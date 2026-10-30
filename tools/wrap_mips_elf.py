@@ -12,8 +12,13 @@ REA then pins `MIPS:BE:32:default` and records the o32 ABI as an *assumption*.
 
 Usage:
   ./wrap_mips_elf.py --input code.bin --output code.elf --base 0x80000400
-  ./wrap_mips_elf.py --input rom.z64 --output rom.elf --base 0x80000000 \\
-                     --offset 0x1000 --length 0x100000
+  ./wrap_mips_elf.py --input rom.z64 --output rom.elf --base 0x80000480 \\
+                     --offset 0x1000 --length 0x11000
+
+CAUTION — `--base` must be the segment's real vram, and for this cartridge
+ROM 0x1000 loads at **0x80000480**, not 0x80000000. Getting this wrong shifts
+every recovered address by 0x480 and silently poisons symbol names; see
+notes/M7-mapping-correction.md for the three tests that recover the base.
 """
 import argparse
 import struct
