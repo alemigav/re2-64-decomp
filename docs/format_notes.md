@@ -1763,6 +1763,34 @@ Next step is mechanical: map `0xa0000000`–`0xc0000000` in **both** emulators (
 for mine) and re-run the normalised comparison for thousands of instructions. That extends the window past the
 dispatcher and, if alignment holds, narrows the remaining candidates to the no-op TLB and cache behaviour.
 
+#### Extended differential with the hardware window (M60)
+
+Mapped `0xa4000000` (SP/VI/MI/PI/AI/SI/DP) **and its kseg1 physical mirror `0x04000000`** for Unicorn, and used
+`HwMemory` for this harness. 3 000 steps from `0x8004d344`:
+
+```
+mine 3000 PCs, unicorn 158 PCs — unicorn stopped: UC_ERR_EXCEPTION
+ALIGNED for all 158 compared addresses (0x8004d344 .. 0x80000fb4)
+markers: 0x80001154 at index 2788, 0x80001168 at index 2793, 0x80007f28 never reached
+```
+
+**Still aligned for every address both emulators completed** — the mapping fix removed the earlier
+`0xa430000c` stop, and the two now run together through the dispatcher's `mtc0 $12` at `0x80000fac`.
+
+Unicorn then raises an uninformative `UC_ERR_EXCEPTION` at `0x80000fb4`/`0x80000fb8`, where this harness executes
+without incident. I cannot yet say whether that is a Unicorn limitation in the COP0/TLB area or a real
+difference — `UC_ERR_EXCEPTION` carries no cause code, and extracting it needs more instrumentation than one run.
+
+**On TLBWI specifically: it is not exercised in this window at all.** From `0x8004d344`, 3 000 instructions
+reach the dispatcher (markers at index 2788/2793) but never `0x80007f28`; in earlier runs that instruction only
+appears around instruction 51 000, on the boot-loader path. So "try TLBWI first" cannot be answered from this
+differential — the comparison would have to be run from `0x80000598` for ~60 000 steps, and Unicorn currently
+cannot get that far without the exception above being explained.
+
+**State of the differential as a tool:** it works, it is normalised correctly, it agrees with the reference for
+the whole comparable window, and its blocker is now Unicorn-side rather than mine. That is the opposite of where
+this investigation started.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
