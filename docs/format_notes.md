@@ -545,17 +545,29 @@ create thread 1  0x8006c0d4        (from FUN_8006cb94)
 thread 9 blocks on mesg queue 0x8012bd30     <- real OS_MESG_BLOCK behaviour
 ```
 
-51 243 instructions executed, **0 loader calls, open(0) did not fire.** The blockers are named, not guessed:
+**After adding COP1 (M23):** FP register file held as Python floats with explicit float32 rounding for
+S-format, `mfc1`/`mtc1`/`cfc1`/`ctc1`, `bc1f`/`bc1t`, S/D arithmetic (`add`/`sub`/`mul`/`div`/`sqrt`/
+`abs`/`mov`/`neg`, round/trunc/ceil/floor, `cvt.s/d/w/l`), `c.eq/c.lt/c.le`, `lwc1`/`ldc1`/`swc1`/`sdc1`,
+correct `lwl`/`lwr`/`swl`/`swr`, `cache` as a no-op, the branch-likely family `0x14`–`0x17` **with delay-slot
+nullification when not taken**, and `mfc0`/`mtc0`/`eret`. `ldl`/`ldr`/`sdl`/`sdr` remain **named faults** —
+approximating a 64-bit unaligned access as an aligned one corrupts memory silently.
 
-| thread | stopped at | first missing feature |
+Result: **thread 7 gets past `0x8000ccf0` and runs to completion.**
+
+| thread | state | detail |
 |---|---|---|
-| 7 | `0x8000ccf0` | **COP1 (FPU op)** |
-| 1 | `0x800887b8` | **SDC1 (FPU store)** |
+| 0 (root) | done | boot chain returned |
+| **7** | **done** | 3 slices, returned normally — the FPU blocker is gone |
+| 9 | blocked | waiting on queue `0x8012bd30` (count 0, 1 waiter) |
+| 1 | blocked | waiting on queue `0x8012bcf8` (count 0, 1 waiter) |
 
-So the engine reaches its thread graph and then needs floating point before it can touch a scene
-transition. That is the next increment, and it is a real one: an FP register file plus
-`lwc1`/`swc1`/`ldc1`/`sdc1`, `mfc1`/`mtc1`, and the arithmetic conversions the engine's camera and matrix
-code uses.
+60 326 instructions; the run ends because **every thread is either done or blocked**, and nothing ever
+posts to those two queues. `open(0)` still does not fire.
+
+So the blocker has moved from *instructions* to *event sources*. The queues are posted by hardware
+interrupts — VI retrace, PI/RSP completion, SI controller — all of which are stubs that return 0 and post
+nothing. The next increment is therefore an event source: implement `osViSetEvent` (record the queue and
+message), then post a retrace message once per simulated frame and let the driver thread wake.
 
 Two opcodes were **mis-mapped during this increment and then removed rather than approximated**: `0x2D` is
 `SDR`, not `daddu` (`daddu` is a SPECIAL function), and `0x3C`/`0x3D` are `SCD`/`SDC1`. An unaligned

@@ -45,22 +45,26 @@ class Fault(Exception): pass
 # opcode number. These are deliberately not approximated: an unaligned dword store
 # done as an aligned one silently corrupts memory and makes the run look plausible.
 NAMED_OPS = {
-    0x1A: "LDL (unaligned load)", 0x1B: "LDR (unaligned load)",
-    0x22: "LWL (unaligned load)", 0x26: "LWR (unaligned load)",
-    0x2A: "SWL (unaligned store)", 0x2C: "SDL (unaligned store)",
-    0x2D: "SDR (unaligned store)", 0x2E: "SWR (unaligned store)",
-    0x31: "LWC1 (FPU load)", 0x35: "LDC1 (FPU load)",
-    0x39: "SWC1 (FPU store)", 0x3D: "SDC1 (FPU store)",
-    0x34: "LLD", 0x3C: "SCD", 0x11: "COP1 (FPU op)",
+    0x1A: "LDL (64-bit unaligned load)", 0x1B: "LDR (64-bit unaligned load)",
+    0x2C: "SDL (64-bit unaligned store)", 0x2D: "SDR (64-bit unaligned store)",
+    0x34: "LLD", 0x3C: "SCD",
 }
 
 class Cpu:
     def __init__(self, mem, hooks, steps=400000):
         self.m = mem; self.hooks = hooks; self.steps = steps
         self.r = [0]*32; self.delay = None; self.pc = 0
+        self.f = [0.0]*32          # COP1 register file, held as Python floats
+        self.nullify = False       # set by a not-taken branch-likely (0x14-0x17)
+        self.fcr31 = 0             # FP control/status: we only use the compare bit
         self.calls = []          # (kind, target, args)
         self.trace = []
     def s32(self, v): return v - (1 << 32) if v & 0x80000000 else v
+    @staticmethod
+    def f32(x):
+        """Round a Python float to IEEE single precision (N64 S-format semantics)."""
+        import struct as _s
+        return _s.unpack(">f", _s.pack(">f", x))[0]
     def run(self, entry, a0=0, a1=0, a2=0, a3=0, sp=0x803FF000):
         self.r = [0]*32; self.r[4], self.r[5], self.r[6], self.r[7] = a0, a1, a2, a3
         self.r[29] = sp; self.r[31] = SENTINEL
@@ -73,6 +77,12 @@ class Cpu:
                 ret = fn(self, self.r[4], self.r[5], self.r[6], self.r[7])
                 self.r[2] = (ret or 0) & 0xFFFFFFFF
                 self.pc = self.r[31]
+                n += 1
+                continue
+            if self.nullify:
+                self.nullify = False
+                self.pc = self.delay if self.delay is not None else self.pc + 4
+                self.delay = None
                 n += 1
                 continue
             cur, after = self.pc, self.delay
@@ -122,6 +132,17 @@ class Cpu:
             if self.s32(r[rs]) <= 0: self.delay = ((pc + 4) + (si << 2)) & 0xFFFFFFFF
         elif op == 0x07:
             if self.s32(r[rs]) > 0: self.delay = ((pc + 4) + (si << 2)) & 0xFFFFFFFF
+        elif op in (0x14, 0x15, 0x16, 0x17):     # BEQL / BNEL / BLEZL / BGTZL
+            if op == 0x14: taken = r[rs] == r[rt]
+            elif op == 0x15: taken = r[rs] != r[rt]
+            elif op == 0x16: taken = self.s32(r[rs]) <= 0
+            else: taken = self.s32(r[rs]) > 0
+            if taken:
+                self.delay = ((pc + 4) + (si << 2)) & 0xFFFFFFFF
+            else:
+                # not taken: the delay slot is *nullified*, not executed
+                self.delay = (pc + 8) & 0xFFFFFFFF
+                self.nullify = True
         elif op == 0x01:
             kind = rt
             if kind in (0x00, 0x10) and self.s32(r[rs]) < 0: self.delay = ((pc+4)+(si<<2)) & 0xFFFFFFFF
@@ -150,6 +171,81 @@ class Cpu:
             elif f == 0x09:
                 t = r[rs]; r[rd] = (pc + 8) & 0xFFFFFFFF; self.delay = t
             else: raise Fault(f"unimplemented SPECIAL {f:#x} at {pc:#x}")
+        elif op == 0x31:                                   # LWC1: 32-bit float load
+            b = self.m.read((r[rs] + si) & 0xFFFFFFFF, 4)
+            self.f[rt] = self.f32(__import__("struct").unpack(">f", b.to_bytes(4, "big"))[0])
+        elif op == 0x35:                                   # LDC1: 64-bit double load
+            b = self.m.read((r[rs] + si) & 0xFFFFFFFF, 8)
+            self.f[rt] = __import__("struct").unpack(">d", b.to_bytes(8, "big"))[0]
+        elif op == 0x39:                                   # SWC1
+            import struct as _s
+            bits = int.from_bytes(_s.pack(">f", self.f[rt]), "big")
+            self.m.write((r[rs] + si) & 0xFFFFFFFF, 4, bits)
+        elif op == 0x3D:                                   # SDC1
+            import struct as _s
+            bits = int.from_bytes(_s.pack(">d", self.f[rt]), "big")
+            self.m.write((r[rs] + si) & 0xFFFFFFFF, 8, bits)
+        elif op == 0x22:                                   # LWL
+            a = (r[rs] + si) & 0xFFFFFFFF; sh = (3 - (a & 3)) * 8
+            wv = self.m.read(a & ~3 & 0xFFFFFFFF, 4)
+            r[rt] = (r[rt] & ((1 << sh) - 1)) | (wv << sh)
+        elif op == 0x26:                                   # LWR
+            a = (r[rs] + si) & 0xFFFFFFFF; sh = (a & 3) * 8
+            wv = self.m.read(a & ~3 & 0xFFFFFFFF, 4)
+            r[rt] = (r[rt] & ((1 << (32 - sh)) - 1) << sh) | (wv >> sh) if sh else wv
+        elif op == 0x2A:                                   # SWL
+            a = (r[rs] + si) & 0xFFFFFFFF; sh = (3 - (a & 3)) * 8
+            al = a & ~3 & 0xFFFFFFFF
+            wv = self.m.read(al, 4)
+            wv = (wv & ~((0xFFFFFFFF << sh) & 0xFFFFFFFF)) | ((r[rt] >> ((3 - (a & 3)) * 8)) << sh)
+            self.m.write(al, 4, wv)
+        elif op == 0x2F: pass                              # CACHE: no-op under emulation
+        elif op == 0x2E:                                   # SWR
+            a = (r[rs] + si) & 0xFFFFFFFF; b = a & 3
+            al = a & ~3 & 0xFFFFFFFF
+            wv = self.m.read(al, 4)
+            keep = (1 << (b * 8)) - 1
+            wv = (wv & keep) | ((r[rt] << ((3 - b) * 8)) & ~keep & 0xFFFFFFFF)
+            self.m.write(al, 4, wv)
+        elif op == 0x11:                                   # COP1
+            fs = (w >> 11) & 0x1F; fmt = rs; fn = w & 0x3F
+            import struct as _s
+            if fmt == 0x00:                                # MFC1: raw 32-bit
+                r[rt] = int.from_bytes(_s.pack(">f", self.f[fs]), "big")
+            elif fmt == 0x02: r[rt] = self.fcr31           # CFC1
+            elif fmt == 0x04:                              # MTC1
+                self.f[fs] = self.f32(_s.unpack(">f", r[rt].to_bytes(4, "big"))[0])
+            elif fmt == 0x06: self.fcr31 = r[rt]           # CTC1
+            elif fmt == 0x08:                              # BC1F / BC1T
+                taken = bool(self.fcr31 & 0x800000)
+                if (rt >> 2) & 1: taken = not taken
+                if taken: self.delay = ((pc + 4) + (si << 2)) & 0xFFFFFFFF
+            elif fmt in (0x10, 0x11, 0x14, 0x15):          # S/D/W/L arithmetic
+                ft = (w >> 16) & 0x1F
+                a, b_ = self.f[fs], self.f[ft]
+                if fn == 0x00: v = a + b_
+                elif fn == 0x01: v = a - b_
+                elif fn == 0x02: v = a * b_
+                elif fn == 0x03: v = a / b_ if b_ else 0.0
+                elif fn == 0x04: v = a ** 0.5 if a >= 0 else 0.0
+                elif fn == 0x05: v = abs(a)
+                elif fn == 0x06: v = a
+                elif fn == 0x07: v = -a
+                elif fn in (0x0C, 0x0D, 0x0E, 0x0F, 0x08, 0x09, 0x0A, 0x0B):
+                    import math
+                    v = {0x0C: round, 0x0D: math.trunc, 0x0E: math.ceil, 0x0F: math.floor,
+                         0x08: round, 0x09: math.trunc, 0x0A: math.ceil, 0x0B: math.floor}[fn](a)
+                elif fn == 0x20: v = self.f32(a)          # cvt.s
+                elif fn == 0x21: v = float(a)             # cvt.d
+                elif fn in (0x24, 0x25):                  # cvt.w / cvt.l
+                    v = float(int(a)) if abs(a) < 2**31 else float(2**31 - 1)
+                elif fn == 0x32 or fn == 0x3C or fn == 0x3E:   # c.eq / c.lt / c.le
+                    cond = (a == b_) if fn == 0x32 else (a < b_) if fn == 0x3C else (a <= b_)
+                    self.fcr31 = (self.fcr31 | 0x800000) if cond else (self.fcr31 & ~0x800000)
+                    return
+                else: raise Fault(f"COP1 fmt {fmt:#x} fn {fn:#x} unimplemented at {pc:#x}")
+                self.f[(w >> 6) & 0x1F] = self.f32(v) if fmt == 0x10 else v
+            else: raise Fault(f"COP1 rs={fmt:#x} unimplemented at {pc:#x}")
         elif op in NAMED_OPS: raise Fault(f"{NAMED_OPS[op]} unimplemented at {pc:#x}")
         else: raise Fault(f"unimplemented op {op:#x} at {pc:#x}")
 
