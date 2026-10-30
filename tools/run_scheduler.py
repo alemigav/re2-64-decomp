@@ -114,9 +114,12 @@ class Sched:
         def create_thread(c, a0, a1, a2, a3, *rest):
             tid, entry, stack = a1, a2, None
             # osCreateThread(t, id, entry, arg, stack, pri) -> 5th arg is on stack
-            stack = self.mem.read(c.r[29], 4) if c.r[29] else 0
+            # osCreateThread(t, id, entry, arg, stack, pri): stack and pri are the
+            # 5th/6th arguments and travel on the stack, at 16(sp) and 20(sp).
+            stack = self.mem.read(c.r[29] + 16, 4) if c.r[29] else 0
             self.by_addr[a0] = tid
             self.threads[tid] = {"regs": [0]*32, "pc": entry, "stack": stack,
+                                 "os_thread": a0,
                                  "state": "created", "waiting": None, "runs": 0}
             self.events.append(("create", tid, entry, stack))
             return 0
@@ -243,6 +246,11 @@ class Sched:
                 self.events.append(("irq", 0x08, self.mem.mi_mask,
                                     self.mem.rcp_asserted()))
             th = self.threads[tid]
+            # The guest keeps its own idea of the current thread in 0x80012950 and
+            # the exception handler dereferences it. A host-side scheduler that
+            # does not maintain it is a semantic gap: threads run, but the guest's
+            # __osCurrentThread stays stale.
+            self.mem.write(0x80012950, 4, th.get("os_thread") or 0)
             c = self.cpu
             c.r = list(th["regs"]); c.pc = th["pc"]; c.delay = None
             c.r[29] = th["stack"] or 0x803FF000

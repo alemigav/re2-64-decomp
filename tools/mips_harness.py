@@ -65,6 +65,8 @@ class Cpu:
         self.cause = 0             # 2-6 ExcCode, 8-15 IP, 31 BD
         self.epc = 0
         self.badvaddr = 0
+        self.hi = 0                 # HI/LO multiply-divide pair
+        self.lo = 0
         self.count = 0
         self.compare = 0
         self.hw_pending = 0        # Cause bit positions (8-15) asserted until the device acks
@@ -245,6 +247,27 @@ class Cpu:
             elif f == 0x27: r[rd] = (~(r[rs] | r[rt])) & 0xFFFFFFFF
             elif f == 0x2A: r[rd] = (0 if self.s32(r[rs]) < self.s32(r[rt]) else 1)
             elif f == 0x2B: r[rd] = (1 if r[rs] < r[rt] else 0)
+            elif f == 0x10: r[rd] = self.hi                      # MFHI
+            elif f == 0x11: self.hi = r[rs]                      # MTHI
+            elif f == 0x12: r[rd] = self.lo                      # MFLO
+            elif f == 0x13: self.lo = r[rs]                      # MTLO
+            elif f == 0x18:                                      # MULT
+                v = self.s32(r[rs]) * self.s32(r[rt])
+                self.lo = v & 0xFFFFFFFF; self.hi = (v >> 32) & 0xFFFFFFFF
+            elif f == 0x19:                                      # MULTU
+                v = r[rs] * r[rt]
+                self.lo = v & 0xFFFFFFFF; self.hi = (v >> 32) & 0xFFFFFFFF
+            elif f == 0x1A:                                      # DIV
+                a, b_ = self.s32(r[rs]), self.s32(r[rt])
+                if b_ == 0:
+                    self.lo = 0xFFFFFFFF if a >= 0 else 1; self.hi = a & 0xFFFFFFFF
+                else:
+                    q = int(a / b_)
+                    self.lo = q & 0xFFFFFFFF; self.hi = (a - q * b_) & 0xFFFFFFFF
+            elif f == 0x1B:                                      # DIVU
+                a, b_ = r[rs], r[rt]
+                if b_ == 0: self.lo = 0xFFFFFFFF; self.hi = a & 0xFFFFFFFF
+                else: self.lo = (a // b_) & 0xFFFFFFFF; self.hi = (a % b_) & 0xFFFFFFFF
             elif f == 0x08: self.delay = r[rs]
             elif f == 0x09:
                 t = r[rs]; r[rd] = (pc + 8) & 0xFFFFFFFF; self.delay = t

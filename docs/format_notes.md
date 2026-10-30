@@ -847,6 +847,29 @@ but the path is not yet executed correctly — most likely in the DMA/inflate ha
 table initialisation. That is the next thing to fix, and it must be fixed before any interrupt test is
 meaningful.
 
+#### MDU ops and scheduler-owned current thread (M32)
+
+Two gaps closed:
+
+1. **MDU instructions implemented** — `MFHI`/`MTHI`/`MFLO`/`MTLO`, `MULT`/`MULTU`, `DIV`/`DIVU` with
+   proper signed division semantics and the divide-by-zero results the architecture defines. The handler
+   previously stopped at `0x800007f8` on `SPECIAL 0x12` (MFLO); that fault is gone.
+2. **The scheduler now maintains the guest's current-thread pointer itself.** Every thread records the
+   `OSThread*` passed to `osCreateThread`, and each context switch writes it to `0x80012950` before
+   restoring registers. Observed values across switches: `0x0` (boot thread), `0x0`, **`0x8010b700`**
+   (thread 7's structure). `osCreateThread`'s 5th/6th arguments were also being read from the wrong stack
+   slot (`0(sp)` instead of `16(sp)`); corrected.
+
+This closes the semantic gap identified earlier: a host-side scheduler that starts interpreting at an entry
+point while leaving `__osCurrentThread` stale lets threads *run* but leaves the guest's own view wrong —
+which is exactly why the exception handler dereferenced a zero.
+
+**Result of the honest re-run (no planted pointer):** the interrupt is taken
+(`0x8004d190`, Cause `0x400`), the handler now gets **past** `0x80000770` — the `sd` that previously faulted
+at address `0x20` — and fails later at `0x80000f2c` on an unmapped access at `0x00000004`, i.e. a
+null-based pointer plus offset 4. So the current-thread identification is supported by the guest's own
+behaviour, and the next null is identified with an address and an instruction rather than a symptom.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
