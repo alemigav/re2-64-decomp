@@ -193,7 +193,7 @@ class Cpu:
         elif op == 0x0D: r[rt] = r[rs] | imm
         elif op == 0x0C: r[rt] = r[rs] & imm
         elif op == 0x0E: r[rt] = r[rs] ^ imm
-        elif op == 0x0A: r[rt] = (0 if self.s32(r[rs]) < si else 1)
+        elif op == 0x0A: r[rt] = (1 if self.s32(r[rs]) < si else 0)              # SLTI: 1 if rs<imm
         elif op == 0x0B: r[rt] = (1 if r[rs] < (imm & 0xFFFFFFFF) else 0)
         elif op == 0x08: r[rt] = (r[rs] + si) & 0xFFFFFFFF
         elif op == 0x23: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 4)
@@ -245,7 +245,7 @@ class Cpu:
             elif f == 0x25: r[rd] = r[rs] | r[rt]
             elif f == 0x26: r[rd] = r[rs] ^ r[rt]
             elif f == 0x27: r[rd] = (~(r[rs] | r[rt])) & 0xFFFFFFFF
-            elif f == 0x2A: r[rd] = (0 if self.s32(r[rs]) < self.s32(r[rt]) else 1)
+            elif f == 0x2A: r[rd] = (1 if self.s32(r[rs]) < self.s32(r[rt]) else 0)   # SLT: 1 if rs<rt
             elif f == 0x2B: r[rd] = (1 if r[rs] < r[rt] else 0)
             elif f == 0x10: r[rd] = self.hi                      # MFHI
             elif f == 0x11: self.hi = r[rs]                      # MTHI

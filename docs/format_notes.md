@@ -1035,6 +1035,46 @@ not the data image.
 Correction to my own reporting: the earlier "no write watchpoints hit" line was meaningless because only
 `0x80012950` was being watched. The `0x8001294c` write clearly happened, which is how thread 7 appears there.
 
+#### Phase 2 works: the bug was my inverted `slt` (M38)
+
+The decision-table trace put the fault **inside** the enqueue helper (`jal 0x80000f08` from
+`0x8000dc34`), not before it, and the captured loop registers named the cause exactly:
+
+```
+0x80000f18  slt r1, t6, t7      t6 = 0xffffffff (sentinel priority), t7 = 0 (new thread)
+            -> r1 must be 1       my emulator produced 0
+```
+
+**My `SLT` and `SLTI` were inverted** — they returned 1 when the comparison was false. Every priority
+comparison in libultra therefore took the wrong branch, the ready-list walk stepped past the sentinel into
+null, and the dispatcher faulted. Fixing both (one line each) unblocks Phase 2 entirely.
+
+**Result — genuine guest-controlled scheduling, with the host choosing nothing:**
+
+| entry | instructions | guest context switches |
+|---|---|---|
+| `FUN_8004D344` | 300 000 | **11** |
+| `FUN_80000598` | 400 000 | **11** |
+
+Every switch is a write to `0x80012950` **by guest code at `0x80000f74`** — inside libultra's dispatcher.
+The observed order:
+
+```
+0x0 -> 0x8010b700 (thread 7) -> 0x800164b0 -> 0x8010b700
+    -> 0x8012bb00 (thread 9)  -> 0x8010b700 -> 0x80017868 ...
+```
+
+Two thread structures appear that no earlier run ever created (`0x800164b0`, `0x80017868`) — the game's own
+`osCreateThread` making threads the host never knew about. Final state: thread 7 `next = 0x80012940`
+(linked to the sentinel), `priority 0`, `state 4` (RUNNING), no faults.
+
+So the host now executes instructions and models hardware; the guest owns queue linkage, priority comparison,
+context save/restore and the current-thread pointer. This is the first run where the answer to "which thread
+runs next" comes from the game's own code.
+
+Not yet established: two identical runs have not been compared as a checkpoint digest, `open(0)` has not
+fired, and both message handoffs are still silent.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
