@@ -1619,6 +1619,43 @@ thread 7's path *after* the `jr ra` at `0x8000dca0`, i.e. its caller's continuat
 reaches `0x80007140` by instruction 42 271; in Phase 2 the same resumption leads to the idle spin. The first
 divergent PC after `0x8000dca0` is the thing to capture, and both harnesses can be logged in the same way.
 
+#### Where thread 7 splits: at `0x8000dc88` itself (M56)
+
+Same instrumentation in both harnesses, capturing thread 7's PCs after executing the `jr ra` at `0x8000dca0`:
+
+| harness | PCs captured |
+|---|---|
+| Phase 1 | **0** |
+| Phase 2 | 32 |
+
+```
+Phase 2: dca4 0x8000bfb0 f4 0x80007300 04 08 0c 10 14 18 0x8000bfb8 bc c0 c4 c8
+         0x8000cdf0 f4 f8 fc 0x8000ce00 … 0x800072e0 …
+```
+
+**The comparison cannot be made, and that is the finding.** Phase 1 never executes `0x8000dc88`–`0x8000dca4` at
+all, because `osStartThread` is a **hook** there — the whole call to `0x80007300`, the frame restore and the
+`jr ra` are replaced by a `return 0`. So the split is not *after* `0x8000dca0`; the split is at `0x8000dc88`,
+i.e. at the boundary of the function the host replaced.
+
+Phase 2 runs that code for real and then continues into a different cluster entirely:
+
+```
+0x8000dca4 -> 0x8000bfb0/bfb4 -> 0x80007300 (helper) -> 0x8000bfb8..bfc8
+          -> 0x8000cdf0.. -> 0x8000ce00.. -> 0x800072e0
+```
+
+`0x8000Bxxx`/`0x8000Cxxx` is libultra's queue/message-helper region, and **`0x8000cdf0` and `0x800072e0` are
+themselves Phase-1 stubs**. So the two harnesses not only differ at `osStartThread`: Phase 1 additionally
+short-circuits two helpers that Phase 2 executes on this very path. The divergence is therefore not a single
+branch — it is the cumulative effect of three replaced functions, and it cannot be localised by comparing
+trajectories that never share a prefix.
+
+**That closes this line of inquiry honestly.** The Phase-1 harness cannot serve as the reference for where
+thread 7's init goes, because it does not execute the code in question. The only faithful statement available
+is Phase 2's: thread 7 resumes at `0x8000dc88`, calls `0x80007300`, returns, and then walks the
+`0x8000Bxxx`/`0x8000Cxxx` helper cluster before reaching the idle spin — never `0x80007140`.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 

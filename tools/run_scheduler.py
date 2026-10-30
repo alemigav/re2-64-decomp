@@ -210,14 +210,19 @@ class Sched:
                   0x80006D00, 0x8000DB70, 0x8000CE20):
             self.hooks.setdefault(a, stub)
 
+    def _walk(self, node):
+        """Read node->next defensively: the guest may corrupt the list too."""
+        try: return self.mem.read(node + self.NODE_NEXT, 4)
+        except Fault: return None
+
     def ready_insert(self, tid):
         """Append a thread node to the guest's circular ready list."""
         node = self.threads.get(tid, {}).get("os_thread")
         if not node or tid in self.guest_ready: return
         p, guard = self.READY_HEAD, 0
         while guard < 64:
-            nxt = self.mem.read(p + self.NODE_NEXT, 4)
-            if nxt == self.READY_HEAD: break
+            nxt = self._walk(p)
+            if nxt is None or nxt == self.READY_HEAD or nxt == 0: break
             p = nxt; guard += 1
         self.mem.write(node + self.NODE_NEXT, 4, self.READY_HEAD)
         self.mem.write(p + self.NODE_NEXT, 4, node)
@@ -230,8 +235,8 @@ class Sched:
         if not node: return
         p, guard = self.READY_HEAD, 0
         while guard < 64:
-            nxt = self.mem.read(p + self.NODE_NEXT, 4)
-            if nxt == self.READY_HEAD: break
+            nxt = self._walk(p)
+            if nxt is None or nxt == self.READY_HEAD or nxt == 0: break
             if nxt == node:
                 self.mem.write(p + self.NODE_NEXT, 4, self.mem.read(node + self.NODE_NEXT, 4))
                 if tid in self.guest_ready: self.guest_ready.remove(tid)
