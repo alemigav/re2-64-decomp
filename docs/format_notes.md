@@ -1290,6 +1290,39 @@ The right instrument is different in kind: find the instruction that performs th
 (the `jr` that consumes the restored PC), record the first PC *after* that jump per slice, and only then compare
 with `+0x11c`. That is a disassembly question about `0x80000f60`–`0x8000100` before it is a tracing question.
 
+#### The restore-and-jump is EPC + ERET, not `jr` (M46)
+
+Disassembling the dispatcher tail `0x80000f60`–`0x80001160` gives the full context restore, and it explains why
+three of my instruments failed to see a "jump":
+
+| address | instruction | role |
+|---|---|---|
+| `0x80000f60` | `lui a0,0x8001` / `jal 0x80000f50` | pop next thread from the run queue |
+| `0x80000f6c`–`70` | `sw v0, 0x2950(at)` | `__osRunningThread = v0` (the switch write I logged) |
+| `0x80000f78` | `sh t0, 0x10(v0)` (t0=4) | state = RUNNING |
+| `0x80000f80` | `lw k1, 0x118(k0)` | saved **SR** |
+| `0x80000fac` | **`mtc0 k1, $12`** | restore **Status** |
+| `0x80000fec`–`0x80001090` | `lw 0x18` + `ldc1 f2..f31` | restore FPU flag and FPRs |
+| `0x80001094`–`0x800010b8` | `ld k1,0x108` … `ld at,0x20` … | restore **lo/hi** and GPRs at…ra |
+| `0x8000110c`/`1114` | `ld sp,0xf0` / `ld ra,0x100` | restore `sp`, `ra` |
+| **`0x80001118`** | **`lw k1, 0x11c(k0)`** | load the saved **PC** |
+| **`0x8000111c`** | **`mtc0 k1, $14`** | write it to **EPC** |
+| `0x80001148`–`0x80001154` | `lhu …` / `sw k1, 0(A430000C)` | restore **MI_INTR_MASK** |
+| `0x80001160` | **`eret`** | resume at EPC — i.e. at `thread+0x11c` |
+
+So the resume is delivered **through CP0 EPC + `eret`**, not a `jr` to a restored register. That single fact
+invalidates the instrument I used for M45: I searched for the saved PC as an executed PC inside a window that
+ends before `0x80001160`, and the transfer only happens at the `eret`. The saved PC **is** the resume point;
+it just arrives via the exception return path.
+
+It also shows the guest restores `MI_INTR_MASK` itself (`0x80001154`) on every context restore — i.e. the mask
+is per-thread state in this implementation, which matters for the interrupt wiring: a thread switch can change
+which RCP sources are enabled.
+
+Correct next instrument: log the **first PC after `0x80001160`** per slice, which by construction equals
+`thread+0x11c` at slice entry, and compare with the previous slice's saved PC. That is now a one-line change
+rather than a boundary guess.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
