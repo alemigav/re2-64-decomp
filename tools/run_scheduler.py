@@ -322,10 +322,10 @@ class Sched:
                 try:
                     p_ = self.mem.read(p_ + self.NODE_NEXT, 4)
                 except Fault:
-                    order.append(("unmapped", p_)); break
+                    break                      # malformed: stop, keep what we have
                 if p_ == self.READY_HEAD: break
-                if p_ == 0:                       # malformed list: node->next == 0
-                    order.append("NULL"); break
+                if p_ == 0:                       # malformed: node->next == 0
+                    break
                 order.append(p_); guard += 1
             prios = {n: self.mem.read(n + self.NODE_PRI, 4) for n in order}
             guest_best = max(order, key=lambda n: prios.get(n, 0)) if order else None
