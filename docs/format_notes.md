@@ -1656,6 +1656,42 @@ thread 7's init goes, because it does not execute the code in question. The only
 is Phase 2's: thread 7 resumes at `0x8000dc88`, calls `0x80007300`, returns, and then walks the
 `0x8000Bxxx`/`0x8000Cxxx` helper cluster before reaching the idle spin — never `0x80007140`.
 
+#### Phase 2 from the real boot loader: still no installer (M57)
+
+Last untried combination — faithful Phase 2, no stubs removed, started at the **real boot loader**
+`0x80000598`, 3 000 000 instructions:
+
+```
+fault:            None
+installer hits:   0            (0x80007140 never reached)
+E_VEC:            00 00 00 00  (zero)
+guest switches:   11           0 -> thread7 -> 0x800164b0 -> thread7 -> thread9 -> thread7 -> 0x80017868 ...
+queue validCounts 0/0/0
+primitives used:  pi_dma, inflate, pi_dma      (the boot loader did run its DMA and inflate)
+```
+
+**Answer: no.** The boot loader executes correctly, the guest builds and switches its thread graph, and thread 7
+still never reaches the vector installer. Starting from the real entry changes nothing.
+
+**Consolidated conclusion of the whole line.** The installer routine *works* — Phase 1 executes it at instruction
+42 271 and `E_VEC` ends up holding the reference preamble. Under faithful guest scheduling thread 7 instead
+resumes at `0x8000dc88`, calls `0x80007300`, walks the `0x8000Bxxx`/`0x8000Cxxx` helper cluster and settles into
+the idle spin at `0x80000518`, never approaching `0x80007140`.
+
+Two readings remain, and they cannot be separated with the evidence in hand:
+
+1. the game's real ordering reaches the installer through a path the harness still diverts, in which case some
+   remaining emulation inaccuracy is responsible — and five of the last six failures in this project were mine
+   (inverted `slt`, mis-numbered CP0 space, four missing instruction families, two instrumentation bugs), so this
+   is the likelier candidate;
+2. the installation genuinely happens later than 3 000 000 instructions on this path, i.e. after something the
+   harness never provides.
+
+**The responsible next step is no longer another harness.** It is a differential against a reference N64
+emulator: run this same code path in a known-good emulator with the same images and compare the first divergent
+PC. That separates "my CPU is still wrong" from "the game does what it does", which is the one question the
+self-built harness can no longer answer about itself.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
