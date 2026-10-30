@@ -44,19 +44,19 @@ def inflate_at(d, p, cap=64 << 20):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("rom")
-    ap.add_argument("--start", type=lambda s: int(s, 0), default=None,
-                    help="first candidate offset (default: 0x2000, past header/code/table)")
+    ap.add_argument("--start", type=lambda s: int(s, 0), default=0x14420,
+                    help="first candidate offset (default 0x14420: the end of the boot "
+                         "descriptor table, where the first zlib member begins)")
     ap.add_argument("--out", help="directory to write members into (omit for a dry run)")
     ap.add_argument("--limit", type=int, default=0, help="stop after N members (0 = all)")
     ap.add_argument("--skip", type=int, default=0, help="skip the first N members")
     a = ap.parse_args()
 
     d = open(a.rom, "rb").read()
-    p = a.start if a.start is not None else 0x2000
     if a.out: os.makedirs(a.out, exist_ok=True)
 
     members, gaps, n = [], [], 0
-    p = 0x14420 if a.start is None else a.start
+    p = a.start
     while p < len(d) - 8:
         r = inflate_at(d, p)
         if r is None:

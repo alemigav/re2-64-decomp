@@ -63,8 +63,12 @@ def main() -> None:
     country = rom[0x3E]
     version = rom[0x3F]
 
-    bootcode = rom[0x40:0x1000 + 0x1000]      # CIC bootcode region
-    boot_sha1 = hashlib.sha1(rom[0x40:0x1000 + 0x0FC0]).hexdigest()
+    # The CIC bootcode is exactly [0x40, 0x1000) — 4032 bytes (0xFC0). The ROM
+    # header ends at 0x40 and the first game segment starts at 0x1000, so ANY
+    # bytes beyond 0x1000 belong to game code and make the fingerprint unusable
+    # against a CIC table.
+    bootcode = rom[0x40:0x1000]
+    boot_sha1 = hashlib.sha1(bootcode).hexdigest()
 
     info = {
         "path": a.rom,

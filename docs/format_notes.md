@@ -46,7 +46,7 @@ int FUN_80001180(int index) { return index * 0x10 + 0x80012150; }
 
 | offset | field |
 |---|---|
-| +0 | cart offset **OR'd with `0xB0000000`**; real offset = `& 0x0FFFFFFF` |
+| +0 | **direct cartridge pointer** `0xB0xxxxxx` (= KSEG1 cart window, offset `xxxxxx`); the boot DMA path masks it with `& 0x0FFFFFFF` because a PI register needs a physical address |
 | +4 | stored (compressed) size |
 | +8 | destination vram start |
 | +12 | destination vram end (= start + decompressed size) |
@@ -316,6 +316,47 @@ void FUN_8004d344(void) {
 
 Note `func_0x80006d60` is at `0x80006d60` — back **inside the boot bank**. Stage 2 calls the boot bank and
 the boot bank calls stage 2, so the two images are one program split across two load units.
+
+### The stage-2 file registry (M16)
+
+Decompiling the thread entry `FUN_8004d190` gave video/RAM setup, not file I/O — so the open was located
+by scanning stage 2 for `jal` encodings of the known loader chain instead. Result: stage 2 has **two**
+complete inflate chains (`0x80032824`, `0x8004CC1C`), and five calls to the descriptor-table producer
+`FUN_80001180`. The file-open is:
+
+```c
+/* the open: inflate one descriptor into its destination */
+undefined4 FUN_8004cbf4(undefined4 *desc) {
+  if (desc[1] == 0) return 0;
+  func_0x80004550(stack, DAT_8010b6fc);                    /* inflate init, window buffer */
+  func_0x800045dc(stack, desc[0], desc[2], desc[1]);       /* src, dst, compressed length */
+  func_0x80004594(stack, 2);                               /* free */
+}
+
+/* the call site: slot -> descriptor -> inflate -> per-slot handler */
+void FUN_8004cc5c(int slot) {
+  uVar1 = func_0x80001180((&DAT_8010b2e0)[slot * 8]);      /* boot table index for this slot */
+  FUN_8004cbf4(uVar1);
+  (**(code **)(&DAT_8010b2e4 + slot * 8))();               /* handler for this slot */
+}
+```
+
+So the file system is a **32-byte-per-entry registry at `0x8010b2e0`**: word 0 = boot-descriptor index,
+word 1 = post-load handler, six more per entry. `FUN_8004cc5c(slot)` is the game's open.
+
+`DAT_8010b6fc = 0x80189a00` is the inflate window, and it is set by the thread entry `FUN_8004d190` —
+which ties the two functions together and confirms the entry is the stage-2 init.
+
+### `0xB0000000` is not a flag — it is the cartridge's KSEG1 base
+
+The open above reveals the correct reading of descriptor field 0. On N64 the cartridge is memory-mapped
+in KSEG1 at `0xA0000000`-`0xBFFFFFFF`, so `0xB0074420` **is** a valid pointer to cart offset `0x74420`.
+`FUN_8004cbf4` uses it directly as the inflate source: **there is no DMA step at all on this path**, which
+is why stage 2 contains zero calls to the raw PI DMA starter.
+
+M8's reading of field 0 as "an offset OR'd with a `0xB` flag" was therefore wrong in emphasis: the value
+is a pointer, and the `& 0x0FFFFFFF` mask exists only because the *boot* loader needed a physical address
+to program a PI register.
 
 ### No descriptor points into R3. Three independent tests:
 
