@@ -15,6 +15,8 @@ Detailed write-ups live in `docs/log/`.
 | M7 | **the mapping was wrong** (`0x480` low); every earlier address repaired | `docs/log/M7-mapping-correction.md` |
 | M8 | **the map found**: 16-byte cart descriptor table at vram `0x80012150`, 66 records | `docs/log/M8-file-table-found.md` |
 | M9 | **the cartridge unpacked**: 4 761 zlib members, 1 227 JPEG frames, an MPEG-1 movie | `docs/log/M9-unpacked.md` |
+| M18 | File-open located: **one** call site in stage 2, `0x800273e4` in `FUN_800271d4`, and it is `FUN_8004cc5c(0)` — **always slot 0**. The slot index byte at `0x8010b2e0` is mutable, so scene files are selected at runtime: no static scan can find an R3 descriptor, and §5b's negatives are expected | `format_notes.md` §5b |
+| M19 | Overlay scan: all six overlay blobs contain **0** boot-shape records and **0** `0xB0000000`-`0xB3FFFFFF` cart pointers; strings found include `ROOM800_SND_LD`, `CONF_LD`, `Init tbl` | `format_notes.md` §5b |
 | M17 | Registry at `0x8010b2e0` enumerated: **9 slots**, 8-byte entries (`u8` descriptor index, 3 pad, `u32` entry point). Indices 2-10, max cart `0x7e132` — no R3. `stored == 0` means "already resident": those 3 slots call straight into stage 2 | `format_notes.md` §5b |
 | M16 | Stage-2 file open found: `FUN_8004cc5c(slot)` -> `FUN_80001180(DAT_8010b2e0[slot*8])` -> `FUN_8004cbf4(desc)` -> inflate, then `DAT_8010b2e4[slot*8]()` handler. Registry is 32 B/entry at `0x8010b2e0`. **`0xB0000000` is KSEG1 cart base, not a flag** — no DMA on this path | `format_notes.md` §5b |
 | M15 | Boot record 0 **is the stage-2 code image** (`0x80018a80`, 1.17 MB, entry spawns thread id 7). **No descriptor points into R3** by three tests - and R3 turns out not to be a resource at all, but a residual span | `format_notes.md` §5b |

@@ -347,6 +347,58 @@ word 1 = post-load handler, six more per entry. `FUN_8004cc5c(slot)` is the game
 `DAT_8010b6fc = 0x80189a00` is the inflate window, and it is set by the thread entry `FUN_8004d190` —
 which ties the two functions together and confirms the entry is the stage-2 init.
 
+### The file-open call, and why no static descriptor can be found (M18)
+
+`FUN_8004d190` itself does no file I/O. It sets video mode and RAM layout (Expansion Pak test at
+`< 0x400001`; 320×240 vs 640×480; framebuffer/buffer pointers), then calls four functions, two of which
+spawn threads:
+
+| call | what it is |
+|---|---|
+| `FUN_8008af6c` | one line: `DAT_8012bd84 = DAT_8010b6f0` (framebuffer pointer) |
+| `FUN_80088910` | `osCreateThread(&DAT_8012bb00, 9, FUN_80088668, 0, &DAT_800c4ea0, 0x3c)` + `osStartThread` |
+| `FUN_8006cb94` | controller/eeprom setup, then `osCreateThread(&DAT_80112a40, 1, FUN_8006c0d4, …)` + start |
+| `func_0x80000518` | a boot-bank function |
+
+`func_0x80006d60` = `osCreateThread(thread, id, entry, arg, stack, pri)` and `func_0x8000db90` =
+`osStartThread`; `func_0x80006d30` / `func_0x8000c9e0` / `func_0x8000cb60` = `osCreateMesgQueue` /
+`osRecvMesg` / `osSendMesg`. Thread 1 (`FUN_8006c0d4`) then spawns thread 2 (`FUN_800282e8`).
+
+**The open is called exactly once in the whole stage-2 image**, at `0x800273e4`, inside `FUN_800271d4`:
+
+```c
+if (DAT_801344c0 == 1) DAT_801344c0 = 2;      /* earlier in the same function */
+...
+if (DAT_801344c0 == 2) {                       /* the state machine fires */
+  FUN_8004cc5c(0);                             /* <-- open, ALWAYS slot 0 */
+  FUN_80026a88();
+  DAT_800c4f60 = 1;
+  DAT_801344c0 = 0;                            /* reset */
+  DAT_800c56f4 = DAT_8010b6e4 == 0;
+}
+```
+
+`FUN_800271d4` is called from `0x800264e0` and `0x800264f8`, both inside `FUN_8002616c`, in the same
+`0x8002xxxx` cluster as thread 2's entry. Proven edges: `FUN_8004d190` → `FUN_8006cb94` →
+thread 1 → thread 2 → `0x8002xxxx` cluster → `FUN_8002616c` → `FUN_800271d4` → `FUN_8004cc5c(0)`.
+The thread boundaries in the middle cannot be followed by `jal` scanning (a thread entry has no caller),
+so that part of the chain is inference from adjacency, not proof.
+
+### Why no descriptor for R3 can be found statically
+
+The open is `FUN_8004cc5c(0)` — the slot index is **hardcoded to 0**. So the file being opened is not
+chosen by the argument; it is whatever descriptor index byte currently sits at `0x8010b2e0`. The code
+reads that byte with `lbu` at runtime precisely because **it is mutable**: slot 0 is a patchable window,
+and the scene loader rewrites its index byte to select which record to load.
+
+That closes the R3 question properly. Any descriptor that points into R3 is assigned **at runtime**, so
+scanning static data — the boot table, the nine overlays, all 4 761 unpacked members — can never find it,
+and the three negative results in §5b are the expected outcome rather than a failure.
+
+**The narrow search this enables:** find the stores to `0x8010b2e0` (and to `0x8010b2e8`, slot 1) in the
+stage-2 image and in the overlays, and see which descriptor index each writes. That is a handful of
+instructions, not a scan of 64 MB.
+
 ### The registry, enumerated (M17)
 
 Read straight out of the stage-2 image: the table is static data at `0x8010b2e0` = blob `+0xf2860`.
