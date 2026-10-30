@@ -1361,6 +1361,34 @@ So the correct way to model VI is to leave the mask entirely to the guest (hardw
 bits; the mask is guest-owned), which is exactly the layering the manual describes and which this harness was
 already built for — it just had one host write too many.
 
+#### Guest-owned mask: VI lands only in `0xaaa` windows (M48)
+
+Host no longer writes `MI_INTR_MASK` at all; hardware asserts `MI_INTR` bit 3 (VI) from step 0 and the guest
+owns the mask. 150 000 instructions:
+
+| step | thread | MI mask | VI bit | exception taken at | vector |
+|---|---|---|---|---|---|
+| 218 | `0x8010b700` | `0xaaa` | SET | `0x8004d190` | `0x80000180` |
+| 42 710 | `0x8010b700` | `0xaaa` | SET | `0x8004d190` | `0x80000180` |
+| 43 632 | `0x800164b0` | `0xaaa` | SET | `0x8000c0d0` | `0x80000180` |
+| 44 349 | `0x8012bb00` | `0xaaa` | SET | `0x80088668` | `0x80000180` |
+| 45 668 | `0x80017868` | `0xaaa` | SET | `0x8000e658` | `0x80000180` |
+| 46 577 | `0x80112a40` | `0xaaa` | SET | `0x8006c0d4` | `0x80000180` |
+
+**Six acceptances, every one inside a window whose restored mask is `0xaaa`** — bit `0x08` set. No acceptance
+occurs in a `0x696`/`0x996`/`0x669` context, which is exactly the prediction recorded before the run. So VI
+eligibility is thread-dependent and guest-controlled, and the host no longer determines it.
+
+**A second observation that must be flagged rather than claimed:** the vector at `0x80000180` now reads
+`3c1a8000 275a06d0 03400008 00000000` — installed. That differs from M41, where 200 000 instructions left it
+zero. But the *first* acceptance here happened at step 218, **before** installation, and jumped into zeros. So
+this run is the **hardware-timing variant** ("assert VI independently of guest readiness"), not the controlled
+one, and the late installation cannot be attributed to correct ordering. It is evidence that the install happens
+at all once the mask is guest-owned, not evidence that the ordering is safe.
+
+The controlled variant is the experiment that matters next: hold VI until all 16 vector bytes match the
+preamble, then assert, and observe whether the handler delivers an event to `0x80139f10`.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
