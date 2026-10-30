@@ -1146,6 +1146,40 @@ queues and the event message buffer `0x80139ff0` is all zeros.
 The blocker is now upstream of the queue question entirely: **the exception vector must be installed before the
 first interrupt**, and in Phase-2 mode it is not.
 
+#### Vector installation under uninterrupted guest scheduling: never happens (M41)
+
+Phase 2 from `0x8004D344`, VI **never** asserted, 16 watchpoints armed over the four vectors
+(`0x80000000`, `0x80000080`, `0x80000100`, `0x80000180`, four words each), 200 000 instructions:
+
+```
+vector writes: 0
+UT_VEC / XUT_VEC / ECC_VEC / E_VEC:  all 16 bytes still 0x00000000
+E_VEC matches the reference preamble (3c1a8000 275a06d0 03400008 00000000): False
+```
+
+**So the installation previously observed in the Phase-1 harness did not belong to this run's path.** Of the
+three possibilities this experiment was designed to separate:
+
+- *"the initializer is on a thread that becomes runnable later"* — **not supported**: 200 000 instructions is
+  far beyond the last thread switch (all 11 occur inside the first ~2 500), so a late-but-runnable thread would
+  have run;
+- *"another initialization path is required"* / *"the earlier installation belonged to a different startup
+  sequence"* — **the remaining candidates**.
+
+The one structural difference between the two harnesses is that Phase 1 **hooked**
+`osCreateThread`/`osStartThread`/`osRecvMesg`/`osSendMesg` and faked their success, while Phase 2 lets the
+guest's real routines run. A guest routine that continues past a fabricated thread start, but blocks or takes
+a different branch when the real queue/dispatch code runs, would explain the difference exactly. That is a
+hypothesis, not a finding.
+
+**Shortest next step:** re-run the *Phase-1* harness with the same 16 watchpoints **plus the writer PC**, capture
+the PC that writes `E_VEC`, then check whether that PC appears anywhere in Phase 2's executed-PC set. If it
+does, the branch that skips it is immediately adjacent; if it does not, the two harnesses diverge before it,
+and the divergence is the thing to instrument.
+
+Nothing in this result disturbs the queue findings: both message queues are initialised and both waiting
+threads inserted by guest code, both threads WAITING, message buffers empty.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
