@@ -972,6 +972,41 @@ Note on thread 7: priority **0** (lowest) and resident in the `b .` spin at `0x8
 with an idle thread, but consistency is not proof — the priority came from `osCreateThread`'s stack
 argument, so a wrong stack read would also produce 0.
 
+#### Phase 2 started: guest owns dispatch, and it cannot yet run (M36)
+
+`tools/run_guest_sched.py` implements the target architecture, kept separate so the Phase-1 harness still
+works:
+
+- **One architectural CPU state.** PC, GPRs, HI/LO, CP0 and FPU live on the CPU; there is no host thread
+  table and no per-thread register file. Suspended contexts exist only where the guest put them, in RDRAM.
+- **No hooks on `osCreateThread`/`osStartThread`/`osCreateMesgQueue`/`osRecvMesg`/`osSendMesg`.** Those run
+  as guest instructions and mutate the guest's own circular lists.
+- The host models hardware only: cartridge reads, the inflate primitive, PI DMA, MI pending/mask, and
+  register reads that would otherwise spin. It never writes `0x80012950` and never chooses a thread.
+- Every guest write to `0x80012950` is logged as a context switch.
+
+**Result: zero guest context switches, on every entry path tried.**
+
+| entry | outcome |
+|---|---|
+| `FUN_80000598` (boot loader) | 148 324 instrs, PI DMA + inflate used, then fault at `0x80000f2c` (null at `0x4`) |
+| `FUN_8004D344` (stage-2 entry) | **123 instrs**, then the same fault at `0x80000f2c` |
+| `0x80000480` (real entrypoint) | 42 299 instrs, then pc `0x0` |
+| `0x80000520` (`main`) | 21 321 instrs, then pc `0x0` |
+
+In every case `0x80012950` is `0x0` and the ready-list sentinel at `0x80012940` still reads `0x0`, so the
+guest dispatcher walks into null. The 123-instruction result for `FUN_8004D344` is diagnostic: the guest
+reaches `osStartThread` almost immediately and dispatches into an **uninitialised** ready queue.
+
+**So: the scheduler's own initialisation never runs on any path we can start.** Phase 1 kept working only
+because the host wrote the sentinel and the current pointer itself — i.e. it was supplying the very state the
+guest owns. Phase 2 removes that crutch and the missing initialisation becomes the fault.
+
+**The digest does not reproduce, and no guest-controlled thread transition has been observed.** Recording
+that as not-done: the remaining work is to find and execute libultra's scheduler initialisation (the code that
+sets `0x80012940` circular and `0x80012950` to the boot thread) before any `osStartThread`, most likely by
+starting where `osInitialize` runs rather than at the entry paths tested here.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
