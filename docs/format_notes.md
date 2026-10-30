@@ -1426,6 +1426,36 @@ whether thread 7 walks forward out of `osStartThread`'s tail into its caller, or
 Nothing here disturbs the queue findings: both queues initialised and both waiters inserted by guest code,
 `validCount` 0 on all three queues, event message buffer empty.
 
+#### Thread 7's post-preemption path: it walks forward, then idles (M50)
+
+Three captures of thread 7 resuming at `0x8000dc88` (the saved PC from `osStartThread`), Phase 2, VI not
+asserted:
+
+| capture | step | PCs until yield | path |
+|---|---|---|---|
+| 1 | 705 | 153 | `0x8000dc88` → `0x8000dc8c` → **`0x80007300`**…`0x80007318` → back to `0x8000dc90`…`0x8000dca4` → `0x8000bfb0` → `0x80007300` again → dispatcher |
+| 2 | 1688 | 820 | same opening → `0x8000dc90`… → **`0x80088974`** → `0x8004d304` → **`0x8006cb94`** → … → dispatcher |
+| 3 | 4440 | 145 560 | same opening → `0x8000dc90`… → **`0x8006cc40`** → `0x8004d30c` → **`0x80000518`** → idle spin for 145 560 instructions |
+
+**Answer to the question: thread 7 does walk forward out of `osStartThread`'s tail into its caller** — it hits
+the small helper at `0x80007300`, then its own remaining callees (`0x80088974`, `0x8006cb94` which spawns
+thread 1, then `0x8006cc40` → `0x8004d30c`), and finally reaches the `b .` idle spin at `0x80000518`, where it
+stays. **`0x80007140` is never on that path.**
+
+**And that localises the Phase-1/Phase-2 divergence precisely.** `0x800072E0` and `0x80007300` are among the
+functions the Phase-1 harness **stubs**; in Phase 2 they execute for real, and thread 7 calls them repeatedly on
+exactly the stretch between resumption and idle. So the two harnesses differ in the very region thread 7
+traverses here — which is where the vector installation must be being gained or lost, not in the dispatcher,
+the mask, or the interrupt path (all of which are now verified).
+
+That makes the next experiment narrow and cheap: un-stub `0x800072E0`/`0x80007300` in the Phase-1 harness (i.e.
+run Phase 1 with only the thread/queue hooks, no helper stubs) and see whether the installer still runs at 42 271.
+If it does not, the stubs were the cause and Phase 2 is right; if it does, the installer is genuinely reachable
+and Phase 2 is losing it for a different reason.
+
+Nothing here disturbs the queue findings: both queues initialised, both waiters inserted, `validCount` 0, buffers
+empty.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
