@@ -1389,6 +1389,43 @@ at all once the mask is guest-owned, not evidence that the ordering is safe.
 The controlled variant is the experiment that matters next: hold VI until all 16 vector bytes match the
 preamble, then assert, and observe whether the handler delivers an event to `0x80139f10`.
 
+#### Controlled VI: the vectors are never installed on this path (M49) — M48 corrected
+
+VI withheld until all 16 vector bytes match the preamble, mask guest-owned, 300 000 instructions:
+
+```
+vector installed at step: None
+VI asserted at step:      None        (the precondition never became true)
+exceptions:               0
+queue writes:             20, all osCreateMesgQueue setup plus the two blocking
+                          waiter inserts at 0x80000f44; validCount stays 0 everywhere
+```
+
+**This corrects M48.** There, the vector *did* end up holding the preamble — but only after an interrupt was
+taken at step 218, **before** installation, which jumped into zeros. Execution sliding through that region
+perturbed the run enough that installation later appeared. With the controlled ordering, installation never
+happens at all in 300 000 instructions.
+
+So the honest state of the vector question is the M41 one, now with a mechanism attached:
+
+- **Phase 1** installs at instruction 42 271 because its `osCreateThread`/`osStartThread` hooks return
+  immediately, letting thread 7 run straight through its init body into `0x80007140`.
+- **Phase 2** preempts thread 7 at its first real `osStartThread`; the saved context is correct
+  (`+0x11c = 0x8000dc88`, confirmed 11/11 resumptions in M47), thread 7 *is* resumed there — but it never
+  progresses as far as the installer.
+
+So the faithful harness and the stubbed one disagree about whether the game ever reaches its own vector
+installation, and the faithful one currently says it does not. That is a statement about **thread 7's post-
+preemption progress**, not about hardware, interrupts or the mask — all of which are now modelled and verified.
+
+**Immediate next measurement** (bounded, and the direct continuation): thread 7's PC sequence between resuming
+at `0x8000dc88` and its next yield. M45 tried this with an exclusion window that excluded the wrong range; with
+the dispatcher now known to span `0x80000f08`–`0x80001168`, the same trace becomes meaningful — the question is
+whether thread 7 walks forward out of `osStartThread`'s tail into its caller, or loops back into the dispatcher.
+
+Nothing here disturbs the queue findings: both queues initialised and both waiters inserted by guest code,
+`validCount` 0 on all three queues, event message buffer empty.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
