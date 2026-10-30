@@ -287,6 +287,59 @@ claim either. **Hypothesis, not finding:** R3 is audio (VADPCM/PCM) or a texture
 Both regions were entered mid-block by the coverage pass, so the first bytes are cut points, not
 headers — which is why their apparent "headers" disagree byte-for-byte with the verified ones.
 
+## 5b. The scene-load path, and why no descriptor points into R3 (M15)
+
+### Record 0 is the stage-2 code image
+
+The boot loader `FUN_80000598` ends by calling `func_0x8004d344` — an address **outside** the boot bank
+(`0x80000480`–`0x800120C0`). That was never a stray reference: boot table record 0 is
+
+| | |
+|---|---|
+| cart offset | `0x14420` |
+| stored | 385 519 B |
+| decompressed to | `0x80018a80` … `0x80136d90` (**1 172 240 B**) |
+| `0x8004d344` | inside it, at `+0x348c4`, where the word is `27bdffe0` = `addiu sp,sp,-0x20` |
+
+So record 0 **is** the stage-2 image, decompressed into RAM and called. It is `assets/unpacked/00000_0014420_1172240.bin`,
+and it is code: **1 240 prologues, 2 237 `jr ra`, 6 457 `jal`**, dense from `+0x8000` to `+0xA0000`, empty at
+the tail. Its base is `0x80018a80`.
+
+Wrapped at that base (`tools/wrap_mips_elf.py --base 0x80018a80`), the entry decompiles to a thread spawn:
+
+```c
+void FUN_8004d344(void) {
+  func_0x80006d60(&DAT_8010b700, 7, FUN_8004d190, 0, &DAT_800c36a0, 0);   /* create, id 7 */
+  func_0x8000db90(&DAT_8010b700);                                        /* start */
+}
+```
+
+Note `func_0x80006d60` is at `0x80006d60` — back **inside the boot bank**. Stage 2 calls the boot bank and
+the boot bank calls stage 2, so the two images are one program split across two load units.
+
+### No descriptor points into R3. Three independent tests:
+
+| test | result |
+|---|---|
+| boot descriptor table (66 records, `0x80012150`) | cart offsets stop at `0xC85E8`; R3 starts at `0xB73FB3` — **0.82 MB vs 12 MB, no overlap** |
+| stage-2 image: `0xB`-flagged records in the boot shape, and `lui`+`addiu` constructions landing in R3's range | **0 records**; 93 constructions, all masks (`0x00FFFFFF`, `0x01000800`, `0x014000F0`, …) |
+| strict record shape (4 coordinated fields: flag+offset, size, vram, vram_end) across **all 4 761 unpacked members** | **0 records in 0 members** — the boot table is the only instance of this format in the cartridge's compressed content |
+
+The exact value `0x00B73FB3` — plain and `0xB`-flagged — occurs **nowhere** in the ROM or in stage 2.
+
+A tempting-looking test that must be rejected: scanning for words whose top nibble is `0xB` "finds" 24 059
+cart offsets across 2 415 members, and 893 apparent pointers into R3. One sixteenth of all random words have
+that nibble, so the flag alone is worthless. The boot table was identified by four fields agreeing over
+consecutive records, and only that strict shape is evidence.
+
+### The reframing this forces
+
+**R3 is not a resource.** Its boundaries came from inverting zlib coverage — it is *everything in that span
+that is not a zlib member*, so a descriptor for it need not exist, and its first bytes are a preceding
+block's trailer rather than a header. Asking "which descriptor points into R3" is therefore ill-posed
+until a **specific offset inside R3** is chosen. R1 and R2 escaped this because their spans happened to
+contain real containers (media blocks with a verified trailer format); R3 and R4 did not.
+
 ## 6. Verification rules this document follows
 
 1. **Two independent paths, or it is not established.** The descriptor table was decoded from
