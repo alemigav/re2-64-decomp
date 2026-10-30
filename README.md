@@ -20,7 +20,7 @@ its own, and so the expensive part is only entered with evidence:
 |---|---|---|
 | **M0** | Toolchain proof: MIPS big-endian decompiles in this stack | ✅ **done 2026-10-30** |
 | **M1** | ROM identified: byte order, entry, cart ID, mapping | ✅ **done** — see `notes/M1-rom-identification.md` |
-| **M2** | Code/data separation via splat; first code segment disassembles | ◐ boot region decompiles as a flat blob; needs splat for boundaries |
+| **M2** | Code/data separation via splat; first code segment disassembles | ✅ **done** — 243 functions, code ends at ROM `0x12140`; see `notes/M2-code-data-boundaries.md` |
 | **M3** | One function decompiled and annotated by hand, with a written explanation | ⏳ |
 | **M4** | A subsystem understood (event scripting, inventory, or the FMV/flagship codec) | ⏳ |
 | **M5** | Byte-matching build of one module | ⏳ *only if M4 justifies it* |
@@ -101,7 +101,7 @@ To obtain:
 
 | Need | Where |
 |---|---|
-| `splat` (ROM splitter) | `pip install splat64` — the community standard |
+| `splat` + MIPS binutils | **installed in the nanocore** — see `notes/M2-code-data-boundaries.md` for the exact sequence (splat64 needs manual dependency injection and a Rust toolchain for `pygfxd`) |
 | MIPS binutils (`mips-linux-gnu-as/objdump/ld`) | distro package, or LLVM's MIPS target (`clang --target=mips-linux-gnu`) |
 | `n64crc` (CRC verify + fix) | community source; needed before trusting a dump |
 | The original compiler | **unknown until M5** — N64 era used IDO 7.1 or GCC 2.7.2/egcs; matched by comparing generated code |
