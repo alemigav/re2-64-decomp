@@ -162,7 +162,7 @@ class Sched:
         return 0
 
     # ---------------- scheduling ----------------
-    def run(self, root_entry, root_a0=0, max_frames=200):
+    def run(self, root_entry, root_a0=0, max_frames=200, vi_after=None):
         tid = 0
         self.threads[tid] = {"regs": [0]*32, "pc": root_entry, "stack": 0x803FF000,
                              "state": "runnable", "waiting": None, "runs": 0}
@@ -189,6 +189,10 @@ class Sched:
                 continue
             tid = live[0] if self.current is None else (live[(live.index(self.current)+1) % len(live)] if self.current in live else live[0])
             self.current = tid
+            if vi_after is not None and spent > vi_after and not getattr(self, "_vi", False):
+                self._vi = True
+                self.cpu.hw_pending |= 0x2000          # Cause bit 13 = IP5 (RCP VI)
+                self.events.append(("irq", 0x2000, 0, 0))
             th = self.threads[tid]
             c = self.cpu
             c.r = list(th["regs"]); c.pc = th["pc"]; c.delay = None
@@ -207,9 +211,21 @@ class Sched:
                         c.r[2] = (ret or 0) & 0xFFFFFFFF
                         c.pc = c.r[31]; n += 1; spent += 1
                         continue
+                    c.count = (c.count + 1) & 0xFFFFFFFF
+                    if c.compare and c.count == c.compare:
+                        c.timer_pending = True
+                    if c.interrupt_pending():
+                        c.pc = c.take_exception(c.pc, 0, False)
+                        c.delay = None
+                        n += 1; spent += 1
+                        continue
                     cur, after = c.pc, c.delay
                     c.delay = None
                     c.step(cur)
+                    if c.jump_now is not None:
+                        c.pc, c.jump_now = c.jump_now, None
+                        n += 1; spent += 1
+                        continue
                     c.pc = after if after is not None else cur + 4
                     n += 1; spent += 1
             except Block as b:

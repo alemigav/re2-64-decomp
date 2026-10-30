@@ -745,6 +745,66 @@ limitation, not a property of the game, and it is the thing to fix next: model S
 the interrupt-enable bit, the mask bits and the pending bits), raise an interrupt when a modelled source
 asserts, and route it through the game's own exception vector at `0x80000000`.
 
+### CP0 implemented and validated; interrupts fire but the vector is empty (M28)
+
+**Vector correction accepted.** The general exception vector is `0x80000180` when BEV=0 and `0xBFC00380`
+when BEV=1; `0x80000000` is the TLB-refill vector when EXL=0. The harness now selects on **Status.BEV**,
+never on where execution began. Checking the cartridge against that:
+
+| vector | maps to |
+|---|---|
+| `0x80000180` | **ROM `0xd00`** — *below* the game image, inside the IPL3 region |
+| `0xBFC00380` | ROM `0x3fc00f00`, outside the cartridge image entirely |
+
+The game image starts at `0x80000480`, so the general vector sits **0x300 bytes before it**. IPL3
+(`ROM 0x40`–`0x1000`) contains 15 `mfc0` but **0 `eret`**, so IPL3 is not the resident handler either. The
+handler is therefore installed at runtime or arrives by a path not yet mapped — the harness cannot assume
+it exists.
+
+**CP0 architectural state implemented**: `BadVAddr`(8), `Count`(9), `Compare`(11), `Status`(12: IE, EXL,
+ERL, IM, BEV), `Cause`(13: ExcCode, IP, BD), `EPC`(14); acceptance is
+`IE=1 ∧ EXL=0 ∧ ERL=0 ∧ (Cause.IP & Status.IM) ≠ 0`; exception entry records `EPC`/`Cause` (with BD) and
+sets EXL; `ERET` restores `EPC` and clears EXL. `hw_pending` holds **Cause bit positions** and stays
+asserted until the modelled device is acknowledged — it is not cleared by taking an exception.
+
+Validation, all five:
+
+| test | result |
+|---|---|
+| masked interrupt does not fire | **PASS** |
+| enabled interrupt fires, vector `0x80000180`, EPC = faulting PC, Cause = `0x2000` (IP5, ExcCode 0) | **PASS** |
+| EXL prevents nested interrupt | **PASS** |
+| ERET resumes at EPC and clears EXL | **PASS** |
+| BEV=1 selects `0xBFC00380` | **PASS** |
+
+Two bugs were found by the tests rather than by inspection: `hw_pending` was masked as a shifted field
+when it holds Cause bit positions (so the very bit being tested was discarded), and `ERET` was given a
+delay slot it does not have.
+
+**Run with CP0 active and one modelled VI source** (asserted after 40 000 instructions; nothing is
+injected into any queue):
+
+```
+exception at 0x80088668 (thread 9 entry)
+  EPC   0x80088668      Cause 0x2000 (IP5 = VI, ExcCode 0 = interrupt)
+  vector 0x80000180     -> RAM there is uninitialised -> executes zeros -> faults
+thread 7 faulted at 0x00000000, thread 9 faulted at 0x80000770, open(0) never fires
+```
+
+So the CPU side of the layering is **demonstrated**: a device pending bit becomes a CPU interrupt,
+`Cause`/`EPC` are right, and the vector is chosen by BEV. What is missing is the handler the device layer
+would jump into — the address maps to IPL3 territory that this harness never loads, which is why execution
+runs off into zeros.
+
+This is the honest boundary. Per the layered model, two open questions remain separate and are **not**
+explained by the interrupt path:
+
+1. Who produces a message for thread 9's `0x8012bd30`?
+2. Who produces the message for thread 1's `0x8012bcf8`?
+
+The generic event dispatcher posts to `0x80139f10` (the only registered queue), and neither blocked thread
+waits there.
+
 ### What is still not available
 
 A full-game trace. The harness runs one function at a time with prepared state; it cannot follow the

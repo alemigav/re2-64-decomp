@@ -60,6 +60,17 @@ class Cpu:
         # a Python float per register silently conflates the two views.
         self.f = [0]*32
         self.nullify = False       # set by a not-taken branch-likely (0x14-0x17)
+        # ---- CP0 architectural state (VR4300) -------------------------------
+        self.status = 0            # bit0 IE, bit1 EXL, bit2 ERL, 8-15 IM, bit22 BEV
+        self.cause = 0             # 2-6 ExcCode, 8-15 IP, 31 BD
+        self.epc = 0
+        self.badvaddr = 0
+        self.count = 0
+        self.compare = 0
+        self.hw_pending = 0        # Cause bit positions (8-15) asserted until the device acks
+        self.jump_now = None       # immediate jump (ERET has no delay slot)
+        self.timer_pending = False
+        self.exceptions = []       # (pc, epc, cause, vector) for the record
         self.fcr31 = 0             # FP control/status: we only use the compare bit
         self.calls = []          # (kind, target, args)
         self.trace = []
@@ -102,12 +113,52 @@ class Cpu:
                 self.delay = None
                 n += 1
                 continue
+            self.count = (self.count + 1) & 0xFFFFFFFF
+            if self.compare and self.count == self.compare:
+                self.timer_pending = True
+            if self.interrupt_pending():
+                self.pc = self.take_exception(self.pc, 0, False)
+                self.delay = None
+                n += 1
+                continue
             cur, after = self.pc, self.delay
             self.delay = None
             self.step(cur)
-            self.pc = after if after is not None else cur + 4
+            if self.jump_now is not None:
+                self.pc, self.jump_now = self.jump_now, None
+            else:
+                self.pc = after if after is not None else cur + 4
             n += 1
         return n
+    STATUS_IE, STATUS_EXL, STATUS_ERL = 0x1, 0x2, 0x4
+    def _IM(self): return (self.status >> 8) & 0xFF
+    def _IP(self): return (self.cause >> 8) & 0xFF
+    def _refresh_ip(self):
+        # hw_pending holds Cause bit positions (8-15), not a shifted field, so it
+        # can be OR'd straight in; mixing the two conventions silently masks the
+        # very bit you asked about.
+        ip = self.hw_pending | (self.cause & 0x300)               # hardware | software IP0-1
+        if self.timer_pending: ip |= 0x8000                        # Cause bit 15 = IP7 timer
+        self.cause = (self.cause & ~0xFF00) | (ip & 0xFF00)
+    def interrupt_enabled(self):
+        return (self.status & self.STATUS_IE) and not (self.status & (self.STATUS_EXL | self.STATUS_ERL))
+    def interrupt_pending(self):
+        """(Cause.IP & Status.IM) != 0, with the VR4300 acceptance conditions."""
+        self._refresh_ip()
+        return self.interrupt_enabled() and (self._IP() & self._IM()) != 0
+    def exception_vector(self):
+        # BEV=0 -> general exception 0x80000180; BEV=1 -> 0xBFC00380.
+        # 0x80000000 is the TLB-refill vector when EXL=0, NOT the general vector.
+        return 0xBFC00380 if (self.status & 0x00400000) else 0x80000180
+    def take_exception(self, pc, code, bd=False):
+        self.epc = (pc - 4) & 0xFFFFFFFF if bd else pc
+        self.cause = (self.cause & ~0x7C) | ((code & 0x1F) << 2) | ((1 << 31) if bd else 0)
+        self._refresh_ip()
+        self.status |= self.STATUS_EXL
+        v = self.exception_vector()
+        self.exceptions.append((pc, self.epc, self.cause, v))
+        return v
+
     def step(self, pc):
         w = self.m.read(pc, 4); r = self.r
         op = w >> 26; rs = (w >> 21) & 0x1F; rt = (w >> 16) & 0x1F
@@ -121,10 +172,20 @@ class Cpu:
         elif op == 0x3F: self.m.write((r[rs] + si) & 0xFFFFFFFF, 8, r[rt])               # sd
         elif op == 0x30: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 4)                    # ll
         elif op == 0x38: r[rt] = 1                                                            # sc
-        elif op == 0x10:                                                                      # COP0
-            if rs == 0x00: r[rt] = 0                 # mfc0: status reads as zero
-            elif rs == 0x04: pass                    # mtc0: ignored
-            elif rs == 0x10: r[31] = (pc + 8) & 0xFFFFFFFF                          # eret
+        elif op == 0x10:                                        # COP0
+            if rs == 0x00:                                     # MFC0
+                r[rt] = {8: self.badvaddr, 9: self.count, 11: self.compare,
+                         12: self.status, 13: self.cause, 14: self.epc}.get(rd, 0)
+            elif rs == 0x04:                                   # MTC0
+                if rd == 12: self.status = r[rt]
+                elif rd == 13: self.cause = (self.cause & ~0x300) | (r[rt] & 0x300)
+                elif rd == 14: self.epc = r[rt]
+                elif rd == 9: self.count = r[rt]
+                elif rd == 11: self.compare = r[rt]; self.timer_pending = False
+                elif rd == 8: self.badvaddr = r[rt]
+            elif rs == 0x10:                                   # ERET
+                self.status &= ~self.STATUS_EXL
+                self.jump_now = self.epc                       # no delay slot
             else: raise Fault(f"COP0 rs={rs:#x} at {pc:#x}")
 
         elif op == 0x0D: r[rt] = r[rs] | imm
