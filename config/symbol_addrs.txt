@@ -1,3 +1,5 @@
-// Visit https://github.com/ethteck/splat/wiki/Adding-Symbols for documentation about this file
 entrypoint = 0x80000480; // type:func
 main = 0x80000520; // type:func
+exception_return_eret = 0x80000CE4; // type:func
+func_80000F08_epilogue = 0x80000F08; // type:func
+func_80000F60_alloc_scan = 0x80000F60; // type:func

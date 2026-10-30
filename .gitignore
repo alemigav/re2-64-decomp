@@ -9,3 +9,7 @@ build/
 build/
 *.o
 *.elf.tmp
+asm/
+bin/
+src/
+*.ld
