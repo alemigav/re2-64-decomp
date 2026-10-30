@@ -1456,6 +1456,35 @@ and Phase 2 is losing it for a different reason.
 Nothing here disturbs the queue findings: both queues initialised, both waiters inserted, `validCount` 0, buffers
 empty.
 
+#### Un-stubbing the helpers changes nothing: the installer still runs at 42 271 (M51)
+
+Phase-1 harness with `0x800072E0` and `0x80007300` **un-stubbed** (guest code, only the thread/queue hooks
+remain), 200 000 instructions:
+
+| condition | installer hits | first | last | `E_VEC` |
+|---|---|---|---|---|
+| VI asserted | 32 | **step 42 271, thread 7, `0x80007140`** | 42 302 | **installed** |
+| VI never asserted | 32 | step 51 091, thread 7 | 51 122 | **installed** |
+
+**The stubs were not the cause.** With them un-stubbed the installer runs at exactly the same instruction,
+42 271 (the later 51 091 in the no-VI run is just the interrupt's timing perturbation), by the same thread, and
+`E_VEC` ends up holding the preamble in both cases.
+
+That eliminates the last non-thread difference between the two harnesses. **The only remaining difference is the
+five thread/queue hooks** — `osCreateThread`, `osStartThread`, `osCreateMesgQueue`, `osRecvMesg`, `osSendMesg` —
+which Phase 1 fakes and Phase 2 executes for real. Since the installer sits at 42 271 in Phase 1 with everything
+else genuine, the divergence is inside the real `osStartThread` path: Phase 2 resumes thread 7 at `0x8000dc88`
+*inside* `osStartThread` and makes it execute that function's tail (`0x8000dc88`–`0x8000dca4`: dequeue from the
+active queue and friends), which Phase 1 never runs because its hook returns immediately.
+
+Also noted, unexamined: in the no-VI run thread 7 ends **faulted** at ~51 655 instructions with threads 1 and 9
+blocked — so that path terminates early somewhere after installation. Worth a look, but it is not the current
+question.
+
+**Conclusion of this line:** the vector installation is not lost to emulation, not to stubs, and not to the
+dispatcher. It is lost to the difference between a faked and a real `osStartThread`, i.e. to how thread 7's
+initialisation is interleaved with the scheduler it is itself driving.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
