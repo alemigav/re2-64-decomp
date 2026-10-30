@@ -1727,6 +1727,42 @@ normalising before it can find real divergences — compare the *visited-PC sequ
 boundaries — and `tools/diff_unicorn.py` is saved with that as its stated next step rather than pretending the
 raw comparison is the answer.
 
+#### Normalised differential: 158 instructions aligned, zero divergence (M59)
+
+Comparing *visited-PC sequences* instead of per-step next-PC removes the delay-slot convention difference
+entirely — both emulators execute the delay slot, so their address sequences should be identical.
+
+```
+mine: 213 PCs, unicorn: 158 PCs
+ALIGNED for all 158 compared instruction addresses
+```
+
+**Yes — it stays aligned past `0x8004d378`, with no divergence anywhere in the comparable window.** The two
+implementations execute the same instruction addresses in the same order for all 158 steps both completed.
+
+Both then stopped, for the same underlying reason: **`0xa430000c` (MI_INTR_MASK) is unmapped.**
+
+- mine: `unmapped access at 0xa430000c` at `0x80001154` (the dispatcher's per-thread mask restore)
+- unicorn: `UC_ERR_EXCEPTION` at the same point
+
+The differential script uses the plain `Memory` class, which — unlike `HwMemory` — has no hardware window, and
+Unicorn has nothing mapped at `0xa4300000` either. So the comparison ended at a shared, understood boundary.
+
+**What this proves and what it does not.** It clears my CPU of basic instruction-semantics error on this path:
+a reference implementation of the MIPS32 instruction set agrees with it instruction-for-instruction. It does
+**not** prove the CPU is right everywhere — 158 instructions is a short window, and the window ends precisely
+where the interesting behaviour begins (the dispatcher's register/mask restore).
+
+**Which sharpens the remaining suspicion.** Since the CPU matches, the reason thread 7 never reaches
+`0x80007140` is unlikely to be instruction semantics and is more likely to be **hardware modelling**: the
+`TLBWI`/`TLBP` operations I made no-ops, cache instructions treated as no-ops, or the MI register behaviour.
+That is a materially different hypothesis from the one I have been testing for several arcs, and it is the first
+time it has been supported by evidence rather than elimination.
+
+Next step is mechanical: map `0xa0000000`–`0xc0000000` in **both** emulators (zero page for Unicorn, `HwMemory`
+for mine) and re-run the normalised comparison for thousands of instructions. That extends the window past the
+dispatcher and, if alignment holds, narrows the remaining candidates to the no-op TLB and cache behaviour.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
