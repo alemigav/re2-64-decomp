@@ -101,6 +101,18 @@ class Sched:
         self.event_msgs = []        # (mq, msg) as registered via osSetEventMesg
         self.frames = 0
         self.on_slice = None
+        # ---- guest scheduler structures -------------------------------------
+        # libultra keeps ready threads on a CIRCULAR list whose terminator is the
+        # queue head node itself. Node layout, taken from the dispatcher at
+        # 0x80000f14 ("lw t6,0x4(t8)" priority, "lw t8,0x0(t8)" next):
+        #   +0x00 next, +0x04 priority, +0x08 queue, +0x0C tlnext,
+        #   +0x10 state, +0x14 id, +0x18 fp, +0x20 context
+        self.READY_HEAD = 0x80012940     # sentinel node; 0x80012948/0x8001294c point here
+        self.NODE_NEXT, self.NODE_PRI = 0, 4
+        self.NODE_STATE, self.NODE_ID = 0x10, 0x14
+        self.CURRENT = 0x80012950
+        self.TAIL = 0x80012954
+        self.guest_ready = []
         self.msglog = []        # every send/recv with PC, message value and queue state
         self.current = None
         self.hooks = {}
@@ -117,7 +129,15 @@ class Sched:
             # osCreateThread(t, id, entry, arg, stack, pri): stack and pri are the
             # 5th/6th arguments and travel on the stack, at 16(sp) and 20(sp).
             stack = self.mem.read(c.r[29] + 16, 4) if c.r[29] else 0
+            pri = self.mem.read(c.r[29] + 20, 4) if c.r[29] else 0
             self.by_addr[a0] = tid
+            # build the guest OSThread header so its own code can read it
+            self.mem.write(a0 + self.NODE_NEXT, 4, self.READY_HEAD)
+            self.mem.write(a0 + self.NODE_PRI, 4, pri)
+            self.mem.write(a0 + 8, 4, 0)
+            self.mem.write(a0 + 0x0C, 4, 0)
+            self.mem.write(a0 + self.NODE_STATE, 4, 1)      # STOPPED
+            self.mem.write(a0 + self.NODE_ID, 4, tid)
             self.threads[tid] = {"regs": [0]*32, "pc": entry, "stack": stack,
                                  "os_thread": a0,
                                  "state": "created", "waiting": None, "runs": 0}
@@ -127,6 +147,8 @@ class Sched:
             tid = self.by_addr.get(a0)
             if tid in self.threads and self.threads[tid]["state"] == "created":
                 self.threads[tid]["state"] = "runnable"
+                self.mem.write(self.threads[tid]["os_thread"] + self.NODE_STATE, 4, 2)
+                self.ready_insert(tid)
                 self.events.append(("start", tid, 0, 0))
             return 0
         def create_mq(c, a0, a1, a2, a3):
@@ -187,6 +209,34 @@ class Sched:
                   0x80006D00, 0x8000DB70, 0x8000CE20):
             self.hooks.setdefault(a, stub)
 
+    def ready_insert(self, tid):
+        """Append a thread node to the guest's circular ready list."""
+        node = self.threads.get(tid, {}).get("os_thread")
+        if not node or tid in self.guest_ready: return
+        p, guard = self.READY_HEAD, 0
+        while guard < 64:
+            nxt = self.mem.read(p + self.NODE_NEXT, 4)
+            if nxt == self.READY_HEAD: break
+            p = nxt; guard += 1
+        self.mem.write(node + self.NODE_NEXT, 4, self.READY_HEAD)
+        self.mem.write(p + self.NODE_NEXT, 4, node)
+        self.mem.write(self.TAIL, 4, node)
+        self.guest_ready.append(tid)
+
+    def ready_remove(self, tid):
+        """Unlink a thread node from the circular ready list."""
+        node = self.threads.get(tid, {}).get("os_thread")
+        if not node: return
+        p, guard = self.READY_HEAD, 0
+        while guard < 64:
+            nxt = self.mem.read(p + self.NODE_NEXT, 4)
+            if nxt == self.READY_HEAD: break
+            if nxt == node:
+                self.mem.write(p + self.NODE_NEXT, 4, self.mem.read(node + self.NODE_NEXT, 4))
+                if tid in self.guest_ready: self.guest_ready.remove(tid)
+                return
+            p = nxt; guard += 1
+
     def post(self, mq, msg):
         """osSendMesg semantics, shared by the app and by hardware ticks."""
         q = self.queues.setdefault(mq, {"buf": 0, "n": 8, "idx": 0, "count": 0, "waiters": []})
@@ -202,12 +252,18 @@ class Sched:
             if self.threads[tid]["state"] == "blocked":
                 self.threads[tid]["state"] = "runnable"
                 self.threads[tid]["waiting"] = None
+                self.ready_insert(tid)
+                if self.threads[tid].get("os_thread"):
+                    self.mem.write(self.threads[tid]["os_thread"] + self.NODE_STATE, 4, 2)
                 self.events.append(("wake", tid, mq, msg))
                 break
         return 0
 
     # ---------------- scheduling ----------------
     def run(self, root_entry, root_a0=0, max_frames=200, vi_after=None):
+        self.mem.write(self.READY_HEAD + self.NODE_NEXT, 4, self.READY_HEAD)  # empty circular
+        self.mem.write(self.READY_HEAD + self.NODE_PRI, 4, 0)
+        self.mem.write(self.TAIL, 4, 0)
         tid = 0
         self.threads[tid] = {"regs": [0]*32, "pc": root_entry, "stack": 0x803FF000,
                              "state": "runnable", "waiting": None, "runs": 0}
@@ -250,7 +306,12 @@ class Sched:
             # the exception handler dereferences it. A host-side scheduler that
             # does not maintain it is a semantic gap: threads run, but the guest's
             # __osCurrentThread stays stale.
-            self.mem.write(0x80012950, 4, th.get("os_thread") or 0)
+            if self.current is not None and self.current != tid:
+                self.ready_remove(self.current)
+            self.ready_remove(tid)          # running threads are off the ready list
+            self.mem.write(self.CURRENT, 4, th.get("os_thread") or 0)
+            if th.get("os_thread"):
+                self.mem.write(th["os_thread"] + self.NODE_STATE, 4, 4)   # RUNNING
             c = self.cpu
             c.r = list(th["regs"]); c.pc = th["pc"]; c.delay = None
             c.r[29] = th["stack"] or 0x803FF000
@@ -260,7 +321,8 @@ class Sched:
             try:
                 while n < self.slice and spent < self.budget:
                     if c.pc == SENTINEL:
-                        th["state"] = "done"; break
+                        th["state"] = "done"
+                        self.ready_remove(tid); break
                     if c.pc in self.hooks:
                         fn = self.hooks[c.pc]
                         ret = fn(c, c.r[4], c.r[5], c.r[6], c.r[7])
@@ -288,6 +350,9 @@ class Sched:
                     n += 1; spent += 1
             except Block as b:
                 th["state"] = "blocked"; th["waiting"] = b.mq
+                self.ready_remove(tid)
+                if th.get("os_thread"):
+                    self.mem.write(th["os_thread"] + self.NODE_STATE, 4, 8)   # WAITING
                 self.events.append(("block", tid, b.mq, 0))
             except Fault as e:
                 self.events.append(("fault", tid, c.pc, str(e)[:30]))

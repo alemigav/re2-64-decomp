@@ -904,6 +904,39 @@ runnable threads itself, while the guest's dispatch routine walks a list that th
 one pointer (`0x80012950`) was enough to get the handler past context save; it is not enough for the guest to
 dispatch threads on its own.
 
+#### Option 1: the host now maintains libultra's circular ready queues (M34)
+
+Node layout taken from the dispatcher itself (`lw t6,0x4(t8)` priority, `lw t8,0x0(t8)` next):
+`+0x00 next`, `+0x04 priority`, `+0x08 queue`, `+0x0C tlnext`, `+0x10 state`, `+0x14 id`,
+`+0x18 fp`, `+0x20 context`. The sentinel is `0x80012940` (where `0x80012948`/`0x8001294c` point), and an
+empty queue is that node pointing at itself.
+
+The scheduler now: writes a real `OSThread` header at each `osCreateThread` address (next/priority/state/id),
+initialises the sentinel as a circular empty list, inserts on `osStartThread` and on wake, unlinks on
+switch/block/exit, sets state RUNNABLE/RUNNING/WAITING, and keeps `0x80012954` as the tail.
+
+**Result: the `0x80000f2c` fault is gone.** After the run the guest list walks cleanly and circularly:
+
+```
+ready list: 0x8012bb00 (thread 9) -> 0x80112a40 (thread 1) -> 0x80012940 (sentinel)
+0x80012950 (current) = 0x8010b700 (thread 7)     0x80012954 (tail) = 0x80112a40
+threads: 0 done, 1/7/9 runnable     faults: none     exceptions: 2 x Cause 0x400 (IP3)
+```
+
+So the guest's own dispatch routine now walks a structure the host keeps coherent, instead of stepping into
+null. Three threads are alive and the interrupt is being accepted — where previously the system either
+deadlocked or faulted.
+
+**Still not solved, and the honest gaps:**
+
+- `msg log` is empty and `open(0)` has not fired; nothing has been posted to `0x8012bd30` or `0x8012bcf8`.
+- Thread 7 now sits in the idle spin at `0x8000051c`, so "all threads runnable" partly means "all threads
+  idle".
+- **The dual-scheduler problem remains.** Threads that stay runnable are unlinked from the guest list at
+  switch and only relinked when they block and are woken, and the host still *chooses* which thread runs.
+  Option 1 makes the guest's structures coherent; option 2 — letting the guest's dispatcher choose — is what
+  removes the duality rather than papering over it.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
