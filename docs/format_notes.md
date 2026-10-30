@@ -1581,6 +1581,44 @@ shift-by-32 forms yielding the correct low word.
 Re-run after both additions: **installer still 32 hits, `E_VEC` installed, thread 7 progressing past
 `0x80006150`** — and the queue `validCount`s remain `0/0/0`.
 
+#### The `0x8000dc88` tail is a clean epilogue — M51's hypothesis is falsified (M55)
+
+Static decode of the region:
+
+```
+0x8000dc80  jal 0x80000dd4        (different entry into the same block)
+0x8000dc84  addiu a0, a0, 0x2948  (delay slot)
+0x8000dc88  jal 0x80007300        <-- thread 7's saved resume point
+0x8000dc8c  addu                  (delay slot)
+0x8000dc90  lw ra, 0x1c(sp)
+0x8000dc94  lw s2, 0x18(sp)
+0x8000dc98  lw s1, 0x14(sp)
+0x8000dc9c  lw s0, 0x10(sp)
+0x8000dca0  jr ra                 <-- return to caller
+0x8000dca4  addiu sp, sp, 0x20    (delay slot)
+```
+
+So `0x8000dc88` is **not a dispatch point**: it is a `jal` to the helper at `0x80007300`, followed by a normal
+frame restore and `jr ra`. Thread 7's saved PC lands *on that call*, which is exactly what a preemption between
+instructions looks like.
+
+Observed, Phase 2, thread 7 in this window (3 visits):
+
+```
+visit 1: dc88 dc8c dc90 dc94 dc98 dc9c dca0 dca4
+visit 2: dc80 dc84
+visit 3: dc88 dc8c dc90 … dca4  dc88 dc8c dc90 … dca4      (twice in a row)
+```
+
+**Thread 7 executes the tail completely and correctly every time** — calls the helper, restores `s0`/`s1`/`s2`/`ra`,
+returns through `jr ra`. There is no divergence, no corruption, no premature yield.
+
+**So the M51 hypothesis — that the Phase-1/Phase-2 divergence lives in this tail — is falsified.** The tail was
+the only place the two harnesses could still differ; it doesn't. What that leaves is narrower than before:
+thread 7's path *after* the `jr ra` at `0x8000dca0`, i.e. its caller's continuation. In Phase 1 that continuation
+reaches `0x80007140` by instruction 42 271; in Phase 2 the same resumption leads to the idle spin. The first
+divergent PC after `0x8000dca0` is the thing to capture, and both harnesses can be logged in the same way.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
