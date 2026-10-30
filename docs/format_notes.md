@@ -1007,6 +1007,34 @@ that as not-done: the remaining work is to find and execute libultra's scheduler
 sets `0x80012940` circular and `0x80012950` to the boot thread) before any `osStartThread`, most likely by
 starting where `osInitialize` runs rather than at the entry paths tested here.
 
+#### Six-word comparison: the scheduler state IS statically initialised (M37)
+
+Reference layout aliases exactly as documented, and the cartridge holds the reference initializer:
+
+| address | field | cartridge | emulated RDRAM after the run |
+|---|---|---|---|
+| `0x80012940` | `__osThreadTail.next` | `0x00000000` | `0x00000000` |
+| `0x80012944` | sentinel priority | `0xffffffff` | `0xffffffff` |
+| `0x80012948` | `__osRunQueue` | `0x80012940` | **`0x80012940` (unchanged)** |
+| `0x8001294c` | `__osActiveQueue` | `0x80012940` | **`0x8010b700` (thread 7)** |
+| `0x80012950` | `__osRunningThread` | `0x00000000` | `0x00000000` |
+| `0x80012954` | `__osFaultedThread` | `0x00000000` | `0x00000000` |
+
+**Outcome: "both contain the expected initializer".** So the harness *is* reproducing the guest's initialised
+data image, and the previous hypothesis — that Phase 2 removed the host crutch but the data image was wrong —
+is disproved. There is no missing `osInitialize`-equivalent to hunt for: the state comes from static data at
+ROM `0x134c0`.
+
+What the RDRAM column localises instead is sharper: **`osCreateThread` ran and linked thread 7 into
+`__osActiveQueue`, but `__osRunQueue` still points at the sentinel** — and the dispatcher, entered because
+`__osRunningThread` is NULL, walks a run queue that contains no threads. Its first step
+(`lw t8,0x0(t8)` from the sentinel, whose `next` is legitimately `0`) lands on `0x0` and the priority load at
+`0x4` faults. So the missing operation is specifically **the run-queue enqueue that `osStartThread` performs**,
+not the data image.
+
+Correction to my own reporting: the earlier "no write watchpoints hit" line was meaningless because only
+`0x80012950` was being watched. The `0x8001294c` write clearly happened, which is how thread 7 appears there.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
