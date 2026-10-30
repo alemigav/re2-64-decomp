@@ -1206,6 +1206,37 @@ queue/dispatch path diverts or blocks. Hypothesis, not finding.
 Nothing here disturbs the queue results: both queues initialised and both waiters inserted by guest code, both
 WAITING, buffers empty.
 
+#### Who installs the vectors, and when (M43)
+
+Phase-1 run from `0x8004D344` with thread-id logging on the installer range
+`0x80007140`–`0x800071c0`:
+
+```
+FIRST hit: instruction 42,271   thread 7 (entry 0x8004d190)   pc 0x80007140
+LAST  hit: instruction 42,302   thread 7                      pc 0x800071bc
+threads seen in range: {7: 32 hits}          E_VEC written at instruction 42,301
+E_VEC afterwards: 3c1a8000 275a06d0 03400008 00000000
+```
+
+**Only thread 7 touches it. The installer is part of thread 7's own initialisation path**, executed about
+42 000 instructions in — i.e. inside `FUN_8004D190`'s work, not on a late or separate thread.
+
+Why Phase 2 never reaches it is now specific and explains itself: in Phase 1, `osCreateThread`/`osStartThread`
+are **host hooks that return immediately**, so thread 7 continues straight through its init body and reaches the
+callee containing `0x80007140`. In Phase 2 the real `osStartThread` **dispatches immediately** to the thread it
+just started, so thread 7 is preempted mid-init; the remainder of its body — including the installer — is
+deferred, and thread 7 later ends in the `b .` idle spin at `0x80000518` without having run it.
+
+That is a coherent, evidence-backed explanation rather than a hypothesis about missing hardware: the difference
+is *where the preemption point falls*, and Phase 1's stubs accidentally moved it.
+
+**Implication for reconciliation:** Phase 2 is the faithful model, so the installer genuinely runs later than
+Phase 1 shows — but Phase 2 also never gets back to it, because once thread 7 yields, the resumed thread never
+restores thread 7 to a runnable state that continues past the yield point. The single question to answer next is
+therefore: **after thread 7's real `osStartThread` preempts it, does anything put thread 7 back and resume it at
+its saved PC, or does the game's own logic only resume a specific subset?** The saved-context word in thread 7's
+`OSThread` (`+0x20`) answers that directly by comparison with its pre-yield PC.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
