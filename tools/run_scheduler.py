@@ -32,7 +32,19 @@ class Block(Exception):
     def __init__(self, mq): self.mq = mq
 
 class HwMemory(Memory):
-    """RAM + cartridge + read-as-zero hardware window."""
+    """RAM + cartridge + a small real hardware model.
+
+    Corrects two mapping errors: 0x80000180 is RDRAM (physical 0x180), NOT
+    cartridge ROM — the earlier "ROM 0xd00" was this harness's image-projection
+    offset, not a hardware translation — and 0xBFC00380 is the PIF boot ROM at
+    physical 0x1FC00380, a different component from the cartridge's IPL3.
+
+    MI_INTR (0xA4300008) holds per-device pending bits, MI_INTR_MASK (0xA430000C)
+    is the mask, and the MI aggregate asserts **CAUSE_IP3 (0x400)** — one CPU
+    interrupt line for all RCP devices. A device bit must never be mapped straight
+    onto an arbitrary Cause bit: IP6 (0x2000) is external interrupt level 6.
+    """
+    MI_INTR, MI_MASK, RCP_IP3 = 0xA4300008, 0xA430000C, 0x400
     def _loc(self, a, n):
         try:
             return Memory._loc(self, a, n)
@@ -40,7 +52,34 @@ class HwMemory(Memory):
             if 0xA0000000 <= a < 0xC0000000:
                 return bytes(n), 0
             raise
+    def __init__(self, ram, rom):
+        super().__init__(ram, rom)
+        self.watch = {}            # address -> label, for vector installation
+        self.mi_pending = 0
+        self.mi_mask = 0
+        self.watch_hits = []
+    def assert_device(self, bit):
+        """A device raises its MI pending bit; MI then decides about IP3."""
+        self.mi_pending |= bit
+        return self.rcp_asserted()
+    def ack_device(self, bit):
+        self.mi_pending &= ~bit
+        return self.rcp_asserted()
+    def rcp_asserted(self):
+        return 0x400 if (self.mi_pending & self.mi_mask) else 0
+    def read(self, a, n):
+        if a == self.MI_INTR: return self.mi_pending
+        if a == self.MI_MASK: return self.mi_mask
+        return Memory.read(self, a, n)
     def write(self, a, n, v):
+        if a in self.watch:
+            self.watch_hits.append((a, self.watch[a], v, n))
+        if a == self.MI_INTR:            # writing 1s clears pending device bits
+            self.mi_pending &= ~v
+            return
+        if a == self.MI_MASK:
+            self.mi_mask = v
+            return
         if 0xA0000000 <= a < 0xC0000000 and not (CART_BASE <= a < CART_BASE + 0x04000000):
             return
         Memory.write(self, a, n, v)
@@ -66,6 +105,8 @@ class Sched:
         self.hooks = {}
         self._install()
         self.cpu = Cpu(self.mem, self.hooks)
+        self.mem.watch = {0x80000000: "UT_VEC", 0x80000080: "XUT_VEC",
+                          0x80000100: "ECC_VEC", 0x80000180: "E_VEC"}
 
     # ---------------- kernel hooks ----------------
     def _install(self):
@@ -191,8 +232,13 @@ class Sched:
             self.current = tid
             if vi_after is not None and spent > vi_after and not getattr(self, "_vi", False):
                 self._vi = True
-                self.cpu.hw_pending |= 0x2000          # Cause bit 13 = IP5 (RCP VI)
-                self.events.append(("irq", 0x2000, 0, 0))
+                # Device layer: VI raises its MI pending bit. MI decides whether the
+                # aggregate RCP line asserts CAUSE_IP3 (0x400). The CPU never sees
+                # 0x08 or 0x2000 — only IP3.
+                self.mem.mi_mask |= 0x08              # enable VI in MI_INTR_MASK
+                self.mem.assert_device(0x08)          # MI_INTR bit 3 = VI
+                self.events.append(("irq", 0x08, self.mem.mi_mask,
+                                    self.mem.rcp_asserted()))
             th = self.threads[tid]
             c = self.cpu
             c.r = list(th["regs"]); c.pc = th["pc"]; c.delay = None
@@ -214,6 +260,7 @@ class Sched:
                     c.count = (c.count + 1) & 0xFFFFFFFF
                     if c.compare and c.count == c.compare:
                         c.timer_pending = True
+                    c.hw_pending = (c.hw_pending & ~0x400) | self.mem.rcp_asserted()
                     if c.interrupt_pending():
                         c.pc = c.take_exception(c.pc, 0, False)
                         c.delay = None

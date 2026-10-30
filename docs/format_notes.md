@@ -745,65 +745,58 @@ limitation, not a property of the game, and it is the thing to fix next: model S
 the interrupt-enable bit, the mask bits and the pending bits), raise an interrupt when a modelled source
 asserts, and route it through the game's own exception vector at `0x80000000`.
 
-### CP0 implemented and validated; interrupts fire but the vector is empty (M28)
+### CP0 validated, then two mapping corrections, then the real interrupt path (M28/M29)
 
-**Vector correction accepted.** The general exception vector is `0x80000180` when BEV=0 and `0xBFC00380`
-when BEV=1; `0x80000000` is the TLB-refill vector when EXL=0. The harness now selects on **Status.BEV**,
-never on where execution began. Checking the cartridge against that:
+**Corrections accepted, both of which invalidate part of the M28 write-up:**
 
-| vector | maps to |
-|---|---|
-| `0x80000180` | **ROM `0xd00`** — *below* the game image, inside the IPL3 region |
-| `0xBFC00380` | ROM `0x3fc00f00`, outside the cartridge image entirely |
+1. **`0x80000180` is RDRAM (physical `0x180`), not cartridge ROM.** My "ROM `0xd00`" was this harness's
+   image-projection offset, not a hardware translation. Equally, `0xBFC00380` is **PIF boot ROM**
+   (physical `0x1FC00380`, offset `0x380`) — a different component from the cartridge's IPL3.
+2. **`Cause = 0x2000` is `CAUSE_IP6` (external interrupt level 6), not the N64 VI interrupt.** The RCP
+   interrupt is **`CAUSE_IP3 = 0x400`**. M28's trace showed only that the CP0 model accepted a pending
+   interrupt on whatever bit was asserted; it did not show a VI interrupt reaching the CPU.
 
-The game image starts at `0x80000480`, so the general vector sits **0x300 bytes before it**. IPL3
-(`ROM 0x40`–`0x1000`) contains 15 `mfc0` but **0 `eret`**, so IPL3 is not the resident handler either. The
-handler is therefore installed at runtime or arrives by a path not yet mapped — the harness cannot assume
-it exists.
-
-**CP0 architectural state implemented**: `BadVAddr`(8), `Count`(9), `Compare`(11), `Status`(12: IE, EXL,
-ERL, IM, BEV), `Cause`(13: ExcCode, IP, BD), `EPC`(14); acceptance is
-`IE=1 ∧ EXL=0 ∧ ERL=0 ∧ (Cause.IP & Status.IM) ≠ 0`; exception entry records `EPC`/`Cause` (with BD) and
-sets EXL; `ERET` restores `EPC` and clears EXL. `hw_pending` holds **Cause bit positions** and stays
-asserted until the modelled device is acknowledged — it is not cleared by taking an exception.
-
-Validation, all five:
-
-| test | result |
-|---|---|
-| masked interrupt does not fire | **PASS** |
-| enabled interrupt fires, vector `0x80000180`, EPC = faulting PC, Cause = `0x2000` (IP5, ExcCode 0) | **PASS** |
-| EXL prevents nested interrupt | **PASS** |
-| ERET resumes at EPC and clears EXL | **PASS** |
-| BEV=1 selects `0xBFC00380` | **PASS** |
-
-Two bugs were found by the tests rather than by inspection: `hw_pending` was masked as a shifted field
-when it holds Cause bit positions (so the very bit being tested was discarded), and `ERET` was given a
-delay slot it does not have.
-
-**Run with CP0 active and one modelled VI source** (asserted after 40 000 instructions; nothing is
-injected into any queue):
+**D1 — the VI path is now the real one.** `HwMemory` models `MI_INTR` (`0xA4300008`, per-device pending
+bits) and `MI_INTR_MASK` (`0xA430000C`). A device sets its MI bit; the MI aggregate asserts `IP3` only when
+`pending & mask`. Verified in a live run:
 
 ```
-exception at 0x80088668 (thread 9 entry)
-  EPC   0x80088668      Cause 0x2000 (IP5 = VI, ExcCode 0 = interrupt)
-  vector 0x80000180     -> RAM there is uninitialised -> executes zeros -> faults
-thread 7 faulted at 0x00000000, thread 9 faulted at 0x80000770, open(0) never fires
+irq event: ('irq', pending=0x08, mask=0x08, rcp=0x400)
+exception at 0x80088668   EPC 0x80088668   Cause 0x400 (IP3)   vector 0x80000180
 ```
 
-So the CPU side of the layering is **demonstrated**: a device pending bit becomes a CPU interrupt,
-`Cause`/`EPC` are right, and the vector is chosen by BEV. What is missing is the handler the device layer
-would jump into — the address maps to IPL3 territory that this harness never loads, which is why execution
-runs off into zeros.
+The CPU never sees `0x08` or `0x2000`; it sees `IP3`, which is the layering the manual describes.
 
-This is the honest boundary. Per the layered model, two open questions remain separate and are **not**
-explained by the interrupt path:
+**D2 — the vector installation is real, and I was wrong about IPL3.** Write watchpoints on all four vector
+addresses fire on the game's own init, from **both** entry points tried:
 
-1. Who produces a message for thread 9's `0x8012bd30`?
-2. Who produces the message for thread 1's `0x8012bcf8`?
+```
+0x80000000 UT_VEC   <- 0x3c1a8000
+0x80000080 XUT_VEC  <- 0x3c1a8000
+0x80000100 ECC_VEC  <- 0x3c1a8000
+0x80000180 E_VEC    <- 0x3c1a8000
+```
 
-The generic event dispatcher posts to `0x80139f10` (the only registered queue), and neither blocked thread
-waits there.
+`E_VEC` afterwards reads `3c1a8000 275a06d0 03400008 00000000` = `lui k0,0x8000 ; addiu k0,k0,0x6d0 ;
+jr k0 ; nop`. **The general exception handler starts at `0x800006d0`.** So an empty vector at cold start
+is expected — exactly the `osInitialize` behaviour — and there is no need to hunt for a handler in IPL3.
+
+**D3 — dispatch works up to the handler, then stops on missing state.** With the MI path and IP3 enabled,
+the interrupt is taken and execution reaches `0x800006d0`. It runs for about `0xa0` bytes and then faults:
+
+```
+thread 9 at 0x80000770: ff490020 = sd t1, 0x20(k0)      with k0 = 0
+                        -> unmapped access at 0x00000020
+thread 7 faulted at pc 0x0 (k0-derived base is zero)
+```
+
+So the chain *device → MI → IP3 → CP0 → `0x80000180` → preamble → `0x800006d0`* is demonstrated end to end,
+and the handler's own first phase is what remains unemulated: `k0` is zero where the code expects a base
+(the preamble sets it, so something between `0x6d0` and `0x770` clears or fails to save it — either state I
+do not model, or an instruction whose effect I get wrong).
+
+**Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
+is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
 ### What is still not available
 
