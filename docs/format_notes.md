@@ -1510,6 +1510,45 @@ Both produce the identical symptom, and the discriminator is whether a `0x800011
 instrumented run away, and it is the first time this question has been genuinely well-posed, because the fault
 now occurs with the scheduler, dispatcher and vector all verified.
 
+#### Thread 7 dies at an `eret` with EPC = 0 (M53)
+
+Refining M52 with the instruction decode of the final block. Thread 7's last PCs:
+
+```
+0x80007408 … 0x8000741c -> 0x800071e4 0x800071e8 -> 0x80007ef0 … 0x80007f28 -> 0x0
+```
+
+`0x800071e4` is `jal 0x80007ef0`, and `ra = 0x800071ec` — so this is a **call to a routine that never returns by
+`jr`**. Its body is a CP0 sequence ending in a trampoline:
+
+```
+0x80007ef0  mfc0                     read SR
+0x80007ef4  addiu t1, zero, 0x1f
+0x80007ef8  mtc0                     write CP0
+0x80007efc  mtc0
+0x80007f04  lui t1, 0xc000
+0x80007f08  mtc0
+0x80007f0c  lui t1, 0x8000
+0x80007f10  srl / or t2 (0x17)
+0x80007f18  mtc0
+0x80007f1c  addiu t1, zero, 1
+0x80007f20  mtc0
+0x80007f28  eret                     <-- jumps to EPC
+```
+
+**So the "jump to 0" is `eret` at `0x80007f28` with EPC = 0.** Thread 7's saved-PC slot reads `0` for the same
+reason: EPC was zero when the trampoline ran.
+
+This is a materially different failure from a bad return address, and it re-frames thread 7's death: the routine
+at `0x80007ef0` is a **non-returning CP0 trampoline** (`jal` in, `eret` out) that expects EPC to carry the resume
+address. In our run nothing had set EPC, so the trampoline legally resumed at 0.
+
+**Hypothesis, explicitly not a finding:** in the real machine EPC at that point is set by the exception that
+precedes this path (the trampoline writes several CP0 registers then returns through the exception mechanism), or
+by one of the `mtc0`s whose register numbers my decoder reports as 0/0xA/2/3 and which should be re-checked
+against the VR4300 CP0 numbering before any conclusion is drawn. Either way the observable is the same and it is
+not an emulation fault in the dispatcher: **thread 7 reaches a legitimate `eret` with a zero EPC.**
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
