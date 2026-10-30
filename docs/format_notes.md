@@ -1075,6 +1075,42 @@ runs next" comes from the game's own code.
 Not yet established: two identical runs have not been compared as a checkpoint digest, `open(0)` has not
 fired, and both message handoffs are still silent.
 
+#### Comparison audit and a real VI through the guest path (M39)
+
+**Audit, and a lesson in test hygiene.** Auditing `SLT`/`SLTU`/`SLTI`/`SLTIU` after the inversion bug took two
+attempts because my *test* was wrong twice, both times silently:
+
+1. first version compared `r5` against `r10` without ever setting `r10`, producing two false failures;
+2. second version set the registers before `Cpu.run()`, which **resets all registers** — so every case
+   compared 0 with 0, and the "expect 0" cases passed by accident.
+
+Verified properly by calling `step()` directly instead of `run()`: **10/10 pass**, including
+`sltu 0xFFFFFFFF,1 == 0`, `sltu 1,0xFFFFFFFF == 1`, `slti -1 < 0 == 1`. So only `SLT`/`SLTI` were inverted;
+`SLTU`/`SLTIU` were always correct. The failure mode to remember is a test that passes because everything is
+zero.
+
+**A real VI interrupt through the guest path.** Hardware asserts VI (MI pending bit 3, mask enabled), the
+guest has its own `Status` set, and nothing is injected into any queue:
+
+```
+VI asserted at instruction 60000;  Status = 0xff01  (IE=1, IM=0xff)
+exception taken at 0x80000518 -> vector 0x80000180
+max Status seen 0xff03;  1 exception;  no faults
+```
+
+The guest enabled interrupts itself (`IE=1`, all mask bits set), the CPU accepted IP3, and the vector was
+taken into the guest's handler — with the host only modelling the device line.
+
+**And the guest's own queue code then touched both wait queues:**
+
+| write | value | meaning |
+|---|---|---|
+| `0x8012bd30 + 0` | `0x8012bb00` | thread 9's `OSThread*` linked as that queue's waiting list |
+| `0x8012bcf8 + 0` | `0x80112a40` | thread 1's `OSThread*` linked as that queue's waiting list |
+
+These are the two handoffs, now produced **by the game's own `osRecvMesg`** rather than by my host scheduler —
+the first time the wait chains have appeared as guest-side behaviour rather than as host bookkeeping.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
