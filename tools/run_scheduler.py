@@ -58,6 +58,9 @@ class Sched:
         self.queues = {}            # mq addr -> dict(count, buf, n, idx, waiters)
         self.events = []
         self.loads = []
+        self.stubcalls = []
+        self.event_msgs = []        # (mq, msg) as registered via osSetEventMesg
+        self.frames = 0
         self.current = None
         self.hooks = {}
         self._install()
@@ -95,16 +98,7 @@ class Sched:
             if a1: self.mem.write(a1, 4, val)
             return 0
         def send(c, a0, a1, a2, a3):
-            q = self.queues.setdefault(a0, {"buf": 0, "n": 8, "idx": 0, "count": 0, "waiters": []})
-            if q["count"] >= q["n"]:
-                return -1
-            pos = (q["idx"] + q["count"]) % max(1, q["n"])
-            if q["buf"]: self.mem.write(q["buf"] + pos*4, 4, a1)
-            q["count"] += 1
-            if q["waiters"]:
-                tid = q["waiters"].pop(0)
-                self.threads[tid]["state"] = "runnable"; self.threads[tid]["waiting"] = None
-            return 0
+            return self.post(a0, a1)
         def inflate_init(c, a0, a1, a2, a3): return 0
         def inflate_run(c, a0, a1, a2, a3):
             import zlib
@@ -123,30 +117,72 @@ class Sched:
         def note_open(c, a0, a1, a2, a3):
             self.events.append(("OPEN", self.current, a0, 0))
             return None
-        stub = lambda c, *a: 0
+        def set_event_mesg(c, a0, a1, a2, a3):
+            """osSetEventMesg(event, mq, msg): the hardware-interrupt inbox."""
+            self.event_msgs.append((a1, a2))
+            self.stubcalls.append((c.pc, a0, a1, a2, a3))
+            return 0
+        def stub(c, a0, a1, a2, a3):
+            self.stubcalls.append((c.pc, a0, a1, a2, a3))
+            return 0
         self.hooks.update({
             O_CREATE_THREAD: create_thread, O_START_THREAD: start_thread,
             O_CREATE_MQ: create_mq, O_RECV: recv, O_SEND: send,
+            0x8000CC90: set_event_mesg,
             INFLATE_INIT: inflate_init, INFLATE_RUN: inflate_run,
             INFLATE_FREE: inflate_free, 0x8000C870: raw_pi,
             OPEN: note_open,
         })
         for a in (0x8000BE50, 0x8000BE60, 0x8000E920, 0x8000CEC0, 0x8000E350,
-                  0x800072E0, 0x80007300, 0x8000CC90, 0x8000E4C0, 0x8000E800,
+                  0x800072E0, 0x80007300, 0x8000E4C0, 0x8000E800,
                   0x80006D00, 0x8000DB70, 0x8000CE20):
             self.hooks.setdefault(a, stub)
 
+    def post(self, mq, msg):
+        """osSendMesg semantics, shared by the app and by hardware ticks."""
+        q = self.queues.setdefault(mq, {"buf": 0, "n": 8, "idx": 0, "count": 0, "waiters": []})
+        if q["count"] >= q["n"]:
+            return -1
+        pos = (q["idx"] + q["count"]) % max(1, q["n"])
+        if q["buf"]:
+            try: self.mem.write(q["buf"] + pos*4, 4, msg)
+            except Fault: pass
+        q["count"] += 1
+        while q["waiters"]:
+            tid = q["waiters"].pop(0)
+            if self.threads[tid]["state"] == "blocked":
+                self.threads[tid]["state"] = "runnable"
+                self.threads[tid]["waiting"] = None
+                self.events.append(("wake", tid, mq, msg))
+                break
+        return 0
+
     # ---------------- scheduling ----------------
-    def run(self, root_entry, root_a0=0):
+    def run(self, root_entry, root_a0=0, max_frames=200):
         tid = 0
         self.threads[tid] = {"regs": [0]*32, "pc": root_entry, "stack": 0x803FF000,
                              "state": "runnable", "waiting": None, "runs": 0}
         self.events.append(("create", tid, root_entry, 0))
         spent = 0
+        stalls = 0
         while spent < self.budget:
             live = [t for t, v in self.threads.items() if v["state"] == "runnable"]
             if not live:
-                break
+                # every thread is blocked: this is the moment a hardware interrupt
+                # would fire. Deliver the next message registered via
+                # osSetEventMesg and let the interrupt-handler thread drain it.
+                if not self.event_msgs or stalls >= max_frames:
+                    break
+                mq, msg = self.event_msgs[stalls % len(self.event_msgs)]
+                q = self.queues.setdefault(mq, {"buf": 0, "n": 8, "idx": 0,
+                                                "count": 0, "waiters": []})
+                if self.post(mq, msg) == 0:
+                    self.frames += 1
+                    self.events.append(("tick", stalls, mq, msg))
+                    stalls += 1
+                else:
+                    break
+                continue
             tid = live[0] if self.current is None else (live[(live.index(self.current)+1) % len(live)] if self.current in live else live[0])
             self.current = tid
             th = self.threads[tid]
@@ -203,7 +239,23 @@ def main():
     for l in s.loads[:10]:
         print("  ", {k: (format(v, '#010x') if isinstance(v, int) and v > 0xFF else v)
                      for k, v in l.items()})
+    for t, v in sorted(s.threads.items()):
+        print(f"  thread {t}: {v['state']:9} pc={v['pc']:#010x} runs={v['runs']}"
+              + (f" waiting on {v['waiting']:#x}" if v['waiting'] else ""))
+    print(f"\nframes ticked: {s.frames}   events delivered: "
+          f"{sorted({m for _, m in s.event_msgs})}")
+    for e in s.events:
+        if e[0] == "tick":
+            print(f"  tick {e[1]:<3} -> mq {format(e[2],'#x')} msg {format(e[3],'#x')}")
     print(f"\nopen(0) fired: {any(e[0] == 'OPEN' for e in s.events)}")
+    print("\nstub calls whose first argument looks like a small event id "
+          "(osSetEventMesg candidates):")
+    seen = set()
+    for pc, a0, a1, a2, a3 in s.stubcalls:
+        if a0 <= 15 and a1 > 0x80000000 and (pc, a0, a1, a2) not in seen:
+            seen.add((pc, a0, a1, a2))
+            q = "known-queue" if a1 in s.queues else ""
+            print(f"  stub {pc:#010x}(event={a0}, mq={a1:#010x}, msg={a2:#x}) {q}")
 
 if __name__ == "__main__":
     main()

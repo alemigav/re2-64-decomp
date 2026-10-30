@@ -54,7 +54,11 @@ class Cpu:
     def __init__(self, mem, hooks, steps=400000):
         self.m = mem; self.hooks = hooks; self.steps = steps
         self.r = [0]*32; self.delay = None; self.pc = 0
-        self.f = [0.0]*32          # COP1 register file, held as Python floats
+        # COP1 register file: 32 x 64-bit, held as raw bit patterns. An FPR is one
+        # 64-bit register, not a host double: S-format values occupy the low 32 bits
+        # and the high 32 bits are preserved, which is what the VR4300 does. Storing
+        # a Python float per register silently conflates the two views.
+        self.f = [0]*32
         self.nullify = False       # set by a not-taken branch-likely (0x14-0x17)
         self.fcr31 = 0             # FP control/status: we only use the compare bit
         self.calls = []          # (kind, target, args)
@@ -65,6 +69,19 @@ class Cpu:
         """Round a Python float to IEEE single precision (N64 S-format semantics)."""
         import struct as _s
         return _s.unpack(">f", _s.pack(">f", x))[0]
+    def fget_s(self, i):
+        import struct as _s
+        return _s.unpack(">f", (self.f[i] & 0xFFFFFFFF).to_bytes(4, "big"))[0]
+    def fset_s(self, i, v):
+        import struct as _s
+        low = int.from_bytes(_s.pack(">f", self.f32(v)), "big")
+        self.f[i] = (self.f[i] & ~0xFFFFFFFF) | low      # high half preserved
+    def fget_d(self, i):
+        import struct as _s
+        return _s.unpack(">d", self.f[i].to_bytes(8, "big"))[0]
+    def fset_d(self, i, v):
+        import struct as _s
+        self.f[i] = int.from_bytes(_s.pack(">d", v), "big")
     def run(self, entry, a0=0, a1=0, a2=0, a3=0, sp=0x803FF000):
         self.r = [0]*32; self.r[4], self.r[5], self.r[6], self.r[7] = a0, a1, a2, a3
         self.r[29] = sp; self.r[31] = SENTINEL
@@ -171,20 +188,14 @@ class Cpu:
             elif f == 0x09:
                 t = r[rs]; r[rd] = (pc + 8) & 0xFFFFFFFF; self.delay = t
             else: raise Fault(f"unimplemented SPECIAL {f:#x} at {pc:#x}")
-        elif op == 0x31:                                   # LWC1: 32-bit float load
-            b = self.m.read((r[rs] + si) & 0xFFFFFFFF, 4)
-            self.f[rt] = self.f32(__import__("struct").unpack(">f", b.to_bytes(4, "big"))[0])
-        elif op == 0x35:                                   # LDC1: 64-bit double load
-            b = self.m.read((r[rs] + si) & 0xFFFFFFFF, 8)
-            self.f[rt] = __import__("struct").unpack(">d", b.to_bytes(8, "big"))[0]
-        elif op == 0x39:                                   # SWC1
-            import struct as _s
-            bits = int.from_bytes(_s.pack(">f", self.f[rt]), "big")
-            self.m.write((r[rs] + si) & 0xFFFFFFFF, 4, bits)
-        elif op == 0x3D:                                   # SDC1
-            import struct as _s
-            bits = int.from_bytes(_s.pack(">d", self.f[rt]), "big")
-            self.m.write((r[rs] + si) & 0xFFFFFFFF, 8, bits)
+        elif op == 0x31:                                   # LWC1: low 32 bits only
+            self.f[rt] = (self.f[rt] & ~0xFFFFFFFF) | self.m.read((r[rs] + si) & 0xFFFFFFFF, 4)
+        elif op == 0x35:                                   # LDC1: whole register
+            self.f[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 8)
+        elif op == 0x39:                                   # SWC1: low 32 bits
+            self.m.write((r[rs] + si) & 0xFFFFFFFF, 4, self.f[rt] & 0xFFFFFFFF)
+        elif op == 0x3D:                                   # SDC1: whole register
+            self.m.write((r[rs] + si) & 0xFFFFFFFF, 8, self.f[rt])
         elif op == 0x22:                                   # LWL
             a = (r[rs] + si) & 0xFFFFFFFF; sh = (3 - (a & 3)) * 8
             wv = self.m.read(a & ~3 & 0xFFFFFFFF, 4)
@@ -210,11 +221,10 @@ class Cpu:
         elif op == 0x11:                                   # COP1
             fs = (w >> 11) & 0x1F; fmt = rs; fn = w & 0x3F
             import struct as _s
-            if fmt == 0x00:                                # MFC1: raw 32-bit
-                r[rt] = int.from_bytes(_s.pack(">f", self.f[fs]), "big")
+            if fmt == 0x00: r[rt] = self.f[fs] & 0xFFFFFFFF          # MFC1: low half
             elif fmt == 0x02: r[rt] = self.fcr31           # CFC1
-            elif fmt == 0x04:                              # MTC1
-                self.f[fs] = self.f32(_s.unpack(">f", r[rt].to_bytes(4, "big"))[0])
+            elif fmt == 0x04:                              # MTC1: low half, high preserved
+                self.f[fs] = (self.f[fs] & ~0xFFFFFFFF) | (r[rt] & 0xFFFFFFFF)
             elif fmt == 0x06: self.fcr31 = r[rt]           # CTC1
             elif fmt == 0x08:                              # BC1F / BC1T
                 taken = bool(self.fcr31 & 0x800000)
@@ -222,7 +232,8 @@ class Cpu:
                 if taken: self.delay = ((pc + 4) + (si << 2)) & 0xFFFFFFFF
             elif fmt in (0x10, 0x11, 0x14, 0x15):          # S/D/W/L arithmetic
                 ft = (w >> 16) & 0x1F
-                a, b_ = self.f[fs], self.f[ft]
+                get = self.fget_s if fmt == 0x10 else self.fget_d
+                a, b_ = get(fs), get(ft)
                 if fn == 0x00: v = a + b_
                 elif fn == 0x01: v = a - b_
                 elif fn == 0x02: v = a * b_
@@ -235,7 +246,7 @@ class Cpu:
                     import math
                     v = {0x0C: round, 0x0D: math.trunc, 0x0E: math.ceil, 0x0F: math.floor,
                          0x08: round, 0x09: math.trunc, 0x0A: math.ceil, 0x0B: math.floor}[fn](a)
-                elif fn == 0x20: v = self.f32(a)          # cvt.s
+                elif fn == 0x20: v = a                    # cvt.s (rounded on store)
                 elif fn == 0x21: v = float(a)             # cvt.d
                 elif fn in (0x24, 0x25):                  # cvt.w / cvt.l
                     v = float(int(a)) if abs(a) < 2**31 else float(2**31 - 1)
@@ -244,7 +255,8 @@ class Cpu:
                     self.fcr31 = (self.fcr31 | 0x800000) if cond else (self.fcr31 & ~0x800000)
                     return
                 else: raise Fault(f"COP1 fmt {fmt:#x} fn {fn:#x} unimplemented at {pc:#x}")
-                self.f[(w >> 6) & 0x1F] = self.f32(v) if fmt == 0x10 else v
+                if fmt == 0x10: self.fset_s((w >> 6) & 0x1F, v)     # S: low half, f32
+                else:           self.fset_d((w >> 6) & 0x1F, v)     # D: whole register
             else: raise Fault(f"COP1 rs={fmt:#x} unimplemented at {pc:#x}")
         elif op in NAMED_OPS: raise Fault(f"{NAMED_OPS[op]} unimplemented at {pc:#x}")
         else: raise Fault(f"unimplemented op {op:#x} at {pc:#x}")

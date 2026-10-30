@@ -599,6 +599,53 @@ self-delimiting streams — which is why a sequential walker reproduces it (M9) 
   `FUN_8004d344` under the scheduler and log every global the init threads write in the `0x8010Bxxx`
   range. That is the right way to find the resource structures, and it needs FPU support first.
 
+### Frame tick built; the hypothesis it tested is falsified (M24)
+
+Two FPU-model corrections first, both prompted by review:
+
+1. **FPRs are now 32 x 64-bit raw bit patterns, not host floats.** An S-format value lives in the low 32
+   bits and the high 32 bits are preserved; `LWC1`/`SWC1` touch only the low half, `LDC1`/`SDC1` the whole
+   register, `MFC1`/`MTC1` move the low half. Storing a Python float per register conflated the two views.
+2. Fixing the storage exposed a second bug: the arithmetic block still read `self.f[fs]` as a float, so
+   `add.s` would have operated on raw bit patterns. Both are corrected; `cvt.s` now rounds on store.
+
+The two stop points from M22 decode to **`CFC1`** (`0x8000ccf0`, `4442f800`) and **`BNEL`**
+(`0x800887b8`, `54600001`) — not SDC1, and not a broad FPU suite. That matches the "implement the minimum
+encountered" advice: the extra work was one FP control-register read and one branch-likely.
+
+#### `osSetEventMesg` identified, and a frame tick built
+
+Instrumenting every stub showed exactly one call receiving a queue address:
+
+```
+stub 0x8000cc90(event=4,  mq=0x80139f10, msg=0x1)     /* AI          */
+stub 0x8000cc90(event=9,  mq=0x80139f10, msg=0x2)     /* SP_BREAK    */
+stub 0x8000cc90(event=6,  mq=0x80139f10, msg=0xa)     /* PI          */
+stub 0x8000cc90(event=14, mq=0x80139f10, msg=0x8)     /* RDB_PREPARE */
+```
+
+So `0x8000cc90` is `osSetEventMesg`, and `0x80139f10` is the hardware-interrupt inbox. The scheduler now
+records those registrations and, whenever **every** thread is blocked, delivers the next one as a frame
+tick. Posting was also unified, because the first version incremented a queue count without waking a
+parked waiter — a silent bug that made the tick look inert.
+
+#### Result: the tick runs, nothing consumes it
+
+| queue | count after 20 ticks | waiters | consumer |
+|---|---|---|---|
+| `0x80139f10` (event inbox) | **20** | **0** | **none — no thread ever waits here** |
+| `0x8012bcf8` | 0 | 1 (thread 1) | app-side |
+| `0x8012bd30` | 0 | 1 (thread 9) | app-side |
+
+`open(0)` still does not fire. The hypothesis is falsified rather than merely unproven: delivering 20
+hardware events to the registered inbox wakes nobody, because **the thread that would drain that inbox is
+not among the threads the boot chain creates** (0 root, 7, 1, 9). Thread 7 registers the events and then
+returns; threads 1 and 9 park on two app queues that nothing posts to.
+
+**Next, concretely:** scan the mapped images for the constant `0x80139f10` to find the drainer, and for
+`0x8012bd30` to find its poster. Both are single-address searches, and whichever thread appears owns the
+piece that is missing from the graph we can start.
+
 ### What is still not available
 
 A full-game trace. The harness runs one function at a time with prepared state; it cannot follow the
