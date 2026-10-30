@@ -384,74 +384,52 @@ thread 1 → thread 2 → `0x8002xxxx` cluster → `FUN_8002616c` → `FUN_80027
 The thread boundaries in the middle cannot be followed by `jal` scanning (a thread entry has no caller),
 so that part of the chain is inference from adjacency, not proof.
 
-### Why no descriptor for R3 can be found statically
+### The registry is **read-only** in every analysed image (M19) — retracting "mutable slot"
 
-The open is `FUN_8004cc5c(0)` — the slot index is **hardcoded to 0**. So the file being opened is not
-chosen by the argument; it is whatever descriptor index byte currently sits at `0x8010b2e0`. The code
-reads that byte with `lbu` at runtime precisely because **it is mutable**: slot 0 is a patchable window,
-and the scene loader rewrites its index byte to select which record to load.
+Entry layout, now confirmed by a cross-reference scanner rather than by inference:
 
-That closes the R3 question properly. Any descriptor that points into R3 is assigned **at runtime**, so
-scanning static data — the boot table, the nine overlays, all 4 761 unpacked members — can never find it,
-and the three negative results in §5b are the expected outcome rather than a failure.
-
-**The narrow search this enables:** find the stores to `0x8010b2e0` (and to `0x8010b2e8`, slot 1) in the
-stage-2 image and in the overlays, and see which descriptor index each writes. That is a handful of
-instructions, not a scan of 64 MB.
-
-### The registry, enumerated (M17)
-
-Read straight out of the stage-2 image: the table is static data at `0x8010b2e0` = blob `+0xf2860`.
-Entry layout is **8 bytes**, confirmed from the instructions, not from the decompiler's types:
-
-```
-0x8004cc6c  sll  s0, a0, 3          ; s0 = slot * 8        <- 8-byte stride
-0x8004cc70  addu s0, s0, v0         ; v0 = 0x8010b2e0
-0x8004cc78  lbu  a0, 0x0(s0)        ; +0: u8 descriptor index
-0x8004cc68  ...                     ; +1..+3: padding, always zero
-0x8004cc8c  lw   v0, 0x4(s0)        ; +4: u32 entry point
-0x8004cc90  jalr ra, v0             ; call it after the load
+```c
+struct OverlayEntry {   /* 8 bytes, table at 0x8010b2e0 */
+  u8  descriptor;       /* +0 */
+  u8  padding[3];       /* +1..3, always zero */
+  u32 entry;            /* +4 */
+};
 ```
 
-Ghidra rendered this as `(&DAT_8010b2e0)[slot * 8]`, which reads like a 32-byte word stride; it is byte
-arithmetic on an `undefined1 *`. Reading it as big-endian `u32` yields `0x02000000` for slot 0 and looks
-like nonsense — the first field is a single byte.
+`tools/xref_registry.py` does a bounded abstract interpretation (MIPS has no absolute store, so it tracks
+constants per register through `lui`/`addiu`/`ori`/`addu`, invalidates on writes and on caller-saved
+registers across `jal`, and follows pointers **stored into globals and reloaded** — the "pointer held in
+another variable" case). Scanned: boot bank (69 KB), stage-2 (1.17 MB), and all six overlay blobs
+(~210 KB), window `0x8010b2e0`..`0x8010b328`.
 
-| slot | desc | cart | stored | destination range | entry point | entry inside range |
-|---|---|---|---|---|---|---|
-| 0 | 2 | `0x72610` | 17 022 | `0x8017b410`–`0x801874b0` | `0x80180cd0` | yes |
-| 1 | 3 | `0x7688e` | 9 087 | `0x8015b030`–`0x80161cf0` | `0x8015b030` | yes |
-| 2 | 4 | `0x78c0e` | 9 067 | `0x8017b410`–`0x801899f0` | `0x8017b410` | yes |
-| 3 | 10 | `0x7e132` | 6 880 | `0x8017b410`–`0x8017e910` | `0x8017b410` | yes |
-| 4 | 5 | `0x7af7a` | 5 592 | `0x8017b410`–`0x80180610` | `0x8017b4a4` | yes |
-| 5 | 8 | `0x7e132` | **0** | `0x8017b410` | `0x8009c370` | no — *inside stage 2* |
-| 6 | 7 | `0x7c552` | 7 136 | `0x8016e880`–`0x80172380` | `0x8016e880` | yes |
-| 7 | 6 | `0x7c552` | **0** | `0x8015b030` | `0x800995fc` | no — *inside stage 2* |
-| 8 | 9 | `0x7e132` | **0** | `0x8017b410` | `0x8008b794` | no — *inside stage 2* |
+| image | references | **stores** |
+|---|---|---|
+| boot bank | 0 | **0** |
+| stage-2 | 9 | **0** |
+| all six overlays | 0 | **0** |
 
-Slot 9 onward is not a slot: index byte 0 with a zero handler, and increasing index reads walk into the
-non-record word at the table base (`0x4f564552` = ASCII "OVER"), so the table is **9 entries**.
+The 9 references are three reader functions (`0x8004cc5c`, `0x8004cca8`, `0x8004cd08`), each of which
+constructs the base, reads `+0` with `lbu` (descriptor) and `+4` with `lw` (entry) — which independently
+confirms the layout above.
 
-Two things this settles:
+**So the registry is never written, and my previous conclusion was wrong.** I claimed slot 0's index byte
+was mutable and rewritten by the scene loader to select which record to open. There is no such write
+anywhere in the analysed code. The correct reading is the opposite:
 
-1. **`stored == 0` means "no overlay to load, call straight into stage 2."** The three zero-size records are
-   exactly the three whose entry points fall inside stage 2 (`0x8009c370`, `0x800995fc`, `0x8008b794`) rather
-   than inside a freshly loaded range. 6 of 9 entry points land inside their own destination range; those are
-   the overlays' entry functions sitting at offset 0 or a small offset.
-2. **Every slot points into the boot table, indices 2–10, max cart offset `0x7e132` ( 516 402 B).** Nothing in
-   the registry references anything near R3 — consistent with §5b: the 9-slot registry is an *overlay
-   registry*, not the index for the 4 761 zlib members, which are therefore reached some other way.
+- `FUN_8004cc5c(0)` always opens **descriptor index 2** — cart `0x72610`, 17 022 B → `0x8017b410`,
+  entry `0x80180cd0`. It is a **fixed overlay load**, not a dynamic file selector.
+- The nine slots are a static resident-overlay table, indexed by constants at each call site.
 
-### `0xB0000000` is not a flag — it is the cartridge's KSEG1 base
+Coverage limit worth stating: this rules out a write in code we have mapped. Code in regions we have not
+mapped (further overlays, or RAM images loaded by paths not yet followed) could still write it.
 
-The open above reveals the correct reading of descriptor field 0. On N64 the cartridge is memory-mapped
-in KSEG1 at `0xA0000000`-`0xBFFFFFFF`, so `0xB0074420` **is** a valid pointer to cart offset `0x74420`.
-`FUN_8004cbf4` uses it directly as the inflate source: **there is no DMA step at all on this path**, which
-is why stage 2 contains zero calls to the raw PI DMA starter.
+### What this leaves for R3
 
-M8's reading of field 0 as "an offset OR'd with a `0xB` flag" was therefore wrong in emphasis: the value
-is a pointer, and the `& 0x0FFFFFFF` mask exists only because the *boot* loader needed a physical address
-to program a PI register.
+R3 is referenced by nothing we can see: not statically (no record, no constructed address, no cart
+pointer in any of 4 761 members) and not dynamically (the only loader path is the fixed 9-slot registry,
+which maxes out at cart `0x7e132`). The 4 761 zlib members are therefore **not** loaded through this
+registry at all — they must be reached by the sequential stream walk that §3 already demonstrates works,
+or by a mechanism still outside the mapped code.
 
 ### No descriptor points into R3. Three independent tests:
 
