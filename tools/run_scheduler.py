@@ -61,6 +61,7 @@ class Sched:
         self.stubcalls = []
         self.event_msgs = []        # (mq, msg) as registered via osSetEventMesg
         self.frames = 0
+        self.msglog = []        # every send/recv with PC, message value and queue state
         self.current = None
         self.hooks = {}
         self._install()
@@ -88,6 +89,7 @@ class Sched:
             return 0
         def recv(c, a0, a1, a2, a3):
             q = self.queues.setdefault(a0, {"buf": 0, "n": 8, "idx": 0, "count": 0, "waiters": []})
+            self.msglog.append((c.pc, "recv", a0, None, q["count"], a2, self.current))
             if q["count"] == 0:
                 if a2:                    # OS_MESG_BLOCK
                     q["waiters"].append(self.current)
@@ -98,6 +100,8 @@ class Sched:
             if a1: self.mem.write(a1, 4, val)
             return 0
         def send(c, a0, a1, a2, a3):
+            q = self.queues.get(a0, {"count": 0})
+            self.msglog.append((c.pc, "send", a0, a1, q["count"], a2, self.current))
             return self.post(a0, a1)
         def inflate_init(c, a0, a1, a2, a3): return 0
         def inflate_run(c, a0, a1, a2, a3):
@@ -299,6 +303,12 @@ def main():
     for t, v in sorted(s.threads.items()):
         print(f"  thread {t}: {v['state']:9} pc={v['pc']:#010x} runs={v['runs']}"
               + (f" waiting on {v['waiting']:#x}" if v['waiting'] else ""))
+    print("\n=== event-delivery trace (pc, op, queue, msg, count_before, flag, thread) ===")
+    for pc, op, mq, msg, cnt, flag, tid in s.msglog:
+        mv = format(msg, "#x") if msg is not None else "-"
+        who = f"thread {tid}"
+        print(f"  {pc:#010x} {op:4} q={mq:#010x} msg={mv:>8} before={cnt} "
+              f"flag={flag} {who}")
     print(f"\nframes ticked: {s.frames}   events delivered: "
           f"{sorted({m for _, m in s.event_msgs})}")
     for e in s.events:

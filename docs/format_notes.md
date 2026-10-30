@@ -694,6 +694,57 @@ comparison. Two independent runs of the boot sequence produce the **same digest*
 "same cartridge, same images, same initial state → same thread and memory behaviour", and it is checked
 rather than asserted.
 
+### Send-site census and event-delivery trace (M27): the producer is *indirect by design*
+
+A constant scan for `0x8012bd30` could never find the producer, and the census shows why. Every
+`osSendMesg` (`0x8000cb60`) call site in the mapped images — **51 of them** — classified by how the queue
+argument is formed:
+
+| how `a0` is formed | count | consequence |
+|---|---|---|
+| `loaded` from memory (`lw a0, off(reg)`) | 17 | queue pointer comes from a **table**, invisible to a constant scan |
+| register + offset (`addiu a0, reg, imm`) | 21 | same, via a computed base |
+| copied from another register (`addu a0, r, zero`) | 11 | same, via data flow |
+| unknown | 1 | — |
+
+Not one send site passes a literal queue address. So the phrasing must be **"no producer identified in
+mapped code and execution coverage so far"**, not "the producer must be hardware or an unloaded overlay"
+— an indirect dispatcher in already-mapped code is exactly the shape this census describes.
+
+Where the hardware layer lives:
+
+| image | `lui 0xA460` (PI) | `lui 0xA440` (VI) |
+|---|---|---|
+| boot bank | **82** | **19** |
+| stage-2 | 1 | 1 |
+| all six overlays | 0 | 0 |
+
+The PI/VI handling is libultra in the boot bank, and the libultra send sites whose `a0` is *loaded*
+(`0x8000c2b0`, `0x8000c2dc`, `0x8000c41c`, `0x8000c444`, `0x8000c454`, `0x8000e050`, `0x8000e71c`) are the
+indirect-dispatch candidates — consistent with `osSetEventMesg` writing an `(mq, msg)` table that the
+dispatcher later loads. **But the only queue registered in that table is `0x80139f10`**, so even the
+indirect path posts there and not to `0x8012bd30`.
+
+#### The trace, before the deadlock
+
+Two message operations occur in the entire run, both receives on empty queues:
+
+```
+0x8000c9e0 recv q=0x8012bd30 msg=- before=0 flag=1 thread 9   <- blocking
+0x8000c9e0 recv q=0x8012bcf8 msg=- before=0 flag=1 thread 1   <- blocking
+```
+
+**Zero sends occur before the system deadlocks**, so thread 1 never reaches the point where it drains
+`0x80139f10`, and the 20 ticks it is sent land in a queue whose consumer is parked upstream.
+
+#### Why the harness cannot observe the interrupt path yet
+
+`mfc0` returns 0, so **CP0 Status reads as zero — interrupts are disabled in the emulated CPU**. No
+interrupt can be recognised, so no dispatcher can run, no matter what is posted. That is a harness
+limitation, not a property of the game, and it is the thing to fix next: model Status/Cause (at minimum
+the interrupt-enable bit, the mask bits and the pending bits), raise an interrupt when a modelled source
+asserts, and route it through the game's own exception vector at `0x80000000`.
+
 ### What is still not available
 
 A full-game trace. The harness runs one function at a time with prepared state; it cannot follow the
