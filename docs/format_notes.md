@@ -1323,6 +1323,44 @@ Correct next instrument: log the **first PC after `0x80001160`** per slice, whic
 `thread+0x11c` at slice entry, and compare with the previous slice's saved PC. That is now a one-line change
 rather than a boundary guess.
 
+#### Resume point verified, and the MI mask is per-thread and clobbered (M47)
+
+The one-line instrument — log the resumption at `0x80001168` (the `eret`) — run for 150 000 instructions,
+11 resumptions:
+
+| # | step | thread | resumed at (EPC) | thread+0x11c | MI mask |
+|---|---|---|---|---|---|
+| 1 | 217 | `0x8010b700` | `0x8004d190` | same | `0xaaa` |
+| 2 | 934 | `0x800164b0` | `0x8000c0d0` | same | `0xaaa` |
+| 3 | 1134 | `0x8010b700` | `0x8000ce98` | same | `0x999` |
+| 4 | 1458 | `0x8012bb00` | `0x80088668` | same | `0xaaa` |
+| 5 | 1687 | `0x8010b700` | `0x8000dc88` | same | **`0x696`** |
+| 6 | 2584 | `0x80017868` | `0x8000e658` | same | `0xaaa` |
+| 7 | 2793 | `0x8010b700` | `0x8000ce98` | same | `0x669` |
+| 8 | 3300 | `0x80112a40` | `0x8006c0d4` | same | `0xaaa` |
+| 9 | 3883 | `0x800164b0` | `0x8000ca44` | same | `0x999` |
+| 10 | 4213 | `0x80112a40` | `0x8000dc88` | same | `0x999` |
+| 11 | 4439 | `0x8010b700` | `0x8000dc88` | same | `0x996` |
+
+**Half 1 — the restore path is confirmed: resumption equals `thread+0x11c` in 11/11 cases.** The dispatcher
+behaves exactly as the disassembly of M46 predicts, and the earlier failures were instruments, not emulation.
+(My table's EPC column was printed with a 17-character width, so it shows `0x00000008004d190`; that is a display
+bug in the run, the values are 32-bit.)
+
+**Half 2 — the MI interrupt mask is per-thread and is rewritten on every single resumption:** `0xaaa`, `0x999`,
+`0x696`, `0x669`, `0x996`, `0xaaa`… Thread 7's own resumptions alternate between **VI enabled** (`0xaaa`, `0x999`,
+`0x669` — bit `0x08` set) and **VI disabled** (`0x696`, `0x996` — bit `0x08` clear).
+
+That is the mechanism behind the Phase-2 interrupt failure, and it is not a bug in the game: the guest restores
+`MI_INTR_MASK` from the thread context at `0x80001154`, so **the mask belongs to whichever thread was just
+scheduled**. A host-side `MI_INTR_MASK |= 0x08` therefore does not survive the next context restore — my earlier
+Phase-2 VI assertions were being overwritten by the guest before a VI could be recognised. Phase 1 masked this
+because its hooks never ran the real restore.
+
+So the correct way to model VI is to leave the mask entirely to the guest (hardware asserts `MI_INTR` pending
+bits; the mask is guest-owned), which is exactly the layering the manual describes and which this harness was
+already built for — it just had one host write too many.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
