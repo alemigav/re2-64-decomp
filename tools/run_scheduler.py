@@ -1,0 +1,209 @@
+#!/usr/bin/env python3
+"""Cooperative scheduler on top of the partial MIPS harness.
+
+Goal: drive the game's own thread graph from the boot chain and watch
+`FUN_8004cc5c(0)` fire by itself, rather than calling it per slot.
+
+What is real: instruction execution, both RAM images, the cartridge mapping,
+message-queue semantics (osCreateMesgQueue/osRecvMesg/osSendMesg on emulated
+memory), thread creation and round-robin scheduling.
+
+What is stubbed: hardware registers read as zero and ignore writes (0xA0000000-
+0xB0000000 and 0xB4000000-0xC0000000), video, controllers, RSP/RDP. A thread that
+polls a register waiting for a value will therefore spin — the run reports where it
+spun instead of pretending it completed.
+
+Every event (thread create/start/block, and any call to the loader) is logged, so
+the output says exactly how far execution got.
+"""
+import struct, sys
+from mips_harness import Cpu, Memory, Fault, RAM_BASE, RAM_SIZE, CART_BASE, CART_MASK, SENTINEL
+from mips_harness import BOOT_VA, STAGE2_VA, DESC_TABLE, REGISTRY
+
+O_CREATE_THREAD = 0x80006D60
+O_START_THREAD = 0x8000DB90
+O_CREATE_MQ = 0x80006D30
+O_RECV = 0x8000C9E0
+O_SEND = 0x8000CB60
+INFLATE_INIT, INFLATE_RUN, INFLATE_FREE = 0x80004550, 0x800045DC, 0x80004594
+OPEN = 0x8004CC5C
+
+class Block(Exception):
+    def __init__(self, mq): self.mq = mq
+
+class HwMemory(Memory):
+    """RAM + cartridge + read-as-zero hardware window."""
+    def _loc(self, a, n):
+        try:
+            return Memory._loc(self, a, n)
+        except Fault:
+            if 0xA0000000 <= a < 0xC0000000:
+                return bytes(n), 0
+            raise
+    def write(self, a, n, v):
+        if 0xA0000000 <= a < 0xC0000000 and not (CART_BASE <= a < CART_BASE + 0x04000000):
+            return
+        Memory.write(self, a, n, v)
+
+class Sched:
+    def __init__(self, rom, stage2, budget=3_000_000, slice_steps=30_000):
+        ram = bytearray(RAM_SIZE)
+        ram[BOOT_VA - RAM_BASE:BOOT_VA - RAM_BASE + 0x13600] = rom[0x1000:0x14600]
+        ram[STAGE2_VA - RAM_BASE:STAGE2_VA - RAM_BASE + len(stage2)] = stage2
+        self.mem = HwMemory(ram, rom)
+        self.stage2 = stage2
+        self.budget, self.slice = budget, slice_steps
+        self.threads = {}           # id -> dict(regs, pc, stack, state, waiting)
+        self.by_addr = {}           # thread struct addr -> id
+        self.queues = {}            # mq addr -> dict(count, buf, n, idx, waiters)
+        self.events = []
+        self.loads = []
+        self.current = None
+        self.hooks = {}
+        self._install()
+        self.cpu = Cpu(self.mem, self.hooks)
+
+    # ---------------- kernel hooks ----------------
+    def _install(self):
+        def create_thread(c, a0, a1, a2, a3, *rest):
+            tid, entry, stack = a1, a2, None
+            # osCreateThread(t, id, entry, arg, stack, pri) -> 5th arg is on stack
+            stack = self.mem.read(c.r[29], 4) if c.r[29] else 0
+            self.by_addr[a0] = tid
+            self.threads[tid] = {"regs": [0]*32, "pc": entry, "stack": stack,
+                                 "state": "created", "waiting": None, "runs": 0}
+            self.events.append(("create", tid, entry, stack))
+            return 0
+        def start_thread(c, a0, a1, a2, a3):
+            tid = self.by_addr.get(a0)
+            if tid in self.threads and self.threads[tid]["state"] == "created":
+                self.threads[tid]["state"] = "runnable"
+                self.events.append(("start", tid, 0, 0))
+            return 0
+        def create_mq(c, a0, a1, a2, a3):
+            self.queues[a0] = {"buf": a1, "n": a2, "idx": 0, "count": 0, "waiters": []}
+            return 0
+        def recv(c, a0, a1, a2, a3):
+            q = self.queues.setdefault(a0, {"buf": 0, "n": 8, "idx": 0, "count": 0, "waiters": []})
+            if q["count"] == 0:
+                if a2:                    # OS_MESG_BLOCK
+                    q["waiters"].append(self.current)
+                    raise Block(a0)
+                return -1
+            val = self.mem.read(q["buf"] + q["idx"]*4, 4)
+            q["idx"] = (q["idx"] + 1) % max(1, q["n"]); q["count"] -= 1
+            if a1: self.mem.write(a1, 4, val)
+            return 0
+        def send(c, a0, a1, a2, a3):
+            q = self.queues.setdefault(a0, {"buf": 0, "n": 8, "idx": 0, "count": 0, "waiters": []})
+            if q["count"] >= q["n"]:
+                return -1
+            pos = (q["idx"] + q["count"]) % max(1, q["n"])
+            if q["buf"]: self.mem.write(q["buf"] + pos*4, 4, a1)
+            q["count"] += 1
+            if q["waiters"]:
+                tid = q["waiters"].pop(0)
+                self.threads[tid]["state"] = "runnable"; self.threads[tid]["waiting"] = None
+            return 0
+        def inflate_init(c, a0, a1, a2, a3): return 0
+        def inflate_run(c, a0, a1, a2, a3):
+            import zlib
+            raw = bytes(self.mem.read(a1+i, 1) for i in range(a3))
+            try: out = zlib.decompress(raw)
+            except Exception: return 1
+            for i, b in enumerate(out): self.mem.write(a2+i, 1, b)
+            self.loads.append({"src": a1, "dst": a2, "csize": a3, "usize": len(out),
+                               "thread": self.current})
+            return 0
+        def inflate_free(c, a0, a1, a2, a3): return 0
+        def raw_pi(c, a0, a1, a2, a3):
+            for i in range(a3): self.mem.write(a2+i, 1, self.mem.rom[(a1+i) & CART_MASK])
+            self.loads.append({"dma_cart": a1, "dma_dst": a2, "len": a3, "thread": self.current})
+            return 0
+        def note_open(c, a0, a1, a2, a3):
+            self.events.append(("OPEN", self.current, a0, 0))
+            return None
+        stub = lambda c, *a: 0
+        self.hooks.update({
+            O_CREATE_THREAD: create_thread, O_START_THREAD: start_thread,
+            O_CREATE_MQ: create_mq, O_RECV: recv, O_SEND: send,
+            INFLATE_INIT: inflate_init, INFLATE_RUN: inflate_run,
+            INFLATE_FREE: inflate_free, 0x8000C870: raw_pi,
+            OPEN: note_open,
+        })
+        for a in (0x8000BE50, 0x8000BE60, 0x8000E920, 0x8000CEC0, 0x8000E350,
+                  0x800072E0, 0x80007300, 0x8000CC90, 0x8000E4C0, 0x8000E800,
+                  0x80006D00, 0x8000DB70, 0x8000CE20):
+            self.hooks.setdefault(a, stub)
+
+    # ---------------- scheduling ----------------
+    def run(self, root_entry, root_a0=0):
+        tid = 0
+        self.threads[tid] = {"regs": [0]*32, "pc": root_entry, "stack": 0x803FF000,
+                             "state": "runnable", "waiting": None, "runs": 0}
+        self.events.append(("create", tid, root_entry, 0))
+        spent = 0
+        while spent < self.budget:
+            live = [t for t, v in self.threads.items() if v["state"] == "runnable"]
+            if not live:
+                break
+            tid = live[0] if self.current is None else (live[(live.index(self.current)+1) % len(live)] if self.current in live else live[0])
+            self.current = tid
+            th = self.threads[tid]
+            c = self.cpu
+            c.r = list(th["regs"]); c.pc = th["pc"]; c.delay = None
+            c.r[29] = th["stack"] or 0x803FF000
+            c.r[31] = SENTINEL
+            th["runs"] += 1
+            n = 0
+            try:
+                while n < self.slice and spent < self.budget:
+                    if c.pc == SENTINEL:
+                        th["state"] = "done"; break
+                    if c.pc in self.hooks:
+                        fn = self.hooks[c.pc]
+                        ret = fn(c, c.r[4], c.r[5], c.r[6], c.r[7])
+                        if c.pc == OPEN: pass
+                        c.r[2] = (ret or 0) & 0xFFFFFFFF
+                        c.pc = c.r[31]; n += 1; spent += 1
+                        continue
+                    cur, after = c.pc, c.delay
+                    c.delay = None
+                    c.step(cur)
+                    c.pc = after if after is not None else cur + 4
+                    n += 1; spent += 1
+            except Block as b:
+                th["state"] = "blocked"; th["waiting"] = b.mq
+                self.events.append(("block", tid, b.mq, 0))
+            except Fault as e:
+                self.events.append(("fault", tid, c.pc, str(e)[:30]))
+                th["state"] = "faulted"
+            th["regs"], th["pc"] = list(c.r), c.pc
+            if th["state"] == "runnable" and n >= self.slice:
+                pass    # preempted by slice, stays runnable
+            self.current = None
+        return spent
+
+def main():
+    rom = open("rom/Resident Evil 2 (USA) (Rev 1).z64", "rb").read()
+    stage2 = open("assets/unpacked/00000_0014420_1172240.bin", "rb").read()
+    s = Sched(rom, stage2)
+    # the boot chain ends by creating + starting thread 7 (entry FUN_8004d190)
+    spent = s.run(0x8004D344)
+    print(f"executed {spent:,} instructions\n")
+    print("threads:", {t: (v["state"], format(v["pc"], '#x'), v["runs"])
+                       for t, v in s.threads.items()})
+    print("\nevents:")
+    for e in s.events:
+        if e[0] in ("create", "start", "block"):
+            print(f"  {e[0]:7} thread {e[1]:<3} {format(e[2], '#010x')}")
+        else:
+            print(f"  {e}")
+    print(f"\nloader calls observed: {len(s.loads)}")
+    for l in s.loads[:10]:
+        print("  ", {k: (format(v, '#010x') if isinstance(v, int) and v > 0xFF else v)
+                     for k, v in l.items()})
+    print(f"\nopen(0) fired: {any(e[0] == 'OPEN' for e in s.events)}")
+
+if __name__ == "__main__":
+    main()

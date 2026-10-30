@@ -41,6 +41,19 @@ class Memory:
 
 class Fault(Exception): pass
 
+# Named so the harness reports *which* missing feature stopped it, instead of a bare
+# opcode number. These are deliberately not approximated: an unaligned dword store
+# done as an aligned one silently corrupts memory and makes the run look plausible.
+NAMED_OPS = {
+    0x1A: "LDL (unaligned load)", 0x1B: "LDR (unaligned load)",
+    0x22: "LWL (unaligned load)", 0x26: "LWR (unaligned load)",
+    0x2A: "SWL (unaligned store)", 0x2C: "SDL (unaligned store)",
+    0x2D: "SDR (unaligned store)", 0x2E: "SWR (unaligned store)",
+    0x31: "LWC1 (FPU load)", 0x35: "LDC1 (FPU load)",
+    0x39: "SWC1 (FPU store)", 0x3D: "SDC1 (FPU store)",
+    0x34: "LLD", 0x3C: "SCD", 0x11: "COP1 (FPU op)",
+}
+
 class Cpu:
     def __init__(self, mem, hooks, steps=400000):
         self.m = mem; self.hooks = hooks; self.steps = steps
@@ -79,7 +92,14 @@ class Cpu:
         elif op == 0x18: r[rt] = (r[rs] + si) & 0xFFFFFFFF     # daddi
         elif op == 0x37: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 8) & 0xFFFFFFFF  # ld
         elif op == 0x3F: self.m.write((r[rs] + si) & 0xFFFFFFFF, 8, r[rt])               # sd
-        elif op == 0x2D: r[rt] = (r[rs] + r[rt]) & 0xFFFFFFFF  # daddu
+        elif op == 0x30: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 4)                    # ll
+        elif op == 0x38: r[rt] = 1                                                            # sc
+        elif op == 0x10:                                                                      # COP0
+            if rs == 0x00: r[rt] = 0                 # mfc0: status reads as zero
+            elif rs == 0x04: pass                    # mtc0: ignored
+            elif rs == 0x10: r[31] = (pc + 8) & 0xFFFFFFFF                          # eret
+            else: raise Fault(f"COP0 rs={rs:#x} at {pc:#x}")
+
         elif op == 0x0D: r[rt] = r[rs] | imm
         elif op == 0x0C: r[rt] = r[rs] & imm
         elif op == 0x0E: r[rt] = r[rs] ^ imm
@@ -130,6 +150,7 @@ class Cpu:
             elif f == 0x09:
                 t = r[rs]; r[rd] = (pc + 8) & 0xFFFFFFFF; self.delay = t
             else: raise Fault(f"unimplemented SPECIAL {f:#x} at {pc:#x}")
+        elif op in NAMED_OPS: raise Fault(f"{NAMED_OPS[op]} unimplemented at {pc:#x}")
         else: raise Fault(f"unimplemented op {op:#x} at {pc:#x}")
 
 # ---------------------------------------------------------------- driver ----

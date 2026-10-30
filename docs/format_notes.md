@@ -528,6 +528,65 @@ Executed: **400 000 instructions, 2 distinct PCs, zero calls.** It never returns
 `FUN_8004d190` ends by handing control to a permanent spin — the file open is reached from the thread
 path (`FUN_800271d4` → `FUN_8004cc5c(0)`), as established in M18, and not from this function.
 
+### Scheduler increment (M22): the thread graph runs, open(0) does **not** fire
+
+`tools/run_scheduler.py` adds real thread and message-queue semantics on top of the harness:
+`osCreateThread`/`osStartThread` build a thread table, `osCreateMesgQueue`/`osRecvMesg`/`osSendMesg` operate
+on emulated memory with OS_MESG_BLOCK honored, and runnable threads are scheduled round-robin. Hardware
+registers read as zero, so a thread polling one spins and the run reports it.
+
+Starting from the boot chain entry `FUN_8004d344`, execution produces the real thread graph:
+
+```
+create thread 0  0x8004d344        (root: the boot chain)
+create thread 7  0x8004d190        (stage-2 init)
+create thread 9  0x80088668        (from FUN_80088910)
+create thread 1  0x8006c0d4        (from FUN_8006cb94)
+thread 9 blocks on mesg queue 0x8012bd30     <- real OS_MESG_BLOCK behaviour
+```
+
+51 243 instructions executed, **0 loader calls, open(0) did not fire.** The blockers are named, not guessed:
+
+| thread | stopped at | first missing feature |
+|---|---|---|
+| 7 | `0x8000ccf0` | **COP1 (FPU op)** |
+| 1 | `0x800887b8` | **SDC1 (FPU store)** |
+
+So the engine reaches its thread graph and then needs floating point before it can touch a scene
+transition. That is the next increment, and it is a real one: an FP register file plus
+`lwc1`/`swc1`/`ldc1`/`sdc1`, `mfc1`/`mtc1`, and the arithmetic conversions the engine's camera and matrix
+code uses.
+
+Two opcodes were **mis-mapped during this increment and then removed rather than approximated**: `0x2D` is
+`SDR`, not `daddu` (`daddu` is a SPECIAL function), and `0x3C`/`0x3D` are `SCD`/`SDC1`. An unaligned
+dword store emulated as an aligned one corrupts memory silently and makes a run look successful — the
+harness now raises a *named* fault instead (`NAMED_OPS`), so a stopped run says which feature is missing.
+
+### Experiment A: `0x14420` is a plain concatenation boundary, not a structure
+
+| observation | value |
+|---|---|
+| 48 bytes before `0x14420` | `…30 31 32 33 34 35 36 37 38 39 41 42 43 44 45 46…` = the ASCII table `0123456789ABCDEF`, then zeros |
+| first 2 bytes of the member | `68 de` — valid zlib header, `%31 = 0` |
+| member end | stored 385 519 → ends at ROM `0x7260f`; the next member begins immediately after |
+| region `0x133b0`–`0x14420` (4 208 B) | 23 vram-pointer words, 48 % non-zero, mostly zeros — mixed boot data, no length table |
+
+**Answer to A: isolated in the structural sense, not in the layout sense.** There is no per-member
+metadata, directory, or size table around the member: it starts with a self-describing zlib header, ends
+where zlib's own end marker says, and the next member follows. The container is a bare concatenation of
+self-delimiting streams — which is why a sequential walker reproduces it (M9) and why no index is needed
+(M15–M19).
+
+### Experiments B and C: scoped, not done
+
+- **B (pointer provenance)** — `tools/xref_registry.py` currently propagates constructed constants and
+  follows pointers stored into globals and reloaded. Extending it through stack slots, arguments and
+  return values is the natural next step, but note that M21/M22 make part of it unnecessary: for code the
+  harness can execute, *running* it beats propagating types.
+- **C (init sequence / resource structures)** — this is now directly observable rather than inferred: run
+  `FUN_8004d344` under the scheduler and log every global the init threads write in the `0x8010Bxxx`
+  range. That is the right way to find the resource structures, and it needs FPU support first.
+
 ### What is still not available
 
 A full-game trace. The harness runs one function at a time with prepared state; it cannot follow the
