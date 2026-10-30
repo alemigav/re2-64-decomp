@@ -100,6 +100,7 @@ class Sched:
         self.stubcalls = []
         self.event_msgs = []        # (mq, msg) as registered via osSetEventMesg
         self.frames = 0
+        self.on_slice = None
         self.msglog = []        # every send/recv with PC, message value and queue state
         self.current = None
         self.hooks = {}
@@ -230,6 +231,8 @@ class Sched:
                 continue
             tid = live[0] if self.current is None else (live[(live.index(self.current)+1) % len(live)] if self.current in live else live[0])
             self.current = tid
+            if getattr(self, "on_slice", None):
+                self.on_slice()
             if vi_after is not None and spent > vi_after and not getattr(self, "_vi", False):
                 self._vi = True
                 # Device layer: VI raises its MI pending bit. MI decides whether the

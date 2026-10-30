@@ -826,6 +826,27 @@ Conclusion: `device → MI → IP3 → CP0 → vector → preamble → 0x800006d
 game's own instructions; what remains is the part of initialisation that fills `0x80012950`, which our entry
 path never executes.
 
+#### Who initialises `0x80012950` (M31)
+
+Static scan of the table window `0x80012940`–`0x80012980` across all mapped images: 53 references, all in
+the **boot bank**, and the writer is the boot loader itself:
+
+| address | in function | kind |
+|---|---|---|
+| `0x80000cb0` / `0x80000cb8` | `FUN_80000598` | store to `0x80012948` / `0x80012954` |
+| **`0x80000f70`** | **`FUN_80000598`** | **store to `0x80012950`** |
+| `0x80000dd8` / `0x80000768` | `FUN_80000598` | reads of `0x80012950` |
+
+So the global the exception handler dereferences is initialised by `FUN_80000598` — **the boot loader our
+earlier runs skipped** by starting at `FUN_8004D344`. The rest of the window is libultra thread machinery
+(`osCreateThread`, `osStartThread`, `osRecvMesg`, `osSendMesg` all read `0x80012948`–`0x80012960`).
+
+Attempting to run that init did **not** yet succeed: starting at `FUN_80000598` ran 186 234 instructions
+and then faulted at pc `0x0` (threads 0 and 7), never reaching the store. So the *writer is identified*,
+but the path is not yet executed correctly — most likely in the DMA/inflate handoff that precedes the
+table initialisation. That is the next thing to fix, and it must be fixed before any interrupt test is
+meaningful.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
