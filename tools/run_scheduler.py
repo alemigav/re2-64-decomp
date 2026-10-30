@@ -113,6 +113,7 @@ class Sched:
         self.CURRENT = 0x80012950
         self.TAIL = 0x80012954
         self.guest_ready = []
+        self.dispatch_log = []      # phase 1: host choice vs guest queue state
         self.msglog = []        # every send/recv with PC, message value and queue state
         self.current = None
         self.hooks = {}
@@ -306,8 +307,26 @@ class Sched:
             # the exception handler dereferences it. A host-side scheduler that
             # does not maintain it is a semantic gap: threads run, but the guest's
             # __osCurrentThread stays stale.
+            # A preempted thread goes BACK on the ready list; only the running one
+            # is off it. Removing without re-inserting makes the guest queue a
+            # fiction that happens to terminate.
             if self.current is not None and self.current != tid:
-                self.ready_remove(self.current)
+                prev = self.threads.get(self.current, {})
+                if prev.get("state") == "runnable":
+                    if prev.get("os_thread"):
+                        self.mem.write(prev["os_thread"] + self.NODE_STATE, 4, 2)
+                    self.ready_insert(self.current)
+            # phase 1 differential: snapshot the guest's own view before we choose
+            order, p_, guard = [], self.READY_HEAD, 0
+            while guard < 64:
+                p_ = self.mem.read(p_ + self.NODE_NEXT, 4)
+                if p_ == self.READY_HEAD: break
+                order.append(p_); guard += 1
+            prios = {n: self.mem.read(n + self.NODE_PRI, 4) for n in order}
+            guest_best = max(order, key=lambda n: prios.get(n, 0)) if order else None
+            self.dispatch_log.append({"step": spent, "host": th.get("os_thread"),
+                                      "order": order, "prios": prios,
+                                      "guest_best": guest_best})
             self.ready_remove(tid)          # running threads are off the ready list
             self.mem.write(self.CURRENT, 4, th.get("os_thread") or 0)
             if th.get("os_thread"):

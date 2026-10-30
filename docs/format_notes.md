@@ -937,6 +937,41 @@ deadlocked or faulted.
   Option 1 makes the guest's structures coherent; option 2 — letting the guest's dispatcher choose — is what
   removes the duality rather than papering over it.
 
+#### Phase 1 differential: the host scheduler ignores priority (M35)
+
+Guest state words and priorities read straight out of the `OSThread` headers the scheduler writes, instead
+of from the host's Python table:
+
+| thread | `OSThread*` | priority | guest state | pc |
+|---|---|---|---|---|
+| 1 | `0x80112a40` | **40** | RUNNABLE | `0x8006c0d4` |
+| 7 | `0x8010b700` | **0** | **RUNNING** | `0x8000051c` |
+| 9 | `0x8012bb00` | **60** | RUNNABLE | `0x80088668` |
+
+The earlier report that "1, 7 and 9 are runnable" was a host-table label, not guest state — corrected here.
+**I1 passes**: exactly one thread is RUNNING and it equals `0x80012950` (`0x8010b700`).
+
+Run queue order and priorities: `[... 0x8012bb00 (60), 0x80112a40 (40) ...]` — thread 7 (priority 0) is
+running and therefore off the queue. Under libultra priority scheduling the next thread to run should be
+**thread 9 (60)**, then thread 1 (40), then thread 7 (0).
+
+**The differential, which is the point of Phase 1:**
+
+```
+12 of 15 dispatch points: guest highest-priority ready node != host choice
+  step 60023: host chose 0x8010b700 (prio 0)   guest queue says 0x8012bb00 (prio 60)
+  step 90023: same
+  step 120023: same
+```
+
+So the host has been scheduling round-robin while the guest's own structure says thread 9 has the highest
+priority. That is the dual-scheduler gap measured rather than argued — and it is exactly the discrepancy
+Phase 1 exists to surface before removing host selection.
+
+Note on thread 7: priority **0** (lowest) and resident in the `b .` spin at `0x8000051c` is *consistent*
+with an idle thread, but consistency is not proof — the priority came from `osCreateThread`'s stack
+argument, so a wrong stack read would also produce 0.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
