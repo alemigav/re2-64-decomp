@@ -1,0 +1,11 @@
+rom/
+*.z64
+*.n64
+*.v64
+*.zip
+*.7z
+assets/
+build/
+build/
+*.o
+*.elf.tmp
