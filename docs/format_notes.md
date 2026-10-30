@@ -471,6 +471,70 @@ Seven distinct cart offsets (`0x14420`, `0x72610`, `0x7688e`, `0x78c0e`, `0x7af7
 code's own constants and the file inventory — not proof of runtime behaviour, and it does not by itself
 show that the game ever walks the other 4 754 members.
 
+### Partial CPU harness, and an executed load trace (M21)
+
+`tools/mips_harness.py` executes the game's own instructions. Scope, stated so it cannot be mistaken for
+a console emulator: integer/doubleword subset of MIPS III (32-bit view of 64-bit ops), no threads, no
+interrupts, no video. What it does provide:
+
+- RAM: 4 MB at `0x80000000`, holding the boot image (ROM `0x1000`–`0x14600`, i.e. **code plus the
+  descriptor table at ROM `0x12cd0`**) at `0x80000480` and stage-2 at `0x80018a80`.
+- Cartridge mapped at KSEG1 `0xB0000000`, so a `0xB0…` descriptor pointer resolves to real ROM bytes.
+  Writes to ROM fault rather than silently succeed.
+- The loader primitives are **host hooks**: `inflate` is Python's `zlib` reading emulated memory;
+  `osCreateThread`/`osStartThread`/message-queue calls are stubs that are logged. Every run prints what
+  was executed and what was stubbed.
+
+**A bug worth recording**: the first run mapped only ROM `0x1000`–`0x12140`. The descriptor table lives at
+ROM `0x12cd0`, past the code end, so every `desc[1]` read as zero and all nine slots took the early exit.
+A clipped image produces a *plausible* result — nine "no inflate call" rows — rather than an error.
+
+#### Executed trace: `FUN_8004cbf4(desc)` for each registry slot
+
+| slot | desc idx | cart pointer | compressed | destination | decompressed | manifest |
+|---|---|---|---|---|---|---|
+| 0 | 2 | `0xb0072610` | 17 022 | `0x8017b410` | **49 312** | match |
+| 1 | 3 | `0xb007688e` | 9 087 | `0x8015b030` | **27 840** | match |
+| 2 | 4 | `0xb0078c0e` | 9 067 | `0x8017b410` | **58 848** | match |
+| 3 | 10 | `0xb007e132` | 6 880 | `0x8017b410` | **13 568** | match |
+| 4 | 5 | `0xb007af7a` | 5 592 | `0x8017b410` | **20 992** | match |
+| 5 | 8 | — | 0 | — | — | early exit |
+| 6 | 7 | `0xb007c552` | 7 136 | `0x8016e880` | **15 104** | match |
+| 7 | 6 | — | 0 | — | — | early exit |
+| 8 | 9 | — | 0 | — | — | early exit |
+
+These rows are produced by *executing* the loader: the pointers, sizes and destinations come out of the
+game's address arithmetic and descriptor field loads, not from reading the table. **All six non-zero
+slots decompress to exactly the size in the 4 761-member manifest**, and the three zero-size slots reach
+the early exit after 13 instructions — which confirms "stored == 0 means no load" by execution rather
+than inference.
+
+#### Run 1: `FUN_8004d190` executes and sets its globals
+
+62 instructions with its four callees stubbed: `0x8010b6fc = 0x80189a00` (the inflate window that
+`FUN_8004cbf4` later consumes), `0x801137f0 = 0x140`, `0x801137f4 = 0xf0` → 320×240, i.e. the
+no-Expansion-Pak branch.
+
+#### Run 2: the last call in `FUN_8004d190` is an idle loop, **not** a file open
+
+`func_0x80000518` decodes to two instructions:
+
+```
+0x80000518  1000ffff   b .                  ; branch to itself
+0x8000051c  64840001   daddiu a0, a0, 1     ; counter in the delay slot
+```
+
+Executed: **400 000 instructions, 2 distinct PCs, zero calls.** It never returns and opens nothing. So
+`FUN_8004d190` ends by handing control to a permanent spin — the file open is reached from the thread
+path (`FUN_800271d4` → `FUN_8004cc5c(0)`), as established in M18, and not from this function.
+
+### What is still not available
+
+A full-game trace. The harness runs one function at a time with prepared state; it cannot follow the
+thread scheduler, so it cannot observe the open as it actually fires at a scene transition. The load
+trace above is real execution of the loader, replayed per slot, not a recording of the game's own
+dispatch order.
+
 ### A genuine execution trace is not available here
 
 No N64 emulator is installed and this project has no CPU harness, so a trace of the form
