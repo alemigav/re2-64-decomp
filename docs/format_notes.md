@@ -423,6 +423,62 @@ anywhere in the analysed code. The correct reading is the opposite:
 Coverage limit worth stating: this rules out a write in code we have mapped. Code in regions we have not
 mapped (further overlays, or RAM images loaded by paths not yet followed) could still write it.
 
+### No stream walker exists in mapped code (M20) — and that is the answer to "its loop bound"
+
+`tools/find_stream_walker.py` looks for a routine that walks the cartridge window: it classifies a
+register as a cart pointer only when the value is **constructed** (`lui`/`addiu`/`ori` into
+`0xB0000000`–`0xB3FFFFFF`), then reports every load through such a register plus the innermost enclosing
+backward branch and the constant that branch compares against.
+
+| image | result |
+|---|---|
+| stage-2 (1.17 MB) | **no register ever holds a constructed KSEG1 cart pointer** |
+| boot bank (69 KB) | same |
+
+So there is **no loop bound to report**, because there is no loop. Both known consumers read the cart
+pointer out of memory and pass it once:
+
+- boot loader `FUN_80000598`: `FUN_8000C870(0, desc[0] & 0x0FFFFFFF, 0x8015B030, desc[1])`
+- registry reader `FUN_8004cbf4`: `inflate(state, desc[0], desc[2], desc[1])`
+
+In both, `desc[0]` is loaded from the descriptor record (a `0xB0…` KSEG1 pointer) and used exactly once.
+No increment, no comparison, no iteration.
+
+**Limitation, stated because it is the honest edge of this result:** an increment applied to a pointer
+that was *loaded* rather than constructed is invisible to this analysis — the value is not a constant, so
+no register is classified. Ruling that out needs real data-flow (or a dynamic trace), not this scan.
+
+### Static load-path table, cross-checked against the 4 761-member manifest
+
+This is a **static reconstruction**, not an execution trace. Rows are known call paths evaluated with the
+constants the code would use; "descriptor" is the boot-table index.
+
+| iter | path | cart pointer | desc | compressed | destination |
+|---|---|---|---|---|---|
+| 0 | boot `FUN_80000598` | `0xb0014420` | 1 | 385 519 | `0x80018a80` |
+| 1 | registry slot 0 | `0xb0072610` | 2 | 17 022 | `0x8017b410` |
+| 2 | registry slot 1 | `0xb007688e` | 3 | 9 087 | `0x8015b030` |
+| 3 | registry slot 2 | `0xb0078c0e` | 4 | 9 067 | `0x8017b410` |
+| 4 | registry slot 3 | `0xb007e132` | 10 | 6 880 | `0x8017b410` |
+| 5 | registry slot 4 | `0xb007af7a` | 5 | 5 592 | `0x8017b410` |
+| 6 | registry slot 5 | `0xb007e132` | 8 | 0 | `0x8017b410` |
+| 7 | registry slot 6 | `0xb007c552` | 7 | 7 136 | `0x8016e880` |
+| 8 | registry slot 7 | `0xb007c552` | 6 | 0 | `0x8015b030` |
+| 9 | registry slot 8 | `0xb007e132` | 9 | 0 | `0x8017b410` |
+
+Seven distinct cart offsets (`0x14420`, `0x72610`, `0x7688e`, `0x78c0e`, `0x7af7a`, `0x7c552`,
+`0x7e132`), and **every one is a zlib member in the manifest**. That is static agreement between the
+code's own constants and the file inventory — not proof of runtime behaviour, and it does not by itself
+show that the game ever walks the other 4 754 members.
+
+### A genuine execution trace is not available here
+
+No N64 emulator is installed and this project has no CPU harness, so a trace of the form
+`iteration → pointer → descriptor → size → destination` cannot be produced by observation. It would need
+either an emulator with a write/PC hook, or a partial CPU emulator driven from the wrapped ELF images.
+Recording this as *not done* rather than reconstructing something that looks like a trace: a fabricated
+trace would be the easiest possible way to make this architecture look finished.
+
 ### What this leaves for R3
 
 R3 is referenced by nothing we can see: not statically (no record, no constructed address, no cart
