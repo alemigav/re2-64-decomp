@@ -231,9 +231,52 @@ is a **diffuse autocorrelation peak** — most likely from redundancy in the dat
 blocks, or 16-bit samples whose high bytes are skewed) — and not a block stride. Nothing about R3's
 container is established by it.
 
-The test that would separate the two: **match-run length at the lag**. Approximate repetition of
-whole records produces runs of 3+ consecutive matching bytes; a byte-level skew artifact produces
-isolated single matches. That is a small addition to the `phase` subcommand and the next thing to run.
+### Match-run length (M14) — the runs are **fills**, so the demotion is confirmed
+
+The test that separates "approximate record repetition" from "byte-level artifact" is run length:
+whole-record repetition produces multi-byte runs; skew produces isolated single matches. Added as
+`scan_headers.py runs --stride N` (run histogram against a shuffle null, plus the distinct-value count
+over each run's span, which is what tells a repeated record from a constant fill).
+
+R3, lag 40, three 64 KB windows:
+
+| run length | observed | shuffled null | ratio |
+|---|---|---|---|
+| 1 | 5 914 | 2 129.0 | 2.8x |
+| 2 | 112 | 23.2 | 4.8x |
+| 3 | 6 | ~0 | — |
+| 4 | 15 | ~0 | — |
+| 5 | 2 | ~0 | — |
+| 6+ | 36 | ~0 | — |
+
+59 runs of length ≥ 3, and the null produces essentially none — so there *is* multi-byte repetition.
+But the span inspection says what it is:
+
+| longest runs | offset | content |
+|---|---|---|
+| 482 B | `0x0b80582` | **all zeros** |
+| 466 B | `0x0b7925b` | **all zeros** |
+| 105 B | `0x0b740bc` | **all zeros** |
+| 51 B | `0x0fc04b9` | **all zeros** |
+| 42 B | `0x0fbb7fa` | **all zeros** |
+| 41 B | `0x140437c` | `fff9fff9fff9fff9…` — a repeated 16-bit sample, not records |
+
+Accounting over the analysed 192 KB: **10 of the 59 runs are constant fills and they carry 68 % of all
+multi-byte matched bytes**; 13 more are the repeated-2-byte-sample shape; the remaining 49 non-fill runs
+total only **582 bytes**, a few bytes each.
+
+**A constant stretch matches at every lag**, so zero-fill inflates the lag-40 rate — and a shuffle null
+cannot produce a 482-byte zero run, which is precisely why the null test alone looked like structure.
+
+**Conclusion: R3 has no record structure at stride 40.** The period is fully explained by fills plus
+per-byte skew. M12's "period 40" is retracted, not merely demoted.
+
+### The general lesson, third instance
+
+After "is it above the null?", the next question is **"what else would produce this?"**. A null tells
+you the measurement is not chance; it does not tell you the measurement is what you named it. Fill
+stretches, per-phase skew and a hardcoded `0x78` header all passed a statistical test and all meant
+something other than the intended reading.
 
 ### What is left for R3
 

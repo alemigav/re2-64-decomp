@@ -115,6 +115,65 @@ def stride_null(d, starts, window, lags, shuffles, seed=20261030):
     return per_lag
 
 
+
+def run_lengths(buf, stride):
+    """Runs of consecutive positions where buf[i] == buf[i+stride].
+
+    Run length is the discriminator a phase sweep cannot provide:
+      * whole-record repetition -> multi-byte runs (a repeated field, a repeated
+        constant stretch), and their starts cluster at one phase mod stride
+      * byte-level skew (e.g. the high byte of 16-bit samples) -> runs of length 1
+    Both produce the same per-phase *rate*, so only the run structure tells them apart.
+    """
+    n = len(buf) - stride
+    runs = []
+    i = 0
+    while i < n:
+        if buf[i] == buf[i + stride]:
+            j = i
+            while j < n and buf[j] == buf[j + stride]:
+                j += 1
+            runs.append((j - i, i))
+            i = j
+        else:
+            i += 1
+    return runs
+
+def runs_report(d, lo, hi, stride, window, nwin, shuffles, top):
+    import random
+    from collections import Counter
+    span = hi - lo
+    starts = [lo + (span - window) * i // max(1, nwin - 1) for i in range(nwin)] \
+             if nwin > 1 else [lo + (span - window) // 2]
+    starts = [max(lo, min(st, hi - window - stride)) for st in starts]
+    obs = Counter(); phases = Counter(); longest = (0, 0); notable = []
+    total_match = total_cmp = 0
+    for st in starts:
+        buf = d[st:st + window]
+        rs = run_lengths(buf, stride)
+        for L, at in rs:
+            obs[min(L, 6)] += 1
+            if L >= 3:
+                phases[at % stride] += 1
+                # a long run is either repeated records or a constant fill; the
+                # distinct-value count over the run span tells them apart
+                span = buf[at:at + L + stride]
+                notable.append((L, st + at, len(set(span)), bytes(span[:8]).hex()))
+            if L > longest[0]: longest = (L, st + at)
+        total_match += sum(L for L, _ in rs)
+        total_cmp += window - stride
+    null = Counter(); null_match = 0
+    rnd = random.Random(20261030)
+    for _ in range(shuffles):
+        for st in starts:
+            b = bytearray(d[st:st + window]); rnd.shuffle(b)
+            rs = run_lengths(bytes(b), stride)
+            for L, _ in rs: null[min(L, 6)] += 1
+            null_match += sum(L for L, _ in rs)
+    scale = shuffles
+    return (obs, null, scale, phases, longest, notable,
+            total_match / total_cmp, null_match / (total_cmp * shuffles))
+
 def phase_sweep(d, lo, hi, stride, window, nwin):
     """Per-byte-position agreement within a period: which bytes actually repeat?
 
@@ -326,6 +385,14 @@ def main():
     ph.add_argument("--windows", type=int, default=3)
     ph.add_argument("--top", type=int, default=12)
 
+    rn = sub.add_parser("runs")
+    rn.add_argument("--region", required=True)
+    rn.add_argument("--stride", type=lambda v: int(v, 0), required=True)
+    rn.add_argument("--window", type=lambda v: int(v, 0), default=0x10000)
+    rn.add_argument("--windows", type=int, default=3)
+    rn.add_argument("--null", type=int, default=4)
+    rn.add_argument("--top", type=int, default=8)
+
     a = ap.parse_args()
     before = sha256(a.rom)
     d = load(a.rom)
@@ -391,6 +458,34 @@ def main():
         ratios = [r[0] / r[2] for r in rows]
         print(f"  mean ratio across all {len(rows)} phases: {sum(ratios)/len(ratios):.2f}x")
         print(f"  phases at or below their own null: {sum(1 for r in ratios if r <= 1.0)}")
+    elif a.cmd == "runs":
+        lo, hi = (int(x, 0) for x in a.region.split(":"))
+        obs, null, scale, phases, longest, notable, mr, nmr = runs_report(
+            d, lo, hi, a.stride, a.window, a.windows, a.null, a.top)
+        print(f"region {lo:#09x}..{hi:#09x}  stride {a.stride}  "
+              f"{a.windows} window(s) of {a.window:#x}  null = {a.null} shuffle(s)")
+        print(f"  match rate {mr*100:.3f}%  (shuffled null {nmr*100:.3f}%, "
+              f"{mr/nmr:.2f}x)")
+        print(f"  {'run len':>7} {'observed':>9} {'null mean':>10} {'ratio':>6}")
+        for L in (1, 2, 3, 4, 5, 6):
+            o = obs.get(L, 0); n = null.get(L, 0) / scale
+            label = f"{L}+" if L == 6 else str(L)
+            print(f"  {label:>7} {o:>9} {n:>10.1f} "
+                  f"{(o/n if n else float('inf')):>6.1f}x")
+        print(f"  longest run: {longest[0]} bytes at {longest[1]:#09x}")
+        if notable:
+            fills = sum(1 for _L, _a, nd, _h in notable if nd <= 2)
+            print(f"  runs >=3: {len(notable)}, of which constant-fill (<=2 distinct "
+                  f"values over the span): {fills} ({fills/len(notable)*100:.0f}%)")
+            print(f"  longest 6 runs: len  offset      distinct  head")
+            for L, at, nd, head in sorted(notable, reverse=True)[:6]:
+                kind = "CONSTANT FILL" if nd <= 2 else f"{nd} values"
+                print(f"    {L:>4} {at:#010x}  {kind:>13}  {head}")
+        if phases:
+            print(f"  starts of runs >=3, by phase mod {a.stride}: "
+                  f"{phases.most_common(a.top)}")
+        else:
+            print("  no run of length >= 3 anywhere")
     after = sha256(a.rom)
     print(f"\nROM sha256 before {before[:16]}…  after {after[:16]}…  "
           f"{'UNCHANGED' if before == after else 'MODIFIED — INVESTIGATE'}")
