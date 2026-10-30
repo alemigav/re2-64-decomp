@@ -220,6 +220,63 @@ class Sched:
             self.current = None
         return spent
 
+import hashlib, json, os
+
+def save_checkpoint(s, outdir="checkpoint"):
+    """Preserve a full, replayable snapshot of a run.
+
+    Purpose is reproducibility, not debugging: given the same cartridge, the same
+    two images and the same initial state, this state must recur. A digest over
+    every file except itself makes that checkable in one comparison.
+    """
+    os.makedirs(outdir, exist_ok=True)
+    names = ["r0","at","v0","v1","a0","a1","a2","a3","t0","t1","t2","t3","t4","t5","t6","t7",
+             "s0","s1","s2","s3","s4","s5","s6","s7","t8","t9","k0","k1","gp","sp","s8","ra"]
+    def w(name, obj):
+        with open(os.path.join(outdir, name), "w") as f:
+            json.dump(obj, f, indent=1, sort_keys=True)
+    w("cpu_registers.json", {str(t): {names[i]: format(v, "#010x")
+                                      for i, v in enumerate(th["regs"])}
+                             for t, th in sorted(s.threads.items())})
+    w("fpu_registers.json", {str(t): [format(v, "#018x") for v in s.cpu.f]
+                             for t in sorted(s.threads)})
+    w("thread_table.json", {str(t): {"state": th["state"], "pc": format(th["pc"], "#010x"),
+                                     "stack": format(th["stack"], "#010x"),
+                                     "waiting_on": (format(th["waiting"], "#x")
+                                                    if th["waiting"] else None),
+                                     "slices": th["runs"]}
+                            for t, th in sorted(s.threads.items())})
+    w("message_queues.json", {format(mq, "#010x"): {"count": q["count"], "capacity": q["n"],
+                                                    "waiters": len(q["waiters"])}
+                              for mq, q in sorted(s.queues.items())})
+    w("memory_regions.json", {
+        "ram": {"base": "0x80000000", "size": len(s.mem.ram),
+                "sha256": hashlib.sha256(bytes(s.mem.ram)).hexdigest()},
+        "cartridge": {"base": "0xb0000000", "size": len(s.mem.rom),
+                      "sha256": hashlib.sha256(s.mem.rom).hexdigest()},
+        "images": {"boot": {"vram": "0x80000480", "rom": "0x1000..0x14600"},
+                   "stage2": {"vram": "0x80018a80", "length": len(s.stage2),
+                              "sha256": hashlib.sha256(s.stage2).hexdigest()}},
+        "hardware_window": {"range": "0xa0000000-0xc0000000",
+                            "behaviour": "reads as zero, writes ignored"}})
+    w("execution_trace.json", {
+        "instructions": s.spent if hasattr(s, "spent") else None,
+        "events": [{"kind": e[0], "a": e[1], "b": e[2], "c": e[3]} for e in s.events],
+        "loader_calls": s.loads,
+        "event_registrations": [{"mq": format(m, "#x"), "msg": format(g, "#x")}
+                                for m, g in s.event_msgs]})
+    w("unresolved_instructions.json", [{"thread": e[1], "pc": format(e[2], "#010x"),
+                                        "reason": e[3]}
+                                       for e in s.events if e[0] == "fault"])
+    dig = hashlib.sha256()
+    for n in sorted(os.listdir(outdir)):
+        if n == "run_digest.json": continue
+        dig.update(open(os.path.join(outdir, n), "rb").read())
+    w("run_digest.json", {"digest": dig.hexdigest(), "files": sorted(
+        n for n in os.listdir(outdir) if n != "run_digest.json")})
+    return dig.hexdigest()
+
+
 def main():
     rom = open("rom/Resident Evil 2 (USA) (Rev 1).z64", "rb").read()
     stage2 = open("assets/unpacked/00000_0014420_1172240.bin", "rb").read()
@@ -247,7 +304,9 @@ def main():
     for e in s.events:
         if e[0] == "tick":
             print(f"  tick {e[1]:<3} -> mq {format(e[2],'#x')} msg {format(e[3],'#x')}")
+    d = save_checkpoint(s)
     print(f"\nopen(0) fired: {any(e[0] == 'OPEN' for e in s.events)}")
+    print(f"checkpoint written to checkpoint/  run digest {d[:32]}…")
     print("\nstub calls whose first argument looks like a small event id "
           "(osSetEventMesg candidates):")
     seen = set()

@@ -646,6 +646,54 @@ returns; threads 1 and 9 park on two app queues that nothing posts to.
 `0x8012bd30` to find its poster. Both are single-address searches, and whichever thread appears owns the
 piece that is missing from the graph we can start.
 
+### Constant scan: who owns the two queues (M25)
+
+Scanning every mapped image (boot bank, stage-2, six overlays) for both addresses:
+
+| constant | referenced by | reading |
+|---|---|---|
+| `0x80139f10` | **thread 1**'s entry `FUN_8006c0d4` (13 construct/arg sites) and `FUN_8006cb94` (5 arg sites = the four `osSetEventMesg` registrations) | the hardware-event **inbox**, drained by **thread 1** |
+| `0x8012bd30` | **thread 9**'s entry `FUN_80088668` (create + receive) plus helpers `FUN_800885c0`, `FUN_80088764` | owned by **thread 9**; **no mapped code ever sends to it** |
+
+This explains the M24 result precisely. The ticks arrived at the *right* queue — thread 1 is its consumer —
+but by the time they were delivered thread 1 was already parked on `0x8012bcf8`, a queue that **thread 9**
+fills, and thread 9 was parked on `0x8012bd30`, for which **every reference in mapped code is a
+construction or a receive, never a send**. The missing edge is a *producer* for `0x8012bd30`: the game
+expects one from a hardware handler or from an overlay this run never loads.
+
+So the dependency chain the game needs is
+
+```
+(something) --> 0x8012bd30 --> thread 9 --> 0x8012bcf8 --> thread 1 --> drains 0x80139f10
+```
+
+and the first link is the one that does not exist in the code we can execute.
+
+### Commit A / B / C status against the plan
+
+| item | status |
+|---|---|
+| **A — COP1 foundation**: real FPR representation, observed loads/stores, arithmetic + comparisons, named faults for the rest | **done** — 32 × 64-bit raw, S in low half; named faults cover `ldl`/`ldr`/`sdl`/`sdr`/`lld`/`scd` |
+| **B — thread execution**: re-run boot, compare thread creation, record first new boundaries | **done** — thread graph stable (0/7/1/9), thread 7 now *completes* (previously faulted at `0x8000ccf0`), threads 1/9 block on app queues |
+| **C — resource access**: instrument cartridge reads, record decompression calls, compare with `manifest.json` | **done in M21** — six executed loads, every decompressed size matches the manifest |
+
+### Execution checkpoints (M26)
+
+`run_scheduler.py` now writes `checkpoint/` at the end of every run:
+
+```
+checkpoint/ cpu_registers.json  fpu_registers.json  thread_table.json
+            message_queues.json  memory_regions.json  execution_trace.json
+            unresolved_instructions.json  run_digest.json
+```
+
+`memory_regions.json` carries sha256 over the emulated RAM, the cartridge and the stage-2 image, so a run
+is pinned to exact inputs. `run_digest.json` hashes every other file, which makes reproducibility a single
+comparison. Two independent runs of the boot sequence produce the **same digest**
+(`80436211b50d1229a2a1ef001e1d8ac2f0ec4d28ea404881aa36786abebde223`), so the claim is now
+"same cartridge, same images, same initial state → same thread and memory behaviour", and it is checked
+rather than asserted.
+
 ### What is still not available
 
 A full-game trace. The harness runs one function at a time with prepared state; it cannot follow the
