@@ -151,6 +151,48 @@ Two further rejections for R3, both with the same parser:
 A second attempt, using the trailer *type word* as the anchor (`--magic 00001000`, which `derive` now
 supports via `--max-after`), reached only 33 % and is not evidence.
 
+### Stride probe (M12) — R3 and R4 do **not** share a block stride
+
+`tools/scan_headers.py stride` measures byte agreement at lag S over three 64 KB windows spread
+through a region, then builds an **empirical null by shuffling the same bytes** (the histogram
+survives, only order dies — exactly the property under test). The null is not optional: a negative
+control on the zlib asset region (`0x20000`–`0x80000`, no block structure) already shows 2.1x-floor
+spikes, so "2x over median" alone proves nothing.
+
+Same lag set, both regions:
+
+| lag | R3 agreement (z vs null) | R4 agreement (z vs null) |
+|---|---|---|
+| **40** | **4.067 % (z +43.7)** — R3's strongest | 0.668 % — **below R4's own median**, i.e. absent |
+| 80 | 3.458 % (+25.7) | 0.668 % — below median |
+| 16 | 2.975 % (+24.4) | 0.797 % |
+| 24 | 2.816 % (+23.3) | 0.818 % |
+| 144 | 2.102 % (+12.5) | 0.874 % |
+| **72** | 1.794 % (+10.1) | **1.084 % (z +29.5)** — R4's second structure |
+| **260** | 1.429 % (**z +4.4 — noise**) | **1.182 % (z +34.9)** — R4's strongest |
+| 520 | 2.379 % (+15.0) | 1.002 % (+28.5) |
+| 780 | 1.155 % (**z +0.7 — none**) | 0.846 % (+15.4) |
+
+Medians: R3 2.379 %, R4 0.846 % (R3's byte distribution is skewed, hence the higher floor).
+
+**Conclusion: no shared stride.** R3 is periodic at **40** (and 80 = 2x40); R4 at **260** (520 = 2x260)
+and **72** (144 = 2x72). Each region's characteristic lag is near-absent in the other — R3 at 260 is
+z +4.4, indistinguishable from noise, and R4 at 40 sits *below* its own median agreement.
+`gcd(40, 260) = 20`, but lag 20 is not a peak in either region, so the common divisor is arithmetic,
+not structure.
+
+Two honest limits:
+
+1. **Periodic is not the same as block stride.** A repeated inner field (a counter, a pointer, a
+   per-record checksum) produces the same signature. The probe establishes a period, not a framing.
+2. **The null is a shuffle null**, so any real local structure scores z > 0. The evidence is the
+   *ranking within a region* and the *absence of the other region's lag*, not the z value alone.
+
+What a 40-byte period means for R3 is still open. A 40-byte record with one changing field would
+produce agreement ≈ (constant bytes)/40 + 1/256; the measured 4.07 % against a 1.08 % null implies
+roughly **one to two repeating bytes per 40**, which is the weakest possible structure — consistent
+with a per-record field that mostly changes (an offset, an index, a checksum).
+
 ### What is left for R3
 
 The head of the region is `… 64 fe 27 fe 74 ff 21 ff a0 ff e3 ff fe 00 05 00 05 06 b6 03 c8 01 a0 00`

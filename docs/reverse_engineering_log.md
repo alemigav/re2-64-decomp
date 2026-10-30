@@ -15,6 +15,7 @@ Detailed write-ups live in `docs/log/`.
 | M7 | **the mapping was wrong** (`0x480` low); every earlier address repaired | `docs/log/M7-mapping-correction.md` |
 | M8 | **the map found**: 16-byte cart descriptor table at vram `0x80012150`, 66 records | `docs/log/M8-file-table-found.md` |
 | M9 | **the cartridge unpacked**: 4 761 zlib members, 1 227 JPEG frames, an MPEG-1 movie | `docs/log/M9-unpacked.md` |
+| M12 | Stride probe with a shuffle null: **R3 and R4 share no block stride** (R3 period 40, R4 periods 260 and 72; each lag is near-absent in the other region) | `format_notes.md` §5 |
 | M11 | R3 is **not** video: zero `00 00 01 B3` in 9 MB (R1 control scores 100 %), and 0/134 JPEG anchors and 0/1 479 trailer candidates resolve | `format_notes.md` §5 |
 | M10 | **media container format recovered and verified**; one parser resolves both media kinds, neither unknown blob | this file, §4 of `format_notes.md` |
 

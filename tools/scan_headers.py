@@ -81,6 +81,65 @@ def cmd_compare(d, at, before):
                " ".join(f"{v:02x}" for v in sorted(vals)[:6]) + (" …" if len(vals) > 6 else "")
         print(f"  -{before-k:>2} {const:>7}  {show}")
 
+
+def _equal_bytes(a, b):
+    """Number of positions where two equal-length byte strings agree.
+
+    Doing this per byte in Python is hopeless at 64 KB x 65 000 lags, so the two
+    windows are XORed as big integers and the zero bytes counted — same answer,
+    all of it in C.
+    """
+    x = int.from_bytes(a, "big") ^ int.from_bytes(b, "big")
+    return x.to_bytes(len(a), "big").count(0)
+
+def stride_null(d, starts, window, lags, shuffles, seed=20261030):
+    """Empirical null for the stride probe: shuffle each window's bytes and re-measure.
+
+    Shuffling keeps the byte histogram (so a value-skewed region stays skewed) and
+    destroys only order, which is exactly the property the probe tests. Without
+    this, a 2x-over-median spike proves nothing: the negative control below shows
+    2x spikes arise in data with no block structure at all.
+    """
+    import random
+    rnd = random.Random(seed)
+    per_lag = {S: [] for S in lags}
+    for _ in range(shuffles):
+        for st in starts:
+            for S in lags:
+                # shuffle a buffer long enough that both sides are `window` bytes,
+                # so the null uses the same comparison length as the measurement
+                base = bytearray(d[st:st + window + S])
+                rnd.shuffle(base)
+                b = bytes(base)
+                per_lag[S].append(_equal_bytes(b[:window], b[S:S + window]) / window)
+    return per_lag
+
+def stride_probe(d, lo, hi, window, nwin, min_s, max_s, step, top, lags=None):
+    """Score lags by byte agreement across several spread windows of a region.
+
+    A fixed-size container repeats something every `stride` bytes, so byte
+    agreement spikes at that lag (and at its multiples) above the ~1/256 floor
+    that random data gives. Averaging over several windows spread through the
+    region keeps one lucky match from becoming a conclusion.
+    """
+    span = hi - lo
+    if span < window + max_s: window = min(window, max(1024, span // 2))
+    starts = [lo + (span - window - max_s) * i // max(1, nwin - 1) for i in range(nwin)] \
+             if nwin > 1 else [lo + (span - window - max_s) // 2]
+    starts = [max(lo, min(st, hi - window - max_s)) for st in starts]
+    scores = {}
+    lags = lags or list(range(min_s, max_s + 1, step))
+    for S in lags:
+        tot = 0
+        for st in starts:
+            a = d[st:st + window]
+            b = d[st + S:st + S + window]
+            tot += _equal_bytes(a, b)
+        scores[S] = tot / (window * len(starts))
+    ordered = sorted(scores.items(), key=lambda kv: -kv[1])
+    floor = sorted(scores.values())[len(scores) // 2]
+    return ordered, floor, starts
+
 def cmd_derive(d, anchors, max_before=40, max_after=16):
     """Find which field explains anchor-to-anchor spacing, using residual distributions.
 
@@ -200,6 +259,18 @@ def main():
     ch.add_argument("--meaning", default="length_covers_header")
     ch.add_argument("--expect-type")
 
+    st = sub.add_parser("stride")
+    st.add_argument("--region", required=True)
+    st.add_argument("--window", type=lambda v: int(v, 0), default=0x10000)
+    st.add_argument("--windows", type=int, default=3)
+    st.add_argument("--min-stride", type=lambda v: int(v, 0), default=16)
+    st.add_argument("--max-stride", type=lambda v: int(v, 0), default=0x10000)
+    st.add_argument("--step", type=int, default=4)
+    st.add_argument("--top", type=int, default=12)
+    st.add_argument("--lags", help="comma-separated lags to probe instead of a range")
+    st.add_argument("--null", type=int, default=0, metavar="N",
+                    help="N shuffles per lag for an empirical null (strongly recommended)")
+
     a = ap.parse_args()
     before = sha256(a.rom)
     d = load(a.rom)
@@ -229,6 +300,28 @@ def main():
         lo, hi = (int(x, 0) for x in a.region.split(":"))
         cmd_chain(d, lo, hi, a.header_len, a.rel, a.width, a.endian, a.meaning, a.expect_type, True)
 
+    elif a.cmd == "stride":
+        lo, hi = (int(x, 0) for x in a.region.split(":"))
+        only = [int(x, 0) for x in a.lags.split(",")] if a.lags else None
+        ordered, floor, starts = stride_probe(d, lo, hi, a.window, a.windows,
+                                              a.min_stride, a.max_stride, a.step, a.top, only)
+        print(f"region {lo:#09x}..{hi:#09x}  {a.windows} window(s) of {a.window:#x}  "
+              f"lags {a.min_stride:#x}..{a.max_stride:#x} step {a.step}")
+        print(f"  chance floor (median agreement): {floor*100:.3f}%")
+        print(f"  {'lag':>8} {'agree':>8} {'x floor':>8}   harmonics")
+        null = None
+        if a.null:
+            null = stride_null(d, starts, a.window,
+                               [S for S, _ in ordered[:a.top]], a.null)
+        for S, sc in ordered[:a.top]:
+            mult = [f"{S//k}={k}x" for k in (2, 3, 4, 8) if S % k == 0 and S//k >= a.min_stride]
+            z = ""
+            if null:
+                vals = null[S]
+                mu = sum(vals) / len(vals)
+                sd = (sum((v - mu) ** 2 for v in vals) / len(vals)) ** 0.5 or 1e-9
+                z = f"   null {mu*100:6.3f}% +-{sd*100:5.3f}  z={(sc-mu)/sd:+6.1f}"
+            print(f"  {S:>8} {sc*100:7.3f}% {sc/floor:7.1f}x{('' if not z else z)}   {','.join(mult[:4])}")
     after = sha256(a.rom)
     print(f"\nROM sha256 before {before[:16]}…  after {after[:16]}…  "
           f"{'UNCHANGED' if before == after else 'MODIFIED — INVESTIGATE'}")
