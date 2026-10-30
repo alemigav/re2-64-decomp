@@ -795,6 +795,37 @@ and the handler's own first phase is what remains unemulated: `k0` is zero where
 (the preamble sets it, so something between `0x6d0` and `0x770` clears or fails to save it — either state I
 do not model, or an instruction whose effect I get wrong).
 
+#### k0 trace: what "clears" it (M30)
+
+A per-instruction trace from the vector to the fault (`TracingCpu` subclass, logging every write to `k0`):
+
+| pc | instruction | k0 |
+|---|---|---|
+| `0x80000184` | `addiu k0, k0, 0x6d0` | `0x80000000` → `0x800006d0` |
+| `0x800006d0` | `lui k0, 0x8001` | `0x800006d0` → `0x80010000` |
+| `0x800006d4` | `addiu k0, k0, 0x5000` | `0x80010000` → **`0x80015000`** (handler work area) |
+| `0x80000764` | `lui k0, 0x8001` | `0x80015000` → `0x80010000` |
+| **`0x80000768`** | **`lw k0, 0x2950(k0)`** | `0x80010000` → **`0x0`** |
+
+So nothing "clears" `k0` incorrectly: the handler **loads** it from **vram `0x80012950`** (ROM `0x134d0`),
+and the word in the cartridge at that address is
+
+```
+0x80012950:  0x00000000 0x00000000 0x00000000 0x00000000 0x80017840 0x00000000
+```
+
+zero, with a plausible pointer in the neighbourhood. The handler therefore depends on a **runtime
+initialised global** that no code path in this run writes — a watchpoint on `0x80012950` records **no
+hits**. The subsequent `sd t1, 0x20(k0)` at `0x80000770` then faults at address `0x20`.
+
+This is not an emulator bug and not a register-clobber bug: it is a **missing initialisation dependency**.
+The handler's work area base `0x80015000` is written (with zero) during the run — one watchpoint hit — which
+suggests the code that would populate `0x80012950` is the same init that owns that area.
+
+Conclusion: `device → MI → IP3 → CP0 → vector → preamble → 0x800006d0` now runs entirely inside the
+game's own instructions; what remains is the part of initialisation that fills `0x80012950`, which our entry
+path never executes.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
