@@ -193,6 +193,48 @@ produce agreement ≈ (constant bytes)/40 + 1/256; the measured 4.07 % against a
 roughly **one to two repeating bytes per 40**, which is the weakest possible structure — consistent
 with a per-record field that mostly changes (an offset, an index, a checksum).
 
+### Phase sweep (M13) — the 40-byte period is diffuse, **not** a record field
+
+`tools/scan_headers.py phase --region … --stride 40` measures, for each byte position
+inside the period, how often that position repeats in the next record. Each phase is scored
+against **its own** marginal distribution (`sum p^2` of that phase's values), so a merely skewed
+position cannot pass — which matters, because the top-scoring positions are all odd and R3's odd
+bytes are the high half of 16-bit samples.
+
+R3, stride 40 (all 40 phases shown in the tool run; top 8 here):
+
+| phase | agreement | vs own null | top byte | distinct values |
+|---|---|---|---|---|
+| 9 | 10.66 % | 9.39x | 0x00 (4.0 %) | 249 |
+| 25 | 11.69 % | 8.95x | 0x00 (4.8 %) | 237 |
+| 33 | 7.51 % | 8.10x | 0x00 (4.0 %) | 254 |
+| 1 | 8.02 % | 7.59x | 0x00 (4.2 %) | 249 |
+| 16 | 6.19 % | 6.82x | 0x00 (3.5 %) | 253 |
+| 32 | 5.17 % | 5.06x | 0x00 (5.0 %) | 256 |
+| 8 | 4.86 % | 4.80x | 0x00 (4.3 %) | 255 |
+| 0 | 4.78 % | 4.55x | 0x00 (4.0 %) | 252 |
+
+**Every one of the 40 phases is above its own null** (mean 3.54x, none at or below), and the
+elevation is *uniform*: the lag-40 agreement of 4.07 % is exactly the average of the phases.
+
+**So there is no repeating field.** A record structure with a header byte would put one or two
+phases near 100 %; the maximum here is 11.7 %, with 237–256 distinct values at even the best phase, and
+the modal byte (`0x00`, 4–6 %) is only the region's baseline skew, not a marker.
+
+R4 at its 260 period behaves the same way, and weaker: mean ratio 2.06x, **38 of 260 phases at or
+below their own null**, best phase 2.79 % with 237 distinct values.
+
+### Consequence: M12's "R3 period 40" is demoted
+
+A period with no position standing out is not evidence of records. The honest reading is that lag 40
+is a **diffuse autocorrelation peak** — most likely from redundancy in the data itself (near-duplicate
+blocks, or 16-bit samples whose high bytes are skewed) — and not a block stride. Nothing about R3's
+container is established by it.
+
+The test that would separate the two: **match-run length at the lag**. Approximate repetition of
+whole records produces runs of 3+ consecutive matching bytes; a byte-level skew artifact produces
+isolated single matches. That is a small addition to the `phase` subcommand and the next thing to run.
+
 ### What is left for R3
 
 The head of the region is `… 64 fe 27 fe 74 ff 21 ff a0 ff e3 ff fe 00 05 00 05 06 b6 03 c8 01 a0 00`

@@ -114,6 +114,54 @@ def stride_null(d, starts, window, lags, shuffles, seed=20261030):
                 per_lag[S].append(_equal_bytes(b[:window], b[S:S + window]) / window)
     return per_lag
 
+
+def phase_sweep(d, lo, hi, stride, window, nwin):
+    """Per-byte-position agreement within a period: which bytes actually repeat?
+
+    For phase p the series is every stride-th byte starting at p. Consecutive
+    elements of that series are the same position in adjacent records, so the
+    agreement rate measures how often *that* byte repeats record-to-record. A
+    single lag agreement rate hides this: 40 positions averaged together turn one
+    constant byte into a 1/40 signal.
+
+    Two reference points are reported per phase:
+      null_p2   sum of squared byte frequencies in the analysed window — the chance
+                that two bytes drawn from this region's own histogram match
+      top value / distinct — a constant byte (padding) and a field that merely
+                changes slowly look identical in the agreement rate but not here
+    """
+    from collections import Counter
+    span = hi - lo
+    if span < window + stride: window = max(1024, span // 2)
+    starts = [lo + (span - window) * i // max(1, nwin - 1) for i in range(nwin)] \
+             if nwin > 1 else [lo + (span - window) // 2]
+    starts = [max(lo, min(st, hi - window)) for st in starts]
+
+    hist = Counter()
+    for st in starts: hist.update(d[st:st + window])
+    total = sum(hist.values())
+    null_p2 = sum((c / total) ** 2 for c in hist.values())
+
+    rows = []
+    for p in range(stride):
+        eq = n = 0
+        vals = Counter()
+        for st in starts:
+            series = d[st + p:st + window:stride]
+            vals.update(series)
+            eq += sum(1 for i in range(len(series) - 1) if series[i] == series[i + 1])
+            n += max(0, len(series) - 1)
+        if not n: continue
+        top_v, top_c = vals.most_common(1)[0]
+        # per-phase null: this phase's OWN marginal distribution. Using the global
+        # null would let a merely skewed position (e.g. the high byte of 16-bit
+        # samples) look periodic — it reproduces its own values by chance often
+        # enough to clear a global floor.
+        np2 = sum((c / n) ** 2 for c in vals.values())
+        rows.append((eq / n, p, np2, top_v, top_c / max(1, sum(vals.values())),
+                     len(vals)))
+    return rows, null_p2, starts
+
 def stride_probe(d, lo, hi, window, nwin, min_s, max_s, step, top, lags=None):
     """Score lags by byte agreement across several spread windows of a region.
 
@@ -271,6 +319,13 @@ def main():
     st.add_argument("--null", type=int, default=0, metavar="N",
                     help="N shuffles per lag for an empirical null (strongly recommended)")
 
+    ph = sub.add_parser("phase")
+    ph.add_argument("--region", required=True)
+    ph.add_argument("--stride", type=lambda v: int(v, 0), required=True)
+    ph.add_argument("--window", type=lambda v: int(v, 0), default=0x10000)
+    ph.add_argument("--windows", type=int, default=3)
+    ph.add_argument("--top", type=int, default=12)
+
     a = ap.parse_args()
     before = sha256(a.rom)
     d = load(a.rom)
@@ -322,6 +377,20 @@ def main():
                 sd = (sum((v - mu) ** 2 for v in vals) / len(vals)) ** 0.5 or 1e-9
                 z = f"   null {mu*100:6.3f}% +-{sd*100:5.3f}  z={(sc-mu)/sd:+6.1f}"
             print(f"  {S:>8} {sc*100:7.3f}% {sc/floor:7.1f}x{('' if not z else z)}   {','.join(mult[:4])}")
+    elif a.cmd == "phase":
+        lo, hi = (int(x, 0) for x in a.region.split(":"))
+        rows, null_p2, starts = phase_sweep(d, lo, hi, a.stride, a.window, a.windows)
+        print(f"region {lo:#09x}..{hi:#09x}  stride {a.stride}  "
+              f"{len(starts)} window(s) of {a.window:#x}")
+        print(f"  per-phase null (sum of squared frequencies): {null_p2*100:.3f}%")
+        print(f"  {'phase':>5} {'agree':>8} {'x null':>7} {'top byte':>9} {'share':>7} {'distinct':>8}")
+        print(f"  ratio uses each phase's own null, so skew alone cannot pass")
+        for rate, p, np2, tv, tc, nd in sorted(rows, key=lambda r: -r[0] / r[2])[:a.top]:
+            print(f"  {p:>5} {rate*100:7.3f}% {rate/np2:6.2f}x "
+                  f"{format(tv, '#04x'):>9} {tc*100:6.1f}% {nd:>8}  (own null {np2*100:.2f}%)")
+        ratios = [r[0] / r[2] for r in rows]
+        print(f"  mean ratio across all {len(rows)} phases: {sum(ratios)/len(ratios):.2f}x")
+        print(f"  phases at or below their own null: {sum(1 for r in ratios if r <= 1.0)}")
     after = sha256(a.rom)
     print(f"\nROM sha256 before {before[:16]}…  after {after[:16]}…  "
           f"{'UNCHANGED' if before == after else 'MODIFIED — INVESTIGATE'}")
