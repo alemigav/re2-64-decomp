@@ -13,3 +13,4 @@ asm/
 bin/
 src/
 *.ld
+.venv/

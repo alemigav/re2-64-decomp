@@ -1692,6 +1692,41 @@ emulator: run this same code path in a known-good emulator with the same images 
 PC. That separates "my CPU is still wrong" from "the game does what it does", which is the one question the
 self-built harness can no longer answer about itself.
 
+#### Differential against Unicorn: the tool works, first difference is a convention (M58)
+
+No reference emulator existed on this host (no mupen64plus, retroarch, ares or qemu-mips), but PyPI is
+reachable, so **Unicorn 2.1.4** (QEMU TCG, MIPS32 BE) was installed into a project-local `.venv`. It is a
+genuinely independent instruction-set implementation, which is what the differential needs.
+
+Two host facts had to be established by experiment:
+
+1. **Unicorn's MIPS32 core translates KSEG0/KSEG1 PCs to physical addresses.** Executing at `0x80000000+`
+   fails with `UC_ERR_FETCH_UNMAPPED` *even though `mem_map` and `mem_write` both succeeded*; the image must
+   also be mapped at the physical mirror (`0x00000000` for kseg0, `0x10000000` for the cartridge). A one-word
+   test at `0x1000` executes fine while the same word at `0x80000000` does not — that contrast is what
+   identified the cause.
+2. Single-stepping needs a code hook that stops on the **second** fetch; stopping on the first prevents the
+   instruction from executing at all.
+
+Result of the raw lockstep from `0x8004d344`:
+
+```
+compared 14 instructions
+FIRST DIVERGENCE after 14 instructions at 0x8004d378  (0c001b58 = jal 0x80006d60)
+  mine    next PC = 0x8004d37c      (the delay slot)
+  unicorn next PC = 0x80006d60      (the branch target)
+```
+
+**That is a delay-slot convention, not a semantic divergence.** This harness tracks delay slots explicitly and
+reports the delay-slot address after a jump; Unicorn reports the branch target and runs the delay slot inside
+its own mechanism. Both are correct under their own models, so a raw PC-by-PC comparison will always diverge at
+the first `jal`.
+
+Everything up to that point matched, including 13 instructions of stack setup. The comparison therefore needs
+normalising before it can find real divergences — compare the *visited-PC sequence*, or align on non-delay
+boundaries — and `tools/diff_unicorn.py` is saved with that as its stated next step rather than pretending the
+raw comparison is the answer.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
