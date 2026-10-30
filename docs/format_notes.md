@@ -870,6 +870,40 @@ at address `0x20` — and fails later at `0x80000f2c` on an unmapped access at `
 null-based pointer plus offset 4. So the current-thread identification is supported by the guest's own
 behaviour, and the next null is identified with an address and an instruction rather than a symptom.
 
+#### The null base at `0x80000f2c` is the guest's ready-list terminator (M33)
+
+The faulting instruction and its register values, captured at the fault:
+
+```
+0x80000f14  lw t6, 0x4(t8)      t6 = node->priority        <- dispatch loop body
+0x80000f18  slt ...             compare priorities
+0x80000f1c  bne ...             exit if this node is not the best
+0x80000f28  lw t8, 0x0(t8)      t8 = t8->next              <- advance
+0x80000f2c  lw t6, 0x4(t8)      t8 = 0x0  -> fault at 0x4
+```
+
+State at the fault:
+
+| global | value |
+|---|---|
+| `0x80012948` | `0x80012940` |
+| `0x8001294c` | `0x80012940` |
+| `0x80012950` | `0x8010b700` (current thread — now scheduler-owned) |
+| **`0x80012954`** | **`0x0`** |
+
+So this is libultra's **thread dispatch loop walking a ready queue**, and it dereferenced the priority field of
+a node whose `next` was null. libultra keeps ready queues as **circular** lists whose terminator is the queue
+head node itself — here the head is `0x80012940`, which is exactly what `0x80012948`/`0x8001294c` already
+point at. What is missing is the linkage: the walk should have returned to the sentinel `0x80012940`, not
+stepped into null, and `0x80012954` — written by the boot loader's init at `0x80000cb8` and still `0x0` here —
+is part of that initialisation.
+
+**So what should be at the null base is the guest's own ready-queue node/sentinel, not a host pointer.** This
+is the same class of gap as `__osCurrentThread`: my scheduler maintains a Python thread table and selects
+runnable threads itself, while the guest's dispatch routine walks a list that the host never builds. Writing
+one pointer (`0x80012950`) was enough to get the handler past context save; it is not enough for the guest to
+dispatch threads on its own.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
