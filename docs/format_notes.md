@@ -122,20 +122,43 @@ wrong boundary would corrupt the stream.
 
 ---
 
-## 5. Still unidentified
+## 5. Still unidentified — and what has been eliminated
 
-| blob | size | facts |
+| blob | size | measurements |
 |---|---|---|
-| `0x0b73fb3`–`0x140ed84` | 9 022 929 B | entropy 7.08; 133 `ffd8ff` markers; `ffprobe` rejects; 1 479 trailer-shaped candidates, none self-consistent |
-| `0x0338fe1`–`0xb63106` | 8 560 933 B | entropy 7.34; no magic, no inner filename; `ffprobe` rejects |
+| `0x0b73fb3`–`0x140ed84` (R3) | 9 022 929 B | entropy 7.08; **0 x `00 00 01 B3`**; 214 x `00 00 01 00`, 133 x `ffd8ff`, 1 484 x `fffb`, 319 x `8000` |
+| `0x0338fe1`–`0xb63106` (R4) | 8 560 933 B | entropy 7.34; 2 x `00 00 01 B3` at one identical spacing (coincidence), 1 x picture code, 29 x `fffb`, 735 x `8000` |
 
-Both begin with a short header whose first words (`00001000 00000082`, `38001000 0000003f`) resemble
-the media trailer types but shifted — consistent with these regions being *entered mid-block* by the
-coverage pass, so the first bytes are not a block boundary. **Hypothesis:** audio (ADPCM) and/or a
-texture archive. Next step is to find a genuine block start inside one of them, and to test the
-trailer rule against anchors of a different kind (e.g. `00 00 01 B3` sequence headers inside R3).
+### Eliminated for R3 by the `00 00 01 B3` experiment
 
----
+Command: `tools/scan_headers.py … derive --region 0x0b73fb3:0x140ed84 --magic 000001b3`,
+with R1 as a positive control:
+
+| region | `000001b3` anchors | parity-model score |
+|---|---|---|
+| R1 (known MPEG-1 container) | 271 | **100.0 %** (C = 8, the 9s all have odd sizes) |
+| **R3 (unknown)** | **0** | not applicable — no sequence header exists |
+| R4 (unknown) | 2 | one spacing only, i.e. coincidence |
+
+So **R3 is not an MPEG-1 video container**: there is no sequence header anywhere in 9 MB. R4 has two,
+at a single spacing, which is the signature of accidental byte matches rather than framing.
+
+Two further rejections for R3, both with the same parser:
+
+- media container with JPEG payloads: 134 anchors, **0 resolved**
+- the general trailer rule: 1 479 candidate starts, **0 resolved**
+
+A second attempt, using the trailer *type word* as the anchor (`--magic 00001000`, which `derive` now
+supports via `--max-after`), reached only 33 % and is not evidence.
+
+### What is left for R3
+
+The head of the region is `… 64 fe 27 fe 74 ff 21 ff a0 ff e3 ff fe 00 05 00 05 06 b6 03 c8 01 a0 00`
+— a run of `0xFF` high bytes, the shape of **16-bit samples that are mostly negative**, i.e. audio.
+1 484 `fffb` frame syncs are too sparse (one per 6 KB) to be a dense MP3 stream, so that is not yet a
+claim either. **Hypothesis, not finding:** R3 is audio (VADPCM/PCM) or a texture archive; R4 likewise.
+Both regions were entered mid-block by the coverage pass, so the first bytes are cut points, not
+headers — which is why their apparent "headers" disagree byte-for-byte with the verified ones.
 
 ## 6. Verification rules this document follows
 

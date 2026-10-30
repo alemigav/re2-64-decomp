@@ -30,6 +30,17 @@ def load(path):
     with open(path, "rb") as f:      # read-only, whole file, never written back
         return f.read()
 
+def magic_anchors(d, lo, hi, magic):
+    """Payload starts = every occurrence of `magic` in [lo,hi)."""
+    pat = bytes.fromhex(magic) if isinstance(magic, str) else magic
+    out, i = [], lo
+    while True:
+        i = d.find(pat, i, hi)
+        if i < 0: break
+        out.append((i, len(pat)))
+        i += len(pat)
+    return out
+
 def jpeg_anchors(d, lo, hi):
     """Payload starts of JPEG members inside [lo,hi), by carving SOI..EOI."""
     out, i = [], lo
@@ -70,13 +81,17 @@ def cmd_compare(d, at, before):
                " ".join(f"{v:02x}" for v in sorted(vals)[:6]) + (" …" if len(vals) > 6 else "")
         print(f"  -{before-k:>2} {const:>7}  {show}")
 
-def cmd_derive(d, anchors, max_before=40):
+def cmd_derive(d, anchors, max_before=40, max_after=16):
     """Find which field explains anchor-to-anchor spacing, using residual distributions.
 
     Anchors are payload starts. For a candidate field read in either the current
     anchor's window or the *next* anchor's window, compute the residual
 
         r_k = (A[k+1] - A[k]) - value_k
+
+    With positive rel the field is read after the anchor, which is what makes a
+    trailer *type word* usable as an anchor: anchor spacing is then the whole block
+    (payload + trailer + pad) and the size sits at anchor+4.
 
     A real length field makes the residual nearly constant: 0 for an unpadded
     length, 8 or 9 for a big-endian trailer plus parity padding, and so on. Scoring
@@ -95,7 +110,7 @@ def cmd_derive(d, anchors, max_before=40):
     for frame in ("cur", "next"):
         for endian in ("be", "le"):
             for width in (1, 2, 3, 4):
-                for rel in range(-max_before, 0):
+                for rel in range(-max_before, max_after + 1):
                     vals = []
                     for k in range(trans):
                         base = A[k] if frame == "cur" else A[k + 1]
@@ -103,20 +118,26 @@ def cmd_derive(d, anchors, max_before=40):
                     if any(v is None for v in vals): continue
                     res = Counter(A[k + 1] - A[k] - vals[k] for k in range(trans))
                     mode, cnt = res.most_common(1)[0]
-                    cands.append((cnt / trans, frame, endian, width, rel, mode,
-                                  res.most_common(3)))
+                    # parity model: residual == C + (value & 1), the shape a trailer
+                    # plus one odd-size pad byte produces. A model that ignores parity
+                    # splits 52/48 across two residuals and looks like a 52 % failure.
+                    par = sum(1 for k in range(trans)
+                              if A[k+1] - A[k] - vals[k] == mode + (vals[k] & 1))
+                    cands.append((par / trans, frame, endian, width, rel, mode,
+                                  res.most_common(3), cnt / trans))
     cands.sort(reverse=True)
     print(f"\nderive: {trans} transitions from {len(A)} anchors")
-    print(f"  {'match':>6}  {'window':>4} {'width':>5} {'endian':>6} {'rel':>5} {'residual':>9}  next-best residuals")
-    for share, frame, endian, width, rel, mode, top in cands[:8]:
-        print(f"  {share*100:5.1f}%  {frame:>4} {width:>5} {endian:>6} {rel:>5} {mode:>9}  "
-              f"{[(r, c) for r, c in top[1:3]]}")
+    print(f"  {'parity':>6} {'modal':>6}  {'window':>4} {'width':>5} {'endian':>6} {'rel':>5} "
+          f"{'C':>5}  other residuals")
+    for share, frame, endian, width, rel, mode, top, modal in cands[:8]:
+        print(f"  {share*100:5.1f}% {modal*100:5.1f}%  {frame:>4} {width:>5} {endian:>6} {rel:>5} "
+              f"{mode:>5}  {[(r, c) for r, c in top[1:3]]}")
     best = cands[0]
     if best[0] < 0.9:
-        print("  NO candidate reaches 90 % — do not extract from this spec")
+        print("  NO candidate reaches 90 % under the parity model — do not extract")
         return None
     spec = {"window": best[1], "endian": best[2], "width": best[3], "rel": best[4],
-            "residual": best[5], "score": best[0]}
+            "residual_C": best[5], "parity_model": True, "score": best[0]}
     print("\nbest spec:", json.dumps(spec))
     return spec
 
@@ -163,8 +184,13 @@ def main():
     c = sub.add_parser("compare"); c.add_argument("--at", required=True)
     c.add_argument("--before", type=int, default=16)
 
-    dv = sub.add_parser("derive"); dv.add_argument("--jpeg-region", required=True)
+    dv = sub.add_parser("derive")
+    dv.add_argument("--jpeg-region", help="carve JPEG members as anchors")
+    dv.add_argument("--region", help="S:E region for --magic anchors")
+    dv.add_argument("--magic", help="hex byte pattern used as anchors, e.g. 000001b3")
     dv.add_argument("--max-before", type=int, default=40)
+    dv.add_argument("--max-after", type=int, default=16,
+                    help="also read fields up to N bytes AFTER an anchor (trailer-type anchors)")
 
     ch = sub.add_parser("chain"); ch.add_argument("--region", required=True)
     ch.add_argument("--header-len", type=int, required=True)
@@ -183,10 +209,21 @@ def main():
     elif a.cmd == "compare":
         cmd_compare(d, [int(x, 0) for x in a.at.split(",")], a.before)
     elif a.cmd == "derive":
-        lo, hi = (int(x, 0) for x in a.jpeg_region.split(":"))
-        anchors = jpeg_anchors(d, lo, hi)
-        print(f"anchors: {len(anchors)} JPEG members in {lo:#x}..{hi:#x}")
-        spec = cmd_derive(d, anchors, a.max_before)
+        if a.jpeg_region:
+            lo, hi = (int(x, 0) for x in a.jpeg_region.split(":"))
+            anchors = jpeg_anchors(d, lo, hi)
+            print(f"anchors: {len(anchors)} JPEG members in {lo:#x}..{hi:#x}")
+        else:
+            if not (a.region and a.magic):
+                sys.exit("derive needs --jpeg-region, or --region with --magic")
+            lo, hi = (int(x, 0) for x in a.region.split(":"))
+            anchors = magic_anchors(d, lo, hi, a.magic)
+            print(f"anchors: {len(anchors)} x '{a.magic}' in {lo:#x}..{hi:#x}")
+            if len(anchors) > 1:
+                gaps = [anchors[k+1][0] - anchors[k][0] for k in range(len(anchors)-1)]
+                print(f"  anchor spacing: min {min(gaps):#x} max {max(gaps):#x} "
+                      f"distinct {len(set(gaps))} values, first {[hex(g) for g in gaps[:6]]}")
+        spec = cmd_derive(d, anchors, a.max_before, a.max_after)
         if spec: print("\nbest spec:", json.dumps(spec))
     elif a.cmd == "chain":
         lo, hi = (int(x, 0) for x in a.region.split(":"))
