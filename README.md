@@ -19,13 +19,15 @@ its own, and so the expensive part is only entered with evidence:
 | Milestone | Deliverable | Status |
 |---|---|---|
 | **M0** | Toolchain proof: MIPS big-endian decompiles in this stack | ✅ **done 2026-10-30** |
-| **M1** | ROM identified: byte order, entry, cart ID, mapping | ✅ **done** — see `notes/M1-rom-identification.md` |
-| **M2** | Code/data separation via splat; first code segment disassembles | ✅ **done** — 243 functions, code ends at ROM `0x12140`; see `notes/M2-code-data-boundaries.md` |
-| **M3** | One function decompiled and annotated by hand, with a written explanation | ⏳ |
-| **M4** | A subsystem understood (event scripting, inventory, or the FMV/flagship codec) | ⏳ |
-| **M5** | Byte-matching build of one module | ⏳ *only if M4 justifies it* |
+| **M1** | ROM identified: byte order, entry, cart ID, mapping | ✅ **done** — see `docs/log/M1-rom-identification.md` |
+| **M2** | Code/data separation via splat; first code segment disassembles | ✅ **done** — 243 functions, code ends at ROM `0x12140`; see `docs/log/M2-code-data-boundaries.md` |
+| **M3** | Name what the entry calls; re-split | ✅ **done** — gained no coverage: labels do not discover code (`docs/log/M3-libultra-naming-and-research.md`) |
+| **M4** | One subsystem understood | ✅ **done** — the ROM is banked; the loader chain is `FUN_80001180` → descriptor → PI DMA → inflate (`docs/log/M8-file-table-found.md`) |
+| **M5** | Byte-matching build of one module | ⏳ *only if M4 justifies it* — splat detects `compiler: KMC`, so the community matching toolchain does not transfer |
+| **M6** | Asset formats and extraction | ✅ **done** — 4 761 zlib members, 1 227 JPEG frames, 271 MPEG-1 blocks; the media container format is verified (`docs/format_notes.md`) |
 
-M4 is the realistic target for a solo effort. M5 is a research question, not a promise.
+M5 remains a research question, not a promise — a byte-matching build of a 64 MB cartridge is a
+community-scale effort. **M4 and M6 are done**; what is left unidentified is ~17.6 MB in two blobs.
 
 ---
 
@@ -69,6 +71,27 @@ accepted and decompiles.
 
 ---
 
+## Repository layout
+
+Discovery is kept separate from extraction, so a wrong hypothesis cannot quietly produce wrong output.
+
+```
+tools/     scan_headers.py   header analysis: window / compare / derive / chain
+           extract_blocks.py  generic container extractor (reads ROM read-only)
+           unpack_zlib.py     sequential zlib member unpacker
+           find_cart_table.py locates the 0x0..-flagged descriptor records
+           wrap_mips_elf.py   raw segment -> ELF (load-bearing: REA refuses raw MIPS)
+manifests/ manifest.json      every extracted block: offset, trailer, size, sha1
+           block_types.json   the container spec the extractor consumes
+assets/    fmv/ video/ unknown/ unpacked/        (gitignored, regenerable in ~20 s)
+docs/      format_notes.md    the established formats and the evidence for them
+           reverse_engineering_log.md   chronological log + the errors worth remembering
+           log/M1..M9/         full write-ups per milestone
+```
+
+The cartridge is immutable input: both analysis tools print the ROM's sha256 before and after
+every run and report `UNCHANGED`.
+
 ## Pipeline
 
 ```
@@ -101,7 +124,7 @@ To obtain:
 
 | Need | Where |
 |---|---|
-| `splat` + MIPS binutils | **installed in the nanocore** — see `notes/M2-code-data-boundaries.md` for the exact sequence (splat64 needs manual dependency injection and a Rust toolchain for `pygfxd`) |
+| `splat` + MIPS binutils | **installed in the nanocore** — see `docs/log/M2-code-data-boundaries.md` for the exact sequence (splat64 needs manual dependency injection and a Rust toolchain for `pygfxd`) |
 | MIPS binutils (`mips-linux-gnu-as/objdump/ld`) | distro package, or LLVM's MIPS target (`clang --target=mips-linux-gnu`) |
 | `n64crc` (CRC verify + fix) | community source; needed before trusting a dump |
 | The original compiler | **unknown until M5** — N64 era used IDO 7.1 or GCC 2.7.2/egcs; matched by comparing generated code |
@@ -110,7 +133,7 @@ To obtain:
 
 1. **Read-only until proven.** No writing back to a cartridge image. Ever, without a
    verified duplicate and a matching hash.
-2. **Every claim gets a note in `notes/`**: what was tested, the exact command, the
+2. **Every claim gets a note in `docs/log/`**: what was tested, the exact command, the
    observed output, and what it does *not* establish.
 3. **Distinguish observed from inferred.** REA is a good model here: it labels
    assumptions (o32 ABI, MIPS-I conformance) rather than silently assuming them.
