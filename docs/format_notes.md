@@ -347,6 +347,49 @@ word 1 = post-load handler, six more per entry. `FUN_8004cc5c(slot)` is the game
 `DAT_8010b6fc = 0x80189a00` is the inflate window, and it is set by the thread entry `FUN_8004d190` —
 which ties the two functions together and confirms the entry is the stage-2 init.
 
+### The registry, enumerated (M17)
+
+Read straight out of the stage-2 image: the table is static data at `0x8010b2e0` = blob `+0xf2860`.
+Entry layout is **8 bytes**, confirmed from the instructions, not from the decompiler's types:
+
+```
+0x8004cc6c  sll  s0, a0, 3          ; s0 = slot * 8        <- 8-byte stride
+0x8004cc70  addu s0, s0, v0         ; v0 = 0x8010b2e0
+0x8004cc78  lbu  a0, 0x0(s0)        ; +0: u8 descriptor index
+0x8004cc68  ...                     ; +1..+3: padding, always zero
+0x8004cc8c  lw   v0, 0x4(s0)        ; +4: u32 entry point
+0x8004cc90  jalr ra, v0             ; call it after the load
+```
+
+Ghidra rendered this as `(&DAT_8010b2e0)[slot * 8]`, which reads like a 32-byte word stride; it is byte
+arithmetic on an `undefined1 *`. Reading it as big-endian `u32` yields `0x02000000` for slot 0 and looks
+like nonsense — the first field is a single byte.
+
+| slot | desc | cart | stored | destination range | entry point | entry inside range |
+|---|---|---|---|---|---|---|
+| 0 | 2 | `0x72610` | 17 022 | `0x8017b410`–`0x801874b0` | `0x80180cd0` | yes |
+| 1 | 3 | `0x7688e` | 9 087 | `0x8015b030`–`0x80161cf0` | `0x8015b030` | yes |
+| 2 | 4 | `0x78c0e` | 9 067 | `0x8017b410`–`0x801899f0` | `0x8017b410` | yes |
+| 3 | 10 | `0x7e132` | 6 880 | `0x8017b410`–`0x8017e910` | `0x8017b410` | yes |
+| 4 | 5 | `0x7af7a` | 5 592 | `0x8017b410`–`0x80180610` | `0x8017b4a4` | yes |
+| 5 | 8 | `0x7e132` | **0** | `0x8017b410` | `0x8009c370` | no — *inside stage 2* |
+| 6 | 7 | `0x7c552` | 7 136 | `0x8016e880`–`0x80172380` | `0x8016e880` | yes |
+| 7 | 6 | `0x7c552` | **0** | `0x8015b030` | `0x800995fc` | no — *inside stage 2* |
+| 8 | 9 | `0x7e132` | **0** | `0x8017b410` | `0x8008b794` | no — *inside stage 2* |
+
+Slot 9 onward is not a slot: index byte 0 with a zero handler, and increasing index reads walk into the
+non-record word at the table base (`0x4f564552` = ASCII "OVER"), so the table is **9 entries**.
+
+Two things this settles:
+
+1. **`stored == 0` means "no overlay to load, call straight into stage 2."** The three zero-size records are
+   exactly the three whose entry points fall inside stage 2 (`0x8009c370`, `0x800995fc`, `0x8008b794`) rather
+   than inside a freshly loaded range. 6 of 9 entry points land inside their own destination range; those are
+   the overlays' entry functions sitting at offset 0 or a small offset.
+2. **Every slot points into the boot table, indices 2–10, max cart offset `0x7e132` ( 516 402 B).** Nothing in
+   the registry references anything near R3 — consistent with §5b: the 9-slot registry is an *overlay
+   registry*, not the index for the 4 761 zlib members, which are therefore reached some other way.
+
 ### `0xB0000000` is not a flag — it is the cartridge's KSEG1 base
 
 The open above reveals the correct reading of descriptor field 0. On N64 the cartridge is memory-mapped
