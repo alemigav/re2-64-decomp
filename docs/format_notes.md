@@ -1180,6 +1180,32 @@ and the divergence is the thing to instrument.
 Nothing in this result disturbs the queue findings: both message queues are initialised and both waiting
 threads inserted by guest code, both threads WAITING, message buffers empty.
 
+#### The installer is `0x800071b8`, and Phase 2 never reaches it (M42)
+
+Writer-PC logging in the Phase-1 harness, both entries, 16 vector watchpoints:
+
+| vector | writer PCs | preamble written |
+|---|---|---|
+| `UT_VEC` `0x80000000` | `0x80007140`, `…44`, `…48`, `…50` | `3c1a8000 275a06d0 03400008 00000000` |
+| `XUT_VEC` `0x80000080` | `0x80007168`, `…6c`, `…70`, `…78` | same |
+| **`E_VEC` `0x80000180`** | **`0x800071b8`** (identical from both entries) | same |
+
+So the installer is a single routine in the boot bank spanning roughly `0x80007140`–`0x800071c0`, and it is not
+path-dependent within Phase 1.
+
+**Diff against Phase 2:** `0x800071b8` is **not** in Phase 2's executed-PC set, and neither is any address in
+`0x80007140`–`0x800071c0`. Phase 2 executes only **1 478 distinct PCs** in 200 000 instructions, so it is
+confined to a small region — the divergence happens *before* the installer, not inside it.
+
+That makes the remaining question narrow and mechanical: which branch in Phase 1 leads into `0x80007140` that
+Phase 2 does not take? The candidates are exactly the host hooks Phase 1 installs and Phase 2 does not
+(`osCreateThread`, `osStartThread`, `osCreateMesgQueue`, `osRecvMesg`, `osSendMesg`) — the installer is plausibly
+reached from an initialisation routine that Phase 1's fabricated thread-start lets continue and Phase 2's real
+queue/dispatch path diverts or blocks. Hypothesis, not finding.
+
+Nothing here disturbs the queue results: both queues initialised and both waiters inserted by guest code, both
+WAITING, buffers empty.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
