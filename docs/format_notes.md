@@ -1263,6 +1263,33 @@ never comes up in its remaining work. So the question is not "is the context cor
 thread 7 do between resuming at `0x8000dc88` and yielding again" — a handful of instructions to trace, and the
 right next measurement is thread 7's own PC trajectory *between* switches, not its context block.
 
+#### Thread 7's trajectory: the instrument was wrong a third time (M45)
+
+Per-slice trace with the dispatcher excluded at `0x80000F00`–`0x80000F9F`:
+
+| slice | starts | own instructions | first PC | last own PC |
+|---|---|---|---|---|
+| 1 | 141 | 665 | `0x80000fa0` | `0x80000efc` |
+| 2 | 1058 | 272 | `0x80000fa0` | `0x80000efc` |
+| 3 | 1611 | 845 | `0x80000fa0` | `0x80000efc` |
+| 4 | 2717 | 455 | `0x80000fa0` | `0x80000efc` |
+| 5 | 4363 | 145 626 | `0x80000fa0` | **`0x80000518`** (idle spin) |
+
+Every slice resumes at `0x80000fa0` and ends at `0x80000efc` — both of which are **still dispatcher code**. My
+exclusion window was too narrow: the dispatcher evidently extends past `0x80000F9F` in both directions, so the
+"own instructions" I counted are dispatcher instructions, and thread 7's application-code trajectory is still
+not visible. The saved PC at `+0x11c` (`0x8000dc88`) never appears as a resume point in what I captured, which
+is consistent with the restore writing it into the CPU and the dispatcher's tail running before control reaches
+it.
+
+So this measurement does not answer the question either. **Three consecutive instruments have now been wrong**
+(yield-PC at the switch, context-block search, and this exclusion window), while the emulator's own behaviour
+has been consistent throughout: context saved sanely, four correct dispatches, then the idle spin.
+
+The right instrument is different in kind: find the instruction that performs the **context restore and jump**
+(the `jr` that consumes the restored PC), record the first PC *after* that jump per slice, and only then compare
+with `+0x11c`. That is a disassembly question about `0x80000f60`–`0x8000100` before it is a tracing question.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
