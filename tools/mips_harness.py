@@ -185,9 +185,18 @@ class Cpu:
                 elif rd == 9: self.count = r[rt]
                 elif rd == 11: self.compare = r[rt]; self.timer_pending = False
                 elif rd == 8: self.badvaddr = r[rt]
-            elif rs == 0x10:                                   # ERET
-                self.status &= ~self.STATUS_EXL
-                self.jump_now = self.epc                       # no delay slot
+            elif rs == 0x10:                                   # COP0 "C0" space
+                # 0x4200000X: the funct field decides. Treating every rs=0x10 as
+                # ERET (funct 0x18) makes TLBWI/TLBWR/TLBP jump to EPC, which is
+                # what sent thread 7 to address 0. There is no TLB model here, so
+                # the TLB ops are no-ops that fall through.
+                fn = w & 0x3F
+                if fn == 0x18:                                 # ERET
+                    self.status &= ~self.STATUS_EXL
+                    self.jump_now = self.epc                   # no delay slot
+                elif fn in (0x01, 0x02, 0x06, 0x08):           # TLBR/TLBWI/TLBWR/TLBP
+                    pass
+                else: raise Fault(f"COP0 C0 funct {fn:#x} at {pc:#x}")
             else: raise Fault(f"COP0 rs={rs:#x} at {pc:#x}")
 
         elif op == 0x0D: r[rt] = r[rs] | imm
@@ -247,6 +256,25 @@ class Cpu:
             elif f == 0x27: r[rd] = (~(r[rs] | r[rt])) & 0xFFFFFFFF
             elif f == 0x2A: r[rd] = (1 if self.s32(r[rs]) < self.s32(r[rt]) else 0)   # SLT: 1 if rs<rt
             elif f == 0x2B: r[rd] = (1 if r[rs] < r[rt] else 0)
+            # 64-bit SPECIAL ops, in the 32-bit view this harness keeps. The low
+            # word is exact for add/sub; shift-by-32 forms yield 0 (or sign) because
+            # the whole low word shifts out, which is what the low half would show.
+            elif f == 0x04: r[rd] = (r[rt] << (r[rs] & 0x1F)) & 0xFFFFFFFF  # SLLV
+            elif f == 0x06: r[rd] = r[rt] >> (r[rs] & 0x1F)                 # SRLV
+            elif f == 0x07: r[rd] = (self.s32(r[rt]) >> (r[rs] & 0x1F)) & 0xFFFFFFFF  # SRAV
+            elif f == 0x14: r[rd] = (r[rt] << (r[rs] & 0x3F)) & 0xFFFFFFFF  # DSLLV
+            elif f == 0x16: r[rd] = r[rt] >> (r[rs] & 0x3F)                 # DSRLV
+            elif f == 0x17: r[rd] = (self.s32(r[rt]) >> (r[rs] & 0x3F)) & 0xFFFFFFFF  # DSRAV
+            elif f == 0x2C: r[rd] = (r[rs] + r[rt]) & 0xFFFFFFFF    # DADD
+            elif f == 0x2D: r[rd] = (r[rs] + r[rt]) & 0xFFFFFFFF    # DADDU
+            elif f == 0x2E: r[rd] = (r[rs] - r[rt]) & 0xFFFFFFFF    # DSUB
+            elif f == 0x2F: r[rd] = (r[rs] - r[rt]) & 0xFFFFFFFF    # DSUBU
+            elif f == 0x38: r[rd] = (r[rt] << ((w >> 6) & 0x1F)) & 0xFFFFFFFF   # DSLL
+            elif f == 0x3A: r[rd] = r[rt] >> ((w >> 6) & 0x1F)                   # DSRL
+            elif f == 0x3B: r[rd] = (self.s32(r[rt]) >> ((w >> 6) & 0x1F)) & 0xFFFFFFFF
+            elif f == 0x3C: r[rd] = 0                                            # DSLL32
+            elif f == 0x3E: r[rd] = 0                                            # DSRL32
+            elif f == 0x3F: r[rd] = (0xFFFFFFFF if self.s32(r[rt]) < 0 else 0)   # DSRA32
             elif f == 0x10: r[rd] = self.hi                      # MFHI
             elif f == 0x11: self.hi = r[rs]                      # MTHI
             elif f == 0x12: r[rd] = self.lo                      # MFLO

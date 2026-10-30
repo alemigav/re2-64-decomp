@@ -1549,6 +1549,38 @@ by one of the `mtc0`s whose register numbers my decoder reports as 0/0xA/2/3 and
 against the VR4300 CP0 numbering before any conclusion is drawn. Either way the observable is the same and it is
 not an emulation fault in the dispatcher: **thread 7 reaches a legitimate `eret` with a zero EPC.**
 
+#### The trampoline is a TLB write, not an `eret` — and that was my bug (M54)
+
+**CP0 register numbering.** For COP0 instructions the target register is `(rs << 3) | rd`, not `rd` alone.
+Re-decoding the trampoline at `0x80007ef0` with that rule:
+
+| address | register written | value |
+|---|---|---|
+| `0x80007ef0` | `$10` EntryHi (`mfc0`) | read |
+| `0x80007ef8` | **`$0` Index** | `0x1f` |
+| `0x80007efc` | **`$10` EntryHi** | `0` |
+| `0x80007f08` | **`$10` EntryHi** | `0xc0000000` |
+| `0x80007f18` | **`$2` EntryLo0** | `0x02000017` |
+| `0x80007f20` | **`$3` EntryLo1** | `1` |
+| **`0x80007f28`** | **`42000002` = TLBWI**, funct `0x02` | — |
+
+**So the instruction at `0x80007f28` is `TLBWI`, not `eret`.** `eret` is `0x42000018` (funct `0x18`); my decoder
+labelled every `rs = 0x10` COP0 instruction as `eret`, and — worse — the harness *implemented* it that way, so
+`TLBWI` executed as `eret` and jumped to `EPC = 0`. **Thread 7's "death at address 0" was an emulator bug of
+mine, not a game behaviour and not a zero EPC in the guest.**
+
+Fixed: only funct `0x18` is `ERET`; `TLBR`/`TLBWI`/`TLBWR`/`TLBP` are no-ops (there is no TLB model), and any
+other funct raises a named fault rather than silently jumping.
+
+**Thread 7 then continues, and the next failures are plain missing instructions**, each one surfaced in turn:
+`SPECIAL 0x2d` (DADDU) at `0x80006100`, then `SPECIAL 0x6` (SRLV) at `0x80006150`. The 64-bit SPECIAL ops
+(`DADD/DADDU/DSUB/DSUBU/DSLL/DSRL/DSRA/DSLL32/DSRL32/DSRA32`) and the variable shifts
+(`SLLV/SRLV/SRAV/DSLLV/DSRLV/DSRAV`) are now implemented in the 32-bit view this harness keeps, with the
+shift-by-32 forms yielding the correct low word.
+
+Re-run after both additions: **installer still 32 hits, `E_VEC` installed, thread 7 progressing past
+`0x80006150`** — and the queue `validCount`s remain `0/0/0`.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
