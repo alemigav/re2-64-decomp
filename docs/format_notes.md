@@ -1237,6 +1237,32 @@ therefore: **after thread 7's real `osStartThread` preempts it, does anything pu
 its saved PC, or does the game's own logic only resume a specific subset?** The saved-context word in thread 7's
 `OSThread` (`+0x20`) answers that directly by comparison with its pre-yield PC.
 
+#### Thread 7's saved context: the comparison I asked for was ill-posed (M44)
+
+Phase 2, 150 000 instructions, 11 switches, thread 7 yields **4 times — all with the "yield PC" reading
+`0x80000f70`**. That is a measurement artefact, not a finding: the switch happens *inside* the dispatcher, so
+the last PC recorded for the outgoing thread is a dispatcher address by construction. Searching the context
+block for that address therefore returns `NONE`, which says nothing about the game.
+
+What the dump does show, at thread 7's `OSThread + 0x20`:
+
+| offset | value | reading |
+|---|---|---|
+| `+0x118` | `0x0000ff02` | saved SR (`0xff02`: IE=0, EXL=1, ERL=1, IM=0xff — a dispatch-time state) |
+| **`+0x11C`** | **`0x8000dc88`** | **saved PC — inside `osStartThread`, i.e. where thread 7 will resume after dispatch** |
+| `+0x128` | `0x00000669` | — |
+| `+0x12c` | `0x01000800` | — |
+
+So the context machinery **is sound**: thread 7's resume address is a sane return into `osStartThread`
+(`0x8000dc88` sits in the `0x8000dc5c`–`0x8000dc88` tail we disassembled), not a dispatcher address and not
+zero.
+
+The real observation is therefore different from the one I proposed: **thread 7 is saved correctly and is
+re-selected four times, yet never reaches `0x80007140`.** It resumes, dispatches again quickly, and the installer
+never comes up in its remaining work. So the question is not "is the context corrupt" (it is not) but "what does
+thread 7 do between resuming at `0x8000dc88` and yielding again" — a handful of instructions to trace, and the
+right next measurement is thread 7's own PC trajectory *between* switches, not its context block.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
