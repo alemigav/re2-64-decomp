@@ -1485,6 +1485,31 @@ question.
 dispatcher. It is lost to the difference between a faked and a real `osStartThread`, i.e. to how thread 7's
 initialisation is interleaved with the scheduler it is itself driving.
 
+#### Thread 7's death: a jump to PC 0, not a memory fault (M52)
+
+Same conditions as M51's no-VI run (Phase 1, helpers un-stubbed), thread-7-only PC ring:
+
+```
+thread 7: state=faulted  pc=0x0        fault event: unmapped access at 0x0
+OSThread+0x11c (saved pc) = 0x0
+```
+
+So thread 7 dies by **transferring control to address 0**, and its saved-context PC slot is `0` at that moment.
+This is the same signature as the very first Phase-2 runs (`pc=0x0`), which I had attributed to a bad return
+address — the difference now is that it happens *after* the vectors are installed and after thread 7 has run
+through its init.
+
+Two readings are consistent with the data and I cannot separate them yet:
+
+1. thread 7's context is re-saved with PC 0 (a save taken at a moment when the pending PC was zero, e.g. during a
+   dispatch that cycled through the thread before it had a saved PC), and the restore then legally resumes at 0;
+2. a `jr` with `ra = 0` inside the path thread 7 takes after `0x8000dc88`.
+
+Both produce the identical symptom, and the discriminator is whether a `0x80001168` (`eret`) resumption for thread
+7 reads `EPC = 0` — i.e. whether the zero arrives through the restore path or through a register. That is one
+instrumented run away, and it is the first time this question has been genuinely well-posed, because the fault
+now occurs with the scheduler, dispatcher and vector all verified.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
