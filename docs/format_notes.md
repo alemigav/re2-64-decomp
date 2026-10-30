@@ -1111,6 +1111,41 @@ taken into the guest's handler — with the host only modelling the device line.
 These are the two handoffs, now produced **by the game's own `osRecvMesg`** rather than by my host scheduler —
 the first time the wait chains have appeared as guest-side behaviour rather than as host bookkeeping.
 
+#### Tracing the handler: the vector is empty in Phase-2 runs (M40)
+
+Two instrumentation errors of mine first, because they shaped the result:
+
+1. In the first attempt I called `take_exception()` but **never assigned `cpu.pc` to the returned vector**, so
+   the "handler path" I printed was the idle loop, not the handler — and of course no event was delivered.
+2. After fixing that, the handler path is `0x80000180, 0x80000184, 0x80000188, …` — **99997 unique PCs,
+   marching sequentially**. That is not a handler: it is execution sliding through *zeros*.
+
+**So in Phase-2 runs the exception vector at `0x80000180` is uninitialised at interrupt time.** This is a real
+difference from the Phase-1 harness, where watchpoints on `UT_VEC`/`XUT_VEC`/`ECC_VEC`/`E_VEC` fired and
+`E_VEC` ended as `lui k0,0x8000 ; addiu k0,0x6d0 ; jr k0`. The vector installation evidently happens on a path
+that Phase 1 reached with host assistance and that stand-alone guest scheduling does not reach before 60 000
+instructions.
+
+**What the queue trace *does* establish** (all guest code, no hooks):
+
+| pc | write | meaning |
+|---|---|---|
+| `0x80006d38`–`0x80006d50` | three queues initialised: `+0/+4 = 0x80012940` (sentinel), `+8 validCount = 0`, `+0x10 msgCount`, `+0x14 msg buffer` | `osCreateMesgQueue`, guest |
+| **`0x80000f44`** | `q9+0: 0x80012940 → 0x8012bb00` | thread 9 enqueued on its queue's **thread-wait** list (blocking receive) |
+| **`0x80000f44`** | `q1+0: 0x80012940 → 0x80112a40` | thread 1 likewise |
+
+Thread 9 and thread 1 both end in state `8` (WAITING). **No delivery occurred**: `validCount` is 0 on all three
+queues and the event message buffer `0x80139ff0` is all zeros.
+
+**Answering the five questions in order:**
+1. Does the VI handler deliver its registered event to `0x80139f10`? **No — the handler never executed**, because
+   the vector was zeros. Not "delivered to the wrong queue": never delivered.
+2. Did any thread receive it? No.
+3–5. Not reachable this run.
+
+The blocker is now upstream of the queue question entirely: **the exception vector must be installed before the
+first interrupt**, and in Phase-2 mode it is not.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
