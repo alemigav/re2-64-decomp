@@ -2347,6 +2347,35 @@ time-matched**, so the difference count is now dominated by schedule, not correc
 instructions to reach a title-screen-equivalent state) or capture an ares dump at an early point the harness can
 reach. Time-matching is what makes the page diff a correctness measure rather than a progress measure.
 
+#### Injecting interrupts breaks the boot chain's return path (M78)
+
+The harness cannot be pushed to the title screen, and the reason is not time: it runs at **465 000 instr/s**
+(3 M in 6 s), so a title-screen run would be minutes. After boot the system is **idle** —
+
+```
+thread 7 RUNNING at the 'b .' spin 0x8000051c   (99.9 % of all executed instructions)
+thread 1 WAITING   thread 9 WAITING   run queue empty
+```
+
+— so what is missing is **hardware events**, exactly as on the console.
+
+Injecting them through the MI model (any of VI/PI/AI/SP, with the mask guest-owned) produces:
+**one exception taken, then a jump to address 0.** Tracing the handler shows the boot chain *unwinding* after
+the interrupt:
+
+```
+0x80007300  (helper, jr ra)     0x8000dc90..dca4  (osStartThread epilogue)
+0x8004d388..d394 (FUN_8004D344 epilogue)   0x800006a0..6b4 (FUN_80000598 epilogue)   -> 0x0
+```
+
+So the exception round-trip leaves the return chain with a null `ra` and execution falls off the end. The guest's
+handler at `0x800006d0` is responsible for the full context save/restore; this harness models `EPC`/`EXL` but the
+general-register round trip evidently depends on state it does not model.
+
+Also established on the way: **VI is not a registered event** — the census found only AI(4), SP(9), PI(6), RDB(14)
+on `0x80139f10` — so a VI interrupt would dispatch to a null handler even on real hardware. All four sources
+crash identically, which is how the handler path (not the device) was identified as the culprit.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
