@@ -227,3 +227,35 @@ That is consistent with the oracle: `validCount = 0` on both application queues 
 after NEW GAME. Harness and machine agree on the observable state, and neither shows a post in the window that
 can be compared. The remaining difference is that ares keeps running and eventually schedules work, while this
 harness has nothing to schedule.
+
+---
+
+## 11. Can the probe reach the title screen? No — and not for lack of running time
+
+Measured with `tools/probe.py` (which never writes the mask, so the guest's own per-thread mask decides):
+
+| source | mask enables it? | interrupts | threads they landed in |
+|---|---|---|---|
+| PI `0x10` | **no** (mask `0x669`) | 1 | thread 7 |
+| SP `0x01` | yes | 3 | threads 7, 1 |
+| VI `0x08` | yes | 5 | threads 7, 9, `0x80017868`, 1 |
+| DP `0x20` | yes | 5 | same five |
+
+So the earlier failure was a **mask-selection error on my side**, not the harness: PI and AI are disabled in this
+game's masks and asserting them was silently ignored.
+
+**Progress is real but bounded.** With an enabled source the dispatcher genuinely switches threads — five
+interrupts land in five different thread structures. But after ~174 000 instructions the system **settles back to
+thread 7 idling**: run queue empty, all three `validCount`s 0, current thread `0x8010b700`. Running 6 000 000
+instead of 4 000 000 changes nothing after that point, and speed is not the limit (465 000 instr/s).
+
+**Two limits, and the second is fundamental.**
+
+1. `MI pending` stays `0x08` — the guest handler never clears it, because VI is not a registered event here. So
+   the line stays asserted while `Status`/mask stop accepting, and interrupts stop.
+2. Injecting an interrupt line does not supply the **device state behind it**. The handler dispatches, finds an
+   empty run queue, and returns. The game is waiting on *completions of work it started* — PI DMA, SP tasks, AI
+   buffers, VI retraces tied to real video timing — and a bare interrupt cannot stand in for those.
+
+**Conclusion: the probe covers the boot-to-idle window (≈175 000 instructions) and cannot carry the game further.
+Past that point a driver model is required — which is a different project, and one that already exists in ares.**
