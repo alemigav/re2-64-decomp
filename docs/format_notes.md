@@ -2376,6 +2376,28 @@ Also established on the way: **VI is not a registered event** — the census fou
 on `0x80139f10` — so a VI interrupt would dispatch to a null handler even on real hardware. All four sources
 crash identically, which is how the handler path (not the device) was identified as the culprit.
 
+#### Interrupt context path scoped (M79)
+
+Full scoping in `docs/log/M79-interrupt-scope.md`. The headline: **the guest handler does the context
+save/restore itself** — `0x800006d0` builds `k0 = 0x80015000` and saves with `sd at,0x20(k0)`, `mfc0 k1,$12` →
+`sw k1,0x118(k0)`, `sd t0/t1/t2`, `mfc0 $13`, `mfc0 $9`, then copies into `__osCurrentThread`. So the harness
+must **not** implement context switching; it needs **CP0 fidelity good enough for the guest's round trip**.
+
+Seven gaps identified, ranked. The one I would fix first is both the smallest and the most likely cause of the
+M78 unwind:
+
+**G1 — exception entry during a delay slot.** The idle spin (`0x80000518` branch / `0x8000051c` delay slot) is
+exactly where the first interrupt lands, and `take_exception()` sets `EPC = pc` unconditionally instead of
+`EPC = branch address` with `Cause.BD = 1`.
+
+Then G2 (registers are 32-bit approximations, and the handler saves with `sd`/restores with `ld`), G3
+(`Count`/`Compare`), G4 (interrupt taken while a host hook runs), G5 (multiple pending sources), G6/G7 lower
+priority.
+
+Acceptance criterion for the whole piece: *inject one PI completion at the idle spin and the guest's handler
+runs, the event table is consulted, a message is delivered, a waiting thread wakes, and the boot chain does not
+unwind to `0x0`.*
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
