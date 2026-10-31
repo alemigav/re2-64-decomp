@@ -75,6 +75,11 @@ AUDITS = [
          file="tools/container_0141.py",
          old="UNIT = 16",
          new="UNIT = 32"),
+    dict(name="container_0141: N forced equal to the distinct-value count",
+         tool="container_0141.py", args=["--check"],
+         file="tools/container_0141.py",
+         old="        pairs.append((n, len(set(payload))))",
+         new="        pairs.append((n, n))"),
     # --- the corpus profiler
     dict(name="script_profile: the script heuristic admits nothing",
          tool="script_profile.py", args=["--check"],

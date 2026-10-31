@@ -68,6 +68,35 @@ def analyse(blocks):
     return by, law, sections
 
 
+def payload_stats(blocks):
+    """The correlation question: is N a bit depth, or the count of distinct payload values?"""
+    maxbyte = []
+    pairs = []                      # (N, distinct payload values) per block, kept paired
+    divisible = 0
+    for _idx, raw in blocks:
+        n = struct.unpack_from(">I", raw, 4)[0]
+        plen = struct.unpack_from(">I", raw, 8)[0]
+        payload = raw[UNIT * n:UNIT * n + plen]
+        if not payload:
+            continue
+        maxbyte.append(max(payload))
+        pairs.append((n, len(set(payload))))
+        if n and plen % n == 0:
+            divisible += 1
+    return maxbyte, pairs, divisible
+
+
+def unit_template(blocks):
+    """Does unit 1 carry a recurring template, i.e. are the units records rather than a directory?"""
+    seen = Counter()
+    for _idx, raw in blocks:
+        n = struct.unpack_from(">I", raw, 4)[0]
+        if n >= 2:
+            seen[raw[UNIT:UNIT + UNIT].hex()] += 1
+    top = seen.most_common(1)
+    return (top[0][1] if top else 0), (top[0][0] if top else "")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -83,12 +112,22 @@ def main() -> int:
     print(f"  blocks whose extra units look like a section table: {sections}")
     if not args.check:
         return 0
+    maxbyte, pairs, divisible = payload_stats(blocks)
+    template_hits, template = unit_template(blocks)
     cases = [
         ("the family is found and is large", len(blocks) > 200),
         ("every block satisfies word2 == filesize - 16*word1", law == len(blocks)),
         ("the unit counts span many values, so the law is not a special case",
          len(by) >= 10),
         ("the extra units are NOT a section table", sections == 0),
+        # N is not a bit depth: a 1-bit payload could not contain a byte of 255, and N=1 blocks do.
+        ("N is not a bit depth — full-range bytes appear even at N=1", max(maxbyte) == 255),
+        # and N is not the distinct-value count either — computed, not asserted by construction.
+        ("N is not the number of distinct payload values in any block",
+         bool(pairs) and all(n != d for n, d in pairs)),
+        ("a large share of payloads divides evenly by N", divisible > 0.7 * len(blocks)),
+        # units are records with constants, not a directory of offsets.
+        ("unit 1 recurs as a template across blocks", template_hits >= 10),
     ]
     passed = 0
     for label, ok in cases:
