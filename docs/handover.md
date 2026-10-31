@@ -244,7 +244,9 @@ The rebuild-facing form of all of this is **`include/re2_formats.h`**, with `too
 
 ## How to rebuild
 
-In order, and each step is what the project actually did (see `PROVISION.md` history in `MEMORY.md` §Rules):
+In order, and each step is what the project actually did. The **provisioning** half is recorded outside this repo
+(the session's project memory), because it is machine state rather than source; the commands below are the ones
+the tree itself provides:
 
 ```sh
 # 1. provision (once): submodules, npm ci, build:cached, Ghidra 12.2 as the only analysis engine, rea wrapper
