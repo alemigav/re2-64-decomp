@@ -42,6 +42,9 @@ RET = "ret"
 LOAD = "load"
 PAROFF = "paroff"          # (param k << scale) + addend: parameter-derived, not a known address
 CBASE = "cbase"            # (base, bias): a KNOWN base plus an unknown offset — "reads 0x800eb204 + ?"
+JTENT = "jtent"            # one entry of the jump table at this address: "the jump goes to the table at X"
+TABLE_MAX = 512            # bound on entries walked out of one table
+TABLE_STATS = {"jtent": 0, "tables": 0, "in_region": 0, "cross": 0, "unresolved": 0}
 UNK = "unk"
 
 LOADS = {0x23: "lw", 0x24: "lbu", 0x25: "lhu", 0x21: "lh", 0x37: "ld", 0x1F: "lwu"}
@@ -56,10 +59,13 @@ U = (UNK, 0)
 # like an address is exactly the kind of plausible inference this project refuses to publish by accident.
 FOLLOW_POINTERS = False
 IMAGES = {}
+MEM_WORDS = {}             # explicit word overrides: fixtures pin synthetic tables here
 
 
 def image_word_at(addr):
     """The stored word at a virtual address, if it lies in one of the images (read-only)."""
+    if addr in MEM_WORDS:
+        return MEM_WORDS[addr]
     for (base, data) in IMAGES.items():
         if base <= addr < base + len(data):
             off = addr - base
@@ -173,11 +179,12 @@ class State:
 
 
 class Access:
-    __slots__ = ("pc", "name", "base", "offset", "target", "unreached", "args")
+    __slots__ = ("pc", "name", "base", "offset", "target", "unreached", "args", "call_target")
 
-    def __init__(self, pc, name, base, offset, unreached=False, args=None):
+    def __init__(self, pc, name, base, offset, unreached=False, args=None, call_target=None):
         self.pc, self.name, self.base, self.offset = pc, name, base, offset
         self.args = args
+        self.call_target = call_target      # which function a `jal` goes to, independent of what it returns
         self.target = base[1] + offset if base[0] == CONST else None
         self.unreached = unreached
 
@@ -307,6 +314,10 @@ def transfer(state, ins, accesses):
                 stored = image_word_at(base[1] + offset)
                 if stored is not None and in_rdram(stored):
                     v = (CONST, stored)                          # the load *is* a pointer we can name
+        elif base[0] == CBASE:
+            # known base + unknown index: this load reads one entry of the table at that base, and an
+            # indirect jump through it may go to ANY entry. That is the jump-table edge.
+            v = (JTENT, base[1][0] + base[1][1])
         else:
             v = U
         state.put(rt, v)
@@ -327,7 +338,32 @@ def transfer(state, ins, accesses):
     return state, None
 
 
-def build_cfg(words, base):
+def table_targets(table, lo, hi):
+    """Entry indices of the table at `table` whose words land inside [lo, hi).
+
+    Bounded twice: by TABLE_MAX and by the first entry that is not code-address-shaped **after** at least
+    one valid entry. A case table of plain constants therefore yields nothing rather than a wrong edge.
+    """
+    out = []
+    TABLE_STATS["tables"] += 1
+    for k in range(TABLE_MAX):
+        w = image_word_at(table + 4 * k)
+        if w is None:
+            TABLE_STATS["unresolved"] += 1
+            break
+        if in_rdram(w):
+            TABLE_STATS["entries"] = TABLE_STATS.get("entries", 0) + 1
+            if lo <= w < hi:
+                out.append((w - lo) // 4)
+                TABLE_STATS["in_region"] += 1
+            else:
+                TABLE_STATS["cross"] += 1      # a handler that is its own region: already analysed
+        elif out:
+            break
+    return out
+
+
+def build_cfg(words, base, extra=None):
     """Basic blocks over one function's words; leaders are the entry, branch targets and branch tails."""
     n = len(words)
     ins = [Instr(base + 4 * i, words[i]) for i in range(n)]
@@ -343,7 +379,11 @@ def build_cfg(words, base):
             leaders.add(min(i + 2, n))
         elif x.op == 0x00 and x.funct == 0x08 and x.rs == RA:
             leaders.add(min(i + 2, n))
-    starts = sorted(i for i in leaders if i < n)
+    for k, targets in (extra or {}).items():
+        leaders.add(k)
+        for t in targets:
+            leaders.add(t)
+    starts = sorted(i for i in leaders if 0 <= i < n)
     blocks = {}
     for bi, s in enumerate(starts):
         e = starts[bi + 1] if bi + 1 < len(starts) else n
@@ -379,6 +419,9 @@ def build_cfg(words, base):
         else:
             if nxt in blocks:
                 b["succ"].add(nxt)
+        for t in (extra or {}).get(last, ()):
+            if t in blocks:
+                b["succ"].add(t)
     return ins, blocks
 
 
@@ -406,7 +449,7 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
         state.put(r, U)
     if ins.op != 0x03:                                   # jalr: target unknown
         state.put(V0, U)
-        accesses.append(Access(ins.pc, "jalr", U, 0, args=args))
+        accesses.append(Access(ins.pc, "jalr", U, 0, args=args, call_target=0))
         return
     target = ((ins.pc + 4) & 0xF0000000) | (ins.imm << 2)
     if summary_out is not None:
@@ -417,21 +460,29 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
     summary = (summaries or {}).get(target)
     if summary is None:
         state.put(V0, (RET, target))
-        accesses.append(Access(ins.pc, "jal", (RET, target), 0, args=args))
+        accesses.append(Access(ins.pc, "jal", (RET, target), 0, args=args, call_target=target))
         return
     for k, v in enumerate(summary["params"]):
         state.put(4 + k, resolve(v, args, summaries) if v[0] != UNK else U)
     lowered = resolve(summary["ret"], args, summaries)
     state.put(V0, lowered)
-    accesses.append(Access(ins.pc, "jal", lowered, 0, args=args))
+    accesses.append(Access(ins.pc, "jal", lowered, 0, args=args, call_target=target))
 
 
-def _walk(state, ins, s, e, accesses, tag_unreached=False, summaries=None, summary_out=None):
+def _walk(state, ins, s, e, accesses, tag_unreached=False, summaries=None, summary_out=None,
+          disc=None, lo=0, hi=0):
     """Run one basic block, honouring MIPS delay slots. Returns the outgoing state."""
     cur = state.copy()
     found = []
     for i in range(s, e):
+        pre = cur.get(ins[i].rs)                             # before the transfer clobbers anything
         _, kind = transfer(cur, ins[i], found)
+        if kind in ("jump", "call") and pre[0] == JTENT:
+            TABLE_STATS["jtent"] += 1
+        if kind in ("jump", "call") and disc is not None and pre[0] == JTENT:
+            targets = table_targets(pre[1], lo, hi)
+            if targets:
+                disc[i] = set(targets)
         if kind is None:
             continue
         delay = i + 1
@@ -461,16 +512,15 @@ def _walk(state, ins, s, e, accesses, tag_unreached=False, summaries=None, summa
     return cur
 
 
-def analyse(words, base, summaries=None, summary_out=None):
-    """Fixpoint over the CFG, then ONE collection pass so accesses are reported once each."""
-    if not words:
-        return [], 0, 0
-    ins, blocks = build_cfg(words, base)
+def _fixpoint(ins, blocks, summaries, summary_out, disc, base, nwords):
+    """Dataflow to a fixed point over one CFG. `disc` collects jump-table edges discovered on the way."""
     state_in = {s: None for s in blocks}
     entry = State()
-    for k in range(4):                                   # a0-a3: NAMED here, resolved only in step 2
+    for k in range(4):                                       # a0-a3 NAMED here, resolved only by summaries
         entry.put(4 + k, (PARAM, k))
-    state_in[0] = entry
+    if 0 in state_in:
+        state_in[0] = entry
+    lo, hi = base, base + 4 * nwords
     sink = []
     changed, rounds = True, 0
     while changed and rounds < 200:
@@ -478,23 +528,48 @@ def analyse(words, base, summaries=None, summary_out=None):
         for s in sorted(blocks):
             if state_in[s] is None:
                 continue
-            out = _walk(state_in[s], ins, s, blocks[s]["end"], sink, False, summaries, summary_out)
+            out = _walk(state_in[s], ins, s, blocks[s]["end"], sink, False, summaries, summary_out,
+                        disc, lo, hi)
             for t in blocks[s]["succ"]:
                 merged = out if state_in[t] is None else state_in[t].merge(out)
                 if state_in[t] is None or merged != state_in[t]:
                     state_in[t] = merged
                     changed = True
+    return state_in
+
+
+def analyse(words, base, summaries=None, summary_out=None):
+    """CFG and dataflow iterated together: a jump-table edge is only visible *after* the load resolves.
+
+    Up to four rounds. Each round runs the dataflow, collects the entry points an indirect jump could reach
+    through its table, and rebuilds the CFG with those edges; when a round discovers nothing new, that CFG is
+    the answer. This is what turns `jr t9` from a dead end into edges, and it is why the `unreached` bucket
+    shrinks.
+    """
+    if not words:
+        return [], 0, 0
+    extra = {}
+    for _ in range(4):
+        ins, blocks = build_cfg(words, base, extra)
+        disc = {}
+        _fixpoint(ins, blocks, summaries, None, disc, base, len(words))     # summaries only on the last run
+        merged = dict(extra)
+        for k, v in disc.items():
+            merged[k] = set(merged.get(k, set())) | v
+        if merged == extra:
+            break
+        extra = merged
+    ins, blocks = build_cfg(words, base, extra)
+    state_in = _fixpoint(ins, blocks, summaries, summary_out, None, base, len(words))
+    lo, hi = base, base + 4 * len(words)
     accesses = []
     for s in sorted(blocks):
         if state_in[s] is None:
-            # no entry state reached this block (indirect jump, unresolved edge): count its operands
-            # as `unreached` so the totals reconcile instead of quietly vanishing
-            _walk(State(), ins, s, blocks[s]["end"], accesses, tag_unreached=True)
+            # no entry state reached this block even with the table edges: count its operands as
+            # `unreached` so the totals reconcile instead of quietly vanishing
+            _walk(State(), ins, s, blocks[s]["end"], accesses, True, None, None, None, lo, hi)
         else:
-            _walk(state_in[s], ins, s, blocks[s]["end"], accesses)
-    # attribution requires BOTH: a constant base AND a block we can prove is reachable. An unreached
-    # block still develops constants locally, and counting those as attributed made the published
-    # attributed total (2910) exceed the `const` bucket (1293) — two numbers for one question.
+            _walk(state_in[s], ins, s, blocks[s]["end"], accesses, False, summaries, None, None, lo, hi)
     attributed = sum(1 for a in accesses if a.attributed() and not a.unreached)
     if summary_out is not None:
         touched = set(summary_out.get("escapes", set()))
@@ -502,12 +577,11 @@ def analyse(words, base, summaries=None, summary_out=None):
             if a.base[0] == PARAM:
                 touched.add(a.base[1])
         summary_out["params"] = [(PARAM, k) if k in touched else U for k in range(4)]
-        rets = [r for r in summary_out.get("rets", []) if r != U]
         raw = summary_out.get("rets", [])
         summary_out["ret"] = raw[0] if raw and len(set(raw)) == 1 else U
         summary_out.pop("rets", None)
         summary_out.setdefault("escapes", set())
-    return accesses, attributed, rounds
+    return accesses, attributed, len(extra)
 
 
 def summarise(regions, rounds=5):
@@ -622,13 +696,28 @@ def fixture_cases_layer2():
                   [(a_base, A), (b_base, B)],
                   lambda summ, acc: any(x.base == (CONST, 0x8011) or x.target == 0x8011 for x in acc)))
 
-    # a call with no summary must claim nothing
-    A = []
-    B = [enc_jal(a_base), enc_nop(), enc_lw(3, 0, 2), enc_jr(RA), enc_nop()]
+    # a call with NO summary at all (target outside every region) must claim nothing
+    B = [enc_jal(0x80500000), enc_nop(), enc_lw(3, 0, 2), enc_jr(RA), enc_nop()]
     cases.append(("L3 an unknown callee leaves ret(name) unresolved, and nothing is attributed",
-                  [(a_base, A), (b_base, B)],
+                  [(b_base, B)],
                   lambda summ, acc: all(x.target is None for x in acc)
                   and any(x.base[0] == RET for x in acc)))
+
+    # L7: an indirect jump through a table reaches handlers that no other edge can reach
+    lo = 0x80200000
+    A = [enc_lui(4, 0x8021), enc_lw(2, 0, 7), enc_sll(2, 2, 2), enc_addu(2, 2, 4),
+         enc_lw(25, 0, 2), enc_jr(25), enc_nop()]
+    A += [enc_nop()] * 5                                     # 7..11
+    for i, (hi, off, tgt) in enumerate(((0x8011, 0x100, None), (0x8012, 0x100, None), (0x8013, 0x200, None))):
+        A += [enc_lui(3, hi), enc_ori(3, 3, off), enc_lw(8, 0, 3), enc_jr(RA), enc_nop()]
+        if i < 2:
+            A += [enc_nop()] * 3
+    MEM_WORDS.update({0x80210000: 0x80200030, 0x80210004: 0x80200050,
+                      0x80210008: 0x80200070, 0x8021000C: 0x00000000})
+    cases.append(("L7 a jump table's edges make its handlers reachable",
+                  [(lo, A)],
+                  lambda summ, acc: {x.target for x in acc if x.target} >= {0x80110100, 0x80120100, 0x80130200}
+                  and all(not x.unreached for x in acc if x.target in (0x80110100, 0x80120100, 0x80130200))))
 
     # L6: a known base plus an unknown index keeps the base and claims nothing about the sum
     A = [enc_lui(4, 0x800E), enc_ori(4, 4, 0xB204), enc_lw(5, 0, 6), enc_addu(2, 4, 5),
@@ -757,7 +846,7 @@ def function_bounds(words):
 
 
 def run_images(target=None, window=0x10, census=False, out=None):
-    images, blob = load_images()
+    images, blob = load_image_bytes()
     report = {"images": [], "target": None}
     for name, base, size, source in images:
         words = image_words(blob, base, size, source)
@@ -787,6 +876,10 @@ def run_images(target=None, window=0x10, census=False, out=None):
         if census:
             print("%-10s %6d memory operands, %6d attributed (%.1f%%), %6d unrecognised" % (
                 name, total_acc, attr, 100.0 * attr / max(total_acc, 1), total_acc - attr))
+    print("jump tables: %d indirect jump(s) through a table, %d table(s) walked, "
+          "%d entry(ies) inside the region, %d outside it, %d unresolvable" % (
+              TABLE_STATS["jtent"], TABLE_STATS["tables"], TABLE_STATS["in_region"],
+              TABLE_STATS["cross"], TABLE_STATS["unresolved"]))
     tot = sum(r["accesses"] for r in report["images"])
     at = sum(r["attributed"] for r in report["images"])
     dist = {}
@@ -802,6 +895,20 @@ def run_images(target=None, window=0x10, census=False, out=None):
         Path(out).write_text(json.dumps(report, indent=1) + "\n")
         print("wrote %s" % out)
     return 0
+
+
+def load_image_bytes():
+    """Populate IMAGES with each image's real bytes — the census path was missing this, so every table it
+    tried to walk came back `unresolvable` while `--region` resolved the same tables fine."""
+    images, blob = load_images()
+    IMAGES.clear()
+    for name, base, size, source in images:
+        if source and source.startswith("ROM 0x"):
+            off = int(source.split()[1], 16)
+            IMAGES[base] = blob[off:off + size]
+        elif source:
+            IMAGES[base] = Path(source).read_bytes()[:size]
+    return images, blob
 
 
 def load_regions():
@@ -820,12 +927,7 @@ def load_regions():
 def run_layer2(args):
     global FOLLOW_POINTERS
     FOLLOW_POINTERS = bool(args.follow_pointers)
-    images, blob = load_images()
-    for name, base, size, source in images:
-        if source and source.startswith("ROM 0x"):
-            IMAGES[base] = blob[int(source.split()[1], 16):int(source.split()[1], 16) + size]
-        elif source:
-            IMAGES[base] = Path(source).read_bytes()[:size]
+    load_image_bytes()
     regions, index = load_regions()
     summaries = summarise([(st, w) for st, w, _ in regions], rounds=4)
 
@@ -859,8 +961,7 @@ def run_layer2(args):
         for start, words, name in regions:
             accesses, _, _ = analyse(words, start, summaries, {})
             for a in accesses:
-                if a.name in ("jal", "jalr") and a.base in ((RET, args.callers),) or \
-                   (a.name in ("jal", "jalr") and a.base[1] == args.callers and a.base[0] == RET):
+                if a.call_target == args.callers:
                     print("  %-10s %08x in %08x  a0=%-18s a1=%-18s v0=%s" % (
                         name, a.pc, start,
                         fmt(a.args[0]) if a.args else "-", fmt(a.args[1]) if a.args else "-",
