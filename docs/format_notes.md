@@ -24,7 +24,7 @@ python3 -c "…"   # score candidate bases by: fraction of jal targets landing o
 |---|---|---|
 | `0x0`–`0x40` | 64 | header (entry `0x80000480`, `NREE`, rev 1, USA) |
 | `0x40`–`0x1000` | 4 032 | IPL3 bootcode |
-| `0x1000`–`0x12140` | 69 184 | boot bank — 243 functions, code only |
+| `0x1000`–`0x12140` | **69 952** | boot bank — 243 splat functions, code only (69 184 was wrong; M81) |
 | `0x12140`–`0x14420` | 8 928 | boot data, then the descriptor table at `0x12cd0` |
 | `0x14420` → | ~8.7 MB | zlib members (4 761), contiguous from the boot set onward |
 | see §4 | ~24.4 MB | MPEG-1 video, 271 container blocks |
@@ -37,6 +37,10 @@ unread code.
 ---
 
 ## 2. The cart descriptor table — `vram 0x80012150`, ROM `0x12cd0`
+
+The table **names itself**: the 16 bytes at its base are ASCII `OVERLAYTABLENUM` followed by a count
+byte `0x43` = **67** (measured M81, `tools/read_overlay_table.py`, which finds the marker instead of
+trusting the address). Record 0 begins at vram `0x80012160`.
 
 Producer, two instructions of code:
 
@@ -51,9 +55,24 @@ int FUN_80001180(int index) { return index * 0x10 + 0x80012150; }
 | +8 | destination vram start |
 | +12 | destination vram end (= start + decompressed size) |
 
-66 usable records, cart `0x14420`…`0xC85E8`, payload 737 779 B, destinations `0x80018A80`…`0x801899F0`.
-This is the **boot load set only**; a whole-ROM sweep finds this table and no other
-(`tools/find_cart_table.py`).
+**66 records validate; the declared 67th does not.** It sits at vram `0x80012580` with a cart
+pointer (`0xb00c8624`), a size field of **`0xCDCDCDCD`** — the only occurrence of that word in the
+whole cartridge — and two zero fields, i.e. a reserved slot whose size was never written.
+
+Payload 737 779 B stored, destinations **four** rather than one per overlay:
+
+| destination | records | reading |
+|---|---|---|
+| `0x80018a80` | 1 | stage-2 code image |
+| `0x8017b410` | 6 | staging bank A |
+| `0x80161cf0` | 28 | staging bank B |
+| `0x8016e880` | 29 | staging bank C |
+
+So this is a **fixed load list into three staging banks**; the nine-slot registry at `0x8010b2e0`
+(§5b) is a subset of it. A whole-ROM sweep finds this table and no other
+(`tools/find_cart_table.py`); every code payload in the cartridge is named by it (M81 census).
+28 records of bank B have **identical decompressed sizes, in the same order**, as 28 of bank C's 29,
+with different compressed sizes — an open question, not a claim.
 
 Loader: `FUN_80000598` — record → `FUN_8000C870(0, cart & 0x0FFFFFFF, 0x8015B030, size)` (DMA to a
 staging buffer) → `FUN_80004550/DC/94` (inflate).
@@ -126,8 +145,16 @@ wrong boundary would corrupt the stream.
 
 | blob | size | measurements |
 |---|---|---|
-| `0x0b73fb3`–`0x140ed84` (R3) | 9 022 929 B | entropy 7.08; **0 x `00 00 01 B3`**; 214 x `00 00 01 00`, 133 x `ffd8ff`, 1 484 x `fffb`, 319 x `8000` |
-| `0x0338fe1`–`0xb63106` (R4) | 8 560 933 B | entropy 7.34; 2 x `00 00 01 B3` at one identical spacing (coincidence), 1 x picture code, 29 x `fffb`, 735 x `8000` |
+| `0x0b73fb3`–`0x140ed84` (R3) | 9 022 929 B | entropy **7.1893** (was stated 7.08); **0 x `00 00 01 B3`**; 214 x `00 00 01 00`, 133 x `ffd8ff`, 1 484 x `fffb`, 319 x `8000` |
+| `0x0338fe1`–`0xb63106` (R4) | 8 560 933 B | entropy **7.9371** (was stated 7.34); 2 x `00 00 01 B3` at one identical spacing (coincidence), 1 x picture code, 29 x `fffb`, 735 x `8000` |
+
+**M81 addendum — the first content identified inside R4.** The tail of R4 holds a **non-zlib
+container** starting at cart `0xb6248` (immediately after a 519-byte zlib member plus its padding
+byte): `02 23 18 00 00 03 ac …`, which inflates under no zlib variant. It carries **28 code
+payloads** whose decompressed sizes match 28 of the 29 records in staging bank C one-for-one.
+They are absent from the decompiled corpus until that container is decoded. This also means R3 and
+R4 are *not* interleaved with zlib members to the degree implied here: only 3 members overlap R3
+(1.45 %, all in its first 20 475 B) and 1 overlaps R4 (0.19 %).
 
 ### Eliminated for R3 by the `00 00 01 B3` experiment
 
