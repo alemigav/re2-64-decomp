@@ -204,6 +204,74 @@ was meant to answer is closed; the GDB route is parked because ares feeds the ga
 controller channel (M109) — the game reads no input, so no room can be reached under debug. ares stays what
 this project always called it: an optional external validator that nothing depends on.
 
+## Format reference: what is decoded
+
+Everything below is measured and gated; the note in brackets is the argument, not a summary.
+
+**The script VM** (`docs/log/M136-command-length-map.md`, `M141`, `M143`, `M159`)
+141-entry opcode→handler table at `0x80113898`, every handler advancing `ctx+0x1c` itself: **15 distinct lengths**,
+1–40 B (`re2_scd_length` in `include/re2_formats.h`). 43 opcodes are named from the MIT-licensed PlayStation
+table; 17 more carry descriptor names this project inferred (`fixtures/scd/inferred_names.json`, printed with a
+leading `~`). `0x44 SceEmSet` is 22 B and **byte 3 is the enemy Id** — the operand M94 measured and M110 tracked
+as 31, which the port resolves through a map into a cartridge bank record. `0x0f` is a **block runner** of
+4 B, not the 2 the first scan reported. `0x18 GoSub` is 2 B with table **stride 2** (settled structurally), and
+`0x19` returns through the slot it saves. `0x0a` and `0x0e` are **blocking**: they leave the pointer untouched
+until a counter expires.
+
+**The room population** (`M156`, `M157`)
+`DAT_80131fa8` is `256` entries (its index is a byte) mapping a room to a file id: **147 distinct ids**, of which
+**50 are scripts** with the u16 record-table layout. The other 97 are other resource kinds — the table is a
+scene→resource table, not a script table.
+
+**The model container** (`M157`–`M163`)
+`0x0141` is not a magic: it is **format version 321**, and `FUN_800824b8` relocates the block's self-relative
+offsets (at `+8`, and for version > 300 at `+12`/`+16` plus a table of `count` ints). A model's texture grid is
+`DAT_8010dbe0[type]` → an index into `DAT_801275c0` → `[w][h][tile ids]`, loaded per cell.
+
+**T64 textures** (`M164`–`M167`)
+`[0xBE1E][height][width][height·bpp/8][format][palette entries][0][0]`, then `entries` × RGBA5551, then
+**raw** pixels — no compression anywhere. `format` 1 is **4 bpp** (two indices per byte, 16-entry palette), 2 is
+**8 bpp** (256). `height` is the true height; the second height is `height·bpp/8`. Palettes are **per tile and
+never shared** — the registry shares whole tiles by id equality, not palettes.
+
+**The exception path** (`M168`–`M171`)
+The handle guard is `break`; the exception vectors through a `jr k0` stub to `0x800006d0`, which reads `Cause`,
+posts a fault event, and converges on the dispatch loop at **`0x8000098c`**. That loop contains **no stores and
+no COP0 writes**, and there is **no `eret`** and **no EPC write** anywhere in the handler — so a stale handle is a
+fatal, unrecoverable stop, and only a hardware reset leaves it.
+
+The rebuild-facing form of all of this is **`include/re2_formats.h`**, with `tools/t64info.c` as its validator.
+
+## How to rebuild
+
+In order, and each step is what the project actually did (see `PROVISION.md` history in `MEMORY.md` §Rules):
+
+```sh
+# 1. provision (once): submodules, npm ci, build:cached, Ghidra 12.2 as the only analysis engine, rea wrapper
+REA_ANALYSIS_PROVIDER=ghidra rea doctor            # Hopper is chmod -a-x; `auto` must never select it
+
+# 2. data: the cartridge is the owner's, never fetched
+python3 tools/unpack_zlib.py        # ROM -> assets/unpacked (4 761 zlib members + manifest)
+python3 tools/build_images.py       # -> build/elfs/*.elf (36 images)
+
+# 3. decompile: cached Ghidra output, then the readable projection
+rea decompile_all                   # -> build/decomp/*/decompile-index.json
+python3 tools/export_src.py         # -> src/ (per-image C)
+
+# 4. fixtures that the gates need
+python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function bounds, 103 792 B)
+python3 tools/script_profile.py --json fixtures/scd/profile.json
+
+# 5. gates
+python3 tools/acceptance.py         # 19 suites, 195 cases
+sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
+python3 tools/audit_gates.py        # 15/15: every check must fail when its mechanism is disabled
+```
+
+**A green CI run does not vouch for everything.** Eight suites are cartridge-gated and report `SKIP` on a runner:
+`provenance acceptance`, `room script`, `script profile`, `cfg reachability`, `room scripts only`,
+`01 41 container`, `exception path` and `t64info`. Their enforcement is the pre-commit hook and a local run.
+
 ## Immediate next step
 
 The emulator is no longer on the critical path. What is left is cartridge-side, and none of it needs ares:

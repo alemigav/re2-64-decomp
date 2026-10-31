@@ -46,6 +46,8 @@ MARKERS = [
     (HANDOVER, "## Rules this project follows (they have all been earned)",
      "the earned rules; rule 7 is the loud-patch rule"),
     (HANDOVER, "## The bank-C question: closed, with its scope stated", "the closed question, with limits"),
+    (HANDOVER, "## Format reference: what is decoded", "the container, the VM and the texture, all gated"),
+    (HANDOVER, "## How to rebuild", "provision, data, decompile, fixtures, gates - in that order"),
     (HANDOVER, "## Immediate next step", "so a rebuilt session knows where it stands"),
     (LOG, "## Retractions carried by later milestones", "the table itself, and its context"),
     (LOG, "| retracted | by | what changed |", "the retraction table header, which must survive edits"),

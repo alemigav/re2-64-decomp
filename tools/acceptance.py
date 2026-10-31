@@ -37,7 +37,7 @@ SUITES = [
     ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8, False),
     ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 7, False),
     ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 12, False),
-    ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 18, False),
+    ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 20, False),
     ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 23, False),
     ("synthetic-rdram walk", [sys.executable, "tools/rdram_fixture.py"], 7, False),
     ("room script (cartridge)", [sys.executable, "tools/room_script.py", "--check"], 4, True),
@@ -46,6 +46,7 @@ SUITES = [
     ("room scripts only (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check-rooms"], 3, True),
     ("01 41 container (cartridge)", [sys.executable, "tools/container_0141.py", "--check"], 29, True),
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
+    ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 15, True),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
