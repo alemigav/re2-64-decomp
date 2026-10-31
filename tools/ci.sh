@@ -7,8 +7,8 @@
 #   3. the cartridge, when present, still hashes to the value the manifests were built from
 #
 # The cartridge is gitignored by design, so a fresh clone cannot supply it: check 3 reports SKIP and the
-# corpus-dependent suites in check 1 report SKIP too. CI is therefore meaningful without the ROM (45 of 48
-# cases) and strictly stronger with it. Exit status is non-zero on any real failure.
+# cartridge-dependent suites in check 1 report SKIP too. CI is therefore meaningful without the ROM (10 of
+# 21 suites, 124 of 226 cases) and strictly stronger with it. Exit status is non-zero on any real failure.
 set -u
 
 root=$(git rev-parse --show-toplevel 2>/dev/null) || {

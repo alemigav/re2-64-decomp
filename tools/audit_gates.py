@@ -119,6 +119,11 @@ AUDITS = [
          file="tools/routine_index.py",
          old="                out.append((v, p.name, expr))",
          new="                out.append((v, p.name, expr)) if v < ROW else None"),
+    dict(name="workflow_lint: the broken-plain-scalar check never fires",
+         tool="workflow_lint.py", args=[],
+         file="tools/workflow_lint.py",
+         old='    if ": " in val:',
+         new="    if False:"),
     dict(name="patch_text: a no-op replacement is accepted",
          tool="patch_text.py", args=["--self-test"],
          file="tools/patch_text.py",
@@ -127,7 +132,9 @@ AUDITS = [
 ]
 
 # things a mutated tool must be able to read; the heavy ones are symlinked
-COPY = ["tools", "fixtures", "docs/log"]
+# `.github` is copied rather than linked because the workflow lint reads it — an audit of that lint that
+# runs in an environment with no workflows passes for the wrong reason, which is how this list grew (M174).
+COPY = ["tools", "fixtures", "docs/log", ".github"]
 COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md"]
 # `build/elfs` holds the built images and `src/` the decompiled corpus; both are read-only for every
 # audit, and a copy is 18 MB per audit for nothing. Not linking them was invisible until an image-

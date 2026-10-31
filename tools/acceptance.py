@@ -39,7 +39,10 @@ SUITES = [
     ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 12, False),
     ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 20, False),
     ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 23, False),
-    ("synthetic-rdram walk", [sys.executable, "tools/rdram_fixture.py"], 7, False),
+    # `rdram_fixture.py` builds its bytes synthetically but walks them with `walk_stream.py`, which loads
+    # the stage-2 image from `assets/unpacked/` — an unpacked cartridge member. Green locally, red on any
+    # fresh clone, so it is cartridge-dependent in fact even though its input memory is synthetic (M174).
+    ("synthetic-rdram walk", [sys.executable, "tools/rdram_fixture.py"], 7, True),
     ("room script (cartridge)", [sys.executable, "tools/room_script.py", "--check"], 4, True),
     ("script profile (cartridge)", [sys.executable, "tools/script_profile.py", "--check"], 5, True),
     ("cfg reachability (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check"], 6, True),
@@ -48,7 +51,10 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 18, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 19, True),
+    # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
+    # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
+    ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 11, False),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 

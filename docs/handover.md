@@ -123,26 +123,27 @@ by three distinct stream-pointer pairs) all carry byte 3 = 31, so the path is in
 
 | place | command | what it covers |
 |---|---|---|
-| pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, ~25 s, blocks the commit |
+| pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, **~60 s** with the cartridge (measured), blocks the commit |
 | local CI | `sh tools/ci.sh` | the same fixtures **plus** a tracked-artefact check, a fixture-size guard and the cartridge sha256 |
-| runner CI | `.github/workflows/acceptance.yml` | the same `ci.sh`, **51 of 54 cases** |
+| runner CI | `.github/workflows/acceptance.yml` | the same `ci.sh`: **10 of 21 suites, 124 of 226 cases**; the 11 cartridge suites report SKIP |
 
-**The three cases CI cannot run are the important ones**, so this is worth stating precisely. They are the two
-pre-registered acceptance checks plus their structure twin, and they assert facts about RE2's own instructions
-(`FUN_800327ec` at `0x800327ec`, the slot map at `0x800eb204`). Running them needs the cartridge's **bytes** —
-1.24 MB of decompressed code, which is cartridge content and is never committed. On a runner they print
-`SKIP (needs the cartridge)`, never PASS. **A green CI run does not vouch for them.**
+**What CI cannot run is the important part**, and M174 replaced the old guess with a measurement: the
+eleven skipped suites are the ones that assert facts about RE2 itself — the corpus checks (`FUN_800327ec`
+at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
+exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
+cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
+each run's job summary lists them. **A green CI run does not vouch for those 102 cases.**
 
 A route to close that gap was built and verified in M130 — ROM as a base64 secret, unpack the 4 761 members
 (10 s), build the 36 images (1 s), boundaries from committed metadata — and then deliberately **not adopted**,
 because it means a copyrighted cartridge living in a CI secret store. The mechanism is written up there if the
 trade is ever worth taking.
 
-What that means in practice: the three corpus checks are enforced **wherever the cartridge exists** — locally with
-`python3 tools/provenance.py --acceptance`, and on every commit through the hook. That is the enforcement that
-actually covers them; CI covers the other 51.
+What that means in practice: those suites are enforced **wherever the cartridge exists** — locally with
+`python3 tools/acceptance.py`, and on every commit through the hook. That is the enforcement that actually
+covers them; CI covers the other 124 cases, including a lint of its own workflow file, which needs no ROM.
 
-Documents are checked structurally too: `tools/check_markers.py` requires 14 anchors (issue: 8 handover sections
+Documents are checked structurally too: `tools/check_markers.py` requires 16 anchors (12 handover sections
 plus the log's retraction table, error list, working method and retractions heading), that **every level-2 heading is registered**, and that **every note in `docs/log/` is indexed by the milestone
 table, titled `# M<n>`, and cited by its own row** — the rules that found M79 had no index row at all and that the
 M2 row was missing its second note (M132/M133/M134/M135).

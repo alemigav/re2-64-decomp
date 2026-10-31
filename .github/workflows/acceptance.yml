@@ -1,18 +1,26 @@
 # The same run as `sh tools/ci.sh`, on a runner.
 #
-# What this runs covers 51 of the 54 cases in `tools/acceptance.py`.
+# Measured, not estimated (M174). A runner has no cartridge — `rom/` is gitignored by design, and so is
+# everything derived from it (`assets/`, `build/`) — so `tools/acceptance.py` reports:
 #
-# The other three assert facts about RE2's own instructions (`FUN_800327ec` at 0x800327ec, the slot map at
-# 0x800eb204). That needs the cartridge's **bytes** — 1.24 MB of decompressed code, which is cartridge content
-# and is never committed — so those three report SKIP here, never PASS. They run wherever the cartridge exists:
-# locally, and in the pre-commit hook.
+#   9 suites / 113 cases   PASS
+#   11 suites / 101 cases  SKIP (needs the cartridge)
+#
+# Locally, with the ROM present, the same command runs all 20 suites / 214 cases. Those numbers are asserted
+# by `tools/acceptance.py`'s own expected counts, so this comment goes stale loudly rather than quietly.
+#
+# **The 101 skipped cases are the ones that assert facts about RE2 itself** — the corpus checks
+# (`FUN_800327ec` at 0x800327ec, the slot map at 0x800eb204), the script VM, the model container, the T64
+# texture law, the exception path, and the routine-index bounds (M173). Running them needs the cartridge's
+# **bytes**, which are cartridge content and are never committed. They run wherever the cartridge exists:
+# locally, and through the pre-commit hook on every commit. **A green run here does not vouch for them.**
 #
 # A way to close the gap was built and verified (M130): supply the ROM as a base64 secret, unpack, build the
 # images, and the boundaries come from the committed `fixtures/decomp/ranges.json`. It was deliberately not
 # adopted, because it means a copyrighted ROM living in a CI secret store. The mechanism is described in
-# docs/log/M130-corpus-checks-in-ci.md if that trade is ever worth taking.
-#
-# Consequence, stated so nobody expects otherwise: a green CI run does NOT vouch for the three corpus checks.
+# docs/log/M130-corpus-checks-in-ci.md if that trade is ever worth taking. M174 re-measured the split and
+# found the workflow had never run: `synthetic-rdram walk` was labelled cartridge-free but loads the stage-2
+# image from `assets/unpacked/`, so the first push would have been red for a reason unrelated to the push.
 name: acceptance
 
 on:
@@ -20,15 +28,47 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read          # nothing here writes to the repo
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+
+      # Pinned to the interpreter the suites were verified on rather than "3.x": every tool is plain stdlib,
+      # so a newer Python is very likely fine — but "very likely" is not what this repo calls verified. A
+      # second matrix leg is one line the day someone runs it.
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: '3.9'
+
       - name: Report what CI can and cannot see
-        run: printf 'ROM present: %s\n' "$(test -f 'rom/Resident Evil 2 (USA) (Rev 1).z64' && echo yes || echo no)"
+        run: |
+          printf 'ROM present: %s\n' "$(test -f 'rom/Resident Evil 2 (USA) (Rev 1).z64' && echo yes || echo no)"
+
       - name: Fixtures and repository hygiene
-        run: sh tools/ci.sh
+        run: |
+          set -o pipefail
+          sh tools/ci.sh 2>&1 | tee ci.log
+
+      # A green run that silently skipped 11 suites is a misleading green, so the split goes in the job
+      # summary, where it is read without opening the log.
+      - name: Summarise what ran and what did not
+        if: always()
+        run: |
+          {
+            printf '### `sh tools/ci.sh`\n\n'
+            printf '```\n'
+            grep -E '^(all |cartridge|suite|ci:)|PASS|FAIL|SKIP' ci.log | tail -40 || true
+            printf '```\n\n'
+            printf 'Suites that need the cartridge report SKIP, never PASS — a green run here does not vouch\n'
+            printf 'for the 101 skipped cases. With the ROM present, the same command runs all 20\n'
+            printf 'suites / 214 cases.\n'
+          } >> "$GITHUB_STEP_SUMMARY"
