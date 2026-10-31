@@ -1976,6 +1976,28 @@ followed by zeros. So the pattern exists in RDRAM at `0x80000134`, not at `0x800
 artefact of its faked `osStartThread`. My faithful harness was closer to the truth than the comparison harness
 that contradicted it — the opposite of what the last several arcs assumed.
 
+#### The remaining reads were not obtained: ares exited (M67)
+
+After the `0x80000180` observation, ares stopped running (`pgrep` finds no process, no crash report in
+`~/Library/Logs/DiagnosticReports`). The two remaining reads — the shape of the real exception entry around
+`0x80000000` and the queue structures at `0x8012bcf0` — were therefore **not** taken.
+
+Host facts learned in the attempt, worth keeping:
+
+- **The desktop spans `y = -900 … 900`** (`bounds of window of desktop` → `0, -900, 3520, 900`; capture size
+  3200×1800). `screencapture -R` with positive y silently fails with *"does not intersect any displays"* —
+  crops need negative-y coordinates.
+- **`set frontmost` / `AXRaise` on the ares process became unreliable** after the first successful run
+  (`-10006 Can't set process ares to true`, then `-1728 Can't get process "ares"` once the app had exited).
+  The working sequence, when it works, is: raise the window, `set value of text field 1`, `keystroke return`.
+- **The Tools panel's text field is `Goto:` (an address), not an export path.** Writing a filename there does
+  nothing; `Export` needs a real address in the field and a visible dialog.
+
+**To finish the last question** (does the real game ever post to `0x8012bd30` / `0x8012bcf8`): relaunch ares with
+the dump, Tools → Memory Editor, region RDRAM, Goto `0x8012bcf0`, and read six words per queue:
+`mtqueue / fullqueue / validCount / first / msgCount / msg`. A non-zero `validCount` or a message in the buffer
+means the game does post; `validCount = 0` with an empty buffer means it does not, and the two stalls are real.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
