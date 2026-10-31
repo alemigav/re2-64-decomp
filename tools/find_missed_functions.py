@@ -119,7 +119,7 @@ def main() -> None:
 
         candidates = sorted(set(candidates))
         (seeds_dir / f"{img['name']}.tsv").write_text(
-            "".join(f"{c:#010x}\tfunction\tfunc_{c:08x}\n" for c in candidates))
+            "".join(f"{c:#010x}\tfunction\tFUN_{c:08x}\n" for c in candidates))
         report["images"].append(dict(
             name=img["name"], unclaimed_runs=len(runs), candidates=len(candidates),
             candidate_bytes=4 * len(candidates),

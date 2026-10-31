@@ -1,9 +1,9 @@
 /* FUN_8008f0a8
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8008f0a8  body 0x8008f0a8..0x8008f457  size 162 B
- * body sha256 f48fb6ecaf1b31df73238492ab642413541c03a2c4a6b7812dade49fa2692480
- * provider record sha256 246f84506d7828a84551be0586ea96b549329dd9cff6924cfe7e5806433f2fd9
- * callees 2 direct (2 in corpus)
+ * address 0x8008f0a8  body 0x8008f0a8..0x8008f117  size 115 B
+ * body sha256 e090d08dda60f9039a6846b20bb165313a08b872bf21f44e4d64574a68db51c5
+ * provider record sha256 d7083db2d32b64da7c6966c75d919d622c533416ac3bf7b2665f2f2099ed4498
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_8008f0a8(void)
@@ -26,7 +26,7 @@ void FUN_8008f0a8(void)
   case '\x01':
     DAT_8012bfd0 = DAT_8012bfd0 + -0xc;
   case '\x02':
-    goto LAB_8008f19c;
+    goto FUN_8008f19c;
   case '\x03':
     DAT_8012bf9d = DAT_8012bf9d + 1;
     if (6 < DAT_8012bf9d) {
@@ -103,7 +103,7 @@ LAB_8008f42c:
   FUN_800988a4(0);
   FUN_80096f68(0);
   return;
-LAB_8008f19c:
+FUN_8008f19c:
   DAT_8012bf9d = DAT_8012bf9d + 1;
   if (4 < DAT_8012bf9d) {
     DAT_8012bf9d = 0;

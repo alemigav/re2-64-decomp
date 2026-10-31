@@ -1,8 +1,8 @@
 /* func_8009de50
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8009de50  body 0x8009de50..0x8009e583  size 102 B
+ * address 0x8009de50  body 0x8009de50..0x8009de8b  size 63 B
  * body sha256 c66f31eab62caf4744065b4811d07466ec4ddf1e82c9ee294048af638000017e
- * provider record sha256 5cdcc358a5eef7970a7370d58a33cbd9935d6f5cacfc2c96325cca201c7b6c19
+ * provider record sha256 b3509c1bccc2ffe055094641cb7f30d82cb034a02e7579c62e3a8a6f0bca6fdf
  * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */

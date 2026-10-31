@@ -106,8 +106,9 @@ routine is either in the 61 KB of remaining code-like gap or reached through a r
   stage-2 — no `jal`, no `j`, no branch.
 * **The addresses appear nowhere** in any of the 36 decompressed images, as data or as a
   `lui`+`addiu` construction.
-* The functions are **switch dispatchers**, and their case blocks are reached through the table at
-  `0x800ca458`, which is **all zeros in the image** — it is filled at runtime.
+* The functions are **switch dispatchers**, and their case blocks are reached through a table.
+  **Corrected (M84):** that table is at `0x800ba458`, not `0x800ca458` — `addiu` takes a *signed*
+  immediate — and it is **statically populated** with 11 entries. Nothing fills it at runtime.
 * The real entries are `prologue − 8`, where `lui v0,0x8013` / `lhu v1,0x272e(v0)` loads the
   dispatch index. With those entries the three functions are 60/56/60 B and declare no incoming
   register; the region's honest coverage is **5.3 %**, and the case blocks remain unattributed

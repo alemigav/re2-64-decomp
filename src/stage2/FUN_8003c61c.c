@@ -1,9 +1,9 @@
 /* FUN_8003c61c
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8003c61c  body 0x8003c61c..0x8003c8d3  size 699 B
- * body sha256 32be8c1afabeafac2418856e44493ba01be11b94234764a6ed73b4c35a44fe12
- * provider record sha256 e948fd3b1214193e4351f647eae4019d3cb0818128bced16d5bc98adb911e2f8
- * callees 3 direct (3 in corpus)
+ * address 0x8003c61c  body 0x8003c61c..0x8003c6ab  size 147 B
+ * body sha256 16cf5b3be28ecebb754c37ddabd6719080f2bcd059b52bcb5a7b8bebf388f4bf
+ * provider record sha256 3f3fe622a5e0ace093b9024c6cbc353592c3bf92e89e782747829fe68397a0dd
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_8003c61c(void)
@@ -14,9 +14,9 @@ void FUN_8003c61c(void)
   uint uVar3;
   uint uVar4;
   undefined1 auStack_88 [80];
-  int local_38;
-  int local_34;
-  int local_30;
+  int iStack_38;
+  int iStack_34;
+  int iStack_30;
   undefined4 local_28;
   undefined4 local_24;
   undefined4 local_20;
@@ -29,23 +29,23 @@ void FUN_8003c61c(void)
   local_1c = 0x1f400fa;
   switch(*(undefined2 *)(DAT_800ebb94 + 0x12)) {
   case 0:
-    local_38 = (int)*(short *)(DAT_800ebb94 + 0x34);
+    iStack_38 = (int)*(short *)(DAT_800ebb94 + 0x34);
     bVar1 = DAT_800ebb94[0x1e];
-    local_34 = (int)*(short *)(DAT_800ebb94 + 0x36);
-    local_30 = (int)*(short *)(DAT_800ebb94 + 0x38);
+    iStack_34 = (int)*(short *)(DAT_800ebb94 + 0x36);
+    iStack_30 = (int)*(short *)(DAT_800ebb94 + 0x38);
     *(undefined2 *)(DAT_800ebb94 + 0x18) = 0x8400;
     *puVar2 = 0;
     DAT_800ebb94[1] = 0x2f;
     if (DAT_800ebb94[0x1e] == '\f') {
-      FUN_80077adc(0x1110001,&local_38);
-      FUN_800609e0(&local_38,(int)*(short *)(DAT_800ebb94 + 0x22),
+      FUN_80077adc(0x1110001,&iStack_38);
+      FUN_800609e0(&iStack_38,(int)*(short *)(DAT_800ebb94 + 0x22),
                    auStack_88 + (uint)(byte)DAT_800ebb94[0x1e] * 8,0x10020009);
-      local_34 = local_34 + 900;
-      FUN_800609e0(&local_38,(int)*(short *)(DAT_800ebb94 + 0x22),
+      iStack_34 = iStack_34 + 900;
+      FUN_800609e0(&iStack_38,(int)*(short *)(DAT_800ebb94 + 0x22),
                    auStack_88 + (uint)(byte)DAT_800ebb94[0x1e] * 8,0x10020009);
     }
     else {
-      FUN_80077adc(0x1140001,&local_38);
+      FUN_80077adc(0x1140001,&iStack_38);
     }
     uVar3 = (bVar1 - 0xc) * 0xa00 & 0xffff;
     if (DAT_800ebb94[0xb] == -1) {

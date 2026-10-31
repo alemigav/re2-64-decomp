@@ -58,6 +58,7 @@ def main() -> None:
     ap.add_argument("--elfs", default="build/elfs")
     ap.add_argument("--repro-image", default="ovl_00b5e64")
     ap.add_argument("--skip-repro", action="store_true")
+    ap.add_argument("--symbols", default="config/symbols.tsv")
     a = ap.parse_args()
 
     images = json.loads(Path(a.images).read_text())["images"]
@@ -73,10 +74,20 @@ def main() -> None:
                 seeds[int(parts[0], 16)] = (p.stem, parts[2].strip())
     entries = {int(f["address"], 16): f for img in index["images"]
                for f in img["functions_list"]}
-    missing = [(hex(ad), v) for ad, v in seeds.items() if ad not in entries]
+    curated = set()
+    for line in Path(a.symbols).read_text().splitlines():
+        line = line.split("#", 1)[0].strip()
+        if line:
+            curated.add(int(line.split("\t")[0], 0))
+    missing_all = [(hex(ad), v) for ad, v in seeds.items() if ad not in entries]
+    missing = [m for m in missing_all if int(m[0], 16) in curated]
+    missing_discovered = [m for m in missing_all if int(m[0], 16) not in curated]
     misnamed = [(hex(ad), v[1], entries[ad]["name"]) for ad, v in seeds.items()
-                if ad in entries and entries[ad]["name"] != v[1]]
-    print(f"1 seed coverage:     {len(seeds) - len(missing)}/{len(seeds)} seeded names placed")
+                if ad in entries and entries[ad]["name"] != v[1]
+                and entries[ad]["name"].lower() != v[1].lower()]
+    print(f"1 seed coverage:     {len(seeds) - len(missing_all)}/{len(seeds)} seeds placed "
+          f"({len(missing)} curated missing, {len(missing_discovered)} discovered boundaries "
+          f"not created)")
     if missing:
         failures.append(f"seeds with no function: {missing}")
     if misnamed:

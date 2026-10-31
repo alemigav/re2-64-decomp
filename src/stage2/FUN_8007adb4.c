@@ -1,9 +1,9 @@
 /* FUN_8007adb4
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8007adb4  body 0x8007adb4..0x8007b513  size 1891 B
- * body sha256 4bfc16e049c16646eadd20c1fe4c70001c601a36c40879eca9ec659119540ea0
- * provider record sha256 8fe22a4390f16a4f1aa40dfdc27451d257d98eb3a8ff86e2e2433abf38fc0e71
- * callees 4 direct (4 in corpus)
+ * address 0x8007adb4  body 0x8007adb4..0x8007ae03  size 83 B
+ * body sha256 92557ee305afba9b87a0f200256f15cf53268c59641b4f8187b4df0333da9d83
+ * provider record sha256 0e3920e83d760494ac14edcc9686bb1f5c5c0f58b9638591cdb84a36ab4af6e8
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_8007adb4(int param_1)
@@ -15,9 +15,9 @@ void FUN_8007adb4(int param_1)
   int iVar4;
   undefined4 uVar5;
   undefined4 uVar6;
-  undefined2 local_20;
-  short local_1e;
-  short local_1c;
+  undefined2 uStack_20;
+  short sStack_1e;
+  short sStack_1c;
   
   uVar5 = *(undefined4 *)(param_1 + 0x22c);
   uVar6 = *(undefined4 *)(param_1 + 0x230);
@@ -34,16 +34,16 @@ void FUN_8007adb4(int param_1)
       *(undefined2 *)(*(int *)(iVar3 + 0x18a0) + 0x10) = 0x200;
       FUN_80066288(param_1,iVar3 + 0x1780);
     }
-    local_20 = 200;
-    local_1e = 0xfe70;
-    local_1c = 0xff38;
+    uStack_20 = 200;
+    sStack_1e = 0xfe70;
+    sStack_1c = 0xff38;
     iVar3 = *(int *)(param_1 + 0x234) + 0x38;
-    FUN_80037780(6000,(int)*(short *)(param_1 + 0x66),iVar3,&local_20);
-    local_20 = 0x96;
-    local_1e = -0x15e;
-    local_1c = -200;
-    FUN_80037780(6000,(int)((*(ushort *)(param_1 + 0x66) + 0x800) * 0x10000) >> 0x10,iVar3,&local_20
-                );
+    FUN_80037780(6000,(int)*(short *)(param_1 + 0x66),iVar3,&uStack_20);
+    uStack_20 = 0x96;
+    sStack_1e = -0x15e;
+    sStack_1c = -200;
+    FUN_80037780(6000,(int)((*(ushort *)(param_1 + 0x66) + 0x800) * 0x10000) >> 0x10,iVar3,
+                 &uStack_20);
     *(undefined2 *)(param_1 + 500) = 0;
     *(undefined1 *)(param_1 + 0x206) = 5;
     *(undefined1 *)(param_1 + 0x207) = 0;
@@ -56,16 +56,16 @@ void FUN_8007adb4(int param_1)
   case 1:
     if (*(byte *)(param_1 + 0x1e9) < 0x2a) {
       if ((*(byte *)(param_1 + 0x1e9) & 3) == 0) {
-        local_20 = 200;
-        local_1e = *(short *)(param_1 + 500) * 0x1e + -400;
+        uStack_20 = 200;
+        sStack_1e = *(short *)(param_1 + 500) * 0x1e + -400;
         iVar3 = *(int *)(param_1 + 0x234) + 0x38;
-        local_1c = *(short *)(param_1 + 500) * 0xf + -200;
-        FUN_80037780(0x10bb8,(int)*(short *)(param_1 + 0x66),iVar3,&local_20);
-        local_20 = 100;
-        local_1e = *(short *)(param_1 + 500) * 0x19 + -0x15e;
-        local_1c = *(short *)(param_1 + 500) * 0xf + -200;
+        sStack_1c = *(short *)(param_1 + 500) * 0xf + -200;
+        FUN_80037780(0x10bb8,(int)*(short *)(param_1 + 0x66),iVar3,&uStack_20);
+        uStack_20 = 100;
+        sStack_1e = *(short *)(param_1 + 500) * 0x19 + -0x15e;
+        sStack_1c = *(short *)(param_1 + 500) * 0xf + -200;
         FUN_80037780(5000,(int)((*(ushort *)(param_1 + 0x66) + 0x800) * 0x10000) >> 0x10,iVar3,
-                     &local_20);
+                     &uStack_20);
         *(short *)(param_1 + 500) = *(short *)(param_1 + 500) + 1;
       }
       if (*(byte *)(param_1 + 0x1e9) < 0x2a) {
@@ -137,7 +137,8 @@ void FUN_8007adb4(int param_1)
     }
     cVar2 = FUN_80089d54(param_1,uVar5,uVar6,0x100);
     *(char *)(param_1 + 6) = *(char *)(param_1 + 6) + cVar2;
-    break;
+    switchD_8007adfc::caseD_4();
+    return;
   case 2:
     *(undefined2 *)(param_1 + 500) = 0x96;
     *(undefined1 *)(param_1 + 6) = 3;
@@ -196,6 +197,7 @@ void FUN_8007adb4(int param_1)
       *(undefined1 *)(param_1 + 6) = 4;
       *(char *)(DAT_800e13f4 + 6) = *(char *)(DAT_800e13f4 + 6) + '\x01';
     }
+  default:
+    return;
   }
-  return;
 }

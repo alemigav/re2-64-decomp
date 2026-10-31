@@ -1,9 +1,9 @@
 /* FUN_80090704
  * image   stage2 (stage2), base 0x80018a80
- * address 0x80090704  body 0x80090704..0x80090b3b  size 126 B
+ * address 0x80090704  body 0x80090704..0x80090757  size 87 B
  * body sha256 3d656d31edddb29dddac1106576a14fbcce95c12ab113603bdc22621e9ae86fe
- * provider record sha256 69fd8d286e807ec0b7588dfa2c37b13dee687e0542ae1b155a27cb57fddd0cc2
- * callees 1 direct (1 in corpus)
+ * provider record sha256 503e94aee417ff2ac9f1ef428fcfeceffd59c9fc47fdb20d8bb955692ebe50b3
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */

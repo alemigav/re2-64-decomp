@@ -1,8 +1,8 @@
 /* FUN_8003f644
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8003f644  body 0x8003f644..0x8003f813  size 467 B
- * body sha256 4a0ca85efd99f848d36b8ac2a1a3084f080ed13e6e0dfe5fe5747854963f0b05
- * provider record sha256 563c07c2ea1cbd96517608d76d29e11ba4a87001549fc03233d4a49c062a6a84
+ * body sha256 6ea8132f735d0aad7da970cd465d55e91b307342c81f085dd6e68929d35d7b32
+ * provider record sha256 f99a8e4a122c5f214a88f0a3782db37294d9daec50e5725d24c3b9ec4387ea6d
  * callees 5 direct (5 in corpus)
  * provider Ghidra 12.2
  */
@@ -15,9 +15,9 @@ void FUN_8003f644(void)
   undefined4 local_30;
   undefined4 local_2c;
   undefined4 local_28;
-  short local_20;
-  short local_1e;
-  short local_1c;
+  short sStack_20;
+  short sStack_1e;
+  short sStack_1c;
   
   puVar2 = DAT_800ebb94;
   if (DAT_800ebb94[0x1b] == '\x03') {
@@ -38,10 +38,10 @@ void FUN_8003f644(void)
         local_2c = (int)*(short *)(DAT_800ebb94 + 0x36);
         local_28 = (int)*(short *)(DAT_800ebb94 + 0x38);
         FUN_80077adc(0x31d0001,&local_30);
-        local_20 = local_30._2_2_ - *(short *)(iVar3 + 0x2a);
-        local_1e = local_2c._2_2_ - *(short *)(iVar3 + 0x2e);
-        local_1c = local_28._2_2_ - *(short *)(iVar3 + 0x32);
-        FUN_80038a20(0x30f1000,0,iVar3 + 0x14,&local_20);
+        sStack_20 = local_30._2_2_ - *(short *)(iVar3 + 0x2a);
+        sStack_1e = local_2c._2_2_ - *(short *)(iVar3 + 0x2e);
+        sStack_1c = local_28._2_2_ - *(short *)(iVar3 + 0x32);
+        FUN_80038a20(0x30f1000,0,iVar3 + 0x14,&sStack_20);
       }
       puVar2 = DAT_800ebb94;
       DAT_800ebb94[1] = 0;

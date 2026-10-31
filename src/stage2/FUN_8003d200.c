@@ -1,8 +1,8 @@
 /* FUN_8003d200
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8003d200  body 0x8003d200..0x8003d2a7  size 171 B
- * body sha256 e534b84e39d5da9176fae9c1b52fc7923c7ac997e515a39d41cc14a6078ea0a3
- * provider record sha256 29cf8d1ffa5f72f1c7af1b65e2a8a20ec10e8061b87b30fa1afac92ea67f478c
+ * body sha256 d23d0a778c0567e68964171b51aab9493207f489389b370a3628a63d1e1404f0
+ * provider record sha256 c4eb3295e94f2e14bf677cf8e9f636ac5fcf573da4737dd76b0a17c88bffcb3e
  * callees 2 direct (2 in corpus)
  * provider Ghidra 12.2
  */
@@ -12,11 +12,11 @@ void FUN_8003d200(void)
   undefined4 *puVar1;
   int local_18;
   int local_14;
-  int local_10;
+  int iStack_10;
   
   local_18 = (int)*(short *)(DAT_800ebb94 + 0xd);
   local_14 = (int)*(short *)((int)DAT_800ebb94 + 0x36);
-  local_10 = (int)*(short *)(DAT_800ebb94 + 0xe);
+  iStack_10 = (int)*(short *)(DAT_800ebb94 + 0xe);
   FUN_80077adc(0x3040001,&local_18);
   *(undefined1 *)((int)DAT_800ebb94 + 0x21) = 0xd;
   *(undefined1 *)(DAT_800ebb94 + 8) = 2;

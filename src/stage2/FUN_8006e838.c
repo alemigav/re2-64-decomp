@@ -1,8 +1,8 @@
 /* FUN_8006e838
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8006e838  body 0x8006e838..0x8006eadf  size 683 B
+ * address 0x8006e838  body 0x8006e838..0x8006e9cb  size 138 B
  * body sha256 7bac219a76ddebfc84391837939a20edf183284f8deea4f3c2da367979878e8e
- * provider record sha256 f203969ac23680615640d093227f0eb03971f40ccd7493d5f8fae47c0a70424e
+ * provider record sha256 57ee1fb7363cff42dd6df9bef2b51ab19d96f8263a2c304a8a73e20729b0614d
  * callees 1 direct (1 in corpus)
  * provider Ghidra 12.2
  */

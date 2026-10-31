@@ -2,7 +2,7 @@
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8004cca8  body 0x8004cca8..0x8004cd07  size 99 B
  * body sha256 965d158b8573194f4e2bea326a0547b1baf00f2be03fbe78acba03f7617979b5
- * provider record sha256 bdbf80c53a63858fa488dd9c89217cb1b701ae1e3f93a39aa617c04912fd107a
+ * provider record sha256 811bd263ba5bb77f296f24281b37605d2fb16a92885a301b3efdaae80cc16de5
  * callees 3 direct (3 in corpus)
  * provider Ghidra 12.2
  */

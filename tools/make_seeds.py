@@ -13,6 +13,7 @@ Usage:
   ./make_seeds.py --images build/elfs/images.json --out build/seeds
 """
 import argparse
+import fnmatch
 import json
 import sys
 from pathlib import Path
@@ -42,8 +43,8 @@ def main() -> None:
     ap.add_argument("--symbols", default=str(SYMBOLS))
     ap.add_argument("--images", default="build/elfs/images.json")
     ap.add_argument("--out", default="build/seeds")
-    ap.add_argument("--extra", default="build/seeds_extra",
-                    help="candidate boundaries discovered by find_missed_functions.py")
+    ap.add_argument("--extra", action="append", default=None,
+                    help="candidate boundary directories (find_missed_functions, find_jump_tables)")
     a = ap.parse_args()
 
     symbols = read_symbols(Path(a.symbols))
@@ -60,12 +61,30 @@ def main() -> None:
     # therefore applied to its own image only, and a curated name must fall inside exactly one
     # image or the run fails.
     extra_by_image = {}
-    if Path(a.extra).is_dir():
-        for p in sorted(Path(a.extra).glob("*.tsv")):
-            extra_by_image[p.stem] = [
-                (int(x.split("\t")[0], 0), x.split("\t")[1], x.split("\t")[2])
-                for x in p.read_text().splitlines()
-                if len(x.split("\t")) >= 3 and int(x.split("\t")[0], 0) not in curated]
+    # versioned deny-list: images whose discovered boundaries were measured and rejected
+    rejected = {}
+    deny = Path("config/rejected_seeds.txt")
+    if deny.exists():
+        for line in deny.read_text().splitlines():
+            line = line.split("#", 1)[0].strip()
+            if line:
+                parts = line.split()
+                rejected[parts[0]] = " ".join(parts[2:]) or "listed in config/rejected_seeds.txt"
+
+    for d in (a.extra or ["build/seeds_extra"]):
+        if not Path(d).is_dir():
+            continue
+        for p in sorted(Path(d).glob("*.tsv")):
+            rows = [(int(x.split("\t")[0], 0), x.split("\t")[1], x.split("\t")[2])
+                    for x in p.read_text().splitlines()
+                    if len(x.split("\t")) >= 3 and int(x.split("\t")[0], 0) not in curated]
+            hit = next((why for pat, why in rejected.items()
+                        if fnmatch.fnmatch(p.stem, pat)), None)
+            if hit is not None:
+                print(f"  {p.stem}: {len(rows)} discovered seeds REJECTED — {hit[:70]}")
+                continue
+            seen = {r[0] for r in extra_by_image.get(p.stem, [])}
+            extra_by_image.setdefault(p.stem, []).extend(r for r in rows if r[0] not in seen)
 
     total = 0
     print(f"{len(symbols)} symbols, {len(images)} images")

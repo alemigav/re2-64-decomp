@@ -1,9 +1,9 @@
 /* FUN_80059868
  * image   stage2 (stage2), base 0x80018a80
- * address 0x80059868  body 0x80059868..0x80059b03  size 671 B
+ * address 0x80059868  body 0x80059868..0x8005989f  size 59 B
  * body sha256 8a9d87353ccf391438a984113be6680af71e5f1622baa332834046736e987719
- * provider record sha256 6c0b63e64381d10caf4608f9a3aab286092cba540222176287871255b8f6e575
- * callees 5 direct (5 in corpus)
+ * provider record sha256 280a4f27aff55bfcaaaffdd88629286737d57b57c549909da9ea5738ee6d4ef4
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
 /* WARNING: Removing unreachable block (ram,0x80059930) */

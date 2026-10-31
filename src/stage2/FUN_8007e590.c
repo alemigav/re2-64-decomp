@@ -1,9 +1,9 @@
 /* FUN_8007e590
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8007e590  body 0x8007e590..0x8007e923  size 919 B
- * body sha256 30d5c7b05759d0dbddd5d2e4396ea8801b40ff9a964478ae26c4d7d5d2387e83
- * provider record sha256 dae3a763ec837545c258783804d46212a21494d409caf1a37338583d2183ce9d
- * callees 3 direct (3 in corpus)
+ * address 0x8007e590  body 0x8007e590..0x8007e5c7  size 59 B
+ * body sha256 442982f9c33937774d379a1155babdc15c813ae3a13609fc862fb0be063b4336
+ * provider record sha256 302f044d2616b4c81ab5e32b4f7786ce3f5a7fc62e500eed11e7f4d0dca114fa
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_8007e590(uint *param_1)
@@ -113,12 +113,8 @@ void FUN_8007e590(uint *param_1)
     }
     cVar5 = FUN_80089d54(param_1,param_1[0x8b],param_1[0x8c],0x400);
     *(char *)((int)param_1 + 7) = *(char *)((int)param_1 + 7) + cVar5;
-  default:
-    if ((*(uint *)param_1[0x85] & 0x4000) != 0) {
-      FUN_80077f30(1,((*(uint *)param_1[0x85] & 0x2000) >> 0xd) * 3 + 4,param_1);
-      DAT_800e112a = DAT_800e112a | 4;
-    }
-    break;
+    switchD_8007e5c0::default();
+    return;
   case 4:
     if (((DAT_800e110c & 0x10000000) == 0) || (param_1 != DAT_800e13ec)) {
       uVar6 = 5;
@@ -132,6 +128,12 @@ void FUN_8007e590(uint *param_1)
     }
     *(undefined1 *)((int)param_1 + 6) = 0;
     *(undefined1 *)((int)param_1 + 7) = 0;
+    break;
+  default:
+    if ((*(uint *)param_1[0x85] & 0x4000) != 0) {
+      FUN_80077f30(1,((*(uint *)param_1[0x85] & 0x2000) >> 0xd) * 3 + 4,param_1);
+      DAT_800e112a = DAT_800e112a | 4;
+    }
   }
   return;
 }

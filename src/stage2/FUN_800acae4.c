@@ -1,9 +1,9 @@
 /* FUN_800acae4
  * image   stage2 (stage2), base 0x80018a80
- * address 0x800acae4  body 0x800acae4..0x800acbb7  size 215 B
+ * address 0x800acae4  body 0x800acae4..0x800acb47  size 103 B
  * body sha256 92acfb0064e393d641abe9589bc858dc7ac3b94567b40d7880225a707cfe1f7e
- * provider record sha256 5ad0495357160d7a7b5690be2a80e5f0650afd30369accf0955b1de5c6e8c9df
- * callees 1 direct (1 in corpus)
+ * provider record sha256 a88897d4e128e38afc20e802f827dc56c399d3bb9058c4c142ed49445bf7adfe
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_800acae4(int param_1,byte param_2,short param_3)
