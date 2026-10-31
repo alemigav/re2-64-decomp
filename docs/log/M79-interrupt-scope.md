@@ -199,3 +199,31 @@ RE2's handler, and the two application queues are fed by ordinary thread code, n
 
 Nothing in the harness is at fault here — `r10` is correct, the jump target exists, and the dispatcher reads the
 run queue properly.
+
+---
+
+## 10. The dispatcher runs, but no thread ever posts
+
+3 000 000 instructions from `main`, PI asserted every 300 000:
+
+```
+interrupts injected:      1  (of 10 intended)
+queue validCount events:  0  on all three queues (0x80139f10, 0x8012bd30, 0x8012bcf8)
+current thread:           0x8010b700 (thread 7)   run queue: empty
+```
+
+Two separate answers came out of it.
+
+**1. Only the first injection landed, and the reason is the per-thread mask.** The guest restores `MI_INTR_MASK`
+from the thread context on every dispatch (M47), so a host `|= 0x10` survives exactly until the next context
+restore. Pending stays set, mask loses the bit, no further interrupt. A faithful event source therefore has to
+re-assert the *pending* line and let the guest's mask decide — never write the mask.
+
+**2. No thread posts, because no thread but the idler ever runs.** Thread 7 sits in the `b .` spin with an empty
+run queue; threads 1 and 9 remain WAITING. So there is no candidate poster: the only runnable thread is the one
+that spins, and the threads that would post are parked on the very queues being watched.
+
+That is consistent with the oracle: `validCount = 0` on both application queues at the ares title screen *and*
+after NEW GAME. Harness and machine agree on the observable state, and neither shows a post in the window that
+can be compared. The remaining difference is that ares keeps running and eventually schedules work, while this
+harness has nothing to schedule.
