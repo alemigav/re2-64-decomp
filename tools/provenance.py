@@ -1058,10 +1058,11 @@ def self_test():
 
 
 # --------------------------------------------------------------------------------------------- real images
-def load_images(manifest="build/elfs/images.json"):
+def load_images(manifest=None):
+    manifest = manifest or MANIFEST
     data = json.loads(Path(manifest).read_text())
     cart_sha = data.get("cart_sha256")
-    rom = Path("rom/Resident Evil 2 (USA) (Rev 1).z64")
+    rom = Path(ROM_PATH)
     if not rom.exists():
         sys.exit("cartridge not found at %s" % rom)
     blob = rom.read_bytes()
@@ -1103,7 +1104,9 @@ def image_words(blob, base, size, source=None):
     return list(struct.unpack(">%dI" % (len(raw) // 4), raw[:len(raw) // 4 * 4]))
 
 
-DECOMP = "build/decomp"
+DECOMP = "build/decomp"          # overridable (--decomp) so a synthetic fixture can drive the pipeline
+ROM_PATH = "rom/Resident Evil 2 (USA) (Rev 1).z64"
+MANIFEST = "build/elfs/images.json"
 REGION_STATS = {"ghidra_images": 0, "fallback_images": [], "ranges": 0, "multi_range": 0,
                 "covered": 0, "total": 0}
 
@@ -1515,11 +1518,87 @@ def run_layer2(args):
     return 0
 
 
+def corpus_self_test():
+    """Drive the whole corpus pipeline over `fixtures/corpus` and assert mechanism-level invariants.
+
+    A synthetic cartridge cannot reproduce RE2's addresses, so this does not re-test the pre-registered
+    acceptance findings. What it does is exercise the code path CI otherwise never touches: manifest and
+    cartridge loading, Ghidra-index regions, the interprocedural fixpoint, and the three checkers — the
+    places where the whole-corpus crashes lived (M115's stale key, M119/M120's un-threaded state).
+    """
+    global ROM_PATH, MANIFEST, DECOMP
+    ROM_PATH, MANIFEST, DECOMP = "fixtures/corpus/cart.z64", "fixtures/corpus/images.json", "fixtures/corpus/decomp"
+    images, _ = load_image_bytes()
+    regions, _ = load_regions()
+    summaries = summarise([(st, w) for st, w, _ in regions], rounds=3)
+
+    checks = []
+    checks.append(("one synthetic image, three regions taken from the fixture's index",
+                   len(images) == 1 and len(regions) == 3,
+                   "%d image(s), %d region(s)" % (len(images), len(regions))))
+
+    tot = attr = 0
+    kinds = {}
+    for st, w, name in regions:
+        acc, a, _ = analyse(w, st, summaries, {})
+        tot += len(acc)
+        attr += a
+        for x in acc:
+            k = ("unreached+const" if x.base[0] == CONST else "unreached") if x.unreached else x.base[0]
+            kinds[k] = kinds.get(k, 0) + 1
+    checks.append(("the census identity holds: every bucket accounted for",
+                   sum(kinds.values()) == tot,
+                   "%d operand(s) in %s" % (tot, dict(sorted(kinds.items())))))
+    checks.append(("attribution equals the const bucket, and finds the fixture's one address",
+                   attr == kinds.get("const", 0) == 1,
+                   "attributed %d, const %d" % (attr, kinds.get("const", 0))))
+
+    target = 0x800004B0
+    sites = []
+    for st, w, name in regions:
+        for a in analyse(w, st, summaries, {})[0]:
+            if a.call_target == target:
+                sites.append(a.pc)
+    checks.append(("the jal resolves to the fixture's third region",
+                   sites == [0x800004A0], "sites %s" % [hex(x) for x in sites]))
+
+    globals()["CHECK_STK"] = True
+    STK_FINDINGS.clear()
+    for st, w, name in regions:
+        analyse(w, st, summaries, {})
+    globals()["CHECK_STK"] = False
+    checks.append(("the stack-argument checker runs and finds nothing to flag",
+                   len(STK_FINDINGS) == 0, "%d finding(s)" % len(STK_FINDINGS)))
+
+    globals()["CHECK_ARG"] = True
+    ARG_FINDINGS.clear()
+    ARG_STATS.update({"deref": 0, "const_address": 0, "const_implausible": 0, "derived": 0, "unknown": 0})
+    for st, w, name in regions:
+        analyse(w, st, summaries, {})
+    globals()["CHECK_ARG"] = False
+    checks.append(("the register-argument checker runs, and the caller passes a derived value",
+                   len(ARG_FINDINGS) == 0 and ARG_STATS["deref"] > 0 and ARG_STATS["derived"] > 0,
+                   "deref %d, derived %d, flagged %d" % (
+                       ARG_STATS["deref"], ARG_STATS["derived"], len(ARG_FINDINGS))))
+
+    passed = 0
+    for name, ok, detail in checks:
+        print("%s  %s\n      %s" % ("PASS" if ok else "FAIL", name, detail))
+        passed += 1 if ok else 0
+    print("\n%d/%d corpus mechanism check(s)" % (passed, len(checks)))
+    return 0 if passed == len(checks) else 1
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--self-test2", action="store_true")
     ap.add_argument("--acceptance", action="store_true", help="run the two experiment-B acceptance tests")
+    ap.add_argument("--corpus-self-test", action="store_true",
+                    help="drive the corpus pipeline over fixtures/corpus (no cartridge needed)")
+    ap.add_argument("--rom", default=None, help="cartridge path (default: rom/Resident Evil 2 (USA) (Rev 1).z64)")
+    ap.add_argument("--manifest", default=None, help="image manifest (default: build/elfs/images.json)")
+    ap.add_argument("--decomp", default=None, help="Ghidra index root (default: build/decomp)")
     ap.add_argument("--arg-check", action="store_true",
                     help="flag a dereferenced register argument passed a constant that cannot be a pointer")
     ap.add_argument("--stk-check", action="store_true",
@@ -1538,6 +1617,15 @@ def main():
     ap.add_argument("--census", action="store_true")
     ap.add_argument("--json", default="manifests/provenance.json")
     args = ap.parse_args()
+    global ROM_PATH, MANIFEST, DECOMP
+    if args.rom:
+        ROM_PATH = args.rom
+    if args.manifest:
+        MANIFEST = args.manifest
+    if args.decomp:
+        DECOMP = args.decomp
+    if args.corpus_self_test:
+        return corpus_self_test()
     if args.self_test:
         return self_test()
     if args.self_test2:

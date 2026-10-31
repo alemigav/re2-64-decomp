@@ -33,6 +33,7 @@ SUITES = [
     ("provenance self-test", [sys.executable, "tools/provenance.py", "--self-test"], 10, False),
     ("provenance self-test2", [sys.executable, "tools/provenance.py", "--self-test2"], 12, False),
     ("provenance acceptance", [sys.executable, "tools/provenance.py", "--acceptance"], 3, True),
+    ("corpus pipeline (synthetic)", [sys.executable, "tools/provenance.py", "--corpus-self-test"], 6, False),
     ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8, False),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
