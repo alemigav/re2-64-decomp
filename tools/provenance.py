@@ -1108,39 +1108,58 @@ DECOMP = "build/decomp"          # overridable (--decomp) so a synthetic fixture
 ROM_PATH = "rom/Resident Evil 2 (USA) (Rev 1).z64"
 MANIFEST = "build/elfs/images.json"
 REGION_STATS = {"ghidra_images": 0, "fallback_images": [], "ranges": 0, "multi_range": 0,
-                "covered": 0, "total": 0}
+                "covered": 0, "total": 0, "index_images": 0, "fixture_images": 0}
+
+
+RANGES_FIXTURE = "fixtures/decomp/ranges.json"
+_RANGES = {}
+
+
+def fixture_ranges(name):
+    """Committed address metadata distilled from the Ghidra index (tools/export_ranges.py).
+
+    `build/decomp` is gitignored, so a fresh checkout has no index. The exact function boundaries still
+    matter — measured in M130: with the prologue heuristic instead of the index, acceptance test 1b fails
+    and revives the M117 artifact — so the ranges are committed as a 101 KB metadata fixture.
+    """
+    if not _RANGES:
+        path = Path(RANGES_FIXTURE)
+        _RANGES["images"] = json.loads(path.read_text()).get("images", {}) if path.exists() else {}
+    return _RANGES["images"].get(name)
 
 
 def ghidra_regions(name, base, nwords):
-    """Function ranges from the Ghidra index this repo already ships (`build/decomp/<image>/`).
+    """Function ranges from the Ghidra index, or from the committed distilled fixture.
 
-    The index gives `address` plus `body.ranges`, whose `end` is **inclusive** (`0x80000480..0x800004ef` is
-    28 words, and the next function starts at `0x800004f0`). Using it replaces the prologue / post-`jr ra`
-    heuristic below, which produced 7 093 "regions" for 3 638 known functions and — as M112 recorded —
-    silently skipped every leaf function with no prologue of its own.
-
-    Returns None when the image has no index, so the caller can fall back and say so.
+    `end` is **inclusive** (`0x80000480..0x800004ef` is 28 words, and the next function starts at
+    `0x800004f0`). Returns None when neither source knows this image, so the caller can fall back to the
+    heuristic and say so.
     """
+    pairs = None
     path = Path(DECOMP) / name / "decompile-index.json"
-    if not path.exists():
-        return None
-    out, seen = [], set()
-    for fn in json.loads(path.read_text()).get("functions", []):
-        body = fn.get("body") or {}
-        ranges = body.get("ranges") or []
-        if len(ranges) > 1:
+    if path.exists():
+        pairs = []
+        for fn in json.loads(path.read_text()).get("functions", []):
+            for r in (fn.get("body") or {}).get("ranges") or []:
+                pairs.append((int(r["start"], 16), int(r["end"], 16)))
+        if len(pairs) > 0 and any(len((fn.get("body") or {}).get("ranges") or []) > 1
+                                  for fn in json.loads(path.read_text()).get("functions", [])):
             REGION_STATS["multi_range"] += 1
-        for r in ranges:
-            start = int(r["start"], 16)
-            end = int(r["end"], 16) + 4                      # inclusive end
-            s_idx = (start - base) // 4
-            e_idx = (end - base) // 4
-            s_idx = max(0, s_idx)
-            e_idx = min(nwords, e_idx)
-            if e_idx <= s_idx or (s_idx, e_idx) in seen:
-                continue
-            seen.add((s_idx, e_idx))
-            out.append((s_idx, e_idx))
+        REGION_STATS["index_images"] += 1
+    else:
+        raw = fixture_ranges(name)
+        if raw is None:
+            return None
+        pairs = [(int(s), int(e)) for s, e in raw]
+        REGION_STATS["fixture_images"] += 1
+    out, seen = [], set()
+    for start_a, end_a in pairs:
+        s_idx = max(0, (start_a - base) // 4)
+        e_idx = min(nwords, (end_a + 4 - base) // 4)
+        if e_idx <= s_idx or (s_idx, e_idx) in seen:
+            continue
+        seen.add((s_idx, e_idx))
+        out.append((s_idx, e_idx))
     return out or None
 
 
@@ -1464,9 +1483,11 @@ def run_layer2(args):
                     k = a.base[0]
                 kinds[k] = kinds.get(k, 0) + 1
         print("base kinds: " + ", ".join("%s %d" % (k, v) for k, v in sorted(kinds.items(), key=lambda x: -x[1])))
-        print("regions: %d image(s) from the Ghidra index, %d range(s), %d multi-range function(s), "
+        print("regions: %d image(s) resolved (%d from build/decomp, %d from fixtures/decomp), "
+              "%d range(s), %d multi-range function(s), "
               "%.1f%% of image bytes inside a known function; fallback heuristic used for: %s" % (
-                  REGION_STATS["ghidra_images"], REGION_STATS["ranges"], REGION_STATS["multi_range"],
+                  REGION_STATS["ghidra_images"], REGION_STATS["index_images"],
+                  REGION_STATS["fixture_images"], REGION_STATS["ranges"], REGION_STATS["multi_range"],
                   100.0 * REGION_STATS["covered"] / max(REGION_STATS["total"], 1),
                   ", ".join(REGION_STATS["fallback_images"]) or "none"))
         h = SLOT_STATS["hit"]

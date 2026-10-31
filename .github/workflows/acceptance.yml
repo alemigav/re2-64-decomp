@@ -1,9 +1,12 @@
 # The same run as `sh tools/ci.sh`, on a runner.
 #
-# The cartridge is gitignored, so a runner has none: `tools/acceptance.py` reports SKIP for the suites that
-# need it rather than pretending they ran, and the integrity check skips too. That leaves 45 of 48 cases
-# meaningful in CI — every synthetic fixture — and the corpus-dependent checks (the two pre-registered
-# acceptance tests over the real images) still run locally and in the pre-commit hook, where the ROM exists.
+# Two tiers, because the cartridge is gitignored and always will be:
+#
+#   * without a secret  — 51 of 54 cases: every synthetic fixture, including the synthetic-cartridge corpus
+#     pipeline (M129). The three checks that assert RE2's own addresses report SKIP, never PASS.
+#   * with RE2_CART_B64 — 54 of 54: the cartridge is materialised, the members unpacked and the images built,
+#     and the three pre-registered acceptance checks run for real. Region boundaries come from the committed
+#     `fixtures/decomp/ranges.json` (M130), so nothing else needs to be smuggled in.
 name: acceptance
 
 on:
@@ -21,5 +24,20 @@ jobs:
           python-version: "3.x"
       - name: Report what CI can and cannot see
         run: printf 'ROM present: %s\n' "$(test -f 'rom/Resident Evil 2 (USA) (Rev 1).z64' && echo yes || echo no)"
+      - name: Cartridge-dependent suites (owner-provided secret)
+        env:
+          RE2_CART_B64: ${{ secrets.RE2_CART_B64 }}
+        run: |
+          if [ -z "${RE2_CART_B64:-}" ]; then
+            echo "no RE2_CART_B64 secret: the three corpus acceptance checks will SKIP (51 of 54 cases)."
+            echo "Provide the cartridge as a base64 secret to get them too; see docs/log/M130."
+            exit 0
+          fi
+          mkdir -p rom
+          printf '%s' "$RE2_CART_B64" | base64 -d > "rom/Resident Evil 2 (USA) (Rev 1).z64"
+          python3 tools/unpack_zlib.py rom/*.z64 --out assets/unpacked
+          python3 tools/build_images.py rom/*.z64
+          python3 tools/export_ranges.py --check || echo "note: fixtures/decomp/ranges.json differs from this build"
+
       - name: Fixtures and repository hygiene
         run: sh tools/ci.sh
