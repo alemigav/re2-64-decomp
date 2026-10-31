@@ -46,6 +46,7 @@ JTENT = "jtent"            # one entry of the jump table at this address: "the j
 SPLOC = "spoff"            # a stack location: sp + bias, the frame address of a local
 TABLE_MAX = 512            # bound on entries walked out of one table
 TABLE_STATS = {"jtent": 0, "tables": 0, "in_region": 0, "cross": 0, "unresolved": 0}
+SLOT_STATS = {"hit": 0, "miss": 0}      # frame slots that resolved to a stored value, and those that did not
 UNK = "unk"
 
 LOADS = {0x23: "lw", 0x24: "lbu", 0x25: "lhu", 0x21: "lh", 0x37: "ld", 0x1F: "lwu"}
@@ -147,18 +148,23 @@ class Instr:
 class State:
     """Abstract state: register -> value, stack offset -> value, and why a register became unknown."""
 
-    __slots__ = ("reg", "slot", "cause")
+    __slots__ = ("reg", "slot", "cause", "spbias")
 
-    def __init__(self, reg=None, slot=None, cause=None):
+    def __init__(self, reg=None, slot=None, cause=None, spbias=0):
         self.reg = dict(reg or {})
         self.slot = dict(slot or {})
         self.cause = dict(cause or {})       # register -> mnemonic of the instruction that made it unknown
+        # stack slots are keyed relative to the **function entry** sp, not the current sp: a frame
+        # adjustment (`addiu sp,sp,-N`) otherwise gives the same local two different keys and the
+        # spilled value is lost.
+        self.spbias = spbias
 
     def copy(self):
-        return State(self.reg, self.slot, self.cause)
+        return State(self.reg, self.slot, self.cause, self.spbias)
 
     def __eq__(self, other):
-        return self.reg == other.reg and self.slot == other.slot and self.cause == other.cause
+        return (self.reg == other.reg and self.slot == other.slot and self.cause == other.cause
+                and self.spbias == other.spbias)
 
     def merge(self, other):
         """A value survives a join only if both predecessors agree; otherwise it becomes unknown."""
@@ -172,6 +178,7 @@ class State:
         for k in set(self.cause) | set(other.cause):
             c = self.cause.get(k)
             out.cause[k] = c if c == other.cause.get(k) else "join"
+        out.spbias = self.spbias if self.spbias == other.spbias else None    # unstable frame: no slot keys
         return out
 
     def get(self, r):
@@ -239,8 +246,10 @@ def transfer(state, ins, accesses):
         elif base[0] == CBASE:
             b, bias = base[1]
             state.put(rt, (CBASE, (b, bias + ins.simm)))
+        elif rs == SP and rt == SP:
+            state.spbias = (state.spbias or 0) + ins.simm               # frame adjustment, entry-relative
         elif rs == SP:
-            state.put(rt, (SPLOC, ins.simm))                           # frame address of a local
+            state.put(rt, (SPLOC, (state.spbias or 0) + ins.simm))      # frame address of a local
         elif base[0] == SPLOC:
             state.put(rt, (SPLOC, base[1] + ins.simm))
         else:
@@ -333,15 +342,22 @@ def transfer(state, ins, accesses):
     if op in LOADS:
         offset = ins.simm                                       # lw offsets are SIGN-EXTENDED
         base = state.get(rs)
+        if rs == SP and state.spbias is not None:
+            base = (SPLOC, state.spbias)                        # report the frame, entry-relative
         accesses.append(Access(ins.pc, ins.name, base, offset,
                                cause=(state.cause.get(rs) if base[0] == UNK else None)))
         slot_key = None
-        if rs == SP:
-            slot_key = ins.simm
-        elif base[0] == SPLOC:
-            slot_key = base[1] + ins.simm
+        if state.spbias is not None:
+            if rs == SP:
+                slot_key = state.spbias + ins.simm
+            elif base[0] == SPLOC:
+                slot_key = base[1] + ins.simm
         if slot_key is not None and slot_key in state.slot:       # reload from a tracked stack slot
             v = state.slot[slot_key]
+            SLOT_STATS["hit"] += 1
+        elif slot_key is not None:
+            v = U
+            SLOT_STATS["miss"] += 1
         elif base[0] == CONST:
             v = (LOAD, base[1] + offset)                         # concrete address, unknown contents
             if FOLLOW_POINTERS and ins.name in ("lw", "lwu", "ld"):
@@ -358,9 +374,16 @@ def transfer(state, ins, accesses):
         return state, None
     if op in STORES:
         base = state.get(rs)
+        if rs == SP and state.spbias is not None:
+            base = (SPLOC, state.spbias)
         accesses.append(Access(ins.pc, ins.name, base, ins.simm,
                                cause=(state.cause.get(rs) if base[0] == UNK else None)))
-        store_key = ins.simm if rs == SP else (base[1] + ins.simm if base[0] == SPLOC else None)
+        store_key = None
+        if state.spbias is not None:
+            if rs == SP:
+                store_key = state.spbias + ins.simm
+            elif base[0] == SPLOC:
+                store_key = base[1] + ins.simm
         if store_key is not None:
             state.slot[store_key] = state.get(rt)                # spilled value is remembered
         return state, None
@@ -739,6 +762,13 @@ def fixture_cases_layer2():
                   lambda summ, acc: all(x.target is None for x in acc)
                   and any(x.base[0] == RET for x in acc)))
 
+    # L8: stack slots are keyed against the entry sp, so a frame adjustment does not lose them
+    A = [enc_addiu(SP, SP, -32), enc_sw(4, 0x20, SP), enc_addiu(SP, SP, -16),
+         enc_lw(2, 0x30, SP), enc_lw(3, 0, 2), enc_jr(RA), enc_nop()]
+    cases.append(("L8 a spilled value survives a frame adjustment (entry-relative slot keys)",
+                  [(a_base, A)],
+                  lambda summ, acc: any(x.base == (PARAM, 0) for x in acc)))
+
     # L7: an indirect jump through a table reaches handlers that no other edge can reach
     lo = 0x80200000
     A = [enc_lui(4, 0x8021), enc_lw(2, 0, 7), enc_sll(2, 2, 2), enc_addu(2, 2, 4),
@@ -1020,6 +1050,9 @@ def run_layer2(args):
                     k = a.base[0]
                 kinds[k] = kinds.get(k, 0) + 1
         print("base kinds: " + ", ".join("%s %d" % (k, v) for k, v in sorted(kinds.items(), key=lambda x: -x[1])))
+        hits, misses = SLOT_STATS["hit"], SLOT_STATS["miss"]
+        print("frame slots: %d access(es) through sp/a frame address, %d resolved to a stored value "
+              "(%.1f%%), %d missed" % (hits + misses, hits, 100.0 * hits / max(hits + misses, 1), misses))
         print("%d regions, %d memory operands, %d attributed (%.1f%%), %d unrecognised" % (
             len(regions), tot, attr, 100.0 * attr / max(tot, 1), tot - attr))
         if args.json:
