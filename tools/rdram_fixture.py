@@ -15,7 +15,7 @@ Cases, one per behaviour that used to be exercised only by hand:
   3. `Goto` is actually **followed** — the next command is at the target, not the fall-through;
   4. `ElseStart` prints both successors and takes the **fall-through**;
   5. a `dynamic` opcode (`0x03`, a script jump) stops the walk and says why;
-  6. an `unverified` opcode (`0x40`) stops the walk instead of guessing a length;
+  6. `PlcDest` (`0x40`), unverified until M145, now advances by its confirmed 8 bytes;
   7. the `SceEmSet` command prints its `Id` field (byte 3) — the operand M94 measured.
 
 Usage:
@@ -45,7 +45,7 @@ def build(path: Path) -> None:
         0: (0x80200000, bytes([0x17, 0x00, 0x00, 0x00, 0x00, 0x10])),          # Goto +0x10
         1: (0x80200100, bytes([0x07, 0x00, 0x00, 0x10])),                      # ElseStart +0x10
         2: (0x80200200, bytes([0x03, 0x00, 0x00, 0x07])),                      # script jump, dynamic
-        3: (0x80200300, bytes([0x40, 0x00, 0x00, 0x00])),                      # PlcDest, unverified
+        3: (0x80200300, bytes([0x40] + [0x00] * 7)),                           # PlcDest: advances 8
         4: (0x80200400, bytes([0x44, 0x00, 0x00, 0x1F]) + bytes(18)),          # SceEmSet, Id = 31
     }
     for ctx, (addr, data) in streams.items():
@@ -91,8 +91,8 @@ def main() -> int:
          "fall-through" in out[1] and "0x80200110" in out[1] and "[ 1] 0x80200104:" in out[1]),
         ("a dynamic opcode stops the walk and says why",
          "STOP: destination is dynamic" in out[2] and "script jump" in out[2]),
-        ("an unverified opcode stops instead of guessing",
-         "STOP: no advance inside its own handler" in out[3]),
+        ("a formerly unverified opcode now advances by its confirmed size",
+         "[ 1] 0x80200308:" in out[3] and "PlcDest len  8" in out[3]),
         ("SceEmSet prints its Id field", "Id(byte3)=31" in out[4]),
     ]
     passed = 0

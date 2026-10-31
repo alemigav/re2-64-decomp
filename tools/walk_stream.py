@@ -271,14 +271,20 @@ def advance_set(h, words, base, handlers) -> list:
             store_matches(x)
             continue
         # call / return: examine the delay slot, then the derived set is gone
-        if op == 0x03 or (op == 0 and (x & 0x3F) == 0x08):
+        if op == 0 and (x & 0x3F) == 0x08:
+            # `jr` is a **jump**, not a call: no register is clobbered by transferring control. Opcode 0x40
+            # ends with a table of `jr v0` arms before it adds 8 to `t0`, so clearing here lost that
+            # advance entirely (`t0` is caller-saved). Its delay slot still executes first.
+            if j + 1 < lim and (words[j + 1] >> 26) == 0x2B and (words[j + 1] & 0xFFFF) == CTX_CMDPTR:
+                store_matches(words[j + 1])
+            continue
+        if op == 0x03:                     # jal
             if j + 1 < lim:
                 nxt = words[j + 1]
                 if (nxt >> 26) == 0x2B and (nxt & 0xFFFF) == CTX_CMDPTR:
                     store_matches(nxt)
             # A call clobbers only the *caller-saved* registers. Opcode 0x2d's handler keeps the command
-            # pointer in `s2` across four calls and adds 38 to it afterwards, so clearing everything here
-            # loses the one handler whose advance the PlayStation table confirms at exactly that size.
+            # pointer in `s2` across four calls and adds 38 to it afterwards.
             for r in [r for r in derived if r in CALLER_SAVED]:
                 derived.pop(r, None)
             continue
@@ -301,6 +307,15 @@ def advance_set(h, words, base, handlers) -> list:
             writes.add(rt)
         for r in writes:
             derived.pop(r, None)
+    # A terminator sitting on the last instruction of the extent still owns its delay slot, and two
+    # handlers (0x6b, 0x7c) put `sw a1,28(a0)` exactly there.
+    if lim - 1 >= j0 and lim < n:
+        last = words[lim - 1]
+        terminator = ((last >> 26) == 0x03 or (last >> 26) in (0x04, 0x05, 0x06, 0x07)
+                      or ((last >> 26) == 0 and (last & 0x3F) in (0x08, 0x09)))
+        nxt = words[lim]
+        if terminator and (nxt >> 26) == 0x2B and (nxt & 0xFFFF) == CTX_CMDPTR:
+            store_matches(nxt)
     return sorted(out)
 
 
@@ -324,6 +339,10 @@ JUMP_FAMILY = {
                    "scans 0x0c-marked case entries and lands on a match or on that skip target"},
     0x17: {"size": 6, "operand": ("s16", 4), "base": "cmd", "add": 0, "conditional": False,
            "from": "0x8006e3a4 lh t0,4(a1) -> 0x8006e3bc addu a1,a1,t0 -> 0x8006e3d0 sw a1,28(a0)"},
+    0x1B: {"size": 6, "operand": ("s16", 2), "base": "cmd", "add": 6, "conditional": True,
+           "from": "0x8006df60 lh t0,2(a3) -> addu v0,a3,t0 -> 0x8006df68 addiu v0,v0,6 -> sw v0,28(t2); "
+                   "the other path advances 6 and records a loop target at 96(v0). Same shape as 0x0d, "
+                   "but the PlayStation table has no entry for this number, so the *name* is unknown"},
     0x18: {"size": 2, "operand": ("u8", 1), "base": "script_table", "add": 0, "conditional": False,
            "saves_return": True,
            "from": "0x8006e3dc lbu a2,1(v1) -> sll a2,a2,6 -> +*(0x80114f2c) -> lhu v0,0(a2) -> "
