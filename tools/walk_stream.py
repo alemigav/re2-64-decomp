@@ -1,30 +1,49 @@
 #!/usr/bin/env python3
 """Walk a room's command stream from the live command pointer.
 
-The static work (M95–M99) established the pieces: a 141-entry opcode→handler table at `0x80113898`,
-ten contexts at `0x80113ad0 + i*0x174`, a command pointer at `ctx+0x1c`, and — the part that makes a
-walk possible — **each handler advances the pointer by its own command length**. This tool turns that
+The static work (M95-M99) established the pieces: a 141-entry opcode->handler table at `0x80113898`,
+ten contexts at `0x80113ad0 + i*0x174`, a command pointer at `ctx+0x1c`, and - the part that makes a
+walk possible - **each handler advances the pointer by its own command length**. This tool turns that
 into a decoder:
 
-  1. for every table slot i, find the advance `lw v,0x1c(rX)` → `addiu v,v,N` → `sw v,0x1c(rX)` inside
-     the handler and record `length[i] = N`;
+  1. for every table slot i, find every advance `lw v,0x1c(rX)` -> `addiu w,v,N` -> `sw w,0x1c(rX)`
+     performed **inside the handler's own extent**, and classify it (M142):
+       ok          exactly one advance, so that is the command length;
+       unverified  none at all, so the number published at M136 came from *outside* the handler and
+                   there is nothing here to walk by;
+       ambiguous   several, and the licensed PlayStation table cannot choose between them;
   2. read a memory dump, take the live command pointer from `ctx+0x1c` (falling back to the descriptor
      `*(0x80115284)` that the handler itself reads);
   3. walk: `opcode = byte[p]`, `p += length[opcode]`, recording each command's bytes.
 
-Two guards, because a wrong length desynchronises the whole walk:
+The extent rule is the load-bearing part. These handlers are layout-adjacent and Ghidra has no function
+range for several of them, so a scan with a fixed forward window reads advances out of its neighbours -
+which is how M136's map and M141's first correction both went wrong. The extent is
+min(next handler in the table, next Ghidra function start, +0x1000 bytes).
 
-  * a command is only accepted when `byte[p]` is a table index with a known length, and the next
-    address stays inside RDRAM;
-  * the walk reports the first opcode with no length and stops there rather than guessing.
+Guards, because a wrong length desynchronises the whole walk:
 
-For opcode `0x44` (the scene-slot command, 22 bytes) it also prints byte 3 — the slot — and byte 9 —
-the gate — so the walk answers "does a room ever select a bank-C record?" directly.
+  * a command is only accepted when `byte[p]` is a table index in status `ok`, and the next address stays
+    inside RDRAM;
+  * the walk **stops loudly** at the first `unverified` or `ambiguous` opcode. 24 opcodes are
+    `unverified` today, and for five of them that is the semantics rather than a gap: the named
+    control-flow commands (`Goto`, `GoSub`, `ForStart`, `Switch`, `ElseStart`) set the pointer from an
+    operand instead of advancing it by a constant.
+
+Opcode names and PlayStation command sizes come from `fixtures/scd/opcodes.json`, transcribed from the
+MIT-licensed OpenBiohazard2 (`fileio/rdt_scd.go`). The port's own measured advance always wins over the
+PlayStation size, and any disagreement is printed rather than hidden.
+
+For opcode `0x44` (`SceEmSet`, 22 bytes) it also prints byte 3 - that command's `Id` field - and byte 9,
+so the walk answers "which enemy id does a room ask for?" directly.
 
 Usage:
+  ./walk_stream.py --lens                  # the whole opcode -> length map, with names and statuses
+  ./walk_stream.py --self-test             # the synthetic fixture (15 cases)
   ./walk_stream.py <rdram-dump.bin> [--commands 64]
 """
 import argparse
+import json
 import struct
 import sys
 from pathlib import Path
@@ -138,27 +157,168 @@ def handler_lengths(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES)
     return out
 
 
-def report_lengths(words) -> int:
-    """Print the whole opcode -> length map, and fail if it is incomplete or vacuous."""
-    lens = handler_lengths(words)
-    print(f"opcode -> command length, derived from {len(lens)} of {TABLE_ENTRIES} handlers")
-    for i in range(TABLE_ENTRIES):
-        if i not in lens:
-            print(f"  0x{i:02x}: no advance found")
+PS1_FIXTURE = "fixtures/scd/opcodes.json"
+RANGES_FIXTURE = "fixtures/decomp/ranges.json"
+
+
+def ps1_opcodes() -> dict:
+    """opcode -> [(name, size)] from the MIT-licensed OpenBiohazard2 table.
+
+    The sizes are the *PlayStation* command sizes, derived by that project's own struct fields. They name
+    our opcodes; they do not overrule our measurement — where the two disagree, the handler's own advance is
+    what the console actually does, and the disagreement is reported rather than hidden.
+    """
+    try:
+        doc = json.loads(Path(PS1_FIXTURE).read_text())
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for key, variants in doc.get("opcodes", {}).items():
+        out[int(key, 16)] = [(v["name"], v["size"]) for v in variants]
+    return out
+
+
+_RANGES = None
+
+
+def _stage2_ranges():
+    global _RANGES
+    if _RANGES is None:
+        try:
+            rng = json.loads(Path(RANGES_FIXTURE).read_text())["images"]["stage2"]
+            _RANGES = sorted(((f["start"], f["end"]) if isinstance(f, dict) else (f[0], f[1])) for f in rng)
+        except (OSError, KeyError, ValueError, TypeError):
+            _RANGES = []
+    return _RANGES
+
+
+def handler_extent(h, words, base, handlers) -> int:
+    """Where this handler ends: the next handler in the table, the next Ghidra function, or 0x1000 bytes.
+
+    The table bound matters because these handlers are layout-adjacent and Ghidra has **no range at all**
+    for several of them — which is how M136's scans came to read advances from outside the handler.
+    """
+    closer = [x for x in handlers if x > h]
+    end = min(closer) if closer else base + 4 * len(words)
+    for s, _e in _stage2_ranges():
+        if h < s < end:
+            end = s
+    for s, e in _stage2_ranges():
+        if s <= h < e:
+            end = min(end, e)
+    return min(end, h + 0x1000)
+
+
+def advance_set(h, words, base, handlers) -> list:
+    """Every distinct positive advance of `ctx+0x1c` performed inside the handler's own extent."""
+    n = len(words)
+    if not (base <= h < base + 4 * n):
+        return []
+    j0 = (h - base) // 4
+    lim = min((handler_extent(h, words, base, handlers) - base) // 4, n)
+    out = set()
+    for j in range(j0, min(lim, n - 6)):
+        w = words[j]
+        if (w >> 26) != 0x23 or (w & 0xFFFF) != CTX_CMDPTR:
             continue
-        handler, length = lens[i]
-        print(f"  0x{i:02x}: {handler:#010x}  +{length}")
-    lengths = sorted(set(v[1] for v in lens.values()))
-    print(f"  distinct lengths: {len(lengths)} -> {lengths}")
-    missing = [i for i in range(TABLE_ENTRIES) if i not in lens]
-    if missing:
-        print(f"  FAIL {len(missing)} opcode(s) with no derived advance: {[hex(i) for i in missing]}")
-    if len(lengths) < 2:
-        print("  FAIL fewer than two distinct lengths: a scan that finds nothing also reports "
-              "no inconsistency, so a uniform answer here would be unearned")
-    ok = not missing and len(lengths) >= 2
-    print(f"  {len(lens)}/{TABLE_ENTRIES} opcodes mapped")
-    return 0 if ok else 1
+        loaded, rbase = (w >> 16) & 0x1F, (w >> 21) & 0x1F
+        for k in range(j + 1, min(lim, n)):
+            y = words[k]
+            if (y >> 26) != 0x09 or ((y >> 21) & 0x1F) != loaded or not (y & 0xFFFF):
+                continue
+            n_adv = y & 0xFFFF
+            n_adv = n_adv - 0x10000 if n_adv & 0x8000 else n_adv
+            dst = (y >> 16) & 0x1F
+            for m in range(k + 1, min(k + 3, n)):
+                z = words[m]
+                if ((z >> 26) == 0x2B and (z & 0xFFFF) == CTX_CMDPTR
+                        and ((z >> 21) & 0x1F) == rbase and ((z >> 16) & 0x1F) == dst):
+                    if n_adv > 0:
+                        out.add(n_adv)
+                    break
+    return sorted(out)
+
+
+def resolve(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES) -> dict:
+    """opcode -> what to walk by, its name, and whether walking by it is defensible.
+
+    status is one of:
+      ok          exactly one advance inside the handler's own extent — walk by it;
+      unverified  **no** advance inside that extent, so the number published at M136 came from outside the
+                  handler; refuse rather than guess (this is the M141 correction made operational);
+      ambiguous   several advances inside the extent and the licensed table does not choose between them.
+    """
+    n = len(words)
+    handlers = sorted({words[(table + 4 * i - base) // 4] for i in range(entries)
+                       if 0 <= (table + 4 * i - base) // 4 < n
+                       and base <= words[(table + 4 * i - base) // 4] < base + 4 * n})
+    ps1 = ps1_opcodes()
+    out = {}
+    for i in range(entries):
+        off = (table + 4 * i - base) // 4
+        if not (0 <= off < n):
+            continue
+        h = words[off]
+        if not (base <= h < base + 4 * n):
+            continue
+        advances = advance_set(h, words, base, handlers)
+        variants = ps1.get(i, [])
+        name = variants[0][0] if variants else ""
+        chosen = None
+        if len(advances) == 1:
+            status, chosen = "ok", advances[0]
+            same = [v for v in variants if v[1] == chosen]
+            if same:
+                name = same[0][0]
+        elif not advances:
+            status = "unverified"
+        else:
+            picked = [v for v in variants if v[1] in advances]
+            if len(picked) == 1:
+                status, chosen = "ok", picked[0][1]
+                name = picked[0][0]
+            else:
+                status = "ambiguous"
+        conflict = bool(variants) and chosen is not None and chosen not in [v[1] for v in variants]
+        out[i] = {"handler": h, "length": chosen, "advances": advances, "status": status,
+                  "name": name, "ps1_sizes": [v[1] for v in variants], "conflict": conflict}
+    return out
+
+
+def report_lengths(words) -> int:
+    """Print the whole opcode -> length map with names and safety, and fail if anything is unresolved."""
+    res = resolve(words)
+    ps1 = ps1_opcodes()
+    named = sum(1 for r in res.values() if r["name"])
+    ok = [i for i, r in res.items() if r["status"] == "ok"]
+    unverified = [i for i, r in res.items() if r["status"] == "unverified"]
+    ambiguous = [i for i, r in res.items() if r["status"] == "ambiguous"]
+    conflicts = [i for i, r in res.items() if r["conflict"]]
+    print(f"opcode -> command length: {len(res)} of {TABLE_ENTRIES} handlers, "
+          f"{named} named from the MIT-licensed PlayStation table")
+    for i in range(TABLE_ENTRIES):
+        if i not in res:
+            continue
+        r = res[i]
+        length = "  ?" if r["length"] is None else f"{r['length']:2d}"
+        tag = {"ok": "ok", "unverified": "UNVERIFIED", "ambiguous": "AMBIGUOUS"}[r["status"]]
+        extra = ""
+        if r["conflict"]:
+            extra = f"  (ps1 size {r['ps1_sizes']} disagrees)"
+        print(f"  0x{i:02x}: {r['handler']:#010x}  len {length}  {tag:10s} "
+              f"{r['name'] or '-':14s} advances={r['advances']}{extra}")
+    print(f"  named: {named} of {len(res)}; ps1 table has {len(ps1)} opcode number(s)")
+    print(f"  walkable {len(ok)}, unverified {len(unverified)}, ambiguous {len(ambiguous)}, "
+          f"size conflicts {len(conflicts)}")
+    if unverified:
+        print(f"  UNVERIFIED (no advance inside the handler's own extent): "
+              f"{[hex(i) for i in unverified]}")
+        print("  These are the opcodes whose M136 length came from outside the handler. A walk stops at "
+              "the first of them rather than advancing by a number the handler never performs.")
+    if ambiguous:
+        print(f"  AMBIGUOUS (several advances, table does not choose): {[hex(i) for i in ambiguous]}")
+    print(f"  {len(ok)}/{len(res)} opcodes walkable")
+    return 0 if not ambiguous else 1
 
 
 def self_test() -> int:
@@ -205,6 +365,43 @@ def self_test() -> int:
         ("distinct lengths are non-vacuous",  len(set(v[1] for v in got.values())), 3),
         ("proven wins over a later relaxed match", got.get(0, (None, None))[1] != 999, True),
     ]
+
+    # --- naming and length-safety cases: a second synthetic table, wide enough to reach named opcodes
+    B2, T2, E2 = 0x80000000, 0x80002000, 0x85          # wide enough to reach opcode 0x7f
+    w2 = [0] * 0x9000
+    def put2(va, x): w2[(va - B2) // 4] = x
+    def handler_at(slot, advances):
+        h = B2 + 0x4000 + slot * 0x100
+        put2(h, lw(2, 0x1C, ctx))
+        for k, n in enumerate(advances):
+            put2(h + 4 + 8 * k, addiu(2, 2, n))
+            put2(h + 8 + 8 * k, sw(2, 0x1C, ctx))
+        put2(T2 + 4 * slot, h)
+    handler_at(0x44, [22])          # named, and the ps1 size agrees
+    handler_at(0x09, [1])           # named, but the ps1 size disagrees
+    handler_at(0x7F, [])            # no advance at all -> must be unverified, never guessed
+    handler_at(0x26, [4, 9])        # two advances; only 4 matches a ps1 variant -> table decides
+    handler_at(0x50, [4, 5])        # two advances, no ps1 entry -> ambiguous, the walk must stop
+    res2 = resolve(tuple(w2), base=B2, table=T2, entries=E2)
+    op44, op09, op7f = res2.get(0x44, {}), res2.get(0x09, {}), res2.get(0x7F, {})
+    op26, op50 = res2.get(0x26, {}), res2.get(0x50, {})
+    cases += [
+        ("the ps1 fixture loads and names SceEmSet at 0x44",
+         (ps1_opcodes().get(0x44) or [(None, None)])[0], ("SceEmSet", 22)),
+        ("0x26 carries two ps1 variants (Calc/Calc2)",
+         len(ps1_opcodes().get(0x26, [])), 2),
+        ("a named opcode resolves to its own advance and its name",
+         (op44.get("status"), op44.get("length"), op44.get("name")), ("ok", 22, "SceEmSet")),
+        ("a handler with no advance is unverified, never guessed",
+         (op7f.get("status"), op7f.get("length")), ("unverified", None)),
+        ("a measured length disagreeing with the ps1 size is flagged",
+         (op09.get("status"), op09.get("conflict")), ("ok", True)),
+        ("two advances plus one matching ps1 size -> the table decides, and names it",
+         (op26.get("status"), op26.get("length"), op26.get("name")), ("ok", 4, "Calc2")),
+        ("two advances with no ps1 entry are ambiguous, not guessed",
+         (op50.get("status"), op50.get("length"), op50.get("name")), ("ambiguous", None, "")),
+    ]
+
     passed = 0
     for label, actual, expected in cases:
         ok = actual == expected
@@ -236,13 +433,11 @@ def main() -> None:
     if not a.dump:
         ap.error("a dump is required unless --lens or --self-test is given")
 
-    lens = handler_lengths(words)
-    print(f"opcode -> command length, derived from {len(lens)} of {TABLE_ENTRIES} handlers")
-    known = sorted(set(v[1] for v in lens.values()))
-    print(f"  lengths in use: {known}")
-    print(f"  opcode 0x{SLOT_OPCODE:02x} (the scene-slot command) -> "
-          f"{lens.get(SLOT_OPCODE, ('?', '?'))}")
-
+    res = resolve(words)
+    named = sum(1 for r in res.values() if r["name"])
+    unverified = {i for i, r in res.items() if r["status"] == "unverified"}
+    print(f"opcode -> command length: {len(res)} of {TABLE_ENTRIES} handlers, {named} named, "
+          f"{len(unverified)} unverified (a walk stops at those)")
     dump = Path(a.dump).read_bytes()
 
     def rd(va, n):
@@ -297,16 +492,20 @@ def main() -> None:
             except ValueError:
                 print(f"  [{k:2d}] {p:#010x}: outside the dump — stop")
                 break
-            if op not in lens:
-                # Distinguish "the stream ended" from "the walk desynchronised": a real command's
-                # opcode is a table index (< 141). A byte at or above 141 cannot be a command, so the
-                # walk has left the command area — which is a bounded stream, not a wrong length.
+            if op not in res:
                 kind = ("not a table index (>= 141) -> the stream ENDED here and the walk left "
                         "the command area" if op >= TABLE_ENTRIES else
-                        "a table index with no derived advance -> a length is missing")
+                        "a table index with no resolvable handler")
                 print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x} — {kind}")
                 break
-            handler, length = lens[op]
+            r = res[op]
+            if r["status"] != "ok":
+                which = ("no advance inside its own handler" if r["status"] == "unverified"
+                         else "several advances and the table does not choose")
+                print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x} {r['name'] or ''} — STOP: {which}. "
+                      f"Walking on would advance by a guess and desynchronise the rest of the walk.")
+                break
+            handler, length = r["handler"], r["length"]
             cmd = rd(p, min(length, 64))
             seen[op] = seen.get(op, 0) + 1
             extra = ""
@@ -314,16 +513,17 @@ def main() -> None:
                 slot = cmd[3] if len(cmd) > 3 else None
                 gate = cmd[9] if len(cmd) > 9 else None
                 slots.append((p, slot, gate))
-                extra = f"  slot(byte3)={slot}  gate(byte9)={gate:#04x}" if gate is not None else ""
-            print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x} len {length:2d} -> "
+                extra = f"  Id(byte3)={slot}" + (f"  gate(byte9)={gate:#04x}" if gate is not None else "")
+            label = f" {r['name']}" if r["name"] else ""
+            print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x}{label} len {length:2d} -> "
                   f"{cmd[:8].hex(' ')}{extra}")
             p += length
         print(f"\n  distinct opcodes: {len(seen)}; top: "
               f"{sorted(seen.items(), key=lambda kv: -kv[1])[:6]}")
         if slots:
-            print(f"  scene-slot commands: {len(slots)}; slot values {sorted(s for _, s, _ in slots)}")
+            print(f"  scene-slot commands: {len(slots)}; Id values {sorted(s for _, s, _ in slots)}")
         else:
-            print("  scene-slot commands (opcode 0x44): none in this walk")
+            print("  scene-slot commands (opcode 0x44 SceEmSet): none in this walk")
 
 
 if __name__ == "__main__":
