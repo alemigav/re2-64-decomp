@@ -46,7 +46,7 @@ cross-reference that must not be flagged**. That third one is the guard on the g
 "tightening" could make the check reject the log's own cross-references and someone would relax it entirely.
 
 `doc markers` is now **12** synthetic + **18** repository checks (14 anchors + 4 aggregate rules). Suite total:
-**89 cases across 9 fixtures**.
+**90 cases across 9 fixtures** (10 + 12 + 3 + 6 + 8 + 6 + 12 + 18 + 15).
 
 ## What is still not covered
 
@@ -58,5 +58,5 @@ own title are compared, not the narrative. Catching that needs semantics, not st
 ```
 python3 tools/check_markers.py --self-test    # 12/12
 python3 tools/check_markers.py                # 18/18
-python3 tools/acceptance.py                   # 89 cases, 9 fixtures
+python3 tools/acceptance.py                   # 90 cases, 9 fixtures
 ```
