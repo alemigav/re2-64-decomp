@@ -52,6 +52,10 @@ TABLE_STATS = {"jtent": 0, "tables": 0, "in_region": 0, "cross": 0, "unresolved"
 SLOT_STATS = {"hit": 0, "miss_merge": 0, "miss_never": 0, "miss_unstable": 0}
 STK_STATS = {"asked": 0, "resolved": 0}   # stack arguments a call site had to supply, and those it could
 CHECK_STK = False        # when set, every call site is checked for a stack argument the caller never stored
+CHECK_ARG = False        # when set, every dereferenced register argument is checked for pointer shape
+CURRENT_IMAGE = {"name": "?"}   # overlays share vaddrs, so a finding must be keyed by (image, pc)
+ARG_FINDINGS = {}        # pc -> {target, k, value}; keyed by pc so fixpoint rounds dedupe
+ARG_STATS = {"deref": 0, "const_address": 0, "const_implausible": 0, "derived": 0, "unknown": 0}
 STK_FINDINGS = {}        # pc -> {target, missing:[(bias, key, kind)]}; keyed by pc so fixpoint rounds dedupe
 UNK = "unk"
 
@@ -156,25 +160,30 @@ class Instr:
 class State:
     """Abstract state: register -> value, stack offset -> value, and why a register became unknown."""
 
-    __slots__ = ("reg", "slot", "cause", "spbias", "written")
+    __slots__ = ("reg", "slot", "cause", "spbias", "written", "tested")
 
-    def __init__(self, reg=None, slot=None, cause=None, spbias=0, written=None):
+    def __init__(self, reg=None, slot=None, cause=None, spbias=0, written=None, tested=None):
         self.reg = dict(reg or {})
         self.slot = dict(slot or {})
         self.cause = dict(cause or {})
         # every frame byte a store has covered, so a halfword read inside a word store is not "missing"
-        self.written = set(written or ())       # register -> mnemonic of the instruction that made it unknown
+        self.written = set(written or ())
+        # REGISTERS compared against zero anywhere on this path: a dereference through one of them is
+        # treated as guarded. Register-based rather than parameter-based because a value is routinely
+        # copied into a callee-saved register first, and merges over loops lose the parameter identity.
+        self.tested = set(tested or ())       # register -> mnemonic of the instruction that made it unknown
         # stack slots are keyed relative to the **function entry** sp, not the current sp: a frame
         # adjustment (`addiu sp,sp,-N`) otherwise gives the same local two different keys and the
         # spilled value is lost.
         self.spbias = spbias
 
     def copy(self):
-        return State(self.reg, self.slot, self.cause, self.spbias, self.written)
+        return State(self.reg, self.slot, self.cause, self.spbias, self.written, self.tested)
 
     def __eq__(self, other):
         return (self.reg == other.reg and self.slot == other.slot and self.cause == other.cause
-                and self.spbias == other.spbias and self.written == other.written)
+                and self.spbias == other.spbias and self.written == other.written
+                and self.tested == other.tested)
 
     def merge(self, other):
         """A value survives a join only if both predecessors agree; otherwise it becomes unknown."""
@@ -190,6 +199,8 @@ class State:
             out.cause[k] = c if c == other.cause.get(k) else "join"
         out.spbias = self.spbias if self.spbias == other.spbias else None    # unstable frame: no slot keys
         out.written = self.written | other.written      # a byte written on any path is written
+        out.tested = self.tested | other.tested         # "may be null-tested": the direction that yields
+                                                        # fewer defect flags, which is what we want here
         return out
 
     def get(self, r):
@@ -208,13 +219,15 @@ class State:
 
 
 class Access:
-    __slots__ = ("pc", "name", "base", "offset", "target", "unreached", "args", "call_target", "cause")
+    __slots__ = ("pc", "name", "base", "offset", "target", "unreached", "args", "call_target", "cause",
+                 "guarded")
 
     def __init__(self, pc, name, base, offset, unreached=False, args=None, call_target=None, cause=None):
         self.pc, self.name, self.base, self.offset = pc, name, base, offset
         self.args = args
         self.call_target = call_target
-        self.cause = cause                 # mnemonic that made the base register unknown      # which function a `jal` goes to, independent of what it returns
+        self.cause = cause                 # mnemonic that made the base register unknown
+        self.guarded = False               # a PARAM base that was null-tested earlier on this path      # which function a `jal` goes to, independent of what it returns
         self.target = base[1] + offset if base[0] == CONST else None
         self.unreached = unreached
 
@@ -355,8 +368,11 @@ def transfer(state, ins, accesses, stores_seen=None, classify=False):
         base = state.get(rs)
         if rs == SP and state.spbias is not None:
             base = (SPLOC, state.spbias)                        # report the frame, entry-relative
-        accesses.append(Access(ins.pc, ins.name, base, offset,
-                               cause=(state.cause.get(rs) if base[0] == UNK else None)))
+        acc = Access(ins.pc, ins.name, base, offset,
+                     cause=(state.cause.get(rs) if base[0] == UNK else None))
+        if base[0] == PARAM and rs in state.tested:
+            acc.guarded = True
+        accesses.append(acc)
         slot_key = None
         if state.spbias is None and classify:
             SLOT_STATS["miss_unstable"] += 1
@@ -395,8 +411,11 @@ def transfer(state, ins, accesses, stores_seen=None, classify=False):
         base = state.get(rs)
         if rs == SP and state.spbias is not None:
             base = (SPLOC, state.spbias)
-        accesses.append(Access(ins.pc, ins.name, base, ins.simm,
-                               cause=(state.cause.get(rs) if base[0] == UNK else None)))
+        acc = Access(ins.pc, ins.name, base, ins.simm,
+                     cause=(state.cause.get(rs) if base[0] == UNK else None))
+        if base[0] == PARAM and rs in state.tested:
+            acc.guarded = True
+        accesses.append(acc)
         store_key = None
         if state.spbias is not None:
             if rs == SP:
@@ -415,6 +434,8 @@ def transfer(state, ins, accesses, stores_seen=None, classify=False):
     if op == 0x02:
         return state, "jump"
     if op in BRANCHES:
+        if op in (0x04, 0x05, 0x14, 0x15):               # beq/bne/beql/bnel against $zero
+            state.tested.add(rt if rs == ZERO else rs)   # the register tested against zero
         return state, "branch"
     state.put(rt, U, CURRENT["name"])                                            # anything unmodelled writes rt
     return state, None
@@ -564,6 +585,26 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
             if key in state.slot:
                 args_stk[b] = state.slot[key]
                 STK_STATS["resolved"] += 1
+    if CHECK_ARG and summary is not None:
+        for k, declared in enumerate(summary.get("params", [])):
+            if declared[0] != PARAM:
+                continue                                  # the callee does not dereference this argument
+            ARG_STATS["deref"] += 1
+            v = args[k]
+            if v[0] == CONST:
+                # "can this constant be a pointer THIS BUILD uses?" — KSEG0 RDRAM (0x80...) or KSEG1
+                # cartridge (0xA0..0xBF). A physical-address (KUSEG, 0x0..0x7FFFFF) pointer would be a
+                # false positive here; the corpus uses KSEG vaddrs throughout, and that is checkable.
+                ok = in_rdram(v[1]) or 0xA0000000 <= v[1] <= 0xBFFFFFFF
+                ARG_STATS["const_address" if ok else "const_implausible"] += 1
+                if not ok:
+                    ARG_FINDINGS[(CURRENT_IMAGE["name"], ins.pc)] = {
+                        "image": CURRENT_IMAGE["name"], "pc": ins.pc, "target": target,
+                        "k": k, "value": v[1]}
+            elif v[0] == UNK:
+                ARG_STATS["unknown"] += 1
+            else:
+                ARG_STATS["derived"] += 1
     if CHECK_STK and summary is not None:
         missing = []
         for b, width in summary.get("stk", ()):
@@ -700,10 +741,15 @@ def analyse(words, base, summaries=None, summary_out=None):
                   stores_seen, classify=True)
     attributed = sum(1 for a in accesses if a.attributed() and not a.unreached)
     if summary_out is not None:
-        touched = set(summary_out.get("escapes", set()))
+        # `params` must mean "this function DEREFERENCES the argument" — a value merely forwarded to
+        # another call escapes, it is not dereferenced here. Merging the two made every pass-through
+        # parameter look like a pointer-taking one (found by the register-argument check flagging
+        # libultra calls that pass small integers).
+        touched = set()
         for a in accesses:
-            if a.base[0] == PARAM:
+            if a.base[0] == PARAM and not a.guarded:
                 touched.add(a.base[1])
+        summary_out["guarded"] = sum(1 for a in accesses if a.base[0] == PARAM and a.guarded)
         summary_out["params"] = [(PARAM, k) if k in touched else U for k in range(4)]
         raw = summary_out.get("rets", [])
         summary_out["ret"] = raw[0] if raw and len(set(raw)) == 1 else U
@@ -843,6 +889,14 @@ def fixture_cases_layer2():
                   lambda summ, acc: all(x.target is None for x in acc)
                   and any(x.base[0] == RET for x in acc)))
 
+    # L11: a dereferenced register argument passed a constant that cannot be a pointer
+    callee = [enc_lw(3, 0, 4), enc_jr(RA), enc_nop()]
+    bad = [enc_addiu(4, ZERO, 0x1234), enc_jal(a_base), enc_nop(), enc_jr(RA), enc_nop()]
+    good = [enc_lui(4, 0x8011), enc_ori(4, 4, 0x5284), enc_jal(a_base), enc_nop(), enc_jr(RA), enc_nop()]
+    cases.append(("L11 a non-pointer constant passed where the callee dereferences is flagged, and only there",
+                  [(a_base, callee), (b_base, bad), (0x80300000, good)],
+                  lambda summ, acc: _arg_case_ok()))
+
     # L10: the caller-side check flags a stack argument the caller never stored
     callee = [enc_lw(2, 0x10, SP), enc_jr(RA), enc_nop()]
     bad = [enc_addiu(SP, SP, -32), enc_jal(a_base), enc_nop(), enc_jr(RA), enc_nop()]
@@ -914,12 +968,21 @@ def _stk_case_ok():
     return pcs == [0x80101004] and findings[0]["missing"][0][2] == "interior"
 
 
+def _arg_case_ok():
+    """Exactly one finding, at the caller that passed 0x1234, and none for the valid pointer."""
+    pcs = sorted(ARG_FINDINGS)
+    return [pc for _, pc in pcs] == [0x80101004] and ARG_FINDINGS[pcs[0]]["value"] == 0x1234
+
+
 def self_test2():
     passed = 0
     cases = fixture_cases_layer2()
     for name, regions, check in cases:
         STK_FINDINGS.clear()
-        globals()["CHECK_STK"] = True                 # the check runs inside analyse; findings dedupe by pc
+        ARG_FINDINGS.clear()
+        ARG_STATS.update({"deref": 0, "const_address": 0, "const_implausible": 0, "derived": 0, "unknown": 0})
+        globals()["CHECK_STK"] = True
+        globals()["CHECK_ARG"] = True                 # the check runs inside analyse; findings dedupe by pc
         summaries = summarise(regions)
         acc = []
         for start, words in regions:
@@ -936,6 +999,7 @@ def self_test2():
                 print("      %s" % a)
         passed += 1 if ok else 0
     globals()["CHECK_STK"] = False
+    globals()["CHECK_ARG"] = False
     print("\n%d/%d (layer 2)" % (passed, len(cases)))
     return 0 if passed == len(cases) else 1
 
@@ -1251,11 +1315,40 @@ def run_layer2(args):
         if not shown:
             print("  none resolved to a known region (the callee has no summary)")
 
+    if args.arg_check:
+        globals()["CHECK_ARG"] = True
+        ARG_FINDINGS.clear()
+        sites = 0
+        owner_map = {}
+        for start, words, name in regions:
+            CURRENT_IMAGE["name"] = name
+            accesses, _, _ = analyse(words, start, summaries, {})
+            sites += sum(1 for a in accesses if a.call_target)
+            for a in accesses:
+                if a.call_target:
+                    owner_map[(name, a.pc)] = start
+        globals()["CHECK_ARG"] = False
+        print("%d call site(s) analysed; %d dereferenced register argument(s)" % (sites, ARG_STATS["deref"]))
+        print("  %d passed a constant that IS a plausible address, %d passed a constant that cannot be one" % (
+            ARG_STATS["const_address"], ARG_STATS["const_implausible"]))
+        print("  %d derived (parameter/return/loaded), %d unknown" % (ARG_STATS["derived"], ARG_STATS["unknown"]))
+        print("\n%d flagged site(s):" % len(ARG_FINDINGS))
+        for (name, pc), f in sorted(ARG_FINDINGS.items())[:25]:
+            print("  %-10s %08x in %08x -> %08x   a%d = %08x" % (
+                name, pc, owner_map.get((name, pc), 0), f["target"], f["k"], f["value"]))
+        if args.json:
+            Path(args.json).parent.mkdir(parents=True, exist_ok=True)
+            Path(args.json).write_text(json.dumps({"stats": ARG_STATS, "flagged": list(ARG_FINDINGS.values())},
+                                                  indent=1) + "\n")
+            print("wrote %s" % args.json)
+        return 0
+
     if args.stk_check:
         globals()["CHECK_STK"] = True
         STK_FINDINGS.clear()
         sites = 0
         for start, words, name in regions:
+            CURRENT_IMAGE["name"] = name
             accesses, _, _ = analyse(words, start, summaries, {})
             sites += sum(1 for a in accesses if a.call_target)
         globals()["CHECK_STK"] = False
@@ -1365,6 +1458,8 @@ def main():
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--self-test2", action="store_true")
     ap.add_argument("--acceptance", action="store_true", help="run the two experiment-B acceptance tests")
+    ap.add_argument("--arg-check", action="store_true",
+                    help="flag a dereferenced register argument passed a constant that cannot be a pointer")
     ap.add_argument("--stk-check", action="store_true",
                     help="flag call sites whose callee reads a stack argument the caller never stored")
     ap.add_argument("--layer2", action="store_true", help="interprocedural fixpoint over the cartridge")
@@ -1388,7 +1483,7 @@ def main():
     if args.acceptance:
         return acceptance()
     if args.layer2 or args.region or args.param_accesses or args.callers is not None \
-            or args.unk_causes or args.census or args.stk_check:
+            or args.unk_causes or args.census or args.stk_check or args.arg_check:
         return run_layer2(args)
     return run_images(args.target, args.window, args.census or args.target is None, args.json)
 
