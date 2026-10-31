@@ -52,8 +52,13 @@ that offset in `assets/unpacked/00005_007c552_15104.bin`:
         "commands" has exactly one entry: 0, 354 occurrences)
 ```
 
-**Zero.** It is a BSS workspace, and the commands are placed there at runtime by the overlay's own
-code — `FUN_80170104` and `FUN_801708a4` read and write through `0x80171e80`, inside the same buffer.
+**Zero.** It is a BSS workspace, and the commands are placed there at runtime. **Retracted (M99):** the
+sentence that followed named `FUN_80170104` and `FUN_801708a4` as the fillers. They are gameplay code —
+float arithmetic, division by 10, and a nibble pack at `s2+0x1962` — and `FUN_80170104` is called
+*after* the fill, not during it. The buffer is filled by a **16-byte block copy** in `FUN_8016e8d0`
+(`0x8016eae4`–`0x8016eb0c`) from a runtime source pointer. The attribution came from a
+`find_readers` near-miss list treated as evidence without reading the site — the third such slip in
+this session.
 
 ## 4. What that settles, and what it ends
 
