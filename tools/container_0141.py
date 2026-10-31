@@ -292,6 +292,57 @@ def tile_geometry(rom, tiles):
     return true_height, pixel_bytes, stride_bytes, stride_words, total
 
 
+def grid_pairs(rom):
+    """Grids of height 2 register a **pair** of blocks per column when the two rows' ids differ, and a
+    single block when they are equal (FUN_8008769c). So every id in those grids must resolve to a tile, and
+    the columns where the ids differ must reference two *distinct* blocks."""
+    words = ws.load_stage2()
+    base = ws.STAGE2_BASE
+
+    def u16(va):
+        off = va - base
+        w = off // 4
+        if not (0 <= w < len(words)):
+            return None
+        return (words[w] >> 16) if off % 4 == 0 else (words[w] & 0xFFFF)
+
+    def magic(fid):
+        if not (0 <= fid < sp.ENTRY_COUNT):
+            return None
+        off, size = struct.unpack_from(">II", rom, sp.FILE_TABLE_ROM + sp.HEADER + 8 * fid)
+        if off == 0xFFFFFFFF or size == 0:
+            return None
+        try:
+            raw = zlib.decompress(rom[sp.FILE_TABLE_ROM + off:sp.FILE_TABLE_ROM + off + size])
+        except zlib.error:
+            return None
+        return struct.unpack_from(">H", raw, 0)[0] if len(raw) >= 2 else None
+
+    ids_ok = ids_total = 0
+    pairs_same = pairs_diff = 0
+    for t in range(11):
+        idx = u16(GRID_INDEX + 2 * t)
+        if idx is None:
+            continue
+        w = u16(GRID_TABLE + 2 * idx) or 0
+        h = u16(GRID_TABLE + 2 * (idx + 1)) or 0
+        if h != 2 or w == 0:
+            continue
+        row0 = [u16(GRID_TABLE + 2 * (idx + 2 + c)) for c in range(min(w, 32))]
+        row1 = [u16(GRID_TABLE + 2 * (idx + 2 + w + c)) for c in range(min(w, 32))]
+        for a, b in zip(row0, row1):
+            for v in (a, b):
+                if v:
+                    ids_total += 1
+                    ids_ok += (magic(v) == 0xBE1E)
+            if a and b:
+                if a == b:
+                    pairs_same += 1
+                else:
+                    pairs_diff += 1
+    return ids_ok, ids_total, pairs_same, pairs_diff
+
+
 def constants_in_code():
     """The two shared record constants: are they code immediates, or only data?"""
     words = ws.load_stage2()
@@ -333,6 +384,7 @@ def main() -> int:
     tile_magics, tile_second_words, gbi_share = tile_headers(ROM.read_bytes(), tiles)
     t_law, t_4bpp, t_8bpp, t_total = tile_formats(ROM.read_bytes(), tiles)
     g_true, g_px, g_stride, g_words, g_total = tile_geometry(ROM.read_bytes(), tiles)
+    ids_ok, ids_total, pairs_same, pairs_diff = grid_pairs(ROM.read_bytes())
     template_hits, template = unit_template(blocks)
     cases = [
         ("the family is found and is large", len(blocks) > 200),
@@ -386,6 +438,10 @@ def main() -> int:
         ("w*h1*bpp/8 equals the pixel byte count on every tile", g_px == g_total),
         ("h1 is NOT a row stride in bytes (that reading fits almost nothing)", g_stride <= 2),
         ("h1 is NOT a row stride in 8-byte words", g_words == 0),
+        # --- the registry's pairing rule (M167)
+        ("every id in a two-row grid resolves to a tile block", ids_total > 0 and ids_ok == ids_total),
+        ("two-row grids contain both equal-id columns (one block) and differing ones (a pair)",
+         pairs_same > 0 and pairs_diff > 0),
     ]
     passed = 0
     for label, ok in cases:
