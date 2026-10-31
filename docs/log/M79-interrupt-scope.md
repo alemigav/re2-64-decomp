@@ -105,3 +105,33 @@ diff against ares becomes meaningful for later states. If it takes S1–S5, the 
 local to `mips_harness.py` plus MI) but it is **emulator work**, not RE2 work — and the oracle already answers
 RE2 questions more cheaply. Worth doing if the goal is a runnable reconstruction; not worth doing if the goal is
 understanding the game.
+
+
+---
+
+## 7. S1 implemented — the crash is fixed
+
+`Cpu.interrupt_entry()` now checks whether the next instruction is a delay slot, clears the pending branch, and
+lets `take_exception(..., bd=in_delay)` set `EPC = pc-4` with `Cause.BD = 1`. Wired at every call site
+(`Cpu.run`, `Sched.run`, and the harness runs).
+
+**Measured, one PI injection at the idle spin:**
+
+```
+exc at instruction 400,000: EPC=0x80000518  BD=True  -> vector 0x80000180
+no fault; 2,000,000 instructions completed
+last 16 PCs: 0x8000051c 0x80000518 0x8000051c 0x80000518 …   (back in the idle spin)
+```
+
+`EPC` is the **branch** (`0x80000518`), not the delay slot (`0x8000051c`), `BD` is set, and — the point — **the
+boot chain no longer unwinds to `0x0`.** One gap, one fix, and the M78 crash is gone.
+
+**The handler really runs**, too (26 handler PCs, 1 000 000-instruction run):
+
+- visited `0x800006d0` → `0x800006f4` (the save sequence) and **reached `0x80000730+`**, the event-send area;
+- save area `0x80015000` holds `sr = 0xff03` — a real saved `Status`.
+
+**But `validCount` on `0x80139f10` is still 0**, so the handler runs and returns *without* delivering an event
+message. That is the next question, and it is now a clean one: the dispatch reaches the send area but nothing is
+enqueued — either the event-table entry the handler consults is empty for this source, or the send is gated on
+something (a registered-queue check) that this harness does not satisfy. It is no longer blocked by any crash.

@@ -364,7 +364,7 @@ class Sched:
                         c.timer_pending = True
                     c.hw_pending = (c.hw_pending & ~0x400) | self.mem.rcp_asserted()
                     if c.interrupt_pending():
-                        c.pc = c.take_exception(c.pc, 0, False)
+                        c.pc = c.interrupt_entry()
                         c.delay = None
                         n += 1; spent += 1
                         continue

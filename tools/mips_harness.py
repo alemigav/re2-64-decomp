@@ -119,7 +119,7 @@ class Cpu:
             if self.compare and self.count == self.compare:
                 self.timer_pending = True
             if self.interrupt_pending():
-                self.pc = self.take_exception(self.pc, 0, False)
+                self.pc = self.interrupt_entry()
                 self.delay = None
                 n += 1
                 continue
@@ -152,6 +152,21 @@ class Cpu:
         # BEV=0 -> general exception 0x80000180; BEV=1 -> 0xBFC00380.
         # 0x80000000 is the TLB-refill vector when EXL=0, NOT the general vector.
         return 0xBFC00380 if (self.status & 0x00400000) else 0x80000180
+    def interrupt_entry(self):
+        """Take an interrupt with delay-slot-correct EPC and Cause.BD.
+
+        If an interrupt is accepted while a branch's delay slot is the next
+        instruction, the architecture puts EPC at the BRANCH (not the delay slot) and
+        sets Cause.BD. EPC therefore points at the branch, and both the branch and its
+        delay slot re-execute after eret. Getting this wrong makes the handler return
+        into the middle of a branch pair - which is what drove the boot chain off the
+        end of its stack in M78.
+        """
+        in_delay = self.delay is not None
+        self.delay = None
+        self.jump_now = None
+        return self.take_exception(self.pc, 0, in_delay)
+
     def take_exception(self, pc, code, bd=False):
         self.epc = (pc - 4) & 0xFFFFFFFF if bd else pc
         self.cause = (self.cause & ~0x7C) | ((code & 0x1F) << 2) | ((1 << 31) if bd else 0)
