@@ -1,18 +1,17 @@
-/* func_8009de58
+/* func_8009de50
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8009de58  body 0x8009de58..0x8009e583  size 1839 B
- * body sha256 5bb4c5111c50001fb37af5b788cbfe3fd58a16ca3337b6280f9175d2015789d2
- * provider record sha256 82d2784b7685c3392cc1f884da986f51cb7bb3c3a6a85f3763eba666664059bc
- * callees 11 direct (11 in corpus)
+ * address 0x8009de50  body 0x8009de50..0x8009e583  size 102 B
+ * body sha256 c66f31eab62caf4744065b4811d07466ec4ddf1e82c9ee294048af638000017e
+ * provider record sha256 5cdcc358a5eef7970a7370d58a33cbd9935d6f5cacfc2c96325cca201c7b6c19
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
-void func_8009de58(void)
+void func_8009de50(void)
 
 {
   int iVar1;
-  undefined4 in_v1;
   
-  switch(in_v1) {
+  switch(DAT_8013272e) {
   case 0:
     FUN_8009e93c(3,0,0xffff,0);
     FUN_800777d8(0x1006b00);
@@ -20,7 +19,7 @@ void func_8009de58(void)
     DAT_8013273a = 0;
     DAT_8013272e = 1;
     DAT_8013272b = 3;
-    goto switchD_8009de84_default;
+    goto LAB_8009e564;
   case 1:
     if (DAT_8013273a == 0xf0) {
       func_0x80004a6c(1,6);
@@ -29,7 +28,7 @@ void func_8009de58(void)
       DAT_80132740 = 3;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0x20b) goto switchD_8009de84_default;
+    if (DAT_8013273a != 0x20b) goto LAB_8009e564;
     DAT_80132740 = 3;
     FUN_8009e8d4(0xb,0);
     DAT_8013272e = 2;
@@ -42,7 +41,7 @@ void func_8009de58(void)
       DAT_80132740 = 0xc;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0x1b6) goto switchD_8009de84_default;
+    if (DAT_8013273a != 0x1b6) goto LAB_8009e564;
     DAT_80132740 = 0xc;
     FUN_8009e8d4(0xb,0);
     DAT_8013272e = 3;
@@ -55,7 +54,7 @@ void func_8009de58(void)
       DAT_80132740 = 0x30;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0x8c) goto switchD_8009de84_default;
+    if (DAT_8013273a != 0x8c) goto LAB_8009e564;
     DAT_80132740 = 0x30;
     FUN_8009e8d4(0xb,0);
     DAT_8013272e = 4;
@@ -68,7 +67,7 @@ void func_8009de58(void)
       DAT_80132740 = 0xc0;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0x142) goto switchD_8009de84_default;
+    if (DAT_8013273a != 0x142) goto LAB_8009e564;
     DAT_80132740 = 0xc0;
     FUN_8009e8d4(0xb,0);
     FUN_80025f78(0,2,&DAT_80132628);
@@ -80,7 +79,7 @@ void func_8009de58(void)
     if (DAT_8013273a == 0x80) {
       func_0x80004a6c(1,0xe);
     }
-    if (DAT_8013273a != 0x151) goto switchD_8009de84_default;
+    if (DAT_8013273a != 0x151) goto LAB_8009e564;
     FUN_8009ced8();
     DAT_80132728 = 8;
     DAT_8013272e = 6;
@@ -93,7 +92,7 @@ void func_8009de58(void)
       DAT_80132740 = 0x300;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0x150) goto switchD_8009de84_default;
+    if (DAT_8013273a != 0x150) goto LAB_8009e564;
     DAT_80132740 = 0x300;
     FUN_8009e8d4(0xb,0);
     DAT_8013272e = 7;
@@ -106,7 +105,7 @@ void func_8009de58(void)
       DAT_80132740 = 0xc00;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0x10a) goto switchD_8009de84_default;
+    if (DAT_8013273a != 0x10a) goto LAB_8009e564;
     DAT_80132740 = 0xc00;
     FUN_8009e8d4(0xb,0);
     DAT_8013272e = 8;
@@ -133,7 +132,7 @@ void func_8009de58(void)
       DAT_80132740 = 0xc000;
       FUN_8009e8d4(0xb,0);
     }
-    if (DAT_8013273a != 0x300) goto switchD_8009de84_default;
+    if (DAT_8013273a != 0x300) goto LAB_8009e564;
     DAT_8013272e = 9;
     break;
   case 9:
@@ -156,14 +155,14 @@ void func_8009de58(void)
       DAT_8013272c = 2;
     }
     if ((DAT_8013273a < 0x254) || (iVar1 = FUN_8002767c(DAT_8013272b), iVar1 == 0))
-    goto switchD_8009de84_default;
+    goto LAB_8009e564;
     DAT_80132740 = 0;
     FUN_8009e8d4(0,1);
     DAT_80132729 = 1;
     DAT_8013272e = 10;
     goto LAB_8009e4e4;
   case 10:
-    if ((DAT_8013273a != 100) || (DAT_80119e70 != '\0')) goto switchD_8009de84_default;
+    if ((DAT_8013273a != 100) || (DAT_80119e70 != '\0')) goto LAB_8009e564;
     DAT_800e90f8 = 1;
     DAT_800e110c = DAT_800e110c & 0xffffffef;
     FUN_8006c070(0);
@@ -171,35 +170,35 @@ void func_8009de58(void)
     DAT_8013272e = 0xb;
     goto LAB_8009e4e4;
   case 0xb:
-    if ((DAT_800e10ec & 0x200) != 0) goto switchD_8009de84_default;
+    if ((DAT_800e10ec & 0x200) != 0) goto LAB_8009e564;
     FUN_8006c070(1);
     DAT_8013272e = 0xc;
     goto LAB_8009e524;
   case 0xc:
-    if (DAT_8013273a != 1) goto switchD_8009de84_default;
+    if (DAT_8013273a != 1) goto LAB_8009e564;
     FUN_8006c070(0);
     FUN_8009f320(0x10);
     DAT_8013272e = 0xd;
 LAB_8009e4e4:
     DAT_8013273a = 0;
-    goto switchD_8009de84_default;
+    goto LAB_8009e564;
   case 0xd:
-    if ((DAT_800e10ec & 0x200) != 0) goto switchD_8009de84_default;
+    if ((DAT_800e10ec & 0x200) != 0) goto LAB_8009e564;
     FUN_8006c070(1);
     DAT_8013272e = 0xe;
 LAB_8009e524:
     DAT_8013273a = 0;
-    goto switchD_8009de84_default;
+    goto LAB_8009e564;
   case 0xe:
     if (DAT_8013273a == 10) {
       DAT_8013272a = 3;
       DAT_8013273c = 4;
     }
   default:
-    goto switchD_8009de84_default;
+    goto LAB_8009e564;
   }
   DAT_8013273a = 0;
-switchD_8009de84_default:
+LAB_8009e564:
   DAT_8013273a = DAT_8013273a + 1;
   return;
 }

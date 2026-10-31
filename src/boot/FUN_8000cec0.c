@@ -2,7 +2,7 @@
  * image   boot (boot), base 0x80000480
  * address 0x8000cec0  body 0x8000cec0..0x8000cf53  size 151 B
  * body sha256 309022631921e98b100b9d09478ec689adb07440129bb1fc1ed9b65932ecd22d
- * provider record sha256 3460a2c9f914cf1119294f803e7620eebdc254d4212e2fc0db6cbe1ffaf36771
+ * provider record sha256 18e5efd9aad7f58dbffd4681c71029ad82bce1e9e28afaf8e9aaf94a426c9ad0
  * callees 2 direct (2 in corpus)
  * provider Ghidra 12.2
  */

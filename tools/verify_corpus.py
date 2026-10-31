@@ -17,6 +17,7 @@ same mistake as deleting the negative results.
 """
 import argparse
 import csv
+import re
 import json
 import os
 import struct
@@ -159,6 +160,22 @@ def main() -> None:
             failures.append(f"{name} no longer shows {[n for n in needles if n and n not in text]}")
         print(f"5 regression:        {name:>16} {'ok' if ok else 'FAILED'} "
               f"({', '.join(n for n in needles if n)})")
+
+    # 7 — no function may read a register nothing in the corpus sets. This is how a mis-placed
+    # boundary announces itself: a function started at a prologue whose argument preload was
+    # hoisted above the frame setup decompiles with `undefined4 in_vN`. Discovery passes that
+    # ignore this shipped 105 such functions in one iteration.
+    allower = {"entrypoint": "the reset vector: nothing calls it, a0 is genuinely unset",
+               "FUN_8016edb4": "pre-existing provider boundary in ovl_007c552, not seed-induced"}
+    offenders, allowed = [], []
+    for f in sorted(Path(a.src).glob("*/*.c")):
+        text = f.read_text()
+        if re.search(r"undefined[0-9]+ in_[a-z]", text):
+            (allowed if f.stem in allower else offenders).append(f.stem)
+    print(f"7 boundary sanity:   {len(offenders)} unexplained functions read an incoming register "
+          f"({len(allowed)} allow-listed)")
+    if offenders:
+        failures.append(f"{len(offenders)} mis-bounded functions, e.g. {offenders[:6]}")
 
     # 6 — reproducibility
     if not a.skip_repro:

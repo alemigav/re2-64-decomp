@@ -1,20 +1,19 @@
-/* func_800aa844
+/* func_800aa83c
  * image   stage2 (stage2), base 0x80018a80
- * address 0x800aa844  body 0x800aa844..0x800aa8b7  size 119 B
- * body sha256 b6d62049f3747018263197dd5de7744327a5e19801c634abd4f8bfdf6735cb45
- * provider record sha256 91960fc8725b1eb8a31a81cc7880c471638186c20b00b9d0fa4ddb1139d80c16
+ * address 0x800aa83c  body 0x800aa83c..0x800aa8b7  size 127 B
+ * body sha256 aca05b48490a26fc00399650c44a13a13802839e0b14e93dc1c9b3cfc71c56d7
+ * provider record sha256 66a4e2ef8b7d5a1b81bc5c6e39e7d9de01eed57be5232a256ea6c7c4f71764c6
  * callees 2 direct (2 in corpus)
  * provider Ghidra 12.2
  */
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-undefined4 func_800aa844(int *param_1)
+undefined4 func_800aa83c(int *param_1)
 
 {
-  int in_v0;
   undefined4 uVar1;
   
-  if (in_v0 == 0) {
+  if (DAT_80136310 == '\0') {
     uVar1 = 0;
   }
   else {

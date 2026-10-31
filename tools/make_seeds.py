@@ -50,22 +50,29 @@ def main() -> None:
     # boundaries found in unclaimed code (tools/find_missed_functions.py) carry func_ names;
     # a curated name in config/symbols.tsv always wins over a discovered boundary.
     curated = {ad for ad, _, _, _ in symbols}
-    extra = []
-    for p in sorted(Path(a.extra).glob("*.tsv")) if Path(a.extra).is_dir() else []:
-        for line in p.read_text().splitlines():
-            parts = line.split("\t")
-            if len(parts) >= 3 and int(parts[0], 0) not in curated:
-                extra.append((int(parts[0], 0), parts[1], parts[2], "discovered boundary"))
-    symbols = symbols + extra
     images = json.loads(Path(a.images).read_text())["images"]
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
+
+    # An address alone does not identify an image: twenty overlays share the load address
+    # 0x80161cf0, so filtering by range broadcasts one image's boundaries into all of them and
+    # decorates each with functions that belong to different bytes. A discovered boundary is
+    # therefore applied to its own image only, and a curated name must fall inside exactly one
+    # image or the run fails.
+    extra_by_image = {}
+    if Path(a.extra).is_dir():
+        for p in sorted(Path(a.extra).glob("*.tsv")):
+            extra_by_image[p.stem] = [
+                (int(x.split("\t")[0], 0), x.split("\t")[1], x.split("\t")[2])
+                for x in p.read_text().splitlines()
+                if len(x.split("\t")) >= 3 and int(x.split("\t")[0], 0) not in curated]
 
     total = 0
     print(f"{len(symbols)} symbols, {len(images)} images")
     for img in images:
         lo, hi = img["base"], img["base"] + img["size"]
         mine = [(ad, k, n) for ad, k, n, _ in symbols if lo <= ad < hi]
+        mine += extra_by_image.get(img["name"], [])
         path = out / f"{img['name']}.tsv"
         path.write_text("".join(f"{ad:#010x}\t{k}\t{n}\n" for ad, k, n in mine))
         total += len(mine)

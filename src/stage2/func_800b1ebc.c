@@ -1,23 +1,22 @@
-/* func_800b1ec4
+/* func_800b1ebc
  * image   stage2 (stage2), base 0x80018a80
- * address 0x800b1ec4  body 0x800b1ec4..0x800b1fbf  size 255 B
- * body sha256 4201fc734419aa209245be415ef2691caa6abe46bcb0ecc6435e229508984675
- * provider record sha256 fd66c078cd6012787940348236ca3267760047a1641f3d0af449568bdbe73afc
+ * address 0x800b1ebc  body 0x800b1ebc..0x800b1fbf  size 263 B
+ * body sha256 0f7fb3841255fb69080b2f12ff83b416367b2f99684477e0297b988a739394c8
+ * provider record sha256 9078adb753aad2e01ffcedbe6837da4e48462298913cd485178197a68eae9c49
  * callees 4 direct (4 in corpus)
  * provider Ghidra 12.2
  */
-undefined4 func_800b1ec4(undefined4 param_1,undefined1 param_2)
+undefined4 func_800b1ebc(undefined4 param_1,undefined1 param_2)
 
 {
   undefined1 uVar1;
-  int in_v0;
   uint uVar2;
   int iVar3;
   uint uVar4;
   undefined4 uVar5;
   
   uVar5 = 0xffffffff;
-  if (in_v0 != 0) {
+  if (DAT_80136310 != '\0') {
     FUN_800a5678();
     uVar2 = FUN_800af0d4(param_1);
     while (uVar2 != 0xffffffff) {

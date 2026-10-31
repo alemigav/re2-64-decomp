@@ -1,24 +1,23 @@
-/* func_800b3ba4
+/* func_800b3b9c
  * image   stage2 (stage2), base 0x80018a80
- * address 0x800b3ba4  body 0x800b3ba4..0x800b3ddb  size 571 B
- * body sha256 11d4cef6b964ba7115ba5606edfbe64860b28f7e006b4a0c03f87d5e34b2d46f
- * provider record sha256 557215ecd679cb57bc436001a608b96e33bb90f3e7fd3fbb165e6091b91ae9b8
+ * address 0x800b3b9c  body 0x800b3b9c..0x800b3ddb  size 579 B
+ * body sha256 6ae11180873405df239e93bf83f0ae943c50ba3dd8ac539df0c707b3ee3ffbad
+ * provider record sha256 71d522b615812e4cce784b2d943cb83140434f679d1f411e2003073c8e74b519
  * callees 7 direct (7 in corpus)
  * provider Ghidra 12.2
  */
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void func_800b3ba4(void)
+void func_800b3b9c(void)
 
 {
   byte bVar1;
-  int in_v0;
   int iVar2;
   int iVar3;
   int iVar4;
   float fVar5;
   
-  if (in_v0 != 0) {
+  if (DAT_80136d80 != '\0') {
     osRecvMesg(0x8015afa0,0,1);
     iVar4 = 0;
     iVar3 = -0x7fea74e0;

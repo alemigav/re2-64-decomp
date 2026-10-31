@@ -1,18 +1,17 @@
-/* func_8009d020
+/* func_8009d018
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8009d020  body 0x8009d020..0x8009d877  size 2139 B
- * body sha256 15eab303a4dc659430446317a354d913d831294c77129754532e257695c466d6
- * provider record sha256 ffcd4c4fb5b7ab231b6f7188003cca02ff7fac4f9d6642db066749db31ed443e
- * callees 11 direct (11 in corpus)
+ * address 0x8009d018  body 0x8009d018..0x8009d877  size 102 B
+ * body sha256 5a8fe9742d4b602d09dac941b1601d1b17731ebc7d1500f29ca2a4c717fbaaf6
+ * provider record sha256 e44ceeb2812d1f7c0ade0e21f09b5459e92775e054ea5cc4552a711b8888b84a
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
-void func_8009d020(void)
+void func_8009d018(void)
 
 {
   int iVar1;
-  undefined4 in_v1;
   
-  switch(in_v1) {
+  switch(DAT_8013272e) {
   case 0:
     FUN_8009e93c(3,0,0xffff,0);
     FUN_800777d8(0x1006b00);
@@ -20,7 +19,7 @@ void func_8009d020(void)
     DAT_8013273a = 0;
     DAT_8013272e = 1;
     DAT_8013272b = 3;
-    goto switchD_8009d04c_default;
+    goto LAB_8009d858;
   case 1:
     if (DAT_8013273a == 0xf0) {
       FUN_80025f78(1,2,&DAT_80132644);
@@ -38,7 +37,7 @@ void func_8009d020(void)
       DAT_80132740 = 3;
       FUN_8009e8d4(0xb,0);
     }
-    if (DAT_8013273a != 0x337) goto switchD_8009d04c_default;
+    if (DAT_8013273a != 0x337) goto LAB_8009d858;
     DAT_80132658 = DAT_800c52d8 + 62000;
     FUN_80025f78(0,2);
     FUN_8009ced8();
@@ -74,7 +73,7 @@ void func_8009d020(void)
       FUN_8009e8d4(0xb,0);
       FUN_8009ced8();
     }
-    if (DAT_8013273a != 0x389) goto switchD_8009d04c_default;
+    if (DAT_8013273a != 0x389) goto LAB_8009d858;
     DAT_80132740 = 0x3c;
     FUN_8009e8d4(0x1b,0);
     DAT_80132740 = 0x400;
@@ -102,7 +101,7 @@ void func_8009d020(void)
       DAT_80132740 = 0x18000;
       FUN_8009e8d4(0xb,0);
     }
-    if (DAT_8013273a != 0x19b) goto switchD_8009d04c_default;
+    if (DAT_8013273a != 0x19b) goto LAB_8009d858;
     FUN_80025f78(0,2,&DAT_80132698);
     DAT_8013272b = 3;
     DAT_80132728 = 0;
@@ -114,7 +113,7 @@ void func_8009d020(void)
     DAT_8013272e = 4;
 LAB_8009d434:
     DAT_8013273a = 0;
-    goto switchD_8009d04c_default;
+    goto LAB_8009d858;
   case 4:
     if (DAT_8013273a == 0x5e) {
       DAT_80132740 = 0;
@@ -138,7 +137,7 @@ LAB_8009d434:
       DAT_80132740 = 0x60000;
       FUN_8009e8d4(0xb,0);
     }
-    if (DAT_8013273a != 0x244) goto switchD_8009d04c_default;
+    if (DAT_8013273a != 0x244) goto LAB_8009d858;
     DAT_80132728 = 8;
     DAT_80132740 = 0x80000;
     FUN_8009e8d4(0x27,0);
@@ -182,14 +181,14 @@ LAB_8009d434:
       FUN_8009ced8();
     }
     if ((DAT_8013273a < 0x1be) || (iVar1 = FUN_8002767c(DAT_8013272b), iVar1 == 0))
-    goto switchD_8009d04c_default;
+    goto LAB_8009d858;
     DAT_80132729 = 1;
     DAT_80132740 = 0;
     FUN_8009e8d4(0);
     DAT_8013272e = 6;
     break;
   case 6:
-    if ((DAT_8013273a != 100) || (DAT_80119e70 != '\0')) goto switchD_8009d04c_default;
+    if ((DAT_8013273a != 100) || (DAT_80119e70 != '\0')) goto LAB_8009d858;
     DAT_800e90f8 = 1;
     DAT_800e110c = DAT_800e110c & 0xffffffef;
     FUN_8006c070(0);
@@ -197,33 +196,33 @@ LAB_8009d434:
     DAT_8013272e = 7;
     break;
   case 7:
-    if ((DAT_800e10ec & 0x200) != 0) goto switchD_8009d04c_default;
+    if ((DAT_800e10ec & 0x200) != 0) goto LAB_8009d858;
     FUN_8006c070(1);
     DAT_8013272e = 8;
     goto LAB_8009d818;
   case 8:
-    if (DAT_8013273a != 1) goto switchD_8009d04c_default;
+    if (DAT_8013273a != 1) goto LAB_8009d858;
     FUN_8006c070(0);
     FUN_8009f320(0xf);
     DAT_8013272e = 9;
     break;
   case 9:
-    if ((DAT_800e10ec & 0x200) != 0) goto switchD_8009d04c_default;
+    if ((DAT_800e10ec & 0x200) != 0) goto LAB_8009d858;
     FUN_8006c070(1);
     DAT_8013272e = 10;
 LAB_8009d818:
     DAT_8013273a = 0;
-    goto switchD_8009d04c_default;
+    goto LAB_8009d858;
   case 10:
     if (DAT_8013273a == 10) {
       DAT_8013272a = 3;
       DAT_8013273c = 4;
     }
   default:
-    goto switchD_8009d04c_default;
+    goto LAB_8009d858;
   }
   DAT_8013273a = 0;
-switchD_8009d04c_default:
+LAB_8009d858:
   DAT_8013273a = DAT_8013273a + 1;
   return;
 }

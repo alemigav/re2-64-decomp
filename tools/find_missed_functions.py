@@ -41,6 +41,27 @@ def is_prologue(w: int) -> bool:
     return (w & 0xFFFF0000) == 0x27BD0000 and (w & 0x8000) != 0
 
 
+def entry_before_prologue(words: list, base: int, prologue: int) -> int:
+    """An entry whose argument preload was hoisted above the frame setup.
+
+    Measured at 0x8009d020 / 0x8009d880 / 0x8009de58: each prologue is preceded by
+    `lui rt,0x8013` + `lhu rt,off(rt)`, loading the dispatch index the prologue is followed by a
+    switch on. Seeding the prologue alone produces a function that reads an incoming register and
+    Ghidra says so (`undefined4 in_v1`), which is how a mis-placed boundary announces itself. When
+    the two words before the prologue are a lui + load pair into RDRAM, the entry is the lui.
+    """
+    i = (prologue - base) // 4
+    if i < 2:
+        return prologue
+    hi, ld = words[i - 2], words[i - 1]
+    if (hi >> 26) != 0x0F or not (0x8000 <= (hi & 0xFFFF) < 0x8040):
+        return prologue
+    rt = (hi >> 16) & 0x1F
+    if (ld >> 26) not in (0x23, 0x25, 0x24) or ((ld >> 21) & 0x1F) != rt:
+        return prologue
+    return prologue - 8
+
+
 def unclaimed_runs(base: int, size: int, covered: set) -> list:
     gaps = sorted(set(range(base, base + size, 4)) - covered)
     runs = []
@@ -94,7 +115,7 @@ def main() -> None:
                 runs.append(dict(start=hex(s), bytes=e - s + 4, prologues=[hex(p) for p in prologues],
                                  jal=jal, jr_ra=jr, verdict="code" if codeish else "data-ish"))
             if codeish:
-                candidates.extend(prologues)
+                candidates.extend(entry_before_prologue(words, base, p) for p in prologues)
 
         candidates = sorted(set(candidates))
         (seeds_dir / f"{img['name']}.tsv").write_text(

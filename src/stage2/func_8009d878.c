@@ -1,18 +1,17 @@
-/* func_8009d880
+/* func_8009d878
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8009d880  body 0x8009d880..0x8009de4f  size 1491 B
- * body sha256 5e1a73e86626f741935078795ad2798de574c5a5daefe39d3e8db80a6e4ed01d
- * provider record sha256 00768462dfa7388901284b011cf886608aa953be2654315f498b8e17a796490d
- * callees 11 direct (11 in corpus)
+ * address 0x8009d878  body 0x8009d878..0x8009de4f  size 94 B
+ * body sha256 d5af22f9a79ff8ac7905f936629e33fc0f4586c160165c1e5a8e2c87114d6323
+ * provider record sha256 6375c870247fa2a857afc77b2abcbf2864cdd22efef9855146f708f92bc1cac5
+ * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */
-void func_8009d880(void)
+void func_8009d878(void)
 
 {
   int iVar1;
-  undefined4 in_v1;
   
-  switch(in_v1) {
+  switch(DAT_8013272e) {
   case 0:
     FUN_8009e93c(3,0,0xffff,0);
     FUN_800777d8(0x1006b00);
@@ -20,7 +19,7 @@ void func_8009d880(void)
     DAT_8013273a = 0;
     DAT_8013272e = 1;
     DAT_8013272b = 3;
-    goto switchD_8009d8a8_default;
+    goto LAB_8009de34;
   case 1:
     if (DAT_8013273a == 0xf0) {
       func_0x80004a6c(1,6);
@@ -29,7 +28,7 @@ void func_8009d880(void)
       DAT_80132740 = 3;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0x20b) goto switchD_8009d8a8_default;
+    if (DAT_8013273a != 0x20b) goto LAB_8009de34;
     DAT_80132740 = 3;
     FUN_8009e8d4(0xb,0);
     DAT_8013272e = 2;
@@ -45,7 +44,7 @@ void func_8009d880(void)
     if (DAT_8013273a == 0xbe) {
       func_0x80004a6c(1,8);
     }
-    if (DAT_8013273a != 0x184) goto switchD_8009d8a8_default;
+    if (DAT_8013273a != 0x184) goto LAB_8009de34;
     DAT_80132740 = 0xc;
     FUN_8009e8d4(0xb,0);
     FUN_80025f78(0,2,&DAT_80132628);
@@ -65,7 +64,7 @@ void func_8009d880(void)
       DAT_80132740 = 0x30;
       FUN_8009e8d4(0xb,0);
     }
-    if (DAT_8013273a != 0x18c) goto switchD_8009d8a8_default;
+    if (DAT_8013273a != 0x18c) goto LAB_8009de34;
     FUN_8009ced8();
     DAT_80132728 = 8;
     DAT_8013272e = 4;
@@ -78,7 +77,7 @@ void func_8009d880(void)
       DAT_80132740 = 0xc0;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0x112) goto switchD_8009d8a8_default;
+    if (DAT_8013273a != 0x112) goto LAB_8009de34;
     DAT_80132740 = 0xc0;
     FUN_8009e8d4(0xb,0);
     DAT_8013272e = 5;
@@ -91,7 +90,7 @@ void func_8009d880(void)
       DAT_80132740 = 0x300;
       FUN_8009e8d4(7,0);
     }
-    if (DAT_8013273a != 0xfd) goto switchD_8009d8a8_default;
+    if (DAT_8013273a != 0xfd) goto LAB_8009de34;
     DAT_80132740 = 0x300;
     FUN_8009e8d4(0xb,0);
     FUN_80025f78(1,2,&DAT_80132660);
@@ -118,14 +117,14 @@ void func_8009d880(void)
       DAT_8013272c = 2;
     }
     if ((DAT_8013273a < 0x206) || (iVar1 = FUN_8002767c(DAT_8013272b), iVar1 == 0))
-    goto switchD_8009d8a8_default;
+    goto LAB_8009de34;
     DAT_80132740 = 0;
     FUN_8009e8d4(0,1);
     DAT_80132729 = 1;
     DAT_8013272e = 7;
     goto LAB_8009ddb4;
   case 7:
-    if ((DAT_8013273a != 100) || (DAT_80119e70 != '\0')) goto switchD_8009d8a8_default;
+    if ((DAT_8013273a != 100) || (DAT_80119e70 != '\0')) goto LAB_8009de34;
     DAT_800e90f8 = 1;
     DAT_800e110c = DAT_800e110c & 0xffffffef;
     FUN_8006c070(0);
@@ -133,35 +132,35 @@ void func_8009d880(void)
     DAT_8013272e = 8;
     goto LAB_8009ddb4;
   case 8:
-    if ((DAT_800e10ec & 0x200) != 0) goto switchD_8009d8a8_default;
+    if ((DAT_800e10ec & 0x200) != 0) goto LAB_8009de34;
     FUN_8006c070(1);
     DAT_8013272e = 9;
     goto LAB_8009ddf4;
   case 9:
-    if (DAT_8013273a != 1) goto switchD_8009d8a8_default;
+    if (DAT_8013273a != 1) goto LAB_8009de34;
     FUN_8006c070(0);
     FUN_8009f320(0x10);
     DAT_8013272e = 10;
 LAB_8009ddb4:
     DAT_8013273a = 0;
-    goto switchD_8009d8a8_default;
+    goto LAB_8009de34;
   case 10:
-    if ((DAT_800e10ec & 0x200) != 0) goto switchD_8009d8a8_default;
+    if ((DAT_800e10ec & 0x200) != 0) goto LAB_8009de34;
     FUN_8006c070(1);
     DAT_8013272e = 0xb;
 LAB_8009ddf4:
     DAT_8013273a = 0;
-    goto switchD_8009d8a8_default;
+    goto LAB_8009de34;
   case 0xb:
     if (DAT_8013273a == 10) {
       DAT_8013272a = 3;
       DAT_8013273c = 4;
     }
   default:
-    goto switchD_8009d8a8_default;
+    goto LAB_8009de34;
   }
   DAT_8013273a = 0;
-switchD_8009d8a8_default:
+LAB_8009de34:
   DAT_8013273a = DAT_8013273a + 1;
   return;
 }

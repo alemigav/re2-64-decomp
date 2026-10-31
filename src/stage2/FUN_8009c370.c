@@ -1,8 +1,8 @@
 /* FUN_8009c370
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8009c370  body 0x8009c370..0x8009c593  size 551 B
- * body sha256 1c39f4e87dbc294fe34446c3fad13a19af809cce8ef68ce47312ae60571ecae2
- * provider record sha256 453c18f8ea31565270411beaafd6223a65d708d7af5339d2ae57ca5764e20366
+ * body sha256 be6354e7a10719c86a7f7ffb78e3c7add3f98cacab798acd5cd3abb991daa2b5
+ * provider record sha256 3d986545a12bfd092dd07e51ef040427f9d20609141ad07dbdfc0c40cf5262b0
  * callees 9 direct (9 in corpus)
  * provider Ghidra 12.2
  */
@@ -61,7 +61,7 @@ LAB_8009c4fc:
       }
     }
     (*(code *)(&PTR_FUN_801321d0)[DAT_8013272a])();
-    (*(code *)(&PTR_LAB_801321e0)[DAT_8013273c])();
+    (*(code *)(&PTR_func_8009d018_801321e0)[DAT_8013273c])();
     FUN_8009e584();
     DAT_80132744 = DAT_80132744 + 1;
     if (DAT_80132744 == 0xffffffff) {

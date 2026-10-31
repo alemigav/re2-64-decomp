@@ -14,15 +14,29 @@
 
 ### Geometry — established
 
+**Where the container starts (M83):** at `0xb6248`, not at the shared destination's first payload.
+Slot 6 (`0x7c552`) also targets `0x8016e880` but is an ordinary zlib member, and between it and
+`0xb6248` sit **229 654 B of other zlib members**. The earlier tool printed the 29-payload span
+`0x7c552`–`0xc8624` = 311 506 B with "gaps 229 654"; those gaps were that prefix, not holes in the
+container. Anyone re-running the old command sees the same 229 654 and should read it this way.
+
 * **The payloads tile exactly.** Each of the 28 starts where the previous ends; there is no
   inter-payload padding, no per-payload header, and no trailer. Measured: every adjacent pair has a
   gap of `0` (the single `229 654`-byte gap in the sequence is between the zlib member at slot 6 and
   the start of the run, and is filled by ordinary zlib members).
 * **Therefore the cart table *is* the directory.** Offsets and stored lengths come from records
   38–65; nothing needs to be parsed to walk the container.
-* Run extent `0xb6248`–`0xc8624` = **81 852 B** stored, exactly the sum of the 28 `stored` fields.
+* Run extent `0xb6248`–`0xc8624` = **74 716 B**, exactly the sum of the 28 `stored` fields.
+  **Corrected (M83):** this note first said 81 852 B, which is the *29-payload* total including the
+  zlib member at slot 6 (7 136 B). The four numbers — start, end, `end − start`, `sum(stored)` —
+  now print together from `decode_r4_container.py layout`, which refuses the claim unless they
+  agree. They do: 74 716 = 74 716, gaps 0 across all 27 adjacent pairs.
 
 ### Structure — established, and it excludes entropy coders
+
+The family predicate is **all-or-nothing** — every record's byte 3 must be `0x00` — and exactly one
+payload fails it (slot 6, the zlib member). So "28 of 29" is auditable: one named exclusion, no
+fractional membership.
 
 Pooled over all 28 payloads (18 679 four-byte records, 74 716 B):
 
@@ -39,8 +53,9 @@ Pooled over all 28 payloads (18 679 four-byte records, 74 716 B):
 The low byte being *never* written is not something an entropy coder can produce — it is a
 **record structure of 32-bit words whose low byte is unused**, with the top byte written only
 rarely. Every codec that stores a byte stream is therefore excluded on structure alone, before any
-decode is attempted. The 432 distinct 16-bit operands out of 1 910 records (payload 38) mark the
-data as a **small dictionary of values**, not as coded text.
+decode is attempted. The operand dictionary is the set of distinct values of the 16-bit field at bytes 1–2 of each
+four-byte record: **432 distinct values across payload 38's 1 910 records**, which marks the data as
+a small dictionary of values, not as coded text.
 
 ### Codec — every hypothesis in the matrix rejected
 
@@ -48,11 +63,16 @@ data as a **small dictionary of values**, not as coded text.
 decoded something only if its output length equals the table's `decompressed` field exactly. A
 decoder that produces plausible bytes of the wrong length has produced nothing.
 
+**The expected length is the table's `decompressed` field, never the stored size** — for payload 38
+that is 52 112 B against 7 640 B stored, so the test is not trivially satisfiable on this
+uncompressed-looking data. The five `pack24-hi` × `deflate-15` results marked "rejected" did emit
+bytes; they emitted the wrong number of them, which is why they are rejections rather than hits.
+
 | family | hypotheses tried | result |
 |---|---|---|
 | zlib / raw deflate / gzip / lzma / lzma-raw / bz2 × 7 transforms (`raw`, 24-of-32 packed both ways, `swap16`, `swap32`, `skip2`, `skip4`) | 42 combinations × 28 payloads | **0 outputs** — every decoder rejects the bytes at the first header |
 | byte-oriented LZ command streams, 3 token widths × 6 field splits | 18 combinations × 28 | **rejected** (wrong length, or a back-reference before the stream start) |
-| bit-level 1-bit-flag LZ over the packed stream, MSB- and LSB-first, offsets 8–16 bits × lengths 3–9 bits | **1 960 probes** | **rejected** |
+| bit-level 1-bit-flag LZ over the packed stream: offsets {8,10,12,13,14,15,16} × lengths {3,4,5,8,9} × {MSB-first, LSB-first} = 70 layouts per payload × 28 payloads | **1 960 probes** | **rejected** |
 
 That is a negative result, and it is the useful kind: the container is not "zlib with different
 constants", which was the cheapest and most likely alternative, and it is not the standard
@@ -117,9 +137,18 @@ call-graph-driven discovery never created it: it is reached indirectly.
 | `func_8009d880` | `0x8009d880`–`0x8009de4f` | 1 487 B |
 | `func_8009de58` | `0x8009de58`–`0x8009e583` | 1 835 B |
 
-`func_8009d020` decompiles to an 11-case `switch` calling 11 functions, all of them resolved in the
-corpus, driving globals `DAT_8013273a`, `DAT_8013272e`, `DAT_8013272b` — a game state machine, not a
-data table. **Region coverage: 0 % → 99.6 % (5 464 of 5 484 B).**
+`func_8009d020` decompiled to an 11-case `switch` driving globals `DAT_8013273a`, `DAT_8013272e`,
+`DAT_8013272b` — a game state machine, not a data table.
+
+**Corrected (M83): that boundary was wrong.** The address is the *prologue*, and the two
+instructions before it (`lui v0,0x8013` / `lhu v1,0x272e(v0)`) load the switch index. Seeding the
+prologue produced a function that reads an incoming register — Ghidra says so with
+`undefined4 in_v1` — and its 2 139-byte body claimed the case blocks. With entries at
+`prologue − 8` the three functions are 60, 56 and 60 bytes: dispatch preambles only, because the
+case blocks are reachable **only** through a jump table at `0x800ca458` that is **all zeros in the
+image** (filled at runtime). So the region's honest coverage is **5.3 % (288 of 5 484 B)**, not
+99.6 %: the 99.6 % was an artefact of a mis-placed boundary, which is the failure mode
+`tools/verify_corpus.py` check 7 now refuses to let through.
 
 ### Generalised: how much code is hiding in the gaps
 
@@ -134,10 +163,14 @@ merely contains a prologue-shaped word.
 | boot | 2 | 844 |
 | all six overlays | 0 | 0 |
 
-Seeding them and re-running changed the corpus from **3 267 → 3 293 functions** and coverage from
-**61.1 % → 61.6 %** (1 189 484 → 1 199 044 B). The modest gain is the real lesson: seeding a start
-does not claim a *run*. Ghidra's body extent stops at the next branch it cannot follow, so a run
-that is 60 KB of code yields 9.5 KB of claimed bodies and 254 smaller gaps where 243 were before.
+**Corrected (M83): the differential as first reported was contaminated.** It came from a run where
+`make_seeds.py` broadcast one image's discovered boundaries into every overlay sharing load address
+`0x80161cf0` — an address does not identify an image — which turned 3 267 functions into 4 184 and
+*lowered* coverage to 59.5 %. Measured properly against a true baseline (curated seeds only, one
+image-scoped seed file per image): **3 267 → 3 292 functions, 61.1 % → 61.3 %**, and `failed` stays
+0 on both sides, so discovery resolved no decompile failures — it added boundaries, nothing more.
+The rest of the lesson stands and is sharper: seeding a start does not claim a *run*, so 24
+candidates bought 25 functions and 0.2 points.
 
 The largest remaining gaps are **not** code: the 521 344 B tail at `0x800b6830` has 816
 `jal`-shaped words and **zero** prologues, and the 47 428 B head at `0x80018a8c` has one prologue

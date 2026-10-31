@@ -226,15 +226,26 @@ def cmd_layout(a) -> None:
               f"{p['decompressed'] / p['stored']:6.2f} {recs:5d} "
               f"{100 * b3 / max(recs,1):5.1f}% {100 * b0 / max(recs,1):5.1f}%  {contig}")
     fam = [p for p in ps if is_record_family(p)]
-    print(f"\n{len(fam)} of {len(ps)} payloads are in the 4-byte/24-bit record family "
-          f"({len(ps) - len(fam)} is the zlib member at slot 6, which fails the grid)")
+    print(f"\n{len(fam)} of {len(ps)} payloads are in the 4-byte/24-bit record family. The predicate "
+          f"is all-or-nothing (every record's byte 3 must be 0x00); the {len(ps) - len(fam)} "
+          f"excluded payload is slot {[p['slot'] for p in ps if not is_record_family(p)]}, "
+          f"the zlib member that shares this destination.")
+    # Four-way agreement: the geometry claim is only as good as these four numbers agreeing, and
+    # a hand-computed constant was wrong here once (81 852 is the 29-payload total, not this run).
+    s0, s1 = fam[0]["cart"], fam[-1]["cart"] + fam[-1]["stored"]
+    tot = sum(p["stored"] for p in fam)
+    pairs = list(zip(fam, fam[1:]))
+    nonzero = [(a["slot"], b["slot"], b["cart"] - (a["cart"] + a["stored"])) for a, b in pairs
+               if b["cart"] != a["cart"] + a["stored"]]
+    print(f"container: start {s0:#09x}  end {s1:#09x}  end-start {s1 - s0:,}  "
+          f"sum(stored) {tot:,}  gaps {len(nonzero)}  "
+          f"{'AGREE' if s1 - s0 == tot and not nonzero else 'DISAGREE'}")
+    print(f"the 29-payload set including slot 6 spans {ps[0]['cart']:#09x}..{s1:#09x} "
+          f"({s1 - ps[0]['cart']:,} B, sum {sum(p['stored'] for p in ps):,} B) — do not")
+    print("quote that span as the container: it begins with 229 654 B of ordinary zlib members.")
     print(f"pooled over the family: byte 3 of every record is 0x00 in {all_b3}/{fam_recs} "
           f"({100 * all_b3 / fam_recs:.1f} %), byte 0 is 0x00 in {all_b0}/{fam_recs} "
           f"({100 * all_b0 / fam_recs:.1f} %)")
-    span = ps[-1]["cart"] + ps[-1]["stored"] - ps[0]["cart"]
-    used = sum(p["stored"] for p in ps)
-    print(f"span {ps[0]['cart']:#09x}..{ps[-1]['cart'] + ps[-1]['stored']:#09x} "
-          f"= {span:,} B, payload bytes {used:,} B, gaps {span - used} B")
 
 
 def cmd_probe(a) -> None:
