@@ -1902,6 +1902,41 @@ launch `/Applications/ares.app` with our dump, open Tools → Debugger, set a br
 whether it is ever hit. If it is hit, the game does install its vectors and my harness is wrong; if it is not, the
 idle-spin conclusion stands. That single observation settles what four arcs of tooling could not.
 
+#### GUI automation of ares: capability achieved, tool still insufficient (M65)
+
+macOS Accessibility was granted for `mimo`, and ares is now drivable from the shell. The working recipe, kept
+because it took several attempts to find:
+
+```applescript
+tell application "System Events" to tell process "ares"
+  -- launch: open -na /Applications/ares.app --args --system "Nintendo 64" <rom>
+  name of every window of process "ares"                    --> "Resident Evil 2 (USA) (Rev 1)"
+  -- menus: Apple, ares, Edit, Load, Nintendo 64, Settings, Tools, Help
+  click menu bar item 7 of menu bar 1                       -- Tools
+  click menu item 13 of menu 1 of menu bar item 7 of menu bar 1   -- Memory
+  -- pop-ups are not enumerable while closed; drive them by keyboard:
+  click pop up button 1 of window "Tools"; key code 125; key code 36
+  -- buttons/titles are readable: button 1 = "Export", button 2 = "Refresh"
+  value of text field 1 of window "Tools"
+end tell
+```
+
+**Confirmed:** ares v148 (Homebrew cask) **boots this dump** — the window is titled `Resident Evil 2 (USA)
+(Rev 1)`.
+
+**Also confirmed: the release build has no CPU debugger.** Complete menu inventory — Tools = Save/Load State,
+Undo, Capture Screenshot, Pause Emulation, Frame Advance, Reload Game, Manifest, Cheats, **Memory**,
+**Graphics**; Nintendo 64 = controller ports, Reset, Unload; Settings = Window Size, Output, Shader, Boot
+Options, Mute, Status Bar, Video/Audio/Input/Hotkeys/Emulators/Options. There is no Debugger item and no CLI
+breakpoint/trace flag, so the `0x80007140` breakpoint test **cannot** be performed in this build.
+
+**And the substitute did not work headlessly.** Tools → Memory does offer a region pop-up (stepped to
+**RDRAM**) and an **Export** button, which would have been enough — a dump's bytes at `0x180` would show
+whether the real game installs its vector. But clicking Export through System Events produces no save sheet and
+no file, and `screencapture` is still blocked (`could not create image from display`, Screen Recording not
+granted), so the dialog cannot be seen or driven. Exporting the dump needs either Screen Recording, or a manual
+click.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
