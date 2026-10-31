@@ -121,22 +121,30 @@ Measured conclusions:
 
 ## Immediate next step
 
-**A dump, or a breakpoint, in a different room** — that is the only thing left between this project and a
-definite answer to "does any room's script make the game load a bank-C record?". The command chain is mapped
-(M85–M106), the instrument to observe it is built (M108), and the five captures in hand are one corridor.
+**A dump from a room, taken in a normal launch.** The command chain is mapped (M85–M106) and the dump tools
+answer from it in a second; the missing input is one RDRAM export from a room other than the corridor in the
+five dumps already present. That route needs no debugger at all:
 
-Either:
+1. `./run-rom.sh` (ares must be in its normal configuration — see the warning below), play into a room;
+2. **Tools → Memory Editor → region `RDRAM` → `Memory` row → `Export`** — the file lands in `rom/`;
+3. `python3 tools/room_probe.py rom/<dump>.bin` then `python3 tools/walk_stream.py rom/<dump>.bin`.
 
-* **play into a different room** and export RDRAM by hand (Tools → Memory Editor), then
-  `python3 tools/room_probe.py rom/<dump>.bin` and `python3 tools/walk_stream.py rom/<dump>.bin`; or
-* **pin a state and breakpoint it**: `tools/ares_rsp.py launch --rom …`, enter a room, save the state
-  (`--save-state` / `Paths/Saves`), then `python3 tools/ares_rsp.py until 0x80071ebc` and read `a0` at
-  every stop — the slot values, live, without any dump at all.
+**The ares debugger route is parked, not disproved.** M108 built the instrument and it works (RSP, memory
+reads, registers, breakpoints); M109 showed `M` writes work too. What blocks it is not the protocol: **ares
+feeds the game `ff ff ff ff` on every controller channel** (the "no controller" pattern) even though macOS
+lists the pad, so the game reads no input and no one can reach a room under debug. If ares' input is repaired
+(Settings → Input → Nintendo 64 → Controller Port 1 → Gamepad bound explicitly to `Pro Controller`, not
+`Default`), the retry is already specified in `docs/log/M109-ares-injection-attempt.md`: break at
+`0x80006750`, write the pad bytes at `0x80014FA0 + 4`, continue, once per frame.
+
+**Warning that cost this session twice:** `ares --setting name=value` **persists** into
+`~/Library/Application Support/ares/settings.bml`. `Boot/AwaitGDBClient=true` left behind makes ares halt at
+`0xBFC00000` with RDRAM all zeros — it boots for a few seconds, then freezes and ignores all input, which
+looks exactly like a broken controller. A launch that needs those settings must also put them back.
 
 The discriminator is unchanged: the slot maps are static `.rodata`, so a slot selects a real record only if
 its static byte is non-zero — **13 slots qualify** (16, 32–49, 51, 52, 54–56, 58, 59, 62, 63) and none has
 been observed. `byte 3 = 31` in five captures at three moments is a parameter, not a selector.
 
-Also owed, in decreasing order of how much they block: the two unidentified blobs (R3/R4) and the 28
-non-zlib payloads at `0xb6248`; experiments B (pointer provenance) and C (resource structures); this file's
-sibling `README.md` still records M0–M7 while the project is at M108.
+Also owed: the two unidentified blobs (R3/R4) and the 28 non-zlib payloads at `0xb6248`; experiments B
+(pointer provenance) and C (resource structures); `README.md` still records M0–M7 while the project is at M109.

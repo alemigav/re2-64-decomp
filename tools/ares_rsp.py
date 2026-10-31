@@ -495,6 +495,82 @@ def do_watch(args):
     return 0 if hits else 1
 
 
+def do_inject(args):
+    """Hold a controller input by rewriting the pad buffer at every SI read.
+
+    `FUN_8000d1f0(0, &DAT_80016470)` is the SI DMA that pulls the PIF response into RDRAM (0x80016470),
+    so the breakpoint goes just after that call: the buffer is filled, and the game has not parsed it yet.
+    Each stop rewrites the bytes and resumes, which is how a held direction is produced without a pad.
+    """
+    rsp = Rsp(args.host, args.port, args.timeout, args.quiet)
+    rsp.connect()
+    rsp.greeting(0.1)
+    if rsp.cmd("Z0,%x,4" % args.bp) != "OK":
+        print("breakpoint refused")
+        rsp.close()
+        return 1
+    patch = {}
+    for item in (args.patch or []):
+        off, val = item.split(":")
+        patch[int(off, 0)] = bytes.fromhex(val)
+    script = None
+    if args.script:
+        script = []
+        for seg in args.script.split(","):
+            n, val = seg.split("x")
+            script.append((int(n), bytes.fromhex(val)))
+        total = sum(n for n, _ in script)
+        print("[..] script: %s (%d frames)" % (
+            ", ".join("%dx%s" % (n, v.hex()) for n, v in script), total))
+        args.frames = total
+    elif args.patch:
+        pass
+    print("[..] bp %08x, buffer %08x (%d B), patch %s" % (
+        args.bp, args.buf, args.len, ", ".join("%d:%s" % (k, v.hex()) for k, v in sorted(patch.items())) or "none"))
+    hits = 0
+    base = None
+    try:
+        for frame in range(args.frames):
+            rsp.send_raw(pkt("c"))
+            stop = rsp.read_packet(timeout=args.wait)
+            if stop is None:
+                print("no stop within %.0fs after %d hit(s)" % (args.wait, hits))
+                break
+            hits += 1
+            if base is None:
+                base = bytearray(rsp.read_mem(args.buf, args.len) or b"")
+                if not base:
+                    print("could not read the buffer")
+                    break
+                if not patch and script is None:
+                    print("[..] buffer at the first stop (%d B):" % len(base))
+                    for i in range(0, len(base), 16):
+                        print("  %08x  %s" % (args.buf + i, base[i:i+16].hex()))
+                    break
+            if frame == 0 and args.show:
+                print("[..] before patch: %s" % bytes(base).hex())
+            patched = bytearray(base)
+            for off, val in patch.items():
+                patched[off:off + len(val)] = val
+            if script is not None:
+                acc, val = 0, script[0][1]
+                for n, v in script:
+                    if hits <= acc + n:
+                        val = v
+                        break
+                    acc += n
+            if script is not None:
+                patched[4:8] = val
+            rsp.cmd("M%x,%x:%s" % (args.buf, len(patched), patched.hex()))
+            if frame == 0 and args.show:
+                print("[..] after patch : %s" % bytes(patched).hex())
+    finally:
+        rsp.cmd("z0,%x,4" % args.bp)
+        rsp.close()
+    print("%d frame(s)" % hits)
+    return 0
+
+
 def do_raw(args):
     rsp = Rsp(args.host, args.port, args.timeout, args.quiet)
     rsp.connect()
@@ -563,6 +639,16 @@ def main():
     p.add_argument("--stops", type=int, default=10)
     p.add_argument("--width", type=int, default=4)
     p.add_argument("--wait", type=float, default=30.0)
+
+    p = add("inject", do_inject)
+    p.add_argument("--bp", type=lambda s: int(s, 0), required=True, help="stop just after the SI read")
+    p.add_argument("--buf", type=lambda s: int(s, 0), default=0x80016470)
+    p.add_argument("--len", type=lambda s: int(s, 0), default=64)
+    p.add_argument("--patch", action="append", help="offset:hexbytes, repeatable")
+    p.add_argument("--frames", type=int, default=120)
+    p.add_argument("--show", action="store_true")
+    p.add_argument("--script", help="NxHHHHHHHH,Nx... segments written to offset 4, cycled")
+    p.add_argument("--wait", type=float, default=10.0)
 
     p = add("raw", do_raw)
     p.add_argument("packet")
