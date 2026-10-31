@@ -36,8 +36,8 @@ SUITES = [
     ("corpus pipeline (synthetic)", [sys.executable, "tools/provenance.py", "--corpus-self-test"], 6, False),
     ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8, False),
     ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 6, False),
-    ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 9, False),
-    ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 17, False),
+    ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 12, False),
+    ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 18, False),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 

@@ -137,9 +137,9 @@ What that means in practice: the three corpus checks are enforced **wherever the
 actually covers them; CI covers the other 51.
 
 Documents are checked structurally too: `tools/check_markers.py` requires 14 anchors (issue: 8 handover sections
-plus the log's retraction table, error list, working method and retractions heading), that **every level-2 heading is
-registered**, and that **every one of the 64 notes is indexed by the milestone table and titled `# M<n>`** — the rule
-that found M79 had no index row at all (M132/M133/M134).
+plus the log's retraction table, error list, working method and retractions heading), that **every level-2 heading is registered**, and that **every note in `docs/log/` is indexed by the milestone
+table, titled `# M<n>`, and cited by its own row** — the rules that found M79 had no index row at all and that the
+M2 row was missing its second note (M132/M133/M134/M135).
 
 Two supporting pieces:
 

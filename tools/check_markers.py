@@ -54,6 +54,9 @@ MARKERS = [
 ]
 
 NOTE_REF = re.compile(r"`(docs/log/[A-Za-z0-9._/-]+\.md)`")
+INDEX_ROW = re.compile(r"^\| (M[0-9]+[a-z]?) \|")        # a milestone-table row
+NOTE_NUM = re.compile(r"^docs/log/(M[0-9]+[a-z]?)-")       # the milestone a note file names
+TITLE_NUM = re.compile(r"^# (M[0-9]+[a-z]?)")             # the milestone a note's title claims
 
 
 def headings(root, path):
@@ -113,6 +116,23 @@ def check(root=Path(".")):
         first = body.splitlines()[0] if body.strip() else ""
         if not first.startswith("# M"):
             failures.append((rel, "note does not begin with a '# M<n>' title"))
+        t = TITLE_NUM.match(first)
+        f = NOTE_NUM.match(rel)
+        if t and f and t.group(1) != f.group(1):
+            failures.append((rel, "title says %s but the file name says %s" % (t.group(1), f.group(1))))
+    # being registered is not the same as being registered correctly: a note cited under the wrong
+    # milestone row is invisible to whoever reads that row. Only table rows count — a reference in
+    # prose is a cross-reference, and there are two of those on purpose.
+    if log.exists():
+        for line in log.read_text().splitlines():
+            row = INDEX_ROW.match(line)
+            if not row:
+                continue
+            for ref in NOTE_REF.findall(line):
+                n = NOTE_NUM.match(ref)
+                if n and n.group(1) != row.group(1):
+                    failures.append((LOG, "note %s is indexed under %s, but it is %s"
+                                     % (ref, row.group(1), n.group(1))))
     return failures
 
 
@@ -182,6 +202,23 @@ def self_test():
     cases.append(("a note without an '# M<n>' title is caught",
                   any("does not begin with" in msg for _p, msg in f)))
 
+    d = bed({HANDOVER: handover,
+             LOG: log_ok.replace("| M1 | x |", "| M2 | x |"),
+             "docs/log/M1-a.md": NOTE})
+    f = check(d)
+    cases.append(("a note indexed under the wrong milestone row is caught",
+                  any("indexed under M2" in msg and "it is M1" in msg for _p, msg in f)))
+
+    d = bed({HANDOVER: handover, LOG: log_ok,
+             "docs/log/M1-a.md": NOTE.replace("# M1", "# M7")})
+    f = check(d)
+    cases.append(("a title that disagrees with its file name is caught",
+                  any("title says M7" in msg for _p, msg in f)))
+
+    d = bed({HANDOVER: handover, LOG: log_ok + "\nSee `docs/log/M1-a.md` for detail.\n",
+             "docs/log/M1-a.md": NOTE})
+    cases.append(("a cross-reference in prose is not treated as an index entry", check(d) == []))
+
     passed = 0
     for name, ok in cases:
         print("%s  %s" % ("PASS" if ok else "FAIL", name))
@@ -229,7 +266,10 @@ def main():
     n_notes = len(list((root / "docs/log").glob("*.md"))) if (root / "docs/log").exists() else 0
     print("%s  %-28s all %d note(s) are indexed and titled '# M<n>'" % (
         "FAIL" if note_bad else "PASS", "(note registration)", n_notes))
-    total = len(MARKERS) + 3
+    index_bad = [f for f in failures if "is indexed under" in f[1] or "title says" in f[1]]
+    print("%s  %-28s each note is cited by its own milestone row, and titled to match" % (
+        "FAIL" if index_bad else "PASS", "(index consistency)"))
+    total = len(MARKERS) + 4
     failed = len({(p, m) for p, m in failures})
     print("\n%d/%d marker check(s)" % (total - min(failed, total), total))
     if failures:
