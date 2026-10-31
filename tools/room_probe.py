@@ -34,6 +34,8 @@ SCRIPT = 0x800df92c            # holds the script descriptor pointer
 STREAM_FIELDS = (0x48, 0x4C)   # two stream pointers inside the descriptor
 BSS_BUFFER = 0x80171DF8        # the overlay's BSS command buffer
 OP_44 = 0x44
+GATE_BYTE = 9                  # FUN_80071e14 tests descriptor byte 9 before calling the loader
+GATE_FN = 0x800837ac           # bitmap bit test: srl a1,5 / sllv v0,0x80000000,a1 / and
 STRIDE = 22                    # settled in M99: opcode 0x44 commands are 22 bytes
 
 
@@ -45,6 +47,10 @@ def read(dump: bytes, va: int, n: int) -> bytes:
 
 
 def word(dump: bytes, va: int) -> int:
+    return struct.unpack(">I", read(dump, va, 4))[0]
+
+
+def word_at(dump: bytes, va: int) -> int:
     return struct.unpack(">I", read(dump, va, 4))[0]
 
 
@@ -86,6 +92,20 @@ def main() -> None:
             slot = read(dump, ctx + 3, 1)[0]
             print(f"  slot = byte 3 of {ctx:#010x} = {slot} ({slot:#04x})")
             print(f"    {classify(slot)}")
+
+            # the gate (M101): byte 9 && the bitmap test decide whether the loader is reached at all
+            b9 = read(dump, ctx + GATE_BYTE, 1)[0]
+            if b9 == 0xFF:
+                verdict = "byte 9 == 0xff -> the gate is skipped and the loader runs"
+            else:
+                wi, bit = b9 >> 5, b9 & 0x1F
+                bitmap_word = word_at(dump, ctx + 4 * wi) if in_ram(ctx + 4 * wi, dump) else 0
+                mask = (0x80000000 << bit) & 0xFFFFFFFF
+                hit = mask & bitmap_word
+                verdict = (f"byte 9 = {b9} -> bitmap word {bitmap_word:#010x}, mask {mask:#010x}, "
+                           f"test {hit:#010x} -> "
+                           f"{'BLOCKS (loader not called)' if hit else 'PASSES (loader called)'}")
+            print(f"  gate: descriptor byte 9 = {b9:#04x}; {verdict}")
 
             if not in_ram(script, dump):
                 print(f"  -> script descriptor NOT installed at {script:#010x}; command stream unknown")
