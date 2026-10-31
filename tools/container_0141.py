@@ -28,6 +28,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import script_profile as sp                                     # noqa: E402
+import walk_stream as ws                                        # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 ROM = HERE.parent / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
@@ -86,6 +87,37 @@ def payload_stats(blocks):
     return maxbyte, pairs, divisible
 
 
+def gbi_test(blocks):
+    """Would a display-list reading survive its own test? Count records whose first word looks like a GBI
+    opcode (G_* commands live in 0xE4-0xFF). Also report the 16-bit statistics a raw RGBA5551 texture would
+    have to show."""
+    heads = Counter()
+    records = 0
+    units = alpha = 0
+    for _idx, raw in blocks:
+        n = struct.unpack_from(">I", raw, 4)[0]
+        if n > 200:
+            continue
+        for k in range(n):
+            head = struct.unpack_from(">I", raw, UNIT * k)[0]
+            heads[(head >> 24) & 0xFF] += 1
+            records += 1
+        plen = struct.unpack_from(">I", raw, 8)[0]
+        payload = raw[UNIT * n:UNIT * n + plen]
+        for i in range(len(payload) // 2):
+            units += 1
+            alpha += struct.unpack_from(">H", payload, 2 * i)[0] & 1
+    gbi = sum(c for b, c in heads.items() if 0xE4 <= b <= 0xFF)
+    return heads, records, gbi, units, alpha
+
+
+def constants_in_code():
+    """The two shared record constants: are they code immediates, or only data?"""
+    words = ws.load_stage2()
+    packed = b"".join(struct.pack(">I", w) for w in words)
+    return sum(packed.count(bytes.fromhex(h)) for h in ("b2b2b2ff", "7f7f7fff"))
+
+
 def unit_template(blocks):
     """Does unit 1 carry a recurring template, i.e. are the units records rather than a directory?"""
     seen = Counter()
@@ -113,6 +145,8 @@ def main() -> int:
     if not args.check:
         return 0
     maxbyte, pairs, divisible = payload_stats(blocks)
+    heads, records, gbi, units, alpha = gbi_test(blocks)
+    const_in_code = constants_in_code()
     template_hits, template = unit_template(blocks)
     cases = [
         ("the family is found and is large", len(blocks) > 200),
@@ -128,6 +162,11 @@ def main() -> int:
         ("a large share of payloads divides evenly by N", divisible > 0.7 * len(blocks)),
         # units are records with constants, not a directory of offsets.
         ("unit 1 recurs as a template across blocks", template_hits >= 10),
+        # the display-list reading, tested and refuted (M161)
+        ("no record begins with a GBI opcode (0xE4-0xFF), so these are not display lists", gbi == 0),
+        ("the payload is not a clean RGBA5551 texture (alpha bit is neither all-set nor all-clear)",
+         0.25 < alpha / max(1, units) < 0.75),
+        ("the shared record constants occur nowhere in the stage-2 code image", const_in_code == 0),
     ]
     passed = 0
     for label, ok in cases:

@@ -80,6 +80,11 @@ AUDITS = [
          file="tools/container_0141.py",
          old="        pairs.append((n, len(set(payload))))",
          new="        pairs.append((n, n))"),
+    dict(name="container_0141: the GBI opcode window is widened to everything",
+         tool="container_0141.py", args=["--check"],
+         file="tools/container_0141.py",
+         old="    gbi = sum(c for b, c in heads.items() if 0xE4 <= b <= 0xFF)",
+         new="    gbi = sum(c for b, c in heads.items())"),
     # --- the corpus profiler
     dict(name="script_profile: the script heuristic admits nothing",
          tool="script_profile.py", args=["--check"],
