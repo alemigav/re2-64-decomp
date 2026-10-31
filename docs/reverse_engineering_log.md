@@ -47,6 +47,7 @@ Detailed write-ups live in `docs/log/`.
 
 | M86 | **the load contract, and two harness bugs**: `FUN_800327ec` decides plain-vs-compressed on `record[1] == record[3] - record[2]`, but **no record in the cartridge passes that test** (all stored sizes are smaller than their span), so the scheme is generic and R4 stays open — better posed, not closed. The `0x800fb264` contradiction dissolved: `lw` offsets are sign-extended, the address is `0x800eb264`, the word there is the valid pointer `0x800eb204`, and it indexes a sparse 40-byte slot->ID map (30 distinct values, only 2 in 38..65) whose meaning is unproven. My third sign-extension error, and again in an ad-hoc command rather than a tool. **`LB`/`LH` do not sign-extend and `SWL`/`SWR` are swapped** — both reproduced with a four-row table; not fixed, because that edits the verified execution path | `docs/log/M86-load-contract-and-harness-bugs.md` |## The five errors worth remembering
 
+| M87 | **the harness is fixed under a fixture, and the slot map is found**: `tools/test_harness.py` encodes the architecture in 15 cases — before the fix **5/15**, after **15/15** with the countdown loop unchanged. `LB`/`LH` did not sign-extend (`LB` and `LBU` were the same instruction) and `SWL`/`SWR` were wrong in all 8 unaligned cases, not merely swapped. The slot→record map is two 48-byte arrays at `0x800eb204`/`0x800eb234` covering record indices 11–66, indexed `byte[slot-16]` with a 57→46 alias; the slot loader has **one** caller (`0x80071ec0`) and takes the slot from byte 3 of a scene structure. **The codec hypothesis is retired**: `FUN_80004550` is an init (zeroes state, allocates the `0x8000` window), not a format dispatcher, and across all 66 records `stored == span` holds for none while `stored == 0` holds for three. `tools/vaddr.py` ends the hand-composed-address class: `sext16`/`compose` with a mandatory mode, and `locate()` refuses shared addresses | `docs/log/M87-harness-fixture-and-slot-map.md` |
 1. **A guessed example poisoned fifteen files (M7).** `tools/wrap_mips_elf.py`'s usage line said
    `--base 0x80000000`, so every hand-computed vram address was `0x480` low. It survived five
    milestones because the wrong addresses still pointed at real code. *Check the base before using any
@@ -64,11 +65,23 @@ Detailed write-ups live in `docs/log/`.
    .rodata bank — so the tables looked empty and a runtime writer was hunted for two sessions. The
    disassembler printed `-23464` on the same line as the bug: **when two tools disagree, check
    which one is being consumed, not which one looks trustworthy.**
-5. **A register name is not a register value.** Grepping `sw …,4(v1)` gave 105 apparent PI writes; a
+5. **A hand-composed address is where every remaining error lives (M84/M86/M87 — four instances).**
+   `ori` for `addiu` gave `0x800ca458` for `0x800ba458`; `+ 0xb264` for a sign-extended `lw` gave
+   `0x800fb264` for `0x800eb264`; a 28-payload span was quoted as 81 852 instead of 74 716; and
+   `0x80004550` was read out of the stage-2 image when it lives in the boot bank. **The fix is
+   `tools/vaddr.py`, not discipline**: `sext16`/`compose(hi, imm, mode)` with no default mode, and
+   `locate()` refusing when several images share the address.
+6. **A register name is not a register value.** Grepping `sw …,4(v1)` gave 105 apparent PI writes; a
    small data-flow window that aborts on redefinition gave the true 2.
 
 ## Working method that produced the answer
 
+- **Change an execution model only under a fixture, and encode the *architecture*, not the current
+  output (M87).** The harness passed for a year against a countdown loop that touched `addiu`,
+  `addu`, `bnez` and `jr` — none of `LB`, `LH`, `SWL`, `SWR`. "Verified path" was true of the whole
+  and false of the parts. Write the failing table first (5/15), fix, then require both the new table
+  and the old smoke test to pass (15/15). The same form was used for CP0, which is why CP0 stayed
+  fixed.
 - **Read the cheap artefact first**: `rea decompile … --format json` puts pseudocode in
   `normalized_result` as a plain string; `rea instructions` returns a bounded array. Reserve
   `detail:"complete"` for fixtures.

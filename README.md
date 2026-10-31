@@ -25,7 +25,7 @@ its own, and so the expensive part is only entered with evidence:
 | **M4** | One subsystem understood | ✅ **done** — the ROM is banked; the loader chain is `FUN_80001180` → descriptor → PI DMA → inflate (`docs/log/M8-file-table-found.md`) |
 | **M5** | Byte-matching build of one module | ⏳ *only if M4 justifies it* — splat detects `compiler: KMC`, so the community matching toolchain does not transfer |
 | **M6** | Asset formats and extraction | ✅ **done** — 4 761 zlib members, 1 227 JPEG frames, 271 MPEG-1 blocks; the media container format is verified (`docs/format_notes.md`) |
-| **M7** | Code corpus: every code image decompiled and indexed | ✅ **done** — a census of all 4 761 members finds **36 code images** (1 947 632 B); **3 638 functions** decompiled, 100 % of in-code `jal` targets resolving, `src/INDEX.md` (`docs/log/M81-code-corpus.md`, `docs/log/M82-r4-container-and-gaps.md`, `docs/log/M83-pipeline-audit.md`, `docs/log/M84-static-tables.md`, `docs/log/M85-bank-c-loader.md`, `docs/log/M86-load-contract-and-harness-bugs.md`) |
+| **M7** | Code corpus: every code image decompiled and indexed | ✅ **done** — a census of all 4 761 members finds **36 code images** (1 947 632 B); **3 638 functions** decompiled, 100 % of in-code `jal` targets resolving, `src/INDEX.md` (`docs/log/M81-code-corpus.md`, `docs/log/M82-r4-container-and-gaps.md`, `docs/log/M83-pipeline-audit.md`, `docs/log/M84-static-tables.md`, `docs/log/M85-bank-c-loader.md`, `docs/log/M86-load-contract-and-harness-bugs.md`, `docs/log/M87-harness-fixture-and-slot-map.md`) |
 
 M5 remains a research question, not a promise — a byte-matching build of a 64 MB cartridge is a
 community-scale effort. **M4, M6 and M7 are done.** Code discovery is closed at the member level:
@@ -81,7 +81,10 @@ Discovery is kept separate from extraction, so a wrong hypothesis cannot quietly
 ```
 run-rom.sh                 launcher for an OPTIONAL external validator; used only to produce the
                            ground-truth RDRAM dumps that tools/diff_rdram.py compares against
-tools/     scan_headers.py   header analysis: window / compare / derive / chain
+tools/     vaddr.py          resolve an address to the image that holds it; sext16/compose with a
+                             mandatory mode; refuses addresses several images share
+           test_harness.py   15-case architectural fixture for the MIPS model (loads, unaligned stores)
+           scan_headers.py   header analysis: window / compare / derive / chain
            extract_blocks.py  generic container extractor (reads ROM read-only)
            unpack_zlib.py     sequential zlib member unpacker
            find_cart_table.py locates the 0x0..-flagged descriptor records

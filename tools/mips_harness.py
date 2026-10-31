@@ -221,9 +221,13 @@ class Cpu:
         elif op == 0x0B: r[rt] = (1 if r[rs] < (imm & 0xFFFFFFFF) else 0)
         elif op == 0x08: r[rt] = (r[rs] + si) & 0xFFFFFFFF
         elif op == 0x23: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 4)
-        elif op == 0x20: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 1)
+        elif op == 0x20:                                   # LB: sign-extend the byte
+            v = self.m.read((r[rs] + si) & 0xFFFFFFFF, 1)
+            r[rt] = (v | 0xFFFFFF00) if v & 0x80 else v
         elif op == 0x24: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 1)
-        elif op == 0x21: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 2)
+        elif op == 0x21:                                   # LH: sign-extend the halfword
+            v = self.m.read((r[rs] + si) & 0xFFFFFFFF, 2)
+            r[rt] = (v | 0xFFFF0000) if v & 0x8000 else v
         elif op == 0x25: r[rt] = self.m.read((r[rs] + si) & 0xFFFFFFFF, 2)
         elif op == 0x2B: self.m.write((r[rs] + si) & 0xFFFFFFFF, 4, r[rt])
         elif op == 0x28: self.m.write((r[rs] + si) & 0xFFFFFFFF, 1, r[rt])
@@ -331,20 +335,22 @@ class Cpu:
             a = (r[rs] + si) & 0xFFFFFFFF; sh = (a & 3) * 8
             wv = self.m.read(a & ~3 & 0xFFFFFFFF, 4)
             r[rt] = (r[rt] & ((1 << (32 - sh)) - 1) << sh) | (wv >> sh) if sh else wv
-        elif op == 0x2A:                                   # SWL
-            a = (r[rs] + si) & 0xFFFFFFFF; sh = (3 - (a & 3)) * 8
+        elif op == 0x2A:                                   # SWL: big-endian, bytes k..3
+            a = (r[rs] + si) & 0xFFFFFFFF; k = a & 3
             al = a & ~3 & 0xFFFFFFFF
+            n = (4 - k) * 8                                # bits of the word SWL writes
+            keep = (0xFFFFFFFF << n) & 0xFFFFFFFF if k else 0
             wv = self.m.read(al, 4)
-            wv = (wv & ~((0xFFFFFFFF << sh) & 0xFFFFFFFF)) | ((r[rt] >> ((3 - (a & 3)) * 8)) << sh)
-            self.m.write(al, 4, wv)
+            wv = (wv & keep) | ((r[rt] >> (k * 8)) & ((1 << n) - 1))
+            self.m.write(al, 4, wv & 0xFFFFFFFF)
         elif op == 0x2F: pass                              # CACHE: no-op under emulation
-        elif op == 0x2E:                                   # SWR
-            a = (r[rs] + si) & 0xFFFFFFFF; b = a & 3
+        elif op == 0x2E:                                   # SWR: big-endian, bytes 0..k
+            a = (r[rs] + si) & 0xFFFFFFFF; k = a & 3
             al = a & ~3 & 0xFFFFFFFF
+            keep = (1 << ((3 - k) * 8)) - 1                # low bytes of the word survive
             wv = self.m.read(al, 4)
-            keep = (1 << (b * 8)) - 1
-            wv = (wv & keep) | ((r[rt] << ((3 - b) * 8)) & ~keep & 0xFFFFFFFF)
-            self.m.write(al, 4, wv)
+            wv = (wv & keep) | ((r[rt] & ((1 << ((k + 1) * 8)) - 1)) << ((3 - k) * 8))
+            self.m.write(al, 4, wv & 0xFFFFFFFF)
         elif op == 0x11:                                   # COP1
             fs = (w >> 11) & 0x1F; fmt = rs; fn = w & 0x3F
             import struct as _s
