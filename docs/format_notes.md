@@ -2211,6 +2211,30 @@ real IPL3 code rather than zeros) — but it also changes execution drastically:
 instructions** at `0x80088554` on an access to `0x805ee000`, far outside RDRAM. So either only part of that
 region belongs there, or IPL3's stub must not be entered this way. The mapping is established; the load is not.
 
+#### IPL3 extent pinned, and why the harness must not load it yet (M74)
+
+Two more ares frames plus the cartridge give the layout exactly:
+
+- **`0x80000000`–`0x800003ff`** holds IPL3's R4300 stub, matching cartridge **ROM `0x4c0`** for the first
+  ~`0x2b8` bytes and fragmenting after that (the game rewrites parts of it).
+- **`0x80000400`–`0x8000047f` is zero** in the real machine. My earlier 0x480-byte load was overwriting that
+  gap with the wrong ROM bytes — the correct load is **0x400 bytes**.
+- **`0x80000480`** onwards is the game image, matching ROM `0x1000` ✓ (unchanged, already correct).
+- **Page 0 is completely static** between the title-screen and post-NEW-GAME dumps: **0 bytes differed**. So
+  nothing in that page is rewritten during play; it is image, not state.
+
+**But loading it breaks the harness, and the extent is not the cause.** With either a 0x400- or a 0x480-byte
+load the run now **faults after 3 407 instructions** at `0x80088554` on an access to `0x805ee000` — an address
+~1.8 MB past the end of RDRAM — where without IPL3 it ran 300 000 instructions cleanly.
+
+So the fault is not "the wrong bytes at the wrong length"; it is that **something in this harness executes the
+IPL3 region**, which the real machine never does (IPL3 has already run; its stub is residue that only the
+vector installation touches, and only its first 16 bytes). The load is therefore **opt-in and off by default**
+(`build(..., with_ipl3=True)`), with the extent and the fault recorded next to it.
+
+**Next diagnostic, bounded:** put a read/write watchpoint on `0x80000000`–`0x800003ff` and log the PC that first
+touches it. That names the code path which illegally re-enters IPL3, and it is a single run.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
