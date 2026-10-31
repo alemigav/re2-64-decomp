@@ -8,7 +8,7 @@
  "opcodes": {
   "0x00": {
    "name": "Nop",
-   "evidence": "0x8006db14: advance 1, return 1 - the one-byte NOP. Decoded predecessors are 0x02 (7202) and itself (3993), and its runs are short, so it pads between commands rather than marking empty space."
+   "evidence": "0x8006db14: advance 1, return 1. With the block-return slots modelled (M150) it is **95.9% reachable** (9 922 of 10 349 at linear record starts), so it is an executed no-op, mostly single and often followed by Goto (6 379x) - a pad before a jump rather than dead space."
   },
   "0x02": {
    "name": "CondEnd",
@@ -31,8 +31,8 @@
    "evidence": "0x8006df78: same counter, but while it is non-zero it reloads ctx+0x1c from a saved slot at 32(thread) \u2014 a loop back to a recorded target; on expiry it advances 2 and drops the block depth."
   },
   "0x20": {
-   "name": "Fill",
-   "evidence": "Shares the same NOP handler at 0x8006db14, so its *semantics* are identical; the data distinguishes it. 7147 of 7753 occurrences are followed by another 0x20, in 606 runs with median 10, p90 31 and max 62 (191 runs are >= 20 long, covering 5254 occurrences). So 0x20 marks long empty stretches, where 0x00 pads between commands. Which one an interpreter sees is decidable only by reachability, not by behaviour - see M149."
+   "name": "NopRun",
+   "evidence": "Same handler as 0x00, so behaviour is identical; the data differs. 7 328 occurrences, **100% reachable**, in 564 runs (median 10, p90 31, max 62) - an executed run of no-ops, not padding. M149 called this 'Fill' on the strength of an unreachability test that had no power; that reading is retracted."
   },
   "0x28": {
    "name": "Rand",

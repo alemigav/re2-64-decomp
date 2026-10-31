@@ -42,6 +42,7 @@ SUITES = [
     ("synthetic-rdram walk", [sys.executable, "tools/rdram_fixture.py"], 7, False),
     ("room script (cartridge)", [sys.executable, "tools/room_script.py", "--check"], 4, True),
     ("script profile (cartridge)", [sys.executable, "tools/script_profile.py", "--check"], 5, True),
+    ("cfg reachability (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check"], 4, True),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 
