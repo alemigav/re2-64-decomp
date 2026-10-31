@@ -199,6 +199,30 @@ def grid_tiles(rom, types=11, cap=64):
     return tiles, first
 
 
+def tile_headers(rom, tiles):
+    """The tile blocks' first halfword, their second word, and whether any carries G_ENDDL where one would be."""
+    magics, seconds, shares = [], [], []
+    for fid in tiles:
+        if not (0 <= fid < sp.ENTRY_COUNT):
+            continue
+        off, size = struct.unpack_from(">II", rom, sp.FILE_TABLE_ROM + sp.HEADER + 8 * fid)
+        if off == 0xFFFFFFFF or size == 0:
+            continue
+        try:
+            raw = zlib.decompress(rom[sp.FILE_TABLE_ROM + off:sp.FILE_TABLE_ROM + off + size])
+        except zlib.error:
+            continue
+        if len(raw) < 8:
+            continue
+        magics.append(struct.unpack_from(">H", raw, 0)[0])
+        seconds.append(struct.unpack_from(">I", raw, 4)[0])
+        words = len(raw) // 8
+        if words:
+            hits = sum(1 for k in range(words) if raw[8 * k] >= 0xB8 or raw[8 * k] in (0x00, 0x01))
+            shares.append(hits / words)
+    return magics, seconds, shares
+
+
 def constants_in_code():
     """The two shared record constants: are they code immediates, or only data?"""
     words = ws.load_stage2()
@@ -237,6 +261,7 @@ def main() -> int:
     const_in_code = constants_in_code()
     kinds = loader_kinds(ROM.read_bytes())
     tiles, tile_first = grid_tiles(ROM.read_bytes())
+    tile_magics, tile_second_words, gbi_share = tile_headers(ROM.read_bytes(), tiles)
     template_hits, template = unit_template(blocks)
     cases = [
         ("the family is found and is large", len(blocks) > 200),
@@ -266,10 +291,19 @@ def main() -> int:
          kinds["ITP"][1].get(MAGIC, 0) == 0),
         ("the EFF loader references a different kind entirely (no family blocks)",
          kinds["EFF"][1].get(MAGIC, 0) == 0),
-        # --- the tiles the model grid references, and what they are (M163)
+        # --- the tiles the model grid references (M163, corrected M164)
         ("the model's grid descriptors reference a substantial set of tiles", len(tiles) >= 20),
-        ("every one of those tile blocks begins with 0xBE (G_MOVEMEM): they are display lists",
-         bool(tile_first) and set(tile_first) == {0xBE}),
+        # M163 read the first byte 0xBE as G_MOVEMEM and called these display lists. The first *halfword*
+        # is a constant across every tile (0xBE1E), and the second word is not a valid RDRAM pointer, so
+        # the block is not a G_MOVEMEM command: it is a texture block with a constant magic.
+        ("every tile begins with the constant halfword 0xBE1E, a magic rather than an opcode",
+         all(m == 0xBE1E for m in tile_magics) and len(set(tile_magics)) == 1),
+        ("no tile's second word is a valid RDRAM pointer, so it is not G_MOVEMEM",
+         all(second < 0x80000000 for second in tile_second_words)),
+        # A display list is nearly all opcodes: ~1.00 of its 8-byte-aligned words carry one. Raw colour
+        # data cannot, so the share discriminates where a G_ENDDL scan does not (0xB8/0xDF occur in pixel
+        # data by chance — that scan was written first and failed, which is what prompted this one).
+        ("no tile's GBI-opcode share approaches a display list's (all are below 0.95)", max(gbi_share) < 0.95),
     ]
     passed = 0
     for label, ok in cases:
