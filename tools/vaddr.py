@@ -60,7 +60,10 @@ def sources() -> dict:
     # 0x80011860 among others. A tool boundary that is too narrow fails the same way as a
     # hand-computed constant: quietly, with a plausible answer.
     out.append(dict(name="boot", lo=0x80000480, hi=0x80000480 + 0x13420,
-                    data=rom[0x1000:0x14420], note="ROM 0x1000..0x14420, linear via +0x7FFFF480"))
+                    data=rom[0x1000:0x14420],
+                    note="ROM 0x1000..0x14420, linear via +0x7FFFF480; 0x14420 is canonical "
+                         "(the first zlib member starts there, see unpack_zlib.py). The harness "
+                         "loads to 0x14600, i.e. 480 B of that member as padding."))
     if Path(IMAGES).exists():
         import json
         for img in json.loads(Path(IMAGES).read_text())["images"]:
