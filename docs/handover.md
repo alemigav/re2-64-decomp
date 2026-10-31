@@ -110,8 +110,54 @@ Measured conclusions:
   fails, the return is discarded, the destination is unchanged;
 * the descriptor's **byte 9 gate** passes for every observed command and is vacuous for the one tested.
 
-**Open, and it needs a different room:** does any room's script carry an `0x44` whose byte 3 is one of the
-13 live map slots (16, 32–49, 51, 52, 54–56, 58, 59, 62, 63)? Five captures from one corridor say no.
+**Closed in M110** — see "The bank-C question" below. Three rooms (the owner's two door animations, corroborated
+by three distinct stream-pointer pairs) all carry byte 3 = 31, so the path is intended behaviour, not an anomaly.
+
+## How "green" is enforced
+
+| place | command | what it covers |
+|---|---|---|
+| pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, ~25 s, blocks the commit |
+| local CI | `sh tools/ci.sh` | the same fixtures **plus** a tracked-artefact check, a fixture-size guard and the cartridge sha256 |
+| runner CI | `.github/workflows/acceptance.yml` | the same `ci.sh`, **51 of 54 cases** |
+
+**The three cases CI cannot run are the important ones**, so this is worth stating precisely. They are the two
+pre-registered acceptance checks plus their structure twin, and they assert facts about RE2's own instructions
+(`FUN_800327ec` at `0x800327ec`, the slot map at `0x800eb204`). Running them needs the cartridge's **bytes** —
+1.24 MB of decompressed code, which is cartridge content and is never committed. On a runner they print
+`SKIP (needs the cartridge)`, never PASS. **A green CI run does not vouch for them.**
+
+A route to close that gap was built and verified in M130 — ROM as a base64 secret, unpack the 4 761 members
+(10 s), build the 36 images (1 s), boundaries from committed metadata — and then deliberately **not adopted**,
+because it means a copyrighted cartridge living in a CI secret store. The mechanism is written up there if the
+trade is ever worth taking.
+
+What that means in practice: the three corpus checks are enforced **wherever the cartridge exists** — locally with
+`python3 tools/provenance.py --acceptance`, and on every commit through the hook. That is the enforcement that
+actually covers them; CI covers the other 51.
+
+Two supporting pieces:
+
+* `fixtures/corpus/` (9 KB, committed) is a **synthetic cartridge** that drives the whole corpus pipeline
+  (`--corpus-self-test`, 6/6), so loading, region extraction, the fixpoint and the three checkers run on a
+  runner without RE2 (M129);
+* `fixtures/decomp/ranges.json` (101 KB) is the distilled function-boundary metadata (36 images, 3 678 ranges,
+  `tools/export_ranges.py`, `--check` for drift). It is **load-bearing, not cosmetic**: with the prologue
+  heuristic in place of the index, acceptance test 1b fails and revives the M117 artifact
+  (`a0 = ret(80001180)` instead of `unk`), so a machine with the ROM but a stale index would report a failure
+  that is not real (M130).
+
+`provenance.py` also takes `--rom`, `--manifest` and `--decomp`, so it can be pointed at another cartridge.
+
+## An external reference worth knowing about
+
+`~/projects/perfect_dark` — a shallow clone of `n64decomp/perfect_dark`, suggested by a third-party audit and
+assessed in M123/M124. It lives **outside this repo** and nothing was ported. Its transferable value is
+`include/PR/` (the real 1998 libultra headers — `OSContPad` there independently confirmed the 4-byte SI response
+layout derived in M109/M121, and it is what corrected three claims in M124), `stagetable.txt`/`ld`/`tools/mkrom`
+for ROM-assembly conventions, and `docs/piracychecks.md` for the anti-tamper hazard class that does not apply here.
+Its `src/` is Rare's engine and its `rarezip`/`inflate` solve Rare's compression — neither applies to Capcom's
+stock-zlib banks (M88).
 
 ## Rules this project follows (they have all been earned)
 
