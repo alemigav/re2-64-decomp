@@ -1937,6 +1937,45 @@ no file, and `screencapture` is still blocked (`could not create image from disp
 granted), so the dialog cannot be seen or driven. Exporting the dump needs either Screen Recording, or a manual
 click.
 
+#### ares reaches the title screen, and RDRAM at 0x80000180 is ZERO (M66)
+
+With Screen Recording granted, ares is now fully drivable and observable. **The real game boots to its title
+screen** — `LOAD GAME / NEW GAME / OPTION`, `© CAPCOM U.S.A., INC. 1998,1999`, `[Nintendo] Nintendo 64 (NTSC)`,
+60 VPS.
+
+Tools → Memory Editor, region **RDRAM**, Goto `0x80000180`, read off the hex view:
+
+```
+0x80000120  24 26 25 02 83 05 04 0a 95 05 05 06 04 05 08 04
+0x80000130  00 00 00 00 27 5a 06 d0 03 40 00 08 00 00 00 00
+0x80000140  00 00 00 00 00 00 00 00 04 05 08 04 00 00 08 00
+0x80000150  15 26 97 7f 25 05 04 02 00 04 00 25 26 12 12 04
+0x80000160  45 10 e0 48 41 e0 10 44 01 40 01 41 04 04 03 04
+0x80000170  00 00 00 c0 45 09 c0 c0 44 04 04 04 00 00 40 04
+0x80000180  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x80000190  00 00 00 00 00 00 00 00 c4 44 04 04 10 04 c0 04
+```
+
+**The general exception vector at `0x80000180` is all zeros in the running game.** The standard libultra
+preamble `3c 1a 80 00 / 27 5a 06 d0 / 03 40 00 08 / 00 00 00 00` is **not** installed there — and my Phase-1
+harness reported exactly that preamble being written at `0x80007140`–`0x800071b8` and ending up at `E_VEC`.
+
+**But something preamble-like is at `0x80000134`**: `27 5a 06 d0 03 40 00 08` — instructions 2 and 3 of that
+preamble (`addiu k0,k0,0x6d0`, `jr k0`) — preceded by four zero bytes where `lui k0,0x8000` would be, and
+followed by zeros. So the pattern exists in RDRAM at `0x80000134`, not at `0x80000180`.
+
+**Two readings, both now testable and neither yet proven:**
+
+1. RE2 (KMC compiler, non-standard entry `0x80000480`) does **not** use libultra's stock vector installation;
+   its exception entry lives at a different address, and `0x80000134` is part of it.
+2. The memory editor view is RDRAM but the vector the game installs is written later/elsewhere, and
+   `0x80000180` genuinely stays zero because this build never takes that path.
+
+**What this changes immediately:** Phase 2's conclusion ("thread 7 never installs the vectors") is now
+**consistent with the real game**, and Phase 1's "installation at instruction 42 271" is very likely an
+artefact of its faked `osStartThread`. My faithful harness was closer to the truth than the comparison harness
+that contradicted it — the opposite of what the last several arcs assumed.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
