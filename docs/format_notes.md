@@ -1998,6 +1998,40 @@ the dump, Tools → Memory Editor, region RDRAM, Goto `0x8012bcf0`, and read six
 `mtqueue / fullqueue / validCount / first / msgCount / msg`. A non-zero `validCount` or a message in the buffer
 means the game does post; `validCount = 0` with an empty buffer means it does not, and the two stalls are real.
 
+#### ares RDRAM 0x80000000-0x80000180: the game installs preambles, but not at E_VEC (M68)
+
+Second ares session, RDRAM region, after a failed `Goto` (the field truncated `0x8012bcf0` to `0x8012bc` and the
+view stayed at the default base). What the base view shows is nonetheless the most informative memory dump in
+this project:
+
+```
+0x80000000  3c 1a 80 00  27 5a 06 00  00 00 00 00  00 00 00 00    lui k0,0x8000 ; addiu k0,k0,0x600
+0x80000010  3c 01 80 00  27 5a 06 d0  03 40 00 08  00 00 00 00
+...
+0x80000080  3c 1a 80 00  27 5a 06 d0  03 40 00 08  00 00 00 00    <- full preamble, jr k0
+0x80000090  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00
+0x80000100  00 00 00 00  3c 1a 80 00  27 5a 06 d0  03 40 00 08    <- preamble at +4, not +0
+0x80000110  00 00 00 00  00 00 00 00  12 12 24 42  00 01 80 48
+0x80000120  24 26 25 02  83 05 04 0a  95 05 05 06  04 05 08 04
+0x80000130  00 00 00 00  27 5a 06 d0  03 40 00 08  00 00 00 00    <- preamble tail at +4
+0x80000180  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00    <- E_VEC: all zero
+```
+
+**The running game does install libultra-style preambles — at `0x80000000` (target `0x80000600`) and at
+`0x80000080` (full four words, `jr k0` to `0x800006d0`). `E_VEC` at `0x80000180` is all zeros.** Preamble-shaped
+runs also appear at `0x80000104` and `0x80000130` — i.e. **+4 from a vector boundary — which is odd and needs a
+re-read before any conclusion**, because instruction fetch requires 4-byte alignment and a vector at `+4` makes
+no architectural sense.
+
+**What this changes:** the M66 reading ("the real game has no standard vector") was too strong. The game *does*
+install preambles at two of the four vector addresses, and not at `E_VEC`. So the honest statement is narrower:
+**this build installs `UT_VEC` and `XUT_VEC` but not `E_VEC`**, and whatever entry it uses for real exceptions is
+either one of those or the shifted copy at `0x80000104`.
+
+**Still unanswered:** the queue structures. The `Goto` field needs its value typed with the field focused and
+committed (truncation to 8 characters suggests the click landed mid-string); retry by clicking the field first,
+then typing, then Return.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
