@@ -2060,6 +2060,56 @@ Also recorded: ares exited three times during these attempts with **no crash rep
 was quit rather than crashing; one earlier "empty desktop" capture was actually the emulator's dark scene, and I
 misread it as the app being gone until `pgrep` corrected me.
 
+#### BREAKTHROUGH: ares `Export` dumps RDRAM, and it settles three questions (M70)
+
+The `Export` button in Tools → Memory Editor **does work** — it writes
+`rom/Resident Evil 2 (USA) (Rev 1)-rdram-<timestamp>.bin`, an **8 MB** RDRAM image, next to the ROM. No `Goto`
+is needed at all: that whole line of fiddling was unnecessary, and `Goto` never worked (field accepts text,
+`keystroke return` does not commit; entering the virtual address lands past the end of the region because the
+field wants an **offset**, and selecting a sidebar row other than *Memory* silently changes the address space).
+
+Reading the dump at exact offsets:
+
+**1. All four exception vectors ARE installed** — including `E_VEC`:
+
+```
+UT_VEC  0x80000000: 3c1a8000 275a06d0 03400008 00000000
+XUT_VEC 0x80000080: 3c1a8000 275a06d0 03400008 00000000
+ECC_VEC 0x80000100: 3c1a8000 275a06d0 03400008 00000000
+E_VEC   0x80000180: 3c1a8000 275a06d0 03400008 00000000
+```
+
+So the real game installs the full stock preamble set, `jr k0` → `0x800006d0`. **M66 and M68 were wrong** — the
+"E_VEC is zero" reading came from the memory editor's display, not from memory. Phase 1's *installation exists*
+conclusion was right all along; Phase 2 never doing it is the genuine divergence.
+
+**2. The two queues, exactly as this project predicted them:**
+
+| queue | mtqueue | fullqueue | validCount | msgCount | msg buffer |
+|---|---|---|---|---|---|
+| `0x8012bcf8` (thread 1's) | `0x80012940` (empty sentinel) | `0x80012940` | **0** | 8 | `0x8012bd10` |
+| `0x8012bd30` (thread 9's) | **`0x8012bb00` = thread 9's `OSThread*`** | `0x80012940` | **0** | 10 | `0x8012bd48` |
+
+So **thread 9 really is parked on `0x8012bd30`** — its `mtqueue` is its own thread structure — and at the title
+screen **no message has been posted**: `validCount = 0` on both. That is not a deadlock; it is a queue with no
+work yet.
+
+**3. The real scheduler, and threads this harness never created:**
+
+```
+current 0x80012950 = 0x80112a40   thread 1, priority 40, state 0x4 RUNNING
+run queue 0x80012948 = 0x80112da0   <- a thread struct never seen here
+active queue 0x8001294c = 0x8010b4f8 <- another one
+thread 7 @0x8010b700  priority 0   state 0x2 RUNNABLE
+thread 9 @0x8012bb00  priority 60  state 0x8 WAITING
+sentinel 0x80012940 = 0
+```
+
+**What this means for the original question.** The queue handoffs are not missing — they are *empty*, with the
+game's own scheduler running thread 1 and holding thread 9 parked exactly where this project said it was. The
+harness's "deadlock" was a faithful snapshot of an idle moment; what it lacked was the game's later posting,
+which never happens at the title screen because nothing has asked for those resources yet.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
