@@ -12,8 +12,8 @@
   "0x00": {
    "count": 16573,
    "length": 1,
-   "name": null,
-   "name_source": null,
+   "name": "~Nop",
+   "name_source": "inferred",
    "status": "ok",
    "successors": [
     [
@@ -151,8 +151,8 @@
   "0x05": {
    "count": 732,
    "length": 2,
-   "name": null,
-   "name_source": null,
+   "name": "~ClearSlot",
+   "name_source": "inferred",
    "status": "ok",
    "successors": [
     [
@@ -1164,8 +1164,8 @@
   "0x20": {
    "count": 7753,
    "length": 1,
-   "name": null,
-   "name_source": null,
+   "name": "~Fill",
+   "name_source": "inferred",
    "status": "ok",
    "successors": [
     [
@@ -1492,8 +1492,8 @@
   "0x28": {
    "count": 1175,
    "length": 1,
-   "name": null,
-   "name_source": null,
+   "name": "~Rand",
+   "name_source": "inferred",
    "status": "ok",
    "successors": [
     [
@@ -5123,8 +5123,8 @@
   "0x88": {
    "count": 681,
    "length": 3,
-   "name": null,
-   "name_source": null,
+   "name": "~CountdownSlot",
+   "name_source": "inferred",
    "status": "ok",
    "successors": [
     [
