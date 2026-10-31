@@ -168,6 +168,11 @@ stock-zlib banks (M88).
    error class struck seven times. A scanner output becomes a fact only after the instruction is read.
 5. **Negative results are results** — record them, with the scan's matching rule.
 6. **No ROM bytes, no extracted assets, no binaries in git.** `src/` (pseudocode) *is* tracked.
+7. **A scripted edit must fail loudly.** `str.replace` on a drifted anchor returns the input unchanged, so a
+   patch can "succeed", write the same bytes back, and land a commit whose message describes a change that is
+   not there — this happened three times in one arc, twice in this very file. Every scripted edit now goes
+   through `tools/patch_text.py` (exact-count match, atomic across files, verified after write), and a doc
+   change is confirmed by grepping for its marker, not by trusting the write.
 
 ## The bank-C question: closed, with its scope stated
 
