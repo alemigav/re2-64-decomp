@@ -2110,6 +2110,43 @@ game's own scheduler running thread 1 and holding thread 9 parked exactly where 
 harness's "deadlock" was a faithful snapshot of an idle moment; what it lacked was the game's later posting,
 which never happens at the title screen because nothing has asked for those resources yet.
 
+#### NEW GAME played, second dump, and the real thread graph (M71)
+
+Down + Return on the title screen started a game — the intro cutscene runs at 59 VPS. Two RDRAM dumps ~3.5
+minutes apart:
+
+| | dump A (title) | dump B (intro) |
+|---|---|---|
+| current thread `0x80012950` | `0x80112a40` (thread 1) | **`0x80112da0`** |
+| `0x8012bcf8` validCount | 0 | **0** |
+| `0x8012bd30` validCount | 0 | **0** |
+| `E_VEC` | installed | installed |
+| 4 KB pages differing | — | **580 of 2048** (~1.16 MB changed) |
+
+**So starting a game switches threads and moves 1.16 MB of RDRAM, and still posts nothing to either queue.**
+
+**The real scheduler, walked out of dump B:**
+
+```
+current       0x80112da0   RUNNING
+run queue     0x8010b700   thread 7, priority 0,  RUNNABLE  -> sentinel
+active queue  0x8010b330   priority 21, STOPPED
+              0x80112bf0   priority 20, WAITING  -> sentinel
+sentinel      0x80012940 next = 0x00000000
+thread 9      0x8012bb00   WAITING, parked on 0x8012bd30's mtqueue
+```
+
+**This is the concrete divergence, and it is not about queues at all.** The real game runs a thread graph with at
+least six structures — `0x8010b700`, `0x8010b330`, `0x80112bf0`, `0x80112da0`, `0x80112a40`, `0x8012bb00` —
+while this harness ever created four, and **thread 7 in the real game is a priority-0 RUNNABLE thread waiting its
+turn, not a thread spinning in `b .`**. The harness's "thread 7 idles forever" was an artefact of it being the
+*only* runnable thread: with the real graph, the game hands control to `0x80112da0` and thread 7 simply waits.
+
+**What that means for the two blocked queues.** They are not the bottleneck at this stage: after a new game
+starts, they are still empty, so the resources they gate are not needed for the intro. The harness's stall and
+the game's state agree — `validCount = 0` in both — and the difference was never a missing producer, it was a
+missing *thread graph*.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
