@@ -2,6 +2,10 @@
 # Consumed by tools/make_seeds.py. A rejection here is evidence, not a preference — state the
 # measurement, so a future session can overturn it by re-measuring rather than re-arguing.
 #
+# THRESHOLD (class-level): a class of discovered boundaries is rejected wholesale when >= 1 % of its
+# candidates produce an in_v1 function on the image where they were discovered. Measured: overlay
+# jump-table targets 5.8 % (44/757), stage2/boot 0.0 % (0/366).
+#
 # image                 candidates  evidence
 ovl_0090698             60          all 60 candidates decompiled to functions declaring an
                                     undefined incoming register (in_v1). The 14 468 B run at

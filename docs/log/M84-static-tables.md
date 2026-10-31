@@ -66,8 +66,15 @@ Corpus-wide that yields **3** runs, all in stage-2:
 
 **This is the mechanism behind the twenty-overlays-at-`0x80161cf0` fact.** The initializer hands
 every slot the *same* staging-bank base and then overrides individual slots with specific overlay
-functions. An address does not identify an image because the loader does not give them distinct
-addresses — it gives them one base and swaps contents.
+functions.
+
+**Reframed (M85):** that is a **design feature, not a defect in the ROM**. The earlier phrasing —
+"an address does not identify an image" — described a real bug in the *seeding rule* (a boundary
+belongs to one image, and the rule was broadcasting it) and wrongly implied the sharing was a ROM
+quirk. The accurate statement is: **a slot has a destination**, the destination table is installed
+once, and twenty payloads can legitimately share one base because they are loaded one at a time.
+The seeding rule stays image-scoped; the reason changes from "the ROM is odd" to "the architecture
+gives slots, not payloads, their addresses".
 
 Two details worth keeping: the run is emitted by the compiler as repeated `lui`+`addiu` for the
 value, so the 48-store sequence arrives as three chunks; and the table extent (48 × 4 = 192 B) must

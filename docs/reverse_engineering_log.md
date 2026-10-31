@@ -43,7 +43,8 @@ Detailed write-ups live in `docs/log/`.
 | M83 | **pipeline audit**: a cancelled `decompile-all` leaves a plausible index (34 of 103 functions, `failed: 0`), an index can report `written` for absent files (36 of 93), and a seed address does not identify an image (20 overlays share `0x80161cf0`, 105 mis-bounded functions followed). Against a true baseline the honest differential is **3 267 → 3 292 functions, 61.1 % → 61.3 %**, `failed` 0 both sides. `in_vN` in pseudocode is the mis-placed-boundary signature and is now a hard check. The R4 region's real coverage is **5.3 %**, not 99.6 % | `docs/log/M83-pipeline-audit.md` |
 | M84 | **the static tables**: `addiu` is signed, so the case tables are at `0x800ba458` / `0x800ba488` / `0x800ba4b8`, statically populated with 11 / 12 / 15 entries — "who writes 0x800ca458" had no answer because there is no such address. Reading them back takes the 5 484 B region at `0x8009d014` from **5.3 % to 99.9 %** claimed and `stage2` from 1 565 to 1 911 functions. A store-run class finds the initializer that gives every slot the same staging base, which is why 20 overlays share `0x80161cf0`. Corpus **3 267 → 3 638 functions, 61.1 % → 62.3 %**, `failed` 0, 0 mis-bounded. **Retracts M83's** "the tables are zero-filled in the image" and "case blocks remain unattributed" | `docs/log/M84-static-tables.md` |
 
-## The four errors worth remembering
+| M85 | **the bank-C loader is a call chain, not a store loop**: `FUN_8003287c(slot)` reads the slot's destination from the initializer's table (`0x800df6b0+0x1f40+4*(slot-16)`), derives a cart-record index, calls `cart_record()` and hands the record to **`FUN_800327ec(record, dest)`** — a generic descriptor inflater that reads fields `[0]` cart pointer, `[1]` stored size, `[3]-[2]` decompressed size, i.e. the 16-byte layout from the other end. Two call sites, both inside the slot loader. **One hop open:** the record index is read through a pointer at `0x800fb264` whose image value `0x413f514e` is not a pointer and which nothing in 36 images constructs or references — a contradiction recorded, not guessed. New instrument `find_bank_writers.py` (destination-based, 720 bank stores + 11 loader calls) because the store-loop class rejects loaded values by design | `docs/log/M85-bank-c-loader.md` |
+## The five errors worth remembering
 
 1. **A guessed example poisoned fifteen files (M7).** `tools/wrap_mips_elf.py`'s usage line said
    `--base 0x80000000`, so every hand-computed vram address was `0x480` low. It survived five
@@ -56,7 +57,13 @@ Detailed write-ups live in `docs/log/`.
    `0xB` flag), adjacent `(rom, vram)` pairs (the record is `offset, size, vram, vram_end`), and
    `CMF == 0x78` (these streams use `0x68`). Each time the data was present and the search constant
    was invented.
-4. **A register name is not a register value.** Grepping `sw …,4(v1)` gave 105 apparent PI writes; a
+4. **A constant's *mode* is part of the constant (M84).** `lui 0x800c` + `addiu v0,v0,-23464`
+   is `0x800c0000 - 0x5ba8 = 0x800ba458`; the scanner beside the disassembler composed it with `ori`
+   semantics and got `0x800ca458`. The wrong address was *plausible* — it pointed at the same
+   .rodata bank — so the tables looked empty and a runtime writer was hunted for two sessions. The
+   disassembler printed `-23464` on the same line as the bug: **when two tools disagree, check
+   which one is being consumed, not which one looks trustworthy.**
+5. **A register name is not a register value.** Grepping `sw …,4(v1)` gave 105 apparent PI writes; a
    small data-flow window that aborts on redefinition gave the true 2.
 
 ## Working method that produced the answer
@@ -64,6 +71,11 @@ Detailed write-ups live in `docs/log/`.
 - **Read the cheap artefact first**: `rea decompile … --format json` puts pseudocode in
   `normalized_result` as a plain string; `rea instructions` returns a bounded array. Reserve
   `detail:"complete"` for fixtures.
+- **A dispatcher states its own table length (M84).** `sltiu v0,v1,K` immediately before a
+  `lw`/`jr` dispatch bounds the jump table at `K` entries. Checking `entries_found == K` is a
+  falsifiable test, not an inspection: it caught a walk that read 27 entries where the table had 12,
+  because it ran on through the padding into the next table. Assumption to state: a table with a
+  default case has `K + 1` entries and will trip this test.
 - **Prefer derivations over inspections**: 1 226 known frame transitions score a length field better
   than any amount of staring at a hexdump, and the score is falsifiable.
 - **Self-consistency is not truth**: the trailer rule is only believed because an independent
