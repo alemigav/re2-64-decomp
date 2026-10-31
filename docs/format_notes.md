@@ -371,8 +371,11 @@ void FUN_8004cc5c(int slot) {
 }
 ```
 
-So the file system is a **32-byte-per-entry registry at `0x8010b2e0`**: word 0 = boot-descriptor index,
-word 1 = post-load handler, six more per entry. `FUN_8004cc5c(slot)` is the game's open.
+So the file system is a **9-entry, 8-byte-per-entry registry at `0x8010b2e0`** (corrected at M138 — the
+"32-byte entry, six more words" reading was the adjacent entries, not padding): byte 0 = boot-descriptor
+index, word 1 = post-load handler. `overlay_open(slot)` (`FUN_8004cc5c`) is the game's open, and there are
+two variants that stash the handler instead of calling it: `overlay_slot_reader(a, slot)` (`FUN_8004cca8`)
+via `FUN_8004cd54`, and `overlay_slot_reader_b(slot)` (`FUN_8004cd08`) via `FUN_8004ce40`.
 
 `DAT_8010b6fc = 0x80189a00` is the inflate window, and it is set by the thread entry `FUN_8004d190` —
 which ties the two functions together and confirms the entry is the stage-2 init.
