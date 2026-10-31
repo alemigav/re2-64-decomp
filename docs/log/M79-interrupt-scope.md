@@ -298,3 +298,34 @@ would be exactly the kind of approximation this project kept having to retract.
 **Recommendation, unchanged and now evidence-backed: stop here.** Past the boot-to-idle window the harness needs
 the game's *own* thread states to enable its own sources, which happens only when real work completes — RSP tasks
 producing output, VI retraces tied to real video. That is an emulator, and ares is one.
+
+---
+
+## 13. Latched PI completion: real interrupts from a real device, still no post
+
+`--driver pi` now latches completions and re-asserts the pending line while one is outstanding; the guest
+acknowledges by writing `MI_INTR`. Run with **`--irq-source none`**, i.e. *no injected interrupt line at all* —
+every interrupt below comes from the driver:
+
+```
+instr         EPC        BD    thread        mask    pending
+170,807  0x8000730c   False  0x8010b700   0x0999    0x0010
+173,767  0x8000730c   False  0x800164b0   0x0999    0x0010
+174,288  0x8000730c   False  0x80112a40   0x0999    0x0010
+queue validCounts: 0 / 0 / 0      run queue empty      current thread 0x8010b700
+driver: 2 completions latched, 2 still outstanding
+```
+
+**Three interrupts, all from the device model, each with the mask (`0x0999`, PI `0x10` set) and the pending bit
+(`0x0010`) recorded at the moment of dispatch**, landing in three distinct threads. The completion → interrupt →
+dispatch chain works end to end without any injected line.
+
+**And still nothing posts.** The threads that would post are never scheduled with work: the run queue stays empty,
+the idler wins, and both application queues keep `mtqueue` pointing at their waiting thread with `validCount = 0`.
+
+So the smallest real work item did exactly what it said on the tin — and it answers the question honestly: **the
+missing piece was never the device signal.** A PI completion now raises a genuine interrupt, at a moment when the
+guest's own mask enables it, and the handler runs. What is still absent is *work* — an RSP task producing output,
+a DMA whose payload a thread then processes — and no amount of device signalling manufactures that.
+
+**That is the boundary of this reconstruction, established rather than assumed.**

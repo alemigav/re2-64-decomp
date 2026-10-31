@@ -78,14 +78,22 @@ def main():
     # --- minimal driver model -------------------------------------------------
     drivers = {d.strip() for d in a.driver.split(",") if d.strip()}
     pi_done = [0]
+    pi_out = [0]
     if "pi" in drivers:
         base_pi = hooks[0x8000C870]
+        base_write = mem.write
         def pi_complete(c, *args):
             out = base_pi(c, *args)
-            mem.mi_pending |= 0x10          # DMA finished -> MI pending PI
+            pi_out[0] += 1                  # latch: completion outstanding
             pi_done[0] += 1
             return out
+        def write_ack(addr, n2, v):
+            # a guest write to MI_INTR clearing bit 0x10 acknowledges one completion
+            if addr == 0xA4300008 and (v & 0x10) and pi_out[0] > 0:
+                pi_out[0] -= 1
+            return base_write(addr, n2, v)
         hooks[0x8000C870] = pi_complete
+        mem.write = write_ack
 
     bit = SOURCES.get(a.irq_source, 0)
     writes, excs, reglog, posts = [], [], [], []
@@ -95,12 +103,14 @@ def main():
             break
         if bit and n and n % a.irq_every == 0:
             mem.assert_device(bit)            # pending only; the mask stays guest-owned
+        if pi_out[0] > 0:
+            mem.mi_pending |= 0x10          # level-triggered: re-assert while outstanding
         cpu.hw_pending = (cpu.hw_pending & ~0x400) | mem.rcp_asserted()
         if cpu.interrupt_pending():
             th = mem.read(0x80012950, 4)
             in_delay = cpu.delay is not None
             cpu.pc = cpu.interrupt_entry()
-            excs.append((n, cpu.epc, in_delay, th, cpu.pc))
+            excs.append((n, cpu.epc, in_delay, th, cpu.pc, mem.mi_mask, mem.mi_pending))
             n += 1
             continue
         for r, p in regs:
@@ -132,8 +142,10 @@ def main():
 
     if excs:
         print(f"  {'instr':>9} {'EPC':>11} {'BD':>5} {'thread':>11}")
-        for st, epc, bd, th, vec in excs[:8]:
-            print(f"  {st:>9,} {format(epc, '#010x'):>11} {str(bd):>5} {format(th, '#010x')}")
+        print(f"  {'instr':>9} {'EPC':>11} {'BD':>5} {'thread':>11} {'mask':>7} {'pending':>8}")
+        for st, epc, bd, th, vec, mk, pd in excs[:10]:
+            print(f"  {st:>9,} {format(epc, '#010x'):>11} {str(bd):>5} {format(th, '#010x'):>11} "
+                  f"{format(mk, '#06x'):>7} {format(pd, '#06x'):>8}")
     if reglog:
         print("\nregister log:")
         for st, pc, r, val, th in reglog[:12]:
@@ -148,7 +160,7 @@ def main():
           f"MI pending {mem.mi_pending:#04x} mask {mem.mi_mask:#06x} (mask is guest-owned)")
     print(f"  host primitives used: {dict(collections.Counter(e[0] for e in log))}")
     if pi_done[0]:
-        print(f"  driver: {pi_done[0]} PI DMA completion(s) -> MI pending 0x10 set")
+        print(f"  driver: {pi_done[0]} PI completion(s) latched, {pi_out[0]} still outstanding")
 
 
 if __name__ == "__main__":
