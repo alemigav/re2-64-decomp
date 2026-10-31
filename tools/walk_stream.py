@@ -209,50 +209,109 @@ def handler_extent(h, words, base, handlers) -> int:
     return min(end, h + 0x1000)
 
 
+CALLER_SAVED = set(range(2, 16)) | {24, 25}    # v0-v1, a0-a3, t0-t9: a call clobbers these
+
+
 def advance_set(h, words, base, handlers) -> list:
-    """Every distinct positive advance of `ctx+0x1c` performed inside the handler's own extent."""
+    """Every distinct positive advance of `ctx+0x1c` performed inside the handler's own extent.
+
+    This is a small forward dataflow rather than a window search, because a window is what got both M136 and
+    M142 wrong: `0x32` writes the pointer back four instructions after its `addiu` (recording three other
+    fields first) and `0x37` nine instructions later, so any fixed window either misses them or reaches into
+    the neighbouring handler. Registers derived from the command pointer are tracked until they are
+    overwritten; a call or a return clears them, **except** that its delay slot is examined first, because
+    `0x28` and `0x45` write the pointer back there.
+    """
     n = len(words)
     if not (base <= h < base + 4 * n):
         return []
     j0 = (h - base) // 4
     lim = min((handler_extent(h, words, base, handlers) - base) // 4, n)
+    derived = {}                     # register -> constant offset from the command pointer
     out = set()
-    for j in range(j0, min(lim, n - 6)):
-        w = words[j]
-        if (w >> 26) != 0x23 or (w & 0xFFFF) != CTX_CMDPTR:
+
+    def store_matches(x):
+        """`sw <derived>, 0x1c(<any base>)` -> record the offset it carries."""
+        rt = (x >> 16) & 0x1F
+        if rt in derived and derived[rt] > 0:
+            out.add(derived[rt])
+            return True
+        return False
+
+    for j in range(j0, lim):
+        x = words[j]
+        op = x >> 26
+        rs = (x >> 21) & 0x1F
+        rt = (x >> 16) & 0x1F
+        rd = (x >> 11) & 0x1F
+        imm = x & 0xFFFF
+        simm = imm - 0x10000 if imm & 0x8000 else imm
+
+        # a load of the command pointer starts a new derivation
+        if op == 0x23 and imm == CTX_CMDPTR:
+            derived.clear()
+            derived[rt] = 0
             continue
-        loaded, rbase = (w >> 16) & 0x1F, (w >> 21) & 0x1F
-        for k in range(j + 1, min(lim, n)):
-            y = words[k]
-            if (y >> 26) != 0x09 or ((y >> 21) & 0x1F) != loaded or not (y & 0xFFFF):
-                continue
-            n_adv = y & 0xFFFF
-            n_adv = n_adv - 0x10000 if n_adv & 0x8000 else n_adv
-            dst = (y >> 16) & 0x1F
-            # Handlers frequently record other state between the add and the write-back, so the store is
-            # allowed up to 8 instructions later - but the first store to `ctx+0x1c` decides: if it writes a
-            # different register, this add was not the pointer advance and is dropped. Opcode 0x32 advances
-            # four instructions after its `addiu` (`sw a1,40(v1)` x3 in between), which a two-instruction
-            # window misses; the PlayStation size for it is 8, and the measured advance is 8.
-            for m in range(k + 1, min(k + 9, n)):
-                z = words[m]
-                if (z >> 26) == 0x2B and (z & 0xFFFF) == CTX_CMDPTR:
-                    if ((z >> 21) & 0x1F) == rbase and ((z >> 16) & 0x1F) == dst and n_adv > 0:
-                        out.add(n_adv)
-                    break
-                if (z >> 26) == 0x03 or ((z >> 26) == 0 and (z & 0x3F) == 0x08):
-                    # A call or return ends this candidate — but its **delay slot still executes first**, and
-                    # two handlers write the pointer back there (0x28 stores cmd+1 before its call, 0x45
-                    # stores cmd+5 in the return delay slot), so the slot is checked before giving up.
-                    slot = m + 1
-                    if slot < min(k + 9, n):
-                        z2 = words[slot]
-                        if ((z2 >> 26) == 0x2B and (z2 & 0xFFFF) == CTX_CMDPTR
-                                and ((z2 >> 21) & 0x1F) == rbase and ((z2 >> 16) & 0x1F) == dst
-                                and n_adv > 0):
-                            out.add(n_adv)
-                    break
+        # add a constant to a derived register
+        if op == 0x09 and rs in derived:
+            value = derived[rs] + simm          # read before popping: `addiu v0,v0,N` has rt == rs
+            derived.pop(rt, None)
+            derived[rt] = value
+            continue
+        # copy / add two registers: derived if exactly one side is derived
+        if op == 0 and (x & 0x3F) == 0x21:
+            a, b = rs in derived, rt in derived
+            value = derived[rs] if a and not b else (derived[rt] if b and not a else None)
+            derived.pop(rd, None)
+            if value is not None:
+                derived[rd] = value
+            continue
+        # write the pointer back
+        if op == 0x2B and (x & 0xFFFF) == CTX_CMDPTR:
+            store_matches(x)
+            continue
+        # call / return: examine the delay slot, then the derived set is gone
+        if op == 0x03 or (op == 0 and (x & 0x3F) == 0x08):
+            if j + 1 < lim:
+                nxt = words[j + 1]
+                if (nxt >> 26) == 0x2B and (nxt & 0xFFFF) == CTX_CMDPTR:
+                    store_matches(nxt)
+            # A call clobbers only the *caller-saved* registers. Opcode 0x2d's handler keeps the command
+            # pointer in `s2` across four calls and adds 38 to it afterwards, so clearing everything here
+            # loses the one handler whose advance the PlayStation table confirms at exactly that size.
+            for r in [r for r in derived if r in CALLER_SAVED]:
+                derived.pop(r, None)
+            continue
+        if op == 0 and (x & 0x3F) == 0x09:          # jalr
+            for r in [r for r in derived if r in CALLER_SAVED]:
+                derived.pop(r, None)
+            continue
+        # any other write to a tracked register invalidates it
+        writes = set()
+        if op == 0x00:
+            if (x & 0x3F) in (0x00, 0x02, 0x03, 0x21, 0x23, 0x24, 0x25, 0x26, 0x27, 0x2A, 0x2B):
+                writes.add(rd)
+        elif op in (0x04, 0x05, 0x06, 0x07, 0x01, 0x08, 0x0C, 0x0E):
+            writes = set()                      # branches write nothing
+        elif op in (0x28, 0x29, 0x2A, 0x2B, 0x2E):
+            writes = set()                      # stores write MEMORY: `sw a1,40(v1)` does not kill a1
+        elif op == 0x0F:
+            writes.add(rt)
+        else:
+            writes.add(rt)
+        for r in writes:
+            derived.pop(r, None)
     return sorted(out)
+
+
+DYNAMIC = {
+    0x03: "script jump by table index: ctx+0x1c = *(0x80114f2c) + u16[byte3] (FUN_8006d5dc; resets the thread)",
+    0x10: "block return: ctx+0x1c = *(ctx + thread*8 + 0x20), a saved pointer",
+    0x19: "return from the GoSub slot: ctx+0x1c = *(ctx + 0x144 + idx*4), the address 0x18 saves",
+    0x1A: "block return: ctx+0x1c = *(ctx + thread*8 + 0x60), a saved pointer",
+    0x36: "table dispatch: jr <*(0x800c****+idx)> — a callback pointer, not a command address",
+    0x01: "no pointer write at all: it returns 2 to the dispatcher and lets it decide",
+}
 
 
 JUMP_FAMILY = {
@@ -340,6 +399,11 @@ def resolve(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES) -> dict
             continue
         advances = advance_set(h, words, base, handlers)
         variants = ps1.get(i, [])
+        if i in DYNAMIC:
+            out[i] = {"handler": h, "length": None, "advances": advances, "status": "dynamic",
+                      "name": variants[0][0] if variants else "", "ps1_sizes": [v[1] for v in variants],
+                      "conflict": False, "why": DYNAMIC[i]}
+            continue
         name = variants[0][0] if variants else ""
         chosen = None
         if len(advances) == 1:
@@ -377,6 +441,7 @@ def report_lengths(words) -> int:
     unverified = [i for i, r in res.items() if r["status"] == "unverified"]
     ambiguous = [i for i, r in res.items() if r["status"] == "ambiguous"]
     jumps = [i for i, r in res.items() if r["status"] == "jump"]
+    dynamic = [i for i, r in res.items() if r["status"] == "dynamic"]
     conflicts = [i for i, r in res.items() if r["conflict"]]
     print(f"opcode -> command length: {len(res)} of {TABLE_ENTRIES} handlers, "
           f"{named} named from the MIT-licensed PlayStation table")
@@ -385,15 +450,18 @@ def report_lengths(words) -> int:
             continue
         r = res[i]
         length = "  ?" if r["length"] is None else f"{r['length']:2d}"
-        tag = {"ok": "ok", "jump": "JUMP", "unverified": "UNVERIFIED", "ambiguous": "AMBIGUOUS"}[r["status"]]
+        tag = {"ok": "ok", "jump": "JUMP", "dynamic": "DYNAMIC", "unverified": "UNVERIFIED",
+               "ambiguous": "AMBIGUOUS"}[r["status"]]
         extra = ""
         if r["conflict"]:
             extra = f"  (ps1 size {r['ps1_sizes']} disagrees)"
         print(f"  0x{i:02x}: {r['handler']:#010x}  len {length}  {tag:10s} "
               f"{r['name'] or '-':14s} advances={r['advances']}{extra}")
     print(f"  named: {named} of {len(res)}; ps1 table has {len(ps1)} opcode number(s)")
-    print(f"  walkable {len(ok)}, jump-family {len(jumps)}, unverified {len(unverified)}, "
-          f"ambiguous {len(ambiguous)}, size conflicts {len(conflicts)}")
+    print(f"  walkable {len(ok)}, jump-family {len(jumps)}, dynamic {len(dynamic)}, "
+          f"unverified {len(unverified)}, ambiguous {len(ambiguous)}, size conflicts {len(conflicts)}")
+    for i in dynamic:
+        print(f"  dynamic 0x{i:02x}: {res[i]['why']}")
     if jumps:
         print(f"  jump family (target computed from an operand, decoded from the handler): "
               f"{[hex(i) + ' ' + str(res[i]['name']) for i in jumps]}")
@@ -624,6 +692,10 @@ def main() -> None:
                     break
                 p += length                        # conditional: follow the fall-through and say so
                 continue
+            if r["status"] == "dynamic":
+                print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x} {r['name']} — STOP: destination is dynamic: "
+                      f"{r['why']}")
+                break
             if r["status"] != "ok":
                 which = ("no advance inside its own handler" if r["status"] == "unverified"
                          else "several advances and the table does not choose")
