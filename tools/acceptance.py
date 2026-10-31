@@ -45,7 +45,7 @@ SUITES = [
     ("cfg reachability (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check"], 6, True),
     ("room scripts only (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check-rooms"], 3, True),
     ("01 41 container (cartridge)", [sys.executable, "tools/container_0141.py", "--check"], 29, True),
-    ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 4, True),
+    ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 15, True),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
