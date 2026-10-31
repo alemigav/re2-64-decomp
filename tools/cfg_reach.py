@@ -237,7 +237,13 @@ def main() -> int:
 
     if not args.check:
         return 0
+    entry_plain = survey(rom, res, entry_only=True)
+    entry_gen = survey(rom, res, entry_only=True, generous=True)
     cases = [
+        # measured: 27.7% of starts with the pop mechanism, 20.5% with `POPPERS` emptied, against a plain
+        # 19.5% - so the margin, not just the inequality, is what the mechanism buys (audit_gates).
+        ("the generous mode reaches at least 1.2x plain entry mode, so the pop mechanism is load-bearing",
+         entry_gen["rec_hit"]["reached"] > 1.2 * entry_plain["rec_hit"]["reached"]),
         ("the structured walk reaches nearly every record start",
          hit["reached"] / max(1, total) > 0.95),
         ("block returns no longer stop the walk",

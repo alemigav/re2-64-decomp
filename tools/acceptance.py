@@ -35,14 +35,15 @@ SUITES = [
     ("provenance acceptance", [sys.executable, "tools/provenance.py", "--acceptance"], 3, True),
     ("corpus pipeline (synthetic)", [sys.executable, "tools/provenance.py", "--corpus-self-test"], 6, False),
     ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8, False),
-    ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 6, False),
+    ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 7, False),
     ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 12, False),
     ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 18, False),
-    ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 22, False),
+    ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 23, False),
     ("synthetic-rdram walk", [sys.executable, "tools/rdram_fixture.py"], 7, False),
     ("room script (cartridge)", [sys.executable, "tools/room_script.py", "--check"], 4, True),
     ("script profile (cartridge)", [sys.executable, "tools/script_profile.py", "--check"], 5, True),
-    ("cfg reachability (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check"], 5, True),
+    ("cfg reachability (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check"], 6, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 10, True),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 

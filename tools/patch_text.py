@@ -101,6 +101,16 @@ def self_test():
         print("      unexpected: %s" % exc)
 
     d = bed({"a.txt": "one two three\n"})
+    try:
+        apply_edits([{"file": "a.txt", "old": "two", "new": "two"}], d)
+        cases.append(("an edit whose old and new are identical is refused", False))
+    except PatchError as exc:
+        # the *specific* guard must be the one that fired: any PatchError would also pass if a later
+        # verification happened to reject the edit, which makes the case vacuous (found by audit_gates).
+        cases.append(("an edit whose old and new are identical is refused",
+                      "identical" in str(exc) and (d / "a.txt").read_text() == "one two three\n"))
+
+    d = bed({"a.txt": "one two three\n"})
     before = (d / "a.txt").read_text()
     try:
         apply_edits([{"file": "a.txt", "old": "four", "new": "4"}], d)

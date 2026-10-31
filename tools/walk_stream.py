@@ -597,6 +597,15 @@ def self_test() -> int:
     handler_at(0x26, [4, 9])        # two advances; only 4 matches a ps1 variant -> table decides
     handler_at(0x50, [4, 5])        # two advances, no ps1 entry -> ambiguous, the walk must stop
     res2 = resolve(tuple(w2), base=B2, table=T2, entries=E2)
+    # a second table, so 0x26 can be exercised with ONE advance as well as two: a single advance must still
+    # take the name of the variant whose size it matches (Calc2), not the variants' list order (Calc).
+    # Without this case the "name follows the chosen size" line can be deleted and everything still passes.
+    w3 = [0] * 0x9000
+    def put3(va, x): w3[(va - B2) // 4] = x
+    h3 = B2 + 0x4000 + 0x26 * 0x100
+    put3(h3, lw(2, 0x1C, ctx)); put3(h3 + 4, addiu(2, 2, 4)); put3(h3 + 8, sw(2, 0x1C, ctx))
+    put3(T2 + 4 * 0x26, h3)
+    res3 = resolve(tuple(w3), base=B2, table=T2, entries=E2)
     op44, op09, op7f = res2.get(0x44, {}), res2.get(0x09, {}), res2.get(0x7F, {})
     op26, op50 = res2.get(0x26, {}), res2.get(0x50, {})
     def succ(op, raw, addr):
@@ -627,6 +636,8 @@ def self_test() -> int:
          (op7f.get("status"), op7f.get("length")), ("unverified", None)),
         ("a measured length disagreeing with the ps1 size is flagged",
          (op09.get("status"), op09.get("conflict")), ("ok", True)),
+        ("one advance matching the second ps1 variant is named after that variant",
+         (res3.get(0x26, {}).get("length"), res3.get(0x26, {}).get("name")), (4, "Calc2")),
         ("two advances plus one matching ps1 size -> the table decides, and names it",
          (op26.get("status"), op26.get("length"), op26.get("name")), ("ok", 4, "Calc2")),
         ("two advances with no ps1 entry are ambiguous, not guessed",
