@@ -111,6 +111,49 @@ def gbi_test(blocks):
     return heads, records, gbi, units, alpha
 
 
+# Loader tables indexed by the object-type byte, with the tag each call site passes to func_0x80004cfc.
+# The tags are .rodata strings, read from the image: 0x800b8f64 "TM3", 0x800b867c "EMD", 0x800b8700 "EFF",
+# 0x800b99cc "ITP", 0x800b9dcc "T64", 0x800b8934 "TIM".
+LOADER_TABLES = {
+    "TM3": 0x8010DBC0,
+    "EMD": 0x80126C80,
+    "EFF": 0x800EBB30,
+    "ITP": 0x8012BEC0,
+}
+
+
+def loader_kinds(rom, sample=40):
+    """Which resource kinds actually reference the family? Sample each loader table and report the magics."""
+    words = ws.load_stage2()
+    base = ws.STAGE2_BASE
+
+    def u16(va):
+        off = va - base
+        w = off // 4
+        if not (0 <= w < len(words)):
+            return None
+        return (words[w] >> 16) if off % 4 == 0 else (words[w] & 0xFFFF)
+
+    blocks = {idx: raw for idx, raw in family(rom)}
+    out = {}
+    for tag, va in LOADER_TABLES.items():
+        magics = Counter()
+        n = 0
+        for i in range(200):
+            v = u16(va + 2 * i)
+            if v is None or not (0 < v < 8091):
+                continue
+            raw = blocks.get(v)
+            if raw is None or len(raw) < 4:
+                continue
+            magics[struct.unpack_from(">I", raw, 0)[0]] += 1
+            n += 1
+            if n >= sample:
+                break
+        out[tag] = (n, magics)
+    return out
+
+
 def constants_in_code():
     """The two shared record constants: are they code immediates, or only data?"""
     words = ws.load_stage2()
@@ -147,6 +190,7 @@ def main() -> int:
     maxbyte, pairs, divisible = payload_stats(blocks)
     heads, records, gbi, units, alpha = gbi_test(blocks)
     const_in_code = constants_in_code()
+    kinds = loader_kinds(ROM.read_bytes())
     template_hits, template = unit_template(blocks)
     cases = [
         ("the family is found and is large", len(blocks) > 200),
@@ -167,6 +211,15 @@ def main() -> int:
         ("the payload is not a clean RGBA5551 texture (alpha bit is neither all-set nor all-clear)",
          0.25 < alpha / max(1, units) < 0.75),
         ("the shared record constants occur nowhere in the stage-2 code image", const_in_code == 0),
+        # --- relational: which loader kinds reference the family (M162)
+        ("the EMD (enemy model) loader references family blocks",
+         kinds["EMD"][1].get(MAGIC, 0) >= 10),
+        ("the TM3 (model) loader references family blocks",
+         kinds["TM3"][1].get(MAGIC, 0) >= 8),
+        ("the ITP loader references a different kind entirely (no family blocks)",
+         kinds["ITP"][1].get(MAGIC, 0) == 0),
+        ("the EFF loader references a different kind entirely (no family blocks)",
+         kinds["EFF"][1].get(MAGIC, 0) == 0),
     ]
     passed = 0
     for label, ok in cases:

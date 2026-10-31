@@ -85,6 +85,11 @@ AUDITS = [
          file="tools/container_0141.py",
          old="    gbi = sum(c for b, c in heads.items() if 0xE4 <= b <= 0xFF)",
          new="    gbi = sum(c for b, c in heads.items())"),
+    dict(name="container_0141: the ITP loader table is swapped for the TM3 one",
+         tool="container_0141.py", args=["--check"],
+         file="tools/container_0141.py",
+         old='    "ITP": 0x8012BEC0,',
+         new='    "ITP": 0x8010DBC0,'),
     # --- the corpus profiler
     dict(name="script_profile: the script heuristic admits nothing",
          tool="script_profile.py", args=["--check"],
