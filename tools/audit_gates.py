@@ -70,6 +70,11 @@ AUDITS = [
          file="tools/cfg_reach.py",
          old="    only_ids = room_script_ids() if (args.rooms or args.check_rooms) else None",
          new="    only_ids = None"),
+    dict(name="container_0141: the unit size is wrong (32 not 16)",
+         tool="container_0141.py", args=["--check"],
+         file="tools/container_0141.py",
+         old="UNIT = 16",
+         new="UNIT = 32"),
     # --- the corpus profiler
     dict(name="script_profile: the script heuristic admits nothing",
          tool="script_profile.py", args=["--check"],
