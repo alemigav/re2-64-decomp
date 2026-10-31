@@ -108,8 +108,10 @@ not the protocol.
 `g` is 568 bytes, which is neither 32×4 nor a clean MIPS set, so nothing about it was guessed:
 
 * `p 0 … p 70` all answer with **8 bytes each**, and 71 × 8 = 568, so the file is uniform;
-* the `p n` concatenation does **not** equal `g` — expected, because the two reads happen at different
-  moments on a running machine. `regmap` says so instead of pretending the check passed;
+* the `p n` concatenation did **not** equal `g` at first — and the cause was mine, not the stub's: the
+  `p` index is **decimal**, and `regmap` formatted it as hex, so `p10` read register 16. With `p%d` the
+  mismatch disappears. The earlier reading ("expected, the two reads are different moments") was a
+  rationalisation of a bug; see the addendum below;
 * two stops at two different addresses isolate **index 37**: it held `0xffffffff80000518` and then
   `0xffffffff8000051c`, i.e. sign-extended 32-bit, and equal to the breakpoint address → **PC = 37**;
 * index 4 held `0x054d442b` then `0x0550ab84`. The static decode of the stop's neighbour explains it:
@@ -133,6 +135,28 @@ What it does **not** do: reach a room. The machine now boots and runs under GDB 
 blocker is unchanged and is still the one that settles the original question — **a dump, or a breakpoint, in
 a different room**. Route B (`--save-state slot` + `Paths/Saves`) is what makes that reproducible;
 `Boot/AwaitGDBClient` and `Boot/Debugger` are separate switches and only the latter gates the listener.
+
+## Addendum — the `p` index is decimal, and `--setting` persists
+
+Two corrections found while using the tool, both cheap to state and expensive to get wrong:
+
+* **`p n` takes a decimal index.** `p37` is PC; `p25` is register 25 (not 37). Verified: `raw p37` ->
+  `ffffffff80000518` while stopped there, `raw p25` -> `0000000000000000`. Every `p` request in this tool
+  now formats the index with `%d`.
+* **ares' `--setting name=value` persists into `~/Library/Application Support/ares/settings.bml`.**
+  Launching once with `Boot/AwaitGDBClient=true` leaves it true for every later launch, including one the
+  owner starts by hand — and in that state ares runs a few seconds of boot and then **halts waiting for a
+  GDB client**: the machine sits at `0xBFC00000` (PIF entry) with RDRAM all zeros and `c` alone does not
+  release it. That is a live confounder for anything measured on a hand-launched ares, and it looks exactly
+  like "the game froze / the controller stopped working". The settings a launch needs are therefore written
+  down, not inherited: `Boot/Debugger`, `Boot/AwaitGDBClient`, `DebugServer/{Enabled,Port,UseIPv4}`.
+* Consequence for the workflow: the machine is **running** while a client is attached and idle (measured:
+  VI_ORIGIN flips across quiet windows), and it keeps running after a clean disconnect — but a session that
+  ends while the core is stopped on a breakpoint can leave ares wedged (`c` then answering `S0b`, SIGSEGV,
+  VI frozen). Always `z0` before closing, which `watch`/`until` do.
+* `M` (write memory) is supported and `X` is not; `Z2`/`Z3`/`Z4` watchpoints are accepted. `FUN_8000d1f0`
+  is `__osSiRawStartDma`, so controller bytes arrive in an **RDRAM** buffer that the debugger can overwrite
+  — the basis for driving the game without the owner's hardware.
 
 ## Errors this note earned
 

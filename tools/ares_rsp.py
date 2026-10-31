@@ -32,6 +32,7 @@ Usage:
   ./ares_rsp.py regmap                      # derive each register's size and offset from `p n`
   ./ares_rsp.py read 0x80012150 64          # `m addr,len`
   ./ares_rsp.py dump out.bin [--expect FILE] # 8 MiB RDRAM in 32 KiB chunks, optional byte-equality check
+  ./ares_rsp.py watch 0x80071ebc --stops 20     # a0 (and PC) at every hit, one connection
   ./ares_rsp.py bp 0x80071eb0 && ./ares_rsp.py cont
   ./ares_rsp.py raw 'qAttached'             # send one literal packet, for dialect exploration
   ./ares_rsp.py launch --rom rom/nree.z64   # start ares with Boot/Debugger + DebugServer/Port
@@ -251,6 +252,12 @@ def do_launch(args):
            "--setting", "DebugServer/Port=%d" % args.port,
            "--setting", "DebugServer/UseIPv4=true",
            "--setting", "Boot/Debugger=true"]
+    if args.log:
+        with open(args.log, "ab") as log:
+            proc = subprocess.Popen(cmd, stdout=log, stderr=log)
+        print("$ " + " ".join(cmd))
+        print("[..] ares pid %d, output -> %s" % (proc.pid, args.log))
+        return proc
     if args.await_gdb:
         cmd += ["--setting", "Boot/AwaitGDBClient=true"]
     print("$ " + " ".join(cmd))
@@ -385,13 +392,24 @@ def do_regmap(args):
     rsp = Rsp(args.host, args.port, args.timeout, args.quiet)
     rsp.connect()
     rsp.greeting(0.1)
+    if args.halt:
+        if rsp.cmd("Z0,%x,4" % args.halt) != "OK":
+            print("could not set the halting breakpoint")
+            rsp.close()
+            return 1
+        rsp.send_raw(pkt("c"))
+        if rsp.read_packet(timeout=args.wait) is None:
+            print("no stop at %08x within %.0fs" % (args.halt, args.wait))
+            rsp.close()
+            return 1
+        print("[..] halted at %08x, so `g` and the `p n` reads are one instant" % args.halt)
     blob = rsp.read_regs()
     if blob is None:
         rsp.close()
         return 1
     rows, off = [], 0
     while off < len(blob):
-        reply = rsp.cmd("p%x" % len(rows))
+        reply = rsp.cmd("p%d" % len(rows))
         if reply is None or reply == "" or is_error(reply):
             print("`p %x` answered %r — stopping the scan" % (len(rows), reply))
             break
@@ -434,6 +452,47 @@ def do_until(args):
         print("registers (%d bytes): %s" % (len(regs), regs.hex()))
     rsp.close()
     return 0
+
+
+DERIVED_REGS = {0: "r0", 4: "a0", 37: "pc"}     # derived by measurement in M108; nothing else is named
+
+
+def do_watch(args):
+    """Hit one address repeatedly and report chosen registers at every stop, in one connection."""
+    rsp = Rsp(args.host, args.port, args.timeout, args.quiet)
+    rsp.connect()
+    rsp.greeting(0.1)
+    reply = rsp.cmd("Z0,%x,%d" % (args.addr, args.width))
+    if reply != "OK":
+        print("breakpoint refused: %r" % reply)
+        rsp.close()
+        return 1
+    names = ", ".join("%s=r%d" % (DERIVED_REGS.get(r, "r%d" % r), r) for r in args.reg)
+    print("[..] breakpoint at %08x; watching %s" % (args.addr, names))
+    hits = 0
+    try:
+        for n in range(1, args.stops + 1):
+            rsp.send_raw(pkt("c"))
+            stop = rsp.read_packet(timeout=args.wait)
+            if stop is None:
+                print("no stop within %.0fs after %d hit(s)" % (args.wait, hits))
+                break
+            hits += 1
+            fields = []
+            for r in args.reg:
+                reply = rsp.cmd("p%d" % r)
+                if reply is None or reply == "" or is_error(reply):
+                    fields.append("%s=<no read>" % DERIVED_REGS.get(r, "r%d" % r))
+                    continue
+                raw = bytes.fromhex(reply)
+                fields.append("%s=%s" % (DERIVED_REGS.get(r, "r%d" % r),
+                                         "0x" + raw[-4:].hex() if len(raw) == 8 else "0x" + raw.hex()))
+            print("stop %2d  %-8s %s" % (n, stop, "  ".join(fields)))
+    finally:
+        rsp.cmd("z0,%x,%d" % (args.addr, args.width))
+        rsp.close()
+    print("%d stop(s)" % hits)
+    return 0 if hits else 1
 
 
 def do_raw(args):
@@ -489,11 +548,21 @@ def main():
     p.add_argument("--wait", type=float, default=5.0)
 
     p = add("regmap", do_regmap)
+    p.add_argument("--halt", type=lambda s: int(s, 0), help="breakpoint to halt on before comparing")
+    p.add_argument("--wait", type=float, default=15.0)
 
     p = add("until", do_until)
     p.add_argument("addr", type=lambda s: int(s, 0))
     p.add_argument("--width", type=int, default=4)
     p.add_argument("--wait", type=float, default=10.0)
+
+    p = add("watch", do_watch)
+    p.add_argument("addr", type=lambda s: int(s, 0))
+    p.add_argument("--reg", type=lambda s: int(s, 0), action="append",
+                   help="register index to read at each stop (repeatable); default 4 (a0) and 37 (pc)")
+    p.add_argument("--stops", type=int, default=10)
+    p.add_argument("--width", type=int, default=4)
+    p.add_argument("--wait", type=float, default=30.0)
 
     p = add("raw", do_raw)
     p.add_argument("packet")
@@ -502,8 +571,11 @@ def main():
     p.add_argument("--rom", required=True)
     p.add_argument("--ares", default="/Applications/ares.app")
     p.add_argument("--await-gdb", action="store_true", help="also set Boot/AwaitGDBClient=true")
+    p.add_argument("--log", help="append ares' own stdout/stderr here (it prints GDB connect/disconnect)")
 
     args = ap.parse_args()
+    if getattr(args, "cmd", None) == "watch" and not args.reg:
+        args.reg = [4, 37]
     Rsp.LEAD_ACK = not args.no_lead_ack
     return args.fn(args) or 0
 
