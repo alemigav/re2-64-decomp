@@ -494,6 +494,19 @@ def resolve(value, args, summaries, seen=()):
     kind, a = value
     if kind == PARAM:
         return args[a] if a < len(args) else U
+    if kind == PAROFF:
+        # a callee's summary can return `(its param k) << scale + addend`. Leaving that form untouched
+        # makes the CALLEE's parameter index read as the CALLER's, which is how `a0=param(a0)<<4+…`
+        # appeared at a call site whose real argument was an unknown byte loaded from a map.
+        k, scale, addend = a
+        inner = resolve((PARAM, k), args, summaries, seen)
+        if inner[0] == CONST:
+            return (CONST, ((inner[1] << scale) + addend) & 0xFFFFFFFF)
+        if inner[0] == PARAM and inner[1] == k:
+            return value                                  # genuinely the caller's own parameter
+        if inner[0] in (PARAM, PAROFF, CBASE):
+            return inner                                  # keep what the caller's value really is
+        return U
     if kind == RET:
         if a in seen or a not in summaries:
             return (RET, a)                     # unresolvable callee: keep the name, claim nothing
@@ -521,8 +534,10 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
         state.put(V0, (RET, target))
         accesses.append(Access(ins.pc, "jal", (RET, target), 0, args=args, call_target=target))
         return
-    for k, v in enumerate(summary["params"]):
-        state.put(4 + k, resolve(v, args, summaries) if v[0] != UNK else U)
+    # NOTE: the callee's `params` summary describes what the CALLEE does with its argument. It says
+    # nothing about what the caller's a0-a3 hold after the call — those are caller-saved and were
+    # clobbered above. Writing them back fabricated argument values that then appeared at later call
+    # sites in the same function (found when Ghidra boundaries changed which call sites are in a region).
     lowered = resolve(summary["ret"], args, summaries)
     state.put(V0, lowered)
     accesses.append(Access(ins.pc, "jal", lowered, 0, args=args, call_target=target))
@@ -868,6 +883,19 @@ def load_images(manifest="build/elfs/images.json"):
     return [(im["name"], im["base"], im["size"], im.get("source")) for im in data["images"]], blob
 
 
+def image_regions(name, base, words):
+    """Ghidra's function ranges when available, else the heuristic — and count which was used."""
+    regions = ghidra_regions(name, base, len(words))
+    if regions is not None:
+        REGION_STATS["ghidra_images"] += 1
+        REGION_STATS["ranges"] += len(regions)
+        REGION_STATS["covered"] += sum(e - s for s, e in regions)
+        REGION_STATS["total"] += len(words)
+        return regions
+    REGION_STATS["fallback_images"].append(name)
+    return function_bounds(words)
+
+
 def image_words(blob, base, size, source=None):
     """Read an image's bytes from where they actually live.
 
@@ -887,6 +915,44 @@ def image_words(blob, base, size, source=None):
     return list(struct.unpack(">%dI" % (len(raw) // 4), raw[:len(raw) // 4 * 4]))
 
 
+DECOMP = "build/decomp"
+REGION_STATS = {"ghidra_images": 0, "fallback_images": [], "ranges": 0, "multi_range": 0,
+                "covered": 0, "total": 0}
+
+
+def ghidra_regions(name, base, nwords):
+    """Function ranges from the Ghidra index this repo already ships (`build/decomp/<image>/`).
+
+    The index gives `address` plus `body.ranges`, whose `end` is **inclusive** (`0x80000480..0x800004ef` is
+    28 words, and the next function starts at `0x800004f0`). Using it replaces the prologue / post-`jr ra`
+    heuristic below, which produced 7 093 "regions" for 3 638 known functions and — as M112 recorded —
+    silently skipped every leaf function with no prologue of its own.
+
+    Returns None when the image has no index, so the caller can fall back and say so.
+    """
+    path = Path(DECOMP) / name / "decompile-index.json"
+    if not path.exists():
+        return None
+    out, seen = [], set()
+    for fn in json.loads(path.read_text()).get("functions", []):
+        body = fn.get("body") or {}
+        ranges = body.get("ranges") or []
+        if len(ranges) > 1:
+            REGION_STATS["multi_range"] += 1
+        for r in ranges:
+            start = int(r["start"], 16)
+            end = int(r["end"], 16) + 4                      # inclusive end
+            s_idx = (start - base) // 4
+            e_idx = (end - base) // 4
+            s_idx = max(0, s_idx)
+            e_idx = min(nwords, e_idx)
+            if e_idx <= s_idx or (s_idx, e_idx) in seen:
+                continue
+            seen.add((s_idx, e_idx))
+            out.append((s_idx, e_idx))
+    return out or None
+
+
 def function_bounds(words):
     """Region boundaries: a prologue (`addiu sp,sp,-N`) or the instruction after a `jr ra`.
 
@@ -896,6 +962,7 @@ def function_bounds(words):
     reaches. Both boundaries are heuristics; the honest statement is that they delimit *regions*, not
     proven functions.
     """
+    """FALLBACK region splitter: prologue or post-`jr ra`. Used only for an image with no Ghidra index."""
     starts = {0}
     for i, w in enumerate(words):
         if (w >> 26) == 0x09 and ((w >> 21) & 0x1F) == SP and ((w >> 16) & 0x1F) == SP \
@@ -918,7 +985,7 @@ def run_images(target=None, window=0x10, census=False, out=None):
         words = image_words(blob, base, size, source)
         total_acc = attr = 0
         kinds = {}
-        for s, e in function_bounds(words):
+        for s, e in image_regions(name, base, words):
             accesses, attributed, _ = analyse(words[s:e], base + 4 * s)
             total_acc += len(accesses)
             attr += attributed
@@ -983,7 +1050,7 @@ def load_regions():
     regions, index = [], {}
     for name, base, size, source in images:
         words = image_words(blob, base, size, source)
-        for s, e in function_bounds(words):
+        for s, e in image_regions(name, base, words):
             start = base + 4 * s
             regions.append((start, words[s:e], name))
             index[start] = (name, base + 4 * e)
@@ -1051,6 +1118,11 @@ def run_layer2(args):
                 kinds[k] = kinds.get(k, 0) + 1
         print("base kinds: " + ", ".join("%s %d" % (k, v) for k, v in sorted(kinds.items(), key=lambda x: -x[1])))
         hits, misses = SLOT_STATS["hit"], SLOT_STATS["miss"]
+        print("regions: %d image(s) from the Ghidra index, %d range(s), %d multi-range function(s), "
+              "%.1f%% of image bytes inside a known function; fallback heuristic used for: %s" % (
+                  REGION_STATS["ghidra_images"], REGION_STATS["ranges"], REGION_STATS["multi_range"],
+                  100.0 * REGION_STATS["covered"] / max(REGION_STATS["total"], 1),
+                  ", ".join(REGION_STATS["fallback_images"]) or "none"))
         print("frame slots: %d access(es) through sp/a frame address, %d resolved to a stored value "
               "(%.1f%%), %d missed" % (hits + misses, hits, 100.0 * hits / max(hits + misses, 1), misses))
         print("%d regions, %d memory operands, %d attributed (%.1f%%), %d unrecognised" % (
