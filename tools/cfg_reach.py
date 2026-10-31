@@ -136,7 +136,28 @@ def _reach_from(raw, start, res, generous_starts=None):
     return {k[0] for k in seen if len(k) == 2}
 
 
-def survey(rom, res, entry_only=False, generous=False):
+ROOM_TABLE = 0x80131FA8       # DAT_80131fa8: room index -> file id (M145)
+ROOM_TABLE_MAX = 400
+
+
+def room_script_ids():
+    """The file ids that are actually room scripts, from the table the room loader uses."""
+    words = ws.load_stage2()             # big-endian 32-bit words, not bytes
+    base = ws.STAGE2_BASE
+    out = set()
+    for i in range(ROOM_TABLE_MAX):
+        va = ROOM_TABLE + 2 * i
+        off = va - base
+        w = off // 4
+        if not (0 <= w < len(words)):
+            break
+        value = (words[w] >> 16) if off % 4 == 0 else (words[w] & 0xFFFF)
+        if value:
+            out.add(value)
+    return out
+
+
+def survey(rom, res, entry_only=False, generous=False, only_ids=None):
     """`entry_only` seeds **only record 0** — the room's real entry point, via FUN_8006d5dc(ctx,0).
 
     Seeding every record start makes the measure near-tautological: each record then "reaches" its own code
@@ -144,11 +165,14 @@ def survey(rom, res, entry_only=False, generous=False):
     actually run from the room's script entry?", and that is where a dead-code claim can live.
     """
     blocks = records = 0
+    left_stream = 0
     rec_hit = Counter()
     reach_ops = Counter()
     decoded_ops = Counter()
     runs_reach = Counter()
     for idx in range(sp.ENTRY_COUNT):
+        if only_ids is not None and idx not in only_ids:
+            continue
         off, size = struct.unpack_from(">II", rom, sp.FILE_TABLE_ROM + sp.HEADER + 8 * idx)
         if off == 0xFFFFFFFF or size == 0:
             continue
@@ -190,6 +214,8 @@ def survey(rom, res, entry_only=False, generous=False):
                     break
                 p += r["length"]
             records += 1
+            if pos and res.get(raw[pos[0]]) is None:
+                left_stream += 1
             k = 0
             while k < len(seq):
                 if seq[k] == 0x20 and pos[k] in reach:
@@ -200,7 +226,7 @@ def survey(rom, res, entry_only=False, generous=False):
                     k = j
                 else:
                     k += 1
-    return {"blocks": blocks, "records": records, "rec_hit": rec_hit,
+    return {"blocks": blocks, "records": records, "rec_hit": rec_hit, "left_stream": left_stream,
             "reach_ops": reach_ops, "decoded_ops": decoded_ops, "runs_reach": runs_reach}
 
 
@@ -208,6 +234,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--rooms", action="store_true",
+                    help="restrict the survey to blocks whose file id is in the room-script table")
+    ap.add_argument("--check-rooms", action="store_true",
+                    help="the gate for the room-script population")
     ap.add_argument("--generous", action="store_true",
                     help="an unresolvable block pop resumes at every record start (over-approximates)")
     ap.add_argument("--entry", action="store_true",
@@ -218,7 +248,23 @@ def main() -> int:
         return 0
     res = ws.resolve(ws.load_stage2())
     rom = ROM.read_bytes()
-    s = survey(rom, res, entry_only=args.entry, generous=args.generous)
+    only_ids = room_script_ids() if (args.rooms or args.check_rooms) else None
+    s = survey(rom, res, entry_only=args.entry, generous=args.generous, only_ids=only_ids)
+    if args.check_rooms:
+        cases = [
+            ("the room table resolves a script population", 20 < s["blocks"] < 200),
+            ("no room-script walk leaves the command stream", s["left_stream"] == 0),
+            ("the three object-table writers never occur in room scripts",
+             all(s["decoded_ops"][o] == 0 for o in (0x6A, 0x7A, 0x7F))),
+        ]
+        print(f"room scripts: {s['blocks']} blocks, {s['records']} records, "
+              f"{s['left_stream']} walk(s) left the command stream")
+        passed = 0
+        for label, ok in cases:
+            passed += ok
+            print(f"  {'PASS' if ok else 'FAIL'} {label}")
+        print(f"{passed}/{len(cases)} room-script case(s)")
+        return 0 if passed == len(cases) else 1
     if args.generous:
         print("(generous closure: unresolvable pops resume at every record start)")
     if args.entry:

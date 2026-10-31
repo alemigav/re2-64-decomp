@@ -43,7 +43,8 @@ SUITES = [
     ("room script (cartridge)", [sys.executable, "tools/room_script.py", "--check"], 4, True),
     ("script profile (cartridge)", [sys.executable, "tools/script_profile.py", "--check"], 5, True),
     ("cfg reachability (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check"], 6, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 10, True),
+    ("room scripts only (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check-rooms"], 3, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 11, True),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 

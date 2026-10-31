@@ -65,6 +65,11 @@ AUDITS = [
          file="tools/cfg_reach.py",
          old="    positions = set()\n    for start in starts:",
          new="    return set()\n    for start in starts:"),
+    dict(name="cfg_reach: the room-script filter is disabled",
+         tool="cfg_reach.py", args=["--check-rooms"],
+         file="tools/cfg_reach.py",
+         old="    only_ids = room_script_ids() if (args.rooms or args.check_rooms) else None",
+         new="    only_ids = None"),
     # --- the corpus profiler
     dict(name="script_profile: the script heuristic admits nothing",
          tool="script_profile.py", args=["--check"],
