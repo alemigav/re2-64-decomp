@@ -49,6 +49,8 @@ TABLE_MAX = 512            # bound on entries walked out of one table
 TABLE_STATS = {"jtent": 0, "tables": 0, "in_region": 0, "cross": 0, "unresolved": 0}
 SLOT_STATS = {"hit": 0, "miss_merge": 0, "miss_never": 0, "miss_unstable": 0}
 STK_STATS = {"asked": 0, "resolved": 0}   # stack arguments a call site had to supply, and those it could
+CHECK_STK = False        # when set, every call site is checked for a stack argument the caller never stored
+STK_FINDINGS = {}        # pc -> {target, missing:[(bias, key, kind)]}; keyed by pc so fixpoint rounds dedupe
 UNK = "unk"
 
 LOADS = {0x23: "lw", 0x24: "lbu", 0x25: "lhu", 0x21: "lh", 0x37: "ld", 0x1F: "lwu"}
@@ -555,6 +557,19 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
             if key in state.slot:
                 args_stk[b] = state.slot[key]
                 STK_STATS["resolved"] += 1
+    if CHECK_STK and summary is not None:
+        missing = []
+        for b in summary.get("stk", ()):
+            key = (state.spbias or 0) + b
+            if key not in state.slot:
+                # `interior` = the slot lies inside the caller's own frame, so a store was expected and is
+                # absent: a real defect signature. `forwarded` = the slot is above the caller's entry sp,
+                # i.e. the value arrives from the caller's own caller and is being passed straight through.
+                missing.append((b, key, "interior" if key < 0 else "forwarded"))
+        if missing:
+            STK_FINDINGS[ins.pc] = {"pc": ins.pc, "target": target, "missing": missing}
+        else:
+            STK_FINDINGS.pop(ins.pc, None)
     if summary is None:
         state.put(V0, (RET, target))
         accesses.append(Access(ins.pc, "jal", (RET, target), 0, args=args, call_target=target))
@@ -817,6 +832,15 @@ def fixture_cases_layer2():
                   lambda summ, acc: all(x.target is None for x in acc)
                   and any(x.base[0] == RET for x in acc)))
 
+    # L10: the caller-side check flags a stack argument the caller never stored
+    callee = [enc_lw(2, 0x10, SP), enc_jr(RA), enc_nop()]
+    bad = [enc_addiu(SP, SP, -32), enc_jal(a_base), enc_nop(), enc_jr(RA), enc_nop()]
+    good = [enc_addiu(SP, SP, -32), enc_lui(8, 0x8011), enc_ori(8, 8, 0x5284),
+            enc_sw(8, 0x10, SP), enc_jal(a_base), enc_nop(), enc_jr(RA), enc_nop()]
+    cases.append(("L10 the caller-side check flags a missing stack argument, and only for the bad caller",
+                  [(a_base, callee), (b_base, bad), (0x80300000, good)],
+                  lambda summ, acc: _stk_case_ok()))
+
     # L9: a callee's incoming stack argument resolves to the caller's outgoing store
     callee = [enc_lw(2, 0x10, SP), enc_jr(RA), enc_nop()]
     caller = [enc_addiu(SP, SP, -32), enc_lui(8, 0x8011), enc_ori(8, 8, 0x5284),
@@ -872,10 +896,19 @@ def fixture_cases_layer2():
     return cases
 
 
+def _stk_case_ok():
+    """Both halves of L10: exactly one finding, at the caller that stored nothing."""
+    findings = list(STK_FINDINGS.values())
+    pcs = sorted(f["pc"] for f in findings)
+    return pcs == [0x80101004] and findings[0]["missing"][0][2] == "interior"
+
+
 def self_test2():
     passed = 0
     cases = fixture_cases_layer2()
     for name, regions, check in cases:
+        STK_FINDINGS.clear()
+        globals()["CHECK_STK"] = True                 # the check runs inside analyse; findings dedupe by pc
         summaries = summarise(regions)
         acc = []
         for start, words in regions:
@@ -891,6 +924,7 @@ def self_test2():
             for a in acc:
                 print("      %s" % a)
         passed += 1 if ok else 0
+    globals()["CHECK_STK"] = False
     print("\n%d/%d (layer 2)" % (passed, len(cases)))
     return 0 if passed == len(cases) else 1
 
@@ -1206,6 +1240,47 @@ def run_layer2(args):
         if not shown:
             print("  none resolved to a known region (the callee has no summary)")
 
+    if args.stk_check:
+        globals()["CHECK_STK"] = True
+        STK_FINDINGS.clear()
+        sites = 0
+        for start, words, name in regions:
+            accesses, _, _ = analyse(words, start, summaries, {})
+            sites += sum(1 for a in accesses if a.call_target)
+        globals()["CHECK_STK"] = False
+        interior = [(pc, f) for pc, f in STK_FINDINGS.items()
+                    if any(k == "interior" for _, _, k in f["missing"])]
+        forwarded = [(pc, f) for pc, f in STK_FINDINGS.items()
+                     if all(k == "forwarded" for _, _, k in f["missing"])]
+        print("%d call site(s) analysed; %d of them leave a stack argument unsupplied" % (
+            sites, len(STK_FINDINGS)))
+        print("  %d site(s) where the missing slot is INSIDE the caller's own frame (a store was "
+              "expected and is absent)" % len(interior))
+        print("  %d site(s) where it lies above the caller's entry sp (the value is passed straight "
+              "through from the caller's caller)" % len(forwarded))
+        def owner(pc):
+            for start, words, name in regions:
+                if start <= pc < start + 4 * len(words):
+                    return name, start
+            return "?", 0
+        print("\nfirst 20 interior cases (caller region, call site, target, missing biases):")
+        for pc, f in sorted(interior)[:20]:
+            name, start = owner(pc)
+            print("  %-10s %08x in %08x -> %08x   biases %s" % (
+                name, pc, start, f["target"],
+                [("%+d" % b) for b, _, _ in f["missing"] if True]))
+        if args.json:
+            Path(args.json).parent.mkdir(parents=True, exist_ok=True)
+            Path(args.json).write_text(json.dumps({
+                "sites": sites,
+                "unsupplied": len(STK_FINDINGS),
+                "interior": [{"pc": pc, "target": f["target"],
+                              "missing": [b for b, _, k in f["missing"] if k == "interior"]}
+                             for pc, f in sorted(interior)],
+                "forwarded": len(forwarded)}, indent=1) + "\n")
+            print("wrote %s" % args.json)
+        return 0
+
     if args.census:
         tot = attr = 0
         kinds = {}
@@ -1279,6 +1354,8 @@ def main():
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--self-test2", action="store_true")
     ap.add_argument("--acceptance", action="store_true", help="run the two experiment-B acceptance tests")
+    ap.add_argument("--stk-check", action="store_true",
+                    help="flag call sites whose callee reads a stack argument the caller never stored")
     ap.add_argument("--layer2", action="store_true", help="interprocedural fixpoint over the cartridge")
     ap.add_argument("--region", type=lambda s: int(s, 0), help="dump every access in the function holding this address")
     ap.add_argument("--param-accesses", action="store_true", help="list parameter-derived accesses")
@@ -1300,7 +1377,7 @@ def main():
     if args.acceptance:
         return acceptance()
     if args.layer2 or args.region or args.param_accesses or args.callers is not None \
-            or args.unk_causes or args.census:
+            or args.unk_causes or args.census or args.stk_check:
         return run_layer2(args)
     return run_images(args.target, args.window, args.census or args.target is None, args.json)
 
