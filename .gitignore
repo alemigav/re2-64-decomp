@@ -12,3 +12,8 @@ asm/
 bin/
 *.ld
 .venv/
+
+# The synthetic corpus fixture is NOT cartridge data: 8 KiB of generated words, committed on purpose so the
+# corpus pipeline can run without the real ROM (M129). The rules above keep actual cartridge images out; this
+# one exception is size-checked by tools/ci.sh.
+!fixtures/corpus/cart.z64

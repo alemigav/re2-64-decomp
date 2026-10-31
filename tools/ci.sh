@@ -22,12 +22,28 @@ printf '== fixtures\n'
 python3 tools/acceptance.py || status=1
 
 printf '\n== tracked artefacts\n'
-bad=$(git ls-files | grep -E '^(rom|assets|build)/|\.(z64|n64|bin|elf)$' || true)
+# `fixtures/` is exempt: fixtures/corpus/cart.z64 is a synthetic 8 KiB file committed so CI can run the corpus
+# pipeline (M129), not cartridge data. Its size is bounded below so the exemption cannot smuggle a real ROM in.
+bad=$(git ls-files | grep -E '^(rom|assets|build)/|\.(z64|n64|bin|elf)$' | grep -v '^fixtures/' || true)
 if [ -n "$bad" ]; then
 	printf 'FAIL these must not be tracked:\n%s\n' "$bad"
 	status=1
 else
 	printf 'none (ok)\n'
+fi
+
+printf '\n== fixture size\n'
+if [ -f fixtures/corpus/cart.z64 ]; then
+	sz=$(wc -c < fixtures/corpus/cart.z64 | tr -d ' ')
+	if [ "$sz" -gt 1048576 ]; then
+		printf 'FAIL fixtures/corpus/cart.z64 is %s bytes — the synthetic fixture must stay tiny\n' "$sz"
+		status=1
+	else
+		printf 'fixtures/corpus/cart.z64 %s bytes (synthetic, ok)\n' "$sz"
+	fi
+else
+	printf 'FAIL fixtures/corpus/cart.z64 is missing\n'
+	status=1
 fi
 
 printf '\n== cartridge integrity\n'
