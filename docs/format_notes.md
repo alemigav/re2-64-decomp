@@ -1818,6 +1818,42 @@ from `0x8004d344` through the dispatcher's `mtc0 $12` — an independent MIPS im
 harness instruction-for-instruction, with zero divergence. The comparison has never yet produced evidence
 against my CPU; all three stopping points have been Unicorn configuration.
 
+#### MIPS64 mapping attempt: Unicorn cannot run this code either way (M62)
+
+Feasibility test with both mappings in place — sign-extended `0xFFFFFFFF80000000` **and** 32-bit `0x80000000`,
+each 4 MB of the same RAM image:
+
+```
+mapped sign-extended RAM ok      mapped 32-bit RAM ok
+PC after write: 0x8004d344
+MIPS64 fetch failed: Unhandled CPU exception (UC_ERR_EXCEPTION)      (0 instructions executed)
+```
+
+So the two Unicorn modes fail in complementary ways:
+
+| mode | behaviour |
+|---|---|
+| `UC_MODE_MIPS32` | executes correctly for 158 instructions, then raises at `0x80000fb4` on `DADDIU` (MIPS III) |
+| `UC_MODE_MIPS64` | raises immediately at `0x8004d344`, executing **nothing**, with either mapping |
+
+**Conclusion: this reference implementation cannot be extended past 158 instructions on this code as available.**
+32-bit mode refuses the 64-bit instructions the VR4300 uses; 64-bit mode does not fetch at all. The differential
+has therefore given its verdict on the window it can cover — **zero divergence across 158 instructions** — and
+cannot answer anything further without a different reference.
+
+**That is a decision point rather than a technical dead end.** The options are:
+
+1. **mupen64plus** (or ares/retroarch) via Homebrew — a real N64 emulator with the right CPU, but a
+   system-level install of a large native package, which this project's rules require the user to approve;
+2. **QEMU system-mips** — likewise a substantial install, and it would need a machine definition for the N64
+   memory map;
+3. **Accept the differential's current verdict** and stop using it: 158 instructions agree with an independent
+   implementation, and no evidence against the CPU has appeared at any point.
+
+Recommendation: option 1 if the investigation continues, because the remaining question ("is my CPU still subtly
+wrong on the 0x8000Bxxx path?") cannot be settled by a tool I configure myself, and 32-bit Unicorn has already
+demonstrated it cannot even reach that region.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
