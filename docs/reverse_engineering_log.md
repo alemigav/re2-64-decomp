@@ -77,7 +77,8 @@ Detailed write-ups live in `docs/log/`.
 | M93 | **the slot condition fully traced and `cart_record(0)` turned out to be a crash path**: `s1` is `slot` or the clamp `16`, so `s1 == 16 ⟺ slot < 32` and `s0 = 1` iff `slot < 32` — the previous trace asserted this without showing the clamp. Slots **17–31** are not a harmless header read: `cart_record(0)` yields `record[1] = 0x4c415954 ≠ 0`, so branch 2 fires and the loader inflates **1.28 GB from cart `0x0f564552`**, four times past the cartridge end — a crash-class path distinct from slot 16's silent failure. The watch at `0x80071ebc` (`lbu a0,3(v0)`) must cover **`[16,32)`**. The stamp record survives **not** because `record[1] == 0` but because nothing passes it to the loader — boot reads field 0 as a pointer itself; handed to `FUN_800327ec` it would inflate 3.4 GB. And the dev-build hypothesis is weak: the two build stamps are 2 days apart in late September 1999 (RE2 N64 shipped October 1999), and `0xCDCDCDCD` occurs **once** in 64 MB, so the audit's own multi-occurrence test fails | `docs/log/M93-slot-condition-and-build-question.md` |   an interior address reports "no callers" no matter how many exist — that produced a nonexistent
 
 | M94 | **the callers of `FUN_8003287c` enumerated**: exactly **one** `jal` (`0x80071ec0` in `FUN_80071e14`), no `lui`+`jalr` construction of its address, no occurrence as a word, and no mid-function entry — four independent forms checked. **No caller passes a literal slot**: the argument is `lbu a0,3(*(0x80115284))`, a runtime byte. Its unchecked range maps to: 0–15 a negative index before the map; **16** bank C record 39 (silent failed inflate); **17–31** `cart_record(0)`, which branch 2 turns into a 1.28 GB out-of-cartridge inflate; **32–63** the live bank-B path; **64–255** an index past the map. The caller's host is itself reached through a data table — its address sits at `0x801139a8`, entry 68 of a 141-word pointer run at `0x80113898` — whose reader is not statically resolvable | `docs/log/M94-callers-enumerated.md` |   cross-bank foothold and a whole arc of dead ends.
-3. **Three null results were filter artefacts.** `offset < 0x4000000` (the real offsets carry a
+
+| M95 | **the table at `0x80113898` and its reader**: it is **141 consecutive in-image function pointers** ending at a zero word (`0x80113acc`), and `0x801139a8` is entry **68** (offset `0x110`). Three sites construct its base — `0x8006da28` (into `s2`), `0x8006e1e8` (into `s0`), `0x8009b89c` (into `s3`) — and in each the index is a **one-byte field**, not a literal: the dispatcher is `lw v0,28(s0); lbu v0,0(v0); sll v0,v0,2; addu v0,v0,s2; lw v0,0(v0); jalr ra,v0` with `s0 = 0x80113ad0`, `s2 = 0x80113898`, so **entry 68 is selected when that byte is `0x44`**. This also exposed a scanner bug of the same class as `addiu`/`ori`: `find_readers.py` never invalidated a register on a **load**, so stale constants produced 167 false near-misses; fixed, the true reader appeared at once | `docs/log/M95-table-readers-and-index-68.md` |3. **Three null results were filter artefacts.** `offset < 0x4000000` (the real offsets carry a
    `0xB` flag), adjacent `(rom, vram)` pairs (the record is `offset, size, vram, vram_end`), and
    `CMF == 0x78` (these streams use `0x68`). Each time the data was present and the search constant
    was invented.
@@ -93,7 +94,11 @@ Detailed write-ups live in `docs/log/`.
    `0x80004550` was read out of the stage-2 image when it lives in the boot bank. **The fix is
    `tools/vaddr.py`, not discipline**: `sext16`/`compose(hi, imm, mode)` with no default mode, and
    `locate()` refusing when several images share the address.
-7. **Never convert an address in your head (sixth instance, M94).** Locating a pointer table I read
+7. **An analysis rule under-invalidates as easily as it under-matches (M95).** Constant tracking that
+   skips **loads** leaves stale values alive: `t4` kept `0x80113a34` across `lw`s and every access
+   through it was reported as if it hit that address — 167 false near-misses around a table whose real
+   reader sat one line away. The scan's *rule*, not just its arithmetic, decides what can be seen.
+8. **Never convert an address in your head (sixth instance, M94).** Locating a pointer table I read
    `2148612520` as `0x80113a68`; it is `0x801139a8`, off by `0xC0`. The wrong address produced a table
    of *different* real function pointers — plausible, and therefore dangerous. `python3 tools/vaddr.py
    <addr>` and `tools/find_readers.py` answer the question without arithmetic; the mitigation for this

@@ -99,7 +99,11 @@ def scan(name: str, code: bytes, base: int, lo: int, hi: int) -> dict:
             known = pend.get(rs if rs in pend else rt)
             pend.pop(rd, None)
             pend[("alias", rd)] = known
-        if op not in MEM_OPS and op not in (0x04, 0x05, 0x06, 0x07, 0x01, 0x02, 0x03):
+        # A LOAD must invalidate its destination: `lw t4,0(x)` overwrites whatever constant t4
+        # held. Excluding MEM_OPS from the update left stale constants alive and produced 167
+        # false "base+register" hits around 0x80113898 — every one of them a register that had
+        # been loaded over. Only branches and jumps are exempt (they write no register).
+        if op not in (0x04, 0x05, 0x06, 0x07, 0x01, 0x02, 0x03):
             if val is not None:
                 pend[rd] = val
             else:
