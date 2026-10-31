@@ -39,15 +39,40 @@ MARKERS = [
     (HANDOVER, "## Tools, and how to run them", "the commands, including the suites"),
     (HANDOVER, "## How \"green\" is enforced", "which fixtures run where, and what CI cannot cover"),
     (HANDOVER, "## An external reference worth knowing about", "perfect_dark, and what it is good for"),
-    (HANDOVER, "## Rules this project follows", "the earned rules; rule 7 is the loud-patch rule"),
+    (HANDOVER, "## The ares dump workflow — now scripted (`tools/ares_rsp.py`, M108)",
+     "the ares route, and why the dumps are what it produced"),
+    (HANDOVER, "## The runtime question this session chased, and where it stands",
+     "the chain from a room script to the loader"),
+    (HANDOVER, "## Rules this project follows (they have all been earned)",
+     "the earned rules; rule 7 is the loud-patch rule"),
     (HANDOVER, "## The bank-C question: closed, with its scope stated", "the closed question, with limits"),
     (HANDOVER, "## Immediate next step", "so a rebuilt session knows where it stands"),
-    (LOG, "| retracted | by | what changed |", "the retraction table, which must survive edits"),
+    (LOG, "## Retractions carried by later milestones", "the table itself, and its context"),
+    (LOG, "| retracted | by | what changed |", "the retraction table header, which must survive edits"),
     (LOG, "## The errors worth remembering", "the error list; retractions are recorded in place"),
     (LOG, "## Working method that produced the answer", "how the work is done, not just what was found"),
 ]
 
 NOTE_REF = re.compile(r"`(docs/log/[A-Za-z0-9._/-]+\.md)`")
+
+
+def headings(root, path):
+    """Level-2 headings in a document, ignoring anything inside a fenced block.
+
+    The fence tracking matters: a shell comment or a Python comment at the start of a line would
+    otherwise be read as a heading and produce a phantom "unregistered heading" failure.
+    """
+    p = root / path
+    if not p.exists():
+        return []
+    out, fence = [], False
+    for line in p.read_text().splitlines():
+        if line.startswith("```"):
+            fence = not fence
+            continue
+        if not fence and line.startswith("## "):
+            out.append(line.rstrip())
+    return out
 
 
 def check(root=Path(".")):
@@ -69,6 +94,13 @@ def check(root=Path(".")):
         for ref in sorted(set(NOTE_REF.findall(log.read_text()))):
             if not (root / ref).exists():
                 failures.append((LOG, "dangling note reference: %s" % ref))
+    # the reverse direction: a heading that no marker names is unprotected, and this is how a
+    # document grows a section that nothing will notice losing
+    for path in (HANDOVER, LOG):
+        registered = {m for f, m, _w in MARKERS if f == path}
+        for h in headings(root, path):
+            if h not in registered:
+                failures.append((path, "unregistered heading: %r" % h))
     return failures
 
 
@@ -115,6 +147,17 @@ def self_test():
     cases.append(("a drifted table header in the log is caught",
                   any(p == LOG and "retracted" in msg for p, msg in f)))
 
+    d = bed({HANDOVER: handover + "## An unregistered new section\n", LOG: log_ok,
+             "docs/log/M1-a.md": "note\n"})
+    f = check(d)
+    cases.append(("a heading absent from the marker list is caught",
+                  any("unregistered heading" in msg and "unregistered new section" in msg
+                      for _p, msg in f)))
+
+    d = bed({HANDOVER: "```\n## not a heading, inside a fence\n```\n" + handover, LOG: log_ok,
+             "docs/log/M1-a.md": "note\n"})
+    cases.append(("a ## line inside a fenced block is not treated as a heading", check(d) == []))
+
     passed = 0
     for name, ok in cases:
         print("%s  %s" % ("PASS" if ok else "FAIL", name))
@@ -154,7 +197,10 @@ def main():
     for path, msg in extra:
         print("FAIL  %-28s %s" % (path, msg))
 
-    total = len(MARKERS) + 1
+    registered_bad = [f for f in failures if "unregistered heading" in f[1]]
+    print("%s  %-28s every level-2 heading is in the marker list" % (
+        "FAIL" if registered_bad else "PASS", "(registration)"))
+    total = len(MARKERS) + 2
     failed = len({(p, m) for p, m in failures})
     print("\n%d/%d marker check(s)" % (total - min(failed, total), total))
     if failures:
