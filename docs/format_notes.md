@@ -1874,6 +1874,34 @@ unanswerable with the current tooling, and is recorded as open rather than assum
 honest position is that the CPU agrees with a reference wherever both could run, and that the region where
 thread 7 diverges has never been compared against anything.
 
+#### ares emulator installed; the trace still needs a human (M64)
+
+Install history, because two failures were mine before one succeeded:
+
+1. `brew install ares` installed **`bee-san/Ares`** — a decryption tool. Name collision, uninstalled.
+2. `brew install ares-emulator` produced **no output and installed nothing**; I reported forward without
+   checking. The verbosed retry showed why: the first attempt had been sitting behind Homebrew's tap-trust
+   banner and an aborted fetch — it was never going to succeed silently.
+3. `brew install -v ares-emulator` → **success**: `ares 148`, `/Applications/ares.app`, a 46 MB universal binary.
+
+Capabilities, measured from its own `--help`:
+
+```
+ares [OPTIONS]... game(s)
+  --system name        (available systems include "Nintendo 64" and "Nintendo 64DD")
+  --kiosk              minimal UI, implies --no-file-prompt
+  --save-state slot / --setting name=value
+```
+
+**There is no breakpoint, trace or headless-execution flag.** ares ships a GUI debugger but exposes no CLI
+interface to it, so the `0x8000Bxxx` differential cannot be automated with this tool either. mupen64plus was
+likewise not installed (that attempt silently failed too, and was not verified at the time).
+
+**What this means for the open question.** The comparison at `0x80007140` is now a **two-minute manual step**:
+launch `/Applications/ares.app` with our dump, open Tools → Debugger, set a breakpoint at `0x80007140`, and see
+whether it is ever hit. If it is hit, the game does install its vectors and my harness is wrong; if it is not, the
+idle-spin conclusion stands. That single observation settles what four arcs of tooling could not.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
