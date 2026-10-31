@@ -158,6 +158,23 @@ def handler_lengths(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES)
     return out
 
 
+INFERRED_FIXTURE = "fixtures/scd/inferred_names.json"
+
+
+def inferred_names() -> dict:
+    """opcode -> {name, evidence}, read from the handlers by this project (not from the licensed table).
+
+    Kept separate from `ps1_opcodes()` on purpose: those names are the original developers', these are
+    descriptions of what the code does. A PlayStation name always wins, and an inferred one is printed with a
+    leading `~` so the two can never be confused.
+    """
+    try:
+        doc = json.loads(Path(INFERRED_FIXTURE).read_text())
+    except (OSError, ValueError):
+        return {}
+    return {int(k, 16): v for k, v in doc.get("opcodes", {}).items()}
+
+
 PS1_FIXTURE = "fixtures/scd/opcodes.json"
 RANGES_FIXTURE = "fixtures/decomp/ranges.json"
 
@@ -429,8 +446,8 @@ def resolve(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES) -> dict
         variants = ps1.get(i, [])
         if i in DYNAMIC:
             out[i] = {"handler": h, "length": None, "advances": advances, "status": "dynamic",
-                      "name": variants[0][0] if variants else "", "ps1_sizes": [v[1] for v in variants],
-                      "conflict": False, "why": DYNAMIC[i]}
+                      "name": variants[0][0] if variants else "", "name_source": "ps1" if variants else "",
+                      "ps1_sizes": [v[1] for v in variants], "conflict": False, "why": DYNAMIC[i]}
             continue
         name = variants[0][0] if variants else ""
         chosen = None
@@ -454,9 +471,14 @@ def resolve(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES) -> dict
             same = [v for v in variants if v[1] == chosen]
             if same:
                 name = same[0][0]
+        source = "ps1" if variants else ""
+        if not name and i in inferred_names():
+            name = "~" + inferred_names()[i]["name"]
+            source = "inferred"
         conflict = bool(variants) and chosen is not None and chosen not in [v[1] for v in variants]
         out[i] = {"handler": h, "length": chosen, "advances": advances, "status": status,
-                  "name": name, "ps1_sizes": [v[1] for v in variants], "conflict": conflict}
+                  "name": name, "name_source": source if (name and chosen is not None) else "",
+                  "ps1_sizes": [v[1] for v in variants], "conflict": conflict}
     return out
 
 
@@ -583,6 +605,9 @@ def self_test() -> int:
          [t for t, _h in succ(0x18, [0x18, 0x03], 0x1000)], [None]),
     ]
     cases += [
+        ("the inferred overlay names 0x84 but never overrides a licensed name",
+         (inferred_names().get(0x84, {}).get("name"), ps1_opcodes().get(0x44, [("", 0)])[0][0]), ("SndMode", "SceEmSet")),
+        ("a licensed name wins over an inferred one at the same opcode", ps1_opcodes().get(0x07)[0][0], "ElseStart"),
         ("the ps1 fixture loads and names SceEmSet at 0x44",
          (ps1_opcodes().get(0x44) or [(None, None)])[0], ("SceEmSet", 22)),
         ("0x26 carries two ps1 variants (Calc/Calc2)",

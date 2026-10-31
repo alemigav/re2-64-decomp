@@ -153,6 +153,7 @@ def build_profile(result, res):
         opcodes[f"0x{op:02x}"] = {
             "count": count,
             "name": r["name"] or None,
+            "name_source": r.get("name_source") or None,
             "length": r["length"],
             "status": r["status"],
             # a list of pairs, not a dict: `json.dump(sort_keys=True)` would re-sort a dict's keys

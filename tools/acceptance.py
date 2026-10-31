@@ -38,7 +38,7 @@ SUITES = [
     ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 6, False),
     ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 12, False),
     ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 18, False),
-    ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 20, False),
+    ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 22, False),
     ("synthetic-rdram walk", [sys.executable, "tools/rdram_fixture.py"], 7, False),
     ("room script (cartridge)", [sys.executable, "tools/room_script.py", "--check"], 4, True),
     ("script profile (cartridge)", [sys.executable, "tools/script_profile.py", "--check"], 5, True),
