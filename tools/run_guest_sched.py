@@ -41,6 +41,15 @@ def build(rom, stage2, with_ipl3=False):
     # region, which the real machine does not. Enable only for that investigation.
     if with_ipl3:
         ram[0:0x400] = rom[0x4C0:0x8C0]
+        # ...but 0x80000300-0x800003FF is NOT code. IPL3 WRITES boot variables there:
+        # an ares dump shows 0x80000318 = 0x00800000 (the detected RDRAM size, 8 MB on
+        # ares' default config) and 0x300/0x31C/0x320/0x33C = 0. FUN_8004D190 compares
+        # 0x80000318 against 0x400001 to choose the 4 MB or 8 MB video layout, so loading
+        # IPL3's bytes over it fed the game a garbage "RDRAM size" and sent it to
+        # framebuffers past the end of this 4 MB harness.
+        for a in (0x300, 0x31C, 0x320, 0x33C):
+            ram[a:a+4] = b"\0\0\0\0"
+        ram[0x318:0x31C] = (RAM_SIZE).to_bytes(4, "big")   # this machine has 4 MB
     ram[STAGE2_VA - RAM_BASE:STAGE2_VA - RAM_BASE + len(stage2)] = stage2
     mem = HwMemory(ram, rom)
     mem.watch = {CURRENT: "current_thread"}

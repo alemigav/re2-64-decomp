@@ -2235,6 +2235,45 @@ vector installation touches, and only its first 16 bytes). The load is therefore
 **Next diagnostic, bounded:** put a read/write watchpoint on `0x80000000`–`0x800003ff` and log the PC that first
 touches it. That names the code path which illegally re-enters IPL3, and it is a single run.
 
+#### Solved: the "IPL3 re-entry" was a clobbered boot variable (M75)
+
+The watchpoint answered it, but not the way either of us expected: **execution never entered
+`0x80000000`–`0x800003ff` and nothing wrote to it.** The region was being **read as data**, twice:
+
+```
+pc 0x8004d198  reads 0x80000318     <- inside FUN_8004D190 (thread 7's init)
+pc 0x8000e3d4  reads 0x80000300
+```
+
+`FUN_8004D190` compares `0x80000318` against `0x400001` to choose the **4 MB or 8 MB video layout** — that
+address is the **RDRAM size IPL3 detects and stores**, not code. An ares dump confirms it:
+
+| address | ares | cartridge `ROM 0x4c0+off` (what I wrongly loaded) |
+|---|---|---|
+| `0x800002f0` | `0` | `0x0afab0024` |
+| `0x80000300` | `1` | `0x0afaf0034` |
+| **`0x80000318`** | **`0x00800000`** (8 MB, ares' default) | `0x0afb50054` |
+| `0x8000031c` / `0x320` / `0x33c` | `0` | code bytes |
+
+So loading IPL3's *code* over the *variables* fed the game a garbage "RDRAM size" of `0xafb50054`, it took the
+8 MB branch, and its framebuffers landed at `0x805ee000` — **past the end of this 4 MB harness**. The fault was
+never a re-entry into IPL3, and never an emulation error in the CPU.
+
+**Fix: load IPL3's stub, then restore the boot variables for a 4 MB machine** (`0x80000318 = 0x00400000`,
+`0x300/0x31c/0x320/0x33c = 0`). Result:
+
+```
+400,000 instructions   fault: none   installer hits: 0
+current thread 0x8010b700 (thread 7)   queue validCounts 0/0
+```
+
+Clean execution with IPL3 present, exactly as the real machine has it.
+
+**What remains open, now cleanly isolated:** the game still never installs the exception preambles in this
+harness (`E_VEC` holds IPL3 code, where ares holds `3c1a8000 275a06d0 03400008`). So the divergence is not
+IPL3, not the boot variables, not the CPU, not the queues — it is that **thread 7's init never reaches the
+vector installer**, which is the same finding as M43 from the other direction.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
