@@ -24,6 +24,7 @@ ground-truth RDRAM dumps. Nothing in the repo imports or requires it.
 | decompiled corpus | **3 292 functions**, 61.3 % of code bytes claimed, `src/` + `src/INDEX.md` | M81–M83 |
 | media | 1 227 MJPEG frames, 271 MPEG-1 blocks (24.4 MB + 15.8 MB), all verified | M10 |
 | unidentified | two blobs ~17.6 MB (R3 `0xb73fb3`–`0x140ed84`, R4 `0x338fe1`–`0xb63106`); R4's tail holds a **non-zlib container** of 28 payloads at cart `0xb6248` | M82/M90 |
+| scripted ares control | GDB RSP over `DebugServer/Port`: 512 KiB in **0.4 s**, `Z0` → `OK`, stop → `S05`; live `0x80000480+0x1234f` is **74 575/74 575 byte-equal to the cartridge** | M108 |
 
 `assets/` is gitignored and regenerable in ~20 s. The repo tip is the last documentation commit; `git log
 --oneline` is the milestone index and `docs/reverse_engineering_log.md` carries every milestone one-liner
@@ -52,20 +53,36 @@ python3 tools/find_store_loops.py                                # table-fill in
 python3 tools/probe.py --reg 4@0x80071ebc --steps 2000000        # harness watch
 python3 tools/walk_stream.py rom/*-rdram-20261031-*.bin          # walk a room's command stream
 python3 tools/room_probe.py rom/*-rdram-*.bin                    # slot / gate / stream from a dump
+python3 tools/ares_rsp.py launch --rom "rom/….z64"               # drive ares: listener on 9123 (M108)
+python3 tools/ares_rsp.py probe                                  # qSupported, PacketSize=4096
+python3 tools/ares_rsp.py --quiet dump out.bin                    # 8 MiB RDRAM, no GUI, ~7 s
+python3 tools/ares_rsp.py --quiet until 0x80071eb0                # bp + continue, returns the stop + registers
 ```
 
-## The ares dump workflow (the only manual step)
+## The ares dump workflow — now scripted (`tools/ares_rsp.py`, M108)
 
-`./run-rom.sh` launches the cartridge. **Dumps land in `rom/`**, named `<rom>-rdram-<YYYYMMDD-HHMMSS>.bin`,
-8 388 608 B each. To make one: play into a room, then **Tools → Memory Editor → region `RDRAM` → the
-`Memory` row → `Export`**. `tools/room_probe.py` / `walk_stream.py` then read it directly.
+`python3 tools/ares_rsp.py launch --rom "rom/…z64"` starts ares with `DebugServer/Enabled`,
+`DebugServer/Port=9123`, `DebugServer/UseIPv4` and `Boot/Debugger`; the tool's other subcommands then drive
+it over GDB RSP: `probe`, `regs`, `regmap`, `read`, `dump`, `bp`, `until`, `cont`, `raw`. Measured: 512 KiB
+in 0.4 s, `Z0` → `OK`, a stop replies `S05` with a 568-byte register block, and live memory is byte-exact
+against the cartridge over the ROM-copied region (74 575/74 575).
+
+**One protocol fact that costs an hour if forgotten:** the first byte ares reads on the socket **must be
+`+`**, or `nall::TCPText::Server::onData` classifies the client as non-GDB and closes the connection. The
+tool does this automatically; `--no-lead-ack` reproduces the M107 negative on demand.
+
+The manual route still works and is still the way to produce a *state* worth keeping: `./run-rom.sh`,
+then **Tools → Memory Editor → region `RDRAM` → the `Memory` row → `Export`**. Dumps land in `rom/` named
+`<rom>-rdram-<YYYYMMDD-HHMMSS>.bin`, 8 388 608 B each.
 
 Nine dumps exist: two pre-room (title / just after NEW GAME) and seven from rooms — five distinct states
 (three of the earlier ones are byte-identical copies of one instant).
 
-**Known automation limit:** ares v148 ships no AppleScript dictionary, and its `Goto` field accepts text
-without committing (M69). Memory export has only ever been done by hand — see `docs/log/M107-ares-control.md`
-for the route to fixing that.
+**What is still manual:** reaching a room. `Boot/AwaitGDBClient` and `Boot/Debugger` are separate switches
+and only the second gates the listener, so ares boots and runs under GDB control — but nothing in the repo
+can *play* the game. `--save-state slot(1-9)` + `Paths/Saves` is the untried route to reproducible fixtures
+(Route B in `docs/log/M107-ares-control.md`); ares v148 ships no AppleScript dictionary (M107), and its
+`Goto` field accepts text without committing (M69).
 
 ## The runtime question this session chased, and where it stands
 
@@ -104,8 +121,22 @@ Measured conclusions:
 
 ## Immediate next step
 
-Read `docs/log/M107-ares-control.md` and take the first experiment there: drive ares through its
-**GDB remote-serial-protocol stub** (`DebugServer/Enabled` + `DebugServer/Port`) so that breakpoints,
-register reads and RDRAM dumps become scripted. That converts every remaining question in this file from
-"ask the owner to play and click Export" into a loop that runs unattended — and it is the only thing
-blocking the last open item above.
+**A dump, or a breakpoint, in a different room** — that is the only thing left between this project and a
+definite answer to "does any room's script make the game load a bank-C record?". The command chain is mapped
+(M85–M106), the instrument to observe it is built (M108), and the five captures in hand are one corridor.
+
+Either:
+
+* **play into a different room** and export RDRAM by hand (Tools → Memory Editor), then
+  `python3 tools/room_probe.py rom/<dump>.bin` and `python3 tools/walk_stream.py rom/<dump>.bin`; or
+* **pin a state and breakpoint it**: `tools/ares_rsp.py launch --rom …`, enter a room, save the state
+  (`--save-state` / `Paths/Saves`), then `python3 tools/ares_rsp.py until 0x80071ebc` and read `a0` at
+  every stop — the slot values, live, without any dump at all.
+
+The discriminator is unchanged: the slot maps are static `.rodata`, so a slot selects a real record only if
+its static byte is non-zero — **13 slots qualify** (16, 32–49, 51, 52, 54–56, 58, 59, 62, 63) and none has
+been observed. `byte 3 = 31` in five captures at three moments is a parameter, not a selector.
+
+Also owed, in decreasing order of how much they block: the two unidentified blobs (R3/R4) and the 28
+non-zlib payloads at `0xb6248`; experiments B (pointer provenance) and C (resource structures); this file's
+sibling `README.md` still records M0–M7 while the project is at M108.
