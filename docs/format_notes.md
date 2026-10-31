@@ -2178,6 +2178,39 @@ comparable point, dump its emulated RDRAM, and diff against an ares dump page by
 the scheduler, the memory map and the loaders together, and the mismatch report points at the first divergent
 page rather than the first divergent instruction.
 
+#### `tools/diff_rdram.py` works, and it found the harness's missing IPL3 image (M73)
+
+New tool: compares the harness's emulated RDRAM against an ares dump page by page, and **classifies** each
+4 KB page, because a raw difference count is misleading — the harness only loads the boot bank and stage-2,
+while ares has run the whole game:
+
+| class | meaning | dump A |
+|---|---|---|
+| `same` | identical | 704 / 1024 |
+| `harness-zero` | harness never loaded it — unexplored, not a bug | 286 |
+| `ares-zero` | harness wrote something the real machine never did | **4** |
+| `both-differ` | both hold data, and it disagrees | **30** |
+
+Options: `--page <vaddr>` for a byte-level view of one page, `--top` for the worst pages, `--harness-file` to
+compare two files instead of running the harness.
+
+**First finding, from `--page 0x80000000`:** the real machine has code at `0x80000010`–`0x8000047f` that this
+harness never loads at all — `3c 01 a4 60` (`lui at,0xA460`) among it, i.e. **PI register setup**. Searching the
+cartridge for those bytes puts them at **ROM `0x4d0`**, which pins the mapping:
+
+```
+RDRAM 0x80000000  <->  ROM 0x4c0        (IPL3's resident tail, 0x480 bytes)
+RDRAM 0x80000480  <->  ROM 0x1000       (the game image — already correct)
+```
+
+So the harness was starting with **`0x80000000`–`0x8000047f` zeroed**, missing IPL3's R4300 stub entirely.
+
+**The fix is not yet right, and that is recorded rather than hidden.** Loading ROM `0x4c0..0x940` at
+`0x80000000` makes page 0 substantially closer (382 bytes differ instead of 452, and the vector area now holds
+real IPL3 code rather than zeros) — but it also changes execution drastically: the run now **faults after 3 407
+instructions** at `0x80088554` on an access to `0x805ee000`, far outside RDRAM. So either only part of that
+region belongs there, or IPL3's stub must not be entered this way. The mapping is established; the load is not.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 

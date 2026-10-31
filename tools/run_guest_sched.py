@@ -30,6 +30,11 @@ CURRENT = 0x80012950
 def build(rom, stage2):
     ram = bytearray(RAM_SIZE)
     ram[BOOT_VA - RAM_BASE:BOOT_VA - RAM_BASE + 0x13600] = rom[0x1000:0x14600]
+    # The real machine also has IPL3 resident at 0x80000000-0x8000047f. An ares RDRAM
+    # dump pinned the mapping exactly: RDRAM 0x80000010 held bytes found at ROM 0x4d0,
+    # so RDRAM 0x80000000 <-> ROM 0x4c0. Without it the harness starts with that region
+    # zeroed and misses the PI/cache setup that lives there.
+    ram[0:0x480] = rom[0x4C0:0x940]
     ram[STAGE2_VA - RAM_BASE:STAGE2_VA - RAM_BASE + len(stage2)] = stage2
     mem = HwMemory(ram, rom)
     mem.watch = {CURRENT: "current_thread"}
