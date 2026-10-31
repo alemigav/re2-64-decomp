@@ -1,0 +1,25 @@
+# The same run as `sh tools/ci.sh`, on a runner.
+#
+# The cartridge is gitignored, so a runner has none: `tools/acceptance.py` reports SKIP for the suites that
+# need it rather than pretending they ran, and the integrity check skips too. That leaves 45 of 48 cases
+# meaningful in CI — every synthetic fixture — and the corpus-dependent checks (the two pre-registered
+# acceptance tests over the real images) still run locally and in the pre-commit hook, where the ROM exists.
+name: acceptance
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Report what CI can and cannot see
+        run: printf 'ROM present: %s\n' "$(test -f 'rom/Resident Evil 2 (USA) (Rev 1).z64' && echo yes || echo no)"
+      - name: Fixtures and repository hygiene
+        run: sh tools/ci.sh

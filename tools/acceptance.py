@@ -24,12 +24,17 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 
+CARTRIDGE = Path("rom/Resident Evil 2 (USA) (Rev 1).z64")
+
+# (name, command, expected case count, needs the cartridge). The cartridge is gitignored by design, so a
+# fresh clone — and therefore any CI runner — cannot supply it. Suites that need it report SKIP rather than
+# PASS or FAIL: pretending they ran would be the same class of error as a fixture that asserts nothing.
 SUITES = [
-    ("provenance self-test", [sys.executable, "tools/provenance.py", "--self-test"], 10),
-    ("provenance self-test2", [sys.executable, "tools/provenance.py", "--self-test2"], 12),
-    ("provenance acceptance", [sys.executable, "tools/provenance.py", "--acceptance"], 3),
-    ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8),
-    ("mips harness", [sys.executable, "tools/test_harness.py"], 15),
+    ("provenance self-test", [sys.executable, "tools/provenance.py", "--self-test"], 10, False),
+    ("provenance self-test2", [sys.executable, "tools/provenance.py", "--self-test2"], 12, False),
+    ("provenance acceptance", [sys.executable, "tools/provenance.py", "--acceptance"], 3, True),
+    ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8, False),
+    ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 
 COUNT = re.compile(r"^(\d+)\s*/\s*(\d+)")
@@ -54,9 +59,16 @@ def main():
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args()
 
-    failures = []
+    have_cart = (HERE.parent / CARTRIDGE).exists()
+    print("cartridge: %s" % ("present" if have_cart else
+                             "ABSENT — suites that need it will report SKIP"))
+    failures, skipped = [], 0
     print("%-24s %-10s %s" % ("suite", "cases", "verdict"))
-    for name, cmd, expected in SUITES:
+    for name, cmd, expected, needs_rom in SUITES:
+        if needs_rom and not have_cart:
+            print("%-24s %-10s %s" % (name, "-", "SKIP (needs the cartridge)"))
+            skipped += 1
+            continue
         code, text, lines = run(cmd)
         got = tally(lines)
         if got is None:
@@ -81,8 +93,10 @@ def main():
         for name, why in failures:
             print("FAIL %s: %s" % (name, why))
         return 1
-    print("all suites pass (%d cases across %d fixtures)" % (
-        sum(e for _, _, e in SUITES), len(SUITES)))
+    ran = [s for s in SUITES if not (s[3] and not have_cart)]
+    print("all %d runnable suite(s) pass (%d cases)%s" % (
+        len(ran), sum(e for _, _, e, _ in ran),
+        "" if not skipped else "; %d skipped for want of the cartridge" % skipped))
     return 0
 
 

@@ -54,6 +54,7 @@ python3 tools/probe.py --reg 4@0x80071ebc --steps 2000000        # harness watch
 python3 tools/walk_stream.py rom/*-rdram-20261031-*.bin          # walk a room's command stream
 python3 tools/room_probe.py rom/*-rdram-*.bin                    # slot / gate / stream from a dump
 python3 tools/acceptance.py                              # every fixture in one verdict (M126)
+sh tools/ci.sh                                           # acceptance + hygiene + cartridge sha (M128)
 sh tools/pre-commit.sh                                   # what the hook runs; install: ln -sf ../../tools/pre-commit.sh .git/hooks/pre-commit
 python3 tools/pad_layout.py --rdram rom/*-rdram-*.bin   # decode an SI command block (M125)
 python3 tools/ares_rsp.py launch --rom "rom/….z64"               # drive ares: listener on 9123 (M108)
