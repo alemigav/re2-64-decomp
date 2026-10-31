@@ -43,8 +43,8 @@ That measurement also replaced every estimated number in the CI prose — locall
 
 | where | suites | cases |
 |---|---|---|
-| local, cartridge present | **21 / 21** | **226 / 226** |
-| runner, no cartridge | **10 / 21 run** | **124 / 226**, 11 suites / 102 cases SKIP |
+| local, cartridge present | **21 / 21** | **227 / 227** |
+| runner, no cartridge | **10 / 21 run** | **125 / 227**, 11 suites / 102 cases SKIP |
 
 Both figures are asserted by `tools/acceptance.py`'s expected counts, so the prose goes stale loudly. The
 job summary now prints the split too, because a green run that silently skipped 11 suites is a misleading
@@ -65,7 +65,7 @@ The new suite needs no cartridge, which means **a runner checks its own definiti
 | `permissions: contents: read` | a token wider than its job |
 
 Five synthetic fixtures prove the linter can fail, one of them a verbatim copy of the broken line. It is a
-gate, so it is audited: `audit_gates.py` is now **19/19, 0 vacuous**.
+gate, so it is audited: `audit_gates.py` is now **20/20, 0 vacuous**.
 
 ## 4. Two mistakes of mine, recorded rather than tidied away
 
@@ -89,9 +89,28 @@ wherever the cartridge exists — locally, and in the pre-commit hook — and M1
 deliberately unadopted. **A green CI run does not vouch for those 102 cases**, and the handover now says so
 with the measured numbers instead of the old `51 of 54`.
 
+## 6. Addendum: the sanctioned edit path was dropping file modes
+
+Committing this milestone turned up a defect in the tool every edit in this repo goes through.
+`tools/patch_text.py` writes each file by writing a **new** temporary file and calling `replace()` — which
+installs a *new inode*, so the original's mode goes with the old one. The commit recorded it plainly:
+
+```
+mode change 100755 => 100644 tools/ci.sh
+```
+
+Harmless for `ci.sh` (always run as `sh tools/ci.sh`), and **not** harmless for `tools/pre-commit.sh`,
+which the hook executes directly: one patch to it and the commit hook silently stops running. The fix is
+one line (`shutil.copymode`), the self-test grew a case that patches an executable file and requires the
+bit to survive (**8/8**), and that case is audited — removing the `copymode` call fails it, so
+`audit_gates.py` is now **20/20, 0 vacuous**.
+
+The general form is worth keeping: *a tool that rewrites a file is responsible for everything about the
+file that is not its text.*
+
 ```
 python3 tools/workflow_lint.py        # 11/11 — CI checking its own definition
-python3 tools/acceptance.py           # 21 suites, 226 cases
-python3 tools/audit_gates.py          # 19/19, 0 vacuous
+python3 tools/acceptance.py           # 21 suites, 227 cases
+python3 tools/audit_gates.py          # 20/20, 0 vacuous
 sh tools/ci.sh                        # ci: ok
 ```

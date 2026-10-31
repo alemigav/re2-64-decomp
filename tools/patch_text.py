@@ -26,6 +26,7 @@ Usage:
 """
 import argparse
 import json
+import shutil
 import sys
 import tempfile
 from pathlib import Path
@@ -71,6 +72,10 @@ def apply_edits(edits, root=Path(".")):
     for path, text in planned.items():
         tmp = Path(tempfile.mkdtemp()) / path.name
         tmp.write_text(text)
+        # `replace` installs a *new* inode, so the original's mode goes with the old file: without this
+        # every edit dropped the executable bit, and an edit to tools/pre-commit.sh would have quietly
+        # disabled the commit hook. Found when a ci.sh edit changed 100755 to 100644 (M174).
+        shutil.copymode(path, tmp)
         tmp.replace(path)                     # atomic per file
         back = path.read_text()
         if back != text:
@@ -80,7 +85,6 @@ def apply_edits(edits, root=Path(".")):
 
 
 def self_test():
-    import shutil
     cases = []
     made = []
 
@@ -152,6 +156,14 @@ def self_test():
     except PatchError as exc:
         cases.append(("an explicit count is honoured", False))
         print("      unexpected: %s" % exc)
+
+    d = bed({"hook.sh": "#!/bin/sh\necho hi\n"})
+    (d / "hook.sh").chmod(0o755)
+    try:
+        apply_edits([{"file": "hook.sh", "old": "hi", "new": "hello"}], d)
+        cases.append(("an edit preserves the file's mode", (d / "hook.sh").stat().st_mode & 0o777 == 0o755))
+    except PatchError:
+        cases.append(("an edit preserves the file's mode", False))
 
     passed = 0
     for name, ok in cases:

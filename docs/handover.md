@@ -125,7 +125,7 @@ by three distinct stream-pointer pairs) all carry byte 3 = 31, so the path is in
 |---|---|---|
 | pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, **~60 s** with the cartridge (measured), blocks the commit |
 | local CI | `sh tools/ci.sh` | the same fixtures **plus** a tracked-artefact check, a fixture-size guard and the cartridge sha256 |
-| runner CI | `.github/workflows/acceptance.yml` | the same `ci.sh`: **10 of 21 suites, 124 of 226 cases**; the 11 cartridge suites report SKIP |
+| runner CI | `.github/workflows/acceptance.yml` | the same `ci.sh`: **10 of 21 suites, 125 of 227 cases**; the 11 cartridge suites report SKIP |
 
 **What CI cannot run is the important part**, and M174 replaced the old guess with a measurement: the
 eleven skipped suites are the ones that assert facts about RE2 itself — the corpus checks (`FUN_800327ec`
@@ -141,7 +141,7 @@ trade is ever worth taking.
 
 What that means in practice: those suites are enforced **wherever the cartridge exists** — locally with
 `python3 tools/acceptance.py`, and on every commit through the hook. That is the enforcement that actually
-covers them; CI covers the other 124 cases, including a lint of its own workflow file, which needs no ROM.
+covers them; CI covers the other 125 cases, including a lint of its own workflow file, which needs no ROM.
 
 Documents are checked structurally too: `tools/check_markers.py` requires 16 anchors (12 handover sections
 plus the log's retraction table, error list, working method and retractions heading), that **every level-2 heading is registered**, and that **every note in `docs/log/` is indexed by the milestone
@@ -268,9 +268,9 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 20 suites, 214 cases
+python3 tools/acceptance.py         # 21 suites, 227 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
-python3 tools/audit_gates.py        # 18/18: every check must fail when its mechanism is disabled
+python3 tools/audit_gates.py        # 20/20: every check must fail when its mechanism is disabled
 ```
 
 **A green CI run does not vouch for everything.** Eight suites are cartridge-gated and report `SKIP` on a runner:

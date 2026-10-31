@@ -3,13 +3,13 @@
 # Measured, not estimated (M174). A runner has no cartridge — `rom/` is gitignored by design, and so is
 # everything derived from it (`assets/`, `build/`) — so `tools/acceptance.py` reports:
 #
-#   9 suites / 113 cases   PASS
-#   11 suites / 101 cases  SKIP (needs the cartridge)
+#   10 suites / 125 cases  PASS
+#   11 suites / 102 cases  SKIP (needs the cartridge)
 #
-# Locally, with the ROM present, the same command runs all 20 suites / 214 cases. Those numbers are asserted
+# Locally, with the ROM present, the same command runs all 21 suites / 227 cases. Those numbers are asserted
 # by `tools/acceptance.py`'s own expected counts, so this comment goes stale loudly rather than quietly.
 #
-# **The 101 skipped cases are the ones that assert facts about RE2 itself** — the corpus checks
+# **The 102 skipped cases are the ones that assert facts about RE2 itself** — the corpus checks
 # (`FUN_800327ec` at 0x800327ec, the slot map at 0x800eb204), the script VM, the model container, the T64
 # texture law, the exception path, and the routine-index bounds (M173). Running them needs the cartridge's
 # **bytes**, which are cartridge content and are never committed. They run wherever the cartridge exists:
@@ -69,6 +69,6 @@ jobs:
             grep -E '^(all |cartridge|suite|ci:)|PASS|FAIL|SKIP' ci.log | tail -40 || true
             printf '```\n\n'
             printf 'Suites that need the cartridge report SKIP, never PASS — a green run here does not vouch\n'
-            printf 'for the 101 skipped cases. With the ROM present, the same command runs all 20\n'
-            printf 'suites / 214 cases.\n'
+            printf 'for the 102 skipped cases. With the ROM present, the same command runs all 21\n'
+            printf 'suites / 227 cases.\n'
           } >> "$GITHUB_STEP_SUMMARY"
