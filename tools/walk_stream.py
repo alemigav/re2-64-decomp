@@ -229,14 +229,91 @@ def advance_set(h, words, base, handlers) -> list:
             n_adv = y & 0xFFFF
             n_adv = n_adv - 0x10000 if n_adv & 0x8000 else n_adv
             dst = (y >> 16) & 0x1F
-            for m in range(k + 1, min(k + 3, n)):
+            # Handlers frequently record other state between the add and the write-back, so the store is
+            # allowed up to 8 instructions later - but the first store to `ctx+0x1c` decides: if it writes a
+            # different register, this add was not the pointer advance and is dropped. Opcode 0x32 advances
+            # four instructions after its `addiu` (`sw a1,40(v1)` x3 in between), which a two-instruction
+            # window misses; the PlayStation size for it is 8, and the measured advance is 8.
+            for m in range(k + 1, min(k + 9, n)):
                 z = words[m]
-                if ((z >> 26) == 0x2B and (z & 0xFFFF) == CTX_CMDPTR
-                        and ((z >> 21) & 0x1F) == rbase and ((z >> 16) & 0x1F) == dst):
-                    if n_adv > 0:
+                if (z >> 26) == 0x2B and (z & 0xFFFF) == CTX_CMDPTR:
+                    if ((z >> 21) & 0x1F) == rbase and ((z >> 16) & 0x1F) == dst and n_adv > 0:
                         out.add(n_adv)
                     break
+                if (z >> 26) == 0x03 or ((z >> 26) == 0 and (z & 0x3F) == 0x08):
+                    # A call or return ends this candidate — but its **delay slot still executes first**, and
+                    # two handlers write the pointer back there (0x28 stores cmd+1 before its call, 0x45
+                    # stores cmd+5 in the return delay slot), so the slot is checked before giving up.
+                    slot = m + 1
+                    if slot < min(k + 9, n):
+                        z2 = words[slot]
+                        if ((z2 >> 26) == 0x2B and (z2 & 0xFFFF) == CTX_CMDPTR
+                                and ((z2 >> 21) & 0x1F) == rbase and ((z2 >> 16) & 0x1F) == dst
+                                and n_adv > 0):
+                            out.add(n_adv)
+                    break
     return sorted(out)
+
+
+JUMP_FAMILY = {
+    0x07: {"size": 4, "operand": ("u16", 2), "base": "cmd", "add": 0, "conditional": True,
+           "from": "0x8006dc84 lhu v0,2(v1) -> 0x8006dc8c addu v1,v1,v0 -> sw v1,28(a0)"},
+    0x0D: {"size": 6, "operand": ("s16", 2), "base": "cmd", "add": 6, "conditional": True,
+           "from": "0x8006dea4 lh t0,2(a3) -> addu v0,a3,t0 -> 0x8006deac addiu v0,v0,6 -> sw v0,28(r10)"},
+    0x13: {"size": 4, "operand": ("u16", 2), "base": "cmd", "add": 0, "conditional": True,
+           "from": "0x8006e288 lhu t0,2(a3) -> 0x8006e2b8 addu a0,a3,t0 (case-table skip); the body then "
+                   "scans 0x0c-marked case entries and lands on a match or on that skip target"},
+    0x17: {"size": 6, "operand": ("s16", 4), "base": "cmd", "add": 0, "conditional": False,
+           "from": "0x8006e3a4 lh t0,4(a1) -> 0x8006e3bc addu a1,a1,t0 -> 0x8006e3d0 sw a1,28(a0)"},
+    0x18: {"size": 2, "operand": ("u8", 1), "base": "script_table", "add": 0, "conditional": False,
+           "saves_return": True,
+           "from": "0x8006e3dc lbu a2,1(v1) -> sll a2,a2,6 -> +*(0x80114f2c) -> lhu v0,0(a2) -> "
+                   "0x8006e42c addu v0,v1,v0 -> sw v0,28(a0); the return address `cmd+2` is saved to "
+                   "0x8006e3f0 sw v1,324(v0)"},
+}
+
+
+def near_conditional(op, sups):
+    """True when the command has a fall-through we can take (everything except an unconditional jump)."""
+    spec = JUMP_FAMILY.get(op)
+    return bool(spec and spec["conditional"])
+
+
+def _read_operand(cmd, kind, offset):
+    width = {"u8": 1, "s8": 1, "u16": 2, "s16": 2}[kind]
+    if len(cmd) < offset + width:
+        return None
+    raw = int.from_bytes(cmd[offset:offset + width], "big")
+    if kind.startswith("s") and raw >= (1 << (8 * width - 1)):
+        raw -= 1 << (8 * width)
+    return raw
+
+
+def successors(op, cmd, addr):
+    """Where a control-flow command goes next: [(target or None, how)], plus the fall-through when it has one.
+
+    `target` is None when the destination is dynamic — GoSub needs the runtime script table, whose base is
+    loaded from `*(0x80114f2c)` and is therefore not in the image.
+    """
+    spec = JUMP_FAMILY.get(op)
+    if spec is None:
+        return []
+    value = _read_operand(cmd, *spec["operand"])
+    out = []
+    if value is None:
+        return [("truncated", "command shorter than its operand")]
+    if spec["base"] == "script_table":
+        # The destination is `record.u16 + script_base`, and **both** come from outside the command: the
+        # base is `*(0x80114f2c)` at runtime and the u16 sits at record offset 0. The command carries only
+        # the record index, so this is dynamic by construction, not for want of trying.
+        out.append((None, f"dynamic: script record {value} (base *(0x80114f2c) + record u16@0)"))
+    else:
+        target = addr + value + spec["add"]
+        how = f"cmd{value:+d}" + (f"{spec['add']:+d}" if spec["add"] else "")
+        out.append((target, how))
+    if spec["conditional"]:
+        out.append((addr + spec["size"], "fall-through"))
+    return out
 
 
 def resolve(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES) -> dict:
@@ -279,6 +356,12 @@ def resolve(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES) -> dict
                 name = picked[0][0]
             else:
                 status = "ambiguous"
+        if i in JUMP_FAMILY:
+            spec = JUMP_FAMILY[i]
+            status, chosen = "jump", spec["size"]
+            same = [v for v in variants if v[1] == chosen]
+            if same:
+                name = same[0][0]
         conflict = bool(variants) and chosen is not None and chosen not in [v[1] for v in variants]
         out[i] = {"handler": h, "length": chosen, "advances": advances, "status": status,
                   "name": name, "ps1_sizes": [v[1] for v in variants], "conflict": conflict}
@@ -293,6 +376,7 @@ def report_lengths(words) -> int:
     ok = [i for i, r in res.items() if r["status"] == "ok"]
     unverified = [i for i, r in res.items() if r["status"] == "unverified"]
     ambiguous = [i for i, r in res.items() if r["status"] == "ambiguous"]
+    jumps = [i for i, r in res.items() if r["status"] == "jump"]
     conflicts = [i for i, r in res.items() if r["conflict"]]
     print(f"opcode -> command length: {len(res)} of {TABLE_ENTRIES} handlers, "
           f"{named} named from the MIT-licensed PlayStation table")
@@ -301,15 +385,18 @@ def report_lengths(words) -> int:
             continue
         r = res[i]
         length = "  ?" if r["length"] is None else f"{r['length']:2d}"
-        tag = {"ok": "ok", "unverified": "UNVERIFIED", "ambiguous": "AMBIGUOUS"}[r["status"]]
+        tag = {"ok": "ok", "jump": "JUMP", "unverified": "UNVERIFIED", "ambiguous": "AMBIGUOUS"}[r["status"]]
         extra = ""
         if r["conflict"]:
             extra = f"  (ps1 size {r['ps1_sizes']} disagrees)"
         print(f"  0x{i:02x}: {r['handler']:#010x}  len {length}  {tag:10s} "
               f"{r['name'] or '-':14s} advances={r['advances']}{extra}")
     print(f"  named: {named} of {len(res)}; ps1 table has {len(ps1)} opcode number(s)")
-    print(f"  walkable {len(ok)}, unverified {len(unverified)}, ambiguous {len(ambiguous)}, "
-          f"size conflicts {len(conflicts)}")
+    print(f"  walkable {len(ok)}, jump-family {len(jumps)}, unverified {len(unverified)}, "
+          f"ambiguous {len(ambiguous)}, size conflicts {len(conflicts)}")
+    if jumps:
+        print(f"  jump family (target computed from an operand, decoded from the handler): "
+              f"{[hex(i) + ' ' + str(res[i]['name']) for i in jumps]}")
     if unverified:
         print(f"  UNVERIFIED (no advance inside the handler's own extent): "
               f"{[hex(i) for i in unverified]}")
@@ -317,7 +404,7 @@ def report_lengths(words) -> int:
               "the first of them rather than advancing by a number the handler never performs.")
     if ambiguous:
         print(f"  AMBIGUOUS (several advances, table does not choose): {[hex(i) for i in ambiguous]}")
-    print(f"  {len(ok)}/{len(res)} opcodes walkable")
+    print(f"  {len(ok) + len(jumps)}/{len(res)} opcodes walkable (of which {len(jumps)} by computed target)")
     return 0 if not ambiguous else 1
 
 
@@ -385,6 +472,20 @@ def self_test() -> int:
     res2 = resolve(tuple(w2), base=B2, table=T2, entries=E2)
     op44, op09, op7f = res2.get(0x44, {}), res2.get(0x09, {}), res2.get(0x7F, {})
     op26, op50 = res2.get(0x26, {}), res2.get(0x50, {})
+    def succ(op, raw, addr):
+        return [(t, h) for t, h in successors(op, bytes(raw), addr)]
+    cases += [
+        ("Goto target is cmd + s16 at byte 4, with no fall-through",
+         [t for t, _h in succ(0x17, [0x17, 0, 0, 0, 0xFF, 0xFA], 0x1000)], [0x0FFA]),
+        ("ElseStart has a jump target (u16 at byte 2) and a fall-through",
+         [t for t, _h in succ(0x07, [0x07, 0, 0x00, 0x0A], 0x1000)], [0x100A, 0x1004]),
+        ("ForStart target is cmd + s16 at byte 2 + 6 (its own size), plus fall-through",
+         [t for t, _h in succ(0x0D, [0x0D, 0, 0x00, 0x04, 0, 0], 0x1000)], [0x100A, 0x1006]),
+        ("Switch has a case-table skip target and a header fall-through",
+         [t for t, _h in succ(0x13, [0x13, 0, 0x00, 0x14], 0x1000)], [0x1014, 0x1004]),
+        ("GoSub carries only a record index, so its destination stays dynamic",
+         [t for t, _h in succ(0x18, [0x18, 0x03], 0x1000)], [None]),
+    ]
     cases += [
         ("the ps1 fixture loads and names SceEmSet at 0x44",
          (ps1_opcodes().get(0x44) or [(None, None)])[0], ("SceEmSet", 22)),
@@ -499,6 +600,30 @@ def main() -> None:
                 print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x} — {kind}")
                 break
             r = res[op]
+            if r["status"] == "jump":
+                length = r["length"]
+                cmd = rd(p, min(length, 64))
+                sups = successors(op, cmd, p)
+                label = f" {r['name']}" if r["name"] else ""
+                print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x}{label} len {length:2d} -> "
+                      f"{cmd[:8].hex(' ')}")
+                for target, how in sups:
+                    shown = "dynamic" if target is None else f"{target:#010x}"
+                    print(f"        {how:34s} -> {shown}")
+                if op == 0x13:                      # Switch: the case table follows the header
+                    p += length
+                    continue
+                if not near_conditional(op, sups):
+                    # an unconditional computed jump (Goto) can be followed; GoSub cannot be resolved
+                    statics = [t for t, _h in sups if t is not None]
+                    if len(sups) == 1 and statics:
+                        print(f"        following the computed target (not the fall-through)")
+                        p = statics[0]
+                        continue
+                    print(f"        STOP: destination is dynamic, so the walk cannot continue")
+                    break
+                p += length                        # conditional: follow the fall-through and say so
+                continue
             if r["status"] != "ok":
                 which = ("no advance inside its own handler" if r["status"] == "unverified"
                          else "several advances and the table does not choose")
