@@ -48,6 +48,8 @@ def main():
                     help="re-assert the pending line every N instructions")
     ap.add_argument("--watch", action="append", default=None,
                     help="address to watch for writes (repeatable); default: the three queues")
+    ap.add_argument("--driver", default="pi,timer",
+                    help="minimal device model: pi (DMA completion), timer (Count/Compare), or none")
     ap.add_argument("--reg", action="append", default=None,
                     help="log REG@PC, e.g. --reg 10@0x800009bc (r10 at that instruction)")
     a = ap.parse_args()
@@ -73,6 +75,18 @@ def main():
         r, pc = spec.split("@")
         regs.append((int(r, 0), int(pc, 0)))
 
+    # --- minimal driver model -------------------------------------------------
+    drivers = {d.strip() for d in a.driver.split(",") if d.strip()}
+    pi_done = [0]
+    if "pi" in drivers:
+        base_pi = hooks[0x8000C870]
+        def pi_complete(c, *args):
+            out = base_pi(c, *args)
+            mem.mi_pending |= 0x10          # DMA finished -> MI pending PI
+            pi_done[0] += 1
+            return out
+        hooks[0x8000C870] = pi_complete
+
     bit = SOURCES.get(a.irq_source, 0)
     writes, excs, reglog, posts = [], [], [], []
     n, faults = 0, []
@@ -97,6 +111,10 @@ def main():
             cpu.r[2] = (out or 0) & 0xFFFFFFFF
             cpu.pc = cpu.r[31]; n += 1
             continue
+        if "timer" in drivers:
+            cpu.count = (cpu.count + 1) & 0xFFFFFFFF
+            if cpu.compare and cpu.count == cpu.compare:
+                cpu.timer_pending = True
         cur, after = cpu.pc, cpu.delay
         cpu.delay = None
         try:
@@ -129,6 +147,8 @@ def main():
           f"run queue {mem.read(0x80012948, 4):#010x}   "
           f"MI pending {mem.mi_pending:#04x} mask {mem.mi_mask:#06x} (mask is guest-owned)")
     print(f"  host primitives used: {dict(collections.Counter(e[0] for e in log))}")
+    if pi_done[0]:
+        print(f"  driver: {pi_done[0]} PI DMA completion(s) -> MI pending 0x10 set")
 
 
 if __name__ == "__main__":

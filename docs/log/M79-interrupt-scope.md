@@ -259,3 +259,42 @@ instead of 4 000 000 changes nothing after that point, and speed is not the limi
 
 **Conclusion: the probe covers the boot-to-idle window (≈175 000 instructions) and cannot carry the game further.
 Past that point a driver model is required — which is a different project, and one that already exists in ares.**
+
+---
+
+## 12. PI completion + timer added: the drivers work, the *enables* are the blocker
+
+Minimal driver model added to `tools/probe.py` (`--driver pi,timer`, now the default):
+
+- **PI completion**: the `0x8000c870` DMA hook now sets `MI pending 0x10` after the copy, i.e. the guest can see
+  the transfer finished. Measured: **2 completions per boot**, `MI pending` ends at **`0x18`** = VI `0x08` +
+  PI `0x10` — both sources asserted simultaneously and independently, which is the S5 behaviour for free.
+- **Count/Compare timer**: `Count` advances per instruction and sets the timer pending bit when it reaches
+  `Compare`.
+
+**Result: nothing wakes.**
+
+```
+interrupts taken: 5   (all between instructions 169,885 and 173,753; five distinct threads)
+queue validCounts: 0 / 0 / 0        current thread 0x8010b700   run queue empty
+MI pending 0x18     mask 0x0669
+```
+
+**Two enable-side blockers, both guest state we must not forge:**
+
+1. **The mask does not enable PI.** `0x669` has bits `0x01`(SP), `0x08`(VI), `0x20`(DP) set and **`0x10`(PI)
+   clear**. So the completion bit is *pollable* — a handler that reads `MI_INTR` will see it — but it can never
+   raise a CPU interrupt. The driver supplies the fact; the guest decides whether to be interrupted by it.
+2. **Interrupts stop after ~174 000 instructions.** The restored `Status` loses `IE`, so even sources the mask
+   *does* enable stop being accepted. That is a property of the game's thread states at that point, not of the
+   driver.
+
+**So the bounded spike has an answer, and it is the negative one:** a PI completion and a timer did not wake
+threads 1 or 9. They did everything a driver can do — set the device-visible completion flag, tick the counter —
+and the system still settles to the idler with an empty run queue. The blocker is not missing device facts; it is
+that the game's own thread states disable the interrupt sources the harness can supply, and forging those states
+would be exactly the kind of approximation this project kept having to retract.
+
+**Recommendation, unchanged and now evidence-backed: stop here.** Past the boot-to-idle window the harness needs
+the game's *own* thread states to enable its own sources, which happens only when real work completes — RSP tasks
+producing output, VI retraces tied to real video. That is an emulator, and ares is one.
