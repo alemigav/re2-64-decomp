@@ -69,7 +69,12 @@ at is real:
              39  0  0 ...                                   (bytes = slot - 16)
 ```
 
-So the contradiction was mine, and the hop is a **sparse slot→ID map**. It is *not* yet the
+So the contradiction was mine, and the hop is a **sparse slot→ID map**.
+
+**Retracted (M88):** the reading below — "a 40-byte array… 30 distinct values, only 2 in 38–65" —
+is superseded. The structure is **two 48-byte arrays** at `0x800eb204` and `0x800eb234`, indexed
+`byte[slot−16]`, covering record indices 11–38 and 39–66. The earlier numbers came from reading the
+first pointer's target as if it were the whole map. It is *not* yet the
 slot→cart-record map: only two of its 40 entries fall in 38–65, and 30 distinct values across 40
 slots is too few for 66 records. Recorded as a real, located structure whose meaning is unproven —
 which is a much better starting point than a contradiction.

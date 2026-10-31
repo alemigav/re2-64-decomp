@@ -96,6 +96,12 @@ class Cpu:
         import struct as _s
         self.f[i] = int.from_bytes(_s.pack(">d", v), "big")
     def run(self, entry, a0=0, a1=0, a2=0, a3=0, sp=0x803FF000):
+        """Execute from `entry` until `pc == SENTINEL` (reached via `jr ra`).
+
+        CONTRACT: `run` REZEROS `self.r` and sets `ra = SENTINEL`, so fixture state cannot be
+        poked into registers beforehand — pass values through `a0..a3`, or set memory first.
+        The correct entry point for whole-function tests; see `tools/test_harness.py`.
+        """
         self.r = [0]*32; self.r[4], self.r[5], self.r[6], self.r[7] = a0, a1, a2, a3
         self.r[29] = sp; self.r[31] = SENTINEL
         self.pc, self.delay = entry, None
@@ -177,6 +183,13 @@ class Cpu:
         return v
 
     def step(self, pc):
+        """Execute the instruction at `pc`.
+
+        CONTRACT: `step` does NOT advance `self.pc`. The caller owns the delay-slot and branch
+        arithmetic, which `run()` does below. Use `run()` for whole-function tests; `step` exists
+        for single-instruction probes, and both `step`-driven and `run`-driven fixtures that get
+        this wrong produce plausible-looking wrong answers rather than errors.
+        """
         w = self.m.read(pc, 4); r = self.r
         op = w >> 26; rs = (w >> 21) & 0x1F; rt = (w >> 16) & 0x1F
         rd = (w >> 11) & 0x1F; imm = w & 0xFFFF

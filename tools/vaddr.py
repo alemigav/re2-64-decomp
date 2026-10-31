@@ -55,8 +55,12 @@ def sources() -> dict:
     """Every byte range that maps at a vaddr: the boot bank (via ROM) and each built image."""
     out = []
     rom = Path(sorted(Path().glob(ROM_GLOB))[0]).read_bytes()
-    out.append(dict(name="boot", lo=0x80000480, hi=0x80000480 + 0x11140,
-                    data=rom[0x1000:0x12140], note="ROM 0x1000, linear via +0x7FFFF480"))
+    # the boot bank AND the boot data that follows it: ROM 0x1000..0x14420 is all mapped
+    # linearly, and stopping at the code end (0x800115C0) hid the .rodata the code reads —
+    # 0x80011860 among others. A tool boundary that is too narrow fails the same way as a
+    # hand-computed constant: quietly, with a plausible answer.
+    out.append(dict(name="boot", lo=0x80000480, hi=0x80000480 + 0x13420,
+                    data=rom[0x1000:0x14420], note="ROM 0x1000..0x14420, linear via +0x7FFFF480"))
     if Path(IMAGES).exists():
         import json
         for img in json.loads(Path(IMAGES).read_text())["images"]:
