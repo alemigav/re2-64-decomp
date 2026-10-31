@@ -123,15 +123,11 @@ def main() -> None:
                     print(f"  neither stream pointer is in RDRAM; reading the BSS buffer at "
                           f"{BSS_BUFFER:#010x}")
 
-            found = [(i, block[i + 3]) for i in range(0, len(block) - STRIDE, STRIDE)
-                     if block[i] == OP_44]
-            if found:
-                print(f"  opcode-0x44 commands at the {STRIDE}-byte stride: {len(found)}")
-                for off, slot_v in found[:20]:
-                    print(f"    +{off:#05x}  byte3 (slot) = {slot_v:3d}   {classify(slot_v)}")
-            else:
-                print(f"  no opcode-0x44 command at the {STRIDE}-byte stride in the first "
-                      f"{len(block)} B")
+            # A stride scan from an arbitrary start does not work: 0x44 is a common byte in this
+            # buffer, and the stream must be walked from a live command pointer using the per-opcode
+            # lengths. That is tools/walk_stream.py, which derives those lengths from the handlers.
+            print("  (for the command stream itself, run tools/walk_stream.py on this dump: it walks "
+                  "from ctx+0x1c using the per-opcode lengths rather than scanning at a fixed stride)")
         except ValueError as exc:
             print(f"  cannot read the chain from this dump: {exc}")
 
