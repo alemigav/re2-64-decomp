@@ -89,7 +89,21 @@ wherever the cartridge exists — locally, and in the pre-commit hook — and M1
 deliberately unadopted. **A green CI run does not vouch for those 103 cases**, and the handover now says so
 with the measured numbers instead of the old `51 of 54`.
 
-## 6. Addendum: the sanctioned edit path was dropping file modes
+## 6. The first real run failed, on the interpreter — which is the check working
+
+The workflow was scheduled for the first time in this project's history and failed in 9 s:
+
+```
+##[error]The version '3.9' with architecture 'x64' was not found for Ubuntu 26.04.
+```
+
+`ubuntu-latest` had moved to **26.04**, which carries no Python 3.9 build. The pin was right and the *image*
+was not: `runs-on` is now **`ubuntu-22.04`**, chosen because 3.9.6 is the only interpreter installed on the
+machine the suites are verified on, and an interpreter nobody ran is not one to claim. This is the argument
+for having the workflow at all: two milestones of prose asserted a runner run that had never happened, and
+the first real one found a break in nine seconds.
+
+## 7. Addendum: the sanctioned edit path was dropping file modes
 
 Committing this milestone turned up a defect in the tool every edit in this repo goes through.
 `tools/patch_text.py` writes each file by writing a **new** temporary file and calling `replace()` — which

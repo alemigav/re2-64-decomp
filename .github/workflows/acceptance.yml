@@ -37,14 +37,18 @@ concurrency:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    # Pinned, not `ubuntu-latest`: the first real run of this workflow failed at setup-python with
+    # "The version '3.9' … was not found for Ubuntu 26.04", because `latest` had moved on. The image is
+    # pinned to the Ubuntu that still carries the interpreter below.
+    runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
-      # Pinned to the interpreter the suites were verified on rather than "3.x": every tool is plain stdlib,
-      # so a newer Python is very likely fine — but "very likely" is not what this repo calls verified. A
-      # second matrix leg is one line the day someone runs it.
+      # Pinned to the interpreter the suites were verified on (3.9.6, the one installed on the machine this
+      # project is developed on) rather than "3.x": every tool is plain stdlib, so a newer Python is very
+      # likely fine — but "very likely" is not what this repo calls verified. A second matrix leg, on the
+      # newest image, is one line the day someone installs that interpreter and runs the suites on it.
       - uses: actions/setup-python@v5
         with:
           python-version: '3.9'
