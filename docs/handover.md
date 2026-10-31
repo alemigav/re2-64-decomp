@@ -136,6 +136,11 @@ What that means in practice: the three corpus checks are enforced **wherever the
 `python3 tools/provenance.py --acceptance`, and on every commit through the hook. That is the enforcement that
 actually covers them; CI covers the other 51.
 
+Documents are checked structurally too: `tools/check_markers.py` requires 14 anchors (issue: 8 handover sections
+plus the log's retraction table, error list, working method and retractions heading), that **every level-2 heading is
+registered**, and that **every one of the 64 notes is indexed by the milestone table and titled `# M<n>`** — the rule
+that found M79 had no index row at all (M132/M133/M134).
+
 Two supporting pieces:
 
 * `fixtures/corpus/` (9 KB, committed) is a **synthetic cartridge** that drives the whole corpus pipeline

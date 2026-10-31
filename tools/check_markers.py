@@ -101,6 +101,18 @@ def check(root=Path(".")):
         for h in headings(root, path):
             if h not in registered:
                 failures.append((path, "unregistered heading: %r" % h))
+    # and the notes themselves: a note nobody indexes is a finding nobody will read, and a note that
+    # does not announce its milestone is one that cannot be cross-checked at all
+    refs = set(NOTE_REF.findall(log.read_text())) if log.exists() else set()
+    notes_dir = root / "docs/log"
+    for p in sorted(notes_dir.glob("*.md")) if notes_dir.exists() else []:
+        rel = "docs/log/" + p.name
+        body = p.read_text()
+        if rel not in refs:
+            failures.append((rel, "note is not registered in the milestone table"))
+        first = body.splitlines()[0] if body.strip() else ""
+        if not first.startswith("# M"):
+            failures.append((rel, "note does not begin with a '# M<n>' title"))
     return failures
 
 
@@ -118,20 +130,21 @@ def self_test():
             (d / name).write_text(body)
         return d
 
+    NOTE = "# M1 — a note\n\ntext\n"
     handover = "\n".join(m for _f, m, _w in MARKERS if _f == HANDOVER) + "\n"
     log_ok = "\n".join(m for _f, m, _w in MARKERS if _f == LOG) + "\n| M1 | x | `docs/log/M1-a.md` |\n"
     cases = []
 
-    d = bed({HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": "note\n"})
+    d = bed({HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": NOTE})
     cases.append(("a complete document set passes", check(d) == []))
 
     d = bed({HANDOVER: handover.replace("## Immediate next step\n", ""), LOG: log_ok,
-             "docs/log/M1-a.md": "note\n"})
+             "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a missing handover section is named",
                   len(f) == 1 and f[0][0] == HANDOVER and "Immediate next step" in f[0][1]))
 
-    d = bed({LOG: log_ok, "docs/log/M1-a.md": "note\n"})
+    d = bed({LOG: log_ok, "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a missing file is reported, once per required file",
                   any(msg == "file is missing" for _p, msg in f) and len([1 for p, _ in f if p == HANDOVER]) == 1))
@@ -142,21 +155,32 @@ def self_test():
                   any("dangling note reference: docs/log/M1-a.md" in msg for _p, msg in f)))
 
     d = bed({HANDOVER: handover, LOG: log_ok.replace("| retracted | by | what changed |\n", ""),
-             "docs/log/M1-a.md": "note\n"})
+             "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a drifted table header in the log is caught",
                   any(p == LOG and "retracted" in msg for p, msg in f)))
 
     d = bed({HANDOVER: handover + "## An unregistered new section\n", LOG: log_ok,
-             "docs/log/M1-a.md": "note\n"})
+             "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a heading absent from the marker list is caught",
                   any("unregistered heading" in msg and "unregistered new section" in msg
                       for _p, msg in f)))
 
     d = bed({HANDOVER: "```\n## not a heading, inside a fence\n```\n" + handover, LOG: log_ok,
-             "docs/log/M1-a.md": "note\n"})
+             "docs/log/M1-a.md": NOTE})
     cases.append(("a ## line inside a fenced block is not treated as a heading", check(d) == []))
+
+    d = bed({HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": NOTE,
+             "docs/log/M2-orphan.md": "# M2 — never indexed\n"})
+    f = check(d)
+    cases.append(("a note that the milestone table never mentions is caught",
+                  any("docs/log/M2-orphan.md" == p and "not registered" in msg for p, msg in f)))
+
+    d = bed({HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": "no title here\n"})
+    f = check(d)
+    cases.append(("a note without an '# M<n>' title is caught",
+                  any("does not begin with" in msg for _p, msg in f)))
 
     passed = 0
     for name, ok in cases:
@@ -200,7 +224,12 @@ def main():
     registered_bad = [f for f in failures if "unregistered heading" in f[1]]
     print("%s  %-28s every level-2 heading is in the marker list" % (
         "FAIL" if registered_bad else "PASS", "(registration)"))
-    total = len(MARKERS) + 2
+    note_bad = [f for f in failures if "not registered in the milestone table" in f[1]
+                or "does not begin with" in f[1]]
+    n_notes = len(list((root / "docs/log").glob("*.md"))) if (root / "docs/log").exists() else 0
+    print("%s  %-28s all %d note(s) are indexed and titled '# M<n>'" % (
+        "FAIL" if note_bad else "PASS", "(note registration)", n_notes))
+    total = len(MARKERS) + 3
     failed = len({(p, m) for p, m in failures})
     print("\n%d/%d marker check(s)" % (total - min(failed, total), total))
     if failures:
