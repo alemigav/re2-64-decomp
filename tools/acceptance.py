@@ -47,7 +47,8 @@ SUITES = [
     ("01 41 container (cartridge)", [sys.executable, "tools/container_0141.py", "--check"], 29, True),
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 15, True),
+    ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 18, True),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 

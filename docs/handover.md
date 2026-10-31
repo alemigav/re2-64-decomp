@@ -25,6 +25,7 @@ ground-truth RDRAM dumps. Nothing in the repo imports or requires it.
 | media | 1 227 MJPEG frames, 271 MPEG-1 blocks (24.4 MB + 15.8 MB), all verified | M10 |
 | unidentified | two blobs ~17.6 MB (R3 `0xb73fb3`–`0x140ed84`, R4 `0x338fe1`–`0xb63106`); R4's tail holds a **non-zlib container** of 28 payloads at cart `0xb6248` | M82/M90 |
 | scripted ares control | GDB RSP over `DebugServer/Port`: 512 KiB in **0.4 s**, `Z0` → `OK`, stop → `S05`; live `0x80000480+0x1234f` is **74 575/74 575 byte-equal to the cartridge** | M108 |
+| routine dispatch on `object+5` | **28** stage-2 sites, no mask and no compare; the class-1 table is 14 long, classes 2/3/4 are 4/2/27, and a class-1 writer stores **15** | M173, `tools/routine_index.py` |
 
 `assets/` is gitignored and regenerable in ~20 s. The repo tip is the last documentation commit; `git log
 --oneline` is the milestone index and `docs/reverse_engineering_log.md` carries every milestone one-liner
@@ -50,6 +51,7 @@ python3 tools/vaddr.py 0x80004550                                # resolve an ad
 python3 tools/find_readers.py 0x80115284 0x80115288              # who touches an address window
 python3 tools/find_jump_tables.py                                # recover dispatch targets
 python3 tools/find_store_loops.py                                # table-fill initialisers
+python3 tools/routine_index.py                                   # the object+5 index bounds (M173)
 python3 tools/probe.py --reg 4@0x80071ebc --steps 2000000        # harness watch
 python3 tools/walk_stream.py rom/*-rdram-20261031-*.bin          # walk a room's command stream
 python3 tools/room_probe.py rom/*-rdram-*.bin                    # slot / gate / stream from a dump
@@ -265,9 +267,9 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 19 suites, 195 cases
+python3 tools/acceptance.py         # 20 suites, 214 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
-python3 tools/audit_gates.py        # 15/15: every check must fail when its mechanism is disabled
+python3 tools/audit_gates.py        # 18/18: every check must fail when its mechanism is disabled
 ```
 
 **A green CI run does not vouch for everything.** Eight suites are cartridge-gated and report `SKIP` on a runner:

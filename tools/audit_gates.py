@@ -102,6 +102,23 @@ AUDITS = [
          file="docs/handover.md",
          old="## Immediate next step",
          new="## Immediate next step (renamed by the audit)"),
+    # --- the routine-index bounds question: one audit per leg of its answer, so that no single
+    # disabled mechanism can leave the answer standing.
+    dict(name="routine_index: a table base shifted by one word",
+         tool="routine_index.py", args=[],
+         file="tools/routine_index.py",
+         old="CLASS_A = [0x8011AF80,",
+         new="CLASS_A = [0x8011AF84,"),
+    dict(name="routine_index: every +5 index counted as masked",
+         tool="routine_index.py", args=[],
+         file="tools/routine_index.py",
+         old='                       and ((b["w"] >> 6) & 0x1F) == 2)        # sll reg,reg,2',
+         new='                       and ((b["w"] >> 6) & 0x1F) == 3)        # sll reg,reg,2'),
+    dict(name="routine_index: the out-of-range writer values are dropped",
+         tool="routine_index.py", args=[],
+         file="tools/routine_index.py",
+         old="                out.append((v, p.name, expr))",
+         new="                out.append((v, p.name, expr)) if v < ROW else None"),
     dict(name="patch_text: a no-op replacement is accepted",
          tool="patch_text.py", args=["--self-test"],
          file="tools/patch_text.py",
@@ -112,7 +129,10 @@ AUDITS = [
 # things a mutated tool must be able to read; the heavy ones are symlinked
 COPY = ["tools", "fixtures", "docs/log"]
 COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md"]
-LINK = ["rom", "assets"]
+# `build/elfs` holds the built images and `src/` the decompiled corpus; both are read-only for every
+# audit, and a copy is 18 MB per audit for nothing. Not linking them was invisible until an image-
+# dependent tool was audited: the mutated copy failed on a missing `images.json`, not on its mutation.
+LINK = ["rom", "assets", "build/elfs", "src"]
 
 
 def build_env(dst: Path) -> None:
@@ -128,6 +148,7 @@ def build_env(dst: Path) -> None:
     for item in LINK:
         src = ROOT / item
         if src.exists():
+            (dst / item).parent.mkdir(parents=True, exist_ok=True)   # build/elfs has no build/ yet
             (dst / item).symlink_to(src)
 
 
