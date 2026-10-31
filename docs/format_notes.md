@@ -55,9 +55,20 @@ int FUN_80001180(int index) { return index * 0x10 + 0x80012150; }
 | +8 | destination vram start |
 | +12 | destination vram end (= start + decompressed size) |
 
-**66 records validate; the declared 67th does not.** It sits at vram `0x80012580` with a cart
-pointer (`0xb00c8624`), a size field of **`0xCDCDCDCD`** — the only occurrence of that word in the
-whole cartridge — and two zero fields, i.e. a reserved slot whose size was never written.
+**66 records validate; the declared 67th looked broken and is not** (corrected at M146). It sits at vram
+`0x80012580` with a cart pointer (`0xb00c8624`), a size field of **`0xCDCDCDCD`** — the only occurrence of
+that word in the whole cartridge — and two zero fields. M146 found its user: `FUN_80004954` reads
+`cart_record(0x43)` and treats it as the **file table**, not as a payload to load —
+
+```c
+_DAT_800128a8 = *cart_record(0x43);              /* = 0xb00c8624, i.e. ROM 0x0c8624 as a KSEG1 address */
+read 0x28 bytes -> word 0 = 8091 entries, then "Tue Sep 28 02:31:44 1999"
+_DAT_80012874 = table + 0x28;                    /* 8-byte {offset, size} entries, offsets relative to 0xc8624 */
+```
+
+So the two zero fields are correct: this record has no destination and no decompressed size because it is
+not part of the load list at all. `FUN_80004cfc(id)` is the load-by-id built on it, and `DAT_80131fa8[room]`
+(stage-2) supplies the id — the route M146 used to decode a room script out of the cartridge.
 
 Payload 737 779 B stored, destinations **four** rather than one per overlay:
 

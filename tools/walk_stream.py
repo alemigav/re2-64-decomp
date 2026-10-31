@@ -45,6 +45,7 @@ Usage:
 import argparse
 import json
 import struct
+import tempfile
 import sys
 from pathlib import Path
 
@@ -329,6 +330,10 @@ DYNAMIC = {
 }
 
 
+RAW_SCRIPT_BASE = None          # set by --raw: the block IS the script base
+RAW_SCRIPT_TABLE = None         # idx -> u16 offset from the block start
+
+
 JUMP_FAMILY = {
     0x07: {"size": 4, "operand": ("u16", 2), "base": "cmd", "add": 0, "conditional": True,
            "from": "0x8006dc84 lhu v0,2(v1) -> 0x8006dc8c addu v1,v1,v0 -> sw v1,28(a0)"},
@@ -367,7 +372,7 @@ def _read_operand(cmd, kind, offset):
     return raw
 
 
-def successors(op, cmd, addr):
+def successors(op, cmd, addr, script_base=None, script_table=None):
     """Where a control-flow command goes next: [(target or None, how)], plus the fall-through when it has one.
 
     `target` is None when the destination is dynamic — GoSub needs the runtime script table, whose base is
@@ -381,10 +386,14 @@ def successors(op, cmd, addr):
     if value is None:
         return [("truncated", "command shorter than its operand")]
     if spec["base"] == "script_table":
-        # The destination is `record.u16 + script_base`, and **both** come from outside the command: the
-        # base is `*(0x80114f2c)` at runtime and the u16 sits at record offset 0. The command carries only
-        # the record index, so this is dynamic by construction, not for want of trying.
-        out.append((None, f"dynamic: script record {value} (base *(0x80114f2c) + record u16@0)"))
+        # The destination is `script_base + u16[index]`. Both halves are outside the command: the base is
+        # `*(0x80114f2c)` at runtime and the u16 sits at the *start of the script block*. So it is dynamic
+        # unless the caller supplies both — which `--raw` can, because there the block **is** the base.
+        offset = script_table(value) if script_table is not None else None
+        if offset is None or script_base is None:
+            out.append((None, f"dynamic: script record {value} (base *(0x80114f2c) + u16[index])"))
+        else:
+            out.append((script_base + offset, f"script record {value} (+{offset:#x})"))
     else:
         target = addr + value + spec["add"]
         how = f"cmd{value:+d}" + (f"{spec['add']:+d}" if spec["add"] else "")
@@ -604,6 +613,10 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("dump", nargs="?")
+    ap.add_argument("--raw", default=None,
+                    help="walk a raw block instead of a dump: the file is placed in a synthetic RDRAM")
+    ap.add_argument("--base", default="0x80400000", help="address to place a --raw block at")
+    ap.add_argument("--start", default="0", help="offset inside a --raw block to start walking from")
     ap.add_argument("--commands", type=int, default=64)
     ap.add_argument("--ctx", type=int, default=None, help="context index 0-9 (default: all with a pointer)")
     ap.add_argument("--lens", action="store_true",
@@ -618,8 +631,29 @@ def main() -> None:
     words = load_stage2()
     if a.lens:
         sys.exit(report_lengths(words))
+    if a.raw:
+        # A cartridge block has no RDRAM to read: build one. The block is placed in a synthetic 8 MiB
+        # image and a context is pointed at `base + start`, so the *same* walk code runs - no second
+        # decoder, and nothing about the path changes just because the bytes came from the cartridge.
+        blob = Path(a.raw).read_bytes()
+        base = int(str(a.base), 16) if str(a.base).startswith("0x") else int(a.base)
+        start = int(str(a.start), 16) if str(a.start).startswith("0x") else int(a.start)
+        dump_bytes = bytearray(8 * 1024 * 1024)
+        off = base - RD_BASE
+        if off < 0 or off + len(blob) > len(dump_bytes):
+            ap.error(f"{len(blob)} bytes at {base:#x} does not fit in the synthetic RDRAM")
+        dump_bytes[off:off + len(blob)] = blob
+        struct.pack_into(">I", dump_bytes, CTX_BASE - RD_BASE + CTX_CMDPTR, base + start)
+        tmpdir = Path(tempfile.mkdtemp(prefix="walkraw."))
+        (tmpdir / "raw_rdram.bin").write_bytes(bytes(dump_bytes))
+        a.dump = str(tmpdir / "raw_rdram.bin")
+        global RAW_SCRIPT_BASE, RAW_SCRIPT_TABLE
+        RAW_SCRIPT_BASE = base
+        RAW_SCRIPT_TABLE = lambda idx: (struct.unpack_from(">H", blob, 2 * idx)[0]
+                                        if 2 * idx + 2 <= len(blob) else None)
+        print(f"raw block {a.raw}: {len(blob)} B at {base:#010x}, walking from +{start:#x}")
     if not a.dump:
-        ap.error("a dump is required unless --lens or --self-test is given")
+        ap.error("a dump is required unless --lens, --self-test or --raw is given")
 
     res = resolve(words)
     named = sum(1 for r in res.values() if r["name"])
@@ -672,6 +706,7 @@ def main() -> None:
     for ci, start in pointers:
         print(f"\n=== walking from ctx{ci} = {start:#010x} ===")
         p = start
+        return_stack = []
         seen = {}
         slots = []
         for k in range(a.commands):
@@ -690,7 +725,7 @@ def main() -> None:
             if r["status"] == "jump":
                 length = r["length"]
                 cmd = rd(p, min(length, 64))
-                sups = successors(op, cmd, p)
+                sups = successors(op, cmd, p, RAW_SCRIPT_BASE, RAW_SCRIPT_TABLE)
                 label = f" {r['name']}" if r["name"] else ""
                 print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x}{label} len {length:2d} -> "
                       f"{cmd[:8].hex(' ')}")
@@ -700,6 +735,8 @@ def main() -> None:
                 if op == 0x13:                      # Switch: the case table follows the header
                     p += length
                     continue
+                if op == 0x18 and sups and sups[0][0] is not None:
+                    return_stack.append(p + length)      # GoSub saves `cmd+2`; a return pops it
                 if not near_conditional(op, sups):
                     # an unconditional computed jump (Goto) can be followed; GoSub cannot be resolved
                     statics = [t for t, _h in sups if t is not None]
@@ -712,6 +749,10 @@ def main() -> None:
                 p += length                        # conditional: follow the fall-through and say so
                 continue
             if r["status"] == "dynamic":
+                if op == 0x19 and return_stack:
+                    p = return_stack.pop()
+                    print(f"  [{k:2d}] 0x{op:02x} return -> {p:#010x}")
+                    continue
                 print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x} {r['name']} — STOP: destination is dynamic: "
                       f"{r['why']}")
                 break
