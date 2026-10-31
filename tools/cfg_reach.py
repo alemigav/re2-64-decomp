@@ -34,13 +34,16 @@ import script_profile as sp                                  # noqa: E402
 HERE = Path(__file__).resolve().parent
 ROM = HERE.parent / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 
-OPENERS = {0x06, 0x0D, 0x11, 0x13, 0x1B}      # push the continuation
+OPENERS = {0x06, 0x0D, 0x11, 0x13, 0x1B}      # push the continuation (0x0f handled separately)
+# `0x0f` was missing until M154 and is the most important of them: FUN_8006dfe4 saves the command
+# pointer at +0x20, computes the block END as `cmd+4+u16@2` into +0x60, runs the block through
+# FUN_8006e1bc(ctx, body, byte1), and if the block signals 0 jumps to that end - the if/else skip.
 SUBCALL, SUBRET = 0x18, 0x19
 POPPERS = {0x10, 0x12, 0x1A}                  # pop a block slot
 NODE_CAP = 40000
 
 
-def reachable(raw, starts, res):
+def reachable(raw, starts, res, generous_starts=None):
     """Positions reachable from any of `starts`, following jumps and the structured pushes/pops.
 
     Each start gets its **own** node budget. Seeding all starts into one shared budget starved the later ones
@@ -49,11 +52,11 @@ def reachable(raw, starts, res):
     """
     positions = set()
     for start in starts:
-        positions |= _reach_from(raw, start, res)
+        positions |= _reach_from(raw, start, res, generous_starts=generous_starts)
     return positions
 
 
-def _reach_from(raw, start, res):
+def _reach_from(raw, start, res, generous_starts=None):
     seen = set()
     work = [(start, ())]
     nodes = 0
@@ -67,20 +70,43 @@ def _reach_from(raw, start, res):
                 break
             seen.add(key)
             r = res.get(raw[p])
-            if r is None or r["length"] is None or p + r["length"] > len(raw):
+            if r is None:
                 break
-            length = r["length"]
             op = raw[p]
+            # **status before length**: dynamic opcodes have `length = None`, so a length guard placed first
+            # (as it was until M154) makes every pop, every `0x03` target and every `0x19` return dead code -
+            # the whole dynamic branch below became unreachable while still appearing present.
+            if r["status"] != "dynamic":
+                if r["length"] is None or p + r["length"] > len(raw):
+                    break
+            length = r["length"]
             if r["status"] == "dynamic":
                 if op in (SUBRET, *POPPERS) and st:
                     p = st.pop()                 # resume where the matching open said
                     continue
+                if op in (SUBRET, *POPPERS) and generous_starts:
+                    # **generous closure**: an unresolvable pop could have been entered by any caller, so
+                    # resume at every record start. This over-approximates reachability, which is the sound
+                    # direction for a dead-code claim: nothing reachable can be missed.
+                    for t in generous_starts:
+                        work.append((t, tuple(st)))
+                    break
                 if op == 0x03 and p + 4 <= len(raw):
                     # `0x03` is a script jump by table index: the callee it delegates to
                     # (FUN_8006d5dc) reads `u16[byte3]` at stride 2, so its target is computable.
                     idx = raw[p + 3]
                     if 2 * idx + 2 <= len(raw):
                         work.append((struct.unpack_from(">H", raw, 2 * idx)[0], tuple(st)))
+                break
+            if op == 0x0F and p + 4 <= len(raw):
+                # `0x0f` runs the block that **starts at cmd+4** and skips to `cmd+4+u16@2` when the block
+                # signals 0, so both are successors and no stack entry is needed. Its header is 4 bytes -
+                # `opcode, span, u16 end` - which is longer than the 2 the length map had (M154).
+                body = p + 4
+                end = body + struct.unpack_from(">H", raw, p + 2)[0]
+                for t in (body, end):
+                    if 0 <= t < len(raw):
+                        work.append((t, tuple(st)))
                 break
             if op in OPENERS or op == SUBCALL:
                 if len(st) < 24:
@@ -110,7 +136,7 @@ def _reach_from(raw, start, res):
     return {k[0] for k in seen if len(k) == 2}
 
 
-def survey(rom, res, entry_only=False):
+def survey(rom, res, entry_only=False, generous=False):
     """`entry_only` seeds **only record 0** — the room's real entry point, via FUN_8006d5dc(ctx,0).
 
     Seeding every record start makes the measure near-tautological: each record then "reaches" its own code
@@ -142,7 +168,8 @@ def survey(rom, res, entry_only=False):
             offs.append(o)
         if len(offs) < 2:
             continue
-        reach = reachable(raw, [offs[0]] if entry_only else offs, res)
+        reach = reachable(raw, [offs[0]] if entry_only else offs, res,
+                          generous_starts=offs if generous else None)
         if len(reach) < 4:
             continue
         blocks += 1
@@ -181,6 +208,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--generous", action="store_true",
+                    help="an unresolvable block pop resumes at every record start (over-approximates)")
     ap.add_argument("--entry", action="store_true",
                     help="seed only record 0 (the room entry point) instead of every record start")
     args = ap.parse_args()
@@ -189,7 +218,9 @@ def main() -> int:
         return 0
     res = ws.resolve(ws.load_stage2())
     rom = ROM.read_bytes()
-    s = survey(rom, res, entry_only=args.entry)
+    s = survey(rom, res, entry_only=args.entry, generous=args.generous)
+    if args.generous:
+        print("(generous closure: unresolvable pops resume at every record start)")
     if args.entry:
         only_dead = sorted(set(s["decoded_ops"]) - set(s["reach_ops"]))
         print(f"opcodes appearing ONLY outside entry-point-reachable code: "

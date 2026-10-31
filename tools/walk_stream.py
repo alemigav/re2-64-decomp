@@ -175,6 +175,13 @@ def inferred_names() -> dict:
     return {int(k, 16): v for k, v in doc.get("opcodes", {}).items()}
 
 
+# Handlers whose true command length the advance scan gets wrong, with the instruction that shows it.
+LENGTH_OVERRIDE = {
+    0x0F: (4, "0x8006dfe4 writes ctx+0x1c = cmd+4 (the block body) and computes the block end as "
+              "cmd+4+u16@2, so the header is [opcode][span][u16 end] = 4 bytes. The 2 the scan measured is "
+              "the span byte, not the command length (M154)."),
+}
+
 PS1_FIXTURE = "fixtures/scd/opcodes.json"
 RANGES_FIXTURE = "fixtures/decomp/ranges.json"
 
@@ -465,6 +472,8 @@ def resolve(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES) -> dict
                 name = picked[0][0]
             else:
                 status = "ambiguous"
+        if i in LENGTH_OVERRIDE:
+            status, chosen = "ok", LENGTH_OVERRIDE[i][0]
         if i in JUMP_FAMILY:
             spec = JUMP_FAMILY[i]
             status, chosen = "jump", spec["size"]
