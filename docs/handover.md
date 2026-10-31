@@ -53,6 +53,7 @@ python3 tools/find_store_loops.py                                # table-fill in
 python3 tools/probe.py --reg 4@0x80071ebc --steps 2000000        # harness watch
 python3 tools/walk_stream.py rom/*-rdram-20261031-*.bin          # walk a room's command stream
 python3 tools/room_probe.py rom/*-rdram-*.bin                    # slot / gate / stream from a dump
+python3 tools/acceptance.py                              # every fixture in one verdict (M126)
 python3 tools/pad_layout.py --rdram rom/*-rdram-*.bin   # decode an SI command block (M125)
 python3 tools/ares_rsp.py launch --rom "rom/….z64"               # drive ares: listener on 9123 (M108)
 python3 tools/ares_rsp.py probe                                  # qSupported, PacketSize=4096

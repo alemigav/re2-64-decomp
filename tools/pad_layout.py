@@ -69,14 +69,17 @@ def decode(block, index=0):
            "cmd": cmd, "cmd_name": CMD.get(cmd, "UNKNOWN(0x%02x)" % cmd), "errno": err,
            "valid": err == 0}
     if cmd == 0x01 and len(block) >= 8:
+        if err != 0:
+            # libultra's `osContGetReadData` only assigns the pad fields when errno == 0; the bytes are
+            # present but must not be read as a pad state. Exposing them invites exactly the M109 misread.
+            out["meaning"] = ("channel error %d: payload present but not a pad reading, "
+                              "as libultra leaves the pad fields untouched" % err)
+            return out
         button = (block[4] << 8) | block[5]
         x = block[6] - 256 if block[6] >= 0x80 else block[6]
         y = block[7] - 256 if block[7] >= 0x80 else block[7]
         out.update({"button": button, "buttons": button_names(button), "stick_x": x, "stick_y": y})
-        # the reading M109 got wrong, stated as a value the tool computes
-        if err != 0:
-            out["meaning"] = "channel error %d: payload is not a pad reading" % err
-        elif button == 0xFFFF and x == -1 and y == -1:
+        if button == 0xFFFF and x == -1 and y == -1:
             out["meaning"] = "every button held, sticks at minimum (a pad state, NOT 'no controller')"
         elif button == 0 and x == 0 and y == 0:
             out["meaning"] = "idle: no buttons, sticks centred"
@@ -155,6 +158,13 @@ def self_test():
     chans, term = decode_block(mem)
     cases.append(("four channel blocks then CONT_CMD_END, as the dump holds",
                   len(chans) == 4 and term == END and all(ch["errno"] == 0 for ch in chans)))
+
+    mem = IDLE + NO_PAD + START + bytes([0xFE])
+    chans, term = decode_block(mem)
+    cases.append(("mixed errno: a bad channel is invalidated while its neighbours still read",
+                  len(chans) == 3 and [c["errno"] for c in chans] == [0, 8, 0]
+                  and "button" not in chans[1] and chans[2]["buttons"] == ["Start"]
+                  and term == END))
 
     mem = PAK + bytes(8) + bytes([0xFE])
     chans, term = decode_block(mem)
