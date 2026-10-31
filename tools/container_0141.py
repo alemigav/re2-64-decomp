@@ -260,6 +260,38 @@ def tile_formats(rom, tiles):
     return law, small4, big8, both
 
 
+def tile_geometry(rom, tiles):
+    """`h1` (the field at offset 2) is the **true pixel height**; the field at offset 6 is its
+    8-bit-equivalent, `h = h1*bpp/8`. Row-stride readings fit almost nothing, so they are refuted here too."""
+    true_height = pixel_bytes = stride_bytes = stride_words = total = 0
+    for fid in tiles:
+        if not (0 <= fid < sp.ENTRY_COUNT):
+            continue
+        off, size = struct.unpack_from(">II", rom, sp.FILE_TABLE_ROM + sp.HEADER + 8 * fid)
+        if off == 0xFFFFFFFF or size == 0:
+            continue
+        try:
+            raw = zlib.decompress(rom[sp.FILE_TABLE_ROM + off:sp.FILE_TABLE_ROM + off + size])
+        except zlib.error:
+            continue
+        if len(raw) < 16:
+            continue
+        h1, w, h, fmt, entries, _z1, _z2 = struct.unpack_from(">7H", raw, 2)
+        bpp = 8 if fmt == 2 else 4
+        px = len(raw) - 16 - entries * 2
+        total += 1
+        if h1 == h * 8 // bpp:
+            true_height += 1
+        if w * h1 * bpp // 8 == px:
+            pixel_bytes += 1
+        stride = w * bpp // 8
+        if h1 == stride:
+            stride_bytes += 1
+        if h1 == stride // 8:
+            stride_words += 1
+    return true_height, pixel_bytes, stride_bytes, stride_words, total
+
+
 def constants_in_code():
     """The two shared record constants: are they code immediates, or only data?"""
     words = ws.load_stage2()
@@ -300,6 +332,7 @@ def main() -> int:
     tiles, tile_first = grid_tiles(ROM.read_bytes())
     tile_magics, tile_second_words, gbi_share = tile_headers(ROM.read_bytes(), tiles)
     t_law, t_4bpp, t_8bpp, t_total = tile_formats(ROM.read_bytes(), tiles)
+    g_true, g_px, g_stride, g_words, g_total = tile_geometry(ROM.read_bytes(), tiles)
     template_hits, template = unit_template(blocks)
     cases = [
         ("the family is found and is large", len(blocks) > 200),
@@ -348,6 +381,11 @@ def main() -> int:
         ("the 8 bpp tiles are consistent: one byte per pixel, w*h of them", t_8bpp >= 30),
         ("both texture formats are present, so the law is not one format's special case",
          t_4bpp > 0 and t_8bpp > 0),
+        # --- what `h1` is (M166)
+        ("h1 is the true pixel height: h1 == h*8/bpp on every tile", g_true == g_total),
+        ("w*h1*bpp/8 equals the pixel byte count on every tile", g_px == g_total),
+        ("h1 is NOT a row stride in bytes (that reading fits almost nothing)", g_stride <= 2),
+        ("h1 is NOT a row stride in 8-byte words", g_words == 0),
     ]
     passed = 0
     for label, ok in cases:
