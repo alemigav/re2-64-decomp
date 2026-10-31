@@ -33,7 +33,9 @@ def harness_ram(entry, steps):
     import run_guest_sched as P
     rom = open("rom/Resident Evil 2 (USA) (Rev 1).z64", "rb").read()
     s2 = open("assets/unpacked/00000_0014420_1172240.bin", "rb").read()
-    mem = P.build(rom, s2)
+    # The correct initial image now includes IPL3's stub plus its boot variables, since
+    # the installer and the 4/8 MB layout decision live there (see M75/M76).
+    mem = P.build(rom, s2, with_ipl3=True)
     log = []
     hooks = P.hooks_for(mem, log)
     cpu = Cpu(mem, hooks); cpu.r[29] = 0x803FF000; cpu.r[31] = SENTINEL
@@ -66,7 +68,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ares", help="ares RDRAM dump (8 MB), or omit to use the newest in rom/")
     ap.add_argument("--harness-file", help="pre-dumped harness RAM instead of running it")
-    ap.add_argument("--entry", type=lambda s: int(s, 0), default=0x8004D344)
+    ap.add_argument("--entry", type=lambda s: int(s, 0), default=0x80000520,
+                    help="default 0x80000520 = main, which installs the vectors")
     ap.add_argument("--steps", type=int, default=150000)
     ap.add_argument("--top", type=int, default=8)
     ap.add_argument("--page", type=lambda s: int(s, 0),

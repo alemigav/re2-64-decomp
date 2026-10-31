@@ -2302,6 +2302,51 @@ emulation.** "Thread 7 never installs the vectors" (M43, M73, M75) is superseded
 installer inside thread 7" only after booting through paths the host had faked — the entry point, not the
 emulator, was doing the misleading.
 
+#### The spin was my zeroed boot variable; boot from `main` now works (M77)
+
+`main`'s body, disassembled at the point the harness sat still:
+
+```
+0x80000564  jal 0x800070c0        installs the vectors
+0x8000056c  lui v0, 0x8000
+0x80000570  lw  v0, 0x300(v0)     read 0x80000300
+0x80000574  bne v0, zero, +0xc
+0x80000578  addu
+0x8000057c  beq v0, zero, -0x4   <-- spins on itself while that word is ZERO
+0x80000584  jal 0x80000598        boot loader
+```
+
+`0x80000300` is another IPL3-written boot variable, and **the ares dump has `1` there**. My M75 "restore the
+boot variables" step had explicitly **zeroed** it, so every run from `main` sat in that two-instruction loop —
+1.5 M instructions with zero progress.
+
+**With `0x80000300 = 1` and `0x80000318 = 0x00400000` (4 MB), booting from `main` now works end to end:**
+
+```
+1,500,000 instructions   faults: none   11 context switches
+E_VEC = 3c1a8000 275a06d0 03400008 00000000     <- installed, matches ares
+host primitives: pi_dma, inflate, pi_dma        <- boot loader ran, stage-2 loaded
+current thread 0x8010b700 (thread 7), active queue 0x80112a40 (thread 1)
+```
+
+**RDRAM diff against the ares title-screen dump, before vs after the entry fix:**
+
+| class | entry `FUN_8004D344` | entry `main` |
+|---|---|---|
+| `same` | 704 | **730** |
+| `harness-zero` | 286 | **190** |
+| `ares-zero` | 4 | 4 |
+| `both-differ` | 30 | **100** |
+
+More pages now match and far fewer are unloaded — but `both-differ` rose, because the harness is loading and
+writing much more while the ares snapshot is from a **much later point in time** (title screen). Pages like
+`0x8017c000` hold decompressed asset data in both, at different stages of the load. **The comparison is not
+time-matched**, so the difference count is now dominated by schedule, not correctness.
+
+**Next requirement, not a bug:** compare like with like — either run the harness much further (millions of
+instructions to reach a title-screen-equivalent state) or capture an ares dump at an early point the harness can
+reach. Time-matching is what makes the page diff a correctness measure rather than a progress measure.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 

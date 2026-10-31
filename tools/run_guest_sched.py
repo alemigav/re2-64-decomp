@@ -47,7 +47,13 @@ def build(rom, stage2, with_ipl3=False):
         # 0x80000318 against 0x400001 to choose the 4 MB or 8 MB video layout, so loading
         # IPL3's bytes over it fed the game a garbage "RDRAM size" and sent it to
         # framebuffers past the end of this 4 MB harness.
-        for a in (0x300, 0x31C, 0x320, 0x33C):
+        # 0x80000300 must be NON-ZERO: main does
+        #   lw v0,0x300(v0) / bne v0,zero,+0xc / beq v0,zero,-0x4
+        # i.e. it spins forever at 0x8000057c unless IPL3 left a non-zero value there.
+        # An ares dump shows 1. Zeroing it (my earlier "restore the boot variables")
+        # is what made every run from main sit in that loop.
+        ram[0x300:0x304] = (1).to_bytes(4, "big")
+        for a in (0x31C, 0x320, 0x33C):
             ram[a:a+4] = b"\0\0\0\0"
         ram[0x318:0x31C] = (RAM_SIZE).to_bytes(4, "big")   # this machine has 4 MB
     ram[STAGE2_VA - RAM_BASE:STAGE2_VA - RAM_BASE + len(stage2)] = stage2
