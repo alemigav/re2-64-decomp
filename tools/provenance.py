@@ -44,9 +44,11 @@ PAROFF = "paroff"          # (param k << scale) + addend: parameter-derived, not
 CBASE = "cbase"            # (base, bias): a KNOWN base plus an unknown offset — "reads 0x800eb204 + ?"
 JTENT = "jtent"            # one entry of the jump table at this address: "the jump goes to the table at X"
 SPLOC = "spoff"            # a stack location: sp + bias, the frame address of a local
+PARAMSTK = "paramstk"      # an INCOMING stack argument: frame-relative bias >= 0, never stored here
 TABLE_MAX = 512            # bound on entries walked out of one table
 TABLE_STATS = {"jtent": 0, "tables": 0, "in_region": 0, "cross": 0, "unresolved": 0}
 SLOT_STATS = {"hit": 0, "miss_merge": 0, "miss_never": 0, "miss_unstable": 0}
+STK_STATS = {"asked": 0, "resolved": 0}   # stack arguments a call site had to supply, and those it could
 UNK = "unk"
 
 LOADS = {0x23: "lw", 0x24: "lbu", 0x25: "lhu", 0x21: "lh", 0x37: "ld", 0x1F: "lwu"}
@@ -99,6 +101,8 @@ def fmt(v):
         return "%08x%+d+?" % (base, bias)
     if kind == SPLOC:
         return "sp%+d" % a
+    if kind == PARAMSTK:
+        return "stkarg(%+d)" % a
     return kind
 
 
@@ -358,7 +362,10 @@ def transfer(state, ins, accesses, stores_seen=None, classify=False):
             v = state.slot[slot_key]
             SLOT_STATS["hit"] += 1
         elif slot_key is not None:
-            v = U
+            # nothing stored to this slot in this frame. At bias >= 0 it lies ABOVE the entry sp, i.e. in
+            # the caller's outgoing argument area: that is an incoming stack argument, and its value is
+            # resolvable at the call site. Below zero it is a local read before being written: unknown.
+            v = (PARAMSTK, slot_key) if slot_key >= 0 else U
             if classify:
                 # distinguish "no store to this slot anywhere in the region" (incoming stack arguments,
                 # a caller's frame) from "a store exists but the paths disagreed" (a merge killed it)
@@ -491,7 +498,7 @@ def build_cfg(words, base, extra=None):
     return ins, blocks
 
 
-def resolve(value, args, summaries, seen=()):
+def resolve(value, args, summaries, seen=(), args_stk=None):
     """Substitute a **callee-space** value into the caller's terms.
 
     A summary is expressed in its own parameter space, so `param(1)` means "whatever the caller passed
@@ -501,12 +508,15 @@ def resolve(value, args, summaries, seen=()):
     kind, a = value
     if kind == PARAM:
         return args[a] if a < len(args) else U
+    if kind == PARAMSTK:
+        got = (args_stk or {}).get(a)
+        return value if got is None else got          # keep the label when the caller stored nothing
     if kind == PAROFF:
         # a callee's summary can return `(its param k) << scale + addend`. Leaving that form untouched
         # makes the CALLEE's parameter index read as the CALLER's, which is how `a0=param(a0)<<4+…`
         # appeared at a call site whose real argument was an unknown byte loaded from a map.
         k, scale, addend = a
-        inner = resolve((PARAM, k), args, summaries, seen)
+        inner = resolve((PARAM, k), args, summaries, seen, args_stk)
         if inner[0] == CONST:
             return (CONST, ((inner[1] << scale) + addend) & 0xFFFFFFFF)
         if inner[0] == PARAM and inner[1] == k:
@@ -517,7 +527,7 @@ def resolve(value, args, summaries, seen=()):
     if kind == RET:
         if a in seen or a not in summaries:
             return (RET, a)                     # unresolvable callee: keep the name, claim nothing
-        return resolve(summaries[a]["ret"], args, summaries, seen + (a,))
+        return resolve(summaries[a]["ret"], args, summaries, seen + (a,), args_stk)
     return value
 
 
@@ -537,6 +547,14 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
             if args[k][0] == PARAM:
                 summary_out.setdefault("escapes", set()).add(args[k][1])
     summary = (summaries or {}).get(target)
+    args_stk = {}
+    if summary is not None:
+        for b in summary.get("stk", ()):             # callee's incoming stack args, caller's outgoing
+            STK_STATS["asked"] += 1
+            key = (state.spbias or 0) + b
+            if key in state.slot:
+                args_stk[b] = state.slot[key]
+                STK_STATS["resolved"] += 1
     if summary is None:
         state.put(V0, (RET, target))
         accesses.append(Access(ins.pc, "jal", (RET, target), 0, args=args, call_target=target))
@@ -545,7 +563,7 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
     # nothing about what the caller's a0-a3 hold after the call — those are caller-saved and were
     # clobbered above. Writing them back fabricated argument values that then appeared at later call
     # sites in the same function (found when Ghidra boundaries changed which call sites are in a region).
-    lowered = resolve(summary["ret"], args, summaries)
+    lowered = resolve(summary["ret"], args, summaries, (), args_stk)
     state.put(V0, lowered)
     accesses.append(Access(ins.pc, "jal", lowered, 0, args=args, call_target=target))
 
@@ -667,6 +685,15 @@ def analyse(words, base, summaries=None, summary_out=None):
         raw = summary_out.get("rets", [])
         summary_out["ret"] = raw[0] if raw and len(set(raw)) == 1 else U
         summary_out.pop("rets", None)
+        # the stack arguments must be collected AFTER `ret` is known: a callee that only *returns* an
+        # incoming stack argument has no access whose base is that argument
+        stk = set(summary_out.get("stk", set()))
+        for a in accesses:
+            if a.base[0] == PARAMSTK:
+                stk.add(a.base[1])
+        if summary_out["ret"][0] == PARAMSTK:
+            stk.add(summary_out["ret"][1])
+        summary_out["stk"] = stk
         summary_out.setdefault("escapes", set())
     return accesses, attributed, len(extra)
 
@@ -684,7 +711,7 @@ def summarise(regions, rounds=5):
             out = {}
             analyse(words, start, summaries, out)
             new[start] = {"params": out.get("params", [U] * 4), "ret": out.get("ret", U),
-                          "calls": out.get("calls", [])}
+                          "calls": out.get("calls", []), "stk": out.get("stk", set())}
         if new == summaries:
             break
         summaries = new
@@ -789,6 +816,15 @@ def fixture_cases_layer2():
                   [(b_base, B)],
                   lambda summ, acc: all(x.target is None for x in acc)
                   and any(x.base[0] == RET for x in acc)))
+
+    # L9: a callee's incoming stack argument resolves to the caller's outgoing store
+    callee = [enc_lw(2, 0x10, SP), enc_jr(RA), enc_nop()]
+    caller = [enc_addiu(SP, SP, -32), enc_lui(8, 0x8011), enc_ori(8, 8, 0x5284),
+              enc_sw(8, 0x10, SP), enc_jal(a_base), enc_nop(), enc_lw(3, 0, 2),
+              enc_jr(RA), enc_nop()]
+    cases.append(("L9 an incoming stack argument resolves to the caller's outgoing store",
+                  [(a_base, callee), (b_base, caller)],
+                  lambda summ, acc: any(x.target == 0x80115284 for x in acc)))
 
     # L8: stack slots are keyed against the entry sp, so a frame adjustment does not lose them
     A = [enc_addiu(SP, SP, -32), enc_sw(4, 0x20, SP), enc_addiu(SP, SP, -16),
@@ -1191,6 +1227,9 @@ def run_layer2(args):
                   ", ".join(REGION_STATS["fallback_images"]) or "none"))
         h = SLOT_STATS["hit"]
         m = SLOT_STATS["miss_merge"] + SLOT_STATS["miss_never"] + SLOT_STATS["miss_unstable"]
+        print("stack arguments: %d asked for by a callee, %d supplied by the caller (%.1f%%)" % (
+            STK_STATS["asked"], STK_STATS["resolved"],
+            100.0 * STK_STATS["resolved"] / max(STK_STATS["asked"], 1)))
         print("frame slots: %d access(es), %d resolved (%.1f%%); missed: %d never stored in this region, "
               "%d killed by a merge, %d with an unstable frame" % (
                   h + m, h, 100.0 * h / max(h + m, 1), SLOT_STATS["miss_never"],
