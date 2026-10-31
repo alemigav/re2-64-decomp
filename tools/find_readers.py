@@ -48,9 +48,17 @@ def enclosing(words: list, base: int, idx: int, prologue_only: bool = True) -> i
 
 
 def scan(name: str, code: bytes, base: int, lo: int, hi: int) -> dict:
+    """Report accesses to the window, including the base-plus-register shape.
+
+    A first version resolved only `constructed base + immediate` and missed the very reader it
+    was written to find: `addu v0,s4,s3` where `s3 = 0x800eb264` and `s4 = s0 << 2`, so the
+    effective address is the window's own base *plus a register*. That shape is now reported
+    separately as `base+reg`, because a register offset can reach 4 bytes past a constructed base
+    and a byte-offset scan will never see it.
+    """
     n = len(code) // 4
     words = list(struct.unpack(f">{n}I", code[:n * 4]))
-    pend, hits, opaque = {}, [], 0
+    pend, hits, opaque, near = {}, [], 0, []
     for i, w in enumerate(words):
         op = w >> 26
         rs, rt, imm = (w >> 21) & 0x1F, (w >> 16) & 0x1F, w & 0xFFFF
@@ -58,6 +66,11 @@ def scan(name: str, code: bytes, base: int, lo: int, hi: int) -> dict:
         rd = (w >> 11) & 0x1F if op == 0 else rt
         if op in MEM_OPS:
             b = pend.get(rs)
+            alias = pend.get(("alias", rs))
+            if b is None and alias is not None and lo - 0x40 <= alias < hi + 0x40:
+                near.append(dict(pc=base + i * 4, op=MEM_OPS[op], base_const=alias,
+                                 function=enclosing(words, base, i),
+                                 note="base+register: a register offset may address the window"))
             if b is None:
                 if rs != 0:
                     opaque += 1
@@ -80,12 +93,18 @@ def scan(name: str, code: bytes, base: int, lo: int, hi: int) -> dict:
             val = pend[rs] + pend[rt]
         elif op == 0 and (w & 63) == 0x25 and rs in pend and rt in pend:
             val = pend[rs] | pend[rt]
+        # addu dst, X, Y where exactly one operand is a constructed constant: remember the
+        # constant so a later load through dst is flagged as base+register rather than lost
+        if op == 0 and (w & 63) == 0x21 and (rs in pend) != (rt in pend):
+            known = pend.get(rs if rs in pend else rt)
+            pend.pop(rd, None)
+            pend[("alias", rd)] = known
         if op not in MEM_OPS and op not in (0x04, 0x05, 0x06, 0x07, 0x01, 0x02, 0x03):
             if val is not None:
                 pend[rd] = val
             else:
                 pend.pop(rd, None)
-    return dict(image=name, hits=hits, opaque=opaque)
+    return dict(image=name, hits=hits, opaque=opaque, near=near)
 
 
 def main() -> None:
@@ -104,17 +123,22 @@ def main() -> None:
     for img in images:
         code = (Path("build/elfs") / f"{img['name']}.elf").read_bytes()[0x100:0x100 + img["size"]]
         r = scan(img["name"], code, img["base"], lo, hi)
-        if r["hits"]:
+        if r["hits"] or r["near"]:
             out.append(r)
             total += len(r["hits"])
 
-    print(f"{total} access(es) to {lo:#010x}..{hi:#010x} across {len(images)} images")
+    neartotal = sum(len(r["near"]) for r in out)
+    print(f"{total} direct access(es) to {lo:#010x}..{hi:#010x} across {len(images)} images; "
+          f"{neartotal} base+register access(es) within 0x40 of the window")
     for r in out:
+        for h in r.get("near", []):
+            print(f"  {r['image']:>14} {h['pc']:#010x}  {h['op']:<3} base+reg where base="
+                  f"{h['base_const']:#010x}  in {h['function']:#010x}   <- MAY reach the window")
         for h in r["hits"]:
             print(f"  {r['image']:>14} {h['pc']:#010x}  {h['op']:<3} {h['reg']:>4}, "
                   f"{h['imm']}({h['base']})  -> {h['addr']:#010x}   in {h['function']:#010x}")
     if not out:
-        print("  none — the address is never formed as a constructed base plus immediate")
+        print("  none — not even a constructed base within 0x40 of the window")
     hidden = sum(r["opaque"] for r in out)
     if hidden:
         print(f"\n{hidden} memory instruction(s) in those images use a base that came from memory; "

@@ -1,6 +1,10 @@
 # M89 — there is no bank-C caller
 
-**The answer to the question is a negative, and it is a clean one.** The pointer to the only map that
+**RETRACTED (M91): the reader exists at `0x80032a5c`.** The loader selects between the two maps
+with `s4 = s0 << 2` and reads `*(s4 + 0x800eb264)`, so `s0 != 0` reads pointer #2 — bank C's map.
+The four closure checks below were all true of the shape `find_readers.py` could see
+(constructed base + immediate) and blind to base + register. Read this note as the record of how
+that closure failed, not as the finding. The answer to the question is a negative, and it is a clean one.** The pointer to the only map that
 selects bank C's records is **never read by any code in the cartridge**.
 
 ## 1. The question, made precise

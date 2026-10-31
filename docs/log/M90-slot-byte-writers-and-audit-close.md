@@ -95,9 +95,11 @@ on its own arithmetic with no padding.
 ## 7. "Identical decompressed sizes", stated precisely
 
 What is pairwise equal between the banks is their **spans** (`vram_end − vram_start`): record 11 and
-record 39 both have 52 112, and so on down the list. Bank C is **itself compressed** — its `stored`
-sizes are 6–7× smaller than its spans — so it is *not* "bank B pre-decompressed", and the audit's
-reading of that phrase was the natural but wrong one.
+record 39 both have 52 112, and so on down the list. **RETRACTED (M91): bank C is not compressed at all.** At `H = 3.59` bits/byte no lossless code can
+exceed `8/H ≈ 2.2×`, so its stored bytes cannot be compressed output; the 6.8 figure is
+`span / stored`, i.e. destination range over input size. Bank C is low-entropy **structured** data,
+and nothing in the loader uses `span` as a length. The audit's reading of "identical decompressed
+sizes" was the natural one; mine was wrong.
 
 That also weakens (correctly) an earlier claim: the M82 compare test put bank C's **stored bytes**
 against bank B's **decompressed bytes**, so it compared compressed data with plaintext. Its negative
