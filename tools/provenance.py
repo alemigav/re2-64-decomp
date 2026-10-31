@@ -41,6 +41,7 @@ PARAM = "param"
 RET = "ret"
 LOAD = "load"
 PAROFF = "paroff"          # (param k << scale) + addend: parameter-derived, not a known address
+CBASE = "cbase"            # (base, bias): a KNOWN base plus an unknown offset — "reads 0x800eb204 + ?"
 UNK = "unk"
 
 LOADS = {0x23: "lw", 0x24: "lbu", 0x25: "lhu", 0x21: "lh", 0x37: "ld", 0x1F: "lwu"}
@@ -85,6 +86,9 @@ def fmt(v):
     if kind == PAROFF:
         k, scale, addend = a
         return "param(a%d)<<%d%+d" % (k, scale, addend)
+    if kind == CBASE:
+        base, bias = a
+        return "%08x%+d+?" % (base, bias)
     return kind
 
 
@@ -213,6 +217,12 @@ def transfer(state, ins, accesses):
             return state, None
         if f in (0x21, 0x2D):                                   # addu / daddu: also `move rd, rs`
             a, b = state.get(rs), state.get(rt)
+            if b == (CONST, 0):
+                state.put(rd, a)
+                return state, None
+            if a == (CONST, 0):
+                state.put(rd, b)
+                return state, None
             if a[0] == PAROFF and b[0] == CONST:
                 k, sc, add = a[1]
                 state.put(rd, (PAROFF, (k, sc, add + b[1])))
@@ -221,12 +231,34 @@ def transfer(state, ins, accesses):
                 k, sc, add = b[1]
                 state.put(rd, (PAROFF, (k, sc, add + a[1])))
                 return state, None
+            if a[0] == CONST and b[0] == PARAM:
+                state.put(rd, (PAROFF, (b[1], 0, a[1])))
+                return state, None
+            if b[0] == CONST and a[0] == PARAM:
+                state.put(rd, (PAROFF, (a[1], 0, b[1])))
+                return state, None
+            if a[0] == CONST and b[0] == UNK and a[1] >= 0x80000000:
+                state.put(rd, (CBASE, (a[1], 0)))
+                return state, None
+            if b[0] == CONST and a[0] == UNK and b[1] >= 0x80000000:
+                state.put(rd, (CBASE, (b[1], 0)))
+                return state, None
+            if a[0] == CBASE and b[0] == CONST:
+                base, bias = a[1]
+                state.put(rd, (CBASE, (base, bias + b[1])))
+                return state, None
+            if b[0] == CBASE and a[0] == CONST:
+                base, bias = b[1]
+                state.put(rd, (CBASE, (base, bias + a[1])))
+                return state, None
+            if a[0] == CBASE and b[0] == UNK:
+                state.put(rd, a)
+                return state, None
+            if b[0] == CBASE and a[0] == UNK:
+                state.put(rd, b)
+                return state, None
             if a[0] == CONST and b[0] == CONST:
                 state.put(rd, (CONST, (a[1] + b[1]) & 0xFFFFFFFF))
-            elif b == (CONST, 0):
-                state.put(rd, a)
-            elif a == (CONST, 0):
-                state.put(rd, b)
             else:
                 state.put(rd, U)
             return state, None
@@ -597,6 +629,14 @@ def fixture_cases_layer2():
                   [(a_base, A), (b_base, B)],
                   lambda summ, acc: all(x.target is None for x in acc)
                   and any(x.base[0] == RET for x in acc)))
+
+    # L6: a known base plus an unknown index keeps the base and claims nothing about the sum
+    A = [enc_lui(4, 0x800E), enc_ori(4, 4, 0xB204), enc_lw(5, 0, 6), enc_addu(2, 4, 5),
+         enc_lw(3, 0, 2), enc_jr(RA), enc_nop()]
+    cases.append(("L6 known base + unknown index is reported as base+?, not as unknown",
+                  [(a_base, A)],
+                  lambda summ, acc: any(x.base[0] == CBASE and x.base[1][0] == 0x800EB204 for x in acc)
+                  and all(x.target is None for x in acc)))
 
     # L5: a branch-likely delay slot is conditional, so its constant must not survive
     A = [enc_beql(4, 0, 1), enc_addiu(4, ZERO, 0x2E), enc_lw(3, 0, 4), enc_jr(RA), enc_nop()]
