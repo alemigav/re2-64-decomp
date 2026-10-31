@@ -20,9 +20,13 @@ same function M89 was looking at:
 0x80032a68  jal  0x80001180         ; cart_record(index)
 ```
 
-So the loader reads **both** maps, choosing between them with a 4-byte offset, and `s0` is 1 exactly
-when the slot argument is ≤ 16 (`s1 = max(slot,16)`, and `bne s1,16` sets `s0`). **Bank C's records
-are reachable.**
+So the loader reads **both** maps, choosing between them with a 4-byte offset.
+
+**Corrected (M92): the condition is `slot < 32`, not `slot <= 16`.** `a1 = slot - 16`;
+`sltiu v0,a1,16` tests `slot < 32`; `s1` becomes 16 when that holds, and `bne s1,16` then falls
+through, executing the delay slot `s0 = 0` and the next instruction `s0 = 1`. So `s0 = 1` iff
+`slot < 32`, and that selects pointer #2 — bank C's map. The direction of this branch was the fifth
+direction error in the project; see M92 §2 for the instruction-by-instruction derivation.
 
 **Why the closure failed.** `find_readers.py` resolved only `constructed base + immediate`. Here the
 address is `constructed base + register`: `s4` is unknown to the scan because it is `s0 << 2`, and `s0`
