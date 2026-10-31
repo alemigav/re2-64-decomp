@@ -43,8 +43,8 @@ That measurement also replaced every estimated number in the CI prose — locall
 
 | where | suites | cases |
 |---|---|---|
-| local, cartridge present | **21 / 21** | **227 / 227** |
-| runner, no cartridge | **10 / 21 run** | **125 / 227**, 11 suites / 102 cases SKIP |
+| local, cartridge present | **21 / 21** | **228 / 228** |
+| runner, no cartridge | **10 / 21 run** | **125 / 228**, 11 suites / 103 cases SKIP |
 
 Both figures are asserted by `tools/acceptance.py`'s expected counts, so the prose goes stale loudly. The
 job summary now prints the split too, because a green run that silently skipped 11 suites is a misleading
@@ -86,7 +86,7 @@ gate, so it is audited: `audit_gates.py` is now **20/20, 0 vacuous**.
 The 11 skipped suites are the ones that assert facts about RE2 itself: the corpus checks, the script VM,
 the model container, the T64 texture law, the exception path, the routine-index bounds (M173). They run
 wherever the cartridge exists — locally, and in the pre-commit hook — and M130's ROM-as-secret route stays
-deliberately unadopted. **A green CI run does not vouch for those 102 cases**, and the handover now says so
+deliberately unadopted. **A green CI run does not vouch for those 103 cases**, and the handover now says so
 with the measured numbers instead of the old `51 of 54`.
 
 ## 6. Addendum: the sanctioned edit path was dropping file modes
@@ -110,7 +110,7 @@ file that is not its text.*
 
 ```
 python3 tools/workflow_lint.py        # 11/11 — CI checking its own definition
-python3 tools/acceptance.py           # 21 suites, 227 cases
+python3 tools/acceptance.py           # 21 suites, 228 cases
 python3 tools/audit_gates.py          # 20/20, 0 vacuous
 sh tools/ci.sh                        # ci: ok
 ```

@@ -125,14 +125,14 @@ by three distinct stream-pointer pairs) all carry byte 3 = 31, so the path is in
 |---|---|---|
 | pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, **~60 s** with the cartridge (measured), blocks the commit |
 | local CI | `sh tools/ci.sh` | the same fixtures **plus** a tracked-artefact check, a fixture-size guard and the cartridge sha256 |
-| runner CI | `.github/workflows/acceptance.yml` | the same `ci.sh`: **10 of 21 suites, 125 of 227 cases**; the 11 cartridge suites report SKIP |
+| runner CI | `.github/workflows/acceptance.yml` | the same `ci.sh`: **10 of 21 suites, 125 of 228 cases**; the 11 cartridge suites report SKIP |
 
 **What CI cannot run is the important part**, and M174 replaced the old guess with a measurement: the
 eleven skipped suites are the ones that assert facts about RE2 itself — the corpus checks (`FUN_800327ec`
 at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
 exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
-each run's job summary lists them. **A green CI run does not vouch for those 102 cases.**
+each run's job summary lists them. **A green CI run does not vouch for those 103 cases.**
 
 A route to close that gap was built and verified in M130 — ROM as a base64 secret, unpack the 4 761 members
 (10 s), build the 36 images (1 s), boundaries from committed metadata — and then deliberately **not adopted**,
@@ -268,7 +268,7 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 21 suites, 227 cases
+python3 tools/acceptance.py         # 21 suites, 228 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
 python3 tools/audit_gates.py        # 20/20: every check must fail when its mechanism is disabled
 ```
