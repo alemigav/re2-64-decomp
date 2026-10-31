@@ -38,6 +38,7 @@ SUITES = [
     ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 6, False),
     ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 12, False),
     ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 18, False),
+    ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 8, False),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 

@@ -102,7 +102,11 @@ room overlay → BSS command buffer → *(0x800df92c) → context +0x145c → ct
 
 Measured conclusions:
 
-* command lengths are **per opcode** (18 distinct, `0x44` = 22 bytes);
+* command lengths are **per opcode**: **141 of 141** table entries advance the pointer themselves, in
+  **15 distinct** lengths from 1 to 40 (`0x44` and `0x4d` are the 22-byte family). The 18 reported at M99
+  counted idiom sites outside the table, including two backward jumps in loop code. Opcodes `0x0f` and `0x12`
+  are 2-byte **block** commands: they advance past a `[opcode][span]` header and run the inner block through
+  `FUN_8006e1bc`, the block runner that has no table entry of its own (`--lens` prints the whole map);
 * **no code writes a context individually**; the ten contexts are driven generically (`s0 += 0x174`);
 * the two 48-byte slot maps at `0x800eb204`/`0x800eb234` are **static `.rodata`**, identical in all five
   room dumps, and the entry for the only slots observed (31, 72) is **0 forever**;

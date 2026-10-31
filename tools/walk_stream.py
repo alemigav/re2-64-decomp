@@ -52,23 +52,27 @@ def load_stage2() -> tuple:
     return struct.unpack(f">{n}I", data[:n * 4])
 
 
-def handler_lengths(words) -> dict:
-    """opcode -> (handler address, command length) from the advance idiom inside each handler."""
+def handler_lengths(words, base=STAGE2_BASE, table=TABLE, entries=TABLE_ENTRIES) -> dict:
+    """opcode -> (handler address, command length), from the advance each handler performs itself.
+
+    Two forms of the same idiom, in order of preference. The **proven** form holds one register
+    throughout — `lw X,0x1c(base)` -> `addiu X,X,N` -> `sw X,0x1c(base)` — and covers 140 of the 141
+    entries. The **cross-register** form (`lw X` -> `addiu Y,X,N` -> `sw Y`) is a fallback for the one
+    that does not, opcode `0x4d`: its handler loads into `a1` at `0x8009bd90`, adds into `v0` fifty
+    instructions later at `0x8009be54`, and stores `v0`.
+
+    The order matters and was measured: running the relaxed form first changes **ten** handlers'
+    lengths, because a later, unrelated `addiu` from the same register matches. As a fallback it adds
+    exactly the one entry and leaves the other 140 byte-identical.
+    """
     n = len(words)
 
     def in_image(va):
-        return STAGE2_BASE <= va < STAGE2_BASE + 4 * n
+        return base <= va < base + 4 * n
 
-    out = {}
-    for i in range(TABLE_ENTRIES):
-        off = (TABLE + 4 * i - STAGE2_BASE) // 4
-        if not (0 <= off < n):
-            continue
-        handler = words[off]
-        if not in_image(handler):
-            continue
-        h = (handler - STAGE2_BASE) // 4
-        length, backwards = None, None
+    def proven(h):
+        """One register end to end. Returns the first positive advance, or None."""
+        length = None
         for j in range(h, min(h + 0x400, n - 6)):
             w = words[j]
             if (w >> 26) != 0x23 or (w & 0xFFFF) != CTX_CMDPTR:
@@ -86,26 +90,154 @@ def handler_lengths(words) -> dict:
                             and ((z >> 21) & 0x1F) == rbase and ((z >> 16) & 0x1F) == rt):
                         if N > 0 and length is None:
                             length = N
-                        elif N < 0 and backwards is None:
-                            backwards = N
                         break
                 break
+        return length
+
+    def cross(h, window=0x40):
+        """`lw X` -> `addiu Y,X,N` -> `sw Y`: only for handlers where `proven` found nothing.
+
+        The first `addiu` from the loaded register is the only candidate considered; if it does not
+        feed the store, this handler has no advance of this shape and the answer is None, not the next
+        load in the function.
+        """
+        for j in range(h, min(h + 0x400, n - 6)):
+            w = words[j]
+            if (w >> 26) != 0x23 or (w & 0xFFFF) != CTX_CMDPTR:
+                continue
+            loaded, rbase = (w >> 16) & 0x1F, (w >> 21) & 0x1F
+            for k in range(j + 1, min(j + 1 + window, n)):
+                y = words[k]
+                if (y >> 26) != 0x09 or ((y >> 21) & 0x1F) != loaded or not (y & 0xFFFF):
+                    continue
+                N = y & 0xFFFF
+                N = N - 0x10000 if N & 0x8000 else N
+                dst = (y >> 16) & 0x1F
+                for m in range(k + 1, min(k + 3, n)):
+                    z = words[m]
+                    if ((z >> 26) == 0x2B and (z & 0xFFFF) == CTX_CMDPTR
+                            and ((z >> 21) & 0x1F) == rbase and ((z >> 16) & 0x1F) == dst):
+                        return N if N > 0 else None
+                return None
+        return None
+
+    out = {}
+    for i in range(entries):
+        off = (table + 4 * i - base) // 4
+        if not (0 <= off < n):
+            continue
+        handler = words[off]
+        if not in_image(handler):
+            continue
+        h = (handler - base) // 4
+        length = proven(h)
+        if length is None:
+            length = cross(h)
         if length is not None:
             out[i] = (handler, length)
     return out
 
 
+def report_lengths(words) -> int:
+    """Print the whole opcode -> length map, and fail if it is incomplete or vacuous."""
+    lens = handler_lengths(words)
+    print(f"opcode -> command length, derived from {len(lens)} of {TABLE_ENTRIES} handlers")
+    for i in range(TABLE_ENTRIES):
+        if i not in lens:
+            print(f"  0x{i:02x}: no advance found")
+            continue
+        handler, length = lens[i]
+        print(f"  0x{i:02x}: {handler:#010x}  +{length}")
+    lengths = sorted(set(v[1] for v in lens.values()))
+    print(f"  distinct lengths: {len(lengths)} -> {lengths}")
+    missing = [i for i in range(TABLE_ENTRIES) if i not in lens]
+    if missing:
+        print(f"  FAIL {len(missing)} opcode(s) with no derived advance: {[hex(i) for i in missing]}")
+    if len(lengths) < 2:
+        print("  FAIL fewer than two distinct lengths: a scan that finds nothing also reports "
+              "no inconsistency, so a uniform answer here would be unearned")
+    ok = not missing and len(lengths) >= 2
+    print(f"  {len(lens)}/{TABLE_ENTRIES} opcodes mapped")
+    return 0 if ok else 1
+
+
+def self_test() -> int:
+    """A synthetic table with one handler per shape of the idiom — no cartridge needed."""
+    base, table, ctx = 0x80000000, 0x80001000, 16
+    words = [0] * 0x3000
+
+    def put(va, x):
+        words[(va - base) // 4] = x
+
+    def lw(rt, off, rs):    return (0x23 << 26) | (rs << 21) | (rt << 16) | (off & 0xFFFF)
+    def sw(rt, off, rs):    return (0x2B << 26) | (rs << 21) | (rt << 16) | (off & 0xFFFF)
+    def addiu(rt, rs, imm): return (0x09 << 26) | (rs << 21) | (rt << 16) | (imm & 0xFFFF)
+
+    proven_A, proven_B, cross_C, none_D = base + 0x2000, base + 0x2100, base + 0x2200, base + 0x2300
+    # A: the proven form, and also a later cross-register store that must NOT win.
+    put(proven_A, lw(2, 0x1C, ctx))
+    put(proven_A + 4, addiu(2, 2, 4))
+    put(proven_A + 8, sw(2, 0x1C, ctx))
+    put(proven_A + 4 * 99, addiu(3, 2, 999))
+    put(proven_A + 4 * 100, sw(3, 0x1C, ctx))
+    # B: the scene-slot length.
+    put(proven_B, lw(5, 0x1C, ctx))
+    put(proven_B + 4, addiu(5, 5, 22))
+    put(proven_B + 8, sw(5, 0x1C, ctx))
+    # C: load into a1, add into v0 fifty instructions later, store v0 — opcode 0x4d's shape.
+    put(cross_C, lw(5, 0x1C, ctx))
+    put(cross_C + 4 * 50, addiu(2, 5, 38))
+    put(cross_C + 4 * 51, sw(2, 0x1C, ctx))
+    # D: an `lw 0x1c` with no advance at all.
+    put(none_D, lw(6, 0x1C, ctx))
+    put(none_D + 4, sw(6, 0x14, ctx))
+    for i, h in enumerate((proven_A, proven_B, cross_C, none_D)):
+        put(table + 4 * i, h)
+
+    got = handler_lengths(words, base=base, table=table, entries=4)
+    cases = [
+        ("proven idiom",                     got.get(0, (None, None))[1], 4),
+        ("scene-slot opcode",                got.get(1, (None, None))[1], 22),
+        ("cross-register fallback",          got.get(2, (None, None))[1], 38),
+        ("handler with no advance is absent", 3 in got, False),
+        ("three of four entries mapped",      len(got), 3),
+        ("handler addresses are the table's", got.get(0, (None, None))[0], proven_A),
+        ("distinct lengths are non-vacuous",  len(set(v[1] for v in got.values())), 3),
+        ("proven wins over a later relaxed match", got.get(0, (None, None))[1] != 999, True),
+    ]
+    passed = 0
+    for label, actual, expected in cases:
+        ok = actual == expected
+        passed += ok
+        print(f"  {'PASS' if ok else 'FAIL'} {label}"
+              + ("" if ok else f": got {actual!r}, expected {expected!r}"))
+    print(f"{passed}/{len(cases)} walk_stream self-test case(s)")
+    return 0 if passed == len(cases) else 1
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("dump")
+    ap.add_argument("dump", nargs="?")
     ap.add_argument("--commands", type=int, default=64)
     ap.add_argument("--ctx", type=int, default=None, help="context index 0-9 (default: all with a pointer)")
+    ap.add_argument("--lens", action="store_true",
+                    help="print the full opcode -> command length map and exit")
+    ap.add_argument("--self-test", action="store_true",
+                    help="run the synthetic length-map fixture and exit")
     a = ap.parse_args()
 
+    if a.self_test:
+        sys.exit(self_test())
+
     words = load_stage2()
+    if a.lens:
+        sys.exit(report_lengths(words))
+    if not a.dump:
+        ap.error("a dump is required unless --lens or --self-test is given")
+
     lens = handler_lengths(words)
-    print(f"opcode -> command length, derived from {len(lens)} handlers with an advance idiom")
+    print(f"opcode -> command length, derived from {len(lens)} of {TABLE_ENTRIES} handlers")
     known = sorted(set(v[1] for v in lens.values()))
     print(f"  lengths in use: {known}")
     print(f"  opcode 0x{SLOT_OPCODE:02x} (the scene-slot command) -> "
