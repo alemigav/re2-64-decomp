@@ -1791,6 +1791,33 @@ cannot get that far without the exception above being explained.
 the whole comparable window, and its blocker is now Unicorn-side rather than mine. That is the opposite of where
 this investigation started.
 
+#### Unicorn's exception at 0x80000fb4 is a mode limitation, not my bug (M61)
+
+Bounded single-stepping (400 steps, two-fetch hook, no unmapped-memory hooks — those loop) caught it exactly:
+
+```
+step 138: unicorn exception at PC 0x80000fb4
+  last 5 PCs: 0x80000fa4 0x80000fa8 0x80000fac 0x80000fb0 0x80000fb4
+  0x80000fb4: 64212140
+```
+
+`0x64212140` has opcode **`0x19` = `DADDIU`** — a MIPS III / 64-bit instruction. **Unicorn was configured in
+`UC_MODE_MIPS32`, which does not implement it, so it raises `UC_ERR_EXCEPTION`; this harness implements `0x19`
+(added during the DADDU/SRLV round).** The VR4300 is a MIPS III core.
+
+**So: not my bug.** It is the reference emulator refusing a legitimate VR4300 instruction because I put it in
+32-bit mode — the third Unicorn-side configuration issue in this exercise, after KSEG0 PC translation (needing
+physical mirrors) and the missing hardware-window mirror.
+
+Re-running in `UC_MODE_MIPS64` as the fix: Unicorn then records **0 PCs** and raises immediately, so the 32-bit
+mappings do not line up under 64-bit address semantics either. That needs its own mapping work (canonical /
+sign-extended addresses) before the differential can be extended past 158 instructions.
+
+**Verdict of the differential as it stands:** on every instruction both emulators could execute — 158 addresses
+from `0x8004d344` through the dispatcher's `mtc0 $12` — an independent MIPS implementation agrees with this
+harness instruction-for-instruction, with zero divergence. The comparison has never yet produced evidence
+against my CPU; all three stopping points have been Unicorn configuration.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
