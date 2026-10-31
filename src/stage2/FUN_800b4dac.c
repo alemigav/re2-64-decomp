@@ -1,0 +1,13 @@
+/* FUN_800b4dac
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x800b4dac  body 0x800b4dac..0x800b4db7  size 15 B
+ * sha256  d7132c36a98bfb8485d3395cc7f5ea6dcf48ec5b109b48b2f54c2a5ba2c0586f
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
+ */
+void FUN_800b4dac(int param_1)
+
+{
+  *(undefined1 *)(param_1 + 0x11dd) = 4;
+  return;
+}

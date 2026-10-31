@@ -1,0 +1,30 @@
+/* FUN_8008c4b8
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x8008c4b8  body 0x8008c4b8..0x8008c51b  size 103 B
+ * sha256  1c062f8e6d10f288bca8b15202be72b5ee7bbc5aadbed0766b6c6508682cb5f7
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
+ */
+uint FUN_8008c4b8(int param_1)
+
+{
+  uint uVar1;
+  undefined4 *puVar2;
+  uint uVar3;
+  
+  uVar1 = 0;
+  uVar3 = 0;
+  puVar2 = &DAT_800c76b0;
+  while ((*(char *)(puVar2 + 0x8606) != '\0' || (uVar3 = uVar3 + 1, param_1 != 0))) {
+    uVar1 = uVar1 + 1;
+    puVar2 = puVar2 + 1;
+    if (DAT_800e8b38 <= uVar1) {
+      uVar1 = 0xffffffff;
+      if (param_1 != 0) {
+        uVar1 = uVar3;
+      }
+      return uVar1;
+    }
+  }
+  return uVar1;
+}

@@ -1,0 +1,51 @@
+/* FUN_800ae3d0
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x800ae3d0  body 0x800ae3d0..0x800ae4d7  size 267 B
+ * sha256  79f2e9bbc0de546e2eaebb3b39ab0fa54f64e0fa5ef613af284dfb7bf4ff9bc2
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
+ */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_800ae3d0(int param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  ushort *puVar3;
+  byte *pbVar4;
+  
+  iVar1 = (uint)*(byte *)(param_1 + 99) * 4;
+  pbVar4 = (byte *)(iVar1 + -0x7fea77c0);
+  if (*(short *)(&DAT_80158842 + iVar1) == 1) {
+    if (*pbVar4 == 0xff) {
+      *(undefined1 *)(*(byte *)(param_1 + 0x2e) + 0x80158940) = *(undefined1 *)(iVar1 + -0x7fea77bf)
+      ;
+    }
+    else {
+      *(undefined1 *)((uint)*pbVar4 * 4 + -0x7fea77bf) = *(undefined1 *)(iVar1 + -0x7fea77bf);
+    }
+    if (*(byte *)(iVar1 + -0x7fea77bf) == 0xff) {
+      if (*pbVar4 != 0xff) {
+        *(undefined2 *)(&DAT_80158842 + iVar1) = 0;
+        return;
+      }
+      iVar2 = (uint)*(byte *)(param_1 + 0x2e) * 4;
+      puVar3 = (ushort *)(iVar2 + -0x7fea7bc8);
+      if (*(ushort *)(iVar2 + -0x7fea7bc6) == 0xffff) {
+        _DAT_8015883a = *puVar3;
+      }
+      else {
+        *(ushort *)((uint)*(ushort *)(iVar2 + -0x7fea7bc6) * 4 + -0x7fea7bc8) = *puVar3;
+      }
+      if (*puVar3 != 0xffff) {
+        *(undefined2 *)((uint)*puVar3 * 4 + -0x7fea7bc6) = *(undefined2 *)(iVar2 + -0x7fea7bc6);
+      }
+    }
+    else {
+      *(byte *)((uint)*(byte *)(iVar1 + -0x7fea77bf) * 4 + -0x7fea77c0) = *pbVar4;
+    }
+    *(undefined2 *)(&DAT_80158842 + iVar1) = 0;
+  }
+  return;
+}

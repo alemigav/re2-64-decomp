@@ -1,0 +1,17 @@
+/* FUN_80040524
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x80040524  body 0x80040524..0x80040583  size 99 B
+ * sha256  32c6e427f06f268087c71f07edbe76a9dc83dd396a9322ba6b1964f4d9ac11ea
+ * callees 1 direct (1 in corpus)
+ * provider Ghidra 12.2
+ */
+void FUN_80040524(void)
+
+{
+  if ((*(ushort *)(DAT_800ebb94 + 0x12) & 3) == 0) {
+    FUN_80038a20(*(ushort *)(DAT_800ebb94 + 0x3a) | 0x1c020000,(int)*(short *)(DAT_800ebb94 + 0x22),
+                 &DAT_800e9028,DAT_800ebb94 + 0x2c);
+  }
+  *(short *)(DAT_800ebb94 + 0x12) = *(short *)(DAT_800ebb94 + 0x12) + 1;
+  return;
+}

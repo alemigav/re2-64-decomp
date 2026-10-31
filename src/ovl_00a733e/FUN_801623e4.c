@@ -1,0 +1,21 @@
+/* FUN_801623e4
+ * image   ovl_00a733e (ovl), base 0x80161cf0
+ * address 0x801623e4  body 0x801623e4..0x80162443  size 99 B
+ * sha256  24f8e159f8f856d2481b767ecdb10309155dc937e8f8759a149723e7ac8c2c72
+ * callees 1 direct (1 in corpus)
+ * provider Ghidra 12.2
+ */
+void FUN_801623e4(int param_1)
+
+{
+  ushort uVar1;
+  
+  uVar1 = *(short *)(param_1 + 500) - 0x200;
+  *(ushort *)(param_1 + 500) = uVar1;
+  if ((int)((uint)uVar1 << 0x10) < 0) {
+    *(undefined2 *)(param_1 + 500) = 0;
+  }
+  FUN_80167bd8(param_1,9,0,(int)*(short *)(param_1 + 500));
+  FUN_80167bd8(param_1,6,0,(int)*(short *)(param_1 + 500));
+  return;
+}

@@ -1,0 +1,19 @@
+/* FUN_80071618
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x80071618  body 0x80071618..0x8007166f  size 91 B
+ * sha256  ea649f2e74b7a51ce4d1f777b4125fed9f469d08051ce8e33b3aa6e9cae55bb3
+ * callees 2 direct (2 in corpus)
+ * provider Ghidra 12.2
+ */
+undefined4 FUN_80071618(int param_1)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = FUN_800717a0((int)*(char *)(*(int *)(param_1 + 0x1c) + 3),
+                       (int)*(char *)(*(int *)(param_1 + 0x1c) + 4));
+  FUN_80038e98(*(undefined1 *)(*(int *)(param_1 + 0x1c) + 1),
+               *(undefined1 *)(*(int *)(param_1 + 0x1c) + 2),uVar1);
+  *(int *)(param_1 + 0x1c) = *(int *)(param_1 + 0x1c) + 5;
+  return 1;
+}

@@ -1,0 +1,41 @@
+/* FUN_80039fc4
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x80039fc4  body 0x80039fc4..0x8003a127  size 359 B
+ * sha256  1695457b5fa03e284f549664582c770839e5f216a86721b6d0c527d760569303
+ * callees 2 direct (2 in corpus)
+ * provider Ghidra 12.2
+ */
+void FUN_80039fc4(void)
+
+{
+  char *pcVar1;
+  char cVar2;
+  int iVar3;
+  uint uVar4;
+  byte bVar5;
+  
+  FUN_80039ba8();
+  uVar4 = FUN_80033604();
+  *(short *)(DAT_800ebb94 + 4) =
+       *(short *)(DAT_800ebb94 + 4) +
+       ((short)(uVar4 & 0xff) + (short)((uVar4 & 0xff) / 5) * -5) * 0x200;
+  bVar5 = FUN_80033604();
+  *(byte *)(DAT_800ebb94 + 0x21) = *(char *)(DAT_800ebb94 + 0x21) + (bVar5 & 1);
+  *(undefined1 *)(DAT_800ebb94 + 0x20) =
+       *(undefined1 *)(*(int *)(DAT_800ebb94 + 0x70) + (uint)*(byte *)(DAT_800ebb94 + 0x21) * 8 + 2)
+  ;
+  iVar3 = DAT_800ebb94;
+  pcVar1 = (char *)(DAT_800ebb94 + 3);
+  cVar2 = *(char *)(DAT_800ebb94 + 0xb);
+  *(short *)(DAT_800ebb94 + 0x2c) =
+       *(short *)(DAT_800ebb94 + 0x2c) + (short)*(char *)(DAT_800ebb94 + 2);
+  *(short *)(iVar3 + 0x2e) = *(short *)(iVar3 + 0x2e) + (short)*pcVar1;
+  *(short *)(iVar3 + 0x30) = *(short *)(iVar3 + 0x30) + (short)cVar2;
+  uVar4 = FUN_80033604();
+  *(short *)(DAT_800ebb94 + 0x44) =
+       *(short *)(DAT_800ebb94 + 0x12) + (short)((uVar4 & 0xff) % 5) * 3;
+  uVar4 = FUN_80033604();
+  *(short *)(DAT_800ebb94 + 0x46) =
+       *(short *)(DAT_800ebb94 + 0x14) + (short)((uVar4 & 0xff) % 5) * 3;
+  return;
+}

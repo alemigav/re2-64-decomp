@@ -1,0 +1,24 @@
+/* FUN_800a8470
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x800a8470  body 0x800a8470..0x800a84e7  size 123 B
+ * sha256  96e4abb88efafb6fca36f4d941d17049530f302bd12f68c2f84ce21ea6d06528
+ * callees 1 direct (1 in corpus)
+ * provider Ghidra 12.2
+ */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_800a8470(void)
+
+{
+  if (_DAT_80147fa0 != 0) {
+    if (_DAT_80147fa4 == 0) {
+      trap(0x1c00);
+    }
+    if ((_DAT_80147fa4 == -1) && (_DAT_80147fa0 * 32000 == -0x80000000)) {
+      trap(0x1800);
+    }
+    _DAT_80147848 = (_DAT_80147fa0 * 32000) / _DAT_80147fa4 << 3;
+    FUN_800a6c04();
+  }
+  return;
+}

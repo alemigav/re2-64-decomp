@@ -1,0 +1,20 @@
+/* FUN_80039b5c
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x80039b5c  body 0x80039b5c..0x80039b9f  size 71 B
+ * sha256  c9137315e25f25f60723da7eeb509e93a9796f2cd16bcbf1cb4a25344db3aede
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
+ */
+void FUN_80039b5c(undefined1 param_1,undefined1 param_2,undefined1 param_3)
+
+{
+  DAT_801317b0 = (int)*(short *)(DAT_800ebb94 + 0x34);
+  DAT_801317b4 = (int)*(short *)(DAT_800ebb94 + 0x36);
+  DAT_80131783 = param_1;
+  DAT_80131784 = param_2;
+  DAT_80131785 = param_3;
+  DAT_80131782 = 0;
+  DAT_80131781 = 0x11;
+  DAT_801317b8 = (int)*(short *)(DAT_800ebb94 + 0x38);
+  return;
+}

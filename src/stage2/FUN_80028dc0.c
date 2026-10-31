@@ -1,0 +1,31 @@
+/* FUN_80028dc0
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x80028dc0  body 0x80028dc0..0x80028e83  size 199 B
+ * sha256  c454756861d583cc1926d7efe54dbfa81883b0e243707ff8c3361f61d19f8e57
+ * callees 1 direct (1 in corpus)
+ * provider Ghidra 12.2
+ */
+undefined4 FUN_80028dc0(int *param_1)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  
+  puVar2 = (undefined4 *)param_1[5];
+  iVar1 = func_0x80004cfc(puVar2[7],puVar2[8],0,&DAT_800b6b30);
+  if (iVar1 == 0) {
+    if (puVar2[9] != 0) {
+      *(undefined4 *)(*param_1 + 0x14) = 0x24;
+      (**(code **)*param_1)(param_1);
+    }
+    *(undefined4 *)(*param_1 + 0x14) = 0x6a;
+    (**(code **)(*param_1 + 4))(param_1,0xffffffff);
+    iVar1 = 2;
+    *(undefined1 *)puVar2[8] = 0xff;
+    *(undefined1 *)(puVar2[8] + 1) = 0xd9;
+  }
+  puVar2[1] = iVar1;
+  puVar2[9] = 0;
+  *puVar2 = puVar2[8];
+  return 1;
+}

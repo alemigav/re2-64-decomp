@@ -1,0 +1,48 @@
+/* FUN_800298a0
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x800298a0  body 0x800298a0..0x800299fb  size 351 B
+ * sha256  bb984c08f6001ea5539d20acd49ca5721b24ddcb44f1ee4c2a38cc7ce33fea41
+ * callees 1 direct (1 in corpus)
+ * provider Ghidra 12.2
+ */
+void FUN_800298a0(int *param_1)
+
+{
+  uint uVar1;
+  uint uVar2;
+  int iVar3;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
+  
+  iVar3 = param_1[0x5e];
+  iVar4 = 0;
+  if (0 < param_1[0x46]) {
+    piVar5 = param_1;
+    iVar6 = iVar3;
+    do {
+      uVar1 = *(uint *)(piVar5[0x47] + 0x14);
+      uVar2 = *(uint *)(piVar5[0x47] + 0x18);
+      if ((3 < uVar1) || (param_1[uVar1 + 0x23] == 0)) {
+        *(undefined4 *)(*param_1 + 0x14) = 0x2a;
+        *(uint *)(*param_1 + 0x18) = uVar1;
+        (**(code **)*param_1)(param_1);
+      }
+      if ((3 < uVar2) || (param_1[uVar2 + 0x27] == 0)) {
+        *(undefined4 *)(*param_1 + 0x14) = 0x2a;
+        *(uint *)(*param_1 + 0x18) = uVar2;
+        (**(code **)*param_1)(param_1);
+      }
+      piVar5 = piVar5 + 1;
+      iVar4 = iVar4 + 1;
+      FUN_800299fc(param_1,param_1[uVar1 + 0x23],iVar3 + uVar1 * 4 + 0x28);
+      FUN_800299fc(param_1,param_1[uVar2 + 0x27],iVar3 + uVar2 * 4 + 0x38);
+      *(undefined4 *)(iVar6 + 0x10) = 0;
+      iVar6 = iVar6 + 4;
+    } while (iVar4 < param_1[0x46]);
+  }
+  *(undefined4 *)(iVar3 + 0xc) = 0;
+  *(undefined4 *)(iVar3 + 0x24) = 0;
+  *(int *)(iVar3 + 0x20) = param_1[0x3a];
+  return;
+}

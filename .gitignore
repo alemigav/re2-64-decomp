@@ -6,11 +6,9 @@ rom/
 *.7z
 assets/
 build/
-build/
 *.o
 *.elf.tmp
 asm/
 bin/
-src/
 *.ld
 .venv/

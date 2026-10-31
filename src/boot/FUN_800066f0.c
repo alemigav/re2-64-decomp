@@ -1,0 +1,23 @@
+/* FUN_800066f0
+ * image   boot (boot), base 0x80000480
+ * address 0x800066f0  body 0x800066f0..0x80006777  size 139 B
+ * sha256  5266d88335842b7e4392f37de2cb68ba0a8b6d640fee9222fbddf6281a5e265d
+ * callees 5 direct (5 in corpus)
+ * provider Ghidra 12.2
+ */
+undefined4 FUN_800066f0(undefined4 param_1)
+
+{
+  undefined4 uVar1;
+  
+  FUN_8000cfb4();
+  if (DAT_80014fe0 != '\x01') {
+    FUN_80006814();
+    FUN_8000d1f0(1,&DAT_80014fa0);
+    osRecvMesg(param_1,0,1);
+  }
+  uVar1 = FUN_8000d1f0(0,&DAT_80014fa0);
+  DAT_80014fe0 = 1;
+  FUN_8000d020();
+  return uVar1;
+}

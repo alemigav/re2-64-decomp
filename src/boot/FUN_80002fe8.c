@@ -1,0 +1,30 @@
+/* FUN_80002fe8
+ * image   boot (boot), base 0x80000480
+ * address 0x80002fe8  body 0x80002fe8..0x8000305b  size 119 B
+ * sha256  01bd72f67469e194e8aa6ad06b75eadc6662218496a5b2767467812ef6fe7919
+ * callees 1 direct (1 in corpus)
+ * provider Ghidra 12.2
+ */
+undefined4 FUN_80002fe8(int param_1)
+
+{
+  int iVar1;
+  undefined1 auStack_10 [8];
+  
+  if (param_1 != 0) {
+    if (*(int *)(param_1 + 0x1c) == 0) {
+      return 0xfffffffe;
+    }
+    if (*(int *)(param_1 + 0x24) != 0) {
+      iVar1 = *(int *)(*(int *)(param_1 + 0x1c) + 0x14);
+      if (iVar1 != 0) {
+        FUN_800022bc(iVar1,param_1,auStack_10);
+      }
+      (**(code **)(param_1 + 0x24))(*(undefined4 *)(param_1 + 0x28),*(undefined4 *)(param_1 + 0x1c))
+      ;
+      *(undefined4 *)(param_1 + 0x1c) = 0;
+      return 0;
+    }
+  }
+  return 0xfffffffe;
+}
