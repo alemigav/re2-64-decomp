@@ -167,3 +167,35 @@ So the event dispatch is not a call — the handler ends by jumping through a re
 
 **Next probe (one run, one register):** log `r10` at `0x800009bc` on the PI interrupt, and the first few PCs
 after that jump.
+
+
+---
+
+## 9. `r10` = 0x80000c68 — the handler exits into the *dispatcher*, not an event notifier
+
+Logged on a PI interrupt:
+
+```
+at 0x800009bc:  r10 = 0x80000c68   (valid RAM)     a0=0x1b928
+jump lands at   0x80000c68 (via delay slot 0x800009c0)
+0x80000c68  lw   t1, 0x4(k0)
+0x80000c6c  lui  t2, 0x8001
+0x80000c70  lw   t2, 0x2948(t2)      t2 = __OSRunQueue
+0x80000c74  lw   t3, 0x4(t2)         t3 = node->priority
+0x80000c78  slt  , t1, t3            compare priorities
+0x80000c7c  beq  , zero, +0x7
+0x80000c9c  lui  t1, 0x8001
+0x80000ca0  addiu t1, t1, 0x2948     &__osRunQueue again
+```
+
+**The exception handler's exit is the thread dispatcher**, reached through `r10` — it reads `__osRunQueue`, compares
+priorities and selects. It is **not** the event notifier the N64 manual describes, and there is no `osSendMesg` on
+this path (consistent with the handler containing no calls at all).
+
+**So the expectation carried since M24 was wrong for this build.** Interrupts here do not post messages to
+`0x80139f10`; they **switch threads**, and whatever posting happens is done by the threads that get scheduled.
+That reframes the whole queue investigation: the "event dispatcher" arrow in the M24 diagram does not exist in
+RE2's handler, and the two application queues are fed by ordinary thread code, not by interrupt delivery.
+
+Nothing in the harness is at fault here — `r10` is correct, the jump target exists, and the dispatcher reads the
+run queue properly.
