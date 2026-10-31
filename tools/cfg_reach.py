@@ -137,7 +137,10 @@ def _reach_from(raw, start, res, generous_starts=None):
 
 
 ROOM_TABLE = 0x80131FA8       # DAT_80131fa8: room index -> file id (M145)
-ROOM_TABLE_MAX = 400
+# **256, not 400**: the index is read from a single byte (`*(byte *)(DAT_800dfb58 + 0xc)`) in 0x8009b27c,
+# so no entry past 255 can ever be selected — a provable bound. M156 used 400 and thereby read 138 entries of
+# neighbouring data as if they were ids, reporting 285 ids where there are 147.
+ROOM_TABLE_MAX = 256
 
 
 def room_script_ids():
