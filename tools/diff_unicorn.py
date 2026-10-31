@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-"""Lockstep differential of tools/mips_harness.py against Unicorn (QEMU TCG).
+"""RETIRED 2026-10-30 — kept for its host findings, not for continued use.
+
+Verdict when retired: across every instruction both implementations could execute
+(158 addresses from 0x8004d344 through the dispatcher's mtc0 $12) Unicorn agreed with
+this harness instruction-for-instruction, zero divergence. The comparison could not be
+extended because Unicorn's two modes fail complementarily — MIPS32 refuses the MIPS III
+instructions the VR4300 uses (DADDIU at 0x80000fb4), MIPS64 does not fetch at all. A
+real N64 emulator is needed for anything further, and that is a system-level install
+requiring user approval. Per user decision the differential is no longer used.
+
+Lockstep differential of tools/mips_harness.py against Unicorn (QEMU TCG).
 
 Unicorn is an independent MIPS32 implementation, which is the only way to ask
 "is my CPU still wrong?" without the self-built harness adjudicating itself.

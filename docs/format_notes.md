@@ -1854,6 +1854,26 @@ Recommendation: option 1 if the investigation continues, because the remaining q
 wrong on the 0x8000Bxxx path?") cannot be settled by a tool I configure myself, and 32-bit Unicorn has already
 demonstrated it cannot even reach that region.
 
+#### Decision: the differential is retired (M63)
+
+Accepted on the user's instruction. `tools/diff_unicorn.py` is marked **RETIRED** in place and kept only for the
+host findings it records (KSEG0/KSEG1 PC translation needing physical mirrors, the hardware-window mirror, the
+two-fetch single-step idiom, and the MIPS32-vs-MIPS64 dead end). It is not part of the workflow.
+
+**What it delivered before retirement:** zero divergence across the 158 instructions both implementations could
+execute — an independent MIPS implementation agreeing with this harness instruction-for-instruction from
+`0x8004d344` through the dispatcher's `mtc0 $12`. That is the strongest single statement the project owns about
+its own CPU.
+
+**What it could not deliver:** anything past instruction 158, hence nothing about the `0x8000Bxxx` cluster where
+thread 7's initialisation actually goes wrong. A real N64 emulator would be needed, which is a system-level
+install and a user decision; that decision is now "not now".
+
+**Consequence for the remaining question.** "Is my CPU still subtly wrong on the `0x8000Bxxx` path?" is now
+unanswerable with the current tooling, and is recorded as open rather than assumed in either direction. The
+honest position is that the CPU agrees with a reference wherever both could run, and that the region where
+thread 7 diverges has never been compared against anything.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
