@@ -154,6 +154,51 @@ def loader_kinds(rom, sample=40):
     return out
 
 
+# The model's texture grid: DAT_8010dbe0[type] -> an index into DAT_801275c0, whose descriptor is
+# [width][height][tile ids...]. FUN_800874d4 walks that grid and loads each distinct id with tag "T64".
+GRID_INDEX = 0x8010DBE0
+GRID_TABLE = 0x801275C0
+
+
+def grid_tiles(rom, types=11, cap=64):
+    """The distinct tile ids the model's grid descriptors reference, and what those blocks begin with."""
+    words = ws.load_stage2()
+    base = ws.STAGE2_BASE
+
+    def u16(va):
+        off = va - base
+        w = off // 4
+        if not (0 <= w < len(words)):
+            return None
+        return (words[w] >> 16) if off % 4 == 0 else (words[w] & 0xFFFF)
+
+    tiles = set()
+    for t in range(types):
+        idx = u16(GRID_INDEX + 2 * t)
+        if idx is None:
+            continue
+        w = u16(GRID_TABLE + 2 * idx) or 0
+        h = u16(GRID_TABLE + 2 * (idx + 1)) or 0
+        for k in range(min(w * h, cap)):
+            v = u16(GRID_TABLE + 2 * (idx + 2 + k))
+            if v:
+                tiles.add(v)
+    first = Counter()
+    for fid in tiles:
+        if not (0 <= fid < sp.ENTRY_COUNT):
+            continue
+        off, size = struct.unpack_from(">II", rom, sp.FILE_TABLE_ROM + sp.HEADER + 8 * fid)
+        if off == 0xFFFFFFFF or size == 0:
+            continue
+        try:
+            raw = zlib.decompress(rom[sp.FILE_TABLE_ROM + off:sp.FILE_TABLE_ROM + off + size])
+        except zlib.error:
+            continue
+        if raw:
+            first[raw[0]] += 1
+    return tiles, first
+
+
 def constants_in_code():
     """The two shared record constants: are they code immediates, or only data?"""
     words = ws.load_stage2()
@@ -191,6 +236,7 @@ def main() -> int:
     heads, records, gbi, units, alpha = gbi_test(blocks)
     const_in_code = constants_in_code()
     kinds = loader_kinds(ROM.read_bytes())
+    tiles, tile_first = grid_tiles(ROM.read_bytes())
     template_hits, template = unit_template(blocks)
     cases = [
         ("the family is found and is large", len(blocks) > 200),
@@ -220,6 +266,10 @@ def main() -> int:
          kinds["ITP"][1].get(MAGIC, 0) == 0),
         ("the EFF loader references a different kind entirely (no family blocks)",
          kinds["EFF"][1].get(MAGIC, 0) == 0),
+        # --- the tiles the model grid references, and what they are (M163)
+        ("the model's grid descriptors reference a substantial set of tiles", len(tiles) >= 20),
+        ("every one of those tile blocks begins with 0xBE (G_MOVEMEM): they are display lists",
+         bool(tile_first) and set(tile_first) == {0xBE}),
     ]
     passed = 0
     for label, ok in cases:
