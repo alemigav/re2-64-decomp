@@ -125,6 +125,17 @@ def main() -> None:
     ctxs = range(CTX_COUNT) if a.ctx is None else [a.ctx]
     pointers = []
     for i in ctxs:
+        base = CTX_BASE + i * CTX_STRIDE
+        # The dispatcher's pop path decrements `lbu 4(ctx + signed(ctx[2]))` — so the only place a
+        # per-context count could live is there. MEASURED: it reads 0xff in every context of both
+        # room dumps, i.e. it is a flag, not a remaining count. Recorded, not trusted as a bound.
+        rel = rd(base + 2, 1)[0]
+        rel = rel - 0x100 if rel & 0x80 else rel
+        counter_addr = base + rel + 4
+        try:
+            counter = rd(counter_addr, 1)[0]
+        except ValueError:
+            counter = None
         p = word(CTX_BASE + i * CTX_STRIDE + CTX_CMDPTR)
         desc = word(DESCRIPTOR)
         tags = []
@@ -132,13 +143,17 @@ def main() -> None:
             tags.append("ctx")
         if p == desc:
             tags.append("== descriptor")
-        print(f"  ctx{i}: ctx+0x1c = {p:#010x}  {tags if tags else '(not in RDRAM)'}")
+        print(f"  ctx{i}: ctx+0x1c = {p:#010x}  counter@{counter_addr:#010x} = "
+              f"{counter if counter is None else hex(counter)}  {tags if tags else '(not in RDRAM)'}")
         if tags:
             pointers.append((i, p))
     if not pointers:
         print("\nno context holds a live command pointer — this dump predates a room load")
         return
 
+    print("\nnote: the counter byte is a FLAG (0xff) in every context measured, so it cannot bound a "
+          "walk; the dispatcher's only numeric bound is `sltiu s1,10` — ten iterations per call. Walks "
+          "therefore run until the stream ends (first byte >= 141).")
     for ci, start in pointers:
         print(f"\n=== walking from ctx{ci} = {start:#010x} ===")
         p = start
