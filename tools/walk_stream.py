@@ -151,8 +151,13 @@ def main() -> None:
                 print(f"  [{k:2d}] {p:#010x}: outside the dump — stop")
                 break
             if op not in lens:
-                print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x} has no derived length — stop "
-                      f"(a wrong length here would desynchronise the walk)")
+                # Distinguish "the stream ended" from "the walk desynchronised": a real command's
+                # opcode is a table index (< 141). A byte at or above 141 cannot be a command, so the
+                # walk has left the command area — which is a bounded stream, not a wrong length.
+                kind = ("not a table index (>= 141) -> the stream ENDED here and the walk left "
+                        "the command area" if op >= TABLE_ENTRIES else
+                        "a table index with no derived advance -> a length is missing")
+                print(f"  [{k:2d}] {p:#010x}: opcode 0x{op:02x} — {kind}")
                 break
             handler, length = lens[op]
             cmd = rd(p, min(length, 64))
