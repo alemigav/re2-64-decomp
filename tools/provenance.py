@@ -592,10 +592,17 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
             ARG_STATS["deref"] += 1
             v = args[k]
             if v[0] == CONST:
-                # "can this constant be a pointer THIS BUILD uses?" — KSEG0 RDRAM (0x80...) or KSEG1
-                # cartridge (0xA0..0xBF). A physical-address (KUSEG, 0x0..0x7FFFFF) pointer would be a
-                # false positive here; the corpus uses KSEG vaddrs throughout, and that is checkable.
-                ok = in_rdram(v[1]) or 0xA0000000 <= v[1] <= 0xBFFFFFFF
+                # The meaningful question on this hardware is not "KSEG or KUSEG" but **mapped or not**:
+                # address 0 is the RDRAM mirror and reads fine, so a small integer is a *valid* N64
+                # address even though it is never a real pointer. Only a constant outside every mapped
+                # range is a genuine shape defect — that is the M92/M93 class (an out-of-cartridge
+                # dereference such as 0x0f564552).
+                w_ = v[1]
+                ok = (w_ <= 0x007FFFFF                       # RDRAM mirror (physical)
+                      or in_rdram(w_)                        # RDRAM KSEG0
+                      or 0x1FC00000 <= w_ <= 0x1FC007FF      # PIF ROM
+                      or 0xA0000000 <= w_ <= 0xBFFFFFFF      # cartridge KSEG1
+                      or 0xC0000000 <= w_ <= 0xDFFFFFFF)     # RDRAM uncached mirror
                 ARG_STATS["const_address" if ok else "const_implausible"] += 1
                 if not ok:
                     ARG_FINDINGS[(CURRENT_IMAGE["name"], ins.pc)] = {
@@ -633,7 +640,7 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
 
 
 def _walk(state, ins, s, e, accesses, tag_unreached=False, summaries=None, summary_out=None,
-          disc=None, lo=0, hi=0, stores_seen=None, classify=False):
+          disc=None, lo=0, hi=0, stores_seen=None, classify=False, succs=None):
     """Run one basic block, honouring MIPS delay slots. Returns the outgoing state."""
     cur = state.copy()
     found = []
@@ -659,6 +666,14 @@ def _walk(state, ins, s, e, accesses, tag_unreached=False, summaries=None, summa
                 cur = cur.merge(taken)
             else:
                 transfer(cur, ins[delay], found, stores_seen, classify)   # ordinary delay slot
+        if kind == "branch" and succs is not None:
+            # a branch whose two sides are both known constants has ONE feasible successor. Without
+            # this, a caller's value can never prune the callee's paths — which is exactly what the
+            # polymorphic argument sites need.
+            a, b = cur.get(ins[i].rs), cur.get(ins[i].rt)
+            if a[0] == CONST and b[0] == CONST:
+                taken = (a[1] == b[1]) if ins[i].op in (0x04, 0x14) else (a[1] != b[1])
+                succs.append((i + 1 + ins[i].simm) if taken else (i + 2))
         if kind == "call":
             _apply_call(cur, ins[i], found, summaries, summary_out)
         if kind == "return" and summary_out is not None:
@@ -675,12 +690,14 @@ def _walk(state, ins, s, e, accesses, tag_unreached=False, summaries=None, summa
     return cur
 
 
-def _fixpoint(ins, blocks, summaries, summary_out, disc, base, nwords):
+def _fixpoint(ins, blocks, summaries, summary_out, disc, base, nwords, seed=None):
     """Dataflow to a fixed point over one CFG. `disc` collects jump-table edges discovered on the way."""
     state_in = {s: None for s in blocks}
     entry = State()
     for k in range(4):                                       # a0-a3 NAMED here, resolved only by summaries
         entry.put(4 + k, (PARAM, k))
+    for r, v in (seed or {}).items():
+        entry.put(r, v)                                      # caller-supplied argument value
     if 0 in state_in:
         state_in[0] = entry
     lo, hi = base, base + 4 * nwords
@@ -691,9 +708,12 @@ def _fixpoint(ins, blocks, summaries, summary_out, disc, base, nwords):
         for s in sorted(blocks):
             if state_in[s] is None:
                 continue
+            succs = []
             out = _walk(state_in[s], ins, s, blocks[s]["end"], sink, False, summaries, summary_out,
-                        disc, lo, hi)
-            for t in blocks[s]["succ"]:
+                        disc, lo, hi, succs=succs)
+            for t in (succs or blocks[s]["succ"]):
+                if t not in state_in:                        # decided target outside this region
+                    continue
                 merged = out if state_in[t] is None else state_in[t].merge(out)
                 if state_in[t] is None or merged != state_in[t]:
                     state_in[t] = merged
@@ -701,7 +721,7 @@ def _fixpoint(ins, blocks, summaries, summary_out, disc, base, nwords):
     return state_in
 
 
-def analyse(words, base, summaries=None, summary_out=None):
+def analyse(words, base, summaries=None, summary_out=None, seed=None):
     """CFG and dataflow iterated together: a jump-table edge is only visible *after* the load resolves.
 
     Up to four rounds. Each round runs the dataflow, collects the entry points an indirect jump could reach
@@ -715,7 +735,7 @@ def analyse(words, base, summaries=None, summary_out=None):
     for _ in range(4):
         ins, blocks = build_cfg(words, base, extra)
         disc = {}
-        _fixpoint(ins, blocks, summaries, None, disc, base, len(words))     # summaries only on the last run
+        _fixpoint(ins, blocks, summaries, None, disc, base, len(words), seed)   # summaries only on the last run
         merged = dict(extra)
         for k, v in disc.items():
             merged[k] = set(merged.get(k, set())) | v
@@ -723,7 +743,7 @@ def analyse(words, base, summaries=None, summary_out=None):
             break
         extra = merged
     ins, blocks = build_cfg(words, base, extra)
-    state_in = _fixpoint(ins, blocks, summaries, summary_out, None, base, len(words))
+    state_in = _fixpoint(ins, blocks, summaries, summary_out, None, base, len(words), seed)
     lo, hi = base, base + 4 * len(words)
     accesses = []
     stores_seen = set()
@@ -889,11 +909,21 @@ def fixture_cases_layer2():
                   lambda summ, acc: all(x.target is None for x in acc)
                   and any(x.base[0] == RET for x in acc)))
 
+    # L12: path sensitivity clears a polymorphic site and keeps a genuinely unsafe one
+    callee = [enc_addiu(8, ZERO, 0x0A), enc_beq(4, 8, 2), enc_nop(),
+              enc_lw(3, 0, 4), enc_jr(RA), enc_nop()]
+    cases.append(("L12 an id-valued caller is cleared by path pruning, an unsafe one is not",
+                  [(a_base, callee)],
+                  lambda summ, acc, W=callee, S=a_base: (not deref_reachable(W, S, 0, 0x0A, summ))
+                  and deref_reachable(W, S, 0, 0x0B, summ)))
+
     # L11: a dereferenced register argument passed a constant that cannot be a pointer
     callee = [enc_lw(3, 0, 4), enc_jr(RA), enc_nop()]
-    bad = [enc_addiu(4, ZERO, 0x1234), enc_jal(a_base), enc_nop(), enc_jr(RA), enc_nop()]
+    # 0x0f564552 is the value M92/M93 found being inflated from: outside every mapped range, which is
+    # the only shape this hardware lets us condemn by constant alone.
+    bad = [enc_lui(4, 0x0F56), enc_ori(4, 4, 0x4552), enc_jal(a_base), enc_nop(), enc_jr(RA), enc_nop()]
     good = [enc_lui(4, 0x8011), enc_ori(4, 4, 0x5284), enc_jal(a_base), enc_nop(), enc_jr(RA), enc_nop()]
-    cases.append(("L11 a non-pointer constant passed where the callee dereferences is flagged, and only there",
+    cases.append(("L11 an out-of-map constant passed where the callee dereferences is flagged, and only there",
                   [(a_base, callee), (b_base, bad), (0x80300000, good)],
                   lambda summ, acc: _arg_case_ok()))
 
@@ -971,7 +1001,7 @@ def _stk_case_ok():
 def _arg_case_ok():
     """Exactly one finding, at the caller that passed 0x1234, and none for the valid pointer."""
     pcs = sorted(ARG_FINDINGS)
-    return [pc for _, pc in pcs] == [0x80101004] and ARG_FINDINGS[pcs[0]]["value"] == 0x1234
+    return [pc for _, pc in pcs] == [0x80101008] and ARG_FINDINGS[pcs[0]]["value"] == 0x0F564552
 
 
 def self_test2():
@@ -1188,6 +1218,17 @@ def run_images(target=None, window=0x10, census=False, out=None):
     return 0
 
 
+def deref_reachable(words, start, k, value, summaries):
+    """Is the callee's dereference of a_k still reachable when a_k is exactly `value`?
+
+    This is one level of context sensitivity: seed the callee with the caller's constant and let constant
+    branch pruning answer. A polymorphic callee that uses a_k as an id on one path and a pointer on
+    another will have its pointer path pruned away for the id-valued callers.
+    """
+    acc, _, _ = analyse(words, start, summaries, {}, seed={4 + k: (CONST, value)})
+    return any(a.base == (CONST, value) and not a.unreached for a in acc)
+
+
 def load_image_bytes():
     """Populate IMAGES with each image's real bytes — the census path was missing this, so every table it
     tried to walk came back `unresolvable` while `--region` resolved the same tables fine."""
@@ -1332,10 +1373,31 @@ def run_layer2(args):
         print("  %d passed a constant that IS a plausible address, %d passed a constant that cannot be one" % (
             ARG_STATS["const_address"], ARG_STATS["const_implausible"]))
         print("  %d derived (parameter/return/loaded), %d unknown" % (ARG_STATS["derived"], ARG_STATS["unknown"]))
-        print("\n%d flagged site(s):" % len(ARG_FINDINGS))
-        for (name, pc), f in sorted(ARG_FINDINGS.items())[:25]:
-            print("  %-10s %08x in %08x -> %08x   a%d = %08x" % (
-                name, pc, owner_map.get((name, pc), 0), f["target"], f["k"], f["value"]))
+        kept, cleared = [], []
+        for (name, pc), f in sorted(ARG_FINDINGS.items()):
+            # Resolve the callee: `boot` and `stage2` are resident and map disjoint address ranges, so
+            # a target inside them is unambiguous. Overlays share vaddrs, so fall back to the caller's
+            # own image first and only then to every candidate.
+            all_c = [(st, w, n) for st, w, n in regions if st <= f["target"] < st + 4 * len(w)]
+            resident = [c for c in all_c if c[2] in ("boot", "stage2")]
+            same = [c for c in all_c if c[2] == name]
+            chosen = resident or same or all_c
+            candidates = [(st, w) for st, w, n in chosen]
+            if not candidates:
+                kept.append((name, pc, f, "callee address maps to no region"))
+                continue
+            if any(deref_reachable(w, st, f["k"], f["value"], summaries) for st, w in candidates):
+                kept.append((name, pc, f, "deref still reachable in %s" % chosen[0][2]))
+            else:
+                cleared.append((name, pc, f))
+        print("\n%d flagged site(s): %d cleared by path pruning (the callee's pointer path is "
+              "unreachable for that value), %d kept" % (len(ARG_FINDINGS), len(cleared), len(kept)))
+        for name, pc, f, why in kept:
+            print("  KEPT    %-10s %08x in %08x -> %08x   a%d = %08x   (%s)" % (
+                name, pc, owner_map.get((name, pc), 0), f["target"], f["k"], f["value"], why))
+        for name, pc, f in cleared[:10]:
+            print("  cleared %-10s %08x -> %08x   a%d = %08x" % (
+                name, pc, f["target"], f["k"], f["value"]))
         if args.json:
             Path(args.json).parent.mkdir(parents=True, exist_ok=True)
             Path(args.json).write_text(json.dumps({"stats": ARG_STATS, "flagged": list(ARG_FINDINGS.values())},
