@@ -45,6 +45,8 @@ CBASE = "cbase"            # (base, bias): a KNOWN base plus an unknown offset â
 JTENT = "jtent"            # one entry of the jump table at this address: "the jump goes to the table at X"
 SPLOC = "spoff"            # a stack location: sp + bias, the frame address of a local
 PARAMSTK = "paramstk"      # an INCOMING stack argument: frame-relative bias >= 0, never stored here
+WIDTH = {"lb": 1, "lbu": 1, "lh": 2, "lhu": 2, "lw": 4, "lwu": 4, "ld": 8,
+         "sb": 1, "sh": 2, "sw": 4, "sd": 8}      # access width by mnemonic, for byte-granular presence
 TABLE_MAX = 512            # bound on entries walked out of one table
 TABLE_STATS = {"jtent": 0, "tables": 0, "in_region": 0, "cross": 0, "unresolved": 0}
 SLOT_STATS = {"hit": 0, "miss_merge": 0, "miss_never": 0, "miss_unstable": 0}
@@ -154,23 +156,25 @@ class Instr:
 class State:
     """Abstract state: register -> value, stack offset -> value, and why a register became unknown."""
 
-    __slots__ = ("reg", "slot", "cause", "spbias")
+    __slots__ = ("reg", "slot", "cause", "spbias", "written")
 
-    def __init__(self, reg=None, slot=None, cause=None, spbias=0):
+    def __init__(self, reg=None, slot=None, cause=None, spbias=0, written=None):
         self.reg = dict(reg or {})
         self.slot = dict(slot or {})
-        self.cause = dict(cause or {})       # register -> mnemonic of the instruction that made it unknown
+        self.cause = dict(cause or {})
+        # every frame byte a store has covered, so a halfword read inside a word store is not "missing"
+        self.written = set(written or ())       # register -> mnemonic of the instruction that made it unknown
         # stack slots are keyed relative to the **function entry** sp, not the current sp: a frame
         # adjustment (`addiu sp,sp,-N`) otherwise gives the same local two different keys and the
         # spilled value is lost.
         self.spbias = spbias
 
     def copy(self):
-        return State(self.reg, self.slot, self.cause, self.spbias)
+        return State(self.reg, self.slot, self.cause, self.spbias, self.written)
 
     def __eq__(self, other):
         return (self.reg == other.reg and self.slot == other.slot and self.cause == other.cause
-                and self.spbias == other.spbias)
+                and self.spbias == other.spbias and self.written == other.written)
 
     def merge(self, other):
         """A value survives a join only if both predecessors agree; otherwise it becomes unknown."""
@@ -185,6 +189,7 @@ class State:
             c = self.cause.get(k)
             out.cause[k] = c if c == other.cause.get(k) else "join"
         out.spbias = self.spbias if self.spbias == other.spbias else None    # unstable frame: no slot keys
+        out.written = self.written | other.written      # a byte written on any path is written
         return out
 
     def get(self, r):
@@ -399,6 +404,8 @@ def transfer(state, ins, accesses, stores_seen=None, classify=False):
             elif base[0] == SPLOC:
                 store_key = base[1] + ins.simm
         if store_key is not None:
+            width = WIDTH.get(ins.name, 4)
+            state.written.update(range(store_key, store_key + width))
             state.slot[store_key] = state.get(rt)                # spilled value is remembered
             if stores_seen is not None:
                 stores_seen.add(store_key)
@@ -551,7 +558,7 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
     summary = (summaries or {}).get(target)
     args_stk = {}
     if summary is not None:
-        for b in summary.get("stk", ()):             # callee's incoming stack args, caller's outgoing
+        for b in {b for b, _ in summary.get("stk", ())}:    # callee's incoming stack args, caller's outgoing
             STK_STATS["asked"] += 1
             key = (state.spbias or 0) + b
             if key in state.slot:
@@ -559,9 +566,10 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
                 STK_STATS["resolved"] += 1
     if CHECK_STK and summary is not None:
         missing = []
-        for b in summary.get("stk", ()):
+        for b, width in summary.get("stk", ()):
             key = (state.spbias or 0) + b
-            if key not in state.slot:
+            # byte-granular presence: a halfword read at +0x12 inside a word store at +0x10 is supplied
+            if not any(off in state.written for off in range(key, key + max(width, 1))):
                 # `interior` = the slot lies inside the caller's own frame, so a store was expected and is
                 # absent: a real defect signature. `forwarded` = the slot is above the caller's entry sp,
                 # i.e. the value arrives from the caller's own caller and is being passed straight through.
@@ -704,10 +712,13 @@ def analyse(words, base, summaries=None, summary_out=None):
         # incoming stack argument has no access whose base is that argument
         stk = set(summary_out.get("stk", set()))
         for a in accesses:
-            if a.base[0] == PARAMSTK:
-                stk.add(a.base[1])
+            # a `jal` pseudo-access carries the CALL'S RETURN value in `base`; counting it would report
+            # the inner callee's stack argument as this function's own. Only a memory access can show
+            # that THIS function reads an incoming stack argument.
+            if a.call_target is None and a.base[0] == PARAMSTK:
+                stk.add((a.base[1], WIDTH.get(a.name, 4)))
         if summary_out["ret"][0] == PARAMSTK:
-            stk.add(summary_out["ret"][1])
+            stk.add((summary_out["ret"][1], 4))         # returned straight through: width is not observed
         summary_out["stk"] = stk
         summary_out.setdefault("escapes", set())
     return accesses, attributed, len(extra)
