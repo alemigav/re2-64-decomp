@@ -223,6 +223,43 @@ def tile_headers(rom, tiles):
     return magics, seconds, shares
 
 
+def tile_formats(rom, tiles):
+    """The T64 law: 16-byte header, palette of `entries` RGBA5551 colours, then raw pixels.
+
+    fmt=1 is 4 bpp (two indices per byte, 16-entry palette) and fmt=2 is 8 bpp (one index per byte,
+    256-entry palette). So the data length is `entries*2 + w*h*bpp/8` with no compression anywhere.
+    """
+    law = small4 = big8 = both = 0
+    for fid in tiles:
+        if not (0 <= fid < sp.ENTRY_COUNT):
+            continue
+        off, size = struct.unpack_from(">II", rom, sp.FILE_TABLE_ROM + sp.HEADER + 8 * fid)
+        if off == 0xFFFFFFFF or size == 0:
+            continue
+        try:
+            raw = zlib.decompress(rom[sp.FILE_TABLE_ROM + off:sp.FILE_TABLE_ROM + off + size])
+        except zlib.error:
+            continue
+        if len(raw) < 16:
+            continue
+        _h1, w, h, fmt, entries, _z1, _z2 = struct.unpack_from(">7H", raw, 2)
+        pixels = raw[16 + entries * 2:]
+        if len(raw) - 16 == entries * 2 + (w * h if fmt == 2 else w * h):
+            law += 1
+        if fmt == 1:
+            both += 1
+            nib = []
+            for byte in pixels:
+                nib += [byte >> 4, byte & 0xF]
+            if nib and max(nib) <= 15 and len(nib) == 2 * w * h:
+                small4 += 1
+        elif fmt == 2:
+            both += 1
+            if pixels and max(pixels) <= 255 and len(pixels) == w * h:
+                big8 += 1
+    return law, small4, big8, both
+
+
 def constants_in_code():
     """The two shared record constants: are they code immediates, or only data?"""
     words = ws.load_stage2()
@@ -262,6 +299,7 @@ def main() -> int:
     kinds = loader_kinds(ROM.read_bytes())
     tiles, tile_first = grid_tiles(ROM.read_bytes())
     tile_magics, tile_second_words, gbi_share = tile_headers(ROM.read_bytes(), tiles)
+    t_law, t_4bpp, t_8bpp, t_total = tile_formats(ROM.read_bytes(), tiles)
     template_hits, template = unit_template(blocks)
     cases = [
         ("the family is found and is large", len(blocks) > 200),
@@ -304,6 +342,12 @@ def main() -> int:
         # data cannot, so the share discriminates where a G_ENDDL scan does not (0xB8/0xDF occur in pixel
         # data by chance — that scan was written first and failed, which is what prompted this one).
         ("no tile's GBI-opcode share approaches a display list's (all are below 0.95)", max(gbi_share) < 0.95),
+        # --- the T64 format itself (M165): no compression anywhere
+        ("every tile's data length is exactly palette*2 + w*h*bpp/8", t_law == t_total),
+        ("the 4 bpp tiles are consistent: nibbles <= 15 and exactly 2*w*h of them", t_4bpp >= 15),
+        ("the 8 bpp tiles are consistent: one byte per pixel, w*h of them", t_8bpp >= 30),
+        ("both texture formats are present, so the law is not one format's special case",
+         t_4bpp > 0 and t_8bpp > 0),
     ]
     passed = 0
     for label, ok in cases:
