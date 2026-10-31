@@ -147,7 +147,12 @@ The emulator is no longer on the critical path. What is left is cartridge-side, 
 * **the two unidentified blobs** — R3 `0xb73fb3`–`0x140ed84` and R4 `0x338fe1`–`0xb63106`, ~17.6 MB between
   them; R4's tail holds the **28-payload non-zlib container** at `0xb6248` (74 716 B, tiles exactly), whose
   codec is still unsolved (M82/M90);
-* **experiment B** — pointer provenance for the construction paths that `find_readers.py` cannot attribute;
+* **experiment B, step 2** — pointer provenance across functions. Step 1 (`tools/provenance.py`) is done and
+  10/10 on its fixture (M111): intra-procedural values over a real CFG, with the interprocedural layer fenced
+  off. It attributes **1 293 of 81 067** memory operands; the honest residue — 798 on parameters, 1 936 on
+  call returns, 1 617 on constants in unproven-reachable code, 57 585 in unreached blocks — is what step 2
+  eats. Its acceptance tests are fixed in advance: `FUN_800327ec`'s record fields attributed to
+  `cart_record()`'s return at `0x80071ec0`, and the bank-C map reader `0x80032a5c` found without being told;
 * **experiment C** — resource structures: what the 4 761 zlib members are, beyond the 36 code images and the
   verified media;
 * `README.md` still records M0–M7 while the project is at M110; `src/` is 3 292 functions at 61.3 % of code
