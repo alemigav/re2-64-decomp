@@ -2274,6 +2274,34 @@ harness (`E_VEC` holds IPL3 code, where ares holds `3c1a8000 275a06d0 03400008`)
 IPL3, not the boot variables, not the CPU, not the queues — it is that **thread 7's init never reaches the
 vector installer**, which is the same finding as M43 from the other direction.
 
+#### RESOLVED: the installer belongs to `main`, and every earlier run skipped it (M76)
+
+Static scan for callers of the installer function: **exactly one** —
+
+```
+jal 0x800070c0   <- 0x80000564, inside the function starting 0x80000520
+```
+
+and `0x80000520` is **`main`**. `0x80007140` is not a function start either (it is a `sw` mid-body), so the
+"installer" was always `func_800070C0`, reached from `main`.
+
+Every run in this project started at `FUN_8004D344` — which **`main` calls after installing the vectors**. So
+the harness has been entering the boot chain *below* the code that installs them. Running from the real entries
+instead:
+
+| entry | instructions | installer hits | `E_VEC` |
+|---|---|---|---|
+| **`main` `0x80000520`** | 600 000 | **32** (first at 21 079) | **`3c1a8000 275a06d0 03400008 00000000`** — matches ares |
+| **entrypoint `0x80000480`** | 600 000 | **32** (first at 42 057) | **same — matches ares** |
+
+**Both runs install the preamble set and agree with the real machine's RDRAM byte for byte.** No faults.
+
+**So the long-standing conclusion was an artefact of the starting point, not a property of the game or of the
+emulation.** "Thread 7 never installs the vectors" (M43, M73, M75) is superseded: thread 7 was never the owner.
+`main` installs them, and the harness simply never ran `main`. That also explains why Phase 1 "reached the
+installer inside thread 7" only after booting through paths the host had faked — the entry point, not the
+emulator, was doing the misleading.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
