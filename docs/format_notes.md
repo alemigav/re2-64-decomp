@@ -2147,6 +2147,37 @@ starts, they are still empty, so the resources they gate are not needed for the 
 the game's state agree — `validCount = 0` in both — and the difference was never a missing producer, it was a
 missing *thread graph*.
 
+#### Pivot: ares is now an oracle, not a debugging target (M72)
+
+No more GUI archaeology. The whole value of ares turned out to be **one button**, and it replaces the reference
+emulator differential, the breakpoint hunt, and the memory-editor navigation all at once.
+
+**The recipe (three clicks, ~2 seconds):**
+
+1. ares running the dump (`open -na /Applications/ares.app --args --system "Nintendo 64" <rom>`).
+2. **Tools → Memory Editor**; set the region pop-up to **RDRAM** (and pick the **Memory** row in the left list —
+   selecting any other row silently changes the address space, which is what made an earlier reading look like
+   zeros).
+3. Click **Export**. It writes **`<rom-basename>-rdram-<YYYYMMDD-HHMMSS>.bin`** — an **8 MB** image — next to the
+   ROM, i.e. `rom/` here (gitignored).
+
+`Goto` is not needed and does not work reliably: the field accepts text but `keystroke return` does not commit,
+the value must be an **offset** (0…0x7FFFFF) not a virtual address, and the field clips its display.
+
+**Why this is better than every approach retired today:**
+
+| approach | status |
+|---|---|
+| Unicorn instruction differential | retired (M63) — could not run past 158 instructions |
+| ares CPU breakpoint at `0x80007140` | impossible — release build has no debugger |
+| ares memory-editor navigation | unnecessary — `Export` gives the whole 8 MB |
+| **ares RDRAM dump vs harness RDRAM** | **the working differential**: memory-level, whole-machine, no breakpoints |
+
+**The comparison this enables** is stronger than the instruction-level one that failed: run the harness to a
+comparable point, dump its emulated RDRAM, and diff against an ares dump page by page. That exercises the CPU,
+the scheduler, the memory map and the loaders together, and the mismatch report points at the first divergent
+page rather than the first divergent instruction.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
