@@ -2032,6 +2032,34 @@ either one of those or the shifted copy at `0x80000104`.
 committed (truncation to 8 characters suggests the click landed mid-string); retry by clicking the field first,
 then typing, then Return.
 
+#### Driving ares' Goto field: text accepted, commit not triggerable (M69)
+
+Third attempt, with Screen Recording and Accessibility both granted. What works and what does not, precisely:
+
+| action | result |
+|---|---|
+| `set value of text field 1 to "0x8012bcf0"` | field shows a **truncated** value (`0x800001`) and reads back as `missing value` |
+| `click text field 1` then `keystroke "…"` | **nothing lands** in the field |
+| **double-click** the field then `keystroke "8012bcf0"` | **text lands correctly** (`8012bcf0` visible in the field) |
+| `keystroke return` after the text lands | **does not commit** — the hex view stays at `0x80000000` |
+| `perform action "AXConfirm"`, then `click button 2` (Refresh) | field cleared, no navigation |
+
+So the panel accepts typed text but exposes no confirmable action through accessibility, and Return does not move
+the view. Navigating from `0x80000000` to `0x8012bcf0` by scrolling is ~19 MB away and impractical.
+
+**Therefore the queue read is a manual step.** It is three seconds of work in the already-open panel:
+
+> **Memory Editor → region RDRAM → click the `Goto:` field, type `8012bcf0`, press Return** — then read the six
+> words at `0x8012bcf8`, and repeat with `8012bd30`.
+
+Reading guide: `mtqueue / fullqueue / validCount / first / msgCount / msg`. `validCount` non-zero, or a message in
+the buffer, means the game **does** post to that queue; `validCount = 0` with an empty buffer means it **does
+not**, and the two blocked threads are what the game genuinely does.
+
+Also recorded: ares exited three times during these attempts with **no crash report and no `.ips` file**, so it
+was quit rather than crashing; one earlier "empty desktop" capture was actually the emulator's dark scene, and I
+misread it as the app being gone until `pgrep` corrected me.
+
 **Both queue handoffs remain unexplained and separate**, exactly as argued: the only registered event queue
 is `0x80139f10`, while the blocked receives are at `0x8012bd30` (thread 9) and `0x8012bcf8` (thread 1).
 
