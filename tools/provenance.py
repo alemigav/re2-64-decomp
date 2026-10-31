@@ -43,6 +43,7 @@ LOAD = "load"
 PAROFF = "paroff"          # (param k << scale) + addend: parameter-derived, not a known address
 CBASE = "cbase"            # (base, bias): a KNOWN base plus an unknown offset — "reads 0x800eb204 + ?"
 JTENT = "jtent"            # one entry of the jump table at this address: "the jump goes to the table at X"
+SPLOC = "spoff"            # a stack location: sp + bias, the frame address of a local
 TABLE_MAX = 512            # bound on entries walked out of one table
 TABLE_STATS = {"jtent": 0, "tables": 0, "in_region": 0, "cross": 0, "unresolved": 0}
 UNK = "unk"
@@ -95,6 +96,8 @@ def fmt(v):
     if kind == CBASE:
         base, bias = a
         return "%08x%+d+?" % (base, bias)
+    if kind == SPLOC:
+        return "sp%+d" % a
     return kind
 
 
@@ -142,19 +145,20 @@ class Instr:
 
 
 class State:
-    """Abstract state: register -> value, stack offset -> value, plus the accesses seen so far."""
+    """Abstract state: register -> value, stack offset -> value, and why a register became unknown."""
 
-    __slots__ = ("reg", "slot")
+    __slots__ = ("reg", "slot", "cause")
 
-    def __init__(self, reg=None, slot=None):
+    def __init__(self, reg=None, slot=None, cause=None):
         self.reg = dict(reg or {})
         self.slot = dict(slot or {})
+        self.cause = dict(cause or {})       # register -> mnemonic of the instruction that made it unknown
 
     def copy(self):
-        return State(self.reg, self.slot)
+        return State(self.reg, self.slot, self.cause)
 
     def __eq__(self, other):
-        return self.reg == other.reg and self.slot == other.slot
+        return self.reg == other.reg and self.slot == other.slot and self.cause == other.cause
 
     def merge(self, other):
         """A value survives a join only if both predecessors agree; otherwise it becomes unknown."""
@@ -165,6 +169,9 @@ class State:
         for k in set(self.slot) | set(other.slot):
             a, b = self.slot.get(k, U), other.slot.get(k, U)
             out.slot[k] = a if a == b else U
+        for k in set(self.cause) | set(other.cause):
+            c = self.cause.get(k)
+            out.cause[k] = c if c == other.cause.get(k) else "join"
         return out
 
     def get(self, r):
@@ -172,19 +179,24 @@ class State:
             return (CONST, 0)                    # $zero is a constant, not an unknown
         return self.reg.get(r, U)
 
-    def put(self, r, v):
+    def put(self, r, v, why=None):
         if r == ZERO:
             return
         self.reg[r] = v
+        if v[0] == UNK:
+            self.cause[r] = why or "?"
+        else:
+            self.cause.pop(r, None)
 
 
 class Access:
-    __slots__ = ("pc", "name", "base", "offset", "target", "unreached", "args", "call_target")
+    __slots__ = ("pc", "name", "base", "offset", "target", "unreached", "args", "call_target", "cause")
 
-    def __init__(self, pc, name, base, offset, unreached=False, args=None, call_target=None):
+    def __init__(self, pc, name, base, offset, unreached=False, args=None, call_target=None, cause=None):
         self.pc, self.name, self.base, self.offset = pc, name, base, offset
         self.args = args
-        self.call_target = call_target      # which function a `jal` goes to, independent of what it returns
+        self.call_target = call_target
+        self.cause = cause                 # mnemonic that made the base register unknown      # which function a `jal` goes to, independent of what it returns
         self.target = base[1] + offset if base[0] == CONST else None
         self.unreached = unreached
 
@@ -199,9 +211,13 @@ class Access:
                                                                     fmt(self.base), self.offset)
 
 
+CURRENT = {"name": "?"}
+
+
 def transfer(state, ins, accesses):
     """Apply one instruction. Returns (state, kind) where kind is None | 'branch' | 'jump' | 'return'."""
     op, rs, rt, rd = ins.op, ins.rs, ins.rt, ins.rd
+    CURRENT["name"] = ins.name
     if op == 0x0F:                                              # lui
         state.put(rt, (CONST, (ins.imm << 16) & 0xFFFFFFFF))
         return state, None
@@ -215,8 +231,20 @@ def transfer(state, ins, accesses):
             state.put(rt, (CONST, (base[1] + ins.simm) & 0xFFFFFFFF))   # immediate is SIGNED
         elif rs == ZERO:
             state.put(rt, (CONST, ins.simm & 0xFFFFFFFF))              # li rt, imm
+        elif base[0] == PARAM:                       # a parameter plus a known bias is STILL parameter-
+            state.put(rt, (PAROFF, (base[1], 0, ins.simm)))            # derived: this was the single
+        elif base[0] == PAROFF:                                        # largest source of `unk` (63.9 %)
+            k, sc, add = base[1]
+            state.put(rt, (PAROFF, (k, sc, add + ins.simm)))
+        elif base[0] == CBASE:
+            b, bias = base[1]
+            state.put(rt, (CBASE, (b, bias + ins.simm)))
+        elif rs == SP:
+            state.put(rt, (SPLOC, ins.simm))                           # frame address of a local
+        elif base[0] == SPLOC:
+            state.put(rt, (SPLOC, base[1] + ins.simm))
         else:
-            state.put(rt, U)
+            state.put(rt, U, CURRENT["name"])
         return state, None
     if op == 0x00:
         f = ins.funct
@@ -267,7 +295,7 @@ def transfer(state, ins, accesses):
             if a[0] == CONST and b[0] == CONST:
                 state.put(rd, (CONST, (a[1] + b[1]) & 0xFFFFFFFF))
             else:
-                state.put(rd, U)
+                state.put(rd, U, CURRENT["name"])
             return state, None
         if f == 0x25:                                           # or
             a, b = state.get(rs), state.get(rt)
@@ -278,7 +306,7 @@ def transfer(state, ins, accesses):
             elif a == (CONST, 0):
                 state.put(rd, b)
             else:
-                state.put(rd, U)
+                state.put(rd, U, CURRENT["name"])
             return state, None
         if f == 0x23:                                           # subu
             a, b = state.get(rs), state.get(rt)
@@ -291,7 +319,7 @@ def transfer(state, ins, accesses):
             elif a[0] == PARAM and f == 0x00:
                 state.put(rd, (PAROFF, (a[1], sh, 0)))           # param << scale: parameter-derived
             else:
-                state.put(rd, U)
+                state.put(rd, U, CURRENT["name"])
             return state, None
         if f == 0x08:                                           # jr
             return state, "return" if rs == RA else "jump"
@@ -300,14 +328,20 @@ def transfer(state, ins, accesses):
                 state.put(r, U)
             state.put(V0, (RET, 0))
             return state, "call"
-        state.put(rd, U)
+        state.put(rd, U, CURRENT["name"])
         return state, None
     if op in LOADS:
         offset = ins.simm                                       # lw offsets are SIGN-EXTENDED
         base = state.get(rs)
-        accesses.append(Access(ins.pc, ins.name, base, offset))
-        if rs == SP and ins.simm in state.slot:                  # reload from a tracked stack slot
-            v = state.slot[ins.simm]
+        accesses.append(Access(ins.pc, ins.name, base, offset,
+                               cause=(state.cause.get(rs) if base[0] == UNK else None)))
+        slot_key = None
+        if rs == SP:
+            slot_key = ins.simm
+        elif base[0] == SPLOC:
+            slot_key = base[1] + ins.simm
+        if slot_key is not None and slot_key in state.slot:       # reload from a tracked stack slot
+            v = state.slot[slot_key]
         elif base[0] == CONST:
             v = (LOAD, base[1] + offset)                         # concrete address, unknown contents
             if FOLLOW_POINTERS and ins.name in ("lw", "lwu", "ld"):
@@ -324,9 +358,11 @@ def transfer(state, ins, accesses):
         return state, None
     if op in STORES:
         base = state.get(rs)
-        accesses.append(Access(ins.pc, ins.name, base, ins.simm))
-        if rs == SP:
-            state.slot[ins.simm] = state.get(rt)                 # spilled value is remembered
+        accesses.append(Access(ins.pc, ins.name, base, ins.simm,
+                               cause=(state.cause.get(rs) if base[0] == UNK else None)))
+        store_key = ins.simm if rs == SP else (base[1] + ins.simm if base[0] == SPLOC else None)
+        if store_key is not None:
+            state.slot[store_key] = state.get(rt)                # spilled value is remembered
         return state, None
     if op == 0x03:                                              # jal
         return state, "call"
@@ -334,7 +370,7 @@ def transfer(state, ins, accesses):
         return state, "jump"
     if op in BRANCHES:
         return state, "branch"
-    state.put(rt, U)                                            # anything unmodelled writes rt
+    state.put(rt, U, CURRENT["name"])                                            # anything unmodelled writes rt
     return state, None
 
 
@@ -448,7 +484,7 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
     for r in CALLER_SAVED:
         state.put(r, U)
     if ins.op != 0x03:                                   # jalr: target unknown
-        state.put(V0, U)
+        state.put(V0, U, CURRENT["name"])
         accesses.append(Access(ins.pc, "jalr", U, 0, args=args, call_target=0))
         return
     target = ((ins.pc + 4) & 0xF0000000) | (ins.imm << 2)
@@ -970,6 +1006,42 @@ def run_layer2(args):
         if not shown:
             print("  none resolved to a known region (the callee has no summary)")
 
+    if args.census:
+        tot = attr = 0
+        kinds = {}
+        for start, words, name in regions:
+            accesses, attributed, _ = analyse(words, start, summaries, {})
+            tot += len(accesses)
+            attr += attributed
+            for a in accesses:
+                if a.unreached:
+                    k = "unreached+const" if a.base[0] == CONST else "unreached"
+                else:
+                    k = a.base[0]
+                kinds[k] = kinds.get(k, 0) + 1
+        print("base kinds: " + ", ".join("%s %d" % (k, v) for k, v in sorted(kinds.items(), key=lambda x: -x[1])))
+        print("%d regions, %d memory operands, %d attributed (%.1f%%), %d unrecognised" % (
+            len(regions), tot, attr, 100.0 * attr / max(tot, 1), tot - attr))
+        if args.json:
+            Path(args.json).parent.mkdir(parents=True, exist_ok=True)
+            Path(args.json).write_text(json.dumps(
+                {"regions": len(regions), "operands": tot, "attributed": attr, "kinds": kinds}, indent=1) + "\n")
+            print("wrote %s" % args.json)
+        return 0
+
+    if args.unk_causes:
+        hist = {}
+        for start, words, name in regions:
+            accesses, _, _ = analyse(words, start, summaries, {})
+            for a in accesses:
+                if a.base[0] == UNK and not a.unreached:
+                    hist[a.cause or "?"] = hist.get(a.cause or "?", 0) + 1
+        total = sum(hist.values())
+        print("\n%d unknown-base operand(s), by the instruction that made the base unknown:" % total)
+        for k, v in sorted(hist.items(), key=lambda x: -x[1])[:20]:
+            print("  %-14s %6d  %5.1f%%" % (k, v, 100.0 * v / max(total, 1)))
+        return 0
+
     if args.param_accesses:
         lo = args.near - args.window2 if args.near is not None else 0
         hi = args.near + args.window2 if args.near is not None else 1 << 32
@@ -996,6 +1068,7 @@ def main():
     ap.add_argument("--region", type=lambda s: int(s, 0), help="dump every access in the function holding this address")
     ap.add_argument("--param-accesses", action="store_true", help="list parameter-derived accesses")
     ap.add_argument("--callers", type=lambda s: int(s, 0), help="call sites of a function, with caller-side arguments")
+    ap.add_argument("--unk-causes", action="store_true", help="histogram of why bases are unknown")
     ap.add_argument("--follow-pointers", action="store_true",
                     help="treat a word loaded from a constant address as a pointer when it lands in RDRAM")
     ap.add_argument("--near", type=lambda s: int(s, 0), help="with --region/--param-accesses: stay within this vaddr")
@@ -1009,7 +1082,8 @@ def main():
         return self_test()
     if args.self_test2:
         return self_test2()
-    if args.layer2 or args.region or args.param_accesses or args.callers is not None:
+    if args.layer2 or args.region or args.param_accesses or args.callers is not None \
+            or args.unk_causes or args.census:
         return run_layer2(args)
     return run_images(args.target, args.window, args.census or args.target is None, args.json)
 
