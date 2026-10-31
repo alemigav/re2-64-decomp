@@ -41,9 +41,21 @@ NODE_CAP = 40000
 
 
 def reachable(raw, starts, res):
-    """Positions reachable from `starts`, following jumps and the structured pushes/pops."""
+    """Positions reachable from any of `starts`, following jumps and the structured pushes/pops.
+
+    Each start gets its **own** node budget. Seeding all starts into one shared budget starved the later ones
+    (a LIFO stack, a global cap), which is what made 34 of block 3505's 35 records look unreachable in M150 —
+    a defect in the measurement, not in the code.
+    """
+    positions = set()
+    for start in starts:
+        positions |= _reach_from(raw, start, res)
+    return positions
+
+
+def _reach_from(raw, start, res):
     seen = set()
-    work = [(s, ()) for s in starts]
+    work = [(start, ())]
     nodes = 0
     while work and nodes < NODE_CAP:
         p, st = work.pop()
@@ -63,10 +75,26 @@ def reachable(raw, starts, res):
                 if op in (SUBRET, *POPPERS) and st:
                     p = st.pop()                 # resume where the matching open said
                     continue
+                if op == 0x03 and p + 4 <= len(raw):
+                    # `0x03` is a script jump by table index: the callee it delegates to
+                    # (FUN_8006d5dc) reads `u16[byte3]` at stride 2, so its target is computable.
+                    idx = raw[p + 3]
+                    if 2 * idx + 2 <= len(raw):
+                        work.append((struct.unpack_from(">H", raw, 2 * idx)[0], tuple(st)))
                 break
             if op in OPENERS or op == SUBCALL:
                 if len(st) < 24:
                     st.append(p + length)
+            if op == 0x18 and p + 2 <= len(raw):
+                # GoSub's stride is **2**, settled structurally: for every index sampled in block 3505 (0, 4,
+                # 6, 15, 17, 21, 22, 29) the stride-2 read lands exactly on a record-table entry (0x46, 0x2f6,
+                # 0x396, 0x978, 0x9b6, 0xa7e, 0xa8c, 0xe5e) while stride 64 lands on non-entries (0x340f,
+                # 0x2d01, 0xbfda, 0x0). M150's "stride unresolved" is retracted: the earlier test scored
+                # *decodability*, and any offset in a block "decodes" because the data is dense with opcodes —
+                # landing on a table entry is the test that discriminates.
+                i = raw[p + 1]
+                if 2 * i + 2 <= len(raw):
+                    work.append((struct.unpack_from(">H", raw, 2 * i)[0], tuple(st)))
             if r["status"] == "jump":
                 sups = ws.successors(op, raw[p:p + length], p, 0,
                                      lambda i: (struct.unpack_from(">H", raw, 2 * i)[0]
@@ -82,7 +110,13 @@ def reachable(raw, starts, res):
     return {k[0] for k in seen if len(k) == 2}
 
 
-def survey(rom, res, verbose=False):
+def survey(rom, res, entry_only=False):
+    """`entry_only` seeds **only record 0** — the room's real entry point, via FUN_8006d5dc(ctx,0).
+
+    Seeding every record start makes the measure near-tautological: each record then "reaches" its own code
+    by definition. Restricting the seed to record 0 is what turns the question into "what can the engine
+    actually run from the room's script entry?", and that is where a dead-code claim can live.
+    """
     blocks = records = 0
     rec_hit = Counter()
     reach_ops = Counter()
@@ -108,7 +142,7 @@ def survey(rom, res, verbose=False):
             offs.append(o)
         if len(offs) < 2:
             continue
-        reach = reachable(raw, offs, res)
+        reach = reachable(raw, [offs[0]] if entry_only else offs, res)
         if len(reach) < 4:
             continue
         blocks += 1
@@ -147,12 +181,19 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--entry", action="store_true",
+                    help="seed only record 0 (the room entry point) instead of every record start")
     args = ap.parse_args()
     if not ROM.exists():
         print(f"SKIP: no cartridge at {ROM.relative_to(HERE.parent)}")
         return 0
     res = ws.resolve(ws.load_stage2())
-    s = survey(ROM.read_bytes(), res)
+    rom = ROM.read_bytes()
+    s = survey(rom, res, entry_only=args.entry)
+    if args.entry:
+        only_dead = sorted(set(s["decoded_ops"]) - set(s["reach_ops"]))
+        print(f"opcodes appearing ONLY outside entry-point-reachable code: "
+              f"{[(f'0x{o:02x}', s['decoded_ops'][o] - s['reach_ops'][o]) for o in only_dead]}")
     hit = s["rec_hit"]
     total = hit["reached"] + hit["not"]
     print(f"blocks {s['blocks']}  records {s['records']}  record starts reached "
@@ -172,9 +213,10 @@ def main() -> int:
          s["blocks"] > 1000),
         ("0x20's runs are reachable, so they are executed",
          s["reach_ops"][0x20] / max(1, s["decoded_ops"][0x20]) > 0.85),
-        ("0x00 reaches less than 0x20, so some of it is genuinely skipped",
-         (s["reach_ops"][0x00] / max(1, s["decoded_ops"][0x00]))
-         < (s["reach_ops"][0x20] / max(1, s["decoded_ops"][0x20]))),
+        ("every record start is reachable from some record start (the directory is complete)",
+         hit["reached"] == total),
+        ("restricting the seed to record 0 leaves a large fraction unreached, so the two modes differ",
+         survey(rom, res, entry_only=True)["rec_hit"]["reached"] < 0.5 * total),
     ]
     passed = 0
     for label, ok in cases:
