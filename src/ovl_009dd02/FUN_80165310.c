@@ -1,7 +1,8 @@
 /* FUN_80165310
  * image   ovl_009dd02 (ovl), base 0x80161cf0
  * address 0x80165310  body 0x80165310..0x8016539f  size 147 B
- * sha256  7d98a99727960e7cc8bb53568146750fc04d7b7fe474fb258e599d22593542f9
+ * body sha256 497cc5cfaf2f3955de55620af973ad2082ffe37652cc1e6158ee68db99ce2303
+ * provider record sha256 7d98a99727960e7cc8bb53568146750fc04d7b7fe474fb258e599d22593542f9
  * callees 2 direct (2 in corpus)
  * provider Ghidra 12.2
  */

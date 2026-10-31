@@ -1,7 +1,8 @@
 /* thread9_entry
  * image   stage2 (stage2), base 0x80018a80
  * address 0x80088668  body 0x80088668..0x80088723  size 191 B
- * sha256  f7d519b6a7dfd48a923e26965909fcf83d5bbb117f561823296544161b492350
+ * body sha256 fb31d54cbcfe0f7bef4dde47250eccbe583878329b6fe15d2b4e90748fdaca3b
+ * provider record sha256 37e297df9113825827fca49c0288a8cb418694fde5ade1e0c713366a1d205378
  * callees 4 direct (4 in corpus)
  * provider Ghidra 12.2
  */

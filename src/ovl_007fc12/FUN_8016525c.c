@@ -1,7 +1,8 @@
 /* FUN_8016525c
  * image   ovl_007fc12 (ovl), base 0x80161cf0
  * address 0x8016525c  body 0x8016525c..0x80165363  size 267 B
- * sha256  118f53665048f0cf0293c0c02faa5eb3438c65f69d036d2c450ef6a8a6e7c96c
+ * body sha256 f4968630d35abd61c6954e821f5c20ea2e8dd573d3e2cf796e7bc017ce63fe5b
+ * provider record sha256 118f53665048f0cf0293c0c02faa5eb3438c65f69d036d2c450ef6a8a6e7c96c
  * callees 5 direct (5 in corpus)
  * provider Ghidra 12.2
  */

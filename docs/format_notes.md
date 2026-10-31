@@ -152,7 +152,10 @@ wrong boundary would corrupt the stream.
 container** starting at cart `0xb6248` (immediately after a 519-byte zlib member plus its padding
 byte): `02 23 18 00 00 03 ac …`, which inflates under no zlib variant. It carries **28 code
 payloads** whose decompressed sizes match 28 of the 29 records in staging bank C one-for-one.
-They are absent from the decompiled corpus until that container is decoded. This also means R3 and
+They are absent from the decompiled corpus until that container is decoded. Its geometry, its
+structural invariants and the codec families that have been *rejected* are in
+`docs/log/M82-r4-container-and-gaps.md`; their decoded content and their identity with bank C's
+size-paired zlib payloads are both **unestablished**, not assumed. This also means R3 and
 R4 are *not* interleaved with zlib members to the degree implied here: only 3 members overlap R3
 (1.45 %, all in its first 20 475 B) and 1 overlaps R4 (0.19 %).
 

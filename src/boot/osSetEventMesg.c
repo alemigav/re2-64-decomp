@@ -1,7 +1,8 @@
 /* osSetEventMesg
  * image   boot (boot), base 0x80000480
  * address 0x8000cc90  body 0x8000cc90..0x8000cceb  size 95 B
- * sha256  fbca8c1872f4c9cb12cec17728eba00bed25904f002c8fff2ce6f0bbed5e0513
+ * body sha256 614a293c2a4b67002a636e958a1b69bfd935279063334e58c588bbffb690381d
+ * provider record sha256 6d45ce09ad26dd512c78101351e9322ebb68939647278470d6ce9c08a14e7407
  * callees 2 direct (2 in corpus)
  * provider Ghidra 12.2
  */

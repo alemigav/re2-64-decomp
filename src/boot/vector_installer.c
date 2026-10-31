@@ -1,7 +1,8 @@
 /* vector_installer
  * image   boot (boot), base 0x80000480
  * address 0x800070c0  body 0x800070c0..0x800072cf  size 531 B
- * sha256  1b7837d5e2fecb4573d07df101dd2711291ea7e3447104eb42ac92054b00d992
+ * body sha256 5e733eff7e1914894c251edf9e9ba4f70968fd49cb1d729318bf00f6908abffd
+ * provider record sha256 db895f19b03616c1720c73f9562f9742e80b7c45db905d49f009725241fed5f6
  * callees 11 direct (11 in corpus)
  * provider Ghidra 12.2
  */

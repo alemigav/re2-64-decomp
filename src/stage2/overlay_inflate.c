@@ -1,7 +1,8 @@
 /* overlay_inflate
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8004cbf4  body 0x8004cbf4..0x8004cc5b  size 107 B
- * sha256  f5df2493e9799017c4f8dfba6d18212aefb3b852af00aa31ff708d1cd9298ef9
+ * body sha256 42cd5afa7d4773429ce15ad9c092ec7fd308db6d6deb06267a745c9714da3de8
+ * provider record sha256 dfb083d7d033e529fde0789e5d1ff41c08c074143504451ac671b5b0fba1a9e9
  * callees 3 direct (3 in corpus)
  * provider Ghidra 12.2
  */

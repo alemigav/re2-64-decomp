@@ -1,7 +1,8 @@
 /* pi_dma_programmer
  * image   boot (boot), base 0x80000480
  * address 0x80007c20  body 0x80007c20..0x80007deb  size 463 B
- * sha256  25b768ad9fd1689b6d0392f7c7f1918ae7c1e102b318355eb3a0c7583362ca81
+ * body sha256 cb177e966e97d24bd0e402542fc01ae7ec725aa976d343fcb0ebde4687c9ebe8
+ * provider record sha256 2245c873934b10e72af6d08c4a0b9e7eac69d6307812543f0edec38b81b830ba
  * callees 1 direct (1 in corpus)
  * provider Ghidra 12.2
  */

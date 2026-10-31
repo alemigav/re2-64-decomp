@@ -1,7 +1,8 @@
 /* FUN_80011390
  * image   boot (boot), base 0x80000480
  * address 0x80011390  body 0x80011390..0x800113d7  size 75 B
- * sha256  15cd151f8ba57f1d78067c754545dfd42d9b204fb01330b3f6ab34311c57c13c
+ * body sha256 d5b9316eab4ada543e84946fb6de60ceec2d80818642b49be69ccfa34d0c2bf0
+ * provider record sha256 5aca4b7d7b68224fc1339cf6bfc5bd389fffa3cb4059c931c8634243fd029d3d
  * callees 3 direct (3 in corpus)
  * provider Ghidra 12.2
  */

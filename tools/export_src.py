@@ -21,6 +21,7 @@ Usage:
   ./export_src.py --images build/elfs/images.json --decomp build/decomp --src src
 """
 import argparse
+import hashlib
 import json
 import re
 import struct
@@ -158,12 +159,17 @@ def main() -> None:
                               for t in ts if ranges and
                               any(int(r["start"], 16) <= s <= int(r["end"], 16) for r in ranges)})
             fname = SAFE.sub("_", name) + ".c"
+            # Hash the pseudocode we actually write. The provider's record hash covers its own
+            # `// limitations:` preamble, which names the seed file and its entry counts, so it
+            # changes whenever seeds change even when not one line of pseudocode moved.
+            body_sha = hashlib.sha256(body.encode()).hexdigest()
             span = (f"{ranges[0]['start']}..{ranges[-1]['end']}" if ranges else "no body")
             header = (f"/* {name}\n"
                       f" * image   {img['name']} ({img['role']}), base {img['base']:#010x}\n"
                       f" * address {e['address']}  body {span}  size "
                       f"{sum(int(r['end'], 16) - int(r['start'], 16) + 4 for r in ranges)} B\n"
-                      f" * sha256  {e.get('sha256', '-')}\n"
+                      f" * body sha256 {body_sha}\n"
+                      f" * provider record sha256 {e.get('sha256', '-')}\n"
                       f" * callees {len(callees)} direct "
                       f"({sum(1 for c in callees if c in corpus)} in corpus)\n"
                       f" * provider {provider['name']} {provider['version']}\n"
@@ -172,7 +178,8 @@ def main() -> None:
             functions.append(dict(address=e["address"], name=name, file=str(outdir / fname),
                                   size=sum(int(r["end"], 16) - int(r["start"], 16) + 4
                                            for r in ranges),
-                                  sha256=e.get("sha256", ""), status=e["status"],
+                                  sha256=body_sha, provider_sha256=e.get("sha256", ""),
+                                  status=e["status"],
                                   callees=[hex(c) for c in callees if c in corpus],
                                   callees_unknown=len([c for c in callees if c not in corpus])))
 

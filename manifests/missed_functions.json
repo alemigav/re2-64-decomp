@@ -1,0 +1,2668 @@
+{
+ "tool": "find_missed_functions.py",
+ "images": [
+  {
+   "name": "boot",
+   "unclaimed_runs": 26,
+   "candidates": 2,
+   "candidate_bytes": 8,
+   "code_runs": [
+    {
+     "start": "0x80009264",
+     "bytes": 524,
+     "prologues": [
+      "0x800092c0"
+     ],
+     "jal": 3,
+     "jr_ra": 1,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800113dc",
+     "bytes": 484,
+     "prologues": [
+      "0x80011518"
+     ],
+     "jal": 2,
+     "jr_ra": 3,
+     "verdict": "code"
+    }
+   ],
+   "runs": [
+    {
+     "start": "0x80000504",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800006dc",
+     "bytes": 1420,
+     "prologues": [],
+     "jal": 13,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80000cb8",
+     "bytes": 284,
+     "prologues": [],
+     "jal": 3,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80000dec",
+     "bytes": 284,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80001058",
+     "bytes": 296,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80001730",
+     "bytes": 2848,
+     "prologues": [],
+     "jal": 15,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80002478",
+     "bytes": 1708,
+     "prologues": [],
+     "jal": 4,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80003224",
+     "bytes": 1204,
+     "prologues": [],
+     "jal": 2,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000492c",
+     "bytes": 40,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80004a24",
+     "bytes": 44,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80004be8",
+     "bytes": 76,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80004c70",
+     "bytes": 44,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80004dd0",
+     "bytes": 200,
+     "prologues": [],
+     "jal": 8,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80004f84",
+     "bytes": 564,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 8,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80006f00",
+     "bytes": 96,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80009264",
+     "bytes": 524,
+     "prologues": [
+      "0x800092c0"
+     ],
+     "jal": 3,
+     "jr_ra": 1,
+     "verdict": "code"
+    },
+    {
+     "start": "0x8000c338",
+     "bytes": 236,
+     "prologues": [],
+     "jal": 5,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000c468",
+     "bytes": 40,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000cd44",
+     "bytes": 156,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000d3d0",
+     "bytes": 88,
+     "prologues": [
+      "0x8000d3dc"
+     ],
+     "jal": 1,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000de7c",
+     "bytes": 32,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000e20c",
+     "bytes": 324,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000e7d4",
+     "bytes": 28,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000f018",
+     "bytes": 56,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8000f61c",
+     "bytes": 1084,
+     "prologues": [],
+     "jal": 4,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800113dc",
+     "bytes": 484,
+     "prologues": [
+      "0x80011518"
+     ],
+     "jal": 2,
+     "jr_ra": 3,
+     "verdict": "code"
+    }
+   ]
+  },
+  {
+   "name": "stage2",
+   "unclaimed_runs": 158,
+   "candidates": 22,
+   "candidate_bytes": 88,
+   "code_runs": [
+    {
+     "start": "0x80018a8c",
+     "bytes": 47428,
+     "prologues": [
+      "0x800241e0"
+     ],
+     "jal": 255,
+     "jr_ra": 58,
+     "verdict": "code"
+    },
+    {
+     "start": "0x8009d014",
+     "bytes": 5488,
+     "prologues": [
+      "0x8009d020",
+      "0x8009d880",
+      "0x8009de58"
+     ],
+     "jal": 139,
+     "jr_ra": 3,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800a2010",
+     "bytes": 408,
+     "prologues": [
+      "0x800a2014"
+     ],
+     "jal": 3,
+     "jr_ra": 5,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800a23d0",
+     "bytes": 116,
+     "prologues": [
+      "0x800a23d4"
+     ],
+     "jal": 3,
+     "jr_ra": 3,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800a94a0",
+     "bytes": 160,
+     "prologues": [
+      "0x800a94a4"
+     ],
+     "jal": 3,
+     "jr_ra": 1,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800aa840",
+     "bytes": 256,
+     "prologues": [
+      "0x800aa844",
+      "0x800aa8e4"
+     ],
+     "jal": 4,
+     "jr_ra": 4,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800aad44",
+     "bytes": 356,
+     "prologues": [
+      "0x800aad48",
+      "0x800aade4"
+     ],
+     "jal": 5,
+     "jr_ra": 2,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b1bf0",
+     "bytes": 456,
+     "prologues": [
+      "0x800b1c78"
+     ],
+     "jal": 6,
+     "jr_ra": 3,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b1ec0",
+     "bytes": 256,
+     "prologues": [
+      "0x800b1ec4"
+     ],
+     "jal": 4,
+     "jr_ra": 1,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b2148",
+     "bytes": 96,
+     "prologues": [
+      "0x800b214c"
+     ],
+     "jal": 3,
+     "jr_ra": 1,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b239c",
+     "bytes": 396,
+     "prologues": [
+      "0x800b23a0",
+      "0x800b2404",
+      "0x800b2468",
+      "0x800b24cc"
+     ],
+     "jal": 12,
+     "jr_ra": 4,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b2590",
+     "bytes": 168,
+     "prologues": [
+      "0x800b2594"
+     ],
+     "jal": 4,
+     "jr_ra": 2,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b26c0",
+     "bytes": 3968,
+     "prologues": [
+      "0x800b26c4"
+     ],
+     "jal": 46,
+     "jr_ra": 14,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b3a6c",
+     "bytes": 880,
+     "prologues": [
+      "0x800b3a70",
+      "0x800b3ba4"
+     ],
+     "jal": 10,
+     "jr_ra": 2,
+     "verdict": "code"
+    }
+   ],
+   "runs": [
+    {
+     "start": "0x80018a8c",
+     "bytes": 47428,
+     "prologues": [
+      "0x800241e0"
+     ],
+     "jal": 255,
+     "jr_ra": 58,
+     "verdict": "code"
+    },
+    {
+     "start": "0x80025e94",
+     "bytes": 92,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80026a9c",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80028dac",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8002935c",
+     "bytes": 52,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 6,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8002de10",
+     "bytes": 260,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8002e7c4",
+     "bytes": 68,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 8,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8002e870",
+     "bytes": 32,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8002fbc0",
+     "bytes": 64,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80030f7c",
+     "bytes": 40,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80031458",
+     "bytes": 1480,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80031ae0",
+     "bytes": 152,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80032480",
+     "bytes": 876,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800341f0",
+     "bytes": 144,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80036b30",
+     "bytes": 84,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80036c48",
+     "bytes": 32,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80036ea4",
+     "bytes": 192,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80037314",
+     "bytes": 108,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80038f80",
+     "bytes": 112,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800390bc",
+     "bytes": 364,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 5,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80039f0c",
+     "bytes": 40,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003a57c",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003aefc",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003b644",
+     "bytes": 40,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003bfb8",
+     "bytes": 16,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003c118",
+     "bytes": 112,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003c3c4",
+     "bytes": 84,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003d490",
+     "bytes": 208,
+     "prologues": [
+      "0x8003d4a0"
+     ],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003dae0",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003dd90",
+     "bytes": 52,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8003ecbc",
+     "bytes": 80,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8004087c",
+     "bytes": 68,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 7,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80040e0c",
+     "bytes": 76,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80041fc0",
+     "bytes": 32,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800421c4",
+     "bytes": 168,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800424a0",
+     "bytes": 28,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800426c8",
+     "bytes": 164,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8004277c",
+     "bytes": 168,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80042834",
+     "bytes": 172,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80043378",
+     "bytes": 32,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80043440",
+     "bytes": 32,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80047918",
+     "bytes": 52,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80047988",
+     "bytes": 52,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80047fe8",
+     "bytes": 120,
+     "prologues": [
+      "0x80047fe8"
+     ],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8004810c",
+     "bytes": 392,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80048790",
+     "bytes": 688,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80048bb0",
+     "bytes": 480,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80049a88",
+     "bytes": 268,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80049dd4",
+     "bytes": 548,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8004d324",
+     "bytes": 32,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8004f8d0",
+     "bytes": 236,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80050f3c",
+     "bytes": 404,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80051108",
+     "bytes": 56,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80053654",
+     "bytes": 300,
+     "prologues": [],
+     "jal": 8,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80054214",
+     "bytes": 1736,
+     "prologues": [],
+     "jal": 39,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80054aa0",
+     "bytes": 1112,
+     "prologues": [],
+     "jal": 19,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8005a76c",
+     "bytes": 908,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 5,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8005da80",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006a430",
+     "bytes": 160,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006a884",
+     "bytes": 112,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 6,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006b290",
+     "bytes": 212,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006b9c0",
+     "bytes": 48,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006bea4",
+     "bytes": 24,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006c548",
+     "bytes": 184,
+     "prologues": [],
+     "jal": 2,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006d0b0",
+     "bytes": 80,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006db04",
+     "bytes": 148,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 5,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006dbf8",
+     "bytes": 1004,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 13,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006e0a0",
+     "bytes": 152,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006e274",
+     "bytes": 704,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 9,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006e578",
+     "bytes": 548,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 14,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006ec5c",
+     "bytes": 100,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006edb4",
+     "bytes": 112,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006ee94",
+     "bytes": 428,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006f330",
+     "bytes": 132,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006f744",
+     "bytes": 364,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006faf8",
+     "bytes": 356,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8006fd34",
+     "bytes": 368,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 5,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800712ec",
+     "bytes": 84,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80071954",
+     "bytes": 488,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80071b98",
+     "bytes": 636,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 6,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800722d0",
+     "bytes": 140,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800725b0",
+     "bytes": 44,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80072730",
+     "bytes": 76,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800727b4",
+     "bytes": 196,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 8,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80072c40",
+     "bytes": 196,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80072de0",
+     "bytes": 568,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 5,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007305c",
+     "bytes": 164,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80073174",
+     "bytes": 828,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 7,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80073568",
+     "bytes": 40,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80073ac8",
+     "bytes": 44,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80073e3c",
+     "bytes": 236,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80073fb8",
+     "bytes": 344,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80074234",
+     "bytes": 64,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800745cc",
+     "bytes": 68,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800748c8",
+     "bytes": 692,
+     "prologues": [],
+     "jal": 7,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800765a8",
+     "bytes": 56,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80079564",
+     "bytes": 72,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80079ea0",
+     "bytes": 116,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007a364",
+     "bytes": 124,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007a514",
+     "bytes": 56,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007a5f0",
+     "bytes": 192,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007a750",
+     "bytes": 148,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007c3e4",
+     "bytes": 196,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007c5b8",
+     "bytes": 364,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007cb78",
+     "bytes": 372,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007dc80",
+     "bytes": 192,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8007eccc",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80081738",
+     "bytes": 28,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800818cc",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800819a4",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80082228",
+     "bytes": 52,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800823b4",
+     "bytes": 44,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80082898",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80083ad0",
+     "bytes": 44,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 5,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80088370",
+     "bytes": 24,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008849c",
+     "bytes": 172,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80088728",
+     "bytes": 60,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800896c4",
+     "bytes": 108,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008aef0",
+     "bytes": 96,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008af60",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008bb14",
+     "bytes": 652,
+     "prologues": [],
+     "jal": 16,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008d8f4",
+     "bytes": 1480,
+     "prologues": [],
+     "jal": 20,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008dfa8",
+     "bytes": 704,
+     "prologues": [],
+     "jal": 4,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008e310",
+     "bytes": 3444,
+     "prologues": [],
+     "jal": 46,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008f11c",
+     "bytes": 784,
+     "prologues": [],
+     "jal": 7,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8008f4c4",
+     "bytes": 4148,
+     "prologues": [],
+     "jal": 44,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8009075c",
+     "bytes": 956,
+     "prologues": [],
+     "jal": 13,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80092a7c",
+     "bytes": 1932,
+     "prologues": [],
+     "jal": 19,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80094e00",
+     "bytes": 1132,
+     "prologues": [],
+     "jal": 9,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8009567c",
+     "bytes": 1276,
+     "prologues": [],
+     "jal": 10,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80099a78",
+     "bytes": 692,
+     "prologues": [],
+     "jal": 16,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80099e30",
+     "bytes": 192,
+     "prologues": [],
+     "jal": 3,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8009b1c0",
+     "bytes": 92,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8009c290",
+     "bytes": 224,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8009d014",
+     "bytes": 5488,
+     "prologues": [
+      "0x8009d020",
+      "0x8009d880",
+      "0x8009de58"
+     ],
+     "jal": 139,
+     "jr_ra": 3,
+     "verdict": "code"
+    },
+    {
+     "start": "0x8009f654",
+     "bytes": 448,
+     "prologues": [],
+     "jal": 4,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800a2010",
+     "bytes": 408,
+     "prologues": [
+      "0x800a2014"
+     ],
+     "jal": 3,
+     "jr_ra": 5,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800a2290",
+     "bytes": 140,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800a23d0",
+     "bytes": 116,
+     "prologues": [
+      "0x800a23d4"
+     ],
+     "jal": 3,
+     "jr_ra": 3,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800a2494",
+     "bytes": 204,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800a5b80",
+     "bytes": 36,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800a5d94",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800a94a0",
+     "bytes": 160,
+     "prologues": [
+      "0x800a94a4"
+     ],
+     "jal": 3,
+     "jr_ra": 1,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800aa840",
+     "bytes": 256,
+     "prologues": [
+      "0x800aa844",
+      "0x800aa8e4"
+     ],
+     "jal": 4,
+     "jr_ra": 4,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800aad44",
+     "bytes": 356,
+     "prologues": [
+      "0x800aad48",
+      "0x800aade4"
+     ],
+     "jal": 5,
+     "jr_ra": 2,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800ab7ac",
+     "bytes": 52,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800ae148",
+     "bytes": 88,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 5,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800b1bf0",
+     "bytes": 456,
+     "prologues": [
+      "0x800b1c78"
+     ],
+     "jal": 6,
+     "jr_ra": 3,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b1ec0",
+     "bytes": 256,
+     "prologues": [
+      "0x800b1ec4"
+     ],
+     "jal": 4,
+     "jr_ra": 1,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b2148",
+     "bytes": 96,
+     "prologues": [
+      "0x800b214c"
+     ],
+     "jal": 3,
+     "jr_ra": 1,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b21f4",
+     "bytes": 164,
+     "prologues": [
+      "0x800b21f8"
+     ],
+     "jal": 2,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800b239c",
+     "bytes": 396,
+     "prologues": [
+      "0x800b23a0",
+      "0x800b2404",
+      "0x800b2468",
+      "0x800b24cc"
+     ],
+     "jal": 12,
+     "jr_ra": 4,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b2590",
+     "bytes": 168,
+     "prologues": [
+      "0x800b2594"
+     ],
+     "jal": 4,
+     "jr_ra": 2,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b26c0",
+     "bytes": 3968,
+     "prologues": [
+      "0x800b26c4"
+     ],
+     "jal": 46,
+     "jr_ra": 14,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b3a6c",
+     "bytes": 880,
+     "prologues": [
+      "0x800b3a70",
+      "0x800b3ba4"
+     ],
+     "jal": 10,
+     "jr_ra": 2,
+     "verdict": "code"
+    },
+    {
+     "start": "0x800b43a4",
+     "bytes": 212,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x800b6830",
+     "bytes": 521344,
+     "prologues": [],
+     "jal": 816,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80135cd0",
+     "bytes": 4288,
+     "prologues": [],
+     "jal": 239,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_0072610",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x801813cc",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8018405c",
+     "bytes": 13396,
+     "prologues": [],
+     "jal": 48,
+     "jr_ra": 8,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_007688e",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x8015b890",
+     "bytes": 440,
+     "prologues": [],
+     "jal": 28,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8015def4",
+     "bytes": 644,
+     "prologues": [],
+     "jal": 14,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80160414",
+     "bytes": 6364,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_0078c0e",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x8017f850",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x801801e8",
+     "bytes": 38920,
+     "prologues": [],
+     "jal": 7,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_007af7a",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x8017b55c",
+     "bytes": 24,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8017bd4c",
+     "bytes": 196,
+     "prologues": [],
+     "jal": 2,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8017dddc",
+     "bytes": 10292,
+     "prologues": [],
+     "jal": 11,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_007c552",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x8016ee0c",
+     "bytes": 3356,
+     "prologues": [],
+     "jal": 69,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80171774",
+     "bytes": 3084,
+     "prologues": [],
+     "jal": 37,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_007e132",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x8017b714",
+     "bytes": 48,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8017d96c",
+     "bytes": 52,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8017e368",
+     "bytes": 1448,
+     "prologues": [],
+     "jal": 2,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_007fc12",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80164ab0",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80165428",
+     "bytes": 36,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8016dce4",
+     "bytes": 2972,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_008505e",
+   "unclaimed_runs": 1,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80166c78",
+     "bytes": 856,
+     "prologues": [],
+     "jal": 5,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_0087352",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80165820",
+     "bytes": 48,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x801663ec",
+     "bytes": 788,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_008900e",
+   "unclaimed_runs": 1,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x8016843c",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_008bef8",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80162c98",
+     "bytes": 36,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x801651dc",
+     "bytes": 128,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80165eec",
+     "bytes": 1156,
+     "prologues": [],
+     "jal": 5,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_008e046",
+   "unclaimed_runs": 0,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": []
+  },
+  {
+   "name": "ovl_0090698",
+   "unclaimed_runs": 1,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80167bd4",
+     "bytes": 1148,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_0093192",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80162880",
+     "bytes": 60,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80162a58",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80162cf0",
+     "bytes": 160,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_0093aba",
+   "unclaimed_runs": 1,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80162244",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_0095446",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80167800",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80167e30",
+     "bytes": 1200,
+     "prologues": [],
+     "jal": 2,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_0097e42",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x801630cc",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80163764",
+     "bytes": 956,
+     "prologues": [],
+     "jal": 11,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_0098ee0",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80163764",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8016605c",
+     "bytes": 2244,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_009aed0",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80162fe8",
+     "bytes": 128,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x801649c8",
+     "bytes": 372,
+     "prologues": [],
+     "jal": 9,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_009d282",
+   "unclaimed_runs": 0,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": []
+  },
+  {
+   "name": "ovl_009d3ba",
+   "unclaimed_runs": 4,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80162624",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80162b98",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80162d4c",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80162fc8",
+     "bytes": 376,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_009dd02",
+   "unclaimed_runs": 4,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80163720",
+     "bytes": 136,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x801665bc",
+     "bytes": 136,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80166cd0",
+     "bytes": 68,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80167158",
+     "bytes": 680,
+     "prologues": [],
+     "jal": 5,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00a0344",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80163710",
+     "bytes": 20,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80163cf4",
+     "bytes": 540,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00a1414",
+   "unclaimed_runs": 4,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80165914",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80165bc4",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80167e5c",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80168d60",
+     "bytes": 800,
+     "prologues": [],
+     "jal": 5,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00a43b6",
+   "unclaimed_runs": 4,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80164e54",
+     "bytes": 64,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80165070",
+     "bytes": 1644,
+     "prologues": [],
+     "jal": 35,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80168994",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8016967c",
+     "bytes": 612,
+     "prologues": [],
+     "jal": 3,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00a733e",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80165414",
+     "bytes": 16,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x801664f4",
+     "bytes": 92,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80167c8c",
+     "bytes": 932,
+     "prologues": [],
+     "jal": 4,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00a9d94",
+   "unclaimed_runs": 5,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80169bc0",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8016abec",
+     "bytes": 292,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8016b218",
+     "bytes": 400,
+     "prologues": [
+      "0x8016b224"
+     ],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8016b540",
+     "bytes": 264,
+     "prologues": [
+      "0x8016b548"
+     ],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x8016c150",
+     "bytes": 1408,
+     "prologues": [],
+     "jal": 4,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00ae24a",
+   "unclaimed_runs": 5,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80163928",
+     "bytes": 76,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 9,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80165340",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80165384",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80165e1c",
+     "bytes": 192,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 2,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80166e24",
+     "bytes": 1772,
+     "prologues": [],
+     "jal": 3,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00b08a2",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80165b24",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80165bb8",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80166e9c",
+     "bytes": 1508,
+     "prologues": [],
+     "jal": 3,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00b2d7a",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80162120",
+     "bytes": 132,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 16,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x801621f0",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80162284",
+     "bytes": 12,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00b321e",
+   "unclaimed_runs": 2,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80164bc0",
+     "bytes": 448,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 4,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x801665e8",
+     "bytes": 856,
+     "prologues": [],
+     "jal": 5,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00b5346",
+   "unclaimed_runs": 3,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80162ad8",
+     "bytes": 68,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 3,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80162ee8",
+     "bytes": 76,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    },
+    {
+     "start": "0x80162ff4",
+     "bytes": 220,
+     "prologues": [],
+     "jal": 1,
+     "jr_ra": 0,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00b5e64",
+   "unclaimed_runs": 1,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": [
+    {
+     "start": "0x80161f40",
+     "bytes": 80,
+     "prologues": [],
+     "jal": 0,
+     "jr_ra": 1,
+     "verdict": "data-ish"
+    }
+   ]
+  },
+  {
+   "name": "ovl_00b6040",
+   "unclaimed_runs": 0,
+   "candidates": 0,
+   "candidate_bytes": 0,
+   "code_runs": [],
+   "runs": []
+  }
+ ]
+}

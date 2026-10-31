@@ -42,9 +42,21 @@ def main() -> None:
     ap.add_argument("--symbols", default=str(SYMBOLS))
     ap.add_argument("--images", default="build/elfs/images.json")
     ap.add_argument("--out", default="build/seeds")
+    ap.add_argument("--extra", default="build/seeds_extra",
+                    help="candidate boundaries discovered by find_missed_functions.py")
     a = ap.parse_args()
 
     symbols = read_symbols(Path(a.symbols))
+    # boundaries found in unclaimed code (tools/find_missed_functions.py) carry func_ names;
+    # a curated name in config/symbols.tsv always wins over a discovered boundary.
+    curated = {ad for ad, _, _, _ in symbols}
+    extra = []
+    for p in sorted(Path(a.extra).glob("*.tsv")) if Path(a.extra).is_dir() else []:
+        for line in p.read_text().splitlines():
+            parts = line.split("\t")
+            if len(parts) >= 3 and int(parts[0], 0) not in curated:
+                extra.append((int(parts[0], 0), parts[1], parts[2], "discovered boundary"))
+    symbols = symbols + extra
     images = json.loads(Path(a.images).read_text())["images"]
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)

@@ -1,7 +1,8 @@
 /* inflate
  * image   boot (boot), base 0x80000480
  * address 0x800045dc  body 0x800045dc..0x8000472b  size 339 B
- * sha256  c46a409646ae1567304ca267af6d29de4a2bf4c08a0137af7ea9f2cb0b5a9c31
+ * body sha256 64675cc955364f10b7b49e6bbdffbf9d23577be198dc2068db83190abc975f94
+ * provider record sha256 df92ffe7dc951a71fcb2de700bb6b625ffa579d9513dee805414051a1fdabd41
  * callees 6 direct (6 in corpus)
  * provider Ghidra 12.2
  */

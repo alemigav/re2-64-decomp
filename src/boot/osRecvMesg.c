@@ -1,7 +1,8 @@
 /* osRecvMesg
  * image   boot (boot), base 0x80000480
  * address 0x8000c9e0  body 0x8000c9e0..0x8000cb03  size 295 B
- * sha256  9f1dda014b7b56833f326552a565eab30bd65df0bc191ea2e4e2ffa3a475f654
+ * body sha256 a51724d92e3b911718c917f0ab14ecab456478ae3ff0483f5a202765a99e9794
+ * provider record sha256 89dfdbaecbfc9ee7688c9b90a23d53375ed2165e498f60b4f61ee3330509b368
  * callees 5 direct (5 in corpus)
  * provider Ghidra 12.2
  */

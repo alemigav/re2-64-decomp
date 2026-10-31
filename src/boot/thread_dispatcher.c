@@ -1,7 +1,8 @@
 /* thread_dispatcher
  * image   boot (boot), base 0x80000480
  * address 0x80000c68  body 0x80000c68..0x80000cb3  size 79 B
- * sha256  cb474eb03f33b976367816190ea279498b3f6e8e19119465f3e1cfdc9779fcd4
+ * body sha256 056cfaac0ec6c0db8369f1a619b1d5050747b1c294f1f778d775ffa98fef2354
+ * provider record sha256 1d3f40181b1aa99f9bf9157b61566c637ebd5b27363716c434e4daa9e1fe30ac
  * callees 1 direct (1 in corpus)
  * provider Ghidra 12.2
  */

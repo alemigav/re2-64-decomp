@@ -176,7 +176,9 @@ def main() -> None:
             else:
                 fresh = {(f["address"], f["sha256"]) for f in
                          json.loads((out / "decompile-index.json").read_text())["functions"]}
-                old = {(f["address"], f["sha256"]) for f in
+                # compare provider record hashes: the index also carries our own body hash,
+                # and the two are different measurements of the same function
+                old = {(f["address"], f["provider_sha256"]) for f in
                        next(i for i in index["images"]
                             if i["name"] == a.repro_image)["functions_list"]}
                 same = fresh == old

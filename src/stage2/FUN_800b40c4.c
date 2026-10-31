@@ -1,7 +1,8 @@
 /* FUN_800b40c4
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800b40c4  body 0x800b40c4..0x800b420f  size 335 B
- * sha256  ab2d48c6d3a9c2c1802c8ff981373e3f49750bc832768f865241b387704872f1
+ * body sha256 2d750a7967e404916ed7b376c276cae588a869ba76ae6da26385121729825e2e
+ * provider record sha256 e8cf1c1ea6af7b143947c4ffc63fd18ae6705e49e7dcbc03d81da4c79d221ea9
  * callees 5 direct (5 in corpus)
  * provider Ghidra 12.2
  */
@@ -43,7 +44,7 @@ void FUN_800b40c4(uint param_1)
       puVar4 = puVar4 + 1;
     } while (iVar3 < 2);
   }
-  _DAT_80143fd8 = &LAB_800b3b9c;
+  _DAT_80143fd8 = &DAT_800b3b9c;
   DAT_80136d80 = 1;
   _DAT_8015af70 = 0;
   return;

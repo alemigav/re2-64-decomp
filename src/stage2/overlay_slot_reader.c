@@ -1,7 +1,8 @@
 /* overlay_slot_reader
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8004cca8  body 0x8004cca8..0x8004cd07  size 99 B
- * sha256  97e60b8668b7f49d650400f205e6da8459d8fec9d7d8fa599309df27d8bd6ed4
+ * body sha256 965d158b8573194f4e2bea326a0547b1baf00f2be03fbe78acba03f7617979b5
+ * provider record sha256 97dd7b918c5c1aa6a0850a51f48b49cd50aaf8334f3c7ea1d676c82be57e3d70
  * callees 3 direct (3 in corpus)
  * provider Ghidra 12.2
  */

@@ -1,7 +1,8 @@
 /* FUN_80007f50
  * image   boot (boot), base 0x80000480
  * address 0x80007f50  body 0x80007f50..0x8000810f  size 451 B
- * sha256  a49c4990426c7567cd307cbb0775d81a786c38265d2bb367af5f5a8be0bc4370
+ * body sha256 782d58bd2f9a0f46c2280b538f3c4951c7123ddb9dc03ef5c19c09f985ab105e
+ * provider record sha256 8c00e355629a29a42030979163c6c5a2a0bcf735ddf8b6db54d1f839a15a790a
  * callees 5 direct (5 in corpus)
  * provider Ghidra 12.2
  */

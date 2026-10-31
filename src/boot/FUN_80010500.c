@@ -1,7 +1,8 @@
 /* FUN_80010500
  * image   boot (boot), base 0x80000480
  * address 0x80010500  body 0x80010500..0x80010583  size 135 B
- * sha256  610ba9379d19aea33709e5e454143ad06cad9b360ac0b8bf929720a8767358dd
+ * body sha256 f8a27edc7277a31ad974946f574c9109bcbd9d4b9cde6efa2b94f628bcbeea25
+ * provider record sha256 8cedc95d6af1bee66402effd326c21a131f3eff98f28324502d327575a4cacf2
  * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */

@@ -1,7 +1,8 @@
 /* FUN_800725dc
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800725dc  body 0x800725dc..0x8007266f  size 151 B
- * sha256  a226a4816608a8d83c784f92e63e63c5bc09e4a7d9c869cb1793a45615a06bd6
+ * body sha256 b5c32c628f5ebd4e7c75d16c4d9a01cf7bd999e63e01b0643d82f819d08057a4
+ * provider record sha256 e6d2473b3a927c985fd9264f79fabbe9cc6dbac381b9bf68533f30812ea4ca41
  * callees 1 direct (1 in corpus)
  * provider Ghidra 12.2
  */

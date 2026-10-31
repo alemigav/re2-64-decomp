@@ -66,8 +66,11 @@ real, they are code, and they are **not zlib**: the group starts at cart `0xb624
 after a 519-byte stream plus its odd-length pad byte) with `02 23 18 00 00 03 ac …`, which inflates
 under no zlib variant. They cannot be extracted yet, so they are **not** in the corpus.
 
-Consequence for R4 (`0x0338fe1`–`0xb63106`): its tail holds a **non-zlib container of 28 code
-payloads**, which is the first concrete content ever identified inside that region. R4's entropy
+Consequence for R4 (`0x0338fe1`–`0xb63106`): its tail holds a **non-zlib container of 28
+payloads**, which is the first concrete content ever identified inside that region. **Correction
+(M82):** an earlier version of this note called them "code by every signal available" — that was an
+inference from their sizes matching bank B, and M82 refutes it at the literal level while leaving
+identity unestablished. Their decoded content is **unknown**. R4's entropy
 also does not reproduce — measured **7.9371**, not the 7.34 in `format_notes.md` §5. R3 measures
 **7.1893**, not 7.08. Both figures need correcting.
 
@@ -132,8 +135,8 @@ Two notes on the numbers:
   them from a `jal` scan — exact for direct calls, blind to indirect ones. M27 already showed the
   message sends are indirect (51 sites, no literal queue argument), so **the call graph does not
   answer where `0x8012bd30` is posted from**. That question stays open.
-- **The 28 non-zlib payloads are absent** (§3). They are code by every signal available and cannot
-  yet be decoded.
+- **The 28 non-zlib payloads are absent** (§3). Their decoded content is unknown — see
+  `docs/log/M82-r4-container-and-gaps.md` §1 for the codec negatives and the identity control.
 - **Discovery at the member level being closed does not mean discovery is finished**: a code image
   could still live inside a non-code member as a sub-range, and the unclaimed runs in §5 are
   exactly where to look next.

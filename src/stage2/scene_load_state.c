@@ -1,7 +1,8 @@
 /* scene_load_state
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800271d4  body 0x800271d4..0x800274e3  size 787 B
- * sha256  cca04d9a51f97ccae15645aceef30767f67b7401f52c152bc2d89c501e0060f6
+ * body sha256 a75efd6833e544b6cf5b7137b27ec98695fd7a4c568c7cfb708643cd395b044e
+ * provider record sha256 1e9b6ce6a23501031407b62736df857e89c558f113a4c024a36243674d10834f
  * callees 20 direct (20 in corpus)
  * provider Ghidra 12.2
  */

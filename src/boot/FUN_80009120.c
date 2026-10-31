@@ -1,7 +1,8 @@
 /* FUN_80009120
  * image   boot (boot), base 0x80000480
  * address 0x80009120  body 0x80009120..0x8000916f  size 83 B
- * sha256  75b6f7f37ac976cbbb73dc31e06d14f8cbab03dd8ff1c4bfa31c33879d847c01
+ * body sha256 6c6dfcea30509bcdd74d7a431da95dd84233c7ddfb80cbac9b27be820dc339bf
+ * provider record sha256 ee712f4b9680a17080690c7cc8c8969ea488d0cf3cf53ed978dcad749b37e53d
  * callees 0 direct (0 in corpus)
  * provider Ghidra 12.2
  */

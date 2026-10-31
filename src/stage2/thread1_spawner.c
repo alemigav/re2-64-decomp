@@ -1,7 +1,8 @@
 /* thread1_spawner
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8006cb94  body 0x8006cb94..0x8006cc4f  size 191 B
- * sha256  4c51dcbc3a4e66bb3b339fdf41f457119638e6a10d9103647b48e584c9991387
+ * body sha256 0347fb8b30c4ee1d3fbe3dda4d94701f0a994e40733680601db7b4b4407bd53a
+ * provider record sha256 ab55d343b08285667ce2c2a51dee054945b32148c4bf975776724218d59a2894
  * callees 5 direct (5 in corpus)
  * provider Ghidra 12.2
  */
