@@ -46,7 +46,7 @@ JTENT = "jtent"            # one entry of the jump table at this address: "the j
 SPLOC = "spoff"            # a stack location: sp + bias, the frame address of a local
 TABLE_MAX = 512            # bound on entries walked out of one table
 TABLE_STATS = {"jtent": 0, "tables": 0, "in_region": 0, "cross": 0, "unresolved": 0}
-SLOT_STATS = {"hit": 0, "miss": 0}      # frame slots that resolved to a stored value, and those that did not
+SLOT_STATS = {"hit": 0, "miss_merge": 0, "miss_never": 0, "miss_unstable": 0}
 UNK = "unk"
 
 LOADS = {0x23: "lw", 0x24: "lbu", 0x25: "lhu", 0x21: "lh", 0x37: "ld", 0x1F: "lwu"}
@@ -221,7 +221,7 @@ class Access:
 CURRENT = {"name": "?"}
 
 
-def transfer(state, ins, accesses):
+def transfer(state, ins, accesses, stores_seen=None, classify=False):
     """Apply one instruction. Returns (state, kind) where kind is None | 'branch' | 'jump' | 'return'."""
     op, rs, rt, rd = ins.op, ins.rs, ins.rt, ins.rd
     CURRENT["name"] = ins.name
@@ -347,6 +347,8 @@ def transfer(state, ins, accesses):
         accesses.append(Access(ins.pc, ins.name, base, offset,
                                cause=(state.cause.get(rs) if base[0] == UNK else None)))
         slot_key = None
+        if state.spbias is None and classify:
+            SLOT_STATS["miss_unstable"] += 1
         if state.spbias is not None:
             if rs == SP:
                 slot_key = state.spbias + ins.simm
@@ -357,7 +359,10 @@ def transfer(state, ins, accesses):
             SLOT_STATS["hit"] += 1
         elif slot_key is not None:
             v = U
-            SLOT_STATS["miss"] += 1
+            if classify:
+                # distinguish "no store to this slot anywhere in the region" (incoming stack arguments,
+                # a caller's frame) from "a store exists but the paths disagreed" (a merge killed it)
+                SLOT_STATS["miss_merge" if (stores_seen and slot_key in stores_seen) else "miss_never"] += 1
         elif base[0] == CONST:
             v = (LOAD, base[1] + offset)                         # concrete address, unknown contents
             if FOLLOW_POINTERS and ins.name in ("lw", "lwu", "ld"):
@@ -386,6 +391,8 @@ def transfer(state, ins, accesses):
                 store_key = base[1] + ins.simm
         if store_key is not None:
             state.slot[store_key] = state.get(rt)                # spilled value is remembered
+            if stores_seen is not None:
+                stores_seen.add(store_key)
         return state, None
     if op == 0x03:                                              # jal
         return state, "call"
@@ -544,13 +551,13 @@ def _apply_call(state, ins, accesses, summaries=None, summary_out=None):
 
 
 def _walk(state, ins, s, e, accesses, tag_unreached=False, summaries=None, summary_out=None,
-          disc=None, lo=0, hi=0):
+          disc=None, lo=0, hi=0, stores_seen=None, classify=False):
     """Run one basic block, honouring MIPS delay slots. Returns the outgoing state."""
     cur = state.copy()
     found = []
     for i in range(s, e):
         pre = cur.get(ins[i].rs)                             # before the transfer clobbers anything
-        _, kind = transfer(cur, ins[i], found)
+        _, kind = transfer(cur, ins[i], found, stores_seen, classify)
         if kind in ("jump", "call") and pre[0] == JTENT:
             TABLE_STATS["jtent"] += 1
         if kind in ("jump", "call") and disc is not None and pre[0] == JTENT:
@@ -566,10 +573,10 @@ def _walk(state, ins, s, e, accesses, tag_unreached=False, summaries=None, summa
                 # 0x800329ec got attributed to 0x800eb222: the `li s1,0x2e` that produced the index sits
                 # in a `beql` delay slot, so the index is only 0x2e on one path. Merge both outcomes.
                 taken = cur.copy()
-                transfer(taken, ins[delay], found)
+                transfer(taken, ins[delay], found, stores_seen, classify)
                 cur = cur.merge(taken)
             else:
-                transfer(cur, ins[delay], found)             # ordinary delay slot: always executes
+                transfer(cur, ins[delay], found, stores_seen, classify)   # ordinary delay slot
         if kind == "call":
             _apply_call(cur, ins[i], found, summaries, summary_out)
         if kind == "return" and summary_out is not None:
@@ -637,13 +644,19 @@ def analyse(words, base, summaries=None, summary_out=None):
     state_in = _fixpoint(ins, blocks, summaries, summary_out, None, base, len(words))
     lo, hi = base, base + 4 * len(words)
     accesses = []
+    stores_seen = set()
     for s in sorted(blocks):
         if state_in[s] is None:
             # no entry state reached this block even with the table edges: count its operands as
             # `unreached` so the totals reconcile instead of quietly vanishing
             _walk(State(), ins, s, blocks[s]["end"], accesses, True, None, None, None, lo, hi)
         else:
-            _walk(state_in[s], ins, s, blocks[s]["end"], accesses, False, summaries, None, None, lo, hi)
+            _walk(state_in[s], ins, s, blocks[s]["end"], accesses, False, summaries, None, None, lo, hi,
+                  stores_seen)
+    for s in sorted(blocks):                                     # second pass: classify the misses
+        if state_in[s] is not None:
+            _walk(state_in[s], ins, s, blocks[s]["end"], [], False, summaries, None, None, lo, hi,
+                  stores_seen, classify=True)
     attributed = sum(1 for a in accesses if a.attributed() and not a.unreached)
     if summary_out is not None:
         touched = set(summary_out.get("escapes", set()))
@@ -1057,6 +1070,60 @@ def load_regions():
     return regions, index
 
 
+def acceptance():
+    """The two pre-registered experiment-B tests, as executable checks so they cannot drift.
+
+    Test 1's expectation was corrected in M117: the *structure* holds (record fields read through the
+    function's own `a0`, two call sites in `FUN_8003287c`), but the argument is a byte loaded from the slot
+    map at `0x800329ec`, so its provenance is `unk` — the earlier `ret(80001180)` was a labelling artifact
+    of a missing substitution inside `paroff`.
+    """
+    global FOLLOW_POINTERS
+    FOLLOW_POINTERS = True                       # test 2 needs the opt-in load-through rule
+    load_image_bytes()
+    regions, _ = load_regions()
+    summaries = summarise([(st, w) for st, w, _ in regions], rounds=4)
+    by_start = {st: (w, n) for st, w, n in regions}
+
+    def region_of(addr):
+        for st, w, n in regions:
+            if st <= addr < st + 4 * len(w):
+                return st, w
+        return None, None
+
+    checks = []
+
+    st, w = region_of(0x800327EC)
+    acc, _, _ = analyse(w, st, summaries, {})
+    fields = sorted({a.offset for a in acc if a.base == (PARAM, 0) and a.name == "lw"})
+    checks.append(("test 1a: FUN_800327ec reads its record fields through param(a0)",
+                   {0x0, 0x4, 0x8, 0xC} <= set(fields), "offsets seen: %s" % [hex(x) for x in fields]))
+
+    st, w = region_of(0x8003287C)
+    acc, _, _ = analyse(w, st, summaries, {})
+    sites = [(a.pc, a.args[0] if a.args else None) for a in acc if a.call_target == 0x800327EC]
+    pc_ok = [hex(p) for p, _ in sites] == ["0x80032a04", "0x80032a84"]
+    arg_ok = all(v == U for _, v in sites)
+    checks.append(("test 1b: both call sites are in FUN_8003287c and the argument is unknown",
+                   pc_ok and arg_ok,
+                   "sites %s, a0 %s" % ([hex(p) for p, _ in sites],
+                                        [fmt(v) if v else "?" for _, v in sites])))
+
+    st, w = region_of(0x800329EC)
+    acc, _, _ = analyse(w, st, summaries, {})
+    want = {0x800329EC: 0x800EB204, 0x80032A5C: 0x800EB264}
+    got = {a.pc: a.base[1][0] for a in acc if a.pc in want and a.base[0] == CBASE}
+    checks.append(("test 2: the map read and the pointer-table load report their known base",
+                   got == want, "got %s" % {hex(k): hex(v) for k, v in got.items()}))
+
+    ok = 0
+    for name, passed, detail in checks:
+        print("%s  %s\n      %s" % ("PASS" if passed else "FAIL", name, detail))
+        ok += 1 if passed else 0
+    print("\n%d/%d acceptance check(s)" % (ok, len(checks)))
+    return 0 if ok == len(checks) else 1
+
+
 def run_layer2(args):
     global FOLLOW_POINTERS
     FOLLOW_POINTERS = bool(args.follow_pointers)
@@ -1117,14 +1184,17 @@ def run_layer2(args):
                     k = a.base[0]
                 kinds[k] = kinds.get(k, 0) + 1
         print("base kinds: " + ", ".join("%s %d" % (k, v) for k, v in sorted(kinds.items(), key=lambda x: -x[1])))
-        hits, misses = SLOT_STATS["hit"], SLOT_STATS["miss"]
         print("regions: %d image(s) from the Ghidra index, %d range(s), %d multi-range function(s), "
               "%.1f%% of image bytes inside a known function; fallback heuristic used for: %s" % (
                   REGION_STATS["ghidra_images"], REGION_STATS["ranges"], REGION_STATS["multi_range"],
                   100.0 * REGION_STATS["covered"] / max(REGION_STATS["total"], 1),
                   ", ".join(REGION_STATS["fallback_images"]) or "none"))
-        print("frame slots: %d access(es) through sp/a frame address, %d resolved to a stored value "
-              "(%.1f%%), %d missed" % (hits + misses, hits, 100.0 * hits / max(hits + misses, 1), misses))
+        h = SLOT_STATS["hit"]
+        m = SLOT_STATS["miss_merge"] + SLOT_STATS["miss_never"] + SLOT_STATS["miss_unstable"]
+        print("frame slots: %d access(es), %d resolved (%.1f%%); missed: %d never stored in this region, "
+              "%d killed by a merge, %d with an unstable frame" % (
+                  h + m, h, 100.0 * h / max(h + m, 1), SLOT_STATS["miss_never"],
+                  SLOT_STATS["miss_merge"], SLOT_STATS["miss_unstable"]))
         print("%d regions, %d memory operands, %d attributed (%.1f%%), %d unrecognised" % (
             len(regions), tot, attr, 100.0 * attr / max(tot, 1), tot - attr))
         if args.json:
@@ -1169,6 +1239,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--self-test2", action="store_true")
+    ap.add_argument("--acceptance", action="store_true", help="run the two experiment-B acceptance tests")
     ap.add_argument("--layer2", action="store_true", help="interprocedural fixpoint over the cartridge")
     ap.add_argument("--region", type=lambda s: int(s, 0), help="dump every access in the function holding this address")
     ap.add_argument("--param-accesses", action="store_true", help="list parameter-derived accesses")
@@ -1187,6 +1258,8 @@ def main():
         return self_test()
     if args.self_test2:
         return self_test2()
+    if args.acceptance:
+        return acceptance()
     if args.layer2 or args.region or args.param_accesses or args.callers is not None \
             or args.unk_causes or args.census:
         return run_layer2(args)
