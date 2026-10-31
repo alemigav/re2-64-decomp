@@ -119,32 +119,44 @@ Measured conclusions:
 5. **Negative results are results** — record them, with the scan's matching rule.
 6. **No ROM bytes, no extracted assets, no binaries in git.** `src/` (pseudocode) *is* tracked.
 
+## The bank-C question: closed, with its scope stated
+
+The chain from a room script to the cartridge loader is mapped (M85–M106) and the outcome is measured, not
+inferred: across **three rooms** — the owner's two door animations, corroborated by three distinct
+stream-pointer pairs in the dumps — the scene-slot command carries **byte 3 = 31** every time, the two 48-byte
+slot maps are immutable `.rodata`, and slot 31's map entry is 0. So `FUN_8003287c(31)` always reaches
+`cart_record(0)` (the `OVERLAYTABLENUM` marker), the inflate fails, the return is discarded, and the
+destination is untouched. `FUN_800327ec` never checks that return. **That is the design**, and it matches the
+finding that bank C has no consumer anywhere: its map pointer `0x800eb268` is constructed in none of the 36
+images (M89/M91).
+
+Scope, stated so it cannot be overclaimed later: three rooms were observed, not all rooms. The discriminating
+case would be an operand in one of the **13 non-zero map slots** (16, 32–49, 51, 52, 54–56, 58, 59, 62, 63);
+none appeared. Proving absence everywhere would need a capture per room, and nothing in the code path gives a
+room a reason to vary the operand.
+
+**No more ares dumps, and no more debugger work.** The manual export route is retired because the question it
+was meant to answer is closed; the GDB route is parked because ares feeds the game `ff ff ff ff` on every
+controller channel (M109) — the game reads no input, so no room can be reached under debug. ares stays what
+this project always called it: an optional external validator that nothing depends on.
+
 ## Immediate next step
 
-**A dump from a room, taken in a normal launch.** The command chain is mapped (M85–M106) and the dump tools
-answer from it in a second; the missing input is one RDRAM export from a room other than the corridor in the
-five dumps already present. That route needs no debugger at all:
+The emulator is no longer on the critical path. What is left is cartridge-side, and none of it needs ares:
 
-1. `./run-rom.sh` (ares must be in its normal configuration — see the warning below), play into a room;
-2. **Tools → Memory Editor → region `RDRAM` → `Memory` row → `Export`** — the file lands in `rom/`;
-3. `python3 tools/room_probe.py rom/<dump>.bin` then `python3 tools/walk_stream.py rom/<dump>.bin`.
+* **the two unidentified blobs** — R3 `0xb73fb3`–`0x140ed84` and R4 `0x338fe1`–`0xb63106`, ~17.6 MB between
+  them; R4's tail holds the **28-payload non-zlib container** at `0xb6248` (74 716 B, tiles exactly), whose
+  codec is still unsolved (M82/M90);
+* **experiment B** — pointer provenance for the construction paths that `find_readers.py` cannot attribute;
+* **experiment C** — resource structures: what the 4 761 zlib members are, beyond the 36 code images and the
+  verified media;
+* `README.md` still records M0–M7 while the project is at M110; `src/` is 3 292 functions at 61.3 % of code
+  bytes.
 
-**The ares debugger route is parked, not disproved.** M108 built the instrument and it works (RSP, memory
-reads, registers, breakpoints); M109 showed `M` writes work too. What blocks it is not the protocol: **ares
-feeds the game `ff ff ff ff` on every controller channel** (the "no controller" pattern) even though macOS
-lists the pad, so the game reads no input and no one can reach a room under debug. If ares' input is repaired
-(Settings → Input → Nintendo 64 → Controller Port 1 → Gamepad bound explicitly to `Pro Controller`, not
-`Default`), the retry is already specified in `docs/log/M109-ares-injection-attempt.md`: break at
-`0x80006750`, write the pad bytes at `0x80014FA0 + 4`, continue, once per frame.
+Reading any future dump, if one ever appears, is still one command per tool:
 
-**Warning that cost this session twice:** `ares --setting name=value` **persists** into
-`~/Library/Application Support/ares/settings.bml`. `Boot/AwaitGDBClient=true` left behind makes ares halt at
-`0xBFC00000` with RDRAM all zeros — it boots for a few seconds, then freezes and ignores all input, which
-looks exactly like a broken controller. A launch that needs those settings must also put them back.
-
-The discriminator is unchanged: the slot maps are static `.rodata`, so a slot selects a real record only if
-its static byte is non-zero — **13 slots qualify** (16, 32–49, 51, 52, 54–56, 58, 59, 62, 63) and none has
-been observed. `byte 3 = 31` in five captures at three moments is a parameter, not a selector.
-
-Also owed: the two unidentified blobs (R3/R4) and the 28 non-zlib payloads at `0xb6248`; experiments B
-(pointer provenance) and C (resource structures); `README.md` still records M0–M7 while the project is at M109.
+```sh
+python3 tools/dump_fingerprint.py rom/*-rdram-*.bin    # same room or not — before anything else
+python3 tools/room_probe.py rom/<dump>.bin             # slot, gate, branch, stream pointers
+python3 tools/walk_stream.py rom/<dump>.bin            # the command stream, opcode by opcode
+```
