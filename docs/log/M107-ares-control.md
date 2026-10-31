@@ -112,3 +112,30 @@ changes is that the validation stops costing a human action per observation.
 | the debug build is not the release build | if `DebugServer` requires a dev build, record it and use Route B; do not patch or rebuild ares in this repo |
 | breakpoints perturb timing | a breakpoint on a *specific PC* is an observation, but state it as such: conclusions from a stopped machine are about the stop, not the run |
 | dumps become "mine" rather than the owner's | dumps stay in `rom/` (gitignored) with ares' own timestamps, and each note records which dump it used |
+
+## First experiment — result (measured)
+
+Two launches, with the cartridge, `--kiosk`:
+
+| settings | listener on the port | replies to `?`, `qSupported`, `g`, `m…` |
+|---|---|---|
+| `DebugServer/Enabled=true`, `DebugServer/Port=1984`, `DebugServer/UseIPv4=true`, **`Boot/Debugger=true`** | **binds** (TCP connect succeeds; port closes when ares exits, so the listener *was* ares) | **all empty** (0 bytes, no error, no reset) |
+| `DebugServer/Enabled=true`, `DebugServer/Port=1985`, no `Boot/Debugger` | **refused** | n/a |
+
+So:
+
+* **`Boot/Debugger=true` is what starts the debugger**; `DebugServer/Enabled` alone does not bind a port.
+* the stub **binds and accepts**, but answers **nothing** to standard RSP framing (`$…#cc`), to a bare
+  `+`, or to a greeting read — over a 1.5–4 s window each.
+
+That is a specific negative, not a dead end: the server wants a handshake or a dialect this client did not
+send. The next probe is to read how the stub is driven (ares' own source for the debug server, or its
+documentation) rather than guessing more framings. Two candidate explanations, both testable:
+
+1. it is **not** GDB RSP — `qSupported` in the binary may belong to a different component, and ares'
+   debugger may speak its own protocol;
+2. it **is** RSP but expects the client to attach to a **paused** core (e.g. the emulator must already be
+   stopped at the debugger prompt), so a client connecting to a running game is accepted and ignored.
+
+Either way the harness for this is now known: `Boot/Debugger=true` + `DebugServer/Port=N` gives an open
+socket on request, and `tools/ares_rsp.py` is the place to iterate on the handshake.
