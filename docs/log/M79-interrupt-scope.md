@@ -135,3 +135,35 @@ boot chain no longer unwinds to `0x0`.** One gap, one fix, and the M78 crash is 
 message. That is the next question, and it is now a clean one: the dispatch reaches the send area but nothing is
 enqueued — either the event-table entry the handler consults is empty for this source, or the send is gated on
 something (a registered-queue check) that this harness does not satisfy. It is no longer blocked by any crash.
+
+
+---
+
+## 8. The handler makes no calls at all — and that changes the delivery question
+
+Tracing `0x80000720`–`0x800007b0` during a PI interrupt showed the region is **not** the event dispatch (my M79
+label was wrong). It is the **context copy into the current thread**:
+
+```
+0x80000768  lw  k0, 0x2950(k0)      k0 = __osCurrentThread
+0x8000076c  ld  t1, 0x20(k0)   / 0x80000770 sd t1, 0x20(k0)
+0x80000774  ld  t1, 0x118(k0)  / 0x80000778 sd t1, 0x118(k0)
+0x8000077c  ld  t1, 0x58(k0)   / 0x80000780 sd t1, 0x58(k0)      … +0x60, +0x68, +0x28, +0x30 …
+```
+
+A static scan settles the bigger question: **the whole handler `0x800006d0`–`0x800009bc` contains no `jal` at
+all**, and it leaves through an **indirect `jr r10` at `0x800009bc`**.
+
+So the event dispatch is not a call — the handler ends by jumping through a register. That means:
+
+1. **No `osSendMesg` call exists inside the handler**, so the M24 census of `osSetEventMesg` registrations does
+   not imply the handler posts them directly; it posts through the pointer it leaves by.
+2. For the harness, the delivery question becomes: **what does `r10` hold at `0x800009bc`, and does that target
+   exist and work in this emulation?** That is one register at one instruction — a bounded check, not another
+   gap in the emulator.
+3. The event queue writes observed so far come from `0x80000688` zeroing `0x80139f10`–`0x80139f2c` (init), and
+   `0x80139f10` ends with `mtqueue = 0x80012940` (empty sentinel), `msg = 0x80139ff0` — a correctly initialised,
+   empty queue.
+
+**Next probe (one run, one register):** log `r10` at `0x800009bc` on the PI interrupt, and the first few PCs
+after that jump.
