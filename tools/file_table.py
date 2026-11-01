@@ -764,6 +764,37 @@ def check() -> int:
                   all((HERE.parent / "src" / "stage2" / f"{f}.c").exists()
                       for f in ("FUN_800b62c0", "FUN_800b63b4", "FUN_800b4dc0"))))
 
+    # --- M200: the pool's classes from the DATA, and the resolver that consumes them. The four
+    # sections are storage; the six `SND_PROJ` lists are roles, and each list's key space says which
+    # section it draws on. The class tag is `(key >> 14) & 3`, and it is NOT the section index: the
+    # sections are tagged 0, 3, 1, 2 in file order, which is why "four classes" and "four sections"
+    # were being used for each other.
+    _tag = lambda k: (k >> 14) & 3
+    _lists = []
+    for _li in range(2, 8):
+        _vals = []
+        for _r in pro_recs:
+            _pos = _r + struct.unpack_from(">I", pro, _r + 4 * _li)[0]
+            while True:
+                _v = struct.unpack_from(">h", pro, _pos)[0]
+                if _v == -1:
+                    break
+                _vals.append(_v)
+                _pos += 2
+        _lists.append(_vals)
+    _dist = [len(set(v)) for v in _lists]
+    _cls = [sorted({_tag(v & 0xFFFF) for v in vals}) for vals in _lists]
+    cases.append((f"the six PROJ lists hold {_dist} distinct keys, drawing on pool tags {_cls} — "
+                  f"[2] and [4] are sample-tagged only, [6] is tag-3 only",
+                  _dist == [2027, 169, 736, 290, 65, 566]
+                  and _cls[0] == [0] and _cls[2] == [0] and _cls[4] == [3]))
+    _res = (HERE.parent / "src" / "stage2" / "FUN_800a86a0.c").read_text()
+    cases.append(("CODE: the resolver walks the pool chain and hands list[4] to the cache at "
+                  "0x8014e1e0, list[5] to 0x801521f0, and list[6] to the length-bearing one at "
+                  "0x80152a00",
+                  all(f"FUN_800a{h}(" in _res for h in ("d0c0", "cbc0", "ce1c"))
+                  and "param_1[4]" in _res and "param_1[5]" in _res and "param_1[6]" in _res
+                  and "piVar5 + 3" in _res and "(int)piVar5 + 10" in _res))
     # --- M191: the codec constants are also a committed fixture, so the prose that quotes them and the
     # measurement that produces them are checked against the same source. The cartridge-gated case runs
     # first: if the measurement ever moves, this fails before the documentation can drift with it.

@@ -275,6 +275,17 @@ AUDITS = [
          file="tools/acceptance.py",
          old="    ok = code == 0 and passed == total and total == expected",
          new="    ok = True"),
+    # --- the M200 class mapping. The tag is `(key >> 14) & 3`; widening the mask mixes the sections
+    # and the data case must fail. The second mutation drops the length argument from the resolver's
+    # reading, which is the only thing distinguishing cache C.
+    dict(name="file_table: the pool class tag is not masked to two bits",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old="    _tag = lambda k: (k >> 14) & 3",
+         new="    _tag = lambda k: 0"),
+    dict(name="file_table: the resolver's length-bearing dispatch is no longer read",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='(int)piVar5 + 10" in _res',
+         new='(int)piVar5 + 99" in _res'),
     # --- the counts gate (M180). Its `--check` runs on a repository that is by definition consistent, so
     # aiming at the comparison is invisible; the mutation is aimed at the *derived* number instead. The
     # second audit disables the phrasectomy in the self-test, so the "a deleted phrase is caught" case
