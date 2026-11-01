@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "f9b5efa",
+   "subject": "M188: the two holes \u2014 531 is a stale index, 11 is an unused slot",
+   "milestones": [
+    188
+   ]
+  },
+  {
    "sha": "35cac6b",
    "subject": "M187: the codec is identified \u2014 MusyX ADPCM, with a 16-byte prologue",
    "milestones": [

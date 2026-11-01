@@ -229,6 +229,59 @@ def check() -> int:
     cases.append(("id 1983 carries no MORT record, and its word 0 is not a count",
                   r3.count(MORT) == 0 and struct.unpack_from(">I", r3, 0)[0] > OTHER_SIZE))
 
+    # --- M189: id 1979's payload is a *second* codec, its header is 12 bytes, and the 418 question is a
+    # rotation. Three findings, each gated, and u16@+4 still unassigned — now with a second independent
+    # refutation of the duration reading.
+    pay12 = [l - 12 for l in lens]
+    at40 = sum(1 for p in pay12 if (p - 16) % 40 == 0)
+    cases.append((f"the MORT payloads are not the pool's codec — only {at40}/{n} satisfy the 16+40k law, "
+                  f"which holds on all 1 192 pool ranges (M187)", at40 == 50 and at40 < n // 10))
+    cases.append((f"the MORT header is 12 bytes, not 10 — (len-12) % 4 == 0 on {sum(1 for l in lens if (l-12)%4==0)}/{n}"
+                  f" while (len-10) % 4 == 0 on {sum(1 for l in lens if (l-10)%4==0)}/{n}",
+                  sum(1 for l in lens if (l - 12) % 4 == 0) == n
+                  and sum(1 for l in lens if (l - 10) % 4 == 0) == 0))
+    b10 = {r4[a + 10] for a in offs[:-1]}
+    cases.append((f"byte +10 of the MORT header takes {len(b10)} small values, so it is a field and not padding",
+                  len(b10) == 65 and min(b10) <= 2))
+    hi2, lo2 = bytearray(), bytearray()
+    for a, l in zip(offs[:-1], lens):
+        blob = r4[a + 12:a + l]
+        hi2 += blob[0::2]
+        lo2 += blob[1::2]
+    def _ent(x):
+        c = Counter(x); t = len(x)
+        return -sum(v / t * math.log2(v / t) for v in c.values())
+    flat2 = (Counter(hi2)[0] + Counter(hi2)[255]) / len(hi2)
+    cases.append((f"REFUTED: the MORT payload is not 16-bit PCM either — planes {_ent(hi2):.3f} and "
+                  f"{_ent(lo2):.3f}, 0x00+0xFF only {flat2:.1%} of the high plane",
+                  abs(_ent(hi2) - _ent(lo2)) < 0.01 and _ent(hi2) > 7.9 and flat2 < 0.01))
+    # u16@+4: a duration would DOUBLE at 8 kHz. The modal payload/field does not move at all.
+    def _mode(R):
+        r = [pay12[i] / field[i] for i in range(n) if rate[i] == R]
+        return Counter(round(x, 2) for x in r).most_common(1)[0][0]
+    m16, m8 = _mode(16000), _mode(8000)
+    cases.append((f"REFUTED: u16@+4 is not a duration — the modal payload/field is {m16} at 16 kHz and "
+                  f"{m8} at 8 kHz, where a duration would require {m16} and {m16 / 2}",
+                  abs(m16 - 32.51) < 0.02 and abs(m8 - 32.51) < 0.02))
+    cases.append((f"and it is not an exact ratio: 2*pay == 65*field holds on "
+                  f"{sum(1 for p, fx in zip(pay12, field) if 2 * p == 65 * fx)}/{n}",
+                  sum(1 for p, fx in zip(pay12, field) if 2 * p == 65 * fx) == 0))
+    # the 418 question: the chain order is nearly key-sorted with wraparound from 118
+    _pro = zlib.decompress(d[BASE + entries[1980][0]:BASE + entries[1980][0] + entries[1980][1]])
+    _pos, pro_keys_seq = 0, []
+    while True:
+        _nxt = struct.unpack_from(">i", _pro, _pos)[0]
+        if _nxt == -1 or _nxt <= 0:
+            break
+        pro_keys_seq.append(struct.unpack_from(">H", _pro, _pos + 4)[0])
+        _pos += _nxt
+    cons = sum(1 for a, b in zip(pro_keys_seq, pro_keys_seq[1:]) if (b - a) % 418 == 1)
+    cases.append((f"SND_PROJ's key order is a rotation from 118 — {cons}/{len(pro_keys_seq) - 1} adjacent "
+                  f"pairs are consecutive mod 418, ending at {pro_keys_seq[-1]} (so 418 is the key range, "
+                  f"not a capacity)",
+                  cons == 370 and len(pro_keys_seq) == 417
+                  and pro_keys_seq[0] == 118 and pro_keys_seq[-1] == 117))
+
     # --- M184: id 1983's container, framed by the sample directory (id 1982, SND_SMPDIR).
     # The directory is 28-byte records terminated by `ffffffff`; a u32 at +4 is a byte offset into 1983,
     # and with the last record closing at the file end the records tile 1983 exactly. So the pool is 1192
