@@ -43,8 +43,8 @@ That measurement also replaced every estimated number in the CI prose — locall
 
 | where | suites | cases |
 |---|---|---|
-| local, cartridge present | **21 / 21** | **228 / 228** |
-| runner, no cartridge | **10 / 21 run** | **125 / 228**, 11 suites / 103 cases SKIP |
+| local, cartridge present | **21 / 21** | **230 / 230** |
+| runner, no cartridge | **10 / 21 run** | **127 / 230**, 11 suites / 103 cases SKIP |
 
 Both figures are asserted by `tools/acceptance.py`'s expected counts, so the prose goes stale loudly. The
 job summary now prints the split too, because a green run that silently skipped 11 suites is a misleading
@@ -124,7 +124,7 @@ file that is not its text.*
 
 ```
 python3 tools/workflow_lint.py        # 11/11 — CI checking its own definition
-python3 tools/acceptance.py           # 21 suites, 228 cases
+python3 tools/acceptance.py           # 21 suites, 230 cases
 python3 tools/audit_gates.py          # 20/20, 0 vacuous
 sh tools/ci.sh                        # ci: ok
 ```

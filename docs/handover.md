@@ -125,7 +125,19 @@ by three distinct stream-pointer pairs) all carry byte 3 = 31, so the path is in
 |---|---|---|
 | pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, **~60 s** with the cartridge (measured), blocks the commit |
 | local CI | `sh tools/ci.sh` | the same fixtures **plus** a tracked-artefact check, a fixture-size guard and the cartridge sha256 |
-| runner CI | `.github/workflows/acceptance.yml` | the same `ci.sh`: **10 of 21 suites, 125 of 228 cases**; the 11 cartridge suites report SKIP |
+| runner CI (GitHub-hosted) | `.github/workflows/acceptance.yml`, job `ci` | the same `ci.sh`: **10 of 21 suites, 127 of 230 cases**; the 11 cartridge suites report SKIP |
+| runner CI (self-hosted) | the same file, job `full` | **all 21 suites / 230 cases** — runs where the cartridge is, and fails if the cartridge suites skip |
+
+**The self-hosted tier (M175)** is how CI covers the cartridge without uploading it: the ROM stays on the
+machine running the runner, nothing goes into a secret, and the job **fails** rather than passing if the
+cartridge suites skipped. It is gated by a repository variable so a push never sits queued while that machine
+is asleep. Enabling it, once, on the machine that holds the ROM:
+
+```sh
+# Settings -> Actions -> Runners -> New self-hosted runner (add the label `re2-cartridge`),
+# then point its work directory at a checkout that has rom/*.z64, assets/unpacked and build/elfs
+gh variable set SELF_HOSTED_RUNNER --body true     # turn it on; unset it to turn it off
+```
 
 **What CI cannot run is the important part**, and M174 replaced the old guess with a measurement: the
 eleven skipped suites are the ones that assert facts about RE2 itself — the corpus checks (`FUN_800327ec`
@@ -134,14 +146,15 @@ exception path and the routine-index bounds (M173). Running them needs the cartr
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
 each run's job summary lists them. **A green CI run does not vouch for those 103 cases.**
 
-A route to close that gap was built and verified in M130 — ROM as a base64 secret, unpack the 4 761 members
-(10 s), build the 36 images (1 s), boundaries from committed metadata — and then deliberately **not adopted**,
-because it means a copyrighted cartridge living in a CI secret store. The mechanism is written up there if the
-trade is ever worth taking.
+A route to close that gap *in a secret* was built and verified in M130 and then deliberately **not adopted**,
+because it means a copyrighted cartridge living in a CI secret store. M175 measured why it also does not work:
+GitHub caps a secret at **48 KB** and the cartridge is **67 108 864 B** (**89 478 489 B** as base64), so the
+single `RE2_CART_B64` secret that M130's step assumed could never have held it. The self-hosted tier above is
+the route that does work, because the bytes never leave the machine that already has them.
 
 What that means in practice: those suites are enforced **wherever the cartridge exists** — locally with
 `python3 tools/acceptance.py`, and on every commit through the hook. That is the enforcement that actually
-covers them; CI covers the other 125 cases, including a lint of its own workflow file, which needs no ROM.
+covers them; CI covers the other 127 cases, including a lint of its own workflow file, which needs no ROM.
 
 Documents are checked structurally too: `tools/check_markers.py` requires 16 anchors (12 handover sections
 plus the log's retraction table, error list, working method and retractions heading), that **every level-2 heading is registered**, and that **every note in `docs/log/` is indexed by the milestone
@@ -268,7 +281,7 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 21 suites, 228 cases
+python3 tools/acceptance.py         # 21 suites, 230 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
 python3 tools/audit_gates.py        # 20/20: every check must fail when its mechanism is disabled
 ```

@@ -14,7 +14,9 @@ failure modes that actually bite rather than pretending to be a parser:
   3. every `uses:` pins a ref (`@v4` or a version/SHA), never a floating branch;
   4. every job declares `runs-on` and `timeout-minutes` (a wedged job would otherwise hold the slot);
   5. every job's steps eventually run the repository gates — `tools/ci.sh` or `tools/acceptance.py`;
-  6. `permissions:` is declared, tightened to `contents: read` (nothing here writes to the repo).
+  6. `permissions:` is declared, tightened to `contents: read` (nothing here writes to the repo);
+  7. when a job is `self-hosted`, it is gated by a repository variable (or it queues while the machine is
+     asleep) and it fails when the cartridge suites were skipped (or it re-runs the hosted tier and passes).
 
 Checks 1-6 run against the real files; `--self-test` runs synthetic ones, including a copy of the exact
 line that was broken, so the linter is shown to fail on the thing it was written for.
@@ -90,6 +92,18 @@ def lint_text(text):
     ok = "permissions:" in body and "contents: read" in body.replace('"', "").replace("'", "")
     out.append(("permissions is declared and read-only", ok,
                 "contents: read" if ok else "no least-privilege permissions block"))
+
+    # A self-hosted job fails in two ways a hosted one cannot, so both guards are required:
+    # without the variable gate it sits *queued* for every push while the machine sleeps, and without the
+    # skip check it happily runs the hosted tier and reports success. Neither is visible in a green tick.
+    if "self-hosted" in body:
+        gated = re.search(r"^\s+if:\s*vars\.", body, re.M) is not None
+        out.append(("a self-hosted job is gated by a repository variable", gated,
+                    "if: vars.<NAME>" if gated else "a self-hosted job with no `if:` queues on every push"))
+        refuses = "skipped for want of the cartridge" in body and "exit 1" in body
+        out.append(("a self-hosted job refuses to pass when suites were skipped", refuses,
+                    "it fails on a SKIP line" if refuses else
+                    "nothing checks that the cartridge suites actually ran"))
     return out
 
 

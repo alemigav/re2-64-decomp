@@ -54,7 +54,7 @@ SUITES = [
     ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 20, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
-    ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 11, False),
+    ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 13, False),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
 ]
 
