@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-197 milestones are indexed. 124 of them have a note; the rest are rows in the log that cite
+198 milestones are indexed. 125 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -213,6 +213,7 @@ at the foot of this file.
 | 194 | **M194** — the voice decoder is not implemented, and the description does not fit this cartridge | `docs/log/M194-the-voice-decoder-does-not-reconcile.md` |
 | 195 | **M195** — `FUN_800b53f4` transcribed field by field, and why the decode still does not run | `docs/log/M195-the-voice-stream-transcribed-and-the-ring.md` |
 | 196 | **M196** — the suite was slow because it recomputed, not because it was Python | `docs/log/M196-the-suite-was-recomputing.md` |
+| 197 | **M197** — the ring does nothing to the bytes, and the reader reverses them | `docs/log/M197-the-ring-does-nothing-and-the-reader-reverses.md` |
 
 ## The gaps, and why they are empty
 

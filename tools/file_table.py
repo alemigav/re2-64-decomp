@@ -666,14 +666,23 @@ def check() -> int:
                   f"values is at least {min(spans):.1f} bytes",
                   min(spans) > 10))
 
-    # --- M195: the voice bit-stream, transcribed from FUN_800b53f4 and tested both ways. Neither bit
-    # order reconciles, so the record's payload bytes are not the bit stream the decoder sees — the CPU
-    # streams them into a 4 KB ring first, and that copy is a transform this project has not established.
+    # --- M197: the stream reconciles, and M195's blocker was the bit order, not the ring.
+    #
+    # FUN_800b53f4 reads (0x800b5428-0x800b5458):
+    #     byte_off = (bitpos >> 3) & 0xFFC     ; 4-byte aligned, wrapped to the 4 KiB ring at ctx+0x1a0
+    #     word     = the big-endian u32 there
+    #     value    = word >> (bitpos & 31)     ; then masked to the field width
+    # LSB-first inside a big-endian word means bit p of the stream is bit (p & 31) of word p >> 5, so the
+    # four bytes of each group are consumed in REVERSE order. M195 tested MSB-first and LSB-first in file
+    # order — neither reverses bytes inside the group — and concluded the DMA ring must be transforming
+    # the bytes. It is not: FUN_800b4a04 fetches it through a callback at ctx+0x190 into ctx+0x1a0, 0x400
+    # bytes at a time at ring + (offset & 0xFF8), which is a verbatim copy, and the raw payload reconciles
+    # under the reader's own order. All three orders are measured below so the correction stays visible.
     SCALE_W, SIDE_W = (6, 6, 5, 5, 4, 4, 3, 3), (7, 2, 2, 6)
     # 36 scales + 4 sides of (17 + 13 x 3) = 260 bits, the one number this whole case turns on.
     SAMPLE_BITS = sum(SCALE_W) + 4 * (sum(SIDE_W) + 13 * 3)
 
-    def _parse(payload, want, msb, guard=1 << 22):
+    def _parse(payload, want, order="word", guard=1 << 22):
         # The field values are read only to be discarded: what the case measures is where the *cursor*
         # ends up, so the body is a fixed 260 bits per emitted sample and the cursor advances
         # arithmetically, O(1) per block instead of O(260). The original per-bit reader is reproduced
@@ -682,6 +691,7 @@ def check() -> int:
         # than clamping to the end (clamping would turn overruns into landings and move both verdicts).
         lim = min(guard + 1, len(payload) * 8)
         p = 0
+        done = normal = silent = 0
 
         def needs(k):
             if p + k > lim:
@@ -693,37 +703,59 @@ def check() -> int:
             v = 0
             for i in range(k):
                 q = p + i
-                bit = (payload[q >> 3] >> (7 - (q & 7) if msb else q & 7)) & 1
-                v = (v << 1) | bit if msb else v | (bit << i)
+                if order == "word":                 # the reader: bytes reversed inside each u32
+                    by, sh = 4 * (q >> 5) + (3 - ((q >> 3) & 3)), q & 7
+                else:                                # M195's two guesses: file order, no reversal
+                    by, sh = q >> 3, (7 - (q & 7) if order == "msb" else q & 7)
+                bit = (payload[by] >> sh) & 1
+                v = (v << 1) | bit if order == "msb" else v | (bit << i)
             p += k
             return v
 
-        done = 0
         while done < want:
             if get(1) == 0:
                 m = min(get(7) + 1, want - done)
                 needs(SAMPLE_BITS * m)
                 p += SAMPLE_BITS * m
                 done += m
+                normal += m
             else:
-                done += min(get(4) + 1, want - done)
-        return p
-    for msb, label in ((True, "MSB-first"), (False, "LSB-first")):
-        over = landed = 0
+                k = min(get(4) + 1, want - done)
+                done += k
+                silent += k
+        return p, done, normal, silent
+    def walk(order):
+        over = land = blocks = normal = silent = 0
+        slacks = []
         for a, l, b in zip(offs, lens, field):
             payload = r4[a + 12:a + l]
             try:
-                if len(payload) * 8 - _parse(payload, b, msb) < 8:
-                    landed += 1
+                used, got, nrm, sil = _parse(payload, b, order)
             except EOFError:
                 over += 1
-        if msb:
-            cases.append((f"REFUTED: {label} reading of the transcribed stream does not reconcile — "
-                          f"{over}/{n} clips overrun and {landed} terminate within 8 bits of the end",
-                          over == 362 and landed == 3))
-        else:
-            cases.append((f"REFUTED: {label} reading does not reconcile either — {over}/{n} overrun, "
-                          f"{landed} land", over == 339 and landed == 0))
+                continue
+            slack = len(payload) * 8 - used
+            if slack < 8:
+                land += 1
+            slacks.append(slack)
+            blocks, normal, silent = blocks + got, normal + nrm, silent + sil
+        return over, land, blocks, normal, silent, slacks
+
+    for order, label, want_over, want_land in (("msb", "MSB-first in file order", 362, 3),
+                                               ("lsb", "LSB-first in file order", 339, 0)):
+        over, land, _b, _nm, _s, _sl = walk(order)
+        cases.append((f"REFUTED: {label} does not reconcile — {over}/{n} clips overrun and {land} "
+                      f"terminate within 8 bits of the end",
+                      over == want_over and land == want_land))
+    over, land, blocks, normal, silent, slacks = walk("word")
+    cases.append((f"the reader's own order reconciles on {n - over}/{n} clips: every stream ends within "
+                  f"{max(slacks)} bits (min {min(slacks)}) of its record, i.e. word padding and nothing else",
+                  over == 0 and len(slacks) == n and min(slacks) >= 0 and max(slacks) <= 32))
+    cases.append((f"and the {blocks:,} declared blocks close the arithmetic: {normal:,} normal at 260 bits "
+                  f"({100 * normal / blocks:.1f}%) and {silent:,} silent at 0, which is "
+                  f"{260 * normal / blocks:.1f} bits per block against the payload's "
+                  f"{8 * sum(len(r4[a + 12:a + l]) for a, l in zip(offs, lens)) / blocks:.1f}",
+                  blocks == 307038 and normal == 262894 and silent == 44144))
     cases.append((f"the field widths transcribed from FUN_800b53f4 do sum to the 260 bits the format claims "
                   f"({sum(SCALE_W)} + 4 x ({sum(SIDE_W)} + 39) = {sum(SCALE_W) + 4 * (sum(SIDE_W) + 39)})",
                   sum(SCALE_W) + 4 * (sum(SIDE_W) + 39) == 260))
