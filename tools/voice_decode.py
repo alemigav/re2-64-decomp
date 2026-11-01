@@ -418,12 +418,75 @@ def transcribe(record, blocks):
     return samples, {"silent": silent, "steps": 0, "memset": silent, "blocks": want}
 
 
+def _compare(rec, blocks, mod):
+    """The differential: emulator samples against transcribed samples, block by block."""
+    total = min(blocks, rec[1])
+    ref, _ = decode(rec[3], total, mod)
+    mine, _ = transcribe(rec[3], total)
+    bad = [(i, a, b) for i, (a, b) in enumerate(zip(ref, mine)) if a != b]
+    blks = sorted({i // BLOCK_SAMPLES for i, _a, _b in bad})
+    return ref, mine, bad, blks
+
+
+def _band_dump(rec, want_block, mod):
+    """Print the cartridge's four band-entry states for one block, and the hand-off after it.
+
+    This is the dump the transcription was debugged with: the lattice's state hand-offs between bands.
+    It reports the CARTRIDGE's own sequence, which is what made an earlier one-band mislabel in my probe
+    show up as a phantom "phase offset" — the numbers were right, the labels were not. Pair it with
+    `--diff` to see the samples themselves.
+    """
+    from unicorn import UC_HOOK_CODE
+    from unicorn.mips_const import (UC_MIPS_REG_S0, UC_MIPS_REG_S1, UC_MIPS_REG_S2, UC_MIPS_REG_S3,
+                                    UC_MIPS_REG_S4, UC_MIPS_REG_S5, UC_MIPS_REG_S6, UC_MIPS_REG_S7)
+    (Uc, ARCH, MODE32, BE, HOOK, R_A0, R_A1, R_A2, R_A3, R_PC, R_RA, R_SP) = mod
+    sg = lambda v: v - (1 << 32) if v >= (1 << 31) else v
+    sregs = (UC_MIPS_REG_S0, UC_MIPS_REG_S1, UC_MIPS_REG_S2, UC_MIPS_REG_S3,
+             UC_MIPS_REG_S4, UC_MIPS_REG_S5, UC_MIPS_REG_S6, UC_MIPS_REG_S7)
+    calls = {0x800b66b4: 0, 0x800b66d8: 1, 0x800b66fc: 2, 0x800b6720: 3}
+    uc, ram, _st = _session(rec[3], mod)
+    cur, prev, seen = {"bi": -1}, {"a": None}, {}
+
+    def hook(u, a, s, d):
+        if a == 0x800B6470 and prev["a"] in calls and cur["bi"] >= 0:
+            seen.setdefault(cur["bi"], []).append(
+                (calls[prev["a"]], [sg(u.reg_read(r)) for r in sregs], sg(u.reg_read(R_A3))))
+        prev["a"] = a
+
+    uc.hook_add(UC_HOOK_CODE, hook)
+    for bi in range(min(want_block + 2, rec[1])):
+        cur["bi"] = bi
+        bp = struct.unpack(">I", uc.mem_read(CTX + 0x11C8, 4))[0]
+        win = (bp >> 3) & ~0xFFF
+        chunk = bytes(ram[PAY + win:PAY + win + 0x1000])
+        uc.mem_write(CTX + RING, chunk + bytes(0x1000 - len(chunk)))
+        for r, v in ((R_SP, 0x003FF000), (R_RA, SENT), (R_A0, CTX), (R_A1, OUT), (R_A2, 0), (R_A3, 0)):
+            uc.reg_write(r, v)
+        uc.emu_start(CODE, SENT, count=4000000)
+    print("clip %d, block %d (rate %d): cartridge band-entry states" % (rec[0], want_block, rec[2]))
+    for band, s, acc in seen.get(want_block, []):
+        print("  band %d entry  s=%-46s acc=%d" % (band, str(s), acc))
+    nxt = seen.get(want_block + 1, [])
+    if nxt:
+        print("  hand-off into block %d: s=%-40s acc=%d" % (want_block + 1, str(nxt[0][1]), nxt[0][2]))
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true", help="the gated cases")
     ap.add_argument("--clips", action="store_true", help="the bank census")
     ap.add_argument("--audio", type=int, metavar="CLIP", help="decode one clip to assets/sound/")
     ap.add_argument("--verbose", action="store_true")
+    # The differential harness: `--diff` compares samples, `--dumps` prints the state hand-offs
+    # that were used to debug the transcription. Both are reproducible from a command, which the
+    # M199 appendix needs in order to be checkable rather than reproduced from memory.
+    ap.add_argument("--diff", type=int, metavar="CLIP",
+                    help="compare the transcription against the emulator for one clip")
+    ap.add_argument("--blocks", type=int, default=40, help="blocks to compare (default 40)")
+    ap.add_argument("--dumps", type=int, metavar="CLIP",
+                    help="print the cartridge band-entry states for one clip")
+    ap.add_argument("--block", type=int, default=13, help="which block to dump (default 13)")
     args = ap.parse_args()
 
     if not ROM.exists():
@@ -433,6 +496,23 @@ def main():
 
     if args.check:
         return check()
+    if args.dumps is not None:
+        drec = [r for r in records() if r[0] == args.dumps]
+        if not drec:
+            sys.exit("no MORT record with index %d" % args.dumps)
+        _band_dump(drec[0], args.block, _unicorn())
+        return 0
+    if args.diff is not None:
+        crec = [r for r in records() if r[0] == args.diff]
+        if not crec:
+            sys.exit("no MORT record with index %d" % args.diff)
+        ref, mine, bad, blks = _compare(crec[0], args.blocks, _unicorn())
+        print("clip %d: %d blocks, %d samples; %d differ%s"
+              % (crec[0][0], min(args.blocks, crec[0][1]), len(ref), len(bad),
+                 "" if not blks else "  (blocks %s)" % blks[:12]))
+        for i, a, b in bad[:6]:
+            print("  sample %d: cartridge %d, transcription %d" % (i, a, b))
+        return 0 if not bad else 1
     rows = records()
     if args.clips:
         print("%d records; blocks %d..%d, total %d samples (%.1f s at 16000 Hz)"

@@ -98,7 +98,14 @@ before the shaper's middle segment was found).
                           mine [25, 11, 1, -1, 5, 6, 4, 16] acc=152  MATCH
 ```
 
-Reproduce with: the emulator is `tools/voice_decode.py`'s `_session`/`decode`; the transcription is
-`transcribe`. The differential gate in `--check` runs the same comparison on clips 27 and 2, so a
-regression shows up there rather than in a probe.
+Reproduce with two commands, added in M199 for exactly this reason:
+
+```sh
+python3 tools/voice_decode.py --diff 27                 # 26 blocks, 4 160 samples, 0 differ
+python3 tools/voice_decode.py --dumps 2 --block 14      # the table above, from the cartridge
+```
+
+`--diff` compares the transcription against the emulator sample for sample and exits non-zero on any
+difference; `--dumps` prints the cartridge's band-entry states for one block. The differential gate in
+`--check` runs the same comparison on clips 27 and 2, so a regression shows up there rather than in a probe.
 
