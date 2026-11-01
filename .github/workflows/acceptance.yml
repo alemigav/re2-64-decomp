@@ -43,13 +43,13 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Pinned to the interpreter the suites were verified on (3.9.6, the one installed on the machine this
       # project is developed on) rather than "3.x": every tool is plain stdlib, so a newer Python is very
       # likely fine — but "very likely" is not what this repo calls verified. A second matrix leg, on the
       # newest image, is one line the day someone installs that interpreter and runs the suites on it.
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.9'
 
@@ -96,7 +96,7 @@ jobs:
     runs-on: [self-hosted, re2-cartridge]
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Report the interpreter the suites will run on
         run: |
