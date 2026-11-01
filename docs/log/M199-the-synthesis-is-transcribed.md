@@ -65,3 +65,40 @@ pipeline lied to me in a way that looked like a real finding.
 434, 500, 587 (634 blocks, 0 samples differing); counts **36 suites / 454 cases**, of which 22 / 218 run
 without the cartridge; audit **48/48, 0 vacuous**. No audio claim is new here — the same WAVs come out,
 now from a decoder that does not need an emulator to produce them.
+
+## Appendix — the two dumps the transcription was debugged with
+
+These were stdout from throwaway probes and were not kept, which was a mistake: they are the evidence for
+the last two turns of debugging. Regenerated after the fix and recorded verbatim. Every line now matches —
+including block 14's hand-off into block 15, which is exactly the line that showed the defect (it read
+`[21, 10, 3, -1, 5, 6, 3, 13] acc=144` against the cartridge's `[25, 11, 1, -1, 5, 6, 4, 16] acc=152`
+before the shaper's middle segment was found).
+
+```
+=== clip 2, block 13: state at all four band entries ===
+  band 0 entry  s=[-3, -1, -1, 4, 20, 1, -5, -10]                acc=-38
+  band 1 entry  s=[-8, -16, -17, 17, 4, 28, -4, 22]              acc=-22
+               mine after band 0  [-8, -16, -17, 17, 4, 28, -4, 22]  acc=-22  MATCH
+  band 2 entry  s=[21, 24, 2, 35, 8, 16, -19, -18]               acc=129
+               mine after band 1  [21, 24, 2, 35, 8, 16, -19, -18]  acc=129  MATCH
+  band 3 entry  s=[40, 1, -74, 30, -4, 35, -10, 39]              acc=78
+               mine after band 2  [40, 1, -74, 30, -4, 35, -10, 39]  acc=78  MATCH
+  hand-off into block 14: cart [-37, -53, 35, -34, -18, 11, -18, 8] acc=-140
+                          mine [-37, -53, 35, -34, -18, 11, -18, 8] acc=-140  MATCH
+
+=== clip 2, block 14: state at all four band entries ===
+  band 0 entry  s=[-37, -53, 35, -34, -18, 11, -18, 8]           acc=-140
+  band 1 entry  s=[-90, 4, -9, 44, -23, 10, 0, -4]               acc=-216
+               mine after band 0  [-90, 4, -9, 44, -23, 10, 0, -4]  acc=-216  MATCH
+  band 2 entry  s=[-11, 8, -14, 6, -12, -6, -4, -24]             acc=-100
+               mine after band 1  [-11, 8, -14, 6, -12, -6, -4, -24]  acc=-100  MATCH
+  band 3 entry  s=[56, -28, 54, 14, -52, 18, -11, -14]           acc=137
+               mine after band 2  [56, -28, 54, 14, -52, 18, -11, -14]  acc=137  MATCH
+  hand-off into block 15: cart [25, 11, 1, -1, 5, 6, 4, 16] acc=152
+                          mine [25, 11, 1, -1, 5, 6, 4, 16] acc=152  MATCH
+```
+
+Reproduce with: the emulator is `tools/voice_decode.py`'s `_session`/`decode`; the transcription is
+`transcribe`. The differential gate in `--check` runs the same comparison on clips 27 and 2, so a
+regression shows up there rather than in a probe.
+
