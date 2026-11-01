@@ -562,6 +562,89 @@ def check() -> int:
     cases.append((f"the two prologue parameters are multiples of 4 throughout ({len(pro_ab)} values)",
                   all(v % 4 == 0 for v in pro_ab)))
 
+    import statistics as _st
+    def _ent(x):
+        c = Counter(x); t = len(x)
+        return -sum(v / t * math.log2(v / t) for v in c.values())
+
+    # --- M192: the codec's two header fields are now *understood*, not merely in range, and the group
+    # layout is confirmed at sample level. Three predictions, all tested on the pool at phase 256.
+    hi_nib, shifts, raws = bytearray(), [], []
+    A0, A1, B0, B1 = [], [], [], []
+    for smp in smp_blobs:
+        p = 256
+        while p + 40 <= len(smp):
+            g = smp[p:p + 40]
+            a0, a1, b0, b1 = struct.unpack_from(">4h", g, 0)
+            A0.append(a0); A1.append(a1); B0.append(b0); B1.append(b1)
+            for blk, ro in ((g[8:24], 0), (g[24:40], 4)):
+                hi_nib += blk[1:]
+                shifts.append(blk[0] & 0xF)
+                x, y = struct.unpack_from(">2h", g, ro)
+                raws.append(max(abs(x), abs(y)))
+            p += 40
+    TH = bytes((i >> 4) for i in range(256))
+    ch = Counter(hi_nib.translate(TH))
+    tot_n = sum(ch.values())
+    share = [ch.get(i, 0) / tot_n for i in range(16)]
+    cases.append((f"the 30 nibbles are signed residuals — {tot_n:,} of them peak at 0 and 15 "
+                  f"({share[0]:.1%} and {share[15]:.1%}) and decay symmetrically to {share[7]:.2%} and "
+                  f"{share[8]:.2%} at the extremes",
+                  share[0] > 0.15 and share[15] > 0.13
+                  and share[7] < 0.012 and share[8] < 0.006
+                  and max(share) == share[0] and max(share[9:]) == share[15]))
+    def _c(x, y):
+        n = len(x); mx = sum(x) / n; my = sum(y) / n
+        num = sum((u - mx) * (v - my) for u, v in zip(x, y))
+        den = (sum((u - mx) ** 2 for u in x) * sum((v - my) ** 2 for v in y)) ** 0.5
+        return num / den if den else 0.0
+    cs = _c(shifts, raws)
+    by = {}
+    for sh, m in zip(shifts, raws):
+        by.setdefault(sh, []).append(m)
+    meds = [sorted(by[sh])[len(by[sh]) // 2] for sh in sorted(by)]
+    # monotone over the shifts that carry real weight; above 8 there are 12 906 frames and fewer, and the
+    # medians flatten out. Asserting all thirteen would be asserting sample size, not structure.
+    dense = meds[:9]
+    cases.append((f"the shift scales the frame — |raw| median falls monotonically over the 9 densest "
+                  f"shifts, {dense[0]} down to {dense[-1]}, correlation {cs:+.3f}",
+                  cs < -0.35 and all(a > b for a, b in zip(dense, dense[1:]))))
+    wa, wb = _c(A0, A1), _c(B0, B1)
+    ab, wrap = _c(A1, B0), _c(B1[:-1], A0[1:])
+    cases.append((f"the four raw int16 of a group are two *adjacent* pairs: within-pair {wa:+.3f} and "
+                  f"{wb:+.3f}, across the frame boundary {ab:+.3f} and {wrap:+.3f}",
+                  wa > 0.8 and wb > 0.8 and abs(ab) < 0.02 and abs(wrap) < 0.02))
+    pre = []
+    for b in smp_off:
+        v = list(struct.unpack_from(">128h", d, o83 + b))
+        pre.append(_c(v[:-1], v[1:]))
+    mono = sum(1 for b in smp_off
+               if all(abs(x) <= abs(y) for x, y in zip(struct.unpack_from(">128h", d, o83 + b),
+                                                       struct.unpack_from(">128h", d, o83 + b)[1:])))
+    cases.append((f"the 256-byte prelude is audio, not a 128-entry codebook table — adjacent correlation "
+                  f"{_st.median(pre):+.3f} and {mono} of {n_smp} sorted by magnitude",
+                  _st.median(pre) > 0.7 and mono == 0))
+    # u16@+4: no byte-aligned frame period anywhere in a plausible range, which is why the ratio is
+    # continuous and non-integral — the stream is bit-packed, not byte-framed.
+    blob = b"".join(r4[a + 12:a + l] for a, l in zip(offs[:-1], lens))
+    gaps = []
+    for F in (16, 20, 32, 40, 59):
+        al = blob[0::F]
+        rest = b"".join(blob[i::F] for i in range(1, F))
+        gaps.append(abs(_ent(al) - _ent(rest)))
+    cases.append((f"REFUTED: the voice payload has no byte-aligned frame — for F in 16/20/32/40/59 the "
+                  f"aligned-vs-rest entropy gap is at most {max(gaps):.4f}",
+                  max(gaps) < 0.01))
+    b10l = [r4[a + 10] for a in offs[:-1]]      # M189's b10 is a set, for a census; this needs a list
+    cnt10 = Counter(b10l)
+    spans = []
+    for v in [x for x, _c in cnt10.most_common() if _c >= 20][:6]:
+        rr = [p / f for p, f, bb in zip(pay, field, b10l) if bb == v]
+        spans.append(max(rr) - min(rr))
+    cases.append((f"REFUTED: byte +10 is not a codec mode — the payload/field span inside each of its "
+                  f"values is at least {min(spans):.1f} bytes",
+                  min(spans) > 10))
+
     # --- M191: the codec constants are also a committed fixture, so the prose that quotes them and the
     # measurement that produces them are checked against the same source. The cartridge-gated case runs
     # first: if the measurement ever moves, this fails before the documentation can drift with it.
