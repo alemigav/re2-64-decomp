@@ -71,7 +71,7 @@ The verification system is no longer a suite you run; it is a system with a stat
 - **A ratchet.** Expected counts may not be lowered, suites may not be deleted, and `src/` may not move —
   each needs a deliberate `--write` that shows up as a diff.
 - **Derived numbers.** Every figure quoted in the README and handover is computed from the registry and
-  asserted in **sixteen** places. A phrase that *disappears* is a failure, so deleting a stale line cannot
+  asserted in **seventeen** places. A phrase that *disappears* is a failure, so deleting a stale line cannot
   help. That mechanism caught its own author making the same clerical error twice in twenty minutes.
 - **One verifier entry point** that will not report `PASS` unless the gate audit is clean: a vacuous audit
   forces `INCONCLUSIVE` regardless of how green everything else is. The rule is the first branch of the
@@ -102,6 +102,19 @@ run and reports success is the same error as a test that asserts nothing.
   class is.
 - **Why key `11` is absent** from `SND_PROJ`, and **why its order starts at 118**. Single facts about one
   file; guessing at them would produce exactly the unfalsifiable story this project keeps refusing.
+
+## Where the tag and this text differ
+
+`v1.1` points at commit `5f9cd9e`. **This description matches the tree as it stands now**, and one thing
+landed after the tag, so a reader who checks out `v1.1` will see two differences:
+
+* the counts read **411** cases (**211** without the cartridge) and the gate asserts **sixteen** numbers,
+  against 414 / 212 / seventeen here — nothing retracted, just a milestone later;
+* **the README at the tag still carries the two figures M190 retracted** — a "16-byte prologue" and
+  "97.58 %". The substance was already correct in the release body you are reading, because it was written
+  after the retraction, but the front page inside the tag was not fixed until the next commit. That is the
+  honest reason this paragraph exists rather than a silently edited release page: a tag is immutable, so the
+  fix went forward, not backward.
 
 ## Provenance
 
