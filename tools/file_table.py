@@ -53,6 +53,8 @@ here: that span holds 2 577 words whose first byte takes no flag distribution at
   ./file_table.py --report    # the census, for a human
 """
 import argparse
+import json
+import re
 import struct
 import sys
 import zlib
@@ -225,6 +227,48 @@ def check() -> int:
     r3 = d[OTHER_CART:OTHER_CART + OTHER_SIZE]
     cases.append(("id 1983 carries no MORT record, and its word 0 is not a count",
                   r3.count(MORT) == 0 and struct.unpack_from(">I", r3, 0)[0] > OTHER_SIZE))
+
+    # --- M182: does anything in the corpus read the record header? No. The tag is never validated, and
+    # the field at +4 is never read at its literal offset by any decompiled function. These are negatives,
+    # which is why they are gated: a negative that is not pinned to a measurement decays into a belief.
+    import re as _re
+    root = HERE.parent
+    images = [p for p in sorted((root / "build" / "elfs").glob("*")) if p.is_file()] \
+        + [p for p in sorted(UNPACKED.glob("*.bin")) if p.is_file()]
+    tagged = [p.name for p in images if 0 < p.read_bytes().count(MORT) < 5]
+    cases.append((f"no built image or unpacked member contains the literal `MORT` — the tag is never "
+                  f"validated ({len(images)} files scanned, {len(images) - len(tagged)} without it)", not tagged))
+
+    ranges = json.loads((root / "fixtures" / "decomp" / "ranges.json").read_text())["images"]
+    have = {p.stem.lower() for p in (root / "src").glob("*/*.c")}
+    total = sum(len(v) for v in ranges.values())
+    missing = [(img, s) for img, rs in ranges.items() for s, _e in rs
+               if f"func_{s:08x}" not in have and f"fun_{s:08x}" not in have]
+    cases.append((f"the corpus holds 3678 function ranges and 74 without a src file "
+                  f"({total} / {len(missing)})", total == 3678 and len(missing) == 74))
+    audio = [(s, e) for s, e in ranges["stage2"] if 0x800B3000 <= s < 0x800B6000]
+    audio_missing = [(s, e) for s, e in audio
+                     if f"func_{s:08x}" not in have and f"fun_{s:08x}" not in have]
+    cases.append((f"the audio cluster is fully decompiled — {len(audio)} functions in "
+                  f"0x800b3000..0x800b6000, {len(audio_missing)} missing", len(audio) == 26 and not audio_missing))
+    gaps_in_audio = [(s, e) for img, s in missing for e in [0] if img == "stage2" and 0x800B0000 <= s < 0x800C0000]
+    cases.append((f"none of the {len(missing)} gaps lies in the audio range 0x800b0000..0x800bffff",
+                  not gaps_in_audio))
+
+    writes = [(p.parent.name + "/" + p.name, ln.strip())
+              for p in sorted((root / "src").glob("*/*.c"))
+              for ln in p.read_text().splitlines() if _re.search(r"0x1a4\) = ", ln)]
+    cases.append((f"only {len(writes)} writes to a literal +0x1a4 field exist, and none is in the audio family",
+                  len(writes) == 4
+                  and not any(n.startswith(("FUN_800b", "func_800b")) for n, _ in writes)))
+    voice = [p.name for p in sorted((root / "src").glob("*/*.c"))
+             if _re.search(r"80158[cde]", p.read_text())]
+    cases.append((f"no decompiled function addresses the voice struct region 0x80158c..0x80158e ({len(voice)})",
+                  not voice))
+    f4a04 = (root / "src" / "stage2" / "FUN_800b4a04.c").read_text()
+    cases.append(("CODE: FUN_800b4a04 reads +0x1a4 and +0x1a8 as stream state, never as a header to parse",
+                  "*(undefined2 *)(param_1 + 0x1a4)" in f4a04
+                  and "*(uint *)(param_1 + 0x1a8) & 0xffffff" in f4a04))
 
     # the zlib accounting: 4761 walked = 4726 distinct named here + 35 elsewhere
     named = {BASE + o for _, o, _ in zl}
