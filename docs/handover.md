@@ -303,7 +303,7 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 33 suites, 410 cases
+python3 tools/acceptance.py         # 33 suites, 411 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
 python3 tools/audit_gates.py        # 44/44: every check must fail when its mechanism is disabled
 python3 tools/ratchet.py --check    # the registry may not drift, and src/ may not move, silently
@@ -314,7 +314,7 @@ python3 tools/counts.py --check     # the seven numbers, derived once and assert
 **A green CI run does not vouch for everything.** Twelve suites are cartridge-gated and report `SKIP`
 on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
 `cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
-`routine index bounds`, `file table` and the gate audit — **200 of 410 cases**. Their enforcement is the
+`routine index bounds`, `file table` and the gate audit — **200 of 411 cases**. Their enforcement is the
 pre-commit hook and a local run, and the CI job summary lists them by name.
 
 ## 5b. Who verifies what, and the three edits that cannot happen silently

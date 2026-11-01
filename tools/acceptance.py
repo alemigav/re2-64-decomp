@@ -82,7 +82,7 @@ SUITES = [
     # The verifier's own rule, graded before anyone relies on it: a vacuous audit must force INCONCLUSIVE
     # rather than PASS. The full run is *not* registered here — it invokes `ci.sh`, which runs this list,
     # so registering it would recurse.
-    ("verifier self-test", [sys.executable, "tools/verify.py", "--self-test"], 7, False),
+    ("verifier self-test", [sys.executable, "tools/verify.py", "--self-test"], 8, False),
 ]
 
 COUNT = re.compile(r"^(\d+)\s*/\s*(\d+)")

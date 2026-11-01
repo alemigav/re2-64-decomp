@@ -24,6 +24,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
+CARTRIDGE = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 
 AUDITS = [
     # --- walk_stream: the length scan's own mechanisms
@@ -368,6 +369,30 @@ def run_audit(audit, keep: Path = None) -> tuple:
             shutil.rmtree(tmp, ignore_errors=True)
 
 
+def gated_tools() -> set:
+    """The tools whose suites are registered as needing the cartridge, read from `acceptance.py`.
+
+    Without this, an audit of a cartridge-gated tool reports VACUOUS on a machine with no cartridge: the
+    mutated copy fails for want of the ROM, which acceptance reports as SKIP, and a mutation that cannot
+    demonstrate anything was being counted as a check that cannot fail. Those are different things — a skip
+    is an unrun check, a vacuous one is a broken check — and conflating them made `verify.py` report
+    INCONCLUSIVE on every fresh clone, including the one the release notes tell a stranger to run.
+    """
+    ns = {"__file__": str(HERE / "acceptance.py"), "__name__": "_acceptance"}
+    try:
+        exec(compile((HERE / "acceptance.py").read_text(), "acceptance.py", "exec"), ns)
+    except OSError:
+        return set()
+    out = set()
+    for _name, cmd, _cases, needs_rom in ns["SUITES"]:
+        if not needs_rom:
+            continue
+        for part in cmd:
+            if isinstance(part, str) and part.startswith("tools/") and part.endswith(".py"):
+                out.add(Path(part).name)
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -379,10 +404,16 @@ def main() -> int:
             print(f"  {a['name']}\n      {a['tool']} {' '.join(a['args'])}  <- mutation in {a['file']}")
         return 0
 
+    skipped = []
+    gated = gated_tools() if not CARTRIDGE.exists() else set()
     passed = 0
     vacuous = []
     broken = []
     for a in AUDITS:
+        if a["tool"] in gated:
+            skipped.append(a["name"])
+            print(f"  SKIP     {a['name']} — needs the cartridge, so its mutation cannot be demonstrated here")
+            continue
         detected, detail = run_audit(a)
         if detected is None:
             broken.append((a["name"], detail))
@@ -394,8 +425,9 @@ def main() -> int:
         else:
             vacuous.append(a["name"])
             print(f"  VACUOUS  {a['name']}  ({detail}) — the check passed with its mechanism disabled")
-    total = len(AUDITS)
-    print(f"\n{passed}/{total} audit case(s); {len(vacuous)} vacuous, {len(broken)} broken")
+    total = len(AUDITS) - len(skipped)
+    print(f"\n{passed}/{total} audit case(s); {len(vacuous)} vacuous, {len(broken)} broken"
+          + (f", {len(skipped)} skipped (needs the cartridge)" if skipped else ""))
     if vacuous:
         print("VACUOUS checks (they cannot fail for the right reason):")
         for name in vacuous:

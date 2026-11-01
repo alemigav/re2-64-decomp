@@ -44,6 +44,8 @@ ADMISSION = ("audit", [sys.executable, "tools/audit_gates.py"], "every gate must
 
 COUNT = re.compile(r"^(\d+)\s*/\s*(\d+)")
 AUDIT = re.compile(r"(\d+)/(\d+) audit case\(s\);\s*(\d+) vacuous,\s*(\d+) broken")
+# "... 9 skipped (needs the cartridge)" — an unrun check, which is not the same as a broken one.
+AUDIT_SKIP = re.compile(r"audit case\(s\);.*?,\s*(\d+) skipped")
 SKIP = re.compile(r"Skipped for want of the cartridge|SKIP \(needs the cartridge\)")
 # `ci.sh` ends with the artefact scan's own `5/5`, which is not what it covers. Its coverage is the
 # acceptance summary, so that is what the report quotes for it — the verifier's report must not be the
@@ -73,7 +75,7 @@ def adjudicate(procedures, audit):
     """
     if audit is None:
         return "INCONCLUSIVE", "the gate audit produced no N/M verdict, so no result can be admitted"
-    ap, at, vac, brk = audit
+    ap, at, vac, brk = audit[:4]
     if vac or brk:
         return "INCONCLUSIVE", (f"the gate audit reports {vac} vacuous and {brk} broken — the checks that "
                                 f"produced this evidence have not been shown to fail")
@@ -104,7 +106,9 @@ def collect():
         screens[name] = out
     code, out = run(ADMISSION[1])
     m = AUDIT.search(out)
-    audit = (int(m.group(1)), int(m.group(2)), int(m.group(3)), int(m.group(4))) if m else None
+    ms = AUDIT_SKIP.search(out)
+    audit = (int(m.group(1)), int(m.group(2)), int(m.group(3)), int(m.group(4)),
+             int(ms.group(1)) if ms else 0) if m else None
     results.append((ADMISSION[0], code, verdict_of(out)))
     screens[ADMISSION[0]] = out
     v = verdict_of(out)
@@ -127,12 +131,13 @@ def report(as_json: bool) -> int:
         "admission": {"gate_audit": f"{audit[0]}/{audit[1]}" if audit else None,
                       "vacuous": audit[2] if audit else None,
                       "broken": audit[3] if audit else None,
+                      "skipped_no_cartridge": audit[4] if audit else None,
                       "admissible": verdict != "INCONCLUSIVE"},
         "verdict": verdict,
         "why": why,
-        "coverage": "partial" if skipped else "full",
+        "coverage": "partial" if (skipped or (audit and audit[4])) else "full",
         "note": ("cartridge-gated suites SKIPped: any claim that depends on them is INCONCLUSIVE here"
-                 if skipped else "all suites ran"),
+                 if (skipped or (audit and audit[4])) else "all suites ran"),
         "blocks_milestone": verdict != "PASS",
     }
     REPORT.parent.mkdir(parents=True, exist_ok=True)
@@ -145,8 +150,10 @@ def report(as_json: bool) -> int:
         print(f"  {'procedure':10s} {'covers':>28s}  exit")
         for p in out["procedures"]:
             print(f"  {p['name']:10s} {p['detail']:>28s}  {p['exit']}")
+        sk = out["admission"]["skipped_no_cartridge"] or 0
         print(f"  admission  gate audit {out['admission']['gate_audit'] or '-'}, "
-              f"{out['admission']['vacuous']} vacuous, {out['admission']['broken']} broken")
+              f"{out['admission']['vacuous']} vacuous, {out['admission']['broken']} broken"
+              + (f", {sk} skipped" if sk else ""))
         print(f"\nVERDICT {verdict} — {why}")
         print(f"coverage {out['coverage']}: {out['note']}")
         print(f"report written to {REPORT}")
@@ -154,18 +161,22 @@ def report(as_json: bool) -> int:
 
 
 def self_test() -> int:
-    clean = (39, 39, 0, 0)
+    clean = (44, 44, 0, 0, 0)
     allpass = [("a", 0, (10, 10)), ("b", 0, (4, 4))]
     cases = [
         ("a clean audit and every procedure passing is PASS",
          adjudicate(allpass, clean)[0] == "PASS"),
+        # an audit that could not run is not an audit that could not fail: skipped must not block a clone,
+        # which is what made verify.py report INCONCLUSIVE on every fresh checkout (M191)
+        ("audits skipped for want of the cartridge do not make a run inadmissible",
+         adjudicate(allpass, (35, 35, 0, 0, 9))[0] == "PASS"),
         # the rule the verifier is not allowed to reinterpret: vacuity outranks greenness
         ("one vacuous audit entry makes a fully green run INCONCLUSIVE, not PASS",
-         adjudicate(allpass, (39, 39, 1, 0))[0] == "INCONCLUSIVE"),
-        ("one broken audit entry is INCONCLUSIVE too", adjudicate(allpass, (39, 39, 0, 1))[0] == "INCONCLUSIVE"),
+         adjudicate(allpass, (44, 44, 1, 0, 0))[0] == "INCONCLUSIVE"),
+        ("one broken audit entry is INCONCLUSIVE too", adjudicate(allpass, (44, 44, 0, 1, 0))[0] == "INCONCLUSIVE"),
         ("an audit with no verdict is INCONCLUSIVE", adjudicate(allpass, None)[0] == "INCONCLUSIVE"),
         ("an audit that did not pass is INCONCLUSIVE, not FAIL",
-         adjudicate(allpass, (38, 39, 0, 0))[0] == "INCONCLUSIVE"),
+         adjudicate(allpass, (43, 44, 0, 0, 0))[0] == "INCONCLUSIVE"),
         # The exit status must be the *only* defect here — a tally of (2, 3) would also trip the
         # "fewer cases than it ran" branch below, and this case was masked by it until the audit aimed at
         # the `failed` branch and found the case passing with that branch disabled (M181).
