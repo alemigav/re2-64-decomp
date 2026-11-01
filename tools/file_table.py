@@ -467,6 +467,38 @@ def check() -> int:
                   f"zeros + 1 dangling reference",
                   resolved + 834 + 1 == len(shorts)))
 
+    # --- M188: the two holes. They are the same *kind* of anomaly — one absent entry in an otherwise
+    # contiguous key space — and they are not the same fact. Both are gated so neither can be upgraded.
+    keypos = Counter(v for _r, L in pro_lists for v in L[4:])
+    cases.append((f"PROJ key positions reference {len(keypos)} distinct slot values, {min(keypos)}..{max(keypos)} "
+                  f"— the whole range, so every slot is spoken for",
+                  len(keypos) == 2026 and min(keypos) == 1 and max(keypos) == 2026 and 0 not in keypos))
+    sec0_refs = set(keypos) & pool_keys
+    cases.append((f"exactly {len(sec0_refs)} of them exist in the pool — section 0's count — so the one "
+                  f"dangling reference is the one hole, and the two facts close",
+                  len(sec0_refs) == 2025 and (set(keypos) - pool_keys) == {531}))
+    cases.append((f"pool sections 1-3 ({sum(counts[1:])} records) are never referenced by any PROJ list",
+                  len(pool_keys - set(keypos)) == 570 and sum(counts[1:]) == 570))
+    # keys are read signed (`>h`) because sections 1 and 3 carry negative ranges, so compare masked
+    hole_census = [sorted(set(range(min(k), max(k) + 1)) - k) for k in sec_keys]
+    h3 = [h & 0xFFFF for h in hole_census[3]]
+    cases.append((f"pool holes per section: {[len(h) for h in hole_census]} — section 2 has none, section 3 "
+                  f"has {[hex(h) for h in h3]}",
+                  [len(h) for h in hole_census] == [1, 11, 0, 1]
+                  and hole_census[0] == [531] and h3 == [0x8098]))
+    pro_key_holes = sorted(set(range(min(pro_keys), max(pro_keys) + 1)) - set(pro_keys))
+    at_11 = [(k, i) for _r, L in pro_lists for k, i in [(0, 0)] if False]
+    at_11 = [(rec_key, i) for (rec_key, L) in [(pro_keys[j], L) for j, (_r, L) in enumerate(pro_lists)]
+             for i, v in enumerate(L) if v == 11 and i >= 4]
+    cases.append((f"PROJ slot {pro_key_holes} is unused, yet the value 11 is a live key reference in "
+                  f"{len(at_11)} lists (record keys {sorted(k for k, _i in at_11)}) — an unused slot, not an "
+                  f"absent target",
+                  pro_key_holes == [11] and len(at_11) == 2
+                  and sorted(k for k, _i in at_11) == [6, 51]))
+    pro_ab = [L[1] for _r, L in pro_lists] + [L[3] for _r, L in pro_lists]
+    cases.append((f"the two prologue parameters are multiples of 4 throughout ({len(pro_ab)} values)",
+                  all(v % 4 == 0 for v in pro_ab)))
+
     # --- M182: does anything in the corpus read the record header? No. The tag is never validated, and
     # the field at +4 is never read at its literal offset by any decompiled function. These are negatives,
     # which is why they are gated: a negative that is not pinned to a measurement decays into a belief.

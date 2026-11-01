@@ -68,7 +68,7 @@ SUITES = [
     # The file table is the cartridge's whole file system, and it is mostly *not* zlib (M178). One
     # suite because the finding is one object: the census, the two files the 17.6 MB turned out to be,
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
-    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 59, True),
+    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 65, True),
     # The ratchet guards the registry itself. `--self-test` breaks each invariant on a synthetic root
     # (a lowered count, a deleted suite, an unbaselined addition, an edit to src/) and requires
     # detection; `--check` applies the same two invariants to this repository. Both are needed: without
