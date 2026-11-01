@@ -287,7 +287,7 @@ def check() -> int:
     cases.append((f"REFUTED: no record field gives the sample length — best of {len(laws)} laws fits "
                   f"{max(fits.values())}/{n_smp}", max(fits.values()) <= 2))
 
-    # --- M185: the other three files of the sound family. `FUN_800a86a0` walks both SND_PROJ and
+    # --- M182: does anything in the corpus read the record header? `FUN_800a86a0` walks both SND_PROJ and
     # SND_POOL the same way — a u32 at the head is a *relative offset to the first record*, each record's
     # first u32 is the stride to the next, and `-1` ends the chain — so each is framed the same way id 1983
     # was framed by its directory. All three are zlib members, unlike 1979 and 1983.
@@ -321,12 +321,14 @@ def check() -> int:
 
     pool = zlib.decompress(d[BASE + entries[1981][0]:BASE + entries[1981][0] + entries[1981][1]])
     secs = list(struct.unpack_from(">4I", pool, 0))
-    pool_keys, counts, abut = set(), [], 0
+    pool_keys, counts, abut, sec_keys = set(), [], 0, []
     for i, st in enumerate(secs):
         end = secs[i + 1] if i + 1 < len(secs) else len(pool)
         recs, termpos, ok = _chain(pool, st + struct.unpack_from(">I", pool, st)[0], end)
         counts.append(len(recs))
-        pool_keys |= {struct.unpack_from(">h", pool, r + 4)[0] for r in recs}
+        keys_here = {struct.unpack_from(">h", pool, r + 4)[0] for r in recs}
+        pool_keys |= keys_here
+        sec_keys.append(keys_here)
         abut += int(ok and termpos + 4 == end)
     cases.append((f"SND_POOL's head is 4 section offsets {secs}, and every section's terminator abuts the "
                   f"next section or EOF ({abut}/4)", abut == 4))
@@ -348,6 +350,44 @@ def check() -> int:
     cases.append((f"PROJ lists hold {len(shorts)} shorts and {resolved} ({resolved / len(shorts):.1%}) are "
                   f"POOL keys — a real link, not a total one",
                   len(shorts) == 5136 and resolved == 4301))
+
+    # --- M186: the 835 that do not resolve are structural, not a second object class. Chased down:
+    # 834 of them are the constant 0 in the first four shorts of *every* list — a two-parameter prologue
+    # stored as u32s with zero high halves — and exactly one is a real dangling reference.
+    pro_lists = []
+    for r in pro_recs:
+        pos = r + struct.unpack_from(">I", pro, r + 8)[0]
+        vals = []
+        while True:
+            v = struct.unpack_from(">h", pro, pos)[0]
+            if v == -1:
+                break
+            vals.append(v)
+            pos += 2
+        pro_lists.append((r, vals))
+    unresolved = [v for _r, L in pro_lists for v in L if v not in pool_keys]
+    zeros_at = [(i, v) for _r, L in pro_lists for i, v in enumerate(L[:4]) if v not in pool_keys and v == 0]
+    stray = [(r, i, v) for r, L in pro_lists for i, v in enumerate(L) if v not in pool_keys and v != 0]
+    cases.append((f"834 of the {len(unresolved)} unresolved shorts are the constant 0, at positions 0 and 2 "
+                  f"of all {len(pro_lists)} lists",
+                  len(unresolved) == 835 and len(zeros_at) == 834
+                  and all(i in (0, 2) for i, _v in zeros_at)))
+    cases.append((f"every PROJ list opens with [0, a, 0, b] — a two-parameter prologue, "
+                  f"{len({L[1] for _r, L in pro_lists})} and {len({L[3] for _r, L in pro_lists})} distinct",
+                  all(L[0] == 0 and L[2] == 0 for _r, L in pro_lists)
+                  and len({L[1] for _r, L in pro_lists}) == 55
+                  and len({L[3] for _r, L in pro_lists}) == 54))
+    cases.append((f"exactly one non-zero short is unresolved — {stray[0][2]} in the list of the first record, "
+                  f"at position {stray[0][1]}",
+                  len(stray) == 1 and stray[0][0] == 0 and stray[0][2] == 531))
+    # ...and it is a *dangling reference*, not a decode failure: it is precisely the one hole in the pool.
+    sec0_keys = sec_keys[0]
+    holes0 = sorted(set(range(min(sec0_keys), max(sec0_keys) + 1)) - sec0_keys)
+    cases.append((f"POOL section 0 has exactly one hole, {holes0}, and it is the key the PROJ dangles on",
+                  holes0 == [531] and 531 not in pool_keys))
+    cases.append((f"all {len(shorts)} shorts are therefore accounted for: {resolved} pool keys + 834 prologue "
+                  f"zeros + 1 dangling reference",
+                  resolved + 834 + 1 == len(shorts)))
 
     # --- M182: does anything in the corpus read the record header? No. The tag is never validated, and
     # the field at +4 is never read at its literal offset by any decompiled function. These are negatives,
