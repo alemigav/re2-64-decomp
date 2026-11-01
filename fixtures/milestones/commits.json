@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "7d4364f",
+   "subject": "M183: a milestone that exists only as a commit is refused",
+   "milestones": [
+    183
+   ]
+  },
+  {
    "sha": "d5b762f",
    "subject": "M182: nothing in the corpus reads the record header",
    "milestones": [

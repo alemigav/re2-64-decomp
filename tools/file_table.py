@@ -54,6 +54,7 @@ here: that span holds 2 577 words whose first byte takes no flag distribution at
 """
 import argparse
 import json
+import math
 import re
 import struct
 import sys
@@ -227,6 +228,64 @@ def check() -> int:
     r3 = d[OTHER_CART:OTHER_CART + OTHER_SIZE]
     cases.append(("id 1983 carries no MORT record, and its word 0 is not a count",
                   r3.count(MORT) == 0 and struct.unpack_from(">I", r3, 0)[0] > OTHER_SIZE))
+
+    # --- M184: id 1983's container, framed by the sample directory (id 1982, SND_SMPDIR).
+    # The directory is 28-byte records terminated by `ffffffff`; a u32 at +4 is a byte offset into 1983,
+    # and with the last record closing at the file end the records tile 1983 exactly. So the pool is 1192
+    # samples with known boundaries and rates. The *sample codec* is a named gap, and the negatives that
+    # keep it open are gated with it — a gap without its refutations becomes a shrug.
+    so, ss = entries[1982]
+    sdir = zlib.decompress(d[BASE + so:BASE + so + ss])
+    other_size = OTHER_SIZE
+    srec = [sdir[28 * k:28 * k + 28] for k in range(len(sdir) // 28)]
+    n_smp = 0
+    while 28 * (n_smp + 1) <= len(sdir) and struct.unpack_from(">h", sdir, 28 * n_smp)[0] != -1:
+        n_smp += 1
+    smp_off = [struct.unpack_from(">I", r, 4)[0] for r in srec[:n_smp]]
+    smp_rate = [struct.unpack_from(">H", r, 14)[0] for r in srec[:n_smp]]
+    smp_idx = [struct.unpack_from(">H", r, 0)[0] for r in srec[:n_smp]]
+    ends = smp_off[1:] + [other_size]
+    smp_len = [e - b for b, e in zip(smp_off, ends)]
+
+    cases.append((f"the sample directory is {len(sdir)} B = {n_smp} x 28 + a ffffffff terminator",
+                  len(sdir) == 33380 and n_smp == 1192 and sdir[28 * n_smp:] == b"\xff\xff\xff\xff"))
+    cases.append((f"its u16 at +0 is a sequential index 1..{n_smp}",
+                  smp_idx == list(range(1, n_smp + 1))))
+    cases.append((f"its u32 at +4 is a strictly ascending byte offset into id 1983, starting at 0 "
+                  f"({smp_off[0]}..{smp_off[-1]:,})",
+                  smp_off[0] == 0 and all(b > a for a, b in zip(smp_off, smp_off[1:]))
+                  and max(smp_off) < other_size))
+    cases.append((f"the offsets tile id 1983 exactly — {n_smp} lengths sum to {sum(smp_len):,} == the file",
+                  sum(smp_len) == other_size))
+    cases.append((f"u16 at +14 takes 15 canonical sample rates (16000 x{sum(1 for x in smp_rate if x == 16000)})",
+                  len(set(smp_rate)) == 15 and smp_rate.count(16000) == 601
+                  and {16000, 11025, 22050, 14000} <= set(smp_rate)))
+    cases.append((f"all {n_smp} sample lengths are divisible by 4",
+                  all(l % 4 == 0 for l in smp_len) and min(smp_len) == 336))
+
+    # the codec, kept open by measurement rather than by omission
+    o83 = BASE + entries[1983][0]
+    hi, lo = bytearray(), bytearray()
+    for b, e in zip(smp_off, ends):
+        blob = d[o83 + b:o83 + e]
+        hi += blob[0::2]
+        lo += blob[1::2]
+    def _H(x):
+        c = Counter(x); t = len(x)
+        return -sum(v / t * math.log2(v / t) for v in c.values())
+    flat = (Counter(hi)[0] + Counter(hi)[255]) / len(hi)
+    cases.append((f"REFUTED: the samples are not plain 16-bit PCM — high-plane entropy {_H(hi):.3f} vs "
+                  f"{_H(lo):.3f}, and 0x00/0xFF only {flat:.1%} of the high plane",
+                  _H(hi) > 6.9 and flat < 0.12))
+    f6 = [struct.unpack_from(">H", r, 6)[0] for r in srec[:n_smp]]
+    f18 = [struct.unpack_from(">H", r, 18)[0] for r in srec[:n_smp]]
+    def _a4(x): return (x + 3) // 4 * 4
+    laws = {"f18*3/2": lambda x: _a4(x * 3 // 2), "f18*2": lambda x: _a4(x * 2),
+            "f18": _a4, "f6*2": lambda x: _a4(x * 2), "f6": _a4}
+    fits = {k: sum(1 for l, x in zip(smp_len, f18 if k.startswith("f18") else f6) if l == fn(x))
+            for k, fn in laws.items()}
+    cases.append((f"REFUTED: no record field gives the sample length — best of {len(laws)} laws fits "
+                  f"{max(fits.values())}/{n_smp}", max(fits.values()) <= 2))
 
     # --- M182: does anything in the corpus read the record header? No. The tag is never validated, and
     # the field at +4 is never read at its literal offset by any decompiled function. These are negatives,
