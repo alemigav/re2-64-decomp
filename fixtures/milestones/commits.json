@@ -2,6 +2,21 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "8ef226c",
+   "subject": "docs: the front page and handover were describing M188, not M199",
+   "milestones": [
+    188,
+    199
+   ]
+  },
+  {
+   "sha": "5bc60cd",
+   "subject": "fix: re-seed the milestone fixture with M199",
+   "milestones": [
+    199
+   ]
+  },
+  {
    "sha": "80969e3",
    "subject": "M199: the voice synthesis is transcribed, and it matches the cartridge",
    "milestones": [
