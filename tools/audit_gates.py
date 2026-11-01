@@ -170,6 +170,29 @@ AUDITS = [
          file="tools/patch_text.py",
          old="        if old == new:",
          new="        if False:"),
+    # --- the file table (M178): one mutation per leg, including the exact bug this tool had on its
+    # first run — the entry offsets are relative to the table base, and slicing the cartridge with one
+    # double-counts it. That mutation reads a plausible file out of the wrong place and still looks sane.
+    dict(name="file_table: the directory is read one word early (the count taken as an offset)",
+         tool="file_table.py", args=["--check"],
+         file="tools/file_table.py",
+         old='    vals = struct.unpack_from(">" + str(count) + "I", r4, 4)',
+         new='    vals = struct.unpack_from(">" + str(count) + "I", r4, 0)'),
+    dict(name="file_table: no offset is ever seen without the top byte",
+         tool="file_table.py", args=["--check"],
+         file="tools/file_table.py",
+         old='    noflag = {k for k, v in enumerate(vals) if v >> 24 == 0}',
+         new='    noflag = set()'),
+    dict(name="file_table: every entry counted as a walked member",
+         tool="file_table.py", args=["--check"],
+         file="tools/file_table.py",
+         old='    named = {BASE + o for _, o, _ in zl}',
+         new='    named = {BASE + o for _, o, _ in real}'),
+    dict(name="file_table: id 1983 sliced with the relative offset",
+         tool="file_table.py", args=["--check"],
+         file="tools/file_table.py",
+         old='    r3 = d[OTHER_CART:OTHER_CART + OTHER_SIZE]',
+         new='    r3 = d[OTHER_REL:OTHER_REL + OTHER_SIZE]'),
 ]
 
 # things a mutated tool must be able to read; the heavy ones are symlinked

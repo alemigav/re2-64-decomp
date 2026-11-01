@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-178 milestones are indexed. 106 of them have a note; the rest are rows in the log that cite
+179 milestones are indexed. 107 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -194,6 +194,7 @@ at the foot of this file.
 | 175 | **M175** — the self-hosted tier: all 230 cases in CI without uploading the cartridge | `docs/log/M175-the-self-hosted-tier.md` |
 | 176 | **M176** — the secret holds access, not bytes: CI fetches the cartridge | `docs/log/M176-the-secret-holds-access.md` |
 | 177 | **M177** — publication readiness: a frontpage, a licence, and a copyright audit that reads bytes | `docs/log/M177-publication-readiness.md` |
+| 178 | **M178** — the file table is the file system, and the 17.6 MB is the sound family | `docs/log/M178-file-table-and-the-sound-family.md` |
 
 ## The gaps, and why they are empty
 

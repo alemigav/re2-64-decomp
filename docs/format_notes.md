@@ -159,6 +159,18 @@ wrong boundary would corrupt the stream.
 | `0x0b73fb3`–`0x140ed84` (R3) | 9 022 929 B | entropy **7.1893** (was stated 7.08); **0 x `00 00 01 B3`**; 214 x `00 00 01 00`, 133 x `ffd8ff`, 1 484 x `fffb`, 319 x `8000` |
 | `0x0338fe1`–`0xb63106` (R4) | 8 560 933 B | entropy **7.9371** (was stated 7.34); 2 x `00 00 01 B3` at one identical spacing (coincidence), 1 x picture code, 29 x `fffb`, 735 x `8000` |
 
+**M178 — both are single file-table entries, and the family is the sound system.** R3 is file id
+**1983** (cart `0x0b73fbc`–`0x140ed7c`, **9 022 912 B**) and R4 is id **1979**
+(`0x0338fea`–`0x0b630fe`, **8 560 916 B**): **17 583 828 B** together, and each boundary is **9 B** inside
+the span above at the head and **8 B** at the tail — the spans were inverted from zlib coverage and are
+that much too generous, which is the "preceding block's trailer" effect noted at the end of this
+document. Between them sit **exactly** ids 1980, 1981 and 1982 — the files `FUN_800759d8` tags
+`SND_PROJ`, `SND_POOL` and `SND_SMPDIR` — and both blobs are loaded by that same function. id 1979's own
+format is decoded there: a `[u32 count][count x u32]` directory of **588** records, each beginning
+`MORT` with a 16 000/8 000 Hz field. The codec of the 28-payload container below is still open, but it is
+now a sub-problem of one file rather than an unidentified 8.6 MB. See
+`docs/log/M178-file-table-and-the-sound-family.md`.
+
 **M81 addendum — the first content identified inside R4.** The tail of R4 holds a **non-zlib
 container** starting at cart `0xb6248` (immediately after a 519-byte zlib member plus its padding
 byte): `02 23 18 00 00 03 ac …`, which inflates under no zlib variant. It carries **28 code
@@ -2490,6 +2502,12 @@ that is not a zlib member*, so a descriptor for it need not exist, and its first
 block's trailer rather than a header. Asking "which descriptor points into R3" is therefore ill-posed
 until a **specific offset inside R3** is chosen. R1 and R2 escaped this because their spans happened to
 contain real containers (media blocks with a verified trailer format); R3 and R4 did not.
+
+**Superseded by M178, in the direction this paragraph was cautious about.** The caution was right that a
+span inverted from zlib coverage need not be a resource, and the resolution is a measurement rather than a
+reversal: R3 *is* exactly one file (id 1983) and R4 is id 1979, with each span 9 B / 8 B wider than its
+file. So "which descriptor points into R3" has an answer — the file table entry at those two ids — and the
+9 bytes at the head of the span are the preceding file's trailer, as predicted here.
 
 ## 6. Verification rules this document follows
 

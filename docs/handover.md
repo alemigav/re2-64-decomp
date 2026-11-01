@@ -23,7 +23,8 @@ ground-truth RDRAM dumps. Nothing in the repo imports or requires it.
 | code images | **36** (boot + stage-2 + 34 overlays), **1 947 632 B** | M81 census |
 | decompiled corpus | **3 638 functions**, **62.3 %** of code bytes claimed (1 212 984 of 1 947 632 B), `src/` + `src/INDEX.md` | M81–M84, `src/INDEX.md` |
 | media | 1 227 MJPEG frames, 271 MPEG-1 blocks (24.4 MB + 15.8 MB), all verified | M10 |
-| unidentified | two blobs ~17.6 MB (R3 `0xb73fb3`–`0x140ed84`, R4 `0x338fe1`–`0xb63106`); R4's tail holds a **non-zlib container** of 28 payloads at cart `0xb6248` | M82/M90 |
+| the 17.6 MB | **identified — the sound family, ids 1979–1983**: id **1979** `0x0338fea`–`0x0b630fe` (8 560 916 B, a **588-record `MORT` bank** whose directory and record header are decoded) and id **1983** `0x0b73fbc`–`0x140ed7c` (9 022 912 B, format open); **17 583 828 B** together, both loaded by `FUN_800759d8` | M178, `tools/file_table.py` |
+| file table | **8 091** entries: 113 sentinels, 7 978 real — 4 852 zlib and **3 126 raw (58 270 043 B: the media)**; it is the file system, not a zlib manifest | M178 |
 | scripted ares control | GDB RSP over `DebugServer/Port`: 512 KiB in **0.4 s**, `Z0` → `OK`, stop → `S05`; live `0x80000480+0x1234f` is **74 575/74 575 byte-equal to the cartridge** | M108 |
 | routine dispatch on `object+5` | **28** stage-2 sites, no mask and no compare; the class-1 table is 14 long, classes 2/3/4 are 4/2/27, and a class-1 writer stores **15** | M173, `tools/routine_index.py` |
 
@@ -165,7 +166,7 @@ eleven skipped suites are the ones that assert facts about RE2 itself — the co
 at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
 exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
-each run's job summary lists them. **A green CI run does not vouch for those 109 cases.**
+each run's job summary lists them. **A green CI run does not vouch for those 133 cases.**
 
 A route to close that gap *in a secret* was built and verified in M130 and then deliberately **not adopted**,
 because it means a copyrighted cartridge living in a CI secret store. M175 measured why it also does not work:
@@ -302,15 +303,15 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 27 suites, 273 cases
+python3 tools/acceptance.py         # 28 suites, 297 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
-python3 tools/audit_gates.py        # 26/26: every check must fail when its mechanism is disabled
+python3 tools/audit_gates.py        # 30/30: every check must fail when its mechanism is disabled
 ```
 
-**A green CI run does not vouch for everything.** Eleven suites are cartridge-gated and report `SKIP`
+**A green CI run does not vouch for everything.** Twelve suites are cartridge-gated and report `SKIP`
 on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
 `cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
-`routine index bounds` and the gate audit — **109 of 273 cases**. Their enforcement is the
+`routine index bounds`, `file table` and the gate audit — **133 of 297 cases**. Their enforcement is the
 pre-commit hook and a local run, and the CI job summary lists them by name.
 
 ## Immediate next step
