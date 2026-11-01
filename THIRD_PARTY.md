@@ -5,6 +5,29 @@ This repository contains one artefact transcribed from another project, one body
 
 `LICENSE` (CC0-1.0) applies to the last group only.
 
+## 0. Read as a specification, not copied: the sound codecs (GPL-3.0)
+
+Two sound codecs in `fixtures/sound/codec.json`, `tools/sound_decode.py` and `tools/file_table.py` were
+established with reference to **re2studio**, a Resident Evil 2 (N64) romhacking toolkit:
+
+| | |
+|---|---|
+| project | `theanine3D/re2studio` — <https://github.com/theanine3D/re2studio> |
+| licence | **GPL-3.0** |
+| what was taken | **facts only**: the `MORT` header field order, the 28-byte directory record's fields, and the ADPCM frame/group geometry |
+| what was **not** taken | no source code. `tools/sound_decode.py` is an independent Python implementation written from the format description and validated against the cartridge, not a port |
+
+**GPL-3.0 code cannot be incorporated into a CC0-1.0 repository**, and none has been. What a program
+*does* — a file layout, a bit width, a formula — is not the program, and this repository's own
+measurements confirm each fact independently: the header's length field matches the clip extent on 588 of
+588 records, the directory record tiles the sample pool exactly, and the decoder produces audio from the
+shared codebook where a per-sample book produces noise. Those checks are what the citation rests on; the
+tool is credited because it pointed at the answer, not because it is relied upon.
+
+Its constants also corroborate three this project derived from the decompilation on its own — the voice
+context stride `0x1228`, the frame-size field at `+0x166`, and the starting bit position `0x60` at
+`+0x11c8`.
+
 ## 1. Transcribed: the RDT opcode table (MIT)
 
 `fixtures/scd/opcodes.json` carries 45 opcode numbers and 46 variants — names and Playstation-side field

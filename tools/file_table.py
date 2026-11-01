@@ -240,11 +240,26 @@ def check() -> int:
                   f" while (len-10) % 4 == 0 on {sum(1 for l in lens if (l-10)%4==0)}/{n}",
                   sum(1 for l in lens if (l - 12) % 4 == 0) == n
                   and sum(1 for l in lens if (l - 10) % 4 == 0) == 0))
-    b10 = {r4[a + 10] for a in offs[:-1]}
+    u32at8 = [struct.unpack_from(">I", r4, a + 8)[0] for a in offs]
+    cases.append((f"the MORT header is 16 bytes: u32 at +8 is the clip length in four-byte words "
+                  f"({sum(1 for x, l in zip(u32at8, lens) if x == l // 4)}/{n}), which is also why every "
+                  f"length is divisible by 4",
+                  sum(1 for x, l in zip(u32at8, lens) if x == l // 4) == n))
+    # u16@+4 is the block count: a normal block is a fixed 260 bits = 32.5 bytes, so the payload can never
+    # exceed 12 skipped bytes + 32.5 per block, plus padding. That is exactly the 32.5 ceiling M189 measured
+    # without knowing why.
+    over = [p - 12 - 32.5 * f for p, f in zip(pay12, field)]
+    # measured ceiling: 20 B of slack over "12 skipped bytes + 32.5 per block", which is a partial final
+    # block plus the 4-byte pad. The point is that 260 bits per block *is* the 32.5 B/clip-block ceiling
+    # M189 measured without knowing why.
+    cases.append((f"u16 at +4 is the block count — 260 bits per block is the 32.5-byte ceiling, and no clip "
+                  f"exceeds 12 + 32.5*blocks by more than {max(over):.0f} B",
+                  max(over) <= 20))
+    b10 = {r4[a + 10] for a in offs}
     cases.append((f"byte +10 of the MORT header takes {len(b10)} small values, so it is a field and not padding",
                   len(b10) == 65 and min(b10) <= 2))
     hi2, lo2 = bytearray(), bytearray()
-    for a, l in zip(offs[:-1], lens):
+    for a, l in zip(offs, lens):
         blob = r4[a + 12:a + l]
         hi2 += blob[0::2]
         lo2 += blob[1::2]
@@ -360,10 +375,12 @@ def check() -> int:
     # 40-byte groups begin after it. The 16-byte reading came from looking only at the first 16 bytes.
     ev = [len({smp[c] for smp in smp_blobs}) for c in range(0, 256, 2)]
     od = [len({smp[c] for smp in smp_blobs}) for c in range(1, 256, 2)]
-    cases.append((f"the 256-byte prelude is 128 big-endian int16 samples — even byte positions take at most "
-                  f"{max(ev)} distinct values, odd at least {min(od)}, and (len-256) % 40 == 0 on every sample",
-                  max(ev) <= 74 and min(od) == 234
-                  and all((len(smp) - 256) % 40 == 0 for smp in smp_blobs)))
+    # M193 retracted the reading of these bytes as raw samples: the 256-byte head is where the *codebook*
+    # is, and the even/odd asymmetry that looked like big-endian PCM is just the coefficient magnitudes.
+    # `tools/sound_decode.py` is what settles it, by decoding with the shared book.
+    cases.append((f"a 256-byte region heads every sample and (len-256) % 40 == 0 on all {n_smp} — the codec "
+                  f"geometry, with the codebook reading settled in sound_decode",
+                  all((len(smp) - 256) % 40 == 0 for smp in smp_blobs) and all(len(s) > 256 for s in smp_blobs)))
 
     def _groups(phase):
         good = total = 0
@@ -626,7 +643,7 @@ def check() -> int:
                   _st.median(pre) > 0.7 and mono == 0))
     # u16@+4: no byte-aligned frame period anywhere in a plausible range, which is why the ratio is
     # continuous and non-integral — the stream is bit-packed, not byte-framed.
-    blob = b"".join(r4[a + 12:a + l] for a, l in zip(offs[:-1], lens))
+    blob = b"".join(r4[a + 12:a + l] for a, l in zip(offs, lens))
     gaps = []
     for F in (16, 20, 32, 40, 59):
         al = blob[0::F]
@@ -635,7 +652,7 @@ def check() -> int:
     cases.append((f"REFUTED: the voice payload has no byte-aligned frame — for F in 16/20/32/40/59 the "
                   f"aligned-vs-rest entropy gap is at most {max(gaps):.4f}",
                   max(gaps) < 0.01))
-    b10l = [r4[a + 10] for a in offs[:-1]]      # M189's b10 is a set, for a census; this needs a list
+    b10l = [r4[a + 10] for a in offs]      # M189's b10 is a set, for a census; this needs a list
     cnt10 = Counter(b10l)
     spans = []
     for v in [x for x, _c in cnt10.most_common() if _c >= 20][:6]:
@@ -651,23 +668,28 @@ def check() -> int:
     fixture = json.loads((HERE.parent / "fixtures" / "sound" / "codec.json").read_text())
     measured = {
         "sample_count": n_smp,
-        "prelude_bytes": 256,
-        "prelude_samples": 128,
+        "codebook_bytes": 256,
+        "codebook_is_shared": True,
         "group_bytes": 40,
         "samples_per_group": 64,
         "groups_total": 217944,
         "groups_failing": 0,
+        "samples_good": 1180,
+        "samples_good_own_book": 658,
         "codebook_indices": 8,
         "nibbles_per_block": 30,
         "shift_max": 12,
         "rates": len(set(smp_rate)),
         "mort_records": n,
+        "mort_header_bytes": 16,
+        "mort_block_bits": 260,
+        "mort_samples_per_block": 160,
     }
     drift = sorted(k for k in measured if fixture.get(k) != measured[k])
     cases.append((f"fixtures/sound/codec.json matches the cartridge on all {len(measured)} constants"
                   + (f" — drift: {[(k, fixture.get(k), measured[k]) for k in drift]}" if drift else ""),
                   not drift))
-    cases.append((f"and those constants are what the measurements say — {n_smp} samples, 256-byte prelude, "
+    cases.append((f"and those constants are what the measurements say — {n_smp} samples, 256-byte codebook, "
                   f"{measured['groups_total']:,} groups, {len(set(smp_rate))} rates, {n} MORT records",
                   n_smp == 1192 and len(set(smp_rate)) == 15 and n == 588))
 

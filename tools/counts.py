@@ -45,9 +45,10 @@ CHECKS = [
     ("README.md", r"tools/\s+(\d+) analysis and gate scripts", ("tool_count",), 1),
     ("README.md", r"docs/log/\s+(\d+) notes", ("note_count",), 1),
     # the codec claim on the front page, tied to the committed fixture rather than to prose
-    ("README.md", r"\*\*([\d\s,]+)\*\*-byte prelude of\s+\*\*([\d\s,]+)\*\* raw int16 samples, "
-                  r"and\s+\*\*([\d\s,]+)\*\* of\s+\*\*([\d\s,]+)\*\* groups pass",
-     ("codec_prelude_bytes", "codec_prelude_samples", "codec_groups_ok", "codec_groups_total"), 1),
+    ("README.md", r"\*\*([\d\s,]+)\*\*-byte shared codebook, with\s+\*\*([\d\s,]+)\*\* of\s+"
+                  r"\*\*([\d\s,]+)\*\* groups structurally valid and\s+\*\*([\d\s,]+)\*\* of\s+"
+                  r"\*\*([\d\s,]+)\*\* samples decoding to audio",
+     ("codec_codebook_bytes", "codec_groups_ok", "codec_groups_total", "codec_good", "codec_samples"), 1),
     ("README.md", r"\*\*(\d+) of (\d+) cases cannot run without your dump\*\*",
      ("gated_cases", "total_cases"), 1),
     ("docs/handover.md", r"# (\d+) suites, (\d+) cases", ("total_suites", "total_cases"), 1),
@@ -97,8 +98,9 @@ def derive(root: Path) -> dict:
         "milestone_rows": len(nums),
         "gap_count": len(gaps),
         "note_count": len(list((root / "docs" / "log").glob("M*.md"))),
-        "codec_prelude_bytes": _codec["prelude_bytes"],
-        "codec_prelude_samples": _codec["prelude_samples"],
+        "codec_codebook_bytes": _codec["codebook_bytes"],
+        "codec_good": _codec["samples_good"],
+        "codec_samples": _codec["sample_count"],
         "codec_groups_ok": _codec["groups_total"] - _codec["groups_failing"],
         "codec_groups_total": _codec["groups_total"],
         "tool_count": len([p for p in (root / "tools").iterdir()

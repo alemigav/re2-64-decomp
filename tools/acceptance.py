@@ -68,7 +68,11 @@ SUITES = [
     # The file table is the cartridge's whole file system, and it is mostly *not* zlib (M178). One
     # suite because the finding is one object: the census, the two files the 17.6 MB turned out to be,
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
-    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 81, True),
+    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 83, True),
+    # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
+    # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a
+    # specification, no code copied); see THIRD_PARTY.md.
+    ("sound decode (cartridge)", [sys.executable, "tools/sound_decode.py", "--check"], 5, True),
     # The ratchet guards the registry itself. `--self-test` breaks each invariant on a synthetic root
     # (a lowered count, a deleted suite, an unbaselined addition, an edit to src/) and requires
     # detection; `--check` applies the same two invariants to this repository. Both are needed: without

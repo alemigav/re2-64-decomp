@@ -1,15 +1,20 @@
 {
- "note": "The pool codec's structural constants, so the prose that quotes them and the measurement that produces them are checked against the same numbers. `tools/file_table.py --check` asserts these against the cartridge; `tools/counts.py` asserts the README quotes them. If the measurement ever changes, the cartridge-gated case fails first.",
+ "note": "The two sound codecs' structural constants. `tools/file_table.py --check` asserts them against the cartridge; `tools/counts.py` asserts the README quotes them. If a measurement moves, the cartridge-gated case fails before any document can drift with it.",
  "sample_count": 1192,
- "prelude_bytes": 256,
- "prelude_samples": 128,
+ "codebook_bytes": 256,
+ "codebook_is_shared": true,
  "group_bytes": 40,
  "samples_per_group": 64,
  "groups_total": 217944,
  "groups_failing": 0,
+ "samples_good": 1180,
+ "samples_good_own_book": 658,
  "codebook_indices": 8,
  "nibbles_per_block": 30,
  "shift_max": 12,
  "rates": 15,
- "mort_records": 588
+ "mort_records": 588,
+ "mort_header_bytes": 16,
+ "mort_block_bits": 260,
+ "mort_samples_per_block": 160
 }

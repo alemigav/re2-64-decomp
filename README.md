@@ -1,7 +1,7 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **420-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **427-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
@@ -43,11 +43,11 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
   fatal, only a hardware reset leaves it (M168–M171).
 * **The audio filesystem**: the file table is the whole file system, not a zlib manifest — 8 091 entries, of
   which **3 126 are stored raw** — and the 17.6 MB "unidentified" region is five files: a 588-record `MORT`
-  bank, three chained section tables, and a sample pool of **1 192 samples that tile it to the byte**
-  (M178–M190).
-* **The sample codec**: MusyX's ADPCM — a **256**-byte prelude of **128** raw int16 samples, and
-  **217 944** of **217 944** groups pass the codebook constraint at the correct alignment, with all eight
-  codebook indices in use and a shift field confined to 0–12 (M187/M190/M191).
+  voice bank, three chained section tables, and a sample pool of **1 192 samples that tile it to the byte**
+  (M178–M193).
+* **The sample codec, decoded**: order-2 ADPCM with a **256**-byte shared codebook, with **217 944** of
+  **217 944** groups structurally valid and **1 180** of **1 192** samples decoding to audio (median
+  adjacent correlation +0.901). `tools/sound_decode.py` implements it and gates the result (M187–M193).
 * **Two codecs, not one**: `id 1979`'s 588 records are *not* that format — high-entropy, 16 000/8 000 Hz,
   and no raw prelude — so the voice bank and the sample pool are encoded differently (M189/M191).
 * **A verification system that can be checked without the game**: 44 mutation audits, a ratchet that forbids
@@ -61,7 +61,7 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 21 suites / 212 of 420 cases run; the other 12 suites SKIP
+python3 tools/acceptance.py      # 21 suites / 212 of 427 cases run; the other 13 suites SKIP
 python3 tools/audit_gates.py     # 44/44 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 21/21 — every doc anchor, heading and note pointer holds
@@ -73,7 +73,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **208 of 420 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **215 of 427 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -90,7 +90,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**193** numbers, 0-192: **143** with a row, and **50** named gaps. The full index — every number, its title,
+**194** numbers, 0-193: **144** with a row, and **50** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -129,23 +129,24 @@ claim, and codified in [include/re2_formats.h](include/re2_formats.h) with a C v
 | file table | 8 091 entries + build stamp; 4 852 zlib, **3 126 stored raw** — the media, uncompressed (M178) |
 | sound files | ids 1979–1983: a 588-record `MORT` bank, `SND_PROJ`/`SND_POOL` chained tables, `SND_SMPDIR` |
 | sample pool | id 1983, 9 022 912 B: **1 192 samples tiling it to the byte**, 15 canonical rates (M184) |
-| sample codec | MusyX ADPCM: **256**-byte prelude of **128** raw int16 samples, then 40-byte groups — `2 raw + 30 nibbles = 32 samples` per 20-byte frame (M187/M190/M191) |
-| voice codec | **not** the same: `id 1979`'s payload is high-entropy in both byte planes, has no prelude, and is 16 000/8 000 Hz (M189/M191) |
+| sample codec | order-2 ADPCM: one **256**-byte shared codebook per bank, then 40-byte groups — `2 raw + 30 nibbles = 32 samples` per 20-byte frame; decoded and gated (M193) |
+| voice bank header | `MORT` + u16 **block count** + u16 rate + u32 **length/4** = **16** bytes; a normal block is a fixed 260 bits (M193) |
+| directory record | 28 bytes: index, offset, rate, **declared length**, **loop start**, **loop end** (M193) |
 | key spaces | pool keys are `[class][index]` in four classes; `SND_PROJ`'s 417 records rotate from key 118; one key is absent and one reference dangles, and they are the same fact (M188) |
 
-The 17.6 MB is no longer unidentified. Both blobs are framed end to end, and what remains is narrower than a
-container: **`u16@+4` in the `MORT` record is still unassigned** — refuted as a note, a duration, a sample
-count, a loop point and a bitrate ladder, and consistent with a frame count at 2.2–8.1 bits/sample, but no
-code path reads it; **the voice codec itself**; and **what the pool's four key classes mean**. Each is named
-with its measurement rather than left as an adjective.
+The 17.6 MB is no longer unidentified, and neither is the pool's codec: it is decoded, and `u16@+4` is
+assigned — it is the `MORT` clip's **block count** at 160 samples per block, which is why every
+`payload/field` ratio sat under 32.5 bytes (260 bits per block). What genuinely remains: the **voice
+codec's own algorithm**, whose decoder is `FUN_800b53f4` in the corpus but which has not been implemented
+here; **what the pool's four key classes mean**; and **12 of 1 192 samples** that do not decode cleanly.
 
 ## Layout
 
 ```
-tools/       64 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+tools/       65 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    121 notes, one per milestone that has one
+docs/log/    122 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
