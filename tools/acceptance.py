@@ -68,7 +68,7 @@ SUITES = [
     # The file table is the cartridge's whole file system, and it is mostly *not* zlib (M178). One
     # suite because the finding is one object: the census, the two files the 17.6 MB turned out to be,
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
-    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 83, True),
+    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 87, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a
     # specification, no code copied); see THIRD_PARTY.md.

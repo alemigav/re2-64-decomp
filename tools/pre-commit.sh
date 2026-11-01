@@ -8,8 +8,10 @@
 #
 # A symlink is used so that editing this file takes effect immediately, with no reinstall.
 #
-# Cost: ~20 s (the acceptance suite runs the whole-corpus provenance fixpoint). To skip it in an
-# emergency, `git commit --no-verify` — and say why in the commit message when you do.
+# Cost: ~5 min as measured at M195 — the gate audit alone is 3m37s, because six of its cases each
+# re-run the 31 s `file_table.py --check`. The suite is run with `-u` so the commit streams its
+# progress instead of showing nothing for five minutes. To skip it in an emergency,
+# `git commit --no-verify` — and say why in the commit message when you do.
 set -u
 
 root=$(git rev-parse --show-toplevel 2>/dev/null) || {
@@ -23,7 +25,7 @@ if ! command -v python3 >/dev/null 2>&1; then
 	exit 1
 fi
 
-if ! python3 tools/acceptance.py; then
+if ! python3 -u tools/acceptance.py; then
 	printf '\n'
 	printf 'pre-commit: acceptance suite FAILED — commit blocked.\n'
 	printf '  Every fixture must pass before a commit lands (see tools/acceptance.py).\n'

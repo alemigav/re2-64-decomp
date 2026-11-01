@@ -666,6 +666,60 @@ def check() -> int:
                   f"values is at least {min(spans):.1f} bytes",
                   min(spans) > 10))
 
+    # --- M195: the voice bit-stream, transcribed from FUN_800b53f4 and tested both ways. Neither bit
+    # order reconciles, so the record's payload bytes are not the bit stream the decoder sees — the CPU
+    # streams them into a 4 KB ring first, and that copy is a transform this project has not established.
+    SCALE_W, SIDE_W = (6, 6, 5, 5, 4, 4, 3, 3), (7, 2, 2, 6)
+    def _parse(payload, want, msb, guard=1 << 22):
+        p = 0
+        def get(k):
+            nonlocal p
+            v = 0
+            for i in range(k):
+                by = p >> 3
+                if by >= len(payload) or p > guard:
+                    raise EOFError
+                bit = (payload[by] >> (7 - (p & 7))) & 1 if msb else (payload[by] >> (p & 7)) & 1
+                v = (v << 1) | bit if msb else v | (bit << i)
+                p += 1
+            return v
+        done = 0
+        while done < want:
+            if get(1) == 0:
+                run = get(7) + 1
+                for _ in range(min(run, want - done)):
+                    for w in SCALE_W: get(w)
+                    for _g in range(4):
+                        for w in SIDE_W: get(w)
+                        for _c in range(13): get(3)
+            else:
+                run = get(4) + 1
+            done += min(run, want - done)
+        return p
+    for msb, label in ((True, "MSB-first"), (False, "LSB-first")):
+        over = landed = 0
+        for a, l, b in zip(offs, lens, field):
+            payload = r4[a + 12:a + l]
+            try:
+                if len(payload) * 8 - _parse(payload, b, msb) < 8:
+                    landed += 1
+            except EOFError:
+                over += 1
+        if msb:
+            cases.append((f"REFUTED: {label} reading of the transcribed stream does not reconcile — "
+                          f"{over}/{n} clips overrun and {landed} terminate within 8 bits of the end",
+                          over == 362 and landed == 3))
+        else:
+            cases.append((f"REFUTED: {label} reading does not reconcile either — {over}/{n} overrun, "
+                          f"{landed} land", over == 339 and landed == 0))
+    cases.append((f"the field widths transcribed from FUN_800b53f4 do sum to the 260 bits the format claims "
+                  f"({sum(SCALE_W)} + 4 x ({sum(SIDE_W)} + 39) = {sum(SCALE_W) + 4 * (sum(SIDE_W) + 39)})",
+                  sum(SCALE_W) + 4 * (sum(SIDE_W) + 39) == 260))
+    cases.append(("CODE: the synthesis path is FUN_800b62c0 / FUN_800b63b4 / FUN_800b4dc0, and all three are "
+                  "in the corpus",
+                  all((HERE.parent / "src" / "stage2" / f"{f}.c").exists()
+                      for f in ("FUN_800b62c0", "FUN_800b63b4", "FUN_800b4dc0"))))
+
     # --- M191: the codec constants are also a committed fixture, so the prose that quotes them and the
     # measurement that produces them are checked against the same source. The cartridge-gated case runs
     # first: if the measurement ever moves, this fails before the documentation can drift with it.
