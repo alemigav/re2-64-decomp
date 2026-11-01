@@ -64,6 +64,30 @@ A gate is not finished when it passes. It is finished when it has been **shown t
 6. `python3 tools/counts.py --check` — the documented numbers follow from the registry, so this is the
    only step that needs the docs to be right.
 
+## Landing a milestone
+
+A milestone is not landed until all three of these are true on the commit that carries it — and that
+ordering is the answer to "did this land properly?", mechanically, instead of by recollection:
+
+1. **`tools/ratchet.py --write`** recorded the count change, so the new numbers are in
+   `fixtures/gates/ratchet.json` and a later shrink is refused. M179 was the first customer: its
+   `file table` 20 → 28 and `gate audit` 35 → 37 were refused until this step.
+2. **`tools/counts.py --check`** is clean, so the documents quote the numbers the registry now holds.
+3. **`python3 tools/verify.py`** reports `PASS` with a clean admission, and `build/verify-report.json`
+   names the same commit. If the report's `artifact.commit` is not the commit being landed, the report is
+   stale and the milestone has not been verified — it has been run at some point.
+
+The two guards are deliberately two-sided, and neither is sufficient alone:
+
+* `acceptance.py` binds each expected count to **reality** — it fails when a suite runs a different number
+  of cases than registered, so a wrong count cannot be baked in.
+* `ratchet.py` binds it to **history** — it fails when the number moves without `--write`, so a correct
+  count cannot be quietly lowered.
+
+`--write` accepts whatever the registry says. That is why step 1 is worthless without `acceptance.py`
+having passed: `--write` will happily record a wrong number, and after that the ratchet defends the wrong
+number. The pair is the guarantee; either one alone is a filing system.
+
 ## What each procedure answers
 
 | procedure | question |
