@@ -232,6 +232,20 @@ AUDITS = [
          file="tools/file_table.py",
          old="all(0.03 < field[k] / pay[k] < 0.115 for k in range(n))",
          new="all(0.05 < field[k] / pay[k] < 0.115 for k in range(n))"),
+    # --- the counts gate (M180). Its `--check` runs on a repository that is by definition consistent, so
+    # aiming at the comparison is invisible; the mutation is aimed at the *derived* number instead. The
+    # second audit disables the phrasectomy in the self-test, so the "a deleted phrase is caught" case
+    # becomes the vacuous case it is meant to prevent.
+    dict(name="counts: the derived total is off by one",
+         tool="counts.py", args=["--check"],
+         file="tools/counts.py",
+         old='        "total_cases": sum(s[2] for s in suites),',
+         new='        "total_cases": sum(s[2] for s in suites) + 1,'),
+    dict(name="counts: the self-test stops deleting the phrase it checks for",
+         tool="counts.py", args=["--self-test"],
+         file="tools/counts.py",
+         old='re.sub(r"vouch for those \\d+ cases", "vouch for those cases", ho)',
+         new='re.sub(r"vouch for those \\d+ cases", lambda m: m.group(0), ho)'),
     dict(name="ratchet: src/ changes are never compared",
          tool="ratchet.py", args=["--self-test"],
          file="tools/ratchet.py",
@@ -246,8 +260,12 @@ COPY = ["tools", "fixtures", "docs/log", ".github"]
 # `docs/MILESTONES.md` is here because a check of it runs: without the file, every audit of
 # `milestone_index.py` "detects" a missing output and proves nothing (fifth environment gap in this arc,
 # after build/elfs, src, .github/ and the shell interpreter).
+# `README.md` is here because the counts gate reads it: the sixth environment gap in this arc if it is
+# missing, and the failure it produced was a FileNotFoundError inside a *different* tool's self-test, which
+# the audit then recorded as a detection (M180). A missing input and a caught mutation look identical from
+# an exit code.
 COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md", "docs/MILESTONES.md",
-              "manifests/manifest.json"]
+              "manifests/manifest.json", "README.md"]
 # `build/elfs` holds the built images and `src/` the decompiled corpus; both are read-only for every
 # audit, and a copy is 18 MB per audit for nothing. Not linking them was invisible until an image-
 # dependent tool was audited: the mutated copy failed on a missing `images.json`, not on its mutation.

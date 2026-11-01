@@ -18,7 +18,7 @@
   "exception path (cartridge)": 8,
   "t64info (C header)": 4,
   "routine index bounds (cartridge)": 14,
-  "gate audit (mechanisms disabled)": 37,
+  "gate audit (mechanisms disabled)": 39,
   "workflow lint": 14,
   "artefact scan (repository)": 5,
   "artefact scan (synthetic)": 7,
@@ -29,7 +29,9 @@
   "mips harness": 15,
   "file table (cartridge)": 28,
   "ratchet self-test": 9,
-  "ratchet (repository)": 4
+  "ratchet (repository)": 4,
+  "counts self-test": 4,
+  "counts (repository)": 12
  },
  "src_tree": "39895ff19eec340c98870ea119ed9fdc625a116a932e7a20b9c4f879a5c93a37"
 }
