@@ -246,6 +246,11 @@ def check() -> int:
     smp_idx = [struct.unpack_from(">H", r, 0)[0] for r in srec[:n_smp]]
     ends = smp_off[1:] + [other_size]
     smp_len = [e - b for b, e in zip(smp_off, ends)]
+    o83 = BASE + entries[1983][0]
+    smp_blobs = [d[o83 + b:o83 + e] for b, e in zip(smp_off, ends)]
+    g_len = 0
+    for _l in smp_len:
+        g_len = math.gcd(g_len, _l)
 
     cases.append((f"the sample directory is {len(sdir)} B = {n_smp} x 28 + a ffffffff terminator",
                   len(sdir) == 33380 and n_smp == 1192 and sdir[28 * n_smp:] == b"\xff\xff\xff\xff"))
@@ -287,7 +292,80 @@ def check() -> int:
     cases.append((f"REFUTED: no record field gives the sample length — best of {len(laws)} laws fits "
                   f"{max(fits.values())}/{n_smp}", max(fits.values()) <= 2))
 
-    # --- M182: does anything in the corpus read the record header? `FUN_800a86a0` walks both SND_PROJ and
+    # --- M187: the sample codec. A third-party claim — MusyX's own ADPCM, 32 samples per 20-byte frame,
+    # two frames per 40-byte group as [A.raw 4][B.raw 4][A.nib 16][B.nib 16] — arrived with two predictions.
+    # The *length* one, as stated, fails; the *structure* one is overwhelming. Both are gated, because the
+    # difference between "refuted as stated" and "confirmed" is the whole point.
+    mods40 = Counter(l % 40 for l in smp_len)
+    cases.append((f"REFUTED as stated: len % 40 == 0 on 0/{n_smp} — every length is 16 (mod 40) "
+                  f"({mods40[16]}/{n_smp}), so the gcd is {g_len}, not 20 or 40",
+                  sum(1 for l in smp_len if l % 40 == 0) == 0
+                  and mods40[16] == n_smp and g_len == 8))
+    # ...which does not refute the codec: it is a 16-byte prologue of 8 big-endian int16 samples, and the
+    # 40-byte groups start after it. The prologue's own byte census says so.
+    ev = [len({smp[c] for smp in smp_blobs}) for c in range(0, 16, 2)]
+    od = [len({smp[c] for smp in smp_blobs}) for c in range(1, 16, 2)]
+    cases.append((f"the 16-byte prologue is 8 big-endian int16 samples — even byte positions take at most "
+                  f"{max(ev)} distinct values, odd at least {min(od)}",
+                  max(ev) <= 51 and min(od) >= 234))
+
+    def _groups(phase):
+        good = total = 0
+        for smp in smp_blobs:
+            p = phase
+            while p + 40 <= len(smp):
+                g = smp[p:p + 40]
+                if any(g):
+                    total += 1
+                    good += (g[8] >> 4) <= 7 and (g[24] >> 4) <= 7
+                p += 40
+        return good, total
+    g16, t16 = _groups(16)
+    g0, t0 = _groups(0)
+    cases.append((f"at phase 16, {g16:,}/{t16:,} 40-byte groups ({g16 / t16:.2%}) have both codebook "
+                  f"bytes' high nibble <= 7, against 25 % by chance", g16 == 219550 and t16 == 224991))
+    cases.append((f"the alignment control holds — at phase 0 the same test gives only {g0 / t0:.2%}",
+                  t0 == 224999 and g0 == 129452))
+
+    def _corr(xs):
+        if len(xs) < 4:
+            return 0.0
+        a, b = xs[:-1], xs[1:]
+        ma, mb = sum(a) / len(a), sum(b) / len(b)
+        num = sum((u - ma) * (v - mb) for u, v in zip(a, b))
+        den = (sum((u - ma) ** 2 for u in a) * sum((v - mb) ** 2 for v in b)) ** 0.5
+        return num / den if den else 0.0
+    import random as _random, statistics as _st
+    real_c, shuf_c = [], []
+    rng = _random.Random(1)
+    for smp in smp_blobs[:400]:
+        vals = []
+        p = 16
+        while p + 40 <= len(smp):
+            vals += list(struct.unpack_from(">4h", smp, p))
+            p += 40
+        real_c.append(_corr(vals))
+        rng.shuffle(vals)
+        shuf_c.append(_corr(vals))
+    cases.append((f"adjacent raw samples correlate — median {_st.median(real_c):+.3f}, shuffled "
+                  f"{_st.median(shuf_c):+.3f}",
+                  _st.median(real_c) > 0.30 and abs(_st.median(shuf_c)) < 0.05))
+
+    fails_total, bad_smp = t16 - g16, 0
+    for smp in smp_blobs:
+        p, bad, tot = 16, 0, 0
+        while p + 40 <= len(smp):
+            g = smp[p:p + 40]
+            if any(g):
+                tot += 1
+                bad += not ((g[8] >> 4) <= 7 and (g[24] >> 4) <= 7)
+            p += 40
+        bad_smp += bool(tot and bad / tot > 0.5)
+    cases.append((f"the {fails_total:,} failing groups ({fails_total / t16:.2%}) are scattered — "
+                  f"{bad_smp} of {n_smp} samples has a majority failing, so there is no second codec class",
+                  fails_total == 5441 and bad_smp == 0))
+
+    # --- M185: the other three files of the sound family. `FUN_800a86a0` walks both SND_PROJ and
     # SND_POOL the same way — a u32 at the head is a *relative offset to the first record*, each record's
     # first u32 is the stride to the next, and `-1` ends the chain — so each is framed the same way id 1983
     # was framed by its directory. All three are zlib members, unlike 1979 and 1983.

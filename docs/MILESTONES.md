@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-187 milestones are indexed. 114 of them have a note; the rest are rows in the log that cite
+188 milestones are indexed. 115 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -203,6 +203,7 @@ at the foot of this file.
 | 184 | **M184** — id 1983 is parsed at the container level, and its codec is a named gap | `docs/log/M184-id-1983-framed-and-its-codec-named.md` |
 | 185 | **M185** — the sound family is framed: proj and pool are chained section tables | `docs/log/M185-the-sound-family-framed.md` |
 | 186 | **M186** — the 835 unresolved shorts are 834 zeros and one dangling reference | `docs/log/M186-the-835-resolved.md` |
+| 187 | **M187** — the codec is identified: MusyX ADPCM, with a 16-byte prologue | `docs/log/M187-the-codec-identified.md` |
 
 ## The gaps, and why they are empty
 
