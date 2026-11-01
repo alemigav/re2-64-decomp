@@ -353,12 +353,14 @@ line that used to carry one.
 
 The emulator is no longer on the critical path. What is left is cartridge-side, and none of it needs ares:
 
-* **the sound family's three open fields** — the 17.6 MB is no longer unidentified (M178–M188): id 1979 is a
-  588-record `MORT` bank, id 1983 is 1 192 samples tiling it to the byte, and the sample codec is identified
-  as MusyX ADPCM behind a 16-byte prologue (M187). What is left is narrower: **`u16@+4`** in the `MORT`
-  record, still unassigned after four readings were refuted and one left doubtful (M179/M182);
-  **2.42 %** of the codec's 40-byte groups failing the codebook test, scattered with no sample-level
-  clustering; **what the pool's four key classes mean** now that the keys read as `[class][index]` (M188);
+* **what the sound family still does not settle** — the 17.6 MB is no longer unidentified (M178–M188): id 1979
+  is a 588-record `MORT` bank, id 1983 is 1 192 samples tiling it to the byte, and the sample codec is MusyX
+  ADPCM behind a **256-byte shared codebook** — the "16-byte prologue" was my reading of the first 16 bytes
+  of that book, retracted in M193. **`u16@+4` is assigned**: it is the clip's block count at 160 samples per
+  block (M193, refuted by M194's over-budget arithmetic and restored by M197, where 307 038 declared blocks
+  parse to the end of all 588 records). The **2.42 %** tail was my own alignment error (M190), not a failure
+  set. The **voice codec is transcribed and bit-exact** against the cartridge (M197–M199). What genuinely
+  remains: **what the pool's four key classes mean** now that the keys read as `[class][index]` (M188),
   and **why `SND_PROJ` has 418 song slots for 417 records** (M188). The 28-payload container at `0xb6248`
   has **no owning file-table entry** — it is not a file (M178);
 * **experiment B, step 2** — pointer provenance across functions. Step 1 (`tools/provenance.py`) is

@@ -48,9 +48,16 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
 * **The sample codec, decoded**: order-2 ADPCM with a **256**-byte shared codebook, with **217 944** of
   **217 944** groups structurally valid and **1 180** of **1 192** samples decoding to audio (median
   adjacent correlation +0.901). `tools/sound_decode.py` implements it and gates the result (M187–M193).
+  The other twelve are **not failures**: adjacent correlation runs continuously from +0.44 to +0.98 with no
+  gap, and the low tail is noise-like content — a 0.7 line drawn through a smooth distribution (M194).
 * **Two codecs, not one**: `id 1979`'s 588 records are *not* that format — high-entropy, 16 000/8 000 Hz,
   and no raw prelude — so the voice bank and the sample pool are encoded differently (M189/M191).
-* **A verification system that can be checked without the game**: 44 mutation audits, a ratchet that forbids
+* **The voice codec, decoded and bit-exact**: `id 1979`'s 588 `MORT` records are a second, unrelated
+  codec — LSB-first bits inside big-endian words, 160 samples per block in 260-bit frames, 14 % of blocks
+  silent — and the whole synthesis (dequantisation, a pitch predictor, an 8-stage lattice, a four-band
+  polyphase mix) is reimplemented in Python and graded **sample for sample** against the cartridge's own
+  code: 13 clips, 634 blocks, 0 differing (M195–M199). `tools/voice_decode.py` also writes the audio.
+* **A verification system that can be checked without the game**: 48 mutation audits, a ratchet that forbids
   silent count changes and any edit to `src/`, derived-and-asserted documentation numbers, and one entry point
   that treats a dirty gate audit as `INCONCLUSIVE` rather than `PASS` (M179–M183).
 
@@ -108,6 +115,7 @@ worth reading before you believe any older note.
 | P8 | M157–M172 | populations audited; `0x0141`, T64, handle registry, exception path; consolidation |
 | P9 | M173–M177 | index bounds, a CI that actually runs, and publication readiness |
 | P10 | M178–M191 | the file table is the file system; the 17.6 MB is the audio family, framed end to end; the sample codec identified and its fields confirmed; the two key holes resolved |
+| P11 | M192–M199 | the pool codec decoded and its samples audible; the voice bank's stream recovered from the reader's own bit order; the voice synthesis transcribed and verified sample for sample; the gate suite made fast enough to run every turn |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -130,15 +138,17 @@ claim, and codified in [include/re2_formats.h](include/re2_formats.h) with a C v
 | sound files | ids 1979–1983: a 588-record `MORT` bank, `SND_PROJ`/`SND_POOL` chained tables, `SND_SMPDIR` |
 | sample pool | id 1983, 9 022 912 B: **1 192 samples tiling it to the byte**, 15 canonical rates (M184) |
 | sample codec | order-2 ADPCM: one **256**-byte shared codebook per bank, then 40-byte groups — `2 raw + 30 nibbles = 32 samples` per 20-byte frame; decoded and gated (M193) |
-| voice bank header | `MORT` + u16 **block count** + u16 rate + u32 **length/4** = **16** bytes; a normal block is a fixed 260 bits (M193) |
+| voice bank header | `MORT` + u16 **block count** + u16 rate + u32 **length/4** = **12** bytes; a normal block is a fixed 260 bits (M193, corrected by M194/M197) |
+| voice codec | bit stream is LSB-first inside big-endian 32-bit words; per block 36 scale bits + 4 × (17 + 39); synthesis transcribed and bit-exact (M197–M199) |
 | directory record | 28 bytes: index, offset, rate, **declared length**, **loop start**, **loop end** (M193) |
 | key spaces | pool keys are `[class][index]` in four classes; `SND_PROJ`'s 417 records rotate from key 118; one key is absent and one reference dangles, and they are the same fact (M188) |
 
-The 17.6 MB is no longer unidentified, and neither is the pool's codec: it is decoded, and `u16@+4` is
-assigned — it is the `MORT` clip's **block count** at 160 samples per block, which is why every
-`payload/field` ratio sat under 32.5 bytes (260 bits per block). What genuinely remains: the **voice
-codec's own algorithm**, whose decoder is `FUN_800b53f4` in the corpus but which has not been implemented
-here; **what the pool's four key classes mean**; and **12 of 1 192 samples** that do not decode cleanly.
+The 17.6 MB is no longer unidentified, and neither codec is: the pool decodes to audio, and the voice
+bank's stream, its header (12 bytes) and its whole synthesis are transcribed and verified sample for
+sample against the cartridge. `u16@+4` is the `MORT` clip's **block count** at 160 samples per block,
+which is why every `payload/field` ratio sat under 32.5 bytes (260 bits per block). What genuinely
+remains: **what the pool's four key classes mean**, and the semantics a player would put on the loop
+points a directory record carries — not the format, which is now read end to end.
 
 ## Layout
 
