@@ -795,6 +795,33 @@ def check() -> int:
                   all(f"FUN_800a{h}(" in _res for h in ("d0c0", "cbc0", "ce1c"))
                   and "param_1[4]" in _res and "param_1[5]" in _res and "param_1[6]" in _res
                   and "piVar5 + 3" in _res and "(int)piVar5 + 10" in _res))
+    # --- M201: the 16-byte class-3 records, and the encoding that was hiding in them. Read as
+    # big-endian the four parameters look like noise (59395, 62465, 53255 ...); byte-swapped they are
+    # round numbers -- 1000, 500, 2000, 4000 -- so the parameters are LITTLE-endian inside a
+    # big-endian container. No canonical sample rate appears in either field, which is what refutes the
+    # "these are rates" reading before anyone writes it down.
+    _recs16 = []
+    for _i in range(len(secs)):
+        _st = secs[_i]
+        _en = secs[_i + 1] if _i + 1 < len(secs) else len(pool)
+        _p = _st + struct.unpack_from(">I", pool, _st)[0]
+        while _p < _en:
+            _n = struct.unpack_from(">i", pool, _p)[0]
+            if _n == -1:
+                break
+            if _n == 16:
+                _recs16.append(_p)
+            _p += _n
+    _sw = lambda v: ((v & 0xFF) << 8) | (v >> 8)
+    _p10 = Counter(_sw(struct.unpack_from(">H", pool, _r + 10)[0]) for _r in _recs16)
+    _p14 = Counter(_sw(struct.unpack_from(">H", pool, _r + 14)[0]) for _r in _recs16)
+    _rates = {8000, 11025, 16000, 22050, 32000, 44100, 48000}
+    cases.append((f"the {len(_recs16)} sixteen-byte records carry LITTLE-endian u16 parameters: +10 "
+                  f"carries the sample rates 8000 and 16000 among levels (1000 x{_p10[1000]}, "
+                  f"3000, 4000, 5000), while +14 carries levels only (1000 x{_p14[1000]}, 0 x{_p14[0]}, "
+                  f"500, 250, 200) and no rate at all",
+                  len(_recs16) == 241 and _p10[1000] == 99 and _p14[1000] == 140
+                  and 8000 in _p10 and 16000 in _p10 and not (set(_p14) & _rates)))
     # --- M191: the codec constants are also a committed fixture, so the prose that quotes them and the
     # measurement that produces them are checked against the same source. The cartridge-gated case runs
     # first: if the measurement ever moves, this fails before the documentation can drift with it.

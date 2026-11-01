@@ -286,6 +286,10 @@ AUDITS = [
          tool="file_table.py", args=["--check"], file="tools/file_table.py",
          old='(int)piVar5 + 10" in _res',
          new='(int)piVar5 + 99" in _res'),
+    dict(name="file_table: the class-3 parameters are read big-endian",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='    _sw = lambda v: ((v & 0xFF) << 8) | (v >> 8)',
+         new='    _sw = lambda v: v'),
     # --- the counts gate (M180). Its `--check` runs on a repository that is by definition consistent, so
     # aiming at the comparison is invisible; the mutation is aimed at the *derived* number instead. The
     # second audit disables the phrasectomy in the self-test, so the "a deleted phrase is caught" case
