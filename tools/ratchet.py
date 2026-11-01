@@ -68,7 +68,15 @@ def src_tree(root: Path) -> str:
         return "(absent)"
     h = hashlib.sha256()
     for p in sorted(x for x in base.rglob("*") if x.is_file()):
-        h.update(str(p.relative_to(base)).encode())
+        rel = p.relative_to(base)
+        # Only corpus content counts. A `.DS_Store` (or `__pycache__`) is not part of the decompilation, and
+        # including it made this invariant *environment-dependent*: the baseline was written on a macOS tree
+        # that had `src/.DS_Store`, so every fresh clone — and therefore every CI run — failed the hash while
+        # the local check passed. That is the same defect class as the six audit-environment gaps: a check
+        # failing on what surrounds the data rather than on the data. Caught by CI, not locally.
+        if any(part.startswith(".") or part == "__pycache__" for part in rel.parts):
+            continue
+        h.update(str(rel).encode())
         h.update(b"\0")
         h.update(hashlib.sha256(p.read_bytes()).hexdigest().encode())
         h.update(b"\n")
@@ -186,6 +194,11 @@ def self_test() -> int:
 
         restore(reg, root); (root / "src" / "f.c").write_text("/* edited to satisfy a test */\n")
         cases.append(("an edit to src/ is caught (alone)", run(root, False) == 1))
+
+        # ...and an ignored file is not corpus content, so it must not move the hash — otherwise the
+        # invariant depends on the machine, which is exactly how it failed on CI while passing locally
+        restore(reg, root); (root / "src" / ".DS_Store").write_bytes(b"junk")
+        cases.append(("an ignored file in src/ does not change the hash", run(root, False) == 0))
 
         restore(reg, root); reg.write_text(stub([("a", 4), ("b", 3)]))
         cases.append(("--write refuses to lower a count without --allow-decrease",

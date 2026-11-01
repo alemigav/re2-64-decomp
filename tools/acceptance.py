@@ -73,7 +73,7 @@ SUITES = [
     # (a lowered count, a deleted suite, an unbaselined addition, an edit to src/) and requires
     # detection; `--check` applies the same two invariants to this repository. Both are needed: without
     # the self-test `--check` passes on a healthy tree whether or not either invariant is wired.
-    ("ratchet self-test", [sys.executable, "tools/ratchet.py", "--self-test"], 9, False),
+    ("ratchet self-test", [sys.executable, "tools/ratchet.py", "--self-test"], 10, False),
     ("ratchet (repository)", [sys.executable, "tools/ratchet.py", "--check"], 4, False),
     # The counts are derived from this very list, so registering a suite changes them — and this suite
     # is the one that notices the docs no longer agree. It caught its own registration (M180).

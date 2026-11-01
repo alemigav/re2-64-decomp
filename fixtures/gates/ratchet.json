@@ -28,11 +28,11 @@
   "cartridge fetch": 4,
   "mips harness": 15,
   "file table (cartridge)": 72,
-  "ratchet self-test": 9,
+  "ratchet self-test": 10,
   "ratchet (repository)": 4,
   "counts self-test": 4,
   "counts (repository)": 16,
   "verifier self-test": 7
  },
- "src_tree": "39895ff19eec340c98870ea119ed9fdc625a116a932e7a20b9c4f879a5c93a37"
+ "src_tree": "fa21d0ad076495d35e989cf002bfa3d04c603b1ed52b8d4971a27d927daca28c"
 }
