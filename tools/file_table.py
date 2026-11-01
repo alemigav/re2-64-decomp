@@ -670,31 +670,43 @@ def check() -> int:
     # order reconciles, so the record's payload bytes are not the bit stream the decoder sees — the CPU
     # streams them into a 4 KB ring first, and that copy is a transform this project has not established.
     SCALE_W, SIDE_W = (6, 6, 5, 5, 4, 4, 3, 3), (7, 2, 2, 6)
+    # 36 scales + 4 sides of (17 + 13 x 3) = 260 bits, the one number this whole case turns on.
+    SAMPLE_BITS = sum(SCALE_W) + 4 * (sum(SIDE_W) + 13 * 3)
+
     def _parse(payload, want, msb, guard=1 << 22):
+        # The field values are read only to be discarded: what the case measures is where the *cursor*
+        # ends up, so the body is a fixed 260 bits per emitted sample and the cursor advances
+        # arithmetically, O(1) per block instead of O(260). The original per-bit reader is reproduced
+        # exactly by three rules: a read may touch bit q iff q < min(guard + 1, 8 * len(payload)); the
+        # body consumes 260 * min(run, want - done) bits, not 260 * run; and running out raises rather
+        # than clamping to the end (clamping would turn overruns into landings and move both verdicts).
+        lim = min(guard + 1, len(payload) * 8)
         p = 0
+
+        def needs(k):
+            if p + k > lim:
+                raise EOFError
+
         def get(k):
             nonlocal p
+            needs(k)
             v = 0
             for i in range(k):
-                by = p >> 3
-                if by >= len(payload) or p > guard:
-                    raise EOFError
-                bit = (payload[by] >> (7 - (p & 7))) & 1 if msb else (payload[by] >> (p & 7)) & 1
+                q = p + i
+                bit = (payload[q >> 3] >> (7 - (q & 7) if msb else q & 7)) & 1
                 v = (v << 1) | bit if msb else v | (bit << i)
-                p += 1
+            p += k
             return v
+
         done = 0
         while done < want:
             if get(1) == 0:
-                run = get(7) + 1
-                for _ in range(min(run, want - done)):
-                    for w in SCALE_W: get(w)
-                    for _g in range(4):
-                        for w in SIDE_W: get(w)
-                        for _c in range(13): get(3)
+                m = min(get(7) + 1, want - done)
+                needs(SAMPLE_BITS * m)
+                p += SAMPLE_BITS * m
+                done += m
             else:
-                run = get(4) + 1
-            done += min(run, want - done)
+                done += min(get(4) + 1, want - done)
         return p
     for msb, label in ((True, "MSB-first"), (False, "LSB-first")):
         over = landed = 0

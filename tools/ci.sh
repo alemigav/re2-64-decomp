@@ -7,8 +7,9 @@
 #   3. the cartridge, when present, still hashes to the value the manifests were built from
 #
 # The cartridge is gitignored by design, so a fresh clone cannot supply it: check 3 reports SKIP and the
-# cartridge-dependent suites in check 1 report SKIP too. CI is therefore meaningful without the ROM (10 of
-# 34 suites, 212 of 433 cases) and strictly stronger with it. Exit status is non-zero on any real failure.
+# cartridge-dependent suites in check 1 report SKIP too. CI is therefore meaningful without the ROM —
+# 22 of 35 suites, 218 of 443 cases — and strictly stronger with it. Exit status is non-zero on any real
+# failure. Both figures are asserted by `tools/counts.py`, which is why they are written on one line.
 set -u
 
 root=$(git rev-parse --show-toplevel 2>/dev/null) || {
@@ -19,7 +20,7 @@ cd "$root" || exit 1
 status=0
 
 printf '== fixtures\n'
-python3 tools/acceptance.py || status=1
+python3 tools/acceptance.py "$@" || status=1
 
 printf '\n== tracked artefacts\n'
 # `fixtures/` is exempt: fixtures/corpus/cart.z64 is a synthetic 8 KiB file committed so CI can run the corpus

@@ -15,11 +15,14 @@ Suites:
 Usage:
   ./acceptance.py            # all suites
   ./acceptance.py -v         # show each suite's own output
+  ./acceptance.py --no-audit # defer the gate audit to verify.py, which grades it last
 """
 import argparse
+import os
 import re
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -51,7 +54,7 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 44, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 48, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
@@ -83,11 +86,21 @@ SUITES = [
     # is the one that notices the docs no longer agree. It caught its own registration (M180).
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
     ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 17, False),
+    # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain
+    # loop cannot: drop a result, reorder the report, or swallow a death. Its own `--self-test` does not
+    # run SUITES, so registering it is not the recursion that `--check` would be.
+    ("acceptance self-test", [sys.executable, "tools/acceptance.py", "--self-test"], 6, False),
     # The verifier's own rule, graded before anyone relies on it: a vacuous audit must force INCONCLUSIVE
     # rather than PASS. The full run is *not* registered here — it invokes `ci.sh`, which runs this list,
     # so registering it would recurse.
     ("verifier self-test", [sys.executable, "tools/verify.py", "--self-test"], 8, False),
 ]
+
+# The one suite that can be handed off. `verify.py` runs this whole file and *then* runs the audit as
+# its admission step, so running it here as well means the most expensive suite in the repository is paid
+# for twice in every verified run (M196). Deferring is a hand-off, not a hole: the audit still runs in
+# every full-tier path -- from verify.py, last, against the tree as it is at the end.
+AUDIT_SUITE = "gate audit (mechanisms disabled)"
 
 COUNT = re.compile(r"^(\d+)\s*/\s*(\d+)")
 
@@ -106,38 +119,95 @@ def tally(lines):
     return None
 
 
+# Four, not eight: `file_table.py --check` holds the 64 MiB cartridge plus its slices, so a worker costs
+# a few hundred MiB. The default stays 1, and CI never sets it — the suite is a gate, not a benchmark.
+MAX_JOBS = 4
+
+
+def jobs_of(raw):
+    """Clamp a JOBS value to 1..MAX_JOBS. An unparseable value is 1 — a pool with no workers would
+    report a green run without running anything."""
+    try:
+        n = int(raw)
+    except (TypeError, ValueError):
+        return 1
+    return max(1, min(n, MAX_JOBS))
+
+
+def jobs_from_env():
+    return jobs_of(os.environ.get("JOBS", "1"))
+
+
+def judge(name, expected, code, text, lines):
+    """-> (verdict line, failure or None, text). One suite's verdict, from its exit status and its tally."""
+    got = tally(lines)
+    if got is None:
+        return ("%-24s %-10s FAIL (no N/M verdict; exit %d)" % (name, "-", code),
+                (name, "no verdict, exit %d" % code), text)
+    passed, total = got
+    ok = code == 0 and passed == total and total == expected
+    note = "" if total == expected else "  EXPECTED %d CASES, found %d" % (expected, total)
+    return ("%-24s %-10s %s%s" % (name, "%d/%d" % (passed, total), "PASS" if ok else "FAIL", note),
+            None if ok else (name, "%d/%d, exit %d" % (passed, total, code)), text)
+
+
+def sweep(entries, jobs, have_cart, skip_audit, emit=None):
+    """Run every suite, at most `jobs` at a time, and report one line per suite **in registry order**.
+
+    Order is the contract, not a courtesy: a run at JOBS=4 must print exactly what JOBS=1 prints, byte for
+    byte, so the pool may change how long the gate takes but never what it says. Skipped and deferred
+    suites keep their own line in their own place instead of being hoisted to the top.
+    """
+    lines, failures, verbose, deferred, skipped = [], [], [], [], 0
+    slots = []
+    with ThreadPoolExecutor(max_workers=jobs) as pool:
+        for name, cmd, expected, needs_rom in entries:
+            if skip_audit and name == AUDIT_SUITE:
+                # NOT "SKIP (needs the cartridge)": that phrase means the cartridge is absent, is counted
+                # as skipped, and is grepped for by ci_full.sh. This is a different fact.
+                slots.append((name, expected, "DEFERRED", None))
+            elif needs_rom and not have_cart:
+                slots.append((name, expected, "SKIP", None))
+            else:
+                slots.append((name, expected, "RUN", pool.submit(run, cmd)))
+        for name, expected, kind, fut in slots:
+            if kind == "DEFERRED":
+                line = "%-24s %-10s %s" % (name, "-", "DEFERRED (graded by verify.py)")
+                deferred.append((name, expected))
+            elif kind == "SKIP":
+                line = "%-24s %-10s %s" % (name, "-", "SKIP (needs the cartridge)")
+                skipped += 1
+            else:
+                code, text, out = fut.result()
+                line, fail, text = judge(name, expected, code, text, out)
+                if fail:
+                    failures.append(fail)
+                    verbose.append(text)
+            lines.append(line)
+            if emit:
+                emit(line)
+    return lines, failures, skipped, deferred, verbose
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("-v", "--verbose", action="store_true")
+    ap.add_argument("--no-audit", action="store_true",
+                    help="defer the gate audit to verify.py (which runs it last, as admission)")
+    ap.add_argument("--self-test", action="store_true",
+                    help="grade the pool: it may change the clock, never the verdict or the order")
     args = ap.parse_args()
+    if args.self_test:
+        return self_test()
 
     have_cart = (HERE.parent / CARTRIDGE).exists()
     print("cartridge: %s" % ("present" if have_cart else
                              "ABSENT — suites that need it will report SKIP"))
-    failures, skipped = [], 0
     print("%-24s %-10s %s" % ("suite", "cases", "verdict"))
-    for name, cmd, expected, needs_rom in SUITES:
-        if needs_rom and not have_cart:
-            print("%-24s %-10s %s" % (name, "-", "SKIP (needs the cartridge)"))
-            skipped += 1
-            continue
-        code, text, lines = run(cmd)
-        got = tally(lines)
-        if got is None:
-            print("%-24s %-10s FAIL (no N/M verdict; exit %d)" % (name, "-", code))
-            failures.append((name, "no verdict, exit %d" % code))
-            if args.verbose:
-                print(text)
-            continue
-        passed, total = got
-        ok = code == 0 and passed == total
-        note = "" if total == expected else "  EXPECTED %d CASES, found %d" % (expected, total)
-        if total != expected:
-            ok = False
-        print("%-24s %-10s %s%s" % (name, "%d/%d" % (passed, total), "PASS" if ok else "FAIL", note))
-        if not ok:
-            failures.append((name, "%d/%d, exit %d" % (passed, total, code)))
-        if args.verbose and not ok:
+    lines, failures, skipped, deferred, verbose = sweep(
+        SUITES, jobs_from_env(), have_cart, args.no_audit, emit=print)
+    if args.verbose:
+        for text in verbose:
             print(text)
 
     print()
@@ -145,11 +215,69 @@ def main():
         for name, why in failures:
             print("FAIL %s: %s" % (name, why))
         return 1
-    ran = [s for s in SUITES if not (s[3] and not have_cart)]
+    ran = [s for s in SUITES if not (s[3] and not have_cart)
+           and not (args.no_audit and s[0] == AUDIT_SUITE)]
+    tail = "" if not skipped else "; %d skipped for want of the cartridge" % skipped
+    if deferred:
+        tail += "; %d deferred to verify.py (%d cases graded there)" % (
+            len(deferred), sum(e for _, e in deferred))
     print("all %d runnable suite(s) pass (%d cases)%s" % (
-        len(ran), sum(e for _, _, e, _ in ran),
-        "" if not skipped else "; %d skipped for want of the cartridge" % skipped))
+        len(ran), sum(e for _, _, e, _ in ran), tail))
     return 0
+
+
+def self_test():
+    """Grade the pool itself, because "it passed under a scheduler" is the failure this repo audits.
+
+    Each case is aimed at one way a worker pool can lie: dropping a result, reordering the report,
+    swallowing a death, or reporting green with no worker at all.
+    """
+    green = ["sh", "-c", "echo PASS; echo 2/2"]
+    red = ["sh", "-c", "echo FAIL; echo 1/2"]
+    silent = ["sh", "-c", "echo nothing to report"]        # exits 0 with no N/M line
+    killed = ["sh", "-c", "exit 3"]                        # dies with no output
+    cases = []
+
+    def at(seq, i):
+        """Guarded access: a case must *fail* when a result is missing, not raise. A crash in a self-test
+        is indistinguishable from a caught mutation at the exit-code level, which is the loophole this
+        whole file exists to avoid."""
+        return seq[i] if i < len(seq) else ""
+
+    three = [("a", green, 2, False), ("b", green, 2, False), ("c", green, 2, False)]
+    l1, f1, _s1, _d1, _v1 = sweep(three, 1, True, False)
+    l4, f4, _s4, _d4, _v4 = sweep(three, 4, True, False)
+    cases.append(("three suites print three lines, in registry order, at one worker and at four",
+                  len(l1) == 3 and l1 == l4 and not f1 and not f4
+                  and at(l1, 0).startswith("a") and at(l1, 1).startswith("b")
+                  and at(l1, 2).startswith("c")))
+
+    l4, f4, _s, _d, _v = sweep([("bad", red, 2, False)], 4, True, False)
+    cases.append(("a failing suite still fails under the pool, and the failure names it",
+                  bool(f4) and at(f4, 0)[0] == "bad" and "FAIL" in at(l4, 0)))
+
+    l4, f4, _s, _d, _v = sweep([("silent", silent, 1, False)], 4, True, False)
+    cases.append(("a suite that exits 0 with no N/M verdict is a FAIL, not a silent drop",
+                  bool(f4) and "no N/M verdict" in at(l4, 0)))
+
+    l4, f4, _s, _d, _v = sweep([("killed", killed, 1, False)], 4, True, False)
+    cases.append(("a suite that dies without a verdict is a FAIL under the pool", bool(f4)))
+
+    l1, f1, _s, _d, _v = sweep([("mismatch", green, 3, False)], 1, True, False)
+    l4, f4, _s, _d, _v = sweep([("mismatch", green, 3, False)], 4, True, False)
+    cases.append(("an expected-count mismatch is caught at one worker and at four, identically",
+                  bool(f1) and bool(f4) and l1 == l4 and "EXPECTED 3 CASES" in at(l4, 0)))
+
+    cases.append(("JOBS clamps to 1..MAX_JOBS, so an empty or absurd pool cannot report a green run",
+                  jobs_of("0") == 1 and jobs_of("-1") == 1 and jobs_of("abc") == 1
+                  and jobs_of(None) == 1 and jobs_of("64") == MAX_JOBS and jobs_of("3") == 3))
+
+    passed = 0
+    for label, ok in cases:
+        passed += ok
+        print("  %s %s" % ("PASS" if ok else "FAIL", label))
+    print("%d/%d acceptance self-test case(s)" % (passed, len(cases)))
+    return 0 if passed == len(cases) else 1
 
 
 if __name__ == "__main__":

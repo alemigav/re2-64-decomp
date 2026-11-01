@@ -36,7 +36,9 @@ CARTRIDGE = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 REPORT = ROOT / "build" / "verify-report.json"
 
 PROCEDURES = [
-    ("ci", ["sh", "tools/ci.sh"], "acceptance, artefact scan and cartridge digest"),
+    # `--no-audit`: this run grades the audit itself, below and last, against the tree as it ends. Letting
+    # the acceptance sweep run it too made the repository's most expensive check cost twice (M196).
+    ("ci", ["sh", "tools/ci.sh", "--no-audit"], "acceptance, artefact scan and cartridge digest"),
     ("ratchet", [sys.executable, "tools/ratchet.py", "--check"], "registry drift and src/ freeze"),
     ("counts", [sys.executable, "tools/counts.py", "--check"], "documented numbers vs the registry"),
 ]

@@ -56,8 +56,11 @@ CHECKS = [
     ("docs/handover.md", r"\*\*(\d+) of (\d+) cases\*\*\. Their enforcement",
      ("gated_cases", "total_cases"), 1),
     ("docs/handover.md", r"vouch for those (\d+) cases", ("gated_cases",), 1),
-    ("tools/ci.sh", r"# (\d+) suites, (\d+) of (\d+) cases\)",
-     ("total_suites", "runnable_cases", "total_cases"), 1),
+    # Written as "N of M suites, N of M cases" on ONE line because the first pair used to be split across a
+    # line break, which is how `ci.sh` came to claim "10 of 34 suites" for several milestones while the
+    # case figures beside it stayed correct: the pattern pinned the cases and could not see the suites (M196).
+    ("tools/ci.sh", r"# (\d+) of (\d+) suites, (\d+) of (\d+) cases",
+     ("runnable_suites", "total_suites", "runnable_cases", "total_cases"), 1),
     (".github/workflows/acceptance.yml", r"#   (\d+) suites / (\d+) cases  PASS",
      ("runnable_suites", "runnable_cases"), 1),
     (".github/workflows/acceptance.yml", r"#   (\d+) suites / (\d+) cases  SKIP",

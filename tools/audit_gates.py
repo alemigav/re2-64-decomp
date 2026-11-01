@@ -246,6 +246,35 @@ AUDITS = [
          file="tools/file_table.py",
          old="all(0.03 < field[k] / pay[k] < 0.115 for k in range(n))",
          new="all(0.05 < field[k] / pay[k] < 0.115 for k in range(n))"),
+    # --- the M195 bit-stream walk (M196). It used to be the suite's most expensive case and the only one
+    # with no audit entry, which is the wrong way round. The mutation removes the block's 260-bit body,
+    # which is the mechanism the case turns on: the cursor then stops at the header, nothing ever overruns,
+    # and both pinned verdicts move from 362/588 and 339/588 to 0. Aiming at `lim` instead would be
+    # vacuous — no clip is over 512 KiB, so the guard never binds and removing it changes nothing.
+    dict(name="file_table: a normal block consumes no sample bits",
+         tool="file_table.py", args=["--check"],
+         file="tools/file_table.py",
+         old="                p += SAMPLE_BITS * m",
+         new="                p += 0"),
+    # --- the pool (M196). One mutation per lie a scheduler can tell: a result that never reaches the
+    # report, a report assembled in completion order, and a failing suite that is judged a pass. Each is
+    # aimed at the acceptance self-test, which is the only thing that looks at the pool rather than through
+    # it -- `--check` on a healthy tree passes whether or not any of this is wired.
+    dict(name="acceptance: a worker's result never reaches the report",
+         tool="acceptance.py", args=["--self-test"],
+         file="tools/acceptance.py",
+         old="            lines.append(line)",
+         new="            pass"),
+    dict(name="acceptance: the report is assembled in completion order, not registry order",
+         tool="acceptance.py", args=["--self-test"],
+         file="tools/acceptance.py",
+         old="    return lines, failures, skipped, deferred, verbose",
+         new="    return lines[::-1], failures, skipped, deferred, verbose"),
+    dict(name="acceptance: a suite is a pass regardless of its exit status or tally",
+         tool="acceptance.py", args=["--self-test"],
+         file="tools/acceptance.py",
+         old="    ok = code == 0 and passed == total and total == expected",
+         new="    ok = True"),
     # --- the counts gate (M180). Its `--check` runs on a repository that is by definition consistent, so
     # aiming at the comparison is invisible; the mutation is aimed at the *derived* number instead. The
     # second audit disables the phrasectomy in the self-test, so the "a deleted phrase is caught" case

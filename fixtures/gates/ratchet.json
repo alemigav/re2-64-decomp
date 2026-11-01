@@ -18,7 +18,7 @@
   "exception path (cartridge)": 8,
   "t64info (C header)": 4,
   "routine index bounds (cartridge)": 14,
-  "gate audit (mechanisms disabled)": 44,
+  "gate audit (mechanisms disabled)": 48,
   "workflow lint": 14,
   "artefact scan (repository)": 5,
   "artefact scan (synthetic)": 7,
@@ -33,6 +33,7 @@
   "ratchet (repository)": 4,
   "counts self-test": 4,
   "counts (repository)": 17,
+  "acceptance self-test": 6,
   "verifier self-test": 8
  },
  "src_tree": "fa21d0ad076495d35e989cf002bfa3d04c603b1ed52b8d4971a27d927daca28c"
