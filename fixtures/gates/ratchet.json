@@ -29,6 +29,7 @@
   "mips harness": 15,
   "file table (cartridge)": 89,
   "sound decode (cartridge)": 7,
+  "voice decode (cartridge)": 7,
   "ratchet self-test": 10,
   "ratchet (repository)": 4,
   "counts self-test": 4,

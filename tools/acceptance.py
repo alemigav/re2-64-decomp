@@ -76,6 +76,12 @@ SUITES = [
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a
     # specification, no code copied); see THIRD_PARTY.md.
     ("sound decode (cartridge)", [sys.executable, "tools/sound_decode.py", "--check"], 7, True),
+    # The voice bank, decoded by EXECUTING the cartridge's synthesis (M198). The synthesis routines take
+    # their arguments in registers the pseudocode does not model, so there is nothing faithful to
+    # transcribe from it; the tool runs the instructions instead and the cases report what came out. It
+    # needs the cartridge and an emulator, and it says so loudly rather than skipping when the emulator is
+    # missing — a suite that goes quiet when its engine is absent is the failure this repository audits.
+    ("voice decode (cartridge)", [sys.executable, "tools/voice_decode.py", "--check"], 7, True),
     # The ratchet guards the registry itself. `--self-test` breaks each invariant on a synthetic root
     # (a lowered count, a deleted suite, an unbaselined addition, an edit to src/) and requires
     # detection; `--check` applies the same two invariants to this repository. Both are needed: without
