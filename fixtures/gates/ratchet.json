@@ -31,7 +31,7 @@
   "ratchet self-test": 9,
   "ratchet (repository)": 4,
   "counts self-test": 4,
-  "counts (repository)": 12,
+  "counts (repository)": 16,
   "verifier self-test": 7
  },
  "src_tree": "39895ff19eec340c98870ea119ed9fdc625a116a932e7a20b9c4f879a5c93a37"

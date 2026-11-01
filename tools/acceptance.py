@@ -78,7 +78,7 @@ SUITES = [
     # The counts are derived from this very list, so registering a suite changes them — and this suite
     # is the one that notices the docs no longer agree. It caught its own registration (M180).
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
-    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 12, False),
+    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 16, False),
     # The verifier's own rule, graded before anyone relies on it: a vacuous audit must force INCONCLUSIVE
     # rather than PASS. The full run is *not* registered here — it invokes `ci.sh`, which runs this list,
     # so registering it would recurse.

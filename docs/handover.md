@@ -303,7 +303,7 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 33 suites, 397 cases
+python3 tools/acceptance.py         # 33 suites, 401 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
 python3 tools/audit_gates.py        # 44/44: every check must fail when its mechanism is disabled
 python3 tools/ratchet.py --check    # the registry may not drift, and src/ may not move, silently
@@ -314,7 +314,7 @@ python3 tools/counts.py --check     # the seven numbers, derived once and assert
 **A green CI run does not vouch for everything.** Twelve suites are cartridge-gated and report `SKIP`
 on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
 `cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
-`routine index bounds`, `file table` and the gate audit — **192 of 397 cases**. Their enforcement is the
+`routine index bounds`, `file table` and the gate audit — **192 of 401 cases**. Their enforcement is the
 pre-commit hook and a local run, and the CI job summary lists them by name.
 
 ## 5b. Who verifies what, and the three edits that cannot happen silently
@@ -353,9 +353,14 @@ line that used to carry one.
 
 The emulator is no longer on the critical path. What is left is cartridge-side, and none of it needs ares:
 
-* **the two unidentified blobs** — R3 `0xb73fb3`–`0x140ed84` and R4 `0x338fe1`–`0xb63106`, ~17.6 MB between
-  them; R4's tail holds the **28-payload non-zlib container** at `0xb6248` (74 716 B, tiles exactly), whose
-  codec is still unsolved (M82/M90);
+* **the sound family's three open fields** — the 17.6 MB is no longer unidentified (M178–M188): id 1979 is a
+  588-record `MORT` bank, id 1983 is 1 192 samples tiling it to the byte, and the sample codec is identified
+  as MusyX ADPCM behind a 16-byte prologue (M187). What is left is narrower: **`u16@+4`** in the `MORT`
+  record, still unassigned after four readings were refuted and one left doubtful (M179/M182);
+  **2.42 %** of the codec's 40-byte groups failing the codebook test, scattered with no sample-level
+  clustering; **what the pool's four key classes mean** now that the keys read as `[class][index]` (M188);
+  and **why `SND_PROJ` has 418 song slots for 417 records** (M188). The 28-payload container at `0xb6248`
+  has **no owning file-table entry** — it is not a file (M178);
 * **experiment B, step 2** — pointer provenance across functions. Step 1 (`tools/provenance.py`) is
   done and 10/10 on its fixture (M111): intra-procedural values over a real CFG, with the
   interprocedural layer fenced off. The committed artifact `manifests/provenance.json` covers

@@ -1,12 +1,13 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **397-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **401-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
 be useful at every step instead: formats decoded, a full pseudocode corpus, the script VM, the texture
-container, and a gate that refuses to let a number rot.
+container, the audio filesystem, and a gate that refuses to let a number rot — plus a verifier that will not
+report `PASS` unless the gates themselves have been shown to fail.
 
 [![ci](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml/badge.svg)](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml)
 [![licence: CC0-1.0](https://img.shields.io/badge/licence-CC0--1.0-lightgrey)](LICENSE)
@@ -39,6 +40,15 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
   verified on **65 of 65** tiles (M159–M167).
 * **The exception path**: `break` → vector → dispatch loop `0x8000098c`, with no `eret` and no EPC write —
   fatal, only a hardware reset leaves it (M168–M171).
+* **The audio filesystem**: the file table is the whole file system, not a zlib manifest — 8 091 entries, of
+  which **3 126 are stored raw** — and the 17.6 MB "unidentified" region is five files: a 588-record `MORT`
+  bank, three chained section tables, and a sample pool of **1 192 samples that tile it to the byte**
+  (M178–M185).
+* **The sample codec**: MusyX's ADPCM — 40-byte groups of two 20-byte frames behind a 16-byte prologue,
+  **97.58 %** structural agreement over 224 991 groups against 25 % by chance (M187).
+* **A verification system that can be checked without the game**: 44 mutation audits, a ratchet that forbids
+  silent count changes and any edit to `src/`, derived-and-asserted documentation numbers, and one entry point
+  that treats a dirty gate audit as `INCONCLUSIVE` rather than `PASS` (M179–M183).
 
 ## Verify it without the cartridge
 
@@ -47,29 +57,37 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 21 suites / 205 of 397 cases run; the other 12 suites SKIP
+python3 tools/acceptance.py      # 21 suites / 209 of 401 cases run; the other 12 suites SKIP
 python3 tools/audit_gates.py     # 44/44 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
-python3 tools/check_markers.py   # 20/20 — every doc anchor, heading and note pointer holds
+python3 tools/check_markers.py   # 21/21 — every doc anchor, heading and note pointer holds
 python3 tools/artefact_scan.py   # 5/5  — no tracked file is cartridge content
+python3 tools/ratchet.py --check # the registry has not drifted, and src/ has not moved, silently
+python3 tools/counts.py --check  # the numbers quoted here still agree with the registry
+python3 tools/verify.py          # all of the above, adjudicated into one verdict
 ```
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **192 of 397 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **192 of 401 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
-* `tools/audit_gates.py` **disables each check's mechanism** and requires the check to fail. 26 mechanisms,
-  26 failures, **0 vacuous** — this caught six checks that could not fail, including one of its own
-  environment assumptions four times over.
+* `tools/audit_gates.py` **disables each check's mechanism** and requires the check to fail. 44 mechanisms,
+  44 failures, **0 vacuous**. It has repeatedly caught checks that could not fail — six of its own environment
+  assumptions, and a verdict rule that made five audits green unconditionally because it grepped the output
+  for the word `FAIL`.
+* `tools/ratchet.py` forbids the three silent edits that make a suite pass: lowering an expected count,
+  deleting a suite, or editing `src/` to satisfy a check. Every change needs `--write`, which is a diff.
+* `tools/counts.py` derives every number quoted in this file and the handover from the registry and asserts
+  them in sixteen places. A phrase that *disappears* is a failure, so deleting a stale line cannot help.
 * `tools/milestone_index.py --check` regenerates [the milestone index](docs/MILESTONES.md) and fails if it
   drifts from the log. The index cannot be hand-edited into agreement with anything.
 
 ## Milestones
 
-178 milestones are recorded, in ten phases. The full index — every number, its title, and the note behind
-it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
+**189** numbers, 0-188: **139** with a row, and **50** named gaps. The full index — every number, its title,
+and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
 
@@ -85,6 +103,7 @@ worth reading before you believe any older note.
 | P7 | M136–M156 | the script VM decoded — lengths, licensed names, jump family, room population |
 | P8 | M157–M172 | populations audited; `0x0141`, T64, handle registry, exception path; consolidation |
 | P9 | M173–M177 | index bounds, a CI that actually runs, and publication readiness |
+| P10 | M178–M188 | the file table is the file system; the 17.6 MB is the audio family, framed end to end; the sample codec identified |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -103,17 +122,23 @@ claim, and codified in [include/re2_formats.h](include/re2_formats.h) with a C v
 | model container | `01 41` = format version **321**, self-relative offsets relocated by `FUN_800824b8` |
 | textures (T64) | `[0xBE1E][height][width][size][format][palette entries]` + RGBA5551 + raw 4/8-bpp indices |
 | exception path | `break` → `jr k0` → `0x800006d0` → dispatch loop `0x8000098c`; unrecoverable by design |
+| file table | 8 091 entries + build stamp; 4 852 zlib, **3 126 stored raw** — the media, uncompressed (M178) |
+| sound files | ids 1979–1983: a 588-record `MORT` bank, `SND_PROJ`/`SND_POOL` chained tables, `SND_SMPDIR` |
+| sample pool | id 1983, 9 022 912 B: **1 192 samples tiling it to the byte**, 15 canonical rates (M184) |
+| sample codec | MusyX ADPCM: 40-byte groups of two 20-byte frames after a 16-byte prologue (M187) |
 
-Still unidentified: ~17.6 MB in two blobs, and a 28-payload non-zlib container in the tail of R4 whose codec
-is unsolved.
+The 17.6 MB is no longer unidentified. Both blobs are framed end to end, and what remains inside them is
+narrower than a container: `u16@+4` in the `MORT` record is still unassigned, 2.42 % of the codec's groups
+fail a structural test, and the meaning of the pool's four key classes is open. Those are named with their
+measurements rather than left as adjectives.
 
 ## Layout
 
 ```
-tools/       60 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+tools/       64 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    107 notes, one per milestone that has one
+docs/log/    117 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

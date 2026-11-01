@@ -21,6 +21,7 @@ the expected number of times, and a missing phrase is a failure, not a skip.
   ./counts.py --self-test    # a wrong number fails, and a deleted phrase fails
 """
 import argparse
+import json
 import re
 import shutil
 import sys
@@ -36,6 +37,13 @@ CHECKS = [
     ("README.md", r"# (\d+) suites / (\d+) of (\d+) cases run; the other (\d+) suites SKIP",
      ("runnable_suites", "runnable_cases", "total_cases", "gated_suites"), 1),
     ("README.md", r"tools/audit_gates\.py\s+# (\d+)/(\d+)", ("audit_cases",) * 2, 1),
+    # The README quotes four more numbers that used to rot silently: the marker count, how much of the
+    # milestone record exists, how many notes there are, and how many tools. Each is derived, not typed.
+    ("README.md", r"tools/check_markers\.py\s+# (\d+)/(\d+)", ("marker_cases",) * 2, 1),
+    ("README.md", r"\*\*(\d+)\*\* numbers, 0-(\d+): \*\*(\d+)\*\* with a row, and \*\*(\d+)\*\* "
+                  r"named gaps", ("milestone_total", "milestone_top", "milestone_rows", "gap_count"), 1),
+    ("README.md", r"tools/\s+(\d+) analysis and gate scripts", ("tool_count",), 1),
+    ("README.md", r"docs/log/\s+(\d+) notes", ("note_count",), 1),
     ("README.md", r"\*\*(\d+) of (\d+) cases cannot run without your dump\*\*",
      ("gated_cases", "total_cases"), 1),
     ("docs/handover.md", r"# (\d+) suites, (\d+) cases", ("total_suites", "total_cases"), 1),
@@ -65,6 +73,11 @@ def derive(root: Path) -> dict:
     runnable = [s for s in suites if not s[3]]
     gated = [s for s in suites if s[3]]
     audit = next(s for s in suites if s[0] == AUDIT_SUITE)
+    logrows = [l for l in (root / "docs" / "reverse_engineering_log.md").read_text().splitlines()
+               if re.match(r"^\| M\d+[a-z]? \|", l)]
+    nums = {int(re.match(r"^\| M(\d+)", l).group(1)) for l in logrows}
+    top = max(nums)
+    gaps = json.loads((root / "fixtures" / "milestones" / "gaps.json").read_text())["gaps"]
     return {
         "total_suites": len(suites),
         "total_cases": sum(s[2] for s in suites),
@@ -73,6 +86,14 @@ def derive(root: Path) -> dict:
         "gated_suites": len(gated),
         "gated_cases": sum(s[2] for s in gated),
         "audit_cases": audit[2],
+        "marker_cases": next(e for n, _c, e, _r in suites if n == "doc markers (repository)"),
+        "milestone_top": top,
+        "milestone_total": top + 1,
+        "milestone_rows": len(nums),
+        "gap_count": len(gaps),
+        "note_count": len(list((root / "docs" / "log").glob("M*.md"))),
+        "tool_count": len([p for p in (root / "tools").iterdir()
+                           if p.suffix in (".py", ".sh", ".c", ".swift")]),
     }
 
 
@@ -114,9 +135,16 @@ def self_test() -> int:
     files = sorted({f for f, *_ in CHECKS})
     cases = []
     try:
-        (tmp / "tools").mkdir(parents=True)
-        shutil.copy2(ROOT / "tools" / "acceptance.py", tmp / "tools" / "acceptance.py")
-        for f in files:
+        # The synthetic root must contain everything `derive()` reads, not just the quoting sites: the
+        # milestone log, the gaps fixture, the note directory and the tool directory. Missing them made this
+        # self-test raise FileNotFoundError, which is the audit-environment gap again — inside the tool that
+        # exists to catch it.
+        for d in ("tools", "docs/log"):
+            shutil.copytree(ROOT / d, tmp / d)
+        (tmp / "fixtures" / "milestones").mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / "fixtures" / "milestones" / "gaps.json",
+                     tmp / "fixtures" / "milestones" / "gaps.json")
+        for f in files + ["docs/reverse_engineering_log.md"]:
             (tmp / f).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / f, tmp / f)
 
