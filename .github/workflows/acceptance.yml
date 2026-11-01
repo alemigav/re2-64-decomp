@@ -3,13 +3,13 @@
 # Measured, not estimated (M174). A runner has no cartridge — `rom/` is gitignored by design, and so is
 # everything derived from it (`assets/`, `build/`) — so `tools/acceptance.py` reports:
 #
-#   10 suites / 127 cases  PASS
-#   11 suites / 103 cases  SKIP (needs the cartridge)
+#   12 suites / 135 cases  PASS
+#   11 suites / 105 cases  SKIP (needs the cartridge)
 #
-# Locally, with the ROM present, the same command runs all 21 suites / 230 cases. Those numbers are asserted
+# Locally, with the ROM present, the same command runs all 23 suites / 240 cases. Those numbers are asserted
 # by `tools/acceptance.py`'s own expected counts, so this comment goes stale loudly rather than quietly.
 #
-# **The 103 skipped cases are the ones that assert facts about RE2 itself** — the corpus checks
+# **The 105 skipped cases are the ones that assert facts about RE2 itself** — the corpus checks
 # (`FUN_800327ec` at 0x800327ec, the slot map at 0x800eb204), the script VM, the model container, the T64
 # texture law, the exception path, and the routine-index bounds (M173). Running them needs the cartridge's
 # **bytes**, which are cartridge content and are never committed. They run wherever the cartridge exists:
@@ -73,11 +73,12 @@ jobs:
             grep -E '^(all |cartridge|suite|ci:)|PASS|FAIL|SKIP' ci.log | tail -40 || true
             printf '```\n\n'
             printf 'Suites that need the cartridge report SKIP, never PASS — a green run here does not vouch\n'
-            printf 'for the 103 skipped cases. With the ROM present, run the `full` job above.\n'
+            printf 'for the 105 skipped cases. With the ROM present, run the `full` job above.\n'
           } >> "$GITHUB_STEP_SUMMARY"
 
-  # The other tier: the same `ci.sh` where the cartridge exists, so all 21 suites / 230 cases run. This job
-  # needs a machine that holds the ROM — nothing is uploaded, and no secret is involved.
+  # The other tier: the same `ci.sh` where the cartridge exists, so all 23 suites / 240 cases run. This job
+  # needs a machine that holds the ROM — nothing is uploaded, and no secret is involved. (`full-url` below
+  # reaches the same coverage on a hosted runner by fetching the cartridge instead.)
   #
   # Two guards exist because a self-hosted job fails in a way a hosted one cannot:
   #
@@ -105,50 +106,67 @@ jobs:
 
       # A self-hosted runner that lost its cartridge would run the *hosted* tier and report success — the
       # exact green-but-empty result this tier exists to avoid. So it fails instead, with the reason.
-      - name: Require the cartridge and the built images
-        run: |
-          set -e
-          rom=$(ls rom/*.z64 2>/dev/null | head -1)
-          if [ -z "$rom" ]; then
-            printf 'no cartridge at rom/*.z64 — this tier needs it, and it is never committed.\n' >&2
-            printf 'See docs/handover.md, "How to rebuild".\n' >&2
-            exit 1
-          fi
-          printf 'cartridge: %s (%s bytes)\n' "$rom" "$(wc -c < "$rom" | tr -d ' ')"
-          if [ ! -d build/elfs ]; then
-            printf 'no build/elfs — run tools/build_images.py first (docs/handover.md).\n' >&2
-            exit 1
-          fi
-          if [ ! -d assets/unpacked ]; then
-            printf 'no assets/unpacked — run tools/unpack_zlib.py first (docs/handover.md).\n' >&2
-            exit 1
-          fi
-
-      - name: All suites
+      # The requiring, the running and the "nothing may have been skipped" guard all live in one script, so
+      # this tier and the fetching tier below cannot drift apart.
+      - name: All suites, and fail if anything was skipped
         run: |
           set -o pipefail
-          sh tools/ci.sh 2>&1 | tee ci.log
-
-      # "All 230 cases" is the whole point of this tier, so it is checked rather than hoped for: a run that
-      # quietly skipped the cartridge suites is a FAILURE here, not a pass.
-      - name: Require that nothing was skipped
-        run: |
-          set -e
-          if grep -q 'skipped for want of the cartridge' ci.log; then
-            printf 'the cartridge suites still skipped — this tier did not do its job:\n' >&2
-            grep -E 'SKIP' ci.log >&2 || true
-            exit 1
-          fi
-          grep -E '^all 21 runnable suite\(s\) pass \(230 cases\)$' ci.log
+          sh tools/ci_full.sh 2>&1 | tee ci_full.log
 
       - name: Summarise what ran
         if: always()
         run: |
           {
-            printf '### `sh tools/ci.sh` — self-hosted tier\n\n'
+            printf '### `sh tools/ci_full.sh` — self-hosted tier\n\n'
             printf '```\n'
-            grep -E '^(all |cartridge|ci:)|PASS|FAIL|SKIP' ci.log | tail -40 || true
+            grep -E '^(all |cartridge|ci:)|PASS|FAIL|SKIP' ci_full.log | tail -40 || true
             printf '```\n\n'
-            printf 'This tier holds the cartridge, so all 21 suites / 230 cases run. Nothing was uploaded:\n'
+            printf 'This tier holds the cartridge, so all 23 suites / 240 cases run. Nothing was uploaded:\n'
             printf 'the ROM lives on the runner, not in a secret.\n'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # The same full coverage without a runner to keep awake: the cartridge is fetched at run time from an
+  # owner-provided URL. A secret cannot hold the bytes — GitHub caps a secret at 48 KB and the cartridge is
+  # 89 478 489 B base64, about 1 870 secrets — so the secret holds *access*, and the bytes stay where they
+  # are until a run needs them. Nothing is committed and nothing is stored on GitHub.
+  #
+  #   gh variable set CARTRIDGE_URL --body true          # turn this tier on
+  #   gh secret set RE2_CART_URL   < url.txt             # where the cartridge lives
+  #   gh secret set RE2_CART_TOKEN < token.txt           # optional, sent as a bearer token
+  #
+  # `tools/cart_fetch.sh` verifies the download against `rom_sha256` in the committed
+  # `manifests/manifest.json` *before* unpacking, so a wrong or truncated file fails loudly instead of
+  # looking like a corrupt game.
+  full-url:
+    if: vars.CARTRIDGE_URL == 'true'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.9'
+
+      - name: Fetch, verify, unpack and build the cartridge
+        env:
+          RE2_CART_URL: ${{ secrets.RE2_CART_URL }}
+          RE2_CART_TOKEN: ${{ secrets.RE2_CART_TOKEN }}
+        run: sh tools/cart_fetch.sh
+
+      - name: All suites, and fail if anything was skipped
+        run: |
+          set -o pipefail
+          sh tools/ci_full.sh 2>&1 | tee ci_full.log
+
+      - name: Summarise what ran
+        if: always()
+        run: |
+          {
+            printf '### `sh tools/ci_full.sh` — fetched tier\n\n'
+            printf '```\n'
+            grep -E '^(all |cartridge|ci:)|PASS|FAIL|SKIP|verified' ci_full.log | tail -40 || true
+            printf '```\n\n'
+            printf 'The cartridge was fetched from `RE2_CART_URL` and verified against the committed\n'
+            printf 'sha256 before use; it is never committed and never stored on GitHub.\n'
           } >> "$GITHUB_STEP_SUMMARY"

@@ -8,7 +8,7 @@
 #
 # The cartridge is gitignored by design, so a fresh clone cannot supply it: check 3 reports SKIP and the
 # cartridge-dependent suites in check 1 report SKIP too. CI is therefore meaningful without the ROM (10 of
-# 21 suites, 127 of 230 cases) and strictly stronger with it. Exit status is non-zero on any real failure.
+# 23 suites, 135 of 240 cases) and strictly stronger with it. Exit status is non-zero on any real failure.
 set -u
 
 root=$(git rev-parse --show-toplevel 2>/dev/null) || {

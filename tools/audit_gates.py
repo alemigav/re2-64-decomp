@@ -129,6 +129,17 @@ AUDITS = [
          file="tools/patch_text.py",
          old="        shutil.copymode(path, tmp)",
          new="        pass"),
+    # --- the full CI tier: one mutation per leg, so neither the skip guard nor the digest check can rot
+    dict(name="ci_full: the skip guard never fires",
+         tool="ci_full.sh", args=["--self-test"], interp="sh",
+         file="tools/ci_full.sh",
+         old="	if grep -q 'skipped for want of the cartridge' \"$log\"; then\n\t\treturn 1",
+         new="	if false; then\n\t\treturn 1"),
+    dict(name="cart_fetch: the digest comparison always passes",
+         tool="cart_fetch.sh", args=["--self-test"], interp="sh",
+         file="tools/cart_fetch.sh",
+         old="\t[ \"$(sha_of \"$1\")\" = \"$2\" ]",
+         new="\ttrue"),
     dict(name="patch_text: a no-op replacement is accepted",
          tool="patch_text.py", args=["--self-test"],
          file="tools/patch_text.py",
@@ -177,7 +188,12 @@ def run_audit(audit, keep: Path = None) -> tuple:
         if mutated == text:
             return None, "mutation changed nothing"
         target.write_text(mutated)
-        proc = subprocess.run([sys.executable, str(tmp / "tools" / audit["tool"])] + audit["args"],
+        # `interp` defaults to Python, but a gate written in shell must be run by shell: with the wrong
+        # interpreter the mutated copy fails on a `SyntaxError` and the audit reports a detection that has
+        # nothing to do with the mutation. Both M176 gates are shell, and both were vacuous until this
+        # default existed. (Fourth time in this arc that an audit environment was wrong for the tool.)
+        interp = audit.get("interp", sys.executable)
+        proc = subprocess.run([interp, str(tmp / "tools" / audit["tool"])] + audit["args"],
                               capture_output=True, text=True, cwd=str(tmp))
         out = proc.stdout + proc.stderr
         detected = proc.returncode != 0 or "FAIL" in out

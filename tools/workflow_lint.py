@@ -31,6 +31,7 @@ import sys
 from pathlib import Path
 
 WORKFLOWS = Path(".github/workflows")
+ROOT = WORKFLOWS.parent.parent          # a job's guard may live in a script it calls, not in the YAML
 KEY = re.compile(r"^(run|name|uses|with|on|jobs|permissions):(\s+)(.*)$")
 USES = re.compile(r"^\s*-?\s*uses:\s*(\S+)")
 JOB_KEYS = ("runs-on:", "timeout-minutes:")
@@ -100,10 +101,28 @@ def lint_text(text):
         gated = re.search(r"^\s+if:\s*vars\.", body, re.M) is not None
         out.append(("a self-hosted job is gated by a repository variable", gated,
                     "if: vars.<NAME>" if gated else "a self-hosted job with no `if:` queues on every push"))
-        refuses = "skipped for want of the cartridge" in body and "exit 1" in body
-        out.append(("a self-hosted job refuses to pass when suites were skipped", refuses,
-                    "it fails on a SKIP line" if refuses else
-                    "nothing checks that the cartridge suites actually ran"))
+        # The guard lives in `tools/ci_full.sh` rather than in this file, so it is one implementation for
+        # both tiers. Following the reference is the point: a job that stops calling the gate is the
+        # failure mode, and a string match on the YAML would have missed it.
+        gate = ROOT / "tools" / "ci_full.sh"
+        if "tools/ci_full.sh" in body and gate.exists():
+            g = gate.read_text()
+            refuses = "skipped for want of the cartridge" in g and "exit 1" in g
+            detail = "tools/ci_full.sh fails on a SKIP line" if refuses else \
+                "tools/ci_full.sh does not check whether the cartridge suites ran"
+        else:
+            refuses = False
+            detail = "a full tier that does not call tools/ci_full.sh"
+        out.append(("a self-hosted job refuses to pass when suites were skipped", refuses, detail))
+
+        # And the fetching path must verify what it downloaded before anything unpacks it.
+        fetch = ROOT / "tools" / "cart_fetch.sh"
+        if "tools/cart_fetch.sh" in body and fetch.exists():
+            f = fetch.read_text()
+            verified = "manifests/manifest.json" in f and "not unpacking it" in f
+            out.append(("a fetched cartridge is verified before it is unpacked", verified,
+                        "sha256 checked against manifests/manifest.json" if verified else
+                        "cart_fetch.sh unpacks without verifying"))
     return out
 
 

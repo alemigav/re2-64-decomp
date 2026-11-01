@@ -125,13 +125,16 @@ by three distinct stream-pointer pairs) all carry byte 3 = 31, so the path is in
 |---|---|---|
 | pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, **~60 s** with the cartridge (measured), blocks the commit |
 | local CI | `sh tools/ci.sh` | the same fixtures **plus** a tracked-artefact check, a fixture-size guard and the cartridge sha256 |
-| runner CI (GitHub-hosted) | `.github/workflows/acceptance.yml`, job `ci` | the same `ci.sh`: **10 of 21 suites, 127 of 230 cases**; the 11 cartridge suites report SKIP |
-| runner CI (self-hosted) | the same file, job `full` | **all 21 suites / 230 cases** — runs where the cartridge is, and fails if the cartridge suites skip |
+| runner CI (GitHub-hosted) | `.github/workflows/acceptance.yml`, job `ci` | the same `ci.sh`: **12 of 23 suites, 135 of 240 cases**; the 11 cartridge suites report SKIP |
+| runner CI (self-hosted) | the same file, job `full` | **all 23 suites / 240 cases** — runs where the cartridge is, and fails if the cartridge suites skip |
+| runner CI (fetched) | the same file, job `full-url` | **all 23 suites / 240 cases** — downloads the cartridge from a URL you host, verifies it, unpacks it, builds it |
 
-**The self-hosted tier (M175)** is how CI covers the cartridge without uploading it: the ROM stays on the
-machine running the runner, nothing goes into a secret, and the job **fails** rather than passing if the
-cartridge suites skipped. It is gated by a repository variable so a push never sits queued while that machine
-is asleep. Enabling it, once, on the machine that holds the ROM:
+**Two tiers cover the cartridge, and neither stores it on GitHub.** Both run `tools/ci_full.sh`, which fails
+rather than passing when the cartridge suites skipped, and both are gated by a repository variable so a push
+never sits *queued* while a machine is asleep.
+
+*Self-hosted (`full`)* — the ROM stays on the machine running the runner; nothing is uploaded and no secret is
+involved.
 
 ```sh
 # Settings -> Actions -> Runners -> New self-hosted runner (add the label `re2-cartridge`),
@@ -139,12 +142,24 @@ is asleep. Enabling it, once, on the machine that holds the ROM:
 gh variable set SELF_HOSTED_RUNNER --body true     # turn it on; unset it to turn it off
 ```
 
+*Fetched (`full-url`, M176)* — the secret holds **access, not bytes**: GitHub caps a secret at 48 KB and the
+cartridge is 89 478 489 B base64, so about 1 870 secrets would be needed to carry it. Instead the job
+downloads it at run time and verifies the SHA-256 against `rom_sha256` in the committed
+`manifests/manifest.json` **before** unpacking anything, so a wrong or truncated download fails loudly instead
+of looking like a corrupt game.
+
+```sh
+gh variable set CARTRIDGE_URL --body true            # turn the fetched tier on
+gh secret   set RE2_CART_URL   < url.txt             # where the cartridge lives (http(s):// or file://)
+gh secret   set RE2_CART_TOKEN < token.txt           # optional, sent as an Authorization: Bearer header
+```
+
 **What CI cannot run is the important part**, and M174 replaced the old guess with a measurement: the
 eleven skipped suites are the ones that assert facts about RE2 itself — the corpus checks (`FUN_800327ec`
 at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
 exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
-each run's job summary lists them. **A green CI run does not vouch for those 103 cases.**
+each run's job summary lists them. **A green CI run does not vouch for those 105 cases.**
 
 A route to close that gap *in a secret* was built and verified in M130 and then deliberately **not adopted**,
 because it means a copyrighted cartridge living in a CI secret store. M175 measured why it also does not work:
@@ -154,7 +169,7 @@ the route that does work, because the bytes never leave the machine that already
 
 What that means in practice: those suites are enforced **wherever the cartridge exists** — locally with
 `python3 tools/acceptance.py`, and on every commit through the hook. That is the enforcement that actually
-covers them; CI covers the other 127 cases, including a lint of its own workflow file, which needs no ROM.
+covers them; CI covers the other 135 cases, including a lint of its own workflow file, which needs no ROM.
 
 Documents are checked structurally too: `tools/check_markers.py` requires 16 anchors (12 handover sections
 plus the log's retraction table, error list, working method and retractions heading), that **every level-2 heading is registered**, and that **every note in `docs/log/` is indexed by the milestone
@@ -281,7 +296,7 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 21 suites, 230 cases
+python3 tools/acceptance.py         # 23 suites, 240 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
 python3 tools/audit_gates.py        # 20/20: every check must fail when its mechanism is disabled
 ```
