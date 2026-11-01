@@ -290,6 +290,14 @@ AUDITS = [
          tool="file_table.py", args=["--check"], file="tools/file_table.py",
          old='    _sw = lambda v: ((v & 0xFF) << 8) | (v >> 8)',
          new='    _sw = lambda v: v'),
+    dict(name="file_table: the +12 parameter is read big-endian",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='    _p12 = Counter(_sw(struct.unpack_from(">H", pool, _r + 12)[0]) for _r in _recs16)',
+         new='    _p12 = Counter(struct.unpack_from(">H", pool, _r + 12)[0] for _r in _recs16)'),
+    dict(name="file_table: list[5] is treated as an independent key set",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old="                  len(_s5) == 290 and len(_t0) == 142 and len(_t3) == 148 and _t0 <= _s2))",
+         new="                  len(_s5) == 290 and len(_t0) == 142 and len(_t3) == 148 and _t0 >= _s2))"),
     # --- the counts gate (M180). Its `--check` runs on a repository that is by definition consistent, so
     # aiming at the comparison is invisible; the mutation is aimed at the *derived* number instead. The
     # second audit disables the phrasectomy in the self-test, so the "a deleted phrase is caught" case

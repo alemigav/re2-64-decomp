@@ -822,6 +822,30 @@ def check() -> int:
                   f"500, 250, 200) and no rate at all",
                   len(_recs16) == 241 and _p10[1000] == 99 and _p14[1000] == 140
                   and 8000 in _p10 and 16000 in _p10 and not (set(_p14) & _rates)))
+    # --- M202: the other two parameters, read through M201's swap, and the cache-B feed.
+    _p8 = Counter(_sw(struct.unpack_from(">H", pool, _r + 8)[0]) for _r in _recs16)
+    _p12 = Counter(_sw(struct.unpack_from(">H", pool, _r + 12)[0]) for _r in _recs16)
+    cases.append((f"swapped, +8 is a time (1000 x{_p8[1000]}, 2000 x{_p8[2000]}, range 0..{max(_p8)}) "
+                  f"and +12 a size capped at the 4096-byte ring chunk ({_p12[4096]} records at 4096, "
+                  f"{_p12[2048]} at 2048)",
+                  _p8[1000] == 29 and _p8[2000] == 20 and max(_p8) == 14000
+                  and _p12[4096] == 100 and _p12[2048] == 7 and max(_p12) == 4096))
+    _k5 = []
+    for _r in pro_recs:
+        _p = _r + struct.unpack_from(">I", pro, _r + 4 * 5)[0]
+        while True:
+            _v = struct.unpack_from(">h", pro, _p)[0]
+            if _v == -1:
+                break
+            _k5.append(_v)
+            _p += 2
+    _s5 = {v & 0xFFFF for v in _k5}
+    _t0 = {v for v in _s5 if _tag(v) == 0}
+    _t3 = {v for v in _s5 if _tag(v) == 3}
+    _s2 = {v & 0xFFFF for v in _lists[0]}
+    cases.append((f"list[5] is the sample-to-parameter pairing, not an independent set: {len(_t0)} "
+                  f"sample keys and {len(_t3)} tag-3 keys, all of its sample keys also in list[2]",
+                  len(_s5) == 290 and len(_t0) == 142 and len(_t3) == 148 and _t0 <= _s2))
     # --- M191: the codec constants are also a committed fixture, so the prose that quotes them and the
     # measurement that produces them are checked against the same source. The cartridge-gated case runs
     # first: if the measurement ever moves, this fails before the documentation can drift with it.
