@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-191 milestones are indexed. 118 of them have a note; the rest are rows in the log that cite
+192 milestones are indexed. 119 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -207,6 +207,7 @@ at the foot of this file.
 | 188 | **M188** — the two holes: 531 is a stale index, 11 is an unused slot | `docs/log/M188-the-two-holes.md` |
 | 189 | **M189** — id 1979 is a second codec, its header is 12 bytes, and the 418 is a rotation | `docs/log/M189-a-second-codec-and-the-rotation.md` |
 | 190 | **M190** — the 2.42 % was my alignment error, and `u16@+4` stays unassigned | `docs/log/M190-the-residual-was-mine.md` |
+| 191 | **M191** — `u16@+4` closed as unassignable, the codebook fields confirmed, and the README fixed | `docs/log/M191-u16-closed-codebook-confirmed-readme-fixed.md` |
 
 ## The gaps, and why they are empty
 

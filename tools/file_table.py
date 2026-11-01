@@ -562,6 +562,32 @@ def check() -> int:
     cases.append((f"the two prologue parameters are multiples of 4 throughout ({len(pro_ab)} values)",
                   all(v % 4 == 0 for v in pro_ab)))
 
+    # --- M191: the codec constants are also a committed fixture, so the prose that quotes them and the
+    # measurement that produces them are checked against the same source. The cartridge-gated case runs
+    # first: if the measurement ever moves, this fails before the documentation can drift with it.
+    fixture = json.loads((HERE.parent / "fixtures" / "sound" / "codec.json").read_text())
+    measured = {
+        "sample_count": n_smp,
+        "prelude_bytes": 256,
+        "prelude_samples": 128,
+        "group_bytes": 40,
+        "samples_per_group": 64,
+        "groups_total": 217944,
+        "groups_failing": 0,
+        "codebook_indices": 8,
+        "nibbles_per_block": 30,
+        "shift_max": 12,
+        "rates": len(set(smp_rate)),
+        "mort_records": n,
+    }
+    drift = sorted(k for k in measured if fixture.get(k) != measured[k])
+    cases.append((f"fixtures/sound/codec.json matches the cartridge on all {len(measured)} constants"
+                  + (f" — drift: {[(k, fixture.get(k), measured[k]) for k in drift]}" if drift else ""),
+                  not drift))
+    cases.append((f"and those constants are what the measurements say — {n_smp} samples, 256-byte prelude, "
+                  f"{measured['groups_total']:,} groups, {len(set(smp_rate))} rates, {n} MORT records",
+                  n_smp == 1192 and len(set(smp_rate)) == 15 and n == 588))
+
     # --- M182: does anything in the corpus read the record header? No. The tag is never validated, and
     # the field at +4 is never read at its literal offset by any decompiled function. These are negatives,
     # which is why they are gated: a negative that is not pinned to a measurement decays into a belief.

@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "7ab9cc3",
+   "subject": "M190: the 2.42% was my alignment error, and u16@+4 stays unassigned",
+   "milestones": [
+    190
+   ]
+  },
+  {
    "sha": "7cf3042",
    "subject": "fix: commit the count propagation M189 left staged",
    "milestones": [

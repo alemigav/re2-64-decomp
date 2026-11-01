@@ -1,7 +1,7 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **411-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **414-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
@@ -10,6 +10,7 @@ container, the audio filesystem, and a gate that refuses to let a number rot —
 report `PASS` unless the gates themselves have been shown to fail.
 
 [![ci](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml/badge.svg)](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml)
+[![release](https://img.shields.io/badge/release-v1.1-lightgrey)](https://github.com/alemigav/re2-64-decomp/releases)
 [![licence: CC0-1.0](https://img.shields.io/badge/licence-CC0--1.0-lightgrey)](LICENSE)
 
 ## No ROM, no assets, no affiliation
@@ -43,9 +44,12 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
 * **The audio filesystem**: the file table is the whole file system, not a zlib manifest — 8 091 entries, of
   which **3 126 are stored raw** — and the 17.6 MB "unidentified" region is five files: a 588-record `MORT`
   bank, three chained section tables, and a sample pool of **1 192 samples that tile it to the byte**
-  (M178–M185).
-* **The sample codec**: MusyX's ADPCM — 40-byte groups of two 20-byte frames behind a 16-byte prologue,
-  **97.58 %** structural agreement over 224 991 groups against 25 % by chance (M187).
+  (M178–M190).
+* **The sample codec**: MusyX's ADPCM — a **256**-byte prelude of **128** raw int16 samples, and
+  **217 944** of **217 944** groups pass the codebook constraint at the correct alignment, with all eight
+  codebook indices in use and a shift field confined to 0–12 (M187/M190/M191).
+* **Two codecs, not one**: `id 1979`'s 588 records are *not* that format — high-entropy, 16 000/8 000 Hz,
+  and no raw prelude — so the voice bank and the sample pool are encoded differently (M189/M191).
 * **A verification system that can be checked without the game**: 44 mutation audits, a ratchet that forbids
   silent count changes and any edit to `src/`, derived-and-asserted documentation numbers, and one entry point
   that treats a dirty gate audit as `INCONCLUSIVE` rather than `PASS` (M179–M183).
@@ -57,7 +61,7 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 21 suites / 211 of 411 cases run; the other 12 suites SKIP
+python3 tools/acceptance.py      # 21 suites / 212 of 414 cases run; the other 12 suites SKIP
 python3 tools/audit_gates.py     # 44/44 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 21/21 — every doc anchor, heading and note pointer holds
@@ -69,7 +73,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **200 of 411 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **202 of 414 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -86,7 +90,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**191** numbers, 0-190: **141** with a row, and **50** named gaps. The full index — every number, its title,
+**192** numbers, 0-191: **142** with a row, and **50** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -103,7 +107,7 @@ worth reading before you believe any older note.
 | P7 | M136–M156 | the script VM decoded — lengths, licensed names, jump family, room population |
 | P8 | M157–M172 | populations audited; `0x0141`, T64, handle registry, exception path; consolidation |
 | P9 | M173–M177 | index bounds, a CI that actually runs, and publication readiness |
-| P10 | M178–M188 | the file table is the file system; the 17.6 MB is the audio family, framed end to end; the sample codec identified |
+| P10 | M178–M191 | the file table is the file system; the 17.6 MB is the audio family, framed end to end; the sample codec identified and its fields confirmed; the two key holes resolved |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -125,12 +129,15 @@ claim, and codified in [include/re2_formats.h](include/re2_formats.h) with a C v
 | file table | 8 091 entries + build stamp; 4 852 zlib, **3 126 stored raw** — the media, uncompressed (M178) |
 | sound files | ids 1979–1983: a 588-record `MORT` bank, `SND_PROJ`/`SND_POOL` chained tables, `SND_SMPDIR` |
 | sample pool | id 1983, 9 022 912 B: **1 192 samples tiling it to the byte**, 15 canonical rates (M184) |
-| sample codec | MusyX ADPCM: 40-byte groups of two 20-byte frames after a 16-byte prologue (M187) |
+| sample codec | MusyX ADPCM: **256**-byte prelude of **128** raw int16 samples, then 40-byte groups — `2 raw + 30 nibbles = 32 samples` per 20-byte frame (M187/M190/M191) |
+| voice codec | **not** the same: `id 1979`'s payload is high-entropy in both byte planes, has no prelude, and is 16 000/8 000 Hz (M189/M191) |
+| key spaces | pool keys are `[class][index]` in four classes; `SND_PROJ`'s 417 records rotate from key 118; one key is absent and one reference dangles, and they are the same fact (M188) |
 
-The 17.6 MB is no longer unidentified. Both blobs are framed end to end, and what remains inside them is
-narrower than a container: `u16@+4` in the `MORT` record is still unassigned, 2.42 % of the codec's groups
-fail a structural test, and the meaning of the pool's four key classes is open. Those are named with their
-measurements rather than left as adjectives.
+The 17.6 MB is no longer unidentified. Both blobs are framed end to end, and what remains is narrower than a
+container: **`u16@+4` in the `MORT` record is still unassigned** — refuted as a note, a duration, a sample
+count, a loop point and a bitrate ladder, and consistent with a frame count at 2.2–8.1 bits/sample, but no
+code path reads it; **the voice codec itself**; and **what the pool's four key classes mean**. Each is named
+with its measurement rather than left as an adjective.
 
 ## Layout
 
@@ -138,7 +145,7 @@ measurements rather than left as adjectives.
 tools/       64 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    119 notes, one per milestone that has one
+docs/log/    120 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

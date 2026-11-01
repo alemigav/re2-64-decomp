@@ -27,11 +27,11 @@
   "full-tier guard": 3,
   "cartridge fetch": 4,
   "mips harness": 15,
-  "file table (cartridge)": 73,
+  "file table (cartridge)": 75,
   "ratchet self-test": 10,
   "ratchet (repository)": 4,
   "counts self-test": 4,
-  "counts (repository)": 16,
+  "counts (repository)": 17,
   "verifier self-test": 8
  },
  "src_tree": "fa21d0ad076495d35e989cf002bfa3d04c603b1ed52b8d4971a27d927daca28c"

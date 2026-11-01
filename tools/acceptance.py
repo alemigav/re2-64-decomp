@@ -68,7 +68,7 @@ SUITES = [
     # The file table is the cartridge's whole file system, and it is mostly *not* zlib (M178). One
     # suite because the finding is one object: the census, the two files the 17.6 MB turned out to be,
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
-    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 73, True),
+    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 75, True),
     # The ratchet guards the registry itself. `--self-test` breaks each invariant on a synthetic root
     # (a lowered count, a deleted suite, an unbaselined addition, an edit to src/) and requires
     # detection; `--check` applies the same two invariants to this repository. Both are needed: without
@@ -78,7 +78,7 @@ SUITES = [
     # The counts are derived from this very list, so registering a suite changes them — and this suite
     # is the one that notices the docs no longer agree. It caught its own registration (M180).
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
-    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 16, False),
+    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 17, False),
     # The verifier's own rule, graded before anyone relies on it: a vacuous audit must force INCONCLUSIVE
     # rather than PASS. The full run is *not* registered here — it invokes `ci.sh`, which runs this list,
     # so registering it would recurse.

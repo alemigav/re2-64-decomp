@@ -83,7 +83,7 @@ The verification system is no longer a suite you run; it is a system with a stat
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 21 suites / 211 of 411 cases run; the other 12 suites SKIP
+python3 tools/acceptance.py      # 21 suites / 212 of 414 cases run; the other 12 suites SKIP
 python3 tools/audit_gates.py     # 25/25, 19 skipped — every gate demonstrable here must fail when disabled
 python3 tools/ratchet.py --check # the registry has not drifted, and src/ has not moved, silently
 python3 tools/counts.py --check  # 16 asserted numbers; deleting a sentence is a failure

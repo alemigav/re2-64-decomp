@@ -1,0 +1,15 @@
+{
+ "note": "The pool codec's structural constants, so the prose that quotes them and the measurement that produces them are checked against the same numbers. `tools/file_table.py --check` asserts these against the cartridge; `tools/counts.py` asserts the README quotes them. If the measurement ever changes, the cartridge-gated case fails first.",
+ "sample_count": 1192,
+ "prelude_bytes": 256,
+ "prelude_samples": 128,
+ "group_bytes": 40,
+ "samples_per_group": 64,
+ "groups_total": 217944,
+ "groups_failing": 0,
+ "codebook_indices": 8,
+ "nibbles_per_block": 30,
+ "shift_max": 12,
+ "rates": 15,
+ "mort_records": 588
+}

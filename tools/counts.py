@@ -44,6 +44,10 @@ CHECKS = [
                   r"named gaps", ("milestone_total", "milestone_top", "milestone_rows", "gap_count"), 1),
     ("README.md", r"tools/\s+(\d+) analysis and gate scripts", ("tool_count",), 1),
     ("README.md", r"docs/log/\s+(\d+) notes", ("note_count",), 1),
+    # the codec claim on the front page, tied to the committed fixture rather than to prose
+    ("README.md", r"\*\*([\d\s,]+)\*\*-byte prelude of\s+\*\*([\d\s,]+)\*\* raw int16 samples, "
+                  r"and\s+\*\*([\d\s,]+)\*\* of\s+\*\*([\d\s,]+)\*\* groups pass",
+     ("codec_prelude_bytes", "codec_prelude_samples", "codec_groups_ok", "codec_groups_total"), 1),
     ("README.md", r"\*\*(\d+) of (\d+) cases cannot run without your dump\*\*",
      ("gated_cases", "total_cases"), 1),
     ("docs/handover.md", r"# (\d+) suites, (\d+) cases", ("total_suites", "total_cases"), 1),
@@ -78,6 +82,7 @@ def derive(root: Path) -> dict:
     nums = {int(re.match(r"^\| M(\d+)", l).group(1)) for l in logrows}
     top = max(nums)
     gaps = json.loads((root / "fixtures" / "milestones" / "gaps.json").read_text())["gaps"]
+    _codec = json.loads((root / "fixtures" / "sound" / "codec.json").read_text())
     return {
         "total_suites": len(suites),
         "total_cases": sum(s[2] for s in suites),
@@ -92,6 +97,10 @@ def derive(root: Path) -> dict:
         "milestone_rows": len(nums),
         "gap_count": len(gaps),
         "note_count": len(list((root / "docs" / "log").glob("M*.md"))),
+        "codec_prelude_bytes": _codec["prelude_bytes"],
+        "codec_prelude_samples": _codec["prelude_samples"],
+        "codec_groups_ok": _codec["groups_total"] - _codec["groups_failing"],
+        "codec_groups_total": _codec["groups_total"],
         "tool_count": len([p for p in (root / "tools").iterdir()
                            if p.suffix in (".py", ".sh", ".c", ".swift")]),
     }
@@ -114,7 +123,9 @@ def check(root: Path, quiet: bool = False):
             continue
         bad = []
         for m in ms:
-            got = [int(g) for g in m.groups()]
+            # numbers in prose may carry thin spaces or commas for readability; normalise rather than
+            # dictate a format, which is what made this check miss its own sentence on the first run
+            got = [int(re.sub(r"[,\s]", "", g)) for g in m.groups()]
             want = [vals[k] for k in keys]
             if got != want:
                 bad.append(f"{got} != {want}")
@@ -141,9 +152,11 @@ def self_test() -> int:
         # exists to catch it.
         for d in ("tools", "docs/log"):
             shutil.copytree(ROOT / d, tmp / d)
-        (tmp / "fixtures" / "milestones").mkdir(parents=True, exist_ok=True)
-        shutil.copy2(ROOT / "fixtures" / "milestones" / "gaps.json",
-                     tmp / "fixtures" / "milestones" / "gaps.json")
+        # everything `derive()` reads, not just the milestones: this self-test has now failed twice on a
+        # missing input, which is the audit-environment gap in miniature
+        for rel in ("fixtures/milestones/gaps.json", "fixtures/sound/codec.json"):
+            (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, tmp / rel)
         for f in files + ["docs/reverse_engineering_log.md"]:
             (tmp / f).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / f, tmp / f)
