@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "31ad2de",
+   "subject": "M202: the four parameters named, and cache B is a pairing",
+   "milestones": [
+    202
+   ]
+  },
+  {
    "sha": "702ff82",
    "subject": "fix: re-seed the milestone fixture with M201",
    "milestones": [
