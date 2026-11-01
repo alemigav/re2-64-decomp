@@ -37,6 +37,21 @@ whose verdict was `"FAIL" in output` — which made five audits green no matter 
 5. When a claim arrives in a class no existing check covers, add the check **and** its mutation audit —
    see "Changing the gates" below.
 
+## Skipped is not vacuous, and neither is a pass
+
+Three states, and the difference is the whole point:
+
+| state | meaning |
+|---|---|
+| **PASS** | the check ran and held, and its mechanism has been shown to fail when disabled |
+| **SKIP** | the check could not run here — no cartridge — so it is *unrun*, and any claim resting on it is `INCONCLUSIVE` |
+| **VACUOUS** | the check ran and could not fail, so whatever it asserted proves nothing |
+
+`audit_gates.py` skips the audits whose tools are cartridge-gated when there is no cartridge, and says so;
+`verify.py` admits a run whose skips are accounted for while still treating vacuous or broken entries as
+`INCONCLUSIVE`. Conflating skip with vacuous made the entry point report `INCONCLUSIVE` on every fresh clone,
+which was wrong in the direction that matters least but is wrong nonetheless.
+
 ## Restrictions
 
 - **Do not edit `src/`.** It is hashed by the ratchet; a verifier that edits the corpus to make a check pass
