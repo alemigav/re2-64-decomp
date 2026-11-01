@@ -15,6 +15,7 @@ Cartridge-dependent audits get `rom/` and `assets/` **symlinked**, never copied.
   ./audit_gates.py --list     # what each audit disables
 """
 import argparse
+import re
 import shutil
 import subprocess
 import sys
@@ -193,6 +194,49 @@ AUDITS = [
          file="tools/file_table.py",
          old='    r3 = d[OTHER_CART:OTHER_CART + OTHER_SIZE]',
          new='    r3 = d[OTHER_REL:OTHER_REL + OTHER_SIZE]'),
+    # --- the ratchet (M179): one mutation per invariant, plus the "make it disappear" route. Each is
+    # aimed at the comparison, and each is caught by `--self-test` rather than `--check`, because on a
+    # healthy repository `--check` passes whether or not these comparisons are wired at all — which is
+    # the whole reason the self-test exists.
+    dict(name="ratchet: a lowered expected count is accepted",
+         tool="ratchet.py", args=["--self-test"],
+         file="tools/ratchet.py",
+         old="    lowered = sorted(n for n in was if n in now and now[n] < was[n])",
+         new="    lowered = []"),
+    dict(name="ratchet: a deleted suite is not noticed",
+         tool="ratchet.py", args=["--self-test"],
+         file="tools/ratchet.py",
+         old="    deleted = sorted(set(was) - set(now))",
+         new="    deleted = []"),
+    dict(name="ratchet: registry drift (a raised count) is accepted without --write",
+         tool="ratchet.py", args=["--self-test"],
+         file="tools/ratchet.py",
+         old='("the registry matches the baseline (any change needs --write)", not drift,',
+         new='("the registry matches the baseline (any change needs --write)", True,'),
+    dict(name="ratchet: --write lowers a count without --allow-decrease",
+         tool="ratchet.py", args=["--self-test"],
+         file="tools/ratchet.py",
+         old="        if (lowered or deleted) and not allow_decrease:",
+         new="        if False:"),
+    # --- the M179 claim classes. A *code reading* is gated by pinning the expressions that make it a
+    # reading, so the audit aims at the needle: with a needle that is not in the source, a wired case fails
+    # and a vacuous one still passes — which is exactly the discrimination the audit is for. The measured
+    # band is aimed at from the inside, by narrowing it until real records violate it.
+    dict(name="file_table: the rate-byte reading looks for an expression that is not there",
+         tool="file_table.py", args=["--check"],
+         file="tools/file_table.py",
+         old='and "param_2 = 16000" in f3704 and "param_2 = 8000;" in f3704',
+         new='and "param_2 = 32000" in f3704 and "param_2 = 8000;" in f3704'),
+    dict(name="file_table: the +4 band is narrowed until real records violate it",
+         tool="file_table.py", args=["--check"],
+         file="tools/file_table.py",
+         old="all(0.03 < field[k] / pay[k] < 0.115 for k in range(n))",
+         new="all(0.05 < field[k] / pay[k] < 0.115 for k in range(n))"),
+    dict(name="ratchet: src/ changes are never compared",
+         tool="ratchet.py", args=["--self-test"],
+         file="tools/ratchet.py",
+         old='("src/ is byte-identical to the baseline", tree_now == tree_was,',
+         new='("src/ is byte-identical to the baseline", True,'),
 ]
 
 # things a mutated tool must be able to read; the heavy ones are symlinked
@@ -227,6 +271,18 @@ def build_env(dst: Path) -> None:
             (dst / item).symlink_to(src)
 
 
+COUNT = re.compile(r"^(\d+)\s*/\s*(\d+)")
+
+
+def verdict(out: str):
+    """The last `N/M` line in a tool's own output, or None — the same rule `acceptance.py` uses."""
+    for line in reversed(out.splitlines()):
+        m = COUNT.match(line.strip())
+        if m:
+            return int(m.group(1)), int(m.group(2))
+    return None
+
+
 def run_audit(audit, keep: Path = None) -> tuple:
     """Returns (detected, detail). `detected` is True when the mutated check failed, as it must."""
     tmp = Path(tempfile.mkdtemp(prefix="gate-audit."))
@@ -248,7 +304,12 @@ def run_audit(audit, keep: Path = None) -> tuple:
         proc = subprocess.run([interp, str(tmp / "tools" / audit["tool"])] + audit["args"],
                               capture_output=True, text=True, cwd=str(tmp))
         out = proc.stdout + proc.stderr
-        detected = proc.returncode != 0 or "FAIL" in out
+        # Judge the mutation the way `acceptance.py` judges a suite: by exit status and the `N/M` verdict
+        # line, never by the presence of the word "FAIL". That fallback was itself the loophole this
+        # audit exists to find — a gate whose *output* legitimately contains "FAIL" (the ratchet's
+        # self-test prints one per deliberately broken invariant) read as "detected" no matter what, so
+        # its three audits were unconditionally green while one of them caught nothing at all.
+        detected = proc.returncode != 0 or (verdict(out) not in (None, (1, 1)) and verdict(out)[0] != verdict(out)[1])
         tail = [l for l in out.splitlines() if "FAIL" in l or "PASS" in l][-1:] or out.splitlines()[-1:]
         return detected, f"exit {proc.returncode}; {tail[0][:90] if tail else ''}"
     finally:

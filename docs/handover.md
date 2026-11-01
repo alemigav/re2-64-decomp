@@ -166,7 +166,7 @@ eleven skipped suites are the ones that assert facts about RE2 itself — the co
 at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
 exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
-each run's job summary lists them. **A green CI run does not vouch for those 133 cases.**
+each run's job summary lists them. **A green CI run does not vouch for those 148 cases.**
 
 A route to close that gap *in a secret* was built and verified in M130 and then deliberately **not adopted**,
 because it means a copyrighted cartridge living in a CI secret store. M175 measured why it also does not work:
@@ -303,16 +303,40 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 28 suites, 297 cases
+python3 tools/acceptance.py         # 30 suites, 326 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
-python3 tools/audit_gates.py        # 30/30: every check must fail when its mechanism is disabled
+python3 tools/audit_gates.py        # 37/37: every check must fail when its mechanism is disabled
+python3 tools/ratchet.py --check    # the registry may not drift, and src/ may not move, silently
+python3 tools/ratchet.py --write    # ...accept the current state (required after any count change)
 ```
 
 **A green CI run does not vouch for everything.** Twelve suites are cartridge-gated and report `SKIP`
 on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
 `cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
-`routine index bounds`, `file table` and the gate audit — **133 of 297 cases**. Their enforcement is the
+`routine index bounds`, `file table` and the gate audit — **148 of 326 cases**. Their enforcement is the
 pre-commit hook and a local run, and the CI job summary lists them by name.
+
+## 5b. Who verifies what, and the three edits that cannot happen silently
+
+Verification is not owned by whoever recovers the structure. `tools/ratchet.py` holds the boundary, and its
+three invariants are mechanical rather than advisory:
+
+| invariant | what it forbids |
+|---|---|
+| **match** | `tools/acceptance.py` drifting from `fixtures/gates/ratchet.json` in any direction — a suite added, deleted, raised **or** lowered. Accepting a change is `--write`, which is a diff. |
+| **decrease** | `--write` refusing to lower a count or drop a suite without `--allow-decrease`. The ordinary path cannot shrink the suite. |
+| **src** | any change to the `src/` tree. A verifier may add cases; it may not edit the decompiled corpus to make them pass. |
+
+This exists because the recurring defect here is not a wrong claim but a **gate that could not fail** — six
+audit environments missing a directory, two mutations failing for the wrong reason, M178's 4 852/4 761 read
+as a missing class when it was 126 aliased entries. An agent that owns the gates inherits that defect in a
+new form, because "make the suite pass" is a one-line edit in three different places. Writing it found a
+fourth: `audit_gates.py` graded a mutation as detected when its *output* contained the word `FAIL`, so a
+suite that prints `FAIL` lines on purpose was green no matter what (M179).
+
+Consequence for anyone recovering code: lay down new evidence, then run `--write` and let the count change
+show in the diff. Do not lower a number to make a run green. If a case is wrong, fix the case and say why
+in the milestone note.
 
 ## Immediate next step
 

@@ -185,6 +185,42 @@ def check() -> int:
     cases.append(("REFUTED: the payload is not 16-byte framed under a 10-byte header (0/588)",
                   sum(1 for l in lens if (l - 10) % 16 == 0) == 0))
 
+    # --- M179: u16 at +4, tested against the three readings that were on the table, and the code
+    # reading that upgrades the directory from "correlated" to "read". The refutations are values, not
+    # opinions, so they stay gated; the code cases pin the three expressions that make FUN_800b3704 a
+    # reading, so a re-decompile that loses them invalidates the claim instead of silently keeping it.
+    pay = [l - 10 for l in lens]
+    rate = [struct.unpack_from(">H", r4, a + 6)[0] for a, _ in recs]
+    ms = [pay[k] / 2 / rate[k] * 1000 for k in range(n)]
+    cases.append(("REFUTED: u16 at +4 is not a MIDI base note (503/588 above 127)",
+                  sum(1 for x in field if x > 127) == 503))
+    cases.append(("REFUTED: u16 at +4 is not a duration in ms for 16-bit mono PCM "
+                  "(exact on 8/588)", sum(1 for k in range(n) if abs(field[k] - ms[k]) < 1) == 8))
+    cases.append(("REFUTED: u16 at +4 is not a sample count (payload/2 and payload/4: 0/588)",
+                  sum(1 for k in range(n) if pay[k] // 2 == field[k]) == 0
+                  and sum(1 for k in range(n) if pay[k] // 4 == field[k]) == 0))
+    cases.append(("u16 at +4 is 3.1-11.4% of its payload on 588/588 — why a loop point is doubtful, "
+                  "not merely unconfirmed",
+                  all(0.03 < field[k] / pay[k] < 0.115 for k in range(n))))
+    # Parity is 272/588 odd: random. That refutes a byte offset in 2-byte units and nothing else — it is
+    # *not* evidence against a count, and the ratio band above is what does that work.
+    cases.append(("odd on 272/588 — refutes a byte offset in 2-byte units, and says nothing more",
+                  sum(1 for x in field if x % 2) == 272))
+
+    src = (HERE.parent / "src")
+    f3704 = (src / "stage2" / "FUN_800b3704.c").read_text()
+    cases.append(("CODE: FUN_800b3704 bounds the index by the 588 count and reads the directory word's "
+                  "top byte as the rate (0 -> 8000, else 16000)",
+                  "param_1 < _DAT_8015af80" in f3704
+                  and "*(char *)(param_1 * 4 + _DAT_8015af7c) == '\\0'" in f3704
+                  and "param_2 = 16000" in f3704 and "param_2 = 8000;" in f3704))
+    cases.append(("CODE: FUN_800b3704 takes the record address as the low 24 bits plus _DAT_8015af78",
+                  "& 0xffffff) + _DAT_8015af78" in f3704))
+    f4a6c = (src / "boot" / "FUN_80004a6c.c").read_text()
+    cases.append(("CODE: FUN_80004a6c uses the same idiom — bit 0x8000 selects 8000, & 0x7fff the index",
+                  "uVar1 & 0x8000" in f4a6c and "uVar1 & 0x7fff" in f4a6c
+                  and "uVar2 = 16000;" in f4a6c and "uVar2 = 8000;" in f4a6c))
+
     # id 1983 has none of that structure
     r3 = d[OTHER_CART:OTHER_CART + OTHER_SIZE]
     cases.append(("id 1983 carries no MORT record, and its word 0 is not a count",

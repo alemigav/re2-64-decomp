@@ -48,6 +48,8 @@ MARKERS = [
     (HANDOVER, "## The bank-C question: closed, with its scope stated", "the closed question, with limits"),
     (HANDOVER, "## Format reference: what is decoded", "the container, the VM and the texture, all gated"),
     (HANDOVER, "## How to rebuild", "provision, data, decompile, fixtures, gates - in that order"),
+    (HANDOVER, "## 5b. Who verifies what, and the three edits that cannot happen silently",
+     "the ratchet's three invariants, and the contract for whoever owns verification"),
     (HANDOVER, "## Immediate next step", "so a rebuilt session knows where it stands"),
     (LOG, "## Retractions carried by later milestones", "the table itself, and its context"),
     (LOG, "| retracted | by | what changed |", "the retraction table header, which must survive edits"),
