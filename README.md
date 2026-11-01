@@ -1,163 +1,174 @@
-# RE2-64 Decompilation
+# Resident Evil 2 (N64) — decompilation research
 
-Decompilation research on **Resident Evil 2 (Nintendo 64, 1999)** — the MIPS III
-big-endian port. Started 2026-10-30.
+Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
+pseudocode, and a **273-case verification suite** that anyone can run. Every claim in the docs is either
+measured by one of those cases or explicitly labelled a reading of the code.
 
-**The ROM is not in this repository and never will be.** Decompilation work legally
-requires you to dump your own cartridge and keep it local. `rom/` is gitignored; the
-tooling here operates on whatever you place there.
+**This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
+be useful at every step instead: formats decoded, a full pseudocode corpus, the script VM, the texture
+container, and a gate that refuses to let a number rot.
 
----
+[![ci](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml/badge.svg)](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml)
+[![licence: CC0-1.0](https://img.shields.io/badge/licence-CC0--1.0-lightgrey)](LICENSE)
 
-## Honest scope
+## No ROM, no assets, no affiliation
 
-A *complete* byte-matching decompilation of a 64 MB cartridge is a community-scale,
-multi-year effort (reference: the N64 decomps that succeeded were 8–32 MB games with
-dedicated teams). This project is therefore staged so that every milestone is useful on
-its own, and so the expensive part is only entered with evidence:
+The cartridge is **not in this repository and never will be** — not in the tree, not in any of its 200+
+commits. `rom/`, `assets/` and `build/` are gitignored; the only `.z64` here is an 8 KiB *synthetic* fixture
+that exists so the corpus pipeline can run without the game.
 
-| Milestone | Deliverable | Status |
-|---|---|---|
-| **M0** | Toolchain proof: MIPS big-endian decompiles in this stack | ✅ **done 2026-10-30** |
-| **M1** | ROM identified: byte order, entry, cart ID, mapping | ✅ **done** — see `docs/log/M1-rom-identification.md` |
-| **M2** | Code/data separation via splat; first code segment disassembles | ✅ **done** — 243 functions, code ends at ROM `0x12140`; see `docs/log/M2-code-data-boundaries.md` |
-| **M3** | Name what the entry calls; re-split | ✅ **done** — gained no coverage: labels do not discover code (`docs/log/M3-libultra-naming-and-research.md`) |
-| **M4** | One subsystem understood | ✅ **done** — the ROM is banked; the loader chain is `FUN_80001180` → descriptor → PI DMA → inflate (`docs/log/M8-file-table-found.md`) |
-| **M5** | Byte-matching build of one module | ⏳ *only if M4 justifies it* — splat detects `compiler: KMC`, so the community matching toolchain does not transfer |
-| **M6** | Asset formats and extraction | ✅ **done** — 4 761 zlib members, 1 227 JPEG frames, 271 MPEG-1 blocks; the media container format is verified (`docs/format_notes.md`) |
-| **M7** | Code corpus: every code image decompiled and indexed | ✅ **done** — a census of all 4 761 members finds **36 code images** (1 947 632 B); **3 638 functions** decompiled, 100 % of in-code `jal` targets resolving, `src/INDEX.md` (`docs/log/M81-code-corpus.md`, `docs/log/M82-r4-container-and-gaps.md`, `docs/log/M83-pipeline-audit.md`, `docs/log/M84-static-tables.md`, `docs/log/M85-bank-c-loader.md`, `docs/log/M86-load-contract-and-harness-bugs.md`, `docs/log/M87-harness-fixture-and-slot-map.md`, `docs/log/M88-codec-is-zlib-and-scene-slot.md`, `docs/log/M89-no-bank-c-caller.md`, `docs/log/M90-slot-byte-writers-and-audit-close.md`, `docs/log/M91-bank-c-map-is-read.md`, `docs/log/M92-callers-s0-direction-and-index-67.md`, `docs/log/M93-slot-condition-and-build-question.md`, `docs/log/M94-callers-enumerated.md`, `docs/log/M95-table-readers-and-index-68.md`, `docs/log/M96-slot-values-enumerated.md`, `docs/log/M97-descriptors-are-script-commands.md`, `docs/log/M98-stream-source.md`, `docs/log/M99-stride-settled.md`, `docs/log/M100-watch-and-dump-probe.md`, `docs/log/M101-room-dump-and-the-gate.md`, `docs/log/M102-the-gate-passes.md`, `docs/log/M103-the-walk.md`, `docs/log/M104-no-other-rooms-and-the-six-stops.md`, `docs/log/M105-counter-is-a-flag-and-the-first-slot-commands.md`, `docs/log/M106-maps-never-populate.md`) — **start with `docs/handover.md`**, then `docs/log/M107-ares-control.md` |
+You need your own legally dumped copy to run anything that reads the cartridge. Nothing extracted from it —
+no textures, no audio, no video, no compressed members — is committed. Only its SHA-256 is, in
+`manifests/manifest.json`.
 
-M5 remains a research question, not a promise — a byte-matching build of a 64 MB cartridge is a
-community-scale effort. **M4, M6 and M7 are done.** Code discovery is closed at the member level:
-every code payload is named by the cart's own load table. What is left unidentified is ~17.6 MB in
-two blobs, and 28 code payloads stored in a non-zlib container inside the tail of R4.
+Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal and licence](#legal-and-licence).
 
----
+## What this project produced
 
-## What M0 established (verified, not assumed)
+* **The mapping law**: `vram = rom_offset + 0x7FFFF480`, established three independent ways after the first
+  version of it was wrong by `0x480` and had invalidated every address (M7).
+* **The container**: 4 761 zlib members, 8 748 242 → 18 550 424 B, plus 1 227 MJPEG frames and 271 MPEG-1
+  blocks, all verified byte-for-byte (M9/M10).
+* **The code corpus**: **36 images** (boot + stage-2 + 34 overlays, 1 947 632 B) censused from the cart's own
+  load table, **3 638 functions** decompiled, **62.3 %** of code bytes claimed — `src/`, `src/INDEX.md`.
+* **The script VM**: a 141-entry handler table, **15 distinct instruction lengths** from 1 to 40 bytes,
+  decoded from the handlers' own behaviour rather than from a reference (M136–M156).
+* **Room population**: 256 table entries → 147 ids → 50 room scripts, proven before anything was modelled
+  on it (M156–M158).
+* **The texture container (T64)**: palette plus raw indices, no compression, `len = 16 + entries·2 + w·h·bpp/8`
+  verified on **65 of 65** tiles (M159–M167).
+* **The exception path**: `break` → vector → dispatch loop `0x8000098c`, with no `eret` and no EPC write —
+  fatal, only a hardware reset leaves it (M168–M171).
 
-Both findings came from testing, and both constrain everything downstream.
+## Verify it without the cartridge
 
-### 1. MIPS decompilation works through this stack
-
-A synthetic MIPS III big-endian ELF (`tools/mkmips.py`, a countdown loop summing
-5+4+3+2+1 into `$v0`) was decompiled by REA→Ghidra 12.2:
-
-```
-language_id:      MIPS:BE:32:default        (provider-pinned)
-mips_support_lane: elf32-exec-mips1-legacy-pinned-v1
-mips_abi_basis:   inferred-o32-assumption-v1
-assembly:         li t0,0x5 · clear v0 · addu v0,v0,t0 · addiu t0,-1 · bne · nop · jr ra · nop
-pseudocode:       do { sum += i; i--; } while (i != 0); return sum;   → 15
-```
-
-REA is honest about its own assumptions in the output: it pins the generic 32-bit MIPS
-language (which also decodes later MIPS32 opcodes), treats o32 as an *assumption* because
-the header declares no ABI, and states that MIPS-I conformance is not established from
-the header alone. Those caveats are exactly the ones that matter for a 1999 compiler.
-
-### 2. Raw ROM segments must be wrapped as ELF
-
-`open_binary` with `format: raw-binary` accepts **only** `6502 | x86 | x86_64 | arm |
-arm64 | m68k` — **not MIPS**. An N64 ROM is a raw big-endian image, so this fails:
-
-```
-architecture: invalid_value — expected one of "6502"|"x86"|"x86_64"|"arm"|"arm64"|"m68k"
-```
-
-Hence `tools/wrap_mips_elf.py`: wraps any raw segment in a minimal ELF32 BE MIPS
-`ET_EXEC` header with `e_flags = 0` (MIPS-I ISA field, no ABI record), which is the
-"recordless legacy" shape REA admits. Verified end to end — the wrapper output is
-accepted and decompiles.
-
-**This wrapper is load-bearing.** Without it, no ROM code reaches the decompiler.
-
----
-
-## Repository layout
-
-Discovery is kept separate from extraction, so a wrong hypothesis cannot quietly produce wrong output.
-
-```
-run-rom.sh                 launcher for an OPTIONAL external validator; used only to produce the
-                           ground-truth RDRAM dumps that tools/diff_rdram.py compares against
-tools/     vaddr.py          resolve an address to the image that holds it; sext16/compose with a
-                             mandatory mode; refuses addresses several images share
-           find_readers.py   every access to an address window, with its enclosing function
-           room_probe.py     read the scene-slot chain out of an ares RDRAM dump (slot, branch, gate)
-           walk_stream.py    walk a room's command stream from the live ctx+0x1c using the per-opcode
-                             command lengths derived from the handlers
-           test_harness.py   15-case architectural fixture for the MIPS model (loads, unaligned stores)
-           scan_headers.py   header analysis: window / compare / derive / chain
-           extract_blocks.py  generic container extractor (reads ROM read-only)
-           unpack_zlib.py     sequential zlib member unpacker
-           find_cart_table.py locates the 0x0..-flagged descriptor records
-           wrap_mips_elf.py   raw segment -> ELF (load-bearing: REA refuses raw MIPS)
-manifests/ manifest.json      every extracted block: offset, trailer, size, sha1
-           block_types.json   the container spec the extractor consumes
-assets/    fmv/ video/ unknown/ unpacked/        (gitignored, regenerable in ~20 s)
-docs/      format_notes.md    the established formats and the evidence for them
-           reverse_engineering_log.md   chronological log + the errors worth remembering
-           log/M1..M9/         full write-ups per milestone
-```
-
-The cartridge is immutable input: both analysis tools print the ROM's sha256 before and after
-every run and report `UNCHANGED`.
-
-## Pipeline
-
-```
-rom/*.z64
-   │  tools/n64info.py           validate, detect byte order, normalise to z64, CIC fingerprint
-   ▼
-z64 (big-endian)
-   │  splat                      split into asm segments + data + symbol map
-   ▼
-segments/*.bin + *.asm + undefined_syms.txt
-   │  tools/wrap_mips_elf.py     raw segment → ELF32 BE MIPS (required by REA)
-   ▼
-*.elf
-   │  rea open_binary → analyze_function → search_strings (in-session)
-   ▼
-annotated analysis → hand-written C → eventual matching build
-```
-
-## Tooling
-
-In this repo:
-
-| Tool | Purpose | Verified |
-|---|---|---|
-| `tools/n64info.py` | ROM identification: byte order (z64/v64/n64), header fields, entry point, bootcode SHA-1 for CIC matching. Never claims a CRC verdict — the N64 CRC table is not reimplemented here | yes, on a synthetic z64 |
-| `tools/wrap_mips_elf.py` | raw BE segment → ELF32 BE MIPS, the shape REA admits | yes, decompiled via REA |
-| `tools/mkmips.py` | generates the known-truth MIPS test pair (raw + ELF) | yes |
-
-To obtain:
-
-| Need | Where |
-|---|---|
-| `splat` + MIPS binutils | **installed in the nanocore** — see `docs/log/M2-code-data-boundaries.md` for the exact sequence (splat64 needs manual dependency injection and a Rust toolchain for `pygfxd`) |
-| MIPS binutils (`mips-linux-gnu-as/objdump/ld`) | distro package, or LLVM's MIPS target (`clang --target=mips-linux-gnu`) |
-| `n64crc` (CRC verify + fix) | community source; needed before trusting a dump |
-| The original compiler | **unknown until M5** — N64 era used IDO 7.1 or GCC 2.7.2/egcs; matched by comparing generated code |
-
-## Working rules
-
-1. **Read-only until proven.** No writing back to a cartridge image. Ever, without a
-   verified duplicate and a matching hash.
-2. **Every claim gets a note in `docs/log/`**: what was tested, the exact command, the
-   observed output, and what it does *not* establish.
-3. **Distinguish observed from inferred.** REA is a good model here: it labels
-   assumptions (o32 ABI, MIPS-I conformance) rather than silently assuming them.
-4. **No ROM, no ROM-derived binaries, no extracted assets in git.**
-
-## Next action
-
-Place your dump at `rom/re2.z64` (or `.n64` / `.v64` — byte order is auto-detected), then:
+This is the part that is unusual for a decompilation, and the part you can check in a minute. No ROM, no
+assets, no emulator:
 
 ```sh
-./tools/n64info.py rom/re2.z64
+git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
+python3 tools/acceptance.py      # 16 suites / 164 of 273 cases run; the other 11 suites SKIP
+python3 tools/audit_gates.py     # 26/26 — every gate must fail when its mechanism is disabled
+python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
+python3 tools/check_markers.py   # 20/20 — every doc anchor, heading and note pointer holds
+python3 tools/artefact_scan.py   # 5/5  — no tracked file is cartridge content
 ```
 
-That produces M1: byte order, entry point, cart ID, CIC fingerprint and size. Everything
-after that is drivable from the layout it prints.
+The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
+run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
+it is counted: **109 of 273 cases cannot run without your dump**, and the CI job summary lists them by name.
+
+Two things worth knowing about how the gate works:
+
+* `tools/audit_gates.py` **disables each check's mechanism** and requires the check to fail. 26 mechanisms,
+  26 failures, **0 vacuous** — this caught six checks that could not fail, including one of its own
+  environment assumptions four times over.
+* `tools/milestone_index.py --check` regenerates [the milestone index](docs/MILESTONES.md) and fails if it
+  drifts from the log. The index cannot be hand-edited into agreement with anything.
+
+## Milestones
+
+178 milestones are recorded, in ten phases. The full index — every number, its title, and the note behind
+it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
+[docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
+worth reading before you believe any older note.
+
+| phase | range | what happened |
+|---|---|---|
+| P0 | M0–M9 | toolchain proof, dump identification, code/data split, the mapping law, cart table, unpack |
+| P1 | M10–M30 | media container recovered, five stride hypotheses killed, load path, first CPU/CP0/FPU model |
+| P2 | **M31–M78** | **the unsaved middle** — no notes survive; only M48, M51 and M78 as commit subjects |
+| P3 | M79–M80 | interrupts work end to end; the boundary is *work*, not signalling |
+| P4 | M81–M110 | code corpus (3 638 functions), bank-C loader chain, scripted emulator control, scene-slot path closed as by design |
+| P5 | M111–M125 | pointer provenance, and two external references assessed |
+| P6 | M126–M135 | the gate itself: fixtures, hook, CI, synthetic corpus, marker checks |
+| P7 | M136–M156 | the script VM decoded — lengths, licensed names, jump family, room population |
+| P8 | M157–M172 | populations audited; `0x0141`, T64, handle registry, exception path; consolidation |
+| P9 | M173–M177 | index bounds, a CI that actually runs, and publication readiness |
+
+The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
+indistinguishable from one written from measurement, and that distinction is the project's whole claim.
+
+## What is decoded
+
+Formats are documented in [docs/format_notes.md](docs/format_notes.md) with the measurement behind each
+claim, and codified in [include/re2_formats.h](include/re2_formats.h) with a C validator
+(`tools/t64info.c`) that is compiled and run in both directions on every gate run.
+
+| format | state |
+|---|---|
+| cartridge | 67 108 864 B, header entry `0x80000480`, cart table at vram `0x80012150`, 66 records + a build stamp |
+| script VM | 141 handlers, 15 lengths (1–40 B), `0x44 SceEmSet` carries the enemy Id at byte 3, GoSub stride 2 |
+| room population | 256 byte entries → 147 ids → 50 room scripts |
+| model container | `01 41` = format version **321**, self-relative offsets relocated by `FUN_800824b8` |
+| textures (T64) | `[0xBE1E][height][width][size][format][palette entries]` + RGBA5551 + raw 4/8-bpp indices |
+| exception path | `break` → `jr k0` → `0x800006d0` → dispatch loop `0x8000098c`; unrecoverable by design |
+
+Still unidentified: ~17.6 MB in two blobs, and a 28-payload non-zlib container in the tail of R4 whose codec
+is unsolved.
+
+## Layout
+
+```
+tools/       60 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
+docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
+docs/log/    107 notes, one per milestone that has one
+manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
+fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
+include/     re2_formats.h — the format structures, shared by the tools and the C validator
+config/      symbol map and splat configuration
+```
+
+Two documents matter most: [docs/handover.md](docs/handover.md) is written so a cold session can resume
+without the transcript, and [docs/format_notes.md](docs/format_notes.md) is the reference for what the
+cartridge actually contains.
+
+## Rebuild with your own dump
+
+Place the cartridge at `rom/re2.z64` (byte order is auto-detected), then:
+
+```sh
+python3 tools/n64info.py rom/re2.z64                          # identify and normalise the dump
+python3 tools/unpack_zlib.py rom/*.z64 --out assets/unpacked  # 4 761 members, ~11 s
+python3 tools/build_images.py rom/*.z64                       # 36 ELFs into build/elfs/
+python3 tools/read_overlay_table.py rom/*.z64                 # the load table, self-validating
+python3 tools/export_src.py                                   # build/decomp → src/
+sh tools/ci.sh                                                # the whole gate, with the cartridge
+```
+
+The decompilation step itself is Ghidra 12.2 driven through REA's CLI (`rea decompile-all --provider ghidra`),
+one invocation per image, seeded from `config/symbols.tsv`. It takes hours, not minutes; the chain that
+matters for reproducing the *findings* is the gates, and those take a minute.
+
+`docs/handover.md` has the full sequence, including how the ranges fixture (`fixtures/decomp/ranges.json`,
+3 678 regions) stands in for the decompiler's index so a rebuild cannot silently shift a boundary.
+
+## Legal and licence
+
+This repository contains **no cartridge data**: no ROM bytes, no extracted assets, no audio, no video. You
+need your own legally dumped copy of Resident Evil 2 (N64) to run anything that reads the cartridge.
+
+The files under `src/` are **decompiled pseudocode**, produced by Ghidra from a Capcom work. They are
+derivative of that work and are published here for study, with no warranty of correctness and no claim of
+endorsement.
+
+This project is not affiliated with, endorsed by or sponsored by Capcom or Nintendo. All trademarks belong to
+their owners.
+
+The author's own text, tools and fixtures are dedicated to the public domain under **CC0-1.0**
+([LICENSE](LICENSE)); that dedication cannot and does not extend to `src/`. Third-party material is credited
+in [THIRD_PARTY.md](THIRD_PARTY.md) — one table transcribed from MIT-licensed OpenBiohazard2, with its full
+licence text reproduced there.
+
+## References
+
+* **REA / Ghidra 12.2** — the analysis engine; every function in `src/` was produced by it, and its provider
+  record is quoted in each file's header.
+* **[OpenBiohazard2](https://github.com/OpenBiohazard2/OpenBiohazard2)** (MIT) — a Go re-implementation whose
+  RDT opcode table is the one transcription here. Read as code, because MIT permits it.
+* **[n64decomp/perfect_dark](https://github.com/n64decomp/perfect_dark)** (MIT) — assessed for method; nothing
+  was ported.
+* **[n64decomp/banjo-kazooie](https://github.com/n64decomp/banjo-kazooie)**,
+  **[n64decomp/sm64](https://github.com/n64decomp/sm64)** — the decomps whose frontpage conventions this one
+  follows, and whose CC0 choice it shares.

@@ -129,6 +129,31 @@ AUDITS = [
          file="tools/patch_text.py",
          old="        shutil.copymode(path, tmp)",
          new="        pass"),
+    # --- the artefact scan: the two ways a content guard silently stops guarding
+    # Mutate the *comparison*, not the constant: emptying `MAGICS` makes the self-test crash on an
+    # index error, and raising `FILE_MAX` makes it try to allocate petabytes — both "fail", neither for
+    # the reason under audit. That was this audit's second attempt; the first was vacuous.
+    dict(name="artefact_scan: the cartridge magics are never compared",
+         tool="artefact_scan.py", args=["--self-test"],
+         file="tools/artefact_scan.py",
+         old="        if head in MAGICS:",
+         new="        if False:"),
+    dict(name="artefact_scan: the size ceiling is never applied",
+         tool="artefact_scan.py", args=["--self-test"],
+         file="tools/artefact_scan.py",
+         old="        if size > FILE_MAX:",
+         new="        if False:"),
+    # --- the milestone index: the two ways it could stop following the record
+    dict(name="milestone_index: note titles ignored (the index stops following the notes)",
+         tool="milestone_index.py", args=["--check"],
+         file="tools/milestone_index.py",
+         old="            note = note_for(num, row)",
+         new="            note = None"),
+    dict(name="milestone_index: the gap list is ignored",
+         tool="milestone_index.py", args=["--check"],
+         file="tools/milestone_index.py",
+         old="    gaps = load_gaps(root) if gaps is None else gaps\n    rows = parse_log(log_text)",
+         new="    gaps = [] if gaps is None else gaps\n    rows = parse_log(log_text)"),
     # --- the full CI tier: one mutation per leg, so neither the skip guard nor the digest check can rot
     dict(name="ci_full: the skip guard never fires",
          tool="ci_full.sh", args=["--self-test"], interp="sh",
@@ -151,7 +176,11 @@ AUDITS = [
 # `.github` is copied rather than linked because the workflow lint reads it — an audit of that lint that
 # runs in an environment with no workflows passes for the wrong reason, which is how this list grew (M174).
 COPY = ["tools", "fixtures", "docs/log", ".github"]
-COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md"]
+# `docs/MILESTONES.md` is here because a check of it runs: without the file, every audit of
+# `milestone_index.py` "detects" a missing output and proves nothing (fifth environment gap in this arc,
+# after build/elfs, src, .github/ and the shell interpreter).
+COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md", "docs/MILESTONES.md",
+              "manifests/manifest.json"]
 # `build/elfs` holds the built images and `src/` the decompiled corpus; both are read-only for every
 # audit, and a copy is 18 MB per audit for nothing. Not linking them was invisible until an image-
 # dependent tool was audited: the mutated copy failed on a missing `images.json`, not on its mutation.

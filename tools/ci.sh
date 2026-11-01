@@ -8,7 +8,7 @@
 #
 # The cartridge is gitignored by design, so a fresh clone cannot supply it: check 3 reports SKIP and the
 # cartridge-dependent suites in check 1 report SKIP too. CI is therefore meaningful without the ROM (10 of
-# 23 suites, 135 of 240 cases) and strictly stronger with it. Exit status is non-zero on any real failure.
+# 27 suites, 164 of 273 cases) and strictly stronger with it. Exit status is non-zero on any real failure.
 set -u
 
 root=$(git rev-parse --show-toplevel 2>/dev/null) || {
@@ -31,6 +31,11 @@ if [ -n "$bad" ]; then
 else
 	printf 'none (ok)\n'
 fi
+
+# That scan matches paths and extensions, so it cannot catch a renamed dump (`rom/x.dat`) or anything at all
+# under `fixtures/`, which it exempts wholesale. The content scan reads bytes: an N64 header in any byte
+# order, a file hashing to the cartridge, an oversized blob, or a second file claiming the fixture exemption.
+python3 tools/artefact_scan.py || status=1
 
 printf '\n== fixture size\n'
 if [ -f fixtures/corpus/cart.z64 ]; then

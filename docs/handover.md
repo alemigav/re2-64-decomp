@@ -21,15 +21,17 @@ ground-truth RDRAM dumps. Nothing in the repo imports or requires it.
 | cart table | vram `0x80012150`: 16-byte header `"OVERLAYTABLENUM"` + count `0x43`; records 1–66; record 67 = build-stamp descriptor; zlib tables from `0x80012590` | M81/M84/M92 |
 | zlib members | **4 761**, 8 748 242 → 18 550 424 B; streams start `68 de` (16 KB window) | M9, `unpack_zlib.py` |
 | code images | **36** (boot + stage-2 + 34 overlays), **1 947 632 B** | M81 census |
-| decompiled corpus | **3 292 functions**, 61.3 % of code bytes claimed, `src/` + `src/INDEX.md` | M81–M83 |
+| decompiled corpus | **3 638 functions**, **62.3 %** of code bytes claimed (1 212 984 of 1 947 632 B), `src/` + `src/INDEX.md` | M81–M84, `src/INDEX.md` |
 | media | 1 227 MJPEG frames, 271 MPEG-1 blocks (24.4 MB + 15.8 MB), all verified | M10 |
 | unidentified | two blobs ~17.6 MB (R3 `0xb73fb3`–`0x140ed84`, R4 `0x338fe1`–`0xb63106`); R4's tail holds a **non-zlib container** of 28 payloads at cart `0xb6248` | M82/M90 |
 | scripted ares control | GDB RSP over `DebugServer/Port`: 512 KiB in **0.4 s**, `Z0` → `OK`, stop → `S05`; live `0x80000480+0x1234f` is **74 575/74 575 byte-equal to the cartridge** | M108 |
 | routine dispatch on `object+5` | **28** stage-2 sites, no mask and no compare; the class-1 table is 14 long, classes 2/3/4 are 4/2/27, and a class-1 writer stores **15** | M173, `tools/routine_index.py` |
 
-`assets/` is gitignored and regenerable in ~20 s. The repo tip is the last documentation commit; `git log
---oneline` is the milestone index and `docs/reverse_engineering_log.md` carries every milestone one-liner
-**plus a retraction table** — read the retraction table before believing any older note.
+`assets/` is gitignored and regenerable in ~20 s. The repo tip is the last documentation commit;
+`docs/MILESTONES.md` indexes **all 178 milestones** — generated, and `--check`-gated against the log — and
+`docs/reverse_engineering_log.md` carries every milestone one-liner **plus a retraction table** — read the
+retraction table before believing any older note. The log's rows are not in file order (M30→M10 descend) and
+50 milestone numbers have no row or note at all; the index names them.
 
 ## Tools, and how to run them
 
@@ -52,6 +54,10 @@ python3 tools/find_readers.py 0x80115284 0x80115288              # who touches a
 python3 tools/find_jump_tables.py                                # recover dispatch targets
 python3 tools/find_store_loops.py                                # table-fill initialisers
 python3 tools/routine_index.py                                   # the object+5 index bounds (M173)
+python3 tools/milestone_index.py --check                          # the index vs the log, notes and gaps
+python3 tools/artefact_scan.py                                   # no tracked file is cartridge content
+sh tools/ci_full.sh                                              # the full tier: fails if anything skipped
+RE2_CART_URL=… sh tools/cart_fetch.sh                            # fetch+verify a cartridge from a URL (M176)
 python3 tools/probe.py --reg 4@0x80071ebc --steps 2000000        # harness watch
 python3 tools/walk_stream.py rom/*-rdram-20261031-*.bin          # walk a room's command stream
 python3 tools/room_probe.py rom/*-rdram-*.bin                    # slot / gate / stream from a dump
@@ -159,7 +165,7 @@ eleven skipped suites are the ones that assert facts about RE2 itself — the co
 at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
 exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
-each run's job summary lists them. **A green CI run does not vouch for those 105 cases.**
+each run's job summary lists them. **A green CI run does not vouch for those 109 cases.**
 
 A route to close that gap *in a secret* was built and verified in M130 and then deliberately **not adopted**,
 because it means a copyrighted cartridge living in a CI secret store. M175 measured why it also does not work:
@@ -296,14 +302,16 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 23 suites, 240 cases
+python3 tools/acceptance.py         # 27 suites, 273 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
-python3 tools/audit_gates.py        # 20/20: every check must fail when its mechanism is disabled
+python3 tools/audit_gates.py        # 26/26: every check must fail when its mechanism is disabled
 ```
 
-**A green CI run does not vouch for everything.** Eight suites are cartridge-gated and report `SKIP` on a runner:
-`provenance acceptance`, `room script`, `script profile`, `cfg reachability`, `room scripts only`,
-`01 41 container`, `exception path` and `t64info`. Their enforcement is the pre-commit hook and a local run.
+**A green CI run does not vouch for everything.** Eleven suites are cartridge-gated and report `SKIP`
+on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
+`cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
+`routine index bounds` and the gate audit — **109 of 273 cases**. Their enforcement is the
+pre-commit hook and a local run, and the CI job summary lists them by name.
 
 ## Immediate next step
 
@@ -312,16 +320,20 @@ The emulator is no longer on the critical path. What is left is cartridge-side, 
 * **the two unidentified blobs** — R3 `0xb73fb3`–`0x140ed84` and R4 `0x338fe1`–`0xb63106`, ~17.6 MB between
   them; R4's tail holds the **28-payload non-zlib container** at `0xb6248` (74 716 B, tiles exactly), whose
   codec is still unsolved (M82/M90);
-* **experiment B, step 2** — pointer provenance across functions. Step 1 (`tools/provenance.py`) is done and
-  10/10 on its fixture (M111): intra-procedural values over a real CFG, with the interprocedural layer fenced
-  off. It attributes **1 293 of 81 067** memory operands; the honest residue — 798 on parameters, 1 936 on
-  call returns, 1 617 on constants in unproven-reachable code, 57 585 in unreached blocks — is what step 2
-  eats. Its acceptance tests are fixed in advance: `FUN_800327ec`'s record fields attributed to
-  `cart_record()`'s return at `0x80071ec0`, and the bank-C map reader `0x80032a5c` found without being told;
+* **experiment B, step 2** — pointer provenance across functions. Step 1 (`tools/provenance.py`) is
+  done and 10/10 on its fixture (M111): intra-procedural values over a real CFG, with the
+  interprocedural layer fenced off. The committed artifact `manifests/provenance.json` covers
+  **3 678 regions / 111 179 memory operands** and records **12 005 attributed (10.8 %)** — all of them
+  in the `const` bucket. Earlier notes quote other figures for other runs; the artifact is what the
+  tools read, so it is the number quoted here. The residue is what step 2 eats: 21 623 `unk`, 25 467
+  in unreached blocks, 26 097 stack offsets, 18 722 parameters, 2 490 loads, 2 431 constant bases.
+  Its acceptance tests are fixed in advance: `FUN_800327ec`'s record fields attributed to
+  `cart_record()`'s return at `0x80071ec0`, and the bank-C map reader `0x80032a5c` found without
+  being told;
 * **experiment C** — resource structures: what the 4 761 zlib members are, beyond the 36 code images and the
   verified media;
-* `README.md` still records M0–M7 while the project is at M110; `src/` is 3 292 functions at 61.3 % of code
-  bytes.
+* `README.md` was rewritten in M177 as a frontpage (what is verified, how to run the gate without the
+  ROM, the licence and the legal notice); `src/` is **3 638** functions at **62.3 %** of code bytes.
 
 Reading any future dump, if one ever appears, is still one command per tool:
 

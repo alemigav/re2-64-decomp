@@ -51,12 +51,17 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 22, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 26, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
     # The full tier's guard and the fetch verification are shell, but they are gates: both are tested in
     # both directions, and neither needs a cartridge, so a runner tests them too (M176).
+    # The milestone index is generated: --check fails when it drifts from the log, the notes or the gaps.
+    ("artefact scan (repository)", [sys.executable, "tools/artefact_scan.py"], 5, False),
+    ("artefact scan (synthetic)", [sys.executable, "tools/artefact_scan.py", "--self-test"], 7, False),
+    ("milestone index (repository)", [sys.executable, "tools/milestone_index.py", "--check"], 8, False),
+    ("milestone index (synthetic)", [sys.executable, "tools/milestone_index.py", "--self-test"], 9, False),
     ("full-tier guard", ["sh", "tools/ci_full.sh", "--self-test"], 3, False),
     ("cartridge fetch", ["sh", "tools/cart_fetch.sh", "--self-test"], 4, False),
     ("mips harness", [sys.executable, "tools/test_harness.py"], 15, False),
