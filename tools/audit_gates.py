@@ -155,6 +155,19 @@ AUDITS = [
          file="tools/milestone_index.py",
          old="    gaps = load_gaps(root) if gaps is None else gaps\n    rows = parse_log(log_text)",
          new="    gaps = [] if gaps is None else gaps\n    rows = parse_log(log_text)"),
+    # --- the commit-subject gate (M183). Two-sided, and each leg is aimed at its own comparison: the
+    # accounting leg is graded by a synthetic bed (a real record has nothing unaccounted, so disabling the
+    # comparison there would be invisible), the freshness leg by a bed whose fixture is deliberately stale.
+    dict(name="milestone_index: a commit subject with no record is accepted",
+         tool="milestone_index.py", args=["--self-test"],
+         file="tools/milestone_index.py",
+         old="                  not unaccounted_commits,",
+         new="                  True,"),
+    dict(name="milestone_index: a stale commit fixture is accepted",
+         tool="milestone_index.py", args=["--self-test"],
+         file="tools/milestone_index.py",
+         old="    fresh = fixture.exists() and bool(committed) and highest - top <= 1",
+         new="    fresh = True"),
     # --- the full CI tier: one mutation per leg, so neither the skip guard nor the digest check can rot
     dict(name="ci_full: the skip guard never fires",
          tool="ci_full.sh", args=["--self-test"], interp="sh",

@@ -38,6 +38,10 @@ ROOT = Path(__file__).resolve().parent.parent
 LOG = "docs/reverse_engineering_log.md"
 NOTES = "docs/log"
 GAPS = "fixtures/milestones/gaps.json"
+# Commit subjects are *committed*, never read from git at check time — the same reason `gaps.json` is:
+# a CI clone is shallow, so consulting history there would make the check fail on the environment rather
+# than on the record. `--seed-gaps` rebuilds both.
+COMMITS = "fixtures/milestones/commits.json"
 OUT = "docs/MILESTONES.md"
 MAX = 176                    # the highest milestone number with a row; gaps may extend below only
 
@@ -188,6 +192,23 @@ def render(root, log_text=None, notes=None, gaps=None):
     return "\n".join(lines) + "\n"
 
 
+def load_commit_milestones(root):
+    """Every milestone number named in a commit subject, from the committed fixture."""
+    p = root / COMMITS
+    if not p.exists():
+        return set()
+    return {int(n) for c in json.loads(p.read_text()).get("commits", [])
+            for n in c.get("milestones", [])}
+
+
+def record_highest(root):
+    """The highest number the record accounts for — row, note or named gap."""
+    nums = {r["num"] for r in parse_log((root / LOG).read_text())}
+    nums |= set(parse_notes(root))
+    nums |= {(g["n"] if isinstance(g, dict) else int(g)) for g in load_gaps(root)}
+    return max(nums) if nums else 0
+
+
 def _esc(s):
     return s.replace("|", "\\|").replace("\n", " ")
 
@@ -250,6 +271,17 @@ def coverage(root, log_text=None, notes=None, gaps=None):
                   not unevidenced and not bad_status,
                   f"{len(unevidenced)} commit-only without evidence, {len(bad_status)} bad status"))
 
+    # A milestone that exists only as a commit subject. M181 was exactly this: the verifier was committed
+    # with a contract and no record, and nothing noticed, because the check below only requires every
+    # number *up to the highest* — so a trailing milestone with no row is structurally invisible.
+    committed = load_commit_milestones(root)
+    unaccounted_commits = sorted(n for n in committed if n not in (covered | set(notes)))
+    cases.append((f"every M<n> in a commit subject is a row, a note or a named gap "
+                  f"({len(committed)} numbers, max {max(committed) if committed else 0})",
+                  not unaccounted_commits,
+                  f"commits with no record: {unaccounted_commits[:6]}" if unaccounted_commits
+                  else "all accounted for"))
+
     cases.append((f"rows without a note fall back to format_notes ({len(missing_row_notes)})",
                   all(rows[i]["detail"] for i in range(len(rows)) if rows[i]["num"] in missing_row_notes),
                   "every row-without-note names its evidence"))
@@ -260,6 +292,23 @@ def check(root):
     expected = render(root)
     p = root / OUT
     cases = coverage(root)
+    # The two cases are two-sided, like `acceptance.py` and the ratchet: the accounting case above catches a
+    # commit with no record, and this one catches a record with no commit re-seed. A milestone cannot land
+    # with one without failing the other.
+    # A milestone's row is written *before* its commit exists, so the fixture is legitimately one behind
+    # while a milestone is mid-landing: require the lag to be at most one. Requiring equality would fail on
+    # every milestone in progress, and requiring nothing would let the fixture sleep forever; a lag of two
+    # means a landing skipped the re-seed. The cost is stated rather than hidden: a skipped re-seed is
+    # caught at the *next* milestone, not the same one.
+    committed = load_commit_milestones(root)
+    highest = record_highest(root)
+    fixture = root / COMMITS
+    top = max(committed) if committed else 0
+    fresh = fixture.exists() and bool(committed) and highest - top <= 1
+    cases.append((f"the commit fixture is within one milestone of the record (commits reach {top}, "
+                  f"the record reaches {highest})", fresh,
+                  "within the one-milestone lag" if fresh else ("fixture missing" if not fixture.exists()
+                                           else "stale — run tools/milestone_index.py --seed-gaps")))
     cases.append((f"{OUT} matches the log, the notes and the gaps", p.exists() and p.read_text() == expected,
                   "identical" if p.exists() and p.read_text() == expected
                   else ("file is missing" if not p.exists() else "stale — run tools/milestone_index.py")))
@@ -346,6 +395,24 @@ def self_test():
                   verdict(coverage(d, gaps=[]), "no milestone row appears anywhere") is False,
                   "splice detected"))
 
+    # 10. a milestone that exists only as a commit subject — the M181 shape, which no existing case could
+    # see because everything below the highest number was accounted for
+    d = bed({LOG: log(("M1", "**one**", "`docs/format_notes.md`")), GAPS: '{"gaps": []}',
+             COMMITS: json.dumps({"commits": [{"sha": "abc1234", "subject": "M2: ghost",
+                                               "milestones": [2]}]})})
+    cases.append(("a milestone that exists only as a commit subject is refused",
+                  verdict(coverage(d, gaps=[]), "every M<n> in a commit subject") is False,
+                  "M181-shaped gap detected"))
+
+    # 11. the other side: a row landed but the commit fixture was not re-seeded
+    d = bed({LOG: log(("M1", "**one**", "`docs/format_notes.md`"), ("M2", "**two**", "`docs/format_notes.md`")),
+             GAPS: '{"gaps": []}',
+             COMMITS: json.dumps({"commits": [{"sha": "abc1234", "subject": "M1: one", "milestones": [1]}]})})
+    (d / LOG).write_text(log(("M1", "**one**", "`docs/format_notes.md`"), ("M2", "**two**", "`docs/format_notes.md`"),
+                             ("M3", "**three**", "`docs/format_notes.md`")))
+    cases.append(("a stale commit fixture is refused (two landings without re-seeding)",
+                  verdict(check(d), "the commit fixture is within one milestone") is False, "staleness detected"))
+
     # 9. --check fails on a tampered output file
     d = bed({LOG: log(("M1", "**one**", "`docs/format_notes.md`")), GAPS: '{"gaps": []}'})
     good = render(d, gaps=[])
@@ -379,6 +446,16 @@ def seed_gaps(root):
                                        "`tools/milestone_index.py --seed-gaps`; never read from git at "
                                        "check time, because a CI clone is shallow.",
                                "gaps": gaps}, indent=1) + "\n")
+    commits = []
+    for line in logged:
+        sha, subject = line.split("\t", 1)
+        nums = sorted({int(m) for m in re.findall(r"\bM(\d+)\b", subject)})
+        if nums:
+            commits.append({"sha": sha[:7], "subject": subject, "milestones": nums})
+    (root / COMMITS).write_text(json.dumps(
+        {"note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the "
+                 "same reason: a check must not read git history, because a CI clone is shallow.",
+         "commits": commits}, indent=1) + "\n")
     return len(gaps)
 
 
