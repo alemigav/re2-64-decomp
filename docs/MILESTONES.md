@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-199 milestones are indexed. 126 of them have a note; the rest are rows in the log that cite
+200 milestones are indexed. 127 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -215,6 +215,7 @@ at the foot of this file.
 | 196 | **M196** — the suite was slow because it recomputed, not because it was Python | `docs/log/M196-the-suite-was-recomputing.md` |
 | 197 | **M197** — the ring does nothing to the bytes, and the reader reverses them | `docs/log/M197-the-ring-does-nothing-and-the-reader-reverses.md` |
 | 198 | **M198** — the voice bank decodes to audio, by running the cartridge's own synthesis | `docs/log/M198-the-voice-bank-decodes-to-audio.md` |
+| 199 | **M199** — the voice synthesis is transcribed, and it agrees with the cartridge sample for sample | `docs/log/M199-the-synthesis-is-transcribed.md` |
 
 ## The gaps, and why they are empty
 

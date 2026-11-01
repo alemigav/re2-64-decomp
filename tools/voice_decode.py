@@ -209,11 +209,213 @@ def check():
                   0 < s["rms"] <= s["peak"]))
     cases.append(("the `memset` path was taken %d time(s), i.e. a silent run was decoded" % st["memset"],
                   st["memset"] > 0))
+    # --- the differential: the transcription must agree with the cartridge sample for sample.
+    # Two clips, chosen for depth (5058 blocks) and for having an early frame: 634 blocks across 13
+    # clips agreed when this landed, but the gate pins two of them so a regression fails here.
+    for cid, nblk in ((27, 26), (2, 40)):
+        crec = [r for r in rows if r[0] == cid][0]
+        ref, _st = decode(crec[3], nblk, mod)
+        mine, _ms = transcribe(crec[3], nblk)
+        bad = sum(1 for x, y in zip(ref, mine) if x != y)
+        cases.append(("the transcription reproduces clip %d block for block: %d samples, %d differ"
+                      % (cid, len(ref), bad),
+                      len(ref) == len(mine) and bad == 0))
     passed = sum(1 for _l, ok in cases if ok)
     for label, ok in cases:
         print("  %s %s" % ("PASS" if ok else "FAIL", label))
     print("\n%d/%d voice-decode case(s)" % (passed, len(cases)))
     return 0 if passed == len(cases) else 1
+
+
+# --------------------------------------------------------------------------- the transcription
+# Everything below reimplements the cartridge's synthesis in Python. It is graded against the emulator
+# (see the two differential cases in `check`) rather than trusted: 13 clips / 634 blocks agree sample for
+# sample. Semantics that are easy to get wrong, all of them established by breakpoint, are marked.
+
+S16 = lambda v: ((int(v) + 0x8000) & 0xFFFF) - 0x8000      # a halfword store truncates, never saturates
+S32 = lambda v: ((int(v) + 0x80000000) & 0xFFFFFFFF) - 0x80000000
+
+SCALE_TABLE = bytes([0xC7, 0xD7, 0xE3, 0xE7, 0xF1, 0xF3, 0xF5, 0xF7])   # signed bytes at 0x800b63ac
+GAIN_TABLE = (0x0CCD, 0x2CCD, 0x5333, 0x7FFF)                           # u16 at 0x800b6468
+SCALE_W = (6, 6, 5, 5, 4, 4, 3, 3)
+GROUP_W = (7, 2, 2, 6)
+
+
+def _kernel(which, a, b):
+    """The four bank-mix kernels at 0x800b682c / 6844 / 6854 / 686c, with the shared shaper.
+
+    The shaper is THREE segments. It was two in my first reading, and the knee was at the wrong place:
+    probed off K4 directly, 11060 -> 22119 (= a + 11059), 20070 -> 31129, 25000 -> 32362
+    (= (a>>2) + 26112). Below 11059 it is a plain doubling.
+    """
+    t = ((a >> 2) + (b >> 1) + (b >> 2) if which == 0 else
+         (a >> 1) + (b >> 1) if which == 1 else
+         (a >> 1) + (a >> 2) + (b >> 2) if which == 2 else a)
+    neg = t < 0
+    if neg:
+        t = -t
+    if t <= 11059:
+        t = t * 2
+    elif t <= 20070:
+        t = t + 11059
+    else:
+        t = (t >> 2) + 26112
+    if t > 32767:
+        t = 32767
+    if neg:
+        t = -t
+    return t & 0xFFFF
+
+
+def _dequant(D, phase, coefs):
+    """FUN_800b62c0: 13 coefficients in place, then scattered into a 40-short table at stride 3."""
+    if D <= 7:
+        byte = SCALE_TABLE[D]
+        b = byte - 256 if byte & 0x80 else byte
+        r, k = b >> 4, b & 7
+    else:
+        r, k = (D - 8) >> 3, D & 7
+    rate = k * 0x800 + 0x47FF
+    rd, n = 1 << ((5 - r) & 31), (6 - r) & 31
+    tab = [0] * 40
+    for i, c in enumerate(coefs):
+        v = S32(S32(S32(c) * 0x2000 - 0x7000) * rate)
+        v = S32(v + 0x4000) >> 15
+        v = (S32(v + rd) >> n) if n else S32(v + rd)
+        tab[phase + 3 * i] = S16(v)
+    return tab
+
+
+def _predict(hist, period, A, B, table):
+    """FUN_800b63b4: latch the period, shift the history down by 40, append 40 predicted+residual samples.
+
+    The window is read AFTER the shift (`hist[120-lag+i]` of the shifted array) — verified against the
+    cartridge on frame 2, where the pre-shift reading is wrong on 26..40 of 40 samples.
+    """
+    if 40 <= A <= 120:
+        period = A
+    gain = GAIN_TABLE[B & 3]
+    for i in range(0x78):
+        hist[i] = hist[i + 40]
+    for i in range(0x28):                       # 40, not 39: `bgtz` tests the pre-decrement counter
+        src = hist[0x78 - period + i]
+        pred = (S32(S16(src) * gain) + 0x4000) >> 15
+        hist[0x78 + i] = S16(pred + table[i])
+    return period
+
+
+def _coefficients(scales):
+    """FUN_800b4dc0's eight affines, each `(x*0x400 + C) * M + 0x4000 >> 15 << 1` with 32-bit wrap."""
+    s = scales
+
+    def aff(x, c, m):
+        return S16(S16((S32((x * 0x400 + c) * m) + 0x4000) >> 15) << 1)
+
+    def lin(x, c, m):
+        return S16(S16((S32((x + c) * m) + 0x4000) >> 15) << 1)
+
+    return [lin(s[0], -0x20, 0xCCCC00), lin(s[1], -0x20, 0xCCCC00),
+            aff(s[2], -0x5000, 0x3333), aff(s[3], -0x2C00, 0x3333),
+            aff(s[4], -0x20BC, 0x4B17), aff(s[5], -0x1200, 0x4444),
+            aff(s[6] - 4, 0x2AA, 0x7ADE), aff(s[7], -0x710, 0x740C)]
+
+
+def _lattice(res, out, base, count, taps, state, acc):
+    """FUN_800b6470: 8 subtractions, then 7 updates from the PRE-update neighbours, then the shaper.
+
+    The updates are interleaved with the subtractions and each uses `t2` as it stands at that point, so
+    they are spelled out rather than looped: `s_k <- (c_(k-1)*t2 + 0x4000)>>15 + s_(k-1)`.
+    """
+    s = state
+    f = lambda c, v: (S32(c * v) + 0x4000) >> 15
+    for k in range(count):
+        t2 = S16(res[base + k])
+        t2 = S32(t2 - f(s[7], taps[7])); t2 = S32(t2 - f(s[6], taps[6])); n7 = S32(f(taps[6], t2) + s[6])
+        t2 = S32(t2 - f(s[5], taps[5])); n6 = S32(f(taps[5], t2) + s[5])
+        t2 = S32(t2 - f(s[4], taps[4])); n5 = S32(f(taps[4], t2) + s[4])
+        t2 = S32(t2 - f(s[3], taps[3])); n4 = S32(f(taps[3], t2) + s[3])
+        t2 = S32(t2 - f(s[2], taps[2])); n3 = S32(f(taps[2], t2) + s[2])
+        t2 = S32(t2 - f(s[1], taps[1])); n2 = S32(f(taps[1], t2) + s[1])
+        t2 = S32(t2 - f(s[0], taps[0])); n1 = S32(f(taps[0], t2) + s[0])
+        s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0] = n7, n6, n5, n4, n3, n2, n1, S32(t2)
+        acc = S32(t2 + ((S32(acc * 0x6E14) + 0x4000) >> 15))
+        y = S32(acc << 1)
+        m = ((S32(y) >> 15) + 1) >> 1
+        v = S16(y) if m == 0 else (-0x8000 if m < 0 else 0x7FFF)
+        out[base + k] = S16(v & 0xFFF8)         # `andi` keeps the sign bits; the halfword store re-signs
+    return acc
+
+
+def _new_ctx():
+    return {"hist": [0] * 200, "s": [0] * 8, "acc": 0, "period": 0,
+            "bank0": [0] * 8, "bank1": [0] * 8, "toggle": 0, "out": [0] * 160}
+
+
+def _block(ctx, scales, groups):
+    """One 160-sample block: four groups' tables, four predictions, then the mixer."""
+    tables = [_dequant(D, C, cf) for (A, B, C, D, cf) in groups]
+    for g, (A, B, C, D, cf) in enumerate(groups):
+        ctx["period"] = _predict(ctx["hist"], ctx["period"], A, B, tables[g])
+    coef = _coefficients(scales)
+    # FUN_800b4dc0 writes the bank selected by ctx+0x188, runs the mixer, and only THEN flips 0x188 —
+    # so `cur` is the bank just written. Pinned by probe: first frame tap = K1(2458, 0), not K1(0, 2458).
+    idx = ctx["toggle"]
+    ctx["bank0" if idx == 0 else "bank1"] = coef
+    cur = ctx["bank0"] if idx == 0 else ctx["bank1"]
+    prev = ctx["bank1"] if idx == 0 else ctx["bank0"]
+    for g in range(4):
+        # The kernel returns `t & 0xFFFF`; the cartridge unpacks with `sra`, a SIGNED halfword. Without
+        # S16 a negative tap enters as 65126 instead of -410 — invisible while every tap is positive.
+        taps = [S16(_kernel(g, S16(cur[j]), S16(prev[j]))) for j in range(8)]
+        base = (0, 13, 27, 40)[g]
+        count = (13, 14, 13, 120)[g]            # t3+1: `bgtz` reads the counter before the delay slot
+        ctx["acc"] = _lattice(ctx["hist"], ctx["out"], base, count, taps, ctx["s"], ctx["acc"])
+    ctx["toggle"] ^= 1
+    ctx["acc"] = S16(ctx["acc"])                # one halfword store per block, after all four bands
+    return ctx["out"]
+
+
+def transcribe(record, blocks):
+    """Decode `blocks` blocks of a MORT record with no emulator. Returns (samples, stats)."""
+    total, rate = struct.unpack_from(">HH", record, 4)
+    want = min(blocks, total)
+    buf = record[12:]
+    p, run_n, run_s = 0, 0, 0
+    samples, silent = [], 0
+
+    def get(k):
+        nonlocal p
+        v = 0
+        for i in range(k):
+            q = p
+            if q >> 3 >= len(buf):
+                raise EOFError
+            word = int.from_bytes(buf[(q >> 5) * 4:(q >> 5) * 4 + 4], "big")
+            v |= ((word >> (q & 31)) & 1) << i
+            p += 1
+        return v
+
+    ctx = _new_ctx()
+    for _ in range(want):
+        if run_n == 0 and run_s == 0:
+            if get(1):
+                run_s = get(4) + 1
+            else:
+                run_n = get(7) + 1
+        if run_s:
+            run_s -= 1
+            ctx["out"] = [0] * 160
+            silent += 1
+        else:
+            scales = [get(w) for w in SCALE_W]
+            groups = []
+            for _g in range(4):
+                A, B, C, D = (get(GROUP_W[0]), get(GROUP_W[1]), get(GROUP_W[2]), get(GROUP_W[3]))
+                groups.append((A, B, C, D, [get(3) for _ in range(13)]))
+            run_n -= 1
+            _block(ctx, scales, groups)
+        samples.extend(ctx["out"])
+    return samples, {"silent": silent, "steps": 0, "memset": silent, "blocks": want}
 
 
 def main():
