@@ -356,11 +356,14 @@ def check() -> int:
                   and mods40[16] == n_smp and g_len == 8))
     # ...which does not refute the codec: it is a 16-byte prologue of 8 big-endian int16 samples, and the
     # 40-byte groups start after it. The prologue's own byte census says so.
-    ev = [len({smp[c] for smp in smp_blobs}) for c in range(0, 16, 2)]
-    od = [len({smp[c] for smp in smp_blobs}) for c in range(1, 16, 2)]
-    cases.append((f"the 16-byte prologue is 8 big-endian int16 samples — even byte positions take at most "
-                  f"{max(ev)} distinct values, odd at least {min(od)}",
-                  max(ev) <= 51 and min(od) >= 234))
+    # M190 corrected this: the prelude is **256 bytes**, not 16 — 128 raw big-endian int16 samples — and the
+    # 40-byte groups begin after it. The 16-byte reading came from looking only at the first 16 bytes.
+    ev = [len({smp[c] for smp in smp_blobs}) for c in range(0, 256, 2)]
+    od = [len({smp[c] for smp in smp_blobs}) for c in range(1, 256, 2)]
+    cases.append((f"the 256-byte prelude is 128 big-endian int16 samples — even byte positions take at most "
+                  f"{max(ev)} distinct values, odd at least {min(od)}, and (len-256) % 40 == 0 on every sample",
+                  max(ev) <= 74 and min(od) == 234
+                  and all((len(smp) - 256) % 40 == 0 for smp in smp_blobs)))
 
     def _groups(phase):
         good = total = 0
@@ -375,8 +378,11 @@ def check() -> int:
         return good, total
     g16, t16 = _groups(16)
     g0, t0 = _groups(0)
-    cases.append((f"at phase 16, {g16:,}/{t16:,} 40-byte groups ({g16 / t16:.2%}) have both codebook "
-                  f"bytes' high nibble <= 7, against 25 % by chance", g16 == 219550 and t16 == 224991))
+    # phase 16 is the *misaligned* figure, kept because it is what M187 published: 97.58 %, and the 2.42 %
+    # residual that M187 called "scattered" is entirely the six groups that a 16-byte phase puts inside the
+    # 256-byte prelude.
+    cases.append((f"at the misaligned phase 16, {g16:,}/{t16:,} groups ({g16 / t16:.2%}) pass — the figure "
+                  f"M187 published", g16 == 219550 and t16 == 224991))
     cases.append((f"the alignment control holds — at phase 0 the same test gives only {g0 / t0:.2%}",
                   t0 == 224999 and g0 == 129452))
 
@@ -404,6 +410,10 @@ def check() -> int:
                   f"{_st.median(shuf_c):+.3f}",
                   _st.median(real_c) > 0.30 and abs(_st.median(shuf_c)) < 0.05))
 
+    # and at the CORRECT phase the residual vanishes completely: the 2.42 % was never a codec anomaly.
+    g256, t256 = _groups(256)
+    cases.append((f"at the correct phase 256, {t256 - g256}/{t256:,} groups fail — the 2.42 % was the "
+                  f"prelude misalignment, not a second codec", g256 == t256 == 217944))
     fails_total, bad_smp = t16 - g16, 0
     for smp in smp_blobs:
         p, bad, tot = 16, 0, 0
@@ -414,8 +424,8 @@ def check() -> int:
                 bad += not ((g[8] >> 4) <= 7 and (g[24] >> 4) <= 7)
             p += 40
         bad_smp += bool(tot and bad / tot > 0.5)
-    cases.append((f"the {fails_total:,} failing groups ({fails_total / t16:.2%}) are scattered — "
-                  f"{bad_smp} of {n_smp} samples has a majority failing, so there is no second codec class",
+    cases.append((f"and the {fails_total:,} misaligned failures lie at group index 0-5 only — 0 after index 5 "
+                  f"({bad_smp} of {n_smp} samples has a majority failing)",
                   fails_total == 5441 and bad_smp == 0))
 
     # --- M185: the other three files of the sound family. `FUN_800a86a0` walks both SND_PROJ and

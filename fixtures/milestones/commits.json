@@ -2,6 +2,20 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "7cf3042",
+   "subject": "fix: commit the count propagation M189 left staged",
+   "milestones": [
+    189
+   ]
+  },
+  {
+   "sha": "1d7778f",
+   "subject": "M189: id 1979 is a second codec, its header is 12 bytes, and the 418 is a rotation",
+   "milestones": [
+    189
+   ]
+  },
+  {
    "sha": "f9b5efa",
    "subject": "M188: the two holes \u2014 531 is a stale index, 11 is an unused slot",
    "milestones": [
