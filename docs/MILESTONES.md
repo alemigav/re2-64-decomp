@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-185 milestones are indexed. 112 of them have a note; the rest are rows in the log that cite
+186 milestones are indexed. 113 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -201,6 +201,7 @@ at the foot of this file.
 | 182 | **M182** — nothing in the corpus reads the record header | `docs/log/M182-nothing-in-the-corpus-reads-the-record-header.md` |
 | 183 | **M183** — a milestone that exists only as a commit is refused | `docs/log/M183-a-milestone-that-exists-only-as-a-commit.md` |
 | 184 | **M184** — id 1983 is parsed at the container level, and its codec is a named gap | `docs/log/M184-id-1983-framed-and-its-codec-named.md` |
+| 185 | **M185** — the sound family is framed: proj and pool are chained section tables | `docs/log/M185-the-sound-family-framed.md` |
 
 ## The gaps, and why they are empty
 

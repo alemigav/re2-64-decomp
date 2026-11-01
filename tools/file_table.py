@@ -287,6 +287,68 @@ def check() -> int:
     cases.append((f"REFUTED: no record field gives the sample length — best of {len(laws)} laws fits "
                   f"{max(fits.values())}/{n_smp}", max(fits.values()) <= 2))
 
+    # --- M185: the other three files of the sound family. `FUN_800a86a0` walks both SND_PROJ and
+    # SND_POOL the same way — a u32 at the head is a *relative offset to the first record*, each record's
+    # first u32 is the stride to the next, and `-1` ends the chain — so each is framed the same way id 1983
+    # was framed by its directory. All three are zlib members, unlike 1979 and 1983.
+    def _chain(b, start, end=None, limit=8000):
+        pos, out = start, []
+        end = len(b) if end is None else end
+        while len(out) < limit and pos < end:
+            nxt = struct.unpack_from(">i", b, pos)[0]
+            if nxt == -1:
+                return out, pos, True
+            if nxt <= 0 or pos + nxt >= end:
+                return out, pos, False
+            out.append(pos)
+            pos += nxt
+        return out, pos, False
+
+    pro = zlib.decompress(d[BASE + entries[1980][0]:BASE + entries[1980][0] + entries[1980][1]])
+    pro_recs, pro_end, pro_term = _chain(pro, 0)
+    pro_keys = [struct.unpack_from(">h", pro, r + 4)[0] for r in pro_recs]
+    cases.append((f"SND_PROJ is a chain of {len(pro_recs)} records whose strides tile to {pro_end:,}, and a "
+                  f"4-byte terminator closes the {len(pro):,}-byte member exactly",
+                  pro_term and len(pro_recs) == 417 and pro_end == 102144
+                  and pro_end + 4 == len(pro)))
+    # Not sequential in record order — a *bijection onto a contiguous range with one hole*. I asserted
+    # `keys == range(118, 535)` first and it failed; the truth is better, and the hole is worth naming.
+    holes = sorted(set(range(min(pro_keys), max(pro_keys) + 1)) - set(pro_keys))
+    cases.append((f"SND_PROJ's u16 at +4 is a bijection onto {min(pro_keys)}..{max(pro_keys)} less "
+                  f"{holes} — {len(set(pro_keys))} distinct keys",
+                  len(set(pro_keys)) == 417 and min(pro_keys) == 0 and max(pro_keys) == 417
+                  and holes == [11]))
+
+    pool = zlib.decompress(d[BASE + entries[1981][0]:BASE + entries[1981][0] + entries[1981][1]])
+    secs = list(struct.unpack_from(">4I", pool, 0))
+    pool_keys, counts, abut = set(), [], 0
+    for i, st in enumerate(secs):
+        end = secs[i + 1] if i + 1 < len(secs) else len(pool)
+        recs, termpos, ok = _chain(pool, st + struct.unpack_from(">I", pool, st)[0], end)
+        counts.append(len(recs))
+        pool_keys |= {struct.unpack_from(">h", pool, r + 4)[0] for r in recs}
+        abut += int(ok and termpos + 4 == end)
+    cases.append((f"SND_POOL's head is 4 section offsets {secs}, and every section's terminator abuts the "
+                  f"next section or EOF ({abut}/4)", abut == 4))
+    cases.append((f"the four sections hold {counts} records — {sum(counts)} in all, all keys distinct",
+                  counts == [2025, 241, 3, 326] and sum(counts) == 2595 and len(pool_keys) == 2595))
+
+    # the cross-file link the code implies: FUN_800a86a0 compares each PROJ list short against the POOL
+    # chain's keys. It resolves for most, not all — measured and stated, not rounded up.
+    shorts = []
+    for r in pro_recs:
+        pos = r + struct.unpack_from(">I", pro, r + 8)[0]
+        while True:
+            v = struct.unpack_from(">h", pro, pos)[0]
+            if v == -1:
+                break
+            shorts.append(v)
+            pos += 2
+    resolved = sum(1 for v in shorts if v in pool_keys)
+    cases.append((f"PROJ lists hold {len(shorts)} shorts and {resolved} ({resolved / len(shorts):.1%}) are "
+                  f"POOL keys — a real link, not a total one",
+                  len(shorts) == 5136 and resolved == 4301))
+
     # --- M182: does anything in the corpus read the record header? No. The tag is never validated, and
     # the field at +4 is never read at its literal offset by any decompiled function. These are negatives,
     # which is why they are gated: a negative that is not pinned to a measurement decays into a belief.
