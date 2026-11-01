@@ -241,7 +241,9 @@ def check() -> int:
                   sum(1 for l in lens if (l - 12) % 4 == 0) == n
                   and sum(1 for l in lens if (l - 10) % 4 == 0) == 0))
     u32at8 = [struct.unpack_from(">I", r4, a + 8)[0] for a in offs]
-    cases.append((f"the MORT header is 16 bytes: u32 at +8 is the clip length in four-byte words "
+    # M193 said 16 bytes, retracting M189's 12. M194 puts it back to 12: the u32 at +8 ends exactly at +12,
+    # and re2studio's FirstBitPosition is 0x60 = 96 bits = 12 bytes — the header — so the stream starts there.
+    cases.append((f"the MORT header is 12 bytes: u32 at +8 is the clip length in four-byte words "
                   f"({sum(1 for x, l in zip(u32at8, lens) if x == l // 4)}/{n}), which is also why every "
                   f"length is divisible by 4",
                   sum(1 for x, l in zip(u32at8, lens) if x == l // 4) == n))
@@ -249,12 +251,14 @@ def check() -> int:
     # exceed 12 skipped bytes + 32.5 per block, plus padding. That is exactly the 32.5 ceiling M189 measured
     # without knowing why.
     over = [p - 12 - 32.5 * f for p, f in zip(pay12, field)]
-    # measured ceiling: 20 B of slack over "12 skipped bytes + 32.5 per block", which is a partial final
-    # block plus the 4-byte pad. The point is that 260 bits per block *is* the 32.5 B/clip-block ceiling
-    # M189 measured without knowing why.
-    cases.append((f"u16 at +4 is the block count — 260 bits per block is the 32.5-byte ceiling, and no clip "
-                  f"exceeds 12 + 32.5*blocks by more than {max(over):.0f} B",
-                  max(over) <= 20))
+    # M194 refuted "u16@+4 is a block count of 260-bit blocks": 260*blocks would need more bytes than the
+    # clip has, in most clips. The bound below was satisfied by any value, which is why it was weak evidence
+    # and why M193's assignment is retracted.
+    short_by = sum(1 for a, l, b in zip(offs, lens, field) if 260 * b > (l - 12) * 8)
+    cases.append((f"REFUTED: 260 bits per declared block does not fit — {short_by}/{n} clips cannot hold "
+                  f"260*u16@+4 bits, and the bank as a whole would need "
+                  f"{260 * sum(field) / 8 / sum(l - 12 for l in lens):.2f}x its payload",
+                  short_by == 531))
     b10 = {r4[a + 10] for a in offs}
     cases.append((f"byte +10 of the MORT header takes {len(b10)} small values, so it is a field and not padding",
                   len(b10) == 65 and min(b10) <= 2))

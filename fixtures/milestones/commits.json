@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "a1995d3",
+   "subject": "M193: u16@+4 is the block count, and the pool codec is decoded",
+   "milestones": [
+    193
+   ]
+  },
+  {
    "sha": "c8b6fba",
    "subject": "M192: the codec's header fields are understood, u16@+4 closed with its reason",
    "milestones": [

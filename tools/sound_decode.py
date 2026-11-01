@@ -130,6 +130,24 @@ def check() -> int:
     book_zero = sum(1 for b in shared if b == 0) / len(shared)
     cases.append((f"the codebook is not sparse padding — {book_zero:.0%} of it is zero",
                   book_zero < 0.25))
+    # The "12 bad samples" M193 reported were an artefact of a 0.7 threshold, not a failure set: the
+    # correlation distribution is continuous down to 0.44 with no gap, and the low tail is noise-like
+    # content, which is exactly what a low adjacent correlation means.
+    ordered = sorted(shared_c)
+    zcr = []
+    for k, (_i, off, _r, declared) in enumerate(recs):
+        y = decode(data[off:ends[k]], shared)[:declared]
+        zcr.append(sum(1 for a, b in zip(y, y[1:]) if (a < 0) != (b < 0)) / max(len(y) - 1, 1))
+    tail = [zcr[k] for k in range(len(recs)) if shared_c[k] <= 0.7]
+    rest = [zcr[k] for k in range(len(recs)) if shared_c[k] > 0.7]
+    big_gap = max(b - a for a, b in zip(ordered, ordered[1:]))
+    cases.append((f"there is no failure set — correlation runs continuously from {ordered[0]:+.3f} to "
+                  f"{ordered[-1]:+.3f} with no gap above {big_gap:.2f}",
+                  ordered[0] > 0.4 and big_gap < 0.15))
+    med = lambda xs: sorted(xs)[len(xs) // 2]
+    cases.append((f"the low tail is noise-like content, not a bad decode — zero-crossing rate "
+                  f"{med(tail):.3f} against {med(rest):.3f} for the rest",
+                  len(tail) == 12 and med(tail) > 1.8 * med(rest)))
     passed = 0
     for label, ok in cases:
         passed += ok
