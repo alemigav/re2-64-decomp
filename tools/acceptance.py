@@ -55,7 +55,7 @@ SUITES = [
     ("corpus pipeline (synthetic)", [sys.executable, "tools/provenance.py", "--corpus-self-test"], 6, False),
     ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8, False),
     ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 8, False),
-    ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 12, False),
+    ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 15, False),
     ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 22, False),
     ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 23, False),
     # `rdram_fixture.py` builds its bytes synthetically but walks them with `walk_stream.py`, which loads
@@ -102,7 +102,7 @@ SUITES = [
     ("mutation anchors (repository)", [sys.executable, "tools/audit_gates.py", "--lint-self-test"], 4, False),
     ("preflight (repository)", [sys.executable, "tools/preflight.py", "--self-test"], 6, False),
     ("handler region (cartridge)", [sys.executable, "tools/handler_region.py", "--check"], 13, True),
-    ("script vm decoder (cartridge)", [sys.executable, "tools/scd_vm.py", "--check"], 33, True),
+    ("script vm decoder (cartridge)", [sys.executable, "tools/scd_vm.py", "--check"], 34, True),
     ("script vm refusals (cartridge)", [sys.executable, "tools/vm_refusals.py", "--check"], 9, True),
     ("script population (cartridge)", [sys.executable, "tools/script_population.py", "--check"], 13, True),
     ("sound project (cartridge)", [sys.executable, "tools/snd_proj.py", "--check"], 28, True),
@@ -120,6 +120,9 @@ SUITES = [
     ("voice decode (cartridge)", [sys.executable, "tools/voice_decode.py", "--check"], 9, True),
     ("voice sweep (cartridge)", [sys.executable, "tools/voice_sweep.py", "--check"], 12, True),
     ("voice descriptor (cartridge)", [sys.executable, "tools/voice_descriptor.py", "--check"], 29, True),
+    # The table opcode 0x36 dispatches through, resolved in M226. It needs the cartridge because every
+    # claim is read out of the unpacked stage-2 member.
+    ("callback table (cartridge)", [sys.executable, "tools/callback_table.py", "--check"], 9, True),
     ("rsp ucode (cartridge)", [sys.executable, "tools/rsp_decode.py", "--check"], 22, True),
     # The interface between the task block the CPU publishes and the code the RSP runs (M224). It needs
     # the cartridge because every claim in it is a measurement of the unpacked stage-2 member.

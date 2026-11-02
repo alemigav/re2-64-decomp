@@ -61,6 +61,14 @@ MARKERS = [
 
 NOTE_REF = re.compile(r"`(docs/log/[A-Za-z0-9._/-]+\.md)`")
 INDEX_ROW = re.compile(r"^\| (M[0-9]+[a-z]?) \|")        # a milestone-table row
+# Table shape. The milestone table has two legitimate formats -- the early rows are | tag | text | evidence |
+# and the later ones | tag | title | detail | evidence | -- so the count is a *range*, not a value. What it
+# catches is the failure M226 produced: a row inserted through a prefix anchor split its neighbour in half,
+# leaving two rows of two and five cells that every other gate read as "M225 has no detail". Cells are split
+# on unescaped pipes only, because `\|` inside a code span is text (three rows use it).
+CELL_SPLIT = re.compile(r"(?<!\\)\|")
+ROW_CELL_RANGE = (3, 4)
+RETRACTION_CELLS = 3
 NOTE_NUM = re.compile(r"^docs/log/(M[0-9]+[a-z]?)-")       # the milestone a note file names
 TITLE_NUM = re.compile(r"^# (M[0-9]+[a-z]?)")             # the milestone a note's title claims
 
@@ -139,6 +147,20 @@ def check(root=Path(".")):
                 if n and n.group(1) != row.group(1):
                     failures.append((LOG, "note %s is indexed under %s, but it is %s"
                                      % (ref, row.group(1), n.group(1))))
+    # table shape: a row that lost or gained a cell still parses as a row, so the shape is checked directly
+    if log.exists():
+        for line in log.read_text().splitlines():
+            row = INDEX_ROW.match(line)
+            cells = [c for c in CELL_SPLIT.split(line.strip())[1:-1]]
+            if row:
+                if not (ROW_CELL_RANGE[0] <= len(cells) <= ROW_CELL_RANGE[1]) or \
+                        not all(c.strip() for c in cells):
+                    failures.append((LOG, "%s has %d cell(s): a row was split, a pipe went unescaped, or a "
+                                     "cell is empty" % (row.group(1), len(cells))))
+            elif line.startswith('| "'):
+                if len(cells) != RETRACTION_CELLS or not all(c.strip() for c in cells):
+                    failures.append((LOG, "retraction row has %d cells, not %d: %.60s"
+                                     % (len(cells), RETRACTION_CELLS, line)))
     return failures
 
 
@@ -214,6 +236,27 @@ def self_test():
     f = check(d)
     cases.append(("a note indexed under the wrong milestone row is caught",
                   any("indexed under M2" in msg and "it is M1" in msg for _p, msg in f)))
+
+    # M226: a row inserted through a prefix anchor split its neighbour in half, and every other gate read the
+    # result as "M225 has no detail". The shape is what notices.
+    d = bed({HANDOVER: handover,
+             LOG: log_ok + "| M2 | **a title** | a detail | `docs/log/M2-b.md` |\n", "docs/log/M1-a.md": NOTE})
+    f = check(d)
+    cases.append(("a row of the newer four-cell shape passes", not [m for _p, m in f if "cell" in m]))
+
+    d = bed({HANDOVER: handover,
+             LOG: log_ok + "| M2 | **a title** |\n| M3 | a detail | `docs/log/M2-b.md` |\n",
+             "docs/log/M1-a.md": NOTE})
+    f = check(d)
+    cases.append(("a row split in half by an insert is caught by its cell count",
+                  any("has 2 cell(s)" in msg for _p, msg in f)))
+
+    d = bed({HANDOVER: handover,
+             LOG: log_ok + "| M2 | **a title** | a detail | with a stray | pipe | `docs/log/M2-b.md` |\n",
+             "docs/log/M1-a.md": NOTE})
+    f = check(d)
+    cases.append(("an unescaped pipe inside a cell is caught",
+                  any("has 6 cell(s)" in msg for _p, msg in f)))
 
     d = bed({HANDOVER: handover, LOG: log_ok,
              "docs/log/M1-a.md": NOTE.replace("# M1", "# M7")})

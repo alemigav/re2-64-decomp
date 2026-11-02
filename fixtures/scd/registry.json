@@ -33,7 +33,7 @@
     {
      "expression": "*(ctx + 0x144 + (s8[ctx+2] - 1) * 4)",
      "kind": "variable",
-     "source": "tools/walk_stream.py:353",
+     "source": "tools/walk_stream.py:365",
      "store": "0x8006db78"
     }
    ],
@@ -145,7 +145,7 @@
     {
      "expression": "cmd + u16[cmd+2]",
      "kind": "variable",
-     "source": "tools/walk_stream.py:362",
+     "source": "tools/walk_stream.py:374",
      "store": "0x8006dc90"
     }
    ],
@@ -259,7 +259,7 @@
     {
      "expression": "cmd + s16[cmd+2] + 6",
      "kind": "variable",
-     "source": "tools/walk_stream.py:364",
+     "source": "tools/walk_stream.py:376",
      "store": "0x8006deb0"
     }
    ],
@@ -327,7 +327,7 @@
     {
      "expression": "*(ctx + s8[ctx+2]*16 + s8[ctx+s8[ctx+2]+8]*4 + 0x20)",
      "kind": "variable",
-     "source": "tools/walk_stream.py:349",
+     "source": "tools/walk_stream.py:358",
      "store": "0x8006e0bc"
     }
    ],
@@ -389,7 +389,7 @@
     {
      "expression": "cmd + 4, scanned by entry + u16[entry+2]; exit entry + 2 (tag 0x15) or entry + 6 (case match)",
      "kind": "variable",
-     "source": "tools/walk_stream.py:366",
+     "source": "tools/walk_stream.py:378",
      "store": "0x8006e32c"
     }
    ],
@@ -463,7 +463,7 @@
     {
      "expression": "cmd + s16[cmd+4]",
      "kind": "variable",
-     "source": "tools/walk_stream.py:369",
+     "source": "tools/walk_stream.py:381",
      "store": "0x8006e3d0"
     }
    ],
@@ -483,7 +483,7 @@
     {
      "expression": "*(0x80114f2c) + u16[cmd+1]",
      "kind": "variable",
-     "source": "tools/walk_stream.py:375",
+     "source": "tools/walk_stream.py:387",
      "store": "0x8006e430"
     }
    ],
@@ -503,7 +503,7 @@
     {
      "expression": "*(ctx + 0x144 + (u8[ctx+2] - 1) * 4)",
      "kind": "variable",
-     "source": "tools/walk_stream.py:350",
+     "source": "tools/walk_stream.py:359",
      "store": "0x8006e45c"
     }
    ],
@@ -523,7 +523,7 @@
     {
      "expression": "*(ctx + s8[ctx+2]*16 + s8[ctx+s8[ctx+2]+8]*4 + 0x60)",
      "kind": "variable",
-     "source": "tools/walk_stream.py:351",
+     "source": "tools/walk_stream.py:360",
      "store": "0x8006e4b4"
     }
    ],
@@ -547,7 +547,7 @@
     {
      "expression": "cmd + s16[cmd+2] + 6",
      "kind": "variable",
-     "source": "tools/walk_stream.py:371",
+     "source": "tools/walk_stream.py:383",
      "store": "0x8006df6c"
     }
    ],
@@ -1033,21 +1033,19 @@
   "0x36": {
    "advances": [
     {
-     "expression": "jr <*(0x800c98e0 + (s16[cmd+4] >> 8)*4)>",
-     "kind": "variable",
-     "source": "tools/walk_stream.py:352",
-     "store": null
+     "kind": "constant",
+     "value": 12
     }
    ],
-   "control_flow": "dynamic",
+   "control_flow": "ok",
    "evidence": "walk_stream.resolve",
    "handler": "0x80071180",
    "in_function_body": true,
    "name": null,
    "name_source": null,
-   "note": "the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x800711cb that bounds the advance scan, so resolve() reports no advance and the profile publishes no length. Recorded here rather than claimed as a constant: what the command selects is the callback the jr takes, and that is not a command address.",
+   "note": "retracted in M226, twice over. The dispatch is `jr *(0x800b98e0 + (u16[cmd+4] >> 8)*4)` with the index bounds-checked against 5 -- at 0x800b98e0, not the 0x800c98e0 this file published, which is what `addiu v0,v0,-26400` gives if its immediate is read unsigned (it is -0x6720, so the base is 0x10000 lower). And the target is not a callback: the five entries are five arms of one dispatch, each selecting a base object before a shared tail computes three coordinates, calls FUN_80077adc and writes ctx+0x1c = cmd+12. So the advance is the constant 12 and the index selects a sub-opcode. Measured by tools/callback_table.py; the base objects the arms select *are* runtime-initialised, which is where that reading belongs.",
    "number": 54,
-   "published": null,
+   "published": 12,
    "scheduler_effect": "unknown"
   },
   "0x37": {
@@ -2601,16 +2599,16 @@
  },
  "refuses": "a folded constant as a constant, a length for the six dynamic opcodes, any scheduler claim, and any name the inputs do not give",
  "totals": {
-  "constant_advances": 131,
+  "constant_advances": 132,
   "control_flow": {
-   "dynamic": 6,
+   "dynamic": 5,
    "jump": 6,
-   "ok": 129
+   "ok": 130
   },
   "in_function_body": 59,
   "opcodes": 141,
   "scheduler_unknown": 141,
-  "variable_advances": 15,
+  "variable_advances": 14,
   "without_function_body": 82
  }
 }

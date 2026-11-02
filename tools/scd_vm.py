@@ -51,7 +51,8 @@
     block-pop arm is `cfg_reach`'s, and a linear trace does not take it.
   * **no claim that a record is reached.** Each record is decoded from its own start, independently.
 
-The 10 opcodes the registry gives no constant advance, and what supplies each one's pc:
+The 9 opcodes the registry gives no constant advance, and what supplies each one's pc (it was 10 until
+M226 resolved `0x36`, which is a constant after all):
 
     jump family, both successors from `walk_stream.successors`   0x07 0x13 0x17 0x18
     block slot, popped from the cfg_reach stack                  0x10 0x1a
@@ -94,7 +95,9 @@ DEFAULT_ROOM = 0               # DAT_80131fa8[0] = file id 1881, the first DOOR_
 MAX_STEPS = 256                # per record, a backstop: a loop is reported by the revisit rule below
 STATES = ("continue", "yield", "blocked", "terminated")
 
-# The six `dynamic` opcodes of the registry, each with the model that supplies its destination.
+# The five `dynamic` opcodes of the registry, each with the model that supplies its destination. It
+# was six until M226: 0x36 is a constant advance over a static five-entry table, so it left both this
+# table and the registry's dynamic set.
 # Keys must equal the registry's `control_flow == "dynamic"` set; `--self-test` asserts that.
 DYNAMIC_MODEL = {
     0x01: "gosub_slot_or_yield",   # *(ctx+0x144+(s8[ctx+2]-1)*4) -- walk_stream records the ctx[2]==0 arm
@@ -102,7 +105,9 @@ DYNAMIC_MODEL = {
     0x10: "block_pop",             # *(ctx + s8[ctx+2]*16 + s8[ctx+s8[ctx+2]+8]*4 + 0x20)
     0x19: "gosub_slot",            # *(ctx+0x144+(u8[ctx+2]-1)*4): the slot cfg_reach.SUBRET pops
     0x1A: "block_pop",             # *(ctx + s8[ctx+2]*16 + s8[ctx+s8[ctx+2]+8]*4 + 0x60)
-    0x36: "unresolved",            # jr <*(0x800c98e0 + (s16[cmd+4] >> 8)*4)>: a callback, not a command
+    # 0x36 left this table in M226: its dispatch is over a static five-entry table at 0x800b98e0 (not
+    # 0x800c98e0 -- the published address was the addiu immediate read unsigned) and every arm ends with the
+    # same ctx+0x1c = cmd+12, so it has a constant advance and no destination of its own to model.
 }
 
 # cfg_reach's own push/pop sets, so the two tools cannot drift: an opener saves its continuation, a
@@ -521,20 +526,23 @@ def registry_cases():
     return [
         case("the table has 141 opcodes and each one has exactly one advance class",
              (len(reg), sum(len(v) for v in classes.values())), (141, 141)),
-        case("the six dynamic opcodes are exactly the ones a slot or table model supplies",
+        case("the five dynamic opcodes are exactly the ones a slot or table model supplies",
              (sorted(dynamic), sorted(DYNAMIC_MODEL)), (sorted(DYNAMIC_MODEL), sorted(dynamic))),
         case("the advance classes are constant 129, jump 6, and one each of the four models",
              {k: len(v) for k, v in sorted(classes.items())},
-             {"block_pop": 2, "constant": 129, "gosub_slot": 1, "gosub_slot_or_yield": 1,
-              "jump": 6, "record_table": 1, "unresolved": 1}),
+             {"block_pop": 2, "constant": 130, "gosub_slot": 1, "gosub_slot_or_yield": 1,
+              "jump": 6, "record_table": 1}),
         case("the only opcode that is both a constant advance and a slot pop is 0x12",
              sorted(op for op in classes.get("constant", []) if op in SLOT_POPPERS), [0x12]),
-        case("10 opcodes have no constant advance: 4 jump, 5 modelled by a slot or table, 1 unresolved",
+        case("9 opcodes have no constant advance: 4 jump, 5 modelled by a slot or table, and none unresolved",
              (len(no_constant), len([o for o in no_constant if o in ws.JUMP_FAMILY]),
               len(no_constant) - len([o for o in no_constant if o in ws.JUMP_FAMILY])
-              - len(classes.get("unresolved", []))), (10, 4, 5)),
-        case("the one unresolved opcode is the 0x36 callback dispatch",
-             classes.get("unresolved"), [0x36]),
+              - len(classes.get("unresolved", []))), (9, 4, 5)),
+        # M226: this used to assert that 0x36 was the one unresolved opcode. It is not unresolved any
+        # more -- its handler's five arms share one tail that writes cmd+12 -- so the case now holds the
+        # stronger property: nothing in the table is left without an advance.
+        case("no opcode is left without a constant advance or a model",
+             classes.get("unresolved", []), []),
         case("every jump-family opcode has a published length to read its operand from",
              sorted(op for op in ws.JUMP_FAMILY if reg[op]["published"] is None), []),
         case("the two sets the trace pushes and pops are cfg_reach's, unchanged",

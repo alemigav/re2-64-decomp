@@ -17,40 +17,18 @@
  },
  "totals": {
   "rooms_swept": 256,
-  "clean": 107,
-  "refused": 59,
+  "clean": 109,
+  "refused": 57,
   "no_block": 90,
   "by_kind": {
    "other": 6,
    "record_start_not_code": 38,
    "truncated": 0,
    "unknown_opcode": 13,
-   "unresolved_advance": 2
+   "unresolved_advance": 0
   }
  },
  "refusals": [
-  {
-   "room": 6,
-   "file_id": 1887,
-   "kind": "unresolved_advance",
-   "pc": 374,
-   "opcode": 54,
-   "records_decoded": 3,
-   "bytes": 1064,
-   "exception": "UnresolvedAdvance",
-   "message": "unresolved advance at 0x176: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)"
-  },
-  {
-   "room": 21,
-   "file_id": 1899,
-   "kind": "unresolved_advance",
-   "pc": 398,
-   "opcode": 54,
-   "records_decoded": 3,
-   "bytes": 1288,
-   "exception": "UnresolvedAdvance",
-   "message": "unresolved advance at 0x18e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)"
-  },
   {
    "room": 56,
    "file_id": 1931,
@@ -849,15 +827,6 @@
    ],
    "count": 13,
    "next_step": "the same `01 41` population as record_start_not_code, one byte further in: at 0x141 the payload happens to start with a table opcode, so the walk misaligns inside container data instead of refusing at the seed. The byte is the container's, not an unregistered command, so this settles with the container question; do not add 0xff or 0x94 to the registry on the strength of these rows."
-  },
-  {
-   "kind": "unresolved_advance",
-   "rooms": [
-    6,
-    21
-   ],
-   "count": 2,
-   "next_step": "0x36 dispatches through a pointer rather than an address (`jr <*(0x800c98e0 + (s16[cmd+4] >> 8)*4)>`). Resolve the table at 0x800c98e0 for the operand these records carry and decide whether the target is a command at all; if it is not, the record's `blocked` state is final and 0x36 needs no registry entry."
   }
  ]
 }

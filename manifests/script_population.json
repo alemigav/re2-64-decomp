@@ -19,17 +19,16 @@
   "order_rule": "the first category whose evidence holds wins, in the order above. A block named by the room table is therefore room_table even if the decoder then refuses part of it; that refusal is still recorded in its first_refusal."
  },
  "decoder": {
-  "blocks_with_a_refusal": 907,
+  "blocks_with_a_refusal": 797,
   "refusals": {
-   "truncated": 2349,
-   "unknown": 638,
-   "unresolved": 192
+   "truncated": 2350,
+   "unknown": 640
   },
   "stops": {
-   "blocked": 455,
-   "revisit": 126,
-   "terminated": 347,
-   "yield": 1004
+   "blocked": 493,
+   "revisit": 140,
+   "terminated": 370,
+   "yield": 1118
   }
  },
  "inputs": {
@@ -95,7 +94,7 @@
    "tool": "tools/scd_vm.py"
   },
   "profile": {
-   "commands": 102673,
+   "commands": 110519,
    "note": "the claim M156/M157 refuted as a population; this artefact classifies it",
    "path": "fixtures/scd/profile.json",
    "records": 5111,
@@ -229,7 +228,7 @@
   },
   {
    "category": "room_table",
-   "commands": 114,
+   "commands": 118,
    "evidence": {
     "rooms": [
      6
@@ -239,7 +238,7 @@
     "table_va": "0x80131fa8"
    },
    "file_id": 1887,
-   "first_refusal": "unresolved advance at 0x176: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -409,7 +408,7 @@
   },
   {
    "category": "room_table",
-   "commands": 111,
+   "commands": 115,
    "evidence": {
     "rooms": [
      21
@@ -419,7 +418,7 @@
     "table_va": "0x80131fa8"
    },
    "file_id": 1899,
-   "first_refusal": "unresolved advance at 0x18e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -990,7 +989,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 77,
+   "commands": 113,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -999,12 +998,12 @@
     "room_table_entries": 256
    },
    "file_id": 3506,
-   "first_refusal": "unresolved advance at 0x88: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 128,
+   "commands": 152,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1013,7 +1012,7 @@
     "room_table_entries": 256
    },
    "file_id": 3507,
-   "first_refusal": "unresolved advance at 0x1d6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1032,7 +1031,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 23,
+   "commands": 33,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1041,12 +1040,12 @@
     "room_table_entries": 256
    },
    "file_id": 3509,
-   "first_refusal": "unresolved advance at 0x1c4: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 4
   },
   {
    "category": "heuristic_only",
-   "commands": 83,
+   "commands": 98,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1055,12 +1054,12 @@
     "room_table_entries": 256
    },
    "file_id": 3510,
-   "first_refusal": "unresolved advance at 0x348: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 161,
+   "commands": 262,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1069,7 +1068,7 @@
     "room_table_entries": 256
    },
    "file_id": 3512,
-   "first_refusal": "unresolved advance at 0x556: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1116,7 +1115,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 49,
+   "commands": 77,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1125,7 +1124,7 @@
     "room_table_entries": 256
    },
    "file_id": 3516,
-   "first_refusal": "unresolved advance at 0x1da: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1172,7 +1171,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 291,
+   "commands": 297,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1181,12 +1180,12 @@
     "room_table_entries": 256
    },
    "file_id": 3520,
-   "first_refusal": "unresolved advance at 0x67a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": "truncated instruction at 0x694: no opcode byte needs 1 byte(s) and the record ends first",
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 140,
+   "commands": 223,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1195,12 +1194,12 @@
     "room_table_entries": 256
    },
    "file_id": 3521,
-   "first_refusal": "unresolved advance at 0xa3e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 165,
+   "commands": 174,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1209,7 +1208,7 @@
     "room_table_entries": 256
    },
    "file_id": 3522,
-   "first_refusal": "unresolved advance at 0x8aa: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1228,7 +1227,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 65,
+   "commands": 92,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1237,7 +1236,7 @@
     "room_table_entries": 256
    },
    "file_id": 3524,
-   "first_refusal": "unresolved advance at 0x32e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1326,7 +1325,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 251,
+   "commands": 293,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1335,7 +1334,7 @@
     "room_table_entries": 256
    },
    "file_id": 3532,
-   "first_refusal": "unresolved advance at 0x3b0: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1354,7 +1353,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 126,
+   "commands": 140,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1363,7 +1362,7 @@
     "room_table_entries": 256
    },
    "file_id": 3534,
-   "first_refusal": "unresolved advance at 0x24a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1424,7 +1423,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 184,
+   "commands": 208,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1433,12 +1432,12 @@
     "room_table_entries": 256
    },
    "file_id": 3539,
-   "first_refusal": "unresolved advance at 0x61c: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 106,
+   "commands": 170,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1447,7 +1446,7 @@
     "room_table_entries": 256
    },
    "file_id": 3540,
-   "first_refusal": "unresolved advance at 0x2e6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1466,7 +1465,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 120,
+   "commands": 123,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1475,12 +1474,12 @@
     "room_table_entries": 256
    },
    "file_id": 3542,
-   "first_refusal": "unresolved advance at 0x244: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 47,
+   "commands": 164,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1489,12 +1488,12 @@
     "room_table_entries": 256
    },
    "file_id": 3543,
-   "first_refusal": "unresolved advance at 0x13a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 4
   },
   {
    "category": "heuristic_only",
-   "commands": 12,
+   "commands": 16,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1503,12 +1502,12 @@
     "room_table_entries": 256
    },
    "file_id": 3544,
-   "first_refusal": "unresolved advance at 0x272: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 4
   },
   {
    "category": "heuristic_only",
-   "commands": 167,
+   "commands": 286,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1517,12 +1516,12 @@
     "room_table_entries": 256
    },
    "file_id": 3545,
-   "first_refusal": "unresolved advance at 0x27e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 138,
+   "commands": 159,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1531,12 +1530,12 @@
     "room_table_entries": 256
    },
    "file_id": 3546,
-   "first_refusal": "unresolved advance at 0x3d4: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 6
   },
   {
    "category": "heuristic_only",
-   "commands": 157,
+   "commands": 222,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1545,12 +1544,12 @@
     "room_table_entries": 256
    },
    "file_id": 3547,
-   "first_refusal": "unresolved advance at 0x376: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 270,
+   "commands": 286,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1559,12 +1558,12 @@
     "room_table_entries": 256
    },
    "file_id": 3548,
-   "first_refusal": "unresolved advance at 0x51e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": "truncated instruction at 0x5f6: opcode 0x3a needs 16 byte(s) and the record ends first",
    "records": 5
   },
   {
    "category": "heuristic_only",
-   "commands": 95,
+   "commands": 256,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1573,12 +1572,12 @@
     "room_table_entries": 256
    },
    "file_id": 3549,
-   "first_refusal": "unresolved advance at 0x356: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 36,
+   "commands": 45,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1587,7 +1586,7 @@
     "room_table_entries": 256
    },
    "file_id": 3550,
-   "first_refusal": "unresolved advance at 0xee: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 6
   },
   {
@@ -1606,7 +1605,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 78,
+   "commands": 86,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1615,12 +1614,12 @@
     "room_table_entries": 256
    },
    "file_id": 3552,
-   "first_refusal": "unresolved advance at 0x8a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 102,
+   "commands": 154,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1629,12 +1628,12 @@
     "room_table_entries": 256
    },
    "file_id": 3553,
-   "first_refusal": "unresolved advance at 0x2f2: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": "truncated instruction at 0xb4a: no opcode byte needs 1 byte(s) and the record ends first",
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 95,
+   "commands": 108,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1643,12 +1642,12 @@
     "room_table_entries": 256
    },
    "file_id": 3554,
-   "first_refusal": "unresolved advance at 0x1a0: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 7
   },
   {
    "category": "heuristic_only",
-   "commands": 148,
+   "commands": 176,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1657,12 +1656,12 @@
     "room_table_entries": 256
    },
    "file_id": 3555,
-   "first_refusal": "unresolved advance at 0x154: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 289,
+   "commands": 492,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1671,7 +1670,7 @@
     "room_table_entries": 256
    },
    "file_id": 3556,
-   "first_refusal": "unresolved advance at 0x226: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1690,7 +1689,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 198,
+   "commands": 203,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1699,12 +1698,12 @@
     "room_table_entries": 256
    },
    "file_id": 3558,
-   "first_refusal": "unresolved advance at 0x37a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 39,
+   "commands": 59,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1713,7 +1712,7 @@
     "room_table_entries": 256
    },
    "file_id": 3559,
-   "first_refusal": "unresolved advance at 0x23e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 6
   },
   {
@@ -1760,7 +1759,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 137,
+   "commands": 155,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1769,12 +1768,12 @@
     "room_table_entries": 256
    },
    "file_id": 3563,
-   "first_refusal": "unresolved advance at 0x44e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 74,
+   "commands": 83,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1783,7 +1782,7 @@
     "room_table_entries": 256
    },
    "file_id": 3564,
-   "first_refusal": "unresolved advance at 0x29a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1802,7 +1801,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 195,
+   "commands": 222,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1811,12 +1810,12 @@
     "room_table_entries": 256
    },
    "file_id": 3566,
-   "first_refusal": "unresolved advance at 0x33a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 50,
+   "commands": 94,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1825,7 +1824,7 @@
     "room_table_entries": 256
    },
    "file_id": 3567,
-   "first_refusal": "unresolved advance at 0x15e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1914,7 +1913,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 85,
+   "commands": 125,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1923,7 +1922,7 @@
     "room_table_entries": 256
    },
    "file_id": 3574,
-   "first_refusal": "unresolved advance at 0x2f4: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -1984,7 +1983,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 236,
+   "commands": 282,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -1993,12 +1992,12 @@
     "room_table_entries": 256
    },
    "file_id": 3579,
-   "first_refusal": "unresolved advance at 0x402: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 151,
+   "commands": 168,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2007,12 +2006,12 @@
     "room_table_entries": 256
    },
    "file_id": 3580,
-   "first_refusal": "unresolved advance at 0x4fa: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 128,
+   "commands": 131,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2021,12 +2020,12 @@
     "room_table_entries": 256
    },
    "file_id": 3581,
-   "first_refusal": "unresolved advance at 0x69e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 115,
+   "commands": 129,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2035,12 +2034,12 @@
     "room_table_entries": 256
    },
    "file_id": 3582,
-   "first_refusal": "unresolved advance at 0x2d6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 55,
+   "commands": 69,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2049,12 +2048,12 @@
     "room_table_entries": 256
    },
    "file_id": 3583,
-   "first_refusal": "unresolved advance at 0x9a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 6
   },
   {
    "category": "heuristic_only",
-   "commands": 32,
+   "commands": 49,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2063,12 +2062,12 @@
     "room_table_entries": 256
    },
    "file_id": 3584,
-   "first_refusal": "unresolved advance at 0x44: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 7
   },
   {
    "category": "heuristic_only",
-   "commands": 143,
+   "commands": 157,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2077,7 +2076,7 @@
     "room_table_entries": 256
    },
    "file_id": 3585,
-   "first_refusal": "unresolved advance at 0x274: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2096,7 +2095,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 199,
+   "commands": 243,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2105,12 +2104,12 @@
     "room_table_entries": 256
    },
    "file_id": 3587,
-   "first_refusal": "unresolved advance at 0x5b2: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 130,
+   "commands": 223,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2119,7 +2118,7 @@
     "room_table_entries": 256
    },
    "file_id": 3588,
-   "first_refusal": "unresolved advance at 0x31a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2152,7 +2151,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 124,
+   "commands": 129,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2161,12 +2160,12 @@
     "room_table_entries": 256
    },
    "file_id": 3591,
-   "first_refusal": "unresolved advance at 0x29e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 75,
+   "commands": 82,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2175,12 +2174,12 @@
     "room_table_entries": 256
    },
    "file_id": 3592,
-   "first_refusal": "unresolved advance at 0x29a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 75,
+   "commands": 127,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2189,12 +2188,12 @@
     "room_table_entries": 256
    },
    "file_id": 3593,
-   "first_refusal": "unresolved advance at 0x210: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 5
   },
   {
    "category": "heuristic_only",
-   "commands": 174,
+   "commands": 193,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2203,7 +2202,7 @@
     "room_table_entries": 256
    },
    "file_id": 3594,
-   "first_refusal": "unresolved advance at 0x3a8: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2236,7 +2235,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 103,
+   "commands": 337,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2245,12 +2244,12 @@
     "room_table_entries": 256
    },
    "file_id": 3597,
-   "first_refusal": "unresolved advance at 0x248: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 188,
+   "commands": 207,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2259,7 +2258,7 @@
     "room_table_entries": 256
    },
    "file_id": 3598,
-   "first_refusal": "unresolved advance at 0x254: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2278,7 +2277,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 148,
+   "commands": 166,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2287,12 +2286,12 @@
     "room_table_entries": 256
    },
    "file_id": 3600,
-   "first_refusal": "unresolved advance at 0x4e2: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 93,
+   "commands": 116,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2301,7 +2300,7 @@
     "room_table_entries": 256
    },
    "file_id": 3601,
-   "first_refusal": "unresolved advance at 0x104: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2334,7 +2333,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 79,
+   "commands": 134,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2343,12 +2342,12 @@
     "room_table_entries": 256
    },
    "file_id": 3604,
-   "first_refusal": "unresolved advance at 0x13e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 51,
+   "commands": 105,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2357,12 +2356,12 @@
     "room_table_entries": 256
    },
    "file_id": 3605,
-   "first_refusal": "unresolved advance at 0xd6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 6
   },
   {
    "category": "heuristic_only",
-   "commands": 160,
+   "commands": 198,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2371,12 +2370,12 @@
     "room_table_entries": 256
    },
    "file_id": 3606,
-   "first_refusal": "unresolved advance at 0x3c8: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 58,
+   "commands": 122,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2385,12 +2384,12 @@
     "room_table_entries": 256
    },
    "file_id": 3607,
-   "first_refusal": "unresolved advance at 0x162: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 176,
+   "commands": 210,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2399,7 +2398,7 @@
     "room_table_entries": 256
    },
    "file_id": 3608,
-   "first_refusal": "unresolved advance at 0x152: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2418,7 +2417,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 68,
+   "commands": 80,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2427,7 +2426,7 @@
     "room_table_entries": 256
    },
    "file_id": 3610,
-   "first_refusal": "unresolved advance at 0x180: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2446,7 +2445,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 52,
+   "commands": 57,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2455,12 +2454,12 @@
     "room_table_entries": 256
    },
    "file_id": 3612,
-   "first_refusal": "unresolved advance at 0xc2: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 77,
+   "commands": 124,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2469,12 +2468,12 @@
     "room_table_entries": 256
    },
    "file_id": 3613,
-   "first_refusal": "unresolved advance at 0x18e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 29,
+   "commands": 64,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2483,7 +2482,7 @@
     "room_table_entries": 256
    },
    "file_id": 3614,
-   "first_refusal": "unresolved advance at 0x254: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 5
   },
   {
@@ -2516,7 +2515,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 102,
+   "commands": 184,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2525,12 +2524,12 @@
     "room_table_entries": 256
    },
    "file_id": 3617,
-   "first_refusal": "unresolved advance at 0x18a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 137,
+   "commands": 149,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2539,12 +2538,12 @@
     "room_table_entries": 256
    },
    "file_id": 3618,
-   "first_refusal": "unresolved advance at 0x416: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 88,
+   "commands": 90,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2553,12 +2552,12 @@
     "room_table_entries": 256
    },
    "file_id": 3619,
-   "first_refusal": "unresolved advance at 0x3ba: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 122,
+   "commands": 127,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2567,12 +2566,12 @@
     "room_table_entries": 256
    },
    "file_id": 3620,
-   "first_refusal": "unresolved advance at 0x2b2: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 87,
+   "commands": 147,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2581,12 +2580,12 @@
     "room_table_entries": 256
    },
    "file_id": 3621,
-   "first_refusal": "unresolved advance at 0x2e0: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 89,
+   "commands": 200,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2595,12 +2594,12 @@
     "room_table_entries": 256
    },
    "file_id": 3622,
-   "first_refusal": "unresolved advance at 0x28c: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 263,
+   "commands": 362,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2609,12 +2608,12 @@
     "room_table_entries": 256
    },
    "file_id": 3623,
-   "first_refusal": "unresolved advance at 0x470: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 209,
+   "commands": 243,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2623,7 +2622,7 @@
     "room_table_entries": 256
    },
    "file_id": 3624,
-   "first_refusal": "unresolved advance at 0x2da: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2642,7 +2641,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 77,
+   "commands": 113,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2651,12 +2650,12 @@
     "room_table_entries": 256
    },
    "file_id": 3626,
-   "first_refusal": "unresolved advance at 0x88: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 128,
+   "commands": 152,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2665,12 +2664,12 @@
     "room_table_entries": 256
    },
    "file_id": 3627,
-   "first_refusal": "unresolved advance at 0x1d6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 83,
+   "commands": 98,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2679,7 +2678,7 @@
     "room_table_entries": 256
    },
    "file_id": 3628,
-   "first_refusal": "unresolved advance at 0x372: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2726,7 +2725,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 184,
+   "commands": 205,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2735,7 +2734,7 @@
     "room_table_entries": 256
    },
    "file_id": 3632,
-   "first_refusal": "unresolved advance at 0xa10: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2754,7 +2753,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 165,
+   "commands": 174,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2763,7 +2762,7 @@
     "room_table_entries": 256
    },
    "file_id": 3634,
-   "first_refusal": "unresolved advance at 0x8aa: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2838,7 +2837,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 126,
+   "commands": 140,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2847,7 +2846,7 @@
     "room_table_entries": 256
    },
    "file_id": 3640,
-   "first_refusal": "unresolved advance at 0x24a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2894,7 +2893,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 75,
+   "commands": 260,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2903,12 +2902,12 @@
     "room_table_entries": 256
    },
    "file_id": 3644,
-   "first_refusal": "unresolved advance at 0x1c4: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 6
   },
   {
    "category": "heuristic_only",
-   "commands": 167,
+   "commands": 286,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2917,12 +2916,12 @@
     "room_table_entries": 256
    },
    "file_id": 3645,
-   "first_refusal": "unresolved advance at 0x270: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 95,
+   "commands": 256,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2931,7 +2930,7 @@
     "room_table_entries": 256
    },
    "file_id": 3646,
-   "first_refusal": "unresolved advance at 0x356: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -2964,7 +2963,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 102,
+   "commands": 154,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2973,12 +2972,12 @@
     "room_table_entries": 256
    },
    "file_id": 3649,
-   "first_refusal": "unresolved advance at 0x2f2: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": "truncated instruction at 0xb4a: no opcode byte needs 1 byte(s) and the record ends first",
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 95,
+   "commands": 108,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -2987,7 +2986,7 @@
     "room_table_entries": 256
    },
    "file_id": 3650,
-   "first_refusal": "unresolved advance at 0x1a0: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 7
   },
   {
@@ -3020,7 +3019,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 192,
+   "commands": 197,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3029,12 +3028,12 @@
     "room_table_entries": 256
    },
    "file_id": 3653,
-   "first_refusal": "unresolved advance at 0x364: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 135,
+   "commands": 155,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3043,7 +3042,7 @@
     "room_table_entries": 256
    },
    "file_id": 3654,
-   "first_refusal": "unresolved advance at 0x57a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3146,7 +3145,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 90,
+   "commands": 172,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3155,12 +3154,12 @@
     "room_table_entries": 256
    },
    "file_id": 3662,
-   "first_refusal": "unresolved advance at 0x1e0: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 75,
+   "commands": 97,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3169,7 +3168,7 @@
     "room_table_entries": 256
    },
    "file_id": 3663,
-   "first_refusal": "unresolved advance at 0x30e: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3202,7 +3201,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 97,
+   "commands": 101,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3211,12 +3210,12 @@
     "room_table_entries": 256
    },
    "file_id": 3666,
-   "first_refusal": "unresolved advance at 0x226: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 79,
+   "commands": 119,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3225,7 +3224,7 @@
     "room_table_entries": 256
    },
    "file_id": 3667,
-   "first_refusal": "unresolved advance at 0x2e6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3286,7 +3285,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 236,
+   "commands": 282,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3295,12 +3294,12 @@
     "room_table_entries": 256
    },
    "file_id": 3672,
-   "first_refusal": "unresolved advance at 0x402: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 198,
+   "commands": 213,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3309,7 +3308,7 @@
     "room_table_entries": 256
    },
    "file_id": 3673,
-   "first_refusal": "unresolved advance at 0x762: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3342,7 +3341,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 55,
+   "commands": 69,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3351,12 +3350,12 @@
     "room_table_entries": 256
    },
    "file_id": 3676,
-   "first_refusal": "unresolved advance at 0x9a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 6
   },
   {
    "category": "heuristic_only",
-   "commands": 133,
+   "commands": 193,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3365,12 +3364,12 @@
     "room_table_entries": 256
    },
    "file_id": 3677,
-   "first_refusal": "unresolved advance at 0x3c6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 42,
+   "commands": 59,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3379,12 +3378,12 @@
     "room_table_entries": 256
    },
    "file_id": 3678,
-   "first_refusal": "unresolved advance at 0x44: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 7
   },
   {
    "category": "heuristic_only",
-   "commands": 163,
+   "commands": 177,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3393,7 +3392,7 @@
     "room_table_entries": 256
    },
    "file_id": 3679,
-   "first_refusal": "unresolved advance at 0x368: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3412,7 +3411,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 114,
+   "commands": 151,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3421,12 +3420,12 @@
     "room_table_entries": 256
    },
    "file_id": 3681,
-   "first_refusal": "unresolved advance at 0x1c6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 115,
+   "commands": 208,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3435,7 +3434,7 @@
     "room_table_entries": 256
    },
    "file_id": 3682,
-   "first_refusal": "unresolved advance at 0x2ec: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3468,7 +3467,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 75,
+   "commands": 82,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3477,7 +3476,7 @@
     "room_table_entries": 256
    },
    "file_id": 3685,
-   "first_refusal": "unresolved advance at 0x288: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3510,7 +3509,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 101,
+   "commands": 335,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3519,12 +3518,12 @@
     "room_table_entries": 256
    },
    "file_id": 3688,
-   "first_refusal": "unresolved advance at 0x274: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 47,
+   "commands": 149,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3533,12 +3532,12 @@
     "room_table_entries": 256
    },
    "file_id": 3689,
-   "first_refusal": "unresolved advance at 0x17a: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 185,
+   "commands": 347,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3547,7 +3546,7 @@
     "room_table_entries": 256
    },
    "file_id": 3690,
-   "first_refusal": "unresolved advance at 0x38c: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3580,7 +3579,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 79,
+   "commands": 134,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3589,12 +3588,12 @@
     "room_table_entries": 256
    },
    "file_id": 3693,
-   "first_refusal": "unresolved advance at 0x170: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 51,
+   "commands": 105,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3603,12 +3602,12 @@
     "room_table_entries": 256
    },
    "file_id": 3694,
-   "first_refusal": "unresolved advance at 0xd6: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 6
   },
   {
    "category": "heuristic_only",
-   "commands": 163,
+   "commands": 201,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3617,12 +3616,12 @@
     "room_table_entries": 256
    },
    "file_id": 3695,
-   "first_refusal": "unresolved advance at 0x3d4: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 58,
+   "commands": 122,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3631,12 +3630,12 @@
     "room_table_entries": 256
    },
    "file_id": 3696,
-   "first_refusal": "unresolved advance at 0x144: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 176,
+   "commands": 210,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3645,7 +3644,7 @@
     "room_table_entries": 256
    },
    "file_id": 3697,
-   "first_refusal": "unresolved advance at 0x118: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3664,7 +3663,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 68,
+   "commands": 80,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3673,7 +3672,7 @@
     "room_table_entries": 256
    },
    "file_id": 3699,
-   "first_refusal": "unresolved advance at 0x180: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -3692,7 +3691,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 54,
+   "commands": 59,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3701,12 +3700,12 @@
     "room_table_entries": 256
    },
    "file_id": 3701,
-   "first_refusal": "unresolved advance at 0xd4: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 40,
+   "commands": 73,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3715,12 +3714,12 @@
     "room_table_entries": 256
    },
    "file_id": 3702,
-   "first_refusal": "unresolved advance at 0x20c: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 139,
+   "commands": 296,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3729,12 +3728,12 @@
     "room_table_entries": 256
    },
    "file_id": 3703,
-   "first_refusal": "unresolved advance at 0x2ac: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 118,
+   "commands": 307,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3743,12 +3742,12 @@
     "room_table_entries": 256
    },
    "file_id": 3704,
-   "first_refusal": "unresolved advance at 0x442: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 88,
+   "commands": 90,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3757,12 +3756,12 @@
     "room_table_entries": 256
    },
    "file_id": 3705,
-   "first_refusal": "unresolved advance at 0x3ba: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 121,
+   "commands": 126,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3771,12 +3770,12 @@
     "room_table_entries": 256
    },
    "file_id": 3706,
-   "first_refusal": "unresolved advance at 0x2b0: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 228,
+   "commands": 282,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3785,12 +3784,12 @@
     "room_table_entries": 256
    },
    "file_id": 3707,
-   "first_refusal": "unresolved advance at 0x1d0: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
    "category": "heuristic_only",
-   "commands": 209,
+   "commands": 243,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -3799,7 +3798,7 @@
     "room_table_entries": 256
    },
    "file_id": 3708,
-   "first_refusal": "unresolved advance at 0x2da: opcode 0x36 has no constant advance and no jump spec, and no slot or table supplies its destination (the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra body 0x80071180..0x80071)",
+   "first_refusal": null,
    "records": 8
   },
   {
@@ -4232,7 +4231,7 @@
   },
   {
    "category": "heuristic_only",
-   "commands": 4,
+   "commands": 18,
    "evidence": {
     "classified_blocks": 50,
     "code_images": 36,
@@ -5070,13 +5069,14 @@
    "records": 4
   },
   {
-   "category": "not_a_script",
-   "commands": 1,
+   "category": "heuristic_only",
+   "commands": 15,
    "evidence": {
-    "decoded": 1,
-    "decoder": "tools/scd_vm.py",
-    "raised_at_first_byte": false,
-    "threshold": 4
+    "classified_blocks": 50,
+    "code_images": 36,
+    "code_instructions": 486908,
+    "found": "none",
+    "room_table_entries": 256
    },
    "file_id": 7074,
    "first_refusal": "truncated instruction at 0x140: no opcode byte needs 1 byte(s) and the record ends first",
@@ -14460,17 +14460,17 @@
  "totals": {
   "by_category": {
    "code_referenced": 0,
-   "heuristic_only": 485,
-   "not_a_script": 514,
+   "heuristic_only": 486,
+   "not_a_script": 513,
    "room_table": 50,
    "script_referenced": 0
   },
   "candidates": 1049,
-  "commands": 34375,
+  "commands": 39623,
   "records": 5111
  },
  "unresolved_notes": [
-  "No candidate is unclassified: all 1049 have exactly one category. What is unresolved is the reference question for the 485 heuristic_only blocks \u2014 their evidence is the absence of a reference under three searches, which is not a proof of disuse.",
+  "No candidate is unclassified: all 1049 have exactly one category. What is unresolved is the reference question for the 486 heuristic_only blocks \u2014 their evidence is the absence of a reference under three searches, which is not a proof of disuse.",
   "A reference by DATA rather than by code is not modelled. The `01 41` container's payload is a scene -> resource list (M158) and is not parsed here; a candidate id listed in one would be a real reference this tool would miss, and the block would still read heuristic_only.",
   "script_referenced is empty for a mechanical reason (a u8 index into the block's own u16[] table), which --check asserts. If `walk_stream.JUMP_FAMILY`'s GoSub operand ever widens, that case fails and the category must be re-derived: it is not an empirical zero that can be trusted forever.",
   "The accessor derivation is anchored on five ids from a sound-init reading (M178). An accessor reached only by ids outside that family would be invisible to it, so code_referenced is a lower bound: 0 is 'none found by this test', not 'none exists'."

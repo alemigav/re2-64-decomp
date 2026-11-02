@@ -91,10 +91,20 @@
    }
   },
   {
-   "name": "no advance at all: 0x36 dispatches through a callback pointer, so it is unresolved",
+   "name": "0x36 advances 12: its dispatch is over a static five-entry table and every arm shares one tail",
+   "bytes": "36 00 00 00 00 40 00 00 00 00 00 00",
+   "expect": {
+    "trace": [
+     {"pc": 0, "opcode": 54, "name": null, "advance": 12, "successors": [], "state": "terminated"}
+    ],
+    "stop": "terminated: the record's stream ends at 0xc"
+   }
+  },
+  {
+   "name": "0x36 in a record shorter than its own 12 bytes is truncated, not followed",
    "bytes": "36 00 00 00 00 40",
    "expect": {
-    "raises": "unresolved", "offset": 0, "opcode": 54
+    "raises": "truncated", "offset": 0, "opcode": 54
    }
   },
   {

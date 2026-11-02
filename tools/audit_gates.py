@@ -421,7 +421,9 @@ AUDITS = [
          old='"room_table": 50,', new='"room_table": 49,'),
     dict(name="script_population: a not-a-script entry is promoted to a heuristic candidate",
          tool="script_population.py", args=["--check"], file="manifests/script_population.json",
-         old='"not_a_script": 514,', new='"not_a_script": 513,'),
+         # re-aimed in M226: resolving 0x36 moved one candidate out of this category (514 -> 513), so the
+         # anchor moved with it rather than being left pointing at a number the artefact no longer carries
+         old='"not_a_script": 513,', new='"not_a_script": 512,'),
     # --- Cycle E step 1: the RSP decoder. Aimed at the two constants the whole artefact turns on: the IMEM
     # address rule and the boundary between the ucode and the CPU code that follows it.
     dict(name="rsp_decode: the jump target is masked to 11 bits instead of IMEM's 12",
@@ -468,17 +470,28 @@ AUDITS = [
     # work item, so both mutations attack that link rather than the numbers.
     dict(name="vm_refusals: one refusal is filed under a kind with no work item",
          tool="vm_refusals.py", args=["--check"], file="manifests/vm_refusals.json",
-         old='"room": 6,\n   "file_id": 1887,\n   "kind": "unresolved_advance"',
-         new='"room": 6,\n   "file_id": 1887,\n   "kind": "unresolved_advances"'),
+         old='"room": 56,\n   "file_id": 1931,\n   "kind": "record_start_not_code"',
+         new='"room": 56,\n   "file_id": 1931,\n   "kind": "record_start_not_codes"'),
     dict(name="vm_refusals: the refused total no longer matches the rows",
          tool="vm_refusals.py", args=["--check"], file="manifests/vm_refusals.json",
-         old='"refused": 59,', new='"refused": 58,'),
-    # --- M213: the decoder. The mutation that matters is the one the milestone forbids: an opcode with no
-    # constant advance must raise as `unresolved`, never be skipped as one byte.
-    dict(name="scd_vm: an opcode with no advance is skipped as one byte",
+         old='"refused": 57,', new='"refused": 56,'),
+    # --- M213: the decoder. The mutation that matters is the one the milestone forbids: a byte the table
+    # does not know must raise, never be skipped as one byte.
+    # M226 re-aimed this: it used to attack the `unresolved` raise for 0x36, and once 0x36 became a constant
+    # advance *no opcode is unresolved any more*, so the mutation had nothing to act on and the audit reported
+    # it vacuous -- which is exactly what the audit is for. The property it was protecting is unchanged and
+    # still load-bearing, so it is aimed at the raise that still exists: an opcode that is not in the
+    # 141-entry table at all.
+    # The mutation has to fail *with a message*, not crash: removing the raise alone makes the next line index
+    # a None and raises TypeError, which the audit would count as a failure while proving nothing about the
+    # refusal. Silently substituting Nop makes the fixture case fail on its own terms instead.
+    # Both "remove the raise" and "substitute Nop" make the next line crash, and a mutation that raises proves
+    # only that the code is fragile. Conflating the *kind* is the mutation that fails cleanly: the refusal still
+    # happens, under the wrong name, and the fixture case says so.
+    dict(name="scd_vm: an unknown opcode is refused as a truncated instruction",
          tool="scd_vm.py", args=["--check"], file="tools/scd_vm.py",
-         old='    if cls == "unresolved":\n        raise UnresolvedAdvance(pc, op, (reg[op].get("note") or "").strip()[:120])',
-         new='    if cls == "unresolved":\n        pass'),
+         old="        raise UnknownOpcode(pc, op)",
+         new="        raise TruncatedInstruction(pc, op, 1)"),
     # --- M212: the handler-region artefact. The two claims worth attacking are the region-entry walk (which
     # turns "79 handlers outside the corpus" into "21 prologues, all known") and its corpus test.
     # These two mutate the *artefact*, because mutating the tool only trips the "committed file equals a
@@ -491,6 +504,21 @@ AUDITS = [
          # anchored on a prologue used by exactly one fragment, so flipping it removes that prologue from the
          # "already a function start" set and the claim fails; flipping a shared one would change nothing.
          old='"region_entry": "0x8006ebec",', new='"region_entry_in_corpus_false_marker": "0x8006ebec",'),
+    # --- M226: the 0x36 dispatch table. Three anchors aimed at the artefact's own outcomes: the sign
+    # extension that puts the table at 0x800b98e0 rather than 0x800c98e0, the bounds check that makes
+    # five the entry count, and the shared tail that makes the advance 12.
+    dict(name="callback_table: the addiu immediate is read unsigned, moving the table 0x10000",
+         tool="callback_table.py", args=["--check"], file="tools/callback_table.py",
+         old="    imm = sx16(addiu & 0xFFFF)",
+         new="    imm = addiu & 0xFFFF"),
+    dict(name="callback_table: the index bound is not the cited five",
+         tool="callback_table.py", args=["--check"], file="tools/callback_table.py",
+         old="ENTRIES = 5                   # `sltiu v0,a0,5`",
+         new="ENTRIES = 4                   # `sltiu v0,a0,5`"),
+    dict(name="callback_table: the tail advance is not read off the tail",
+         tool="callback_table.py", args=["--check"], file="tools/callback_table.py",
+         old="        \"advance\": 12 if adv and store else None,",
+         new="        \"advance\": 8 if adv and store else None,"),
     # --- M224: the RSP interface. Three anchors, each aimed at an outcome the artefact turns on: the
     # 12-bit mask that puts the one synthesized link back inside the program, the two-value pointer
     # that produces the parameter records, and the bytes-1 rule the cited register map states.

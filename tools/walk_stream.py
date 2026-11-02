@@ -177,6 +177,15 @@ def inferred_names() -> dict:
 
 # Handlers whose true command length the advance scan gets wrong, with the instruction that shows it.
 LENGTH_OVERRIDE = {
+    # M226: the scan cannot see this one because the store lies outside the handler's Ghidra extent -- the
+    # handler is a dispatch head whose five arms live at 0x800711cc, 0x800711dc, 0x800711fc, 0x8007121c and
+    # 0x8007124c, and the shared tail that writes the pointer is at 0x800712c8. Every one of the five arms
+    # reaches 0x80071278, and the tail is `addiu v0,s0,12` / `sw v0,28(s1)`: twelve regardless of the arm.
+    # Established by tools/callback_table.py, which folds the table address (lui 0x800c + addiu -26400 =
+    # 0x800b98e0, *not* the 0x800c98e0 three documents published) and disassembles all five arms.
+    0x36: (12, "the handler's five table arms all reach the same tail, which writes ctx+0x1c = cmd+12 "
+               "(0x800712c8/0x800712cc). The store is outside the handler's bounded body, which is why the "
+               "advance scan reports nothing; tools/callback_table.py measures it from the arms themselves."),
     0x0F: (4, "0x8006dfe4 writes ctx+0x1c = cmd+4 (the block body) and computes the block end as "
               "cmd+4+u16@2, so the header is [opcode][span][u16 end] = 4 bytes. The 2 the scan measured is "
               "the span byte, not the command length (M154)."),
@@ -349,7 +358,10 @@ DYNAMIC = {
     0x10: "block return: ctx+0x1c = *(ctx + thread*8 + 0x20), a saved pointer",
     0x19: "return from the GoSub slot: ctx+0x1c = *(ctx + 0x144 + idx*4), the address 0x18 saves",
     0x1A: "block return: ctx+0x1c = *(ctx + thread*8 + 0x60), a saved pointer",
-    0x36: "table dispatch: jr <*(0x800c****+idx)> — a callback pointer, not a command address",
+    # 0x36 was here until M226: it is not dynamic at all. Its handler bounds-checks the index
+    # (`sltiu v0,a0,5`), jumps through a *static* five-entry table at 0x800b98e0, and every one of the five
+    # arms ends at the same tail, which writes ctx+0x1c = cmd+12. The table is `LENGTH_OVERRIDE`'s job, not
+    # DYNAMIC's.
     0x01: "no pointer write at all: it returns 2 to the dispatcher and lets it decide",
 }
 

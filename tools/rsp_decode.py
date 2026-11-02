@@ -161,6 +161,11 @@ OPCODES = {
     0x0F: ("lui", "lui", "su_r4000"),
     0x10: ("cop0", "cop0", "rsp_physical"),
     0x12: ("cop2", "cop2", "vu_elements"),
+    # `lh` is in the subset the cited page names explicitly ("using the standard opcodes like LW / SW or
+    # LH / LHU / SH"), and this program contains none of them -- added for `callback_table.py`, which
+    # disassembles the CPU-side handler that reads the 0x36 dispatch table (M226). Zero words here, so
+    # no count in this manifest moves.
+    0x21: ("lh", "load", "dmem_only"),
     0x23: ("lw", "load", "dmem_only"),
     0x24: ("lbu", "load", "dmem_only"),
     0x25: ("lhu", "load", "dmem_only"),
@@ -387,7 +392,7 @@ def decode(word, va):
         return rec
     if op == 0x12:
         return _vector(rec, word)
-    if op in (0x23, 0x24, 0x25, 0x28, 0x29, 0x2B):
+    if op in (0x21, 0x23, 0x24, 0x25, 0x28, 0x29, 0x2B):
         mn, form, cite = OPCODES[op]
         rs, rt, off = bits(word, 25, 21), bits(word, 20, 16), sx16(word & 0xFFFF)
         rec.update(mnemonic=mn, text="%s %s,%d(%s)" % (mn, REG[rt], off, REG[rs]), cite=cite,
@@ -760,7 +765,7 @@ def program_section(dec, words, foff):
     gaps = coverage(rsp, funcs)
     raw_targets = [d["target_raw"] for d in rsp if d.get("target_raw") is not None]
     dmem = [d["dmem_offset"] for d in rsp
-            if "dmem_offset" in d and d["mnemonic"] in ("lw", "lbu", "lhu", "sb", "sh", "sw")]
+            if "dmem_offset" in d and d["mnemonic"] in ("lh", "lw", "lbu", "lhu", "sb", "sh", "sw")]
     vector_rows = {}
     for d in rsp:
         if d["vector_kind"] == "vector_transfer" if d.get("vector_kind") else False:

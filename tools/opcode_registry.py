@@ -75,6 +75,12 @@ CONSTANT_PATH = {
     0x0F: 4,      # the block body: 0x8006e040 addiu a3,4(a1) -> 0x8006e070 sw v0,28(s1)
     0x12: 2,      # the header advance: 0x8006e1a4 sw v1,28(s1) on the constant arm (FUN_8006e138.c:18)
     0x1B: 6,      # the fall-through into the loop body: 0x8006df00 addiu a3,a3,6 -> 0x8006df3c sw a3,28(t2)
+    # M226: 0x36 is a constant after all. Its handler dispatches through a static five-entry table at
+    # 0x800b98e0 (not 0x800c98e0 -- that is `addiu v0,v0,-26400`'s immediate read unsigned, -0x6720 gives a
+    # base 0x10000 lower) and *every* arm then runs one tail: 0x800712c8 addiu v0,s0,12 -> 0x800712cc
+    # sw v0,28(s1). The store is outside the handler's Ghidra extent, which is why the scan sees nothing;
+    # tools/callback_table.py measures it from the five arms, and the extent correction is queued.
+    0x36: 12,
 }
 
 # The computed `ctx+0x1c` write no constant covers: expression, the `sw` it was read from, and how to cite it.
@@ -104,7 +110,6 @@ VARIABLE_PATH = {
     0x1A: dict(expression="*(ctx + s8[ctx+2]*16 + s8[ctx+s8[ctx+2]+8]*4 + 0x60)", store="0x8006e4b4",
                cite=("walk", 0x1A)),
     0x1B: dict(expression="cmd + s16[cmd+2] + 6", store="0x8006df6c", cite=("walk", 0x1B)),
-    0x36: dict(expression="jr <*(0x800c98e0 + (s16[cmd+4] >> 8)*4)>", store=None, cite=("walk", 0x36)),
 }
 
 # Only handlers whose decompiled body was read for the classification. Every other opcode's advance came from
@@ -162,10 +167,14 @@ NOTES = {
           "a3 = cmd+6 out of the fall-through arm (0x8006df00) into the loop-exit arm "
           "(0x8006df60 lh t0,2(a3) -> 0x8006df68 addiu v0,v0,6 -> 0x8006df6c sw v0,28(t2)). The licensed "
           "table has no entry for this number, so the name stays null.",
-    0x36: "the handler's single exit writes cmd+12 at 0x800712c8/0x800712cc, which lies outside the Ghidra "
-          "body 0x80071180..0x800711cb that bounds the advance scan, so resolve() reports no advance and the "
-          "profile publishes no length. Recorded here rather than claimed as a constant: what the command "
-          "selects is the callback the jr takes, and that is not a command address.",
+    0x36: "retracted in M226, twice over. The dispatch is `jr *(0x800b98e0 + (u16[cmd+4] >> 8)*4)` with the "
+          "index bounds-checked against 5 -- at 0x800b98e0, not the 0x800c98e0 this file published, which is "
+          "what `addiu v0,v0,-26400` gives if its immediate is read unsigned (it is -0x6720, so the base is "
+          "0x10000 lower). And the target is not a callback: the five entries are five arms of one dispatch, "
+          "each selecting a base object before a shared tail computes three coordinates, calls FUN_80077adc "
+          "and writes ctx+0x1c = cmd+12. So the advance is the constant 12 and the index selects a "
+          "sub-opcode. Measured by tools/callback_table.py; the base objects the arms select *are* "
+          "runtime-initialised, which is where that reading belongs.",
 }
 
 
@@ -289,9 +298,14 @@ def build() -> dict:
                 raise SystemExit("opcode 0x%02x has %d measured advances and no classification"
                                  % (number, len(r["advances"])))
             constant = r["advances"][0]
-        if constant is not None and constant not in r["advances"]:
-            raise SystemExit("opcode 0x%02x claims constant %d, resolve() measured %s"
-                             % (number, constant, r["advances"]))
+        # Two records of the same fact have to agree: this table's constant and the length the profile
+        # publishes. They can differ from `advances` because walk_stream's LENGTH_OVERRIDE exists for the
+        # case where the store lies outside the handler's scan (M226 added 0x36 that way), so the override's
+        # value is accepted -- and the profile's status has to be "ok" for it to count.
+        override_ok = (r["length"] == constant and r["status"] == "ok")
+        if constant is not None and constant not in r["advances"] and not override_ok:
+            raise SystemExit("opcode 0x%02x claims constant %d, resolve() measured %s and publishes %s"
+                             % (number, constant, r["advances"], r["length"]))
         advances = []
         if constant is not None:
             advances.append({"kind": "constant", "value": constant})
