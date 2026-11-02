@@ -54,7 +54,7 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 105, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 107, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
@@ -100,6 +100,7 @@ SUITES = [
     ("voice decode (cartridge)", [sys.executable, "tools/voice_decode.py", "--check"], 9, True),
     ("voice sweep (cartridge)", [sys.executable, "tools/voice_sweep.py", "--check"], 12, True),
     ("voice descriptor (cartridge)", [sys.executable, "tools/voice_descriptor.py", "--check"], 29, True),
+    ("rsp ucode (cartridge)", [sys.executable, "tools/rsp_decode.py", "--check"], 18, True),
     ("sound fixtures (repository)", [sys.executable, "tools/sound_fixtures.py", "--check"], 10, False),
     ("sound fixtures self-test", [sys.executable, "tools/sound_fixtures.py", "--self-test"], 4, False),
     # The ratchet guards the registry itself. `--self-test` breaks each invariant on a synthetic root

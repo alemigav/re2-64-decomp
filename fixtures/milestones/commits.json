@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "0b39324",
+   "subject": "M222: WP3b -- the voice descriptor, and my own +0x1a4 was wrong",
+   "milestones": [
+    222
+   ]
+  },
+  {
    "sha": "6037626",
    "subject": "M221: WP3 -- every one of the 588 voice clips, and 12 037 live comparison blocks",
    "milestones": [

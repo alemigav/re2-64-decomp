@@ -422,6 +422,14 @@ AUDITS = [
     dict(name="script_population: a not-a-script entry is promoted to a heuristic candidate",
          tool="script_population.py", args=["--check"], file="manifests/script_population.json",
          old='"not_a_script": 514,', new='"not_a_script": 513,'),
+    # --- Cycle E step 1: the RSP decoder. Aimed at the two constants the whole artefact turns on: the IMEM
+    # address rule and the boundary between the ucode and the CPU code that follows it.
+    dict(name="rsp_decode: the jump target is masked to 11 bits instead of IMEM's 12",
+         tool="rsp_decode.py", args=["--check"], file="tools/rsp_decode.py",
+         old="    return raw, raw & 0xFFF", new="    return raw, raw & 0x7FF"),
+    dict(name="rsp_decode: the ucode/CPU boundary moves four bytes",
+         tool="rsp_decode.py", args=["--check"], file="manifests/rsp_ucode.json",
+         old='"addr": "0x800b2700",', new='"addr": "0x800b2704",'),
     # --- M222: the voice descriptor. Aimed at the tool's constants rather than the artefact's strings,
     # because the artefact's field lines are multi-line JSON and an anchor spanning them is fragile: both of
     # my first attempts failed to match, and the lint caught it. Moving the slot stride and the ring size
