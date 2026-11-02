@@ -14,6 +14,12 @@ of advances it published, not the count in the code.
 Published as 17, with the reason; the retraction row is in the log's table; and `counts.py` now derives the
 number from the profile and asserts the phrase in README and both handover sites, so it cannot drift again.
 
+**That reason was wrong when first written and is corrected here.** I wrote that the 30- and 38-byte advances
+"belong to the handlers that take more than one" — M141's claim, which M211 then measured and refuted: only
+`0x0d` and `0x1b` carry more than one constant, and both are really `6` plus a variable. The two sizes arrived
+because M141 corrected `0x69 ItemAotSet4p` (2 → 30) and `0x2d ObjModelSet` (3 → 38) against the PS1 table,
+which is a different mechanism and the one the artifact supports.
+
 ## 2. The scheduler contract was a reading with no gate
 
 Since M152 the project has said "a handler returning 1 runs again, 2 yields", and every reachability claim rests

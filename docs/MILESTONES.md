@@ -7,8 +7,8 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-211 milestones are indexed. 138 of them have a note; the rest are rows in the log that cite
-`docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
+216 milestones are indexed. 140 of them have a note; the rest are rows in the log that cite
+`docs/format_notes.md` instead. **53 have no record at all** — 31–78, 80, 172, 212–214 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
 
@@ -227,12 +227,17 @@ at the foot of this file.
 | 208 | **M208** — the census was a whole corpus generation stale, and the cull is a decision | `docs/log/M208-the-census-was-a-generation-stale.md` |
 | 209 | **M209** — "3 638 decompiled" is one claim; here are the four that are not it | `docs/log/M209-the-ladder-and-the-two-axes.md` |
 | 210 | **M210** — three published claims corrected, and the landing unit becomes a cycle | `docs/log/M210-three-claims-and-the-cycle-contract.md` |
+| 211 | **M211** — the registry, and the multi-advance claim it disproved | `docs/log/M211-the-registry-and-the-multi-advance-refutation.md` |
+| 212 | **M212** — *(no row, no note)* | no evidence in the tree |
+| 213 | **M213** — *(no row, no note)* | no evidence in the tree |
+| 214 | **M214** — *(no row, no note)* | no evidence in the tree |
+| 215 | **M215** — a call graph whose edges carry their evidence, and whose unknown targets stay unknown | `docs/log/M215-a-call-graph-that-carries-its-evidence.md` |
 
 ## The gaps, and why they are empty
 
-**50** milestone numbers have neither a row in `docs/reverse_engineering_log.md` nor a note in `docs/log/`. The project did not keep a note for every number it used: much of the middle work was recorded in `docs/format_notes.md` and in commit messages instead, and the log's own numbering runs M10–M30 in that style before resuming per-milestone notes at M81.
+**53** milestone numbers have neither a row in `docs/reverse_engineering_log.md` nor a note in `docs/log/`. The project did not keep a note for every number it used: much of the middle work was recorded in `docs/format_notes.md` and in commit messages instead, and the log's own numbering runs M10–M30 in that style before resuming per-milestone notes at M81.
 
 * **M48, M51, M78, M172** survive only as commit subjects, quoted above. Nothing further is known about them, so nothing further is written.
-* **31–47, 49–50, 52–77, 80** have no evidence in the tree at all — no row, no note, no commit that names them.
+* **31–47, 49–50, 52–77, 80, 212–214** have no evidence in the tree at all — no row, no note, no commit that names them.
 
 None of these gaps is reconstructed after the fact. A note written from guesswork would be indistinguishable from a note written from measurement, and this project's whole claim is that the difference is visible.

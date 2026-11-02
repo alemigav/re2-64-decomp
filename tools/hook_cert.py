@@ -43,22 +43,23 @@ def _git(*args, root=ROOT):
 
 
 def worktree_hash(root=ROOT):
-    """A hash of the working tree's *content* versus HEAD, invariant under `git add`.
+    """A hash of the working tree's *content* versus HEAD: one entry per changed path, whatever its state.
 
-    The first version also hashed `git status` and `git diff --cached`, which made the certificate change the
-    moment the cycle's files were staged -- so the hook re-ran the five-minute suite on the one commit the
-    certificate existed for, and the commit was still running when the turn ended. Content is what is being
-    committed, so content is what is hashed: the tracked diff against HEAD (staged and unstaged both live in
-    `git diff HEAD`) plus every untracked file's own bytes.
+    Three earlier versions were wrong, each found by using the certificate rather than by reading it. Hashing
+    `git status` made staging invalidate it. Hashing `git diff HEAD` plus the untracked list represented a new
+    file two different ways. Using `git ls-files -m -o -d` was index-relative, so it went *empty* once
+    everything was staged and hashed the empty string. This version builds one path set -- "differs from HEAD,
+    or is new" -- and hashes `path + the file's bytes`, which is precisely what a commit would carry and does
+    not depend on the index.
     """
+    names = set()
+    for args in (("diff", "HEAD", "--name-only", "-z"),
+                 ("ls-files", "--others", "--exclude-standard", "-z")):
+        names.update(x for x in _git(*args, root=root).split(b"\0") if x)
     h = hashlib.sha256()
-    h.update(_git("diff", "HEAD", "--binary", root=root))
-    h.update(b"\0")
-    for name in sorted(_git("ls-files", "--others", "--exclude-standard", "-z", root=root).split(b"\0")):
-        if not name:
-            continue
-        p = root / name.decode()
-        h.update(name + b"\0")
+    for raw in sorted(names):
+        h.update(raw + b"\0")
+        p = root / raw.decode()
         h.update(hashlib.sha256(p.read_bytes()).digest() if p.is_file() else b"-")
         h.update(b"\0")
     return h.hexdigest()[:32]

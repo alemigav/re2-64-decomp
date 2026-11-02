@@ -366,6 +366,24 @@ AUDITS = [
     dict(name="image inventory: a committed extent is edited by hand",
          tool="export_ranges.py", args=["--check-images"], file="fixtures/decomp/images.json",
          old='"size": 69952', new='"size": 69960'),
+    # --- M211/M215: the two derived artefacts this cycle adds. Each mutation attacks the property that makes
+    # the artefact worth having: the registry's refusal to call a variable path a constant, and the graph's
+    # refusal to invent a target.
+    dict(name="opcode_registry: the folded 12 is recorded as a constant advance",
+         tool="opcode_registry.py", args=["--check"], file="tools/opcode_registry.py",
+         old='        constant, variable = CONSTANT_PATH.get(number), VARIABLE_PATH.get(number)',
+         new='        constant, variable = (CONSTANT_PATH.get(number) or 0) + 6, None'),
+    dict(name="opcode_registry: an unclassified handler is counted as being in a function body",
+         tool="opcode_registry.py", args=["--check"], file="tools/opcode_registry.py",
+         old='    return any(start <= handler < end for start, end in bodies)', new='    return True'),
+    dict(name="call_graph: the callees reconciliation reads no callees",
+         tool="call_graph.py", args=["--check"], file="tools/call_graph.py",
+         old='            callees[f"{img[\'name\']}:{f[\'address\']}"] = {int(x, 16) for x in f["callees"]}',
+         new='            callees[f"{img[\'name\']}:{f[\'address\']}"] = set()'),
+    dict(name="call_graph: node identity drops the image qualifier",
+         tool="call_graph.py", args=["--check"], file="tools/call_graph.py",
+         old='node = dict(id=f"{img[\'name\']}:{f[\'address\']}"',
+         new='node = dict(id=f"{f[\'address\']}"'),
     # --- M209: the analysis-status index. Two ways it could flatter the corpus: the naming axis counted
     # without the curated-name rule, and the validated axis made free by an empty rule.
     dict(name="analysis_status: every function counts as named",
