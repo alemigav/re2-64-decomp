@@ -169,22 +169,20 @@
    "entry": "0x80071744",
    "extent_bytes": 1019,
    "first_handler": "0x80071950",
-   "handlers": 3,
+   "handlers": 2,
    "last_end": "0x80071b3b",
    "opcodes": [
     "0x3f",
-    "0x40",
     "0x4a"
    ]
   },
   {
    "entry": "0x80071b3c",
    "extent_bytes": 731,
-   "first_handler": "0x80071b94",
-   "handlers": 6,
+   "first_handler": "0x80071ca0",
+   "handlers": 5,
    "last_end": "0x80071e13",
    "opcodes": [
-    "0x41",
     "0x42",
     "0x43",
     "0x58",

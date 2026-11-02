@@ -61,6 +61,8 @@ STORE_KINDS = {
     "own_extent": "the store is inside the handler's own code extent",
     "via_correction": "the store is outside the handler's own extent and only the queued correction's "
                       "extent reaches it",
+    "store_in_arm": "the handler is a dispatch head and the store is in one of its table's arms, which the "
+                    "corpus records as a separate function",
     "none": "no ctx+0x1c store inside the code the corpus and the queue claim for this handler",
     "outside_window": "a store exists but beyond the claimed window, which nothing in the queue reaches",
 }
@@ -81,6 +83,42 @@ def words_at(image, lo, hi):
 def stores(image, lo, hi):
     return [a for a in words_at(image, lo, hi)
             if (pixel(image, a) >> 26) == SW and (pixel(image, a) & 0xFFFF) == CTX_CMDPTR]
+
+
+def follow(image, start, limit=256):
+    """Every address reachable from `start` by fall-through, branch and `j`, stopping at any `jr`.
+
+    M229 needed this twice over. A fixed window past an arm found 0x80071af8's store but not 0x80071b94's,
+    because that head's arms all `j` to a shared continuation 0x5c bytes past the last arm and the store is in
+    the continuation. A window is not an attribution — M212, M227 and now here — so the arms are followed.
+    """
+    lo, hi = rd.STAGE2_BASE, rd.STAGE2_BASE + len(image)
+    seen, stack = set(), [start]
+    while stack and len(seen) < limit:
+        va = stack.pop()
+        if va in seen or not (lo <= va < hi):
+            continue
+        seen.add(va)
+        w = pixel(image, va)
+        op = w >> 26
+        if op == 0x00 and (w & 0x3F) == 0x08:          # jr: the arm returns or dispatches
+            continue
+        if op == 0x02:                                  # j
+            stack.append((va + 4 & 0xF0000000) | ((w & 0x3FFFFFF) << 2))
+            continue
+        if op in (0x04, 0x05):                          # beq / bne: both arms
+            imm = w & 0xFFFF
+            imm = imm - 0x10000 if imm & 0x8000 else imm
+            stack.append((va + 4 + (imm << 2)) & 0xFFFFFFFF)
+        elif op in (0x01, 0x06, 0x07):                  # regimm / blez / bgtz
+            imm = w & 0xFFFF
+            imm = imm - 0x10000 if imm & 0x8000 else imm
+            stack.append((va + 4 + (imm << 2)) & 0xFFFFFFFF)
+        elif op == 0x03:                                # jal: the callee is not this arm's code
+            stack.append(va + 8)
+            continue
+        stack.append(va + 4)
+    return seen
 
 
 def references(image):
@@ -116,6 +154,13 @@ def _body_of(ranges, va):
     return None
 
 
+def _heads():
+    """The head census, indexed the two ways a consumer needs: by body start and by dispatch site."""
+    heads = json.loads(HEADS.read_text())["entries"] if HEADS.exists() else []
+    return heads, {e["head_body"]["start"]: e for e in heads if e["head_body"]}, \
+        {j: e for e in heads for j in e["jr_sites"]}
+
+
 def store_placement(image, ranges, handlers, queue):
     """Where each handler's `ctx+0x1c` store lives, attributed against the handler's *own* extent.
 
@@ -126,6 +171,7 @@ def store_placement(image, ranges, handlers, queue):
     window-leakage defect (`an unbounded forward scan reported 103 handlers with several advances`) met a
     second time. A store is attributed to a handler only if the handler's own extent contains it.
     """
+    _heads_all, _by_body, head_by_jr = _heads()
     out = []
     for h, rec in sorted(handlers.items()):
         hv = int(h, 16)
@@ -150,6 +196,20 @@ def store_placement(image, ranges, handlers, queue):
                      {"at": a, "where": "via_correction", "body": None}
                      for a in stores(image, own[1] + 1, corrected[1])]
         kind = sites[0]["where"] if sites else "none"
+        if kind == "none" and rec.get("classification") == "dispatch_head" and rec.get("dispatch_jr"):
+            head = head_by_jr.get(int(rec["dispatch_jr"], 16))
+            if head is not None:
+                for target in head["targets"]:
+                    reached = follow(image, target)
+                    hit = sorted(a for a in reached
+                                 if (pixel(image, a) >> 26) == SW
+                                 and (pixel(image, a) & 0xFFFF) == CTX_CMDPTR)
+                    if hit:
+                        sites = [{"at": a, "where": "store_in_arm", "body": None,
+                                  "arm": target, "table": head["table"],
+                                  "reachable_words": len(reached)} for a in hit]
+                        kind = "store_in_arm"
+                        break
         out.append({
             "handler": h,
             "opcodes": rec["opcodes"],
@@ -180,8 +240,9 @@ def queue_audit(ranges, queue, handlers, jal, branch, pointers):
     starts = sorted(a for a, _b in ranges)
     ends = {a: b for a, b in ranges}
     handler_starts = {int(h, 16) for h in handlers}
-    heads = json.loads(HEADS.read_text())["entries"] if HEADS.exists() else []
-    head_of = {e["head_body"]["start"]: e for e in heads if e["head_body"]}
+    # a handler_region dispatch head carries its `jr` site, which is how it joins the census: for these the
+    # deciding store is in an arm, not in the head, and that is a placement in its own right (M229)
+    heads, head_of, _by_jr = _heads()
     arms = {t for e in heads for t in e["targets"]}
     out = []
     for c in queue:
@@ -338,15 +399,20 @@ def check(committed, image):
                       for h in sp["handlers"] if h["kind"] == "via_correction")))
 
     none = [h for h in sp["handlers"] if h["kind"] == "none"]
-    cases.append((f"the handlers with no ctx+0x1c store are the dynamic one whose destination comes from a "
-                  f"callee and M212's three unresolved ({sorted(o for h in none for o in h['opcodes'])})",
-                  len(none) == 4
-                  and sorted(o for h in none for o in h["opcodes"]) == ["0x03", "0x23", "0x2e", "0x81"]
+    inarm = [h for h in sp["handlers"] if h["kind"] == "store_in_arm"]
+    cases.append((f"the one handler with no ctx+0x1c store is the dynamic one whose destination comes from a "
+                  f"callee ({sorted(o for h in none for o in h['opcodes'])})",
+                  len(none) == 1 and none[0]["opcodes"] == ["0x03"]
+                  and none[0]["classification"] == "function_body"
                   and next(v["control_flow"] for v in
                            json.loads(REGISTRY.read_text())["opcodes"].values()
-                           if v["handler"] == "0x8006db98") == "dynamic"
-                  and sorted(h["classification"] for h in none) == ["function_body", "unresolved",
-                                                                   "unresolved", "unresolved"]))
+                           if v["handler"] == "0x8006db98") == "dynamic"))
+
+    cases.append((f"the dispatch heads whose store lives in an arm say so, and name the arm "
+                  f"({[(h['handler'], h['stores'][0]['arm']) for h in inarm]})",
+                  sorted(o for h in inarm for o in h["opcodes"]) == ["0x40", "0x41"]
+                  and all(h["classification"] == "dispatch_head" and h["stores"][0]["where"] == "store_in_arm"
+                          and h["stores"][0]["table"] for h in inarm)))
 
     case36 = committed["the_0x36_case"]
     s36 = next(h for h in sp["handlers"] if h["handler"] == "0x80071180")

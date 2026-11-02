@@ -79,7 +79,7 @@ JR_RA = 0x03E00008
 OP_ADDIU = 0x09
 SP = 29
 
-CLASSES = ("code_outside_body", "fragment", "function_body", "unresolved")
+CLASSES = ("code_outside_body", "dispatch_head", "fragment", "function_body", "unresolved")
 ADDRESS = re.compile(r"0x[0-9a-f]{8}")
 OPCODE = re.compile(r"0x[0-9a-f]{2}")
 
@@ -179,6 +179,31 @@ def _terminator(handler, words):
                            ", which is the image end" if stop == len(words) else ""))
 
 
+def _first_jr(handler, words):
+    """(address, delay slot, kind, reason): the first `jr` of *any* kind from the handler.
+
+    M229: `_terminator` looked only for `jr ra`, so a handler that dispatches through a table had its extent
+    run past its own `jr v0` and into the first table arm — arm 0 is laid out immediately after the dispatch,
+    and it *falls through into* the `jr ra` the scan was looking for. The extent of a dispatch head ends at
+    the dispatch, because the arms are other functions; the `jr ra` beyond it belongs to an arm.
+    """
+    start = (handler - BASE) // 4
+    stop = min(start + WINDOW_WORDS, len(words))
+    for index in range(start, stop):
+        word = words[index]
+        if (word >> 26) != 0 or (word & 0x3F) != 0x08:
+            continue
+        if index + 1 >= len(words):
+            return None, None, None, ("the jr at %s is the last word of the image, so it has no delay slot"
+                                      % _hex(BASE + 4 * index))
+        target = (word >> 21) & 0x1F
+        kind = "return" if target in (31, 30) else "dispatch"
+        return BASE + 4 * index, BASE + 4 * (index + 1), kind, None
+    return None, None, None, ("no jr within %d words of %s (the window ends at %s%s)"
+                              % (WINDOW_WORDS, _hex(handler), _hex(BASE + 4 * (stop - 1)),
+                                 ", which is the image end" if stop == len(words) else ""))
+
+
 def _unresolved(handler, reason, prologue, opcodes):
     return {"classification": "unresolved", "start": _hex(handler), "end": None, "words": None,
             "prologue": prologue, "restore_matches": None, "in_body": None,
@@ -216,9 +241,21 @@ def _record(handler, words, bodies, numbers):
                 "in_body": {"start": _hex(body[0]), "end": _hex(body[1])},
                 "opcodes": opcodes, "evidence": RANGES}
 
-    jr, delay, reason = _terminator(handler, words)
+    jr, delay, kind, reason = _first_jr(handler, words)
     if jr is None:
         return _unresolved(handler, reason, prologue, opcodes)
+    if kind == "dispatch":
+        # the arms are laid out after the dispatch and are separate functions; the extent is the dispatch
+        end = delay + 3
+        return {"classification": "dispatch_head", "start": _hex(handler), "end": _hex(end),
+                "words": (end - handler) // 4 + 1, "prologue": prologue, "restore_matches": None,
+                "in_body": None, "opcodes": opcodes,
+                # the dispatch site, so a consumer can join this head to its table (M229). The store that
+                # decides the advance is in an *arm* for these handlers, not in the head.
+                "dispatch_jr": _hex(jr),
+                "evidence": "bytes: the handler dispatches through a table -- `jr` at %s, not `jr ra` -- so "
+                            "the extent ends at its delay slot. Any `jr ra` beyond it belongs to a table arm, "
+                            "which the corpus records as its own function" % _hex(jr)}
     crossed = [b for b in bodies if handler < b[0] <= delay]
     if crossed:
         return _unresolved(handler, ("the extent from %s would cross into the Ghidra body %s..%s before its "

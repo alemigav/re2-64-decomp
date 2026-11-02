@@ -476,7 +476,6 @@
     "must_stop_before": 2147948448,
     "opcodes": [
      "0x3f",
-     "0x40",
      "0x4a"
     ],
     "shape": "merge",
@@ -554,7 +553,6 @@
     ],
     "must_stop_before": null,
     "opcodes": [
-     "0x41",
      "0x42",
      "0x43",
      "0x58",
@@ -773,8 +771,9 @@
  "schema": "extent-audit/1",
  "store_placement": {
   "by_kind": {
-   "none": 4,
-   "own_extent": 131,
+   "none": 1,
+   "own_extent": 132,
+   "store_in_arm": 2,
    "via_correction": 3
   },
   "handlers": [
@@ -1708,21 +1707,27 @@
     "why": "the store is inside the handler's own code extent"
    },
    {
-    "classification": "unresolved",
+    "classification": "dispatch_head",
     "corrected_extent": null,
     "handler": "0x8006e68c",
-    "kind": "none",
+    "kind": "own_extent",
     "opcodes": [
      "0x23"
     ],
     "own_body": null,
     "own_extent": {
-     "end": 2147935883,
+     "end": 2147935967,
      "start": 2147935884
     },
     "region_entry": null,
-    "stores": [],
-    "why": "no ctx+0x1c store inside the code the corpus and the queue claim for this handler"
+    "stores": [
+     {
+      "at": 2147935900,
+      "body": null,
+      "where": "own_extent"
+     }
+    ],
+    "why": "the store is inside the handler's own code extent"
    },
    {
     "classification": "fragment",
@@ -2353,21 +2358,27 @@
     "why": "the store is inside the handler's own code extent"
    },
    {
-    "classification": "unresolved",
+    "classification": "dispatch_head",
     "corrected_extent": null,
     "handler": "0x8006fb48",
-    "kind": "none",
+    "kind": "own_extent",
     "opcodes": [
      "0x2e"
     ],
     "own_body": null,
     "own_extent": {
-     "end": 2147941191,
+     "end": 2147941283,
      "start": 2147941192
     },
     "region_entry": null,
-    "stores": [],
-    "why": "no ctx+0x1c store inside the code the corpus and the queue claim for this handler"
+    "stores": [
+     {
+      "at": 2147941240,
+      "body": null,
+      "where": "own_extent"
+     }
+    ],
+    "why": "the store is inside the handler's own code extent"
    },
    {
     "classification": "function_body",
@@ -3026,30 +3037,30 @@
     "why": "the store is inside the handler's own code extent"
    },
    {
-    "classification": "fragment",
-    "corrected_extent": {
-     "end": 2147949371,
-     "start": 2147948356
-    },
+    "classification": "dispatch_head",
+    "corrected_extent": null,
     "handler": "0x8007199c",
-    "kind": "own_extent",
+    "kind": "store_in_arm",
     "opcodes": [
      "0x40"
     ],
     "own_body": null,
     "own_extent": {
-     "end": 2147949315,
+     "end": 2147949059,
      "start": 2147948956
     },
-    "region_entry": "0x80071744",
+    "region_entry": null,
     "stores": [
      {
+      "arm": 2147949060,
       "at": 2147949304,
       "body": null,
-      "where": "own_extent"
+      "reachable_words": 22,
+      "table": 2148243728,
+      "where": "store_in_arm"
      }
     ],
-    "why": "the store is inside the handler's own code extent"
+    "why": "the handler is a dispatch head and the store is in one of its table's arms, which the corpus records as a separate function"
    },
    {
     "classification": "fragment",
@@ -3107,30 +3118,30 @@
     "why": "the store is inside the handler's own code extent"
    },
    {
-    "classification": "fragment",
-    "corrected_extent": {
-     "end": 2147950099,
-     "start": 2147949372
-    },
+    "classification": "dispatch_head",
+    "corrected_extent": null,
     "handler": "0x80071b94",
-    "kind": "own_extent",
+    "kind": "store_in_arm",
     "opcodes": [
      "0x41"
     ],
     "own_body": null,
     "own_extent": {
-     "end": 2147949727,
+     "end": 2147949543,
      "start": 2147949460
     },
-    "region_entry": "0x80071b3c",
+    "region_entry": null,
     "stores": [
      {
+      "arm": 2147949544,
       "at": 2147949716,
       "body": null,
-      "where": "own_extent"
+      "reachable_words": 27,
+      "table": 2148243856,
+      "where": "store_in_arm"
      }
     ],
-    "why": "the store is inside the handler's own code extent"
+    "why": "the handler is a dispatch head and the store is in one of its table's arms, which the corpus records as a separate function"
    },
    {
     "classification": "fragment",
@@ -3708,21 +3719,27 @@
     "why": "the store is inside the handler's own code extent"
    },
    {
-    "classification": "unresolved",
+    "classification": "dispatch_head",
     "corrected_extent": null,
     "handler": "0x800727b0",
-    "kind": "none",
+    "kind": "own_extent",
     "opcodes": [
      "0x81"
     ],
     "own_body": null,
     "own_extent": {
-     "end": 2147952559,
+     "end": 2147952675,
      "start": 2147952560
     },
     "region_entry": null,
-    "stores": [],
-    "why": "no ctx+0x1c store inside the code the corpus and the queue claim for this handler"
+    "stores": [
+     {
+      "at": 2147952628,
+      "body": null,
+      "where": "own_extent"
+     }
+    ],
+    "why": "the store is inside the handler's own code extent"
    },
    {
     "classification": "function_body",
@@ -4524,7 +4541,7 @@
     "why": "the store is inside the handler's own code extent"
    }
   ],
-  "reading": "0 handlers write their advance inside their own body, 0 inside a body that belongs to one of their own dispatch arms, 0 only inside a queued extent and 4 not at all. The zero in the third column is the useful one: the queue is not what makes any advance findable, so it cannot be justified by the advances.",
+  "reading": "0 handlers write their advance inside their own body, 0 inside a body that belongs to one of their own dispatch arms, 0 only inside a queued extent and 1 not at all. The zero in the third column is the useful one: the queue is not what makes any advance findable, so it cannot be justified by the advances.",
   "rule": "for each of the 138 handlers, every `sw rt,0x1c(rb)` inside its own body, inside the body of its region entry, and inside its queued extent"
  },
  "the_0x36_case": {

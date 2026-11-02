@@ -49,7 +49,7 @@
   "voice sweep (cartridge)": 12,
   "voice descriptor (cartridge)": 29,
   "callback table (cartridge)": 9,
-  "extent audit (cartridge)": 13,
+  "extent audit (cartridge)": 14,
   "dispatch heads (cartridge)": 9,
   "rsp ucode (cartridge)": 22,
   "rsp interface (cartridge)": 28,

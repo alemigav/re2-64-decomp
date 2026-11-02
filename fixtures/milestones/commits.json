@@ -2,6 +2,48 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "a71324b",
+   "subject": "M228: eighty-six dispatch heads, and the queue entry that has no valid extension",
+   "milestones": [
+    228
+   ]
+  },
+  {
+   "sha": "8c7bc17",
+   "subject": "M227: the extent queue, audited -- 16 extensions, 5 merges, and one that would eat a callable",
+   "milestones": [
+    227
+   ]
+  },
+  {
+   "sha": "559f01f",
+   "subject": "M226: the 0x36 table -- five entries, and an address that was 0x10000 wrong",
+   "milestones": [
+    226
+   ]
+  },
+  {
+   "sha": "167aed9",
+   "subject": "M225: the vector unit, named -- 252 of 254, and the two that stayed refused",
+   "milestones": [
+    225
+   ]
+  },
+  {
+   "sha": "3087911",
+   "subject": "M224: the interface is a frame loop, not a command list -- and the register map is cited",
+   "milestones": [
+    224
+   ]
+  },
+  {
+   "sha": "8d7f754",
+   "subject": "M223: the RSP ucode -- decoded, and deliberately not named",
+   "milestones": [
+    223
+   ]
+  },
+  {
    "sha": "0b39324",
    "subject": "M222: WP3b -- the voice descriptor, and my own +0x1a4 was wrong",
    "milestones": [

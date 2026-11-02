@@ -505,9 +505,10 @@
    "words": 35
   },
   "0x8006e68c": {
-   "classification": "unresolved",
-   "end": null,
-   "evidence": "the extent from 0x8006e68c would cross into the Ghidra body 0x8006e6e0..0x8006e6eb before its jr ra at 0x8006e6e4",
+   "classification": "dispatch_head",
+   "dispatch_jr": "0x8006e6d8",
+   "end": "0x8006e6df",
+   "evidence": "bytes: the handler dispatches through a table -- `jr` at 0x8006e6d8, not `jr ra` -- so the extent ends at its delay slot. Any `jr ra` beyond it belongs to a table arm, which the corpus records as its own function",
    "in_body": null,
    "opcodes": [
     "0x23"
@@ -515,7 +516,7 @@
    "prologue": null,
    "restore_matches": null,
    "start": "0x8006e68c",
-   "words": null
+   "words": 21
   },
   "0x8006e730": {
    "classification": "fragment",
@@ -875,9 +876,10 @@
    "words": 21
   },
   "0x8006fb48": {
-   "classification": "unresolved",
-   "end": null,
-   "evidence": "the extent from 0x8006fb48 would cross into the Ghidra body 0x8006fba4..0x8006fbc3 before its jr ra at 0x8006fc54",
+   "classification": "dispatch_head",
+   "dispatch_jr": "0x8006fb9c",
+   "end": "0x8006fba3",
+   "evidence": "bytes: the handler dispatches through a table -- `jr` at 0x8006fb9c, not `jr ra` -- so the extent ends at its delay slot. Any `jr ra` beyond it belongs to a table arm, which the corpus records as its own function",
    "in_body": null,
    "opcodes": [
     "0x2e"
@@ -885,7 +887,7 @@
    "prologue": null,
    "restore_matches": null,
    "start": "0x8006fb48",
-   "words": null
+   "words": 23
   },
   "0x8006fc5c": {
    "classification": "function_body",
@@ -1265,19 +1267,18 @@
    "words": 19
   },
   "0x8007199c": {
-   "classification": "fragment",
-   "end": "0x80071b03",
-   "evidence": "bytes: jr ra at 0x80071afc, delay slot 0x80071b00 = 0x24020001, no addiu sp,sp at 0x8007199c; nearest frame setup behind it 0x80071744, already a function start",
+   "classification": "dispatch_head",
+   "dispatch_jr": "0x800719fc",
+   "end": "0x80071a03",
+   "evidence": "bytes: the handler dispatches through a table -- `jr` at 0x800719fc, not `jr ra` -- so the extent ends at its delay slot. Any `jr ra` beyond it belongs to a table arm, which the corpus records as its own function",
    "in_body": null,
    "opcodes": [
     "0x40"
    ],
    "prologue": null,
-   "region_entry": "0x80071744",
-   "region_entry_in_corpus": true,
    "restore_matches": null,
    "start": "0x8007199c",
-   "words": 90
+   "words": 26
   },
   "0x80071b04": {
    "classification": "fragment",
@@ -1311,19 +1312,18 @@
    "words": 22
   },
   "0x80071b94": {
-   "classification": "fragment",
-   "end": "0x80071c9f",
-   "evidence": "bytes: jr ra at 0x80071c98, delay slot 0x80071c9c = 0x24020001, no addiu sp,sp at 0x80071b94; nearest frame setup behind it 0x80071b3c, already a function start",
+   "classification": "dispatch_head",
+   "dispatch_jr": "0x80071be0",
+   "end": "0x80071be7",
+   "evidence": "bytes: the handler dispatches through a table -- `jr` at 0x80071be0, not `jr ra` -- so the extent ends at its delay slot. Any `jr ra` beyond it belongs to a table arm, which the corpus records as its own function",
    "in_body": null,
    "opcodes": [
     "0x41"
    ],
    "prologue": null,
-   "region_entry": "0x80071b3c",
-   "region_entry_in_corpus": true,
    "restore_matches": null,
    "start": "0x80071b94",
-   "words": 67
+   "words": 21
   },
   "0x80071ca0": {
    "classification": "fragment",
@@ -1650,9 +1650,10 @@
    "words": 13
   },
   "0x800727b0": {
-   "classification": "unresolved",
-   "end": null,
-   "evidence": "the extent from 0x800727b0 would cross into the Ghidra body 0x80072824..0x8007282f before its jr ra at 0x80072828",
+   "classification": "dispatch_head",
+   "dispatch_jr": "0x8007281c",
+   "end": "0x80072823",
+   "evidence": "bytes: the handler dispatches through a table -- `jr` at 0x8007281c, not `jr ra` -- so the extent ends at its delay slot. Any `jr ra` beyond it belongs to a table arm, which the corpus records as its own function",
    "in_body": null,
    "opcodes": [
     "0x81"
@@ -1660,7 +1661,7 @@
    "prologue": null,
    "restore_matches": null,
    "start": "0x800727b0",
-   "words": null
+   "words": 29
   },
   "0x80072878": {
    "classification": "function_body",
@@ -2148,9 +2149,10 @@
  "totals": {
   "classification": {
    "code_outside_body": 0,
-   "fragment": 76,
+   "dispatch_head": 5,
+   "fragment": 74,
    "function_body": 59,
-   "unresolved": 3
+   "unresolved": 0
   },
   "fragment_region_entries": 21,
   "fragment_region_entries_in_corpus": 21,
@@ -2161,7 +2163,7 @@
   "outside_function_body": 79,
   "prologue_at_start": 55,
   "table_entries": 141,
-  "words_recovered": 4238
+  "words_recovered": 4201
  },
  "window_words": 4096
 }
