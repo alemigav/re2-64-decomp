@@ -1,7 +1,7 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **843-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **858-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
@@ -77,8 +77,8 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 29 suites / 273 of 843 cases run; the other 30 suites SKIP
-python3 tools/audit_gates.py     # 118/118 — every gate must fail when its mechanism is disabled
+python3 tools/acceptance.py      # 29 suites / 273 of 858 cases run; the other 31 suites SKIP
+python3 tools/audit_gates.py     # 121/121 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 22/22 — every doc anchor, heading and note pointer holds
 python3 tools/artefact_scan.py   # 5/5  — no tracked file is cartridge content
@@ -89,7 +89,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **570 of 843 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **585 of 858 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -106,7 +106,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**227** numbers, 0-226: **177** with a row, and **50** named gaps. The full index — every number, its title,
+**228** numbers, 0-227: **178** with a row, and **50** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -164,10 +164,10 @@ samples, and 187 of the 1 192 records name one.
 ## Layout
 
 ```
-tools/       84 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+tools/       85 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    156 notes, one per milestone that has one
+docs/log/    157 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

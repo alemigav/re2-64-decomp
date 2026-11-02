@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-227 milestones are indexed. 154 of them have a note; the rest are rows in the log that cite
+228 milestones are indexed. 155 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -244,6 +244,7 @@ at the foot of this file.
 | 224 | **M224** — the interface is a frame loop, not a command list | `docs/log/M224-the-interface-is-a-frame-loop-not-a-command-list.md` |
 | 225 | **M225** — the vector unit, named: 252 of 254, and the two that stayed refused | `docs/log/M225-the-vector-unit-named.md` |
 | 226 | **M226** — the 0x36 table: five entries, and an address that was 0x10000 wrong | `docs/log/M226-the-0x36-table-and-an-address-0x10000-wrong.md` |
+| 227 | **M227** — the extent queue, audited: 16 extensions, 5 merges, and one that would eat a callable | `docs/log/M227-the-extent-queue-audited.md` |
 
 ## The gaps, and why they are empty
 

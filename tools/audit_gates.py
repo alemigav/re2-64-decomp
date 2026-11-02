@@ -504,6 +504,21 @@ AUDITS = [
          # anchored on a prologue used by exactly one fragment, so flipping it removes that prologue from the
          # "already a function start" set and the claim fails; flipping a shared one would change nothing.
          old='"region_entry": "0x8006ebec",', new='"region_entry_in_corpus_false_marker": "0x8006ebec",'),
+    # --- M227: the extent-correction queue. Three anchors aimed at its own outcomes: the word-grid
+    # alignment (whose absence is the bug this tool actually shipped first), the attribution of a store
+    # to its own handler, and the reference class that makes one queued correction unsafe.
+    dict(name="extent_audit: the scan starts on a byte boundary instead of the word grid",
+         tool="extent_audit.py", args=["--check"], file="tools/extent_audit.py",
+         old="    lo = (lo + 3) & ~3",
+         new="    lo = lo + 1"),
+    dict(name="extent_audit: a store found through the correction is filed as the handler's own",
+         tool="extent_audit.py", args=["--check"], file="tools/extent_audit.py",
+         old='        kind = sites[0]["where"] if sites else "none"',
+         new='        kind = "own_extent" if sites else "none"'),
+    dict(name="extent_audit: a jal-callable function is classified as a dispatch arm",
+         tool="extent_audit.py", args=["--check"], file="tools/extent_audit.py",
+         old='            elif s in jal:\n                kind = "jal_callable"',
+         new='            elif s in jal:\n                kind = "dispatch_arm"'),
     # --- M226: the 0x36 dispatch table. Three anchors aimed at the artefact's own outcomes: the sign
     # extension that puts the table at 0x800b98e0 rather than 0x800c98e0, the bounds check that makes
     # five the entry count, and the shared tail that makes the advance 12.

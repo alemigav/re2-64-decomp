@@ -123,6 +123,8 @@ SUITES = [
     # The table opcode 0x36 dispatches through, resolved in M226. It needs the cartridge because every
     # claim is read out of the unpacked stage-2 member.
     ("callback table (cartridge)", [sys.executable, "tools/callback_table.py", "--check"], 9, True),
+    # The extent-correction queue M212 left, audited before anyone spends a Ghidra run on it (M227).
+    ("extent audit (cartridge)", [sys.executable, "tools/extent_audit.py", "--check"], 12, True),
     ("rsp ucode (cartridge)", [sys.executable, "tools/rsp_decode.py", "--check"], 22, True),
     # The interface between the task block the CPU publishes and the code the RSP runs (M224). It needs
     # the cartridge because every claim in it is a measurement of the unpacked stage-2 member.
