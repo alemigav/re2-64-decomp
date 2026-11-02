@@ -571,7 +571,10 @@ def check() -> int:
     pool_keys, counts, abut, sec_keys = set(), [], 0, []
     for i, st in enumerate(secs):
         end = secs[i + 1] if i + 1 < len(secs) else len(pool)
-        recs, termpos, ok = _chain(pool, st + struct.unpack_from(">I", pool, st)[0], end)
+        # M220: a section's first record starts **at** the section offset -- the u32 there is that record's
+        # own stride, not a pointer past it. Starting one stride late skipped four records in total, and those
+        # four keys (531, -16251, 16385, -32616) are exactly the "dangling" set M186/M188/M219 argued about.
+        recs, termpos, ok = _chain(pool, st, end)
         counts.append(len(recs))
         keys_here = {struct.unpack_from(">h", pool, r + 4)[0] for r in recs}
         pool_keys |= keys_here
@@ -579,8 +582,10 @@ def check() -> int:
         abut += int(ok and termpos + 4 == end)
     cases.append((f"SND_POOL's head is 4 section offsets {secs}, and every section's terminator abuts the "
                   f"next section or EOF ({abut}/4)", abut == 4))
-    cases.append((f"the four sections hold {counts} records — {sum(counts)} in all, all keys distinct",
-                  counts == [2025, 241, 3, 326] and sum(counts) == 2595 and len(pool_keys) == 2595))
+    cases.append((f"the four sections hold {counts} records — {sum(counts)} in all, all keys distinct (M220: "
+                  f"each section's first record is AT its offset; the old [2025, 241, 3, 326] skipped one per "
+                  f"section)",
+                  counts == [2026, 242, 4, 327] and sum(counts) == 2599 and len(pool_keys) == 2599))
 
     # the cross-file link the code implies: FUN_800a86a0 compares each PROJ list short against the POOL
     # chain's keys. **M219 corrected the base**: the lists live at `record + 8 + offset`, because the six offset
@@ -629,10 +634,10 @@ def check() -> int:
                   f"at record+8, which is where the offset fields themselves start",
                   _spans["record+0"] == len(pro_recs) and _spans["record+8"] == 0))
     _unres = sorted(set(shorts) - pool_keys)
-    cases.append((f"exactly {len(_unres)} distinct list keys resolve to no pool record -- {_unres} -- and 531 is "
-                  f"one of them, so M186/M188's dangling reference SURVIVES the base correction while their "
-                  f"prologue arithmetic does not",
-                  _unres == [-32616, -16251, 531, 16385] and 531 not in pool_keys))
+    cases.append((f"REFUTED, finally: {len(_unres)} list keys fail to resolve -- {_unres}. The four that looked "
+                  f"dangling (531, -16251, 16385, -32616) are the **first record of each pool section**, which the "
+                  f"section walk used to skip; with the walk fixed every one of the {len(shorts)} values resolves",
+                  _unres == [] and 531 in pool_keys))
 
     # --- M188 retracted by M219, except one measurable half. M188 published "one hole at 531 in pool section 0,
     # which the PROJ dangles on", "sections 1-3 never referenced by any PROJ list", "PROJ slot 11 unused yet

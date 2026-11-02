@@ -381,6 +381,18 @@ AUDITS = [
     dict(name="handler_region: the extent queue drops one correction",
          tool="handler_region.py", args=["--check"], file="manifests/extent_corrections.json",
          old='"entry": "0x8006da14",', new='"entry": "0x8006da18",'),
+    # --- WP2: the four opcodes. The claim is that the opcode IS the key's class tag and that the dispatcher
+    # reads the top two bits, so both mutations attack that reading rather than the numbers.
+    dict(name="snd_macros: the opcode mask is widened past the top two bits",
+         tool="snd_macros.py", args=["--check"], file="tools/snd_macros.py",
+         # `& 7` instead of `& 3` is vacuous on this data (bits 12-13 are always zero), and moving the shift
+         # makes the tool hang rather than fail. This mutation relabels the opcodes instead: the counts stay
+         # right and the labels move, which is exactly what a naming gate must catch.
+         old="    1: \"0x4000\",", new="    1: \"0x8000\","),
+    dict(name="file_table: a pool section's first record is skipped again",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old="        recs, termpos, ok = _chain(pool, st, end)",
+         new="        recs, termpos, ok = _chain(pool, st + struct.unpack_from(\">I\", pool, st)[0], end)"),
     # --- WP1: the sound project. Two claims worth attacking: the record-array width (12, not a key width) and
     # the negative answer on command streams, which is what sends the macro search to the pool.
     # Aimed at the tool, not the artefact: editing the committed JSON only trips the staleness case (and an

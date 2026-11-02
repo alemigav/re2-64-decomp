@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "92cacd7",
+   "subject": "M219: the base correction lands, and one retraction is itself retracted",
+   "milestones": [
+    219
+   ]
+  },
+  {
    "sha": "65ae6f6",
    "subject": "cycle C: the refusals as a work list, and the population classified (M213b, M214)",
    "milestones": [

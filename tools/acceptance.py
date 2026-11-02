@@ -54,7 +54,7 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 99, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 101, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
@@ -86,6 +86,7 @@ SUITES = [
     ("script vm refusals (cartridge)", [sys.executable, "tools/vm_refusals.py", "--check"], 9, True),
     ("script population (cartridge)", [sys.executable, "tools/script_population.py", "--check"], 13, True),
     ("sound project (cartridge)", [sys.executable, "tools/snd_proj.py", "--check"], 28, True),
+    ("sound macros (cartridge)", [sys.executable, "tools/snd_macros.py", "--check"], 24, True),
     ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 101, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a
