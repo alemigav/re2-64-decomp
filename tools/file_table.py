@@ -854,6 +854,19 @@ def check() -> int:
     cases.append(("CODE: cache C is keyed by key AND rate — the resolver hands it record+12 as the "
                   "payload and the u16 at record+10 as the third argument",
                   "FUN_800ace1c(*psVar6,piVar5+3,*(undefined2*)((int)piVar5+10));" in _resn))
+    # --- the sixth handler. list[2] is not a cache feed at all: it carries the whole sample key space,
+    # and its handler is the only one of the six that touches no cache table. That is the distinction the
+    # three caches needed in order to be describable -- "list -> cache" is not the rule, "list -> cache
+    # except list[2]" is.
+    _s2b = {v & 0xFFFF for v in _lists[0]}
+    _dkeys = set(smp_idx)
+    cases.append((f"list[2] is the entire sample key space — {len(_s2b)} distinct, spanning 0..2026, and "
+                  f"containing all {len(_dkeys)} directory keys",
+                  len(_s2b) == 2027 and 0 in _s2b and 2026 in _s2b and _dkeys <= _s2b))
+    _h2 = (HERE.parent / "src" / "stage2" / "FUN_800ad62c.c").read_text()
+    cases.append(("CODE: list[2]'s handler is the only one of the six that references no cache table — "
+                  "it binds the project's samples without going through a cache",
+                  not any(g in _h2 for g in ("8014e1d0", "801521e0", "801529f0"))))
     # --- M191: the codec constants are also a committed fixture, so the prose that quotes them and the
     # measurement that produces them are checked against the same source. The cartridge-gated case runs
     # first: if the measurement ever moves, this fails before the documentation can drift with it.

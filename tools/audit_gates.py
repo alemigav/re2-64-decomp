@@ -302,6 +302,14 @@ AUDITS = [
          tool="file_table.py", args=["--check"], file="tools/file_table.py",
          old='                  "FUN_800ace1c(*psVar6,piVar5+3,*(undefined2*)((int)piVar5+10));" in _resn))',
          new='                  "FUN_800ace1c(*psVar6,piVar5+3,*(undefined2*)((int)piVar5+99));" in _resn))'),
+    dict(name="file_table: list[2] is allowed to stop short of the sample space",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old="                  len(_s2b) == 2027 and 0 in _s2b and 2026 in _s2b and _dkeys <= _s2b))",
+         new="                  len(_s2b) == 2027 and 0 in _s2b and 2027 in _s2b and _dkeys <= _s2b))"),
+    dict(name="file_table: list[2]'s handler is not checked for cache tables",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='                  not any(g in _h2 for g in ("8014e1d0", "801521e0", "801529f0"))))',
+         new='                  any(g in _h2 for g in ("8014e1d0", "801521e0", "801529f0"))))'),
     # --- the counts gate (M180). Its `--check` runs on a repository that is by definition consistent, so
     # aiming at the comparison is invisible; the mutation is aimed at the *derived* number instead. The
     # second audit disables the phrasectomy in the self-test, so the "a deleted phrase is caught" case
