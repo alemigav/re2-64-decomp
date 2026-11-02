@@ -350,6 +350,25 @@ AUDITS = [
          tool="file_table.py", args=["--check"], file="tools/file_table.py",
          old='"_DAT_80143f0c + 1) = 0;" in s_off',
          new='"_DAT_80143f0c + 2) = 0;" in s_off'),
+    # --- the M204 addressing cases. The claim is that nothing exists past byte 27, so the mutations are
+    # the two ways a record could be wider than it is: a stride of 32 bytes instead of 28, and a member
+    # that ends 8 bytes after the terminator. The third breaks the walker's own stride.
+    dict(name="file_table: the adjacency is checked four bytes too far into the next record",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='                  if struct.unpack_from(">H", sdir, 28 * k + 28)[0] == smp_idx[k + 1])',
+         new='                  if struct.unpack_from(">H", sdir, 28 * k + 32)[0] == smp_idx[k + 1])'),
+    dict(name="file_table: the record stride is taken as 32 bytes, not 28",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='    nxt_idx = sum(1 for k in range(n_smp - 1)',
+         new='    nxt_idx = sum(1 for k in range(n_smp - 2)'),
+    dict(name="file_table: the directory is taken as ending 8 bytes after the terminator",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='                  sdir[28 * n_smp:] == b"\\xff\\xff\\xff\\xff" and len(sdir) == 28 * n_smp + 4))',
+         new='                  sdir[28 * n_smp:] == b"\\xff\\xff\\xff\\xff" and len(sdir) == 28 * n_smp + 12))'),
+    dict(name="file_table: the count walker's stride is read as 16 bytes",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='                  and "psVar5 = psVar5 + 0xe;" in s_count and "param_1 = param_1 + 0xe;" in s_count',
+         new='                  and "psVar5 = psVar5 + 0x10;" in s_count and "param_1 = param_1 + 0xe;" in s_count'),
     # --- the counts gate (M180). Its `--check` runs on a repository that is by definition consistent, so
     # aiming at the comparison is invisible; the mutation is aimed at the *derived* number instead. The
     # second audit disables the phrasectomy in the self-test, so the "a deleted phrase is caught" case

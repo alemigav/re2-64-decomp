@@ -1,7 +1,7 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **488-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **495-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
@@ -68,8 +68,8 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 22 suites / 218 of 488 cases run; the other 14 suites SKIP
-python3 tools/audit_gates.py     # 65/65 — every gate must fail when its mechanism is disabled
+python3 tools/acceptance.py      # 22 suites / 218 of 495 cases run; the other 14 suites SKIP
+python3 tools/audit_gates.py     # 69/69 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 21/21 — every doc anchor, heading and note pointer holds
 python3 tools/artefact_scan.py   # 5/5  — no tracked file is cartridge content
@@ -80,7 +80,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **270 of 488 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **277 of 495 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -97,7 +97,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**204** numbers, 0-203: **154** with a row, and **50** named gaps. The full index — every number, its title,
+**205** numbers, 0-204: **155** with a row, and **50** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -140,7 +140,7 @@ claim, and codified in [include/re2_formats.h](include/re2_formats.h) with a C v
 | sample codec | order-2 ADPCM: one **256**-byte shared codebook per bank, then 40-byte groups — `2 raw + 30 nibbles = 32 samples` per 20-byte frame; decoded and gated (M193) |
 | voice bank header | `MORT` + u16 **block count** + u16 rate + u32 **length/4** = **12** bytes; a normal block is a fixed 260 bits (M193, corrected by M194/M197) |
 | voice codec | bit stream is LSB-first inside big-endian 32-bit words; per block 36 scale bits + 4 × (17 + 39); synthesis transcribed and bit-exact (M197–M199) |
-| directory record | 28 bytes: index, refcount, offset, rate, codec byte, **24-bit declared length**, **loop start**, **loop length** — the mixer adds the last two for the loop end and plays the remainder out on release (M193, corrected by M203) |
+| directory record | 28 bytes, and that is the whole record: index, refcount, offset, rate, codec byte, **24-bit declared length**, **loop start**, **loop length** — the mixer adds the last two for the loop end and plays the remainder out on release (M193, corrected by M203/M204) |
 | key spaces | pool keys are `[tag][index]` with the tag in the **top two bits** (`(key >> 14) & 3`); the four POOL **sections** are tagged 0, 3, 1, 2 in file order — sections are *storage*, while the roles are the **six lists** a `SND_PROJ` record carries; `SND_PROJ`'s 417 records rotate from key 118; one key is absent and one reference dangles, and they are the same fact (M188, corrected by M200) |
 
 The 17.6 MB is no longer unidentified, and neither codec is: the pool decodes to audio, and the voice
@@ -158,7 +158,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       66 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    132 notes, one per milestone that has one
+docs/log/    133 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

@@ -510,6 +510,29 @@ def check() -> int:
                   "loop to play the remainder",
                   "_DAT_80143f0c + 1) = 0;" in s_off
                   and "(param_1[1] == '\\0' && (*(int *)(param_1 + 0x3c) != 0))" in s_mix))
+    # --- M204: the record is 28 bytes, so there is no field at +28 or +32 — those bytes are the *next*
+    # record's index and offset. The honest answer to "what are +28 and +32" is the addressing, not a
+    # field, so the addressing is what is asserted: every adjacency, the terminator where a 29th byte would
+    # be, and the two strides the cartridge actually uses.
+    nxt_idx = sum(1 for k in range(n_smp - 1)
+                  if struct.unpack_from(">H", sdir, 28 * k + 28)[0] == smp_idx[k + 1])
+    nxt_off = sum(1 for k in range(n_smp - 1)
+                  if struct.unpack_from(">I", sdir, 28 * k + 32)[0] == smp_off[k + 1])
+    cases.append((f"there is no field at +28 or +32: record k's +28 is record k+1's u16 index on "
+                  f"{nxt_idx}/{n_smp - 1}, and its +32 is that record's byte offset on {nxt_off}/{n_smp - 1}",
+                  nxt_idx == 1191 and nxt_off == 1191))
+    cases.append((f"the last record's +28 is the ffffffff terminator, which is the member's last byte — "
+                  f"{len(sdir)} = {n_smp} x 28 + 4, so 28 bytes is the whole record and a 29th would be a "
+                  f"different record's first",
+                  sdir[28 * n_smp:] == b"\xff\xff\xff\xff" and len(sdir) == 28 * n_smp + 4))
+    s_count = (src / "stage2" / "FUN_800ad330.c").read_text()
+    cases.append(("CODE: the cartridge touches this directory at two strides only — the search's 0x1c-byte "
+                  "record stride and the count walker's 0xe shorts — and the reader's highest field load is "
+                  "+0x18, which ends at +0x1b",
+                  ",0x1c,&LAB_800ae154);" in s_dir
+                  and "psVar5 = psVar5 + 0xe;" in s_count and "param_1 = param_1 + 0xe;" in s_count
+                  and "param_2[5] = *(undefined4 *)(iVar1 + 0x18);" in s_dir))
+
 
     # --- M185: the other three files of the sound family. `FUN_800a86a0` walks both SND_PROJ and
     # SND_POOL the same way — a u32 at the head is a *relative offset to the first record*, each record's
