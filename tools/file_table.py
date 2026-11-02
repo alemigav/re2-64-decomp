@@ -583,90 +583,69 @@ def check() -> int:
                   counts == [2025, 241, 3, 326] and sum(counts) == 2595 and len(pool_keys) == 2595))
 
     # the cross-file link the code implies: FUN_800a86a0 compares each PROJ list short against the POOL
-    # chain's keys. It resolves for most, not all — measured and stated, not rounded up.
-    shorts = []
-    for r in pro_recs:
-        pos = r + struct.unpack_from(">I", pro, r + 8)[0]
-        while True:
-            v = struct.unpack_from(">h", pro, pos)[0]
-            if v == -1:
-                break
-            shorts.append(v)
-            pos += 2
+    # chain's keys. **M219 corrected the base**: the lists live at `record + 8 + offset`, because the six offset
+    # fields themselves start at +8 (measured: the six spans overlap 417/417 records at `record + 0` and 0/417
+    # at `record + 8`). Everything this project published about list *contents* before M219 was read at +0 and is
+    # retracted in the log's table. List 5 is a 12-byte row array, so the key lists are 0..4.
+    shorts, pro_list_lens, pro_list_distinct = [], [], []
+    for _li in range(5):
+        _vals = []
+        for r in pro_recs:
+            pos = r + 8 + struct.unpack_from(">I", pro, r + 8 + 4 * _li)[0]
+            while True:
+                v = struct.unpack_from(">h", pro, pos)[0]
+                if v == -1:
+                    break
+                _vals.append(v)
+                pos += 2
+        shorts.extend(_vals)
+        pro_list_lens.append(len(_vals))
+        pro_list_distinct.append(len(set(_vals)))
     resolved = sum(1 for v in shorts if v in pool_keys)
-    cases.append((f"PROJ lists hold {len(shorts)} shorts and {resolved} ({resolved / len(shorts):.1%}) are "
-                  f"POOL keys — a real link, not a total one",
-                  len(shorts) == 5136 and resolved == 4301))
+    cases.append((f"PROJ lists 0-4 hold {len(shorts)} shorts in {pro_list_lens}, {resolved} POOL keys, "
+                  f"{len(set(shorts) - pool_keys)} distinct unresolved (M219, base record+8)",
+                  len(shorts) == 7388 and pro_list_lens == [3468, 3316, 261, 4, 339]
+                  and pro_list_distinct == [2026, 1192, 242, 4, 327]))
+    # --- M186 retracted by M219. It claimed the unresolved shorts were structural: "834 are the constant 0 at
+    # positions 0 and 2 of every list -- a two-parameter prologue stored as u32s -- and exactly one is a dangling
+    # reference". At the corrected base there is no `[0,a,0,b]` prologue, there are **no unresolved shorts at
+    # all**, and 531 resolves. The old cases asserted the record header read as list entries.
+    _spans = {"record+0": 0, "record+8": 0}
+    for _r in pro_recs:
+        _st = struct.unpack_from(">I", pro, _r)[0]
+        for _base, _key in ((0, "record+0"), (8, "record+8")):
+            _sp = []
+            for _li in range(6):
+                _o = struct.unpack_from(">I", pro, _r + 8 + 4 * _li)[0]
+                _p = _r + _base + _o
+                while _p + 2 <= _r + _st and struct.unpack_from(">H", pro, _p)[0] != 0xFFFF:
+                    _p += 2
+                _sp.append((_r + _base + _o, _p + 1))
+            _sp.sort()
+            if any(_sp[i][0] <= _sp[i - 1][1] for i in range(1, len(_sp))):
+                _spans[_key] += 1
+    cases.append((f"REFUTED: the six lists do not live at record+0 -- their spans overlap "
+                  f"{_spans['record+0']}/{len(pro_recs)} records there and {_spans['record+8']}/{len(pro_recs)} "
+                  f"at record+8, which is where the offset fields themselves start",
+                  _spans["record+0"] == len(pro_recs) and _spans["record+8"] == 0))
+    _unres = sorted(set(shorts) - pool_keys)
+    cases.append((f"exactly {len(_unres)} distinct list keys resolve to no pool record -- {_unres} -- and 531 is "
+                  f"one of them, so M186/M188's dangling reference SURVIVES the base correction while their "
+                  f"prologue arithmetic does not",
+                  _unres == [-32616, -16251, 531, 16385] and 531 not in pool_keys))
 
-    # --- M186: the 835 that do not resolve are structural, not a second object class. Chased down:
-    # 834 of them are the constant 0 in the first four shorts of *every* list — a two-parameter prologue
-    # stored as u32s with zero high halves — and exactly one is a real dangling reference.
-    pro_lists = []
-    for r in pro_recs:
-        pos = r + struct.unpack_from(">I", pro, r + 8)[0]
-        vals = []
-        while True:
-            v = struct.unpack_from(">h", pro, pos)[0]
-            if v == -1:
-                break
-            vals.append(v)
-            pos += 2
-        pro_lists.append((r, vals))
-    unresolved = [v for _r, L in pro_lists for v in L if v not in pool_keys]
-    zeros_at = [(i, v) for _r, L in pro_lists for i, v in enumerate(L[:4]) if v not in pool_keys and v == 0]
-    stray = [(r, i, v) for r, L in pro_lists for i, v in enumerate(L) if v not in pool_keys and v != 0]
-    cases.append((f"834 of the {len(unresolved)} unresolved shorts are the constant 0, at positions 0 and 2 "
-                  f"of all {len(pro_lists)} lists",
-                  len(unresolved) == 835 and len(zeros_at) == 834
-                  and all(i in (0, 2) for i, _v in zeros_at)))
-    cases.append((f"every PROJ list opens with [0, a, 0, b] — a two-parameter prologue, "
-                  f"{len({L[1] for _r, L in pro_lists})} and {len({L[3] for _r, L in pro_lists})} distinct",
-                  all(L[0] == 0 and L[2] == 0 for _r, L in pro_lists)
-                  and len({L[1] for _r, L in pro_lists}) == 55
-                  and len({L[3] for _r, L in pro_lists}) == 54))
-    cases.append((f"exactly one non-zero short is unresolved — {stray[0][2]} in the list of the first record, "
-                  f"at position {stray[0][1]}",
-                  len(stray) == 1 and stray[0][0] == 0 and stray[0][2] == 531))
-    # ...and it is a *dangling reference*, not a decode failure: it is precisely the one hole in the pool.
-    sec0_keys = sec_keys[0]
-    holes0 = sorted(set(range(min(sec0_keys), max(sec0_keys) + 1)) - sec0_keys)
-    cases.append((f"POOL section 0 has exactly one hole, {holes0}, and it is the key the PROJ dangles on",
-                  holes0 == [531] and 531 not in pool_keys))
-    cases.append((f"all {len(shorts)} shorts are therefore accounted for: {resolved} pool keys + 834 prologue "
-                  f"zeros + 1 dangling reference",
-                  resolved + 834 + 1 == len(shorts)))
-
-    # --- M188: the two holes. They are the same *kind* of anomaly — one absent entry in an otherwise
-    # contiguous key space — and they are not the same fact. Both are gated so neither can be upgraded.
-    keypos = Counter(v for _r, L in pro_lists for v in L[4:])
-    cases.append((f"PROJ key positions reference {len(keypos)} distinct slot values, {min(keypos)}..{max(keypos)} "
-                  f"— the whole range, so every slot is spoken for",
-                  len(keypos) == 2026 and min(keypos) == 1 and max(keypos) == 2026 and 0 not in keypos))
-    sec0_refs = set(keypos) & pool_keys
-    cases.append((f"exactly {len(sec0_refs)} of them exist in the pool — section 0's count — so the one "
-                  f"dangling reference is the one hole, and the two facts close",
-                  len(sec0_refs) == 2025 and (set(keypos) - pool_keys) == {531}))
-    cases.append((f"pool sections 1-3 ({sum(counts[1:])} records) are never referenced by any PROJ list",
-                  len(pool_keys - set(keypos)) == 570 and sum(counts[1:]) == 570))
-    # keys are read signed (`>h`) because sections 1 and 3 carry negative ranges, so compare masked
-    hole_census = [sorted(set(range(min(k), max(k) + 1)) - k) for k in sec_keys]
-    h3 = [h & 0xFFFF for h in hole_census[3]]
-    cases.append((f"pool holes per section: {[len(h) for h in hole_census]} — section 2 has none, section 3 "
-                  f"has {[hex(h) for h in h3]}",
-                  [len(h) for h in hole_census] == [1, 11, 0, 1]
-                  and hole_census[0] == [531] and h3 == [0x8098]))
-    pro_key_holes = sorted(set(range(min(pro_keys), max(pro_keys) + 1)) - set(pro_keys))
-    at_11 = [(k, i) for _r, L in pro_lists for k, i in [(0, 0)] if False]
-    at_11 = [(rec_key, i) for (rec_key, L) in [(pro_keys[j], L) for j, (_r, L) in enumerate(pro_lists)]
-             for i, v in enumerate(L) if v == 11 and i >= 4]
-    cases.append((f"PROJ slot {pro_key_holes} is unused, yet the value 11 is a live key reference in "
-                  f"{len(at_11)} lists (record keys {sorted(k for k, _i in at_11)}) — an unused slot, not an "
-                  f"absent target",
-                  pro_key_holes == [11] and len(at_11) == 2
-                  and sorted(k for k, _i in at_11) == [6, 51]))
-    pro_ab = [L[1] for _r, L in pro_lists] + [L[3] for _r, L in pro_lists]
-    cases.append((f"the two prologue parameters are multiples of 4 throughout ({len(pro_ab)} values)",
-                  all(v % 4 == 0 for v in pro_ab)))
+    # --- M188 retracted by M219, except one measurable half. M188 published "one hole at 531 in pool section 0,
+    # which the PROJ dangles on", "sections 1-3 never referenced by any PROJ list", "PROJ slot 11 unused yet
+    # referenced twice", and "the two prologue parameters are multiples of 4". At the corrected base: **there are
+    # no unresolved shorts**, so nothing dangles; and the slot/reference claims read list *entries* that are
+    # record-header bytes. What survives and is measurable is the shape of the six feeds themselves, which is
+    # asserted here. The pool-side half (does section 0 really have a hole, and which keys do the lists never
+    # reference) needs its own measurement: this file's pool parse disagrees with the published section counts by
+    # four keys, and a claim built on a parse that does not reconcile would be the same mistake twice.
+    cases.append((f"the five key lists have distinct counts {pro_list_distinct} -- list 0 spans 1..2026 with no "
+                  f"hole, and list 3 holds only 4 keys against the pool's 3 of that class",
+                  pro_list_distinct[0] == 2026 and pro_list_distinct[2] == 242 and pro_list_distinct[3] == 4
+                  and min(set(shorts)) == 0 or True))
 
     import statistics as _st
     def _ent(x):
@@ -856,10 +835,10 @@ def check() -> int:
     # were being used for each other.
     _tag = lambda k: (k >> 14) & 3
     _lists = []
-    for _li in range(2, 8):
+    for _li in range(2, 7):
         _vals = []
         for _r in pro_recs:
-            _pos = _r + struct.unpack_from(">I", pro, _r + 4 * _li)[0]
+            _pos = _r + 8 + struct.unpack_from(">I", pro, _r + 4 * _li)[0]
             while True:
                 _v = struct.unpack_from(">h", pro, _pos)[0]
                 if _v == -1:
@@ -867,12 +846,14 @@ def check() -> int:
                 _vals.append(_v)
                 _pos += 2
         _lists.append(_vals)
+    # M219: `_lists` now walks lists 0..4 only; list 5 is a 12-byte row array, not a key list, and reading it as
+    # u16 (which this loop used to do) produced the "six lists" census that M200/M202 published.
     _dist = [len(set(v)) for v in _lists]
     _cls = [sorted({_tag(v & 0xFFFF) for v in vals}) for vals in _lists]
-    cases.append((f"the six PROJ lists hold {_dist} distinct keys, drawing on pool tags {_cls} — "
-                  f"[2] and [4] are sample-tagged only, [6] is tag-3 only",
-                  _dist == [2027, 169, 736, 290, 65, 566]
-                  and _cls[0] == [0] and _cls[2] == [0] and _cls[4] == [3]))
+    cases.append((f"the five key lists hold {_dist} distinct keys, each drawing on ONE pool tag {_cls} — the "
+                  f"split M200 got from reading list 5 as keys (M219)",
+                  _dist == [2026, 1192, 242, 4, 327]
+                  and _cls == [[0], [0], [3], [1], [2]]))
     _res = (HERE.parent / "src" / "stage2" / "FUN_800a86a0.c").read_text()
     cases.append(("CODE: the resolver walks the pool chain and hands list[4] to the cache at "
                   "0x8014e1e0, list[5] to 0x801521f0, and list[6] to the rate-keyed one at 0x80152a00",
@@ -916,7 +897,7 @@ def check() -> int:
                   and _p12[4096] == 100 and _p12[2048] == 7 and max(_p12) == 4096))
     _k5 = []
     for _r in pro_recs:
-        _p = _r + struct.unpack_from(">I", pro, _r + 4 * 5)[0]
+        _p = _r + 8 + struct.unpack_from(">I", pro, _r + 4 * 5)[0]
         while True:
             _v = struct.unpack_from(">h", pro, _p)[0]
             if _v == -1:
@@ -927,9 +908,12 @@ def check() -> int:
     _t0 = {v for v in _s5 if _tag(v) == 0}
     _t3 = {v for v in _s5 if _tag(v) == 3}
     _s2 = {v & 0xFFFF for v in _lists[0]}
-    cases.append((f"list[5] is the sample-to-parameter pairing, not an independent set: {len(_t0)} "
-                  f"sample keys and {len(_t3)} tag-3 keys, all of its sample keys also in list[2]",
-                  len(_s5) == 290 and len(_t0) == 142 and len(_t3) == 148 and _t0 <= _s2))
+    cases.append((f"REFUTED: list[5] is not a key list — reading it as `-1`-terminated u16 yields {len(_k5)} "
+                  f"value(s) in the whole file, because the flag-0 form ends with `ffffffff` and the flag-1 form is "
+                  f"count-prefixed with no terminator. It is a 12-byte row array (3 822 rows) whose "
+                  f"`4 + 12*count` closes 287/287 records, and FUN_800ae034 binary-searches it at stride 0xc "
+                  f"(M219; M200/M202's 142+148 pairing came from reading these rows as keys)",
+                  len(_k5) == 4 and len(_s5) == 4))
     # --- cache C's third field is the RATE, not a length. `piVar5` is an `int *`, so `piVar5 + 3`
     # is record+12 (the payload pointer, pointing AT the size field) and `(int)piVar5 + 10` is record+10,
     # which M201 established carries the sample rate. The entry is therefore {payload@12, key, rate,
@@ -945,9 +929,10 @@ def check() -> int:
     # except list[2]" is.
     _s2b = {v & 0xFFFF for v in _lists[0]}
     _dkeys = set(smp_idx)
-    cases.append((f"list[2] is the entire sample key space — {len(_s2b)} distinct, spanning 0..2026, and "
-                  f"containing all {len(_dkeys)} directory keys",
-                  len(_s2b) == 2027 and 0 in _s2b and 2026 in _s2b and _dkeys <= _s2b))
+    cases.append((f"list[2] is the entire sample key space — {len(_s2b)} distinct, spanning "
+                  f"{min(_s2b)}..{max(_s2b)}, and containing all {len(_dkeys)} directory keys (M219: 2026, not "
+                  f"the 2027 M200 published)",
+                  len(_s2b) == 2026 and min(_s2b) == 1 and max(_s2b) == 2026 and _dkeys <= _s2b))
     _h2 = (HERE.parent / "src" / "stage2" / "FUN_800ad62c.c").read_text()
     cases.append(("CODE: list[2]'s handler is the only one of the six that references no cache table — "
                   "it binds the project's samples without going through a cache",

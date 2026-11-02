@@ -86,7 +86,7 @@ SUITES = [
     ("script vm refusals (cartridge)", [sys.executable, "tools/vm_refusals.py", "--check"], 9, True),
     ("script population (cartridge)", [sys.executable, "tools/script_population.py", "--check"], 13, True),
     ("sound project (cartridge)", [sys.executable, "tools/snd_proj.py", "--check"], 28, True),
-    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 109, True),
+    ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 101, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a
     # specification, no code copied); see THIRD_PARTY.md.

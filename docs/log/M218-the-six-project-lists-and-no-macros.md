@@ -56,7 +56,7 @@ Everything this project published about *list contents* was read at `record + 0`
 |---|---|---|
 | M185 — proj lists hold | 5 136 shorts, 4 301 pool keys (83.7 %) | **7 388 shorts (lists 0–4), 6 784 pool keys (91.8 %)** |
 | M186 — "every list opens `[0, a, 0, b]`", 834 prologue zeros | a two-parameter prologue | **no such prologue**: the lists open on negative class-1/2 keys, and the "zeros" were header bytes |
-| M186/M188 — 531 is a dangling reference | the pool's one hole | **531 resolves**; the dangling-reference story is retracted |
+| M186/M188 — 531 is a dangling reference | the pool's one hole | **it survives** — 531 is one of **4** distinct unresolved keys (`-32616, -16251, 531, 16385`); the *count* changes, the finding does not |
 | M200/M202 — list 5 is the sample-to-parameter pairing, 142 + 148 keys | a u16 key list | **list 5 is a 12-byte row array** (`{key, count, pointer}`), 3 822 rows |
 | M200 — list 2 holds 2 027 distinct keys | the whole sample space | **2 026** |
 
