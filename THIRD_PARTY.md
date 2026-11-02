@@ -114,10 +114,11 @@ COP0 register numbers and the field split of the vector-unit instructions.
 |---|---|
 | source | N64brew Wiki, <https://n64brew.dev/> (Miraheze) |
 | pages | `Reality_Signal_Processor/Interface`, revision **5376** (2024-03-19) — the register map, the length-is-bytes-minus-1 rule, the semaphore's read-sets-the-bit behaviour, the `SP_STATUS` write layout |
-| | `Reality_Signal_Processor/CPU_Core`, revision **5539** (2025-02-01) — the `lwc2`/`swc2` field split, the access sizes, the 12-bit PC, and that branch-likely opcodes are not implemented |
+| | `Reality_Signal_Processor/CPU_Core`, revision **5539** (2025-02-01) — the `lwc2`/`swc2` field split and access sizes, **the vector-unit instruction tables** (computational, select, single-lane, and the element/broadcast modifier list), the single-lane lane-selection rule, the 12-bit PC, and that branch-likely opcodes are not implemented |
 | licence | **CC BY-SA-4.0** — <https://creativecommons.org/licenses/by-sa/4.0/> |
-| what was taken | **facts only**: register numbers and their names, bit-field boundaries, and stated behaviour. **No text is reproduced** and no wiki markup or code is copied |
-| where it appears | `tools/rsp_iface.py` (`SP_REGISTERS`, the `lwc2` row table) and `manifests/rsp_iface.json`, whose `external_sources` block carries the URLs, revisions and licences next to the claims that use them |
+| what was taken | **facts only**: register numbers and their names, bit-field boundaries, opcode-to-mnemonic rows, access sizes and stated behaviour. **No text is reproduced** and no wiki markup or code is copied |
+| where it appears | `tools/rsp_iface.py` (`SP_REGISTERS`) and `tools/rsp_decode.py` (`VU_ALU`, `VU_SELECT`, `VU_SINGLE`, `VU_BROADCAST`, `VU_ROWS`, `VU_FORMAT`, `VU_KIND`), with the two manifests' `external_sources` blocks carrying the URLs, revisions and licences next to the claims that use them |
+| defects in the source | two, both recorded in `manifests/rsp_ucode.json` (`external_sources.table_defects`) rather than quietly worked around: the transpose group states `0x01 swv`, which collides with the scalar group's `0x01 lsv/ssv`, and the computational table has **no row for `funct 0x11`**, which this cartridge uses twice. Those two words are the whole of the artefact's `unreadable` list |
 
 The manual was asked first and answered clearly — it does not map these registers and says so: p115, "With
 the current software architecture, the application does not program the SP directly, and need not concern

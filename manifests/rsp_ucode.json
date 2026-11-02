@@ -185,6 +185,14 @@
     "status": "family",
     "words": 18
    },
+   "ldv": {
+    "cite": "vu_transfer",
+    "first": 1428,
+    "form_example": "ldv v3,0(t1) [element 0, x8]",
+    "mnemonic": "ldv",
+    "status": "family",
+    "words": 39
+   },
    "lhu": {
     "cite": "dmem_only",
     "first": 144,
@@ -193,6 +201,38 @@
     "status": "family",
     "words": 54
    },
+   "llv": {
+    "cite": "vu_transfer",
+    "first": 2536,
+    "form_example": "llv v19,0(t3) [element 0, x4]",
+    "mnemonic": "llv",
+    "status": "family",
+    "words": 1
+   },
+   "lqv": {
+    "cite": "vu_transfer",
+    "first": 1664,
+    "form_example": "lqv v26,0(gp) [element 0, x16]",
+    "mnemonic": "lqv",
+    "status": "family",
+    "words": 19
+   },
+   "lrv": {
+    "cite": "vu_transfer",
+    "first": 2688,
+    "form_example": "lrv v5,1(a1) [element 0, x16]",
+    "mnemonic": "lrv",
+    "status": "family",
+    "words": 14
+   },
+   "lsv": {
+    "cite": "vu_transfer",
+    "first": 3416,
+    "form_example": "lsv v1,0(t3) [element 2, x2]",
+    "mnemonic": "lsv",
+    "status": "family",
+    "words": 2
+   },
    "lw": {
     "cite": "dmem_only",
     "first": 44,
@@ -200,14 +240,6 @@
     "mnemonic": "lw",
     "status": "family",
     "words": 27
-   },
-   "lwc2": {
-    "cite": "vu_elements",
-    "first": 1428,
-    "form_example": "lwc2 v3,6144(t1)",
-    "mnemonic": "lwc2",
-    "status": "family",
-    "words": 75
    },
    "mfc0": {
     "cite": "rsp_physical",
@@ -257,6 +289,14 @@
     "status": "family",
     "words": 4
    },
+   "sdv": {
+    "cite": "vu_transfer",
+    "first": 2288,
+    "form_example": "sdv v3,0(t5) [element 0, x8]",
+    "mnemonic": "sdv",
+    "status": "family",
+    "words": 4
+   },
    "sh": {
     "cite": "dmem_only",
     "first": 216,
@@ -280,6 +320,14 @@
     "mnemonic": "slt",
     "status": "family",
     "words": 8
+   },
+   "sqv": {
+    "cite": "vu_transfer",
+    "first": 1188,
+    "form_example": "sqv v3,0(at) [element 0, x16]",
+    "mnemonic": "sqv",
+    "status": "family",
+    "words": 26
    },
    "sra": {
     "cite": "su_r4000",
@@ -305,6 +353,14 @@
     "status": "family",
     "words": 1
    },
+   "ssv": {
+    "cite": "vu_transfer",
+    "first": 1800,
+    "form_example": "ssv v3,0(a1) [element 14, x2]",
+    "mnemonic": "ssv",
+    "status": "family",
+    "words": 20
+   },
    "subu": {
     "cite": "su_r4000",
     "first": 212,
@@ -321,14 +377,6 @@
     "status": "family",
     "words": 1
    },
-   "swc2": {
-    "cite": "vu_elements",
-    "first": 1188,
-    "form_example": "swc2 v3,8192(at)",
-    "mnemonic": "swc2",
-    "status": "family",
-    "words": 50
-   },
    "xori": {
     "cite": "su_r4000",
     "first": 508,
@@ -340,544 +388,340 @@
   },
   "unreadable": [
    {
-    "cite": "vu_elements",
-    "first": 2308,
-    "key": "COP2 mtc2 v1",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 6
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1848,
-    "key": "COP2 mtc2 v10",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1860,
-    "key": "COP2 mtc2 v11",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 2496,
-    "key": "COP2 mtc2 v19",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 3
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1312,
-    "key": "COP2 mtc2 v20",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 4
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1304,
-    "key": "COP2 mtc2 v21",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 4
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1116,
-    "key": "COP2 mtc2 v28",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 1
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1872,
-    "key": "COP2 mtc2 v3",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 4
-   },
-   {
-    "cite": "vu_elements",
-    "first": 992,
-    "key": "COP2 mtc2 v31",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 6
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1880,
-    "key": "COP2 mtc2 v4",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 3
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1896,
-    "key": "COP2 mtc2 v6",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1016,
-    "key": "COP2 mtc2 v7",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1824,
-    "key": "COP2 mtc2 v8",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1836,
-    "key": "COP2 mtc2 v9",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1536,
-    "key": "COP2 vector funct 0x00",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 15
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1172,
-    "key": "COP2 vector funct 0x04",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 3
-   },
-   {
-    "cite": "vu_elements",
-    "first": 2668,
-    "key": "COP2 vector funct 0x05",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 4
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1168,
-    "key": "COP2 vector funct 0x06",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 15
-   },
-   {
-    "cite": "vu_elements",
-    "first": 2060,
-    "key": "COP2 vector funct 0x07",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 11
-   },
-   {
-    "cite": "vu_elements",
-    "first": 2256,
-    "key": "COP2 vector funct 0x0d",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1180,
-    "key": "COP2 vector funct 0x0e",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 10
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1680,
-    "key": "COP2 vector funct 0x0f",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 56
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1124,
-    "key": "COP2 vector funct 0x10",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 37
-   },
-   {
-    "cite": "vu_elements",
+    "cite": "vu_alu",
     "first": 1152,
-    "key": "COP2 vector funct 0x11",
+    "key": "COP2 funct 0x11 (not in the cited table)",
     "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
+    "why": "the cited instruction table has no row for this function code, so the word is identified as a vector-unit instruction and left unnamed rather than guessed at",
     "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1424,
-    "key": "COP2 vector funct 0x14",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 10
-   },
-   {
-    "cite": "vu_elements",
-    "first": 2268,
-    "key": "COP2 vector funct 0x1d",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 10
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1160,
-    "key": "COP2 vector funct 0x20",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 1164,
-    "key": "COP2 vector funct 0x27",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 2
-   },
-   {
-    "cite": "vu_elements",
-    "first": 2576,
-    "key": "COP2 vector funct 0x28",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 8
-   },
-   {
-    "cite": "vu_elements",
-    "first": 40,
-    "key": "COP2 vector funct 0x2c",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 16
-   },
-   {
-    "cite": "vu_elements",
-    "first": 2692,
-    "key": "COP2 vector funct 0x33",
-    "kind": "vector-unit",
-    "why": "the RSP's vector function codes are in no document this repository holds, so the word is identified as a vector-unit instruction and left unnamed",
-    "words": 8
    }
   ],
   "vector_ops": {
-   "COP2 mtc2 v1": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 t0,v1",
-    "first": 2308,
-    "key": "COP2 mtc2 v1",
+   "COP2 funct 0x11 (not in the cited table)": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 9,
+     "funct": 17,
+     "vd": 27,
+     "vs": 1,
+     "vt": 31
+    },
+    "fields_example": "cop2 e=9 vt=v31 vs=v1 vd=v3 funct=0x11 (unlisted)",
+    "first": 1152,
+    "key": "COP2 funct 0x11 (not in the cited table)",
     "mnemonic": null,
     "status": "unresolved",
-    "words": 6
-   },
-   "COP2 mtc2 v10": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a1,v10",
-    "first": 1848,
-    "key": "COP2 mtc2 v10",
-    "mnemonic": null,
-    "status": "unresolved",
+    "why": null,
     "words": 2
    },
-   "COP2 mtc2 v11": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a1,v11",
-    "first": 1860,
-    "key": "COP2 mtc2 v11",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 mtc2 v19": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a1,v19",
-    "first": 2496,
-    "key": "COP2 mtc2 v19",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 3
-   },
-   "COP2 mtc2 v20": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a2,v20",
-    "first": 1312,
-    "key": "COP2 mtc2 v20",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 4
-   },
-   "COP2 mtc2 v21": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a2,v21",
-    "first": 1304,
-    "key": "COP2 mtc2 v21",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 4
-   },
-   "COP2 mtc2 v28": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a1,v28",
-    "first": 1116,
-    "key": "COP2 mtc2 v28",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 1
-   },
-   "COP2 mtc2 v3": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a2,v3",
-    "first": 1872,
-    "key": "COP2 mtc2 v3",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 4
-   },
-   "COP2 mtc2 v31": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a3,v31",
+   "mtc2": {
+    "cite": "vu_transfer",
+    "fields_example": "mtc2 a3,v31[e byte 0]",
     "first": 992,
-    "key": "COP2 mtc2 v31",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 6
+    "key": "mtc2",
+    "mnemonic": "mtc2",
+    "status": "cited-external",
+    "why": null,
+    "words": 43
    },
-   "COP2 mtc2 v4": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 t0,v4",
-    "first": 1880,
-    "key": "COP2 mtc2 v4",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 3
-   },
-   "COP2 mtc2 v6": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a1,v6",
-    "first": 1896,
-    "key": "COP2 mtc2 v6",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 mtc2 v7": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a2,v7",
-    "first": 1016,
-    "key": "COP2 mtc2 v7",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 mtc2 v8": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a1,v8",
-    "first": 1824,
-    "key": "COP2 mtc2 v8",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 mtc2 v9": {
-    "cite": "vu_elements",
-    "fields_example": "mtc2 a1,v9",
-    "first": 1836,
-    "key": "COP2 mtc2 v9",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 vector funct 0x00": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=0 vt=v25 vs=v3 vd=v3 funct=0x00 (unnamed)",
-    "first": 1536,
-    "key": "COP2 vector funct 0x00",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 15
-   },
-   "COP2 vector funct 0x04": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=13 vt=v31 vs=v2 vd=v4 funct=0x04 (unnamed)",
-    "first": 1172,
-    "key": "COP2 vector funct 0x04",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 3
-   },
-   "COP2 vector funct 0x05": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=10 vt=v19 vs=v23 vd=v23 funct=0x05 (unnamed)",
-    "first": 2668,
-    "key": "COP2 vector funct 0x05",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 4
-   },
-   "COP2 vector funct 0x06": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=11 vt=v31 vs=v1 vd=v3 funct=0x06 (unnamed)",
-    "first": 1168,
-    "key": "COP2 vector funct 0x06",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 15
-   },
-   "COP2 vector funct 0x07": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=8 vt=v3 vs=v4 vd=v6 funct=0x07 (unnamed)",
-    "first": 2060,
-    "key": "COP2 vector funct 0x07",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 11
-   },
-   "COP2 vector funct 0x0d": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=8 vt=v4 vs=v1 vd=v5 funct=0x0d (unnamed)",
-    "first": 2256,
-    "key": "COP2 vector funct 0x0d",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 vector funct 0x0e": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=8 vt=v31 vs=v28 vd=v4 funct=0x0e (unnamed)",
-    "first": 1180,
-    "key": "COP2 vector funct 0x0e",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 10
-   },
-   "COP2 vector funct 0x0f": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=0 vt=v28 vs=v26 vd=v26 funct=0x0f (unnamed)",
-    "first": 1680,
-    "key": "COP2 vector funct 0x0f",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 56
-   },
-   "COP2 vector funct 0x10": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=8 vt=v28 vs=v0 vd=v28 funct=0x10 (unnamed)",
+   "vadd": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 6,
+     "funct": 16,
+     "vd": 6,
+     "vs": 14,
+     "vt": 14
+    },
+    "fields_example": "vadd v28,v0,v28,e(0)",
     "first": 1124,
-    "key": "COP2 vector funct 0x10",
-    "mnemonic": null,
-    "status": "unresolved",
+    "key": "vadd",
+    "mnemonic": "vadd",
+    "status": "cited-external",
+    "why": "add with carry",
     "words": 37
    },
-   "COP2 vector funct 0x11": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=9 vt=v31 vs=v1 vd=v3 funct=0x11 (unnamed)",
-    "first": 1152,
-    "key": "COP2 vector funct 0x11",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 vector funct 0x14": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=9 vt=v7 vs=v2 vd=v2 funct=0x14 (unnamed)",
+   "vaddc": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 8,
+     "funct": 20,
+     "vd": 1,
+     "vs": 0,
+     "vt": 1
+    },
+    "fields_example": "vaddc v2,v2,v7,e(1)",
     "first": 1424,
-    "key": "COP2 vector funct 0x14",
-    "mnemonic": null,
-    "status": "unresolved",
+    "key": "vaddc",
+    "mnemonic": "vaddc",
+    "status": "cited-external",
+    "why": "add, writing the overflow into the carry",
     "words": 10
    },
-   "COP2 vector funct 0x1d": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=10 vt=v3 vs=v5 vd=v2 funct=0x1d (unnamed)",
-    "first": 2268,
-    "key": "COP2 vector funct 0x1d",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 10
-   },
-   "COP2 vector funct 0x20": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=9 vt=v31 vs=v1 vd=v1 funct=0x20 (unnamed)",
-    "first": 1160,
-    "key": "COP2 vector funct 0x20",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 vector funct 0x27": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=0 vt=v3 vs=v1 vd=v1 funct=0x27 (unnamed)",
-    "first": 1164,
-    "key": "COP2 vector funct 0x27",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 2
-   },
-   "COP2 vector funct 0x28": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=8 vt=v20 vs=v1 vd=v15 funct=0x28 (unnamed)",
+   "vand": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 11,
+     "funct": 40,
+     "vd": 18,
+     "vs": 2,
+     "vt": 20
+    },
+    "fields_example": "vand v15,v1,v20,e(0)",
     "first": 2576,
-    "key": "COP2 vector funct 0x28",
-    "mnemonic": null,
-    "status": "unresolved",
+    "key": "vand",
+    "mnemonic": "vand",
+    "status": "cited-external",
+    "why": "bitwise and",
     "words": 8
    },
-   "COP2 vector funct 0x2c": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=0 vt=v0 vs=v0 vd=v0 funct=0x2c (unnamed)",
-    "first": 40,
-    "key": "COP2 vector funct 0x2c",
-    "mnemonic": null,
-    "status": "unresolved",
-    "words": 16
+   "vlt": {
+    "cite": "vu_select",
+    "fields": {
+     "element": 9,
+     "funct": 32,
+     "vd": 1,
+     "vs": 1,
+     "vt": 31
+    },
+    "fields_example": "vlt v1,v1,v31,e(1)",
+    "first": 1160,
+    "key": "vlt",
+    "mnemonic": "vlt",
+    "status": "cited-external",
+    "why": "select the lower of two vectors",
+    "words": 2
    },
-   "COP2 vector funct 0x33": {
-    "cite": "vu_elements",
-    "fields_example": "cop2 e=12 vt=v19 vs=v8 vd=v5 funct=0x33 (unnamed)",
+   "vmadh": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 8,
+     "funct": 15,
+     "vd": 16,
+     "vs": 16,
+     "vt": 1
+    },
+    "fields_example": "vmadh v26,v26,v28",
+    "first": 1680,
+    "key": "vmadh",
+    "mnemonic": "vmadh",
+    "status": "cited-external",
+    "why": "vmudh, adding to the accumulator",
+    "words": 56
+   },
+   "vmadm": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 9,
+     "funct": 13,
+     "vd": 3,
+     "vs": 3,
+     "vt": 4
+    },
+    "fields_example": "vmadm v5,v1,v4,e(0)",
+    "first": 2256,
+    "key": "vmadm",
+    "mnemonic": "vmadm",
+    "status": "cited-external",
+    "why": "vmudm, adding to the accumulator",
+    "words": 2
+   },
+   "vmadn": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 0,
+     "funct": 14,
+     "vd": 26,
+     "vs": 18,
+     "vt": 3
+    },
+    "fields_example": "vmadn v4,v28,v31,e(0)",
+    "first": 1180,
+    "key": "vmadn",
+    "mnemonic": "vmadn",
+    "status": "cited-external",
+    "why": "vmudn, adding to the accumulator",
+    "words": 10
+   },
+   "vmov": {
+    "cite": "vu_single",
+    "fields": {
+     "dest_lane": 4,
+     "element": 12,
+     "opcode": 51,
+     "source_lane": 4,
+     "vd": 15,
+     "vt": 19
+    },
+    "fields_example": "vmov v8[e(5)],v19[e(4)]",
     "first": 2692,
-    "key": "COP2 vector funct 0x33",
-    "mnemonic": null,
-    "status": "unresolved",
+    "key": "vmov",
+    "mnemonic": "vmov",
+    "status": "cited-external",
+    "why": "copy one lane of a vector register into another",
     "words": 8
+   },
+   "vmrg": {
+    "cite": "vu_select",
+    "fields": {
+     "element": 0,
+     "funct": 39,
+     "vd": 1,
+     "vs": 1,
+     "vt": 27
+    },
+    "fields_example": "vmrg v1,v1,v3",
+    "first": 1164,
+    "key": "vmrg",
+    "mnemonic": "vmrg",
+    "status": "cited-external",
+    "why": "merge two vectors lane by lane using the flags",
+    "words": 2
+   },
+   "vmudh": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 4,
+     "funct": 7,
+     "vd": 3,
+     "vs": 8,
+     "vt": 3
+    },
+    "fields_example": "vmudh v6,v4,v3,e(0)",
+    "first": 2060,
+    "key": "vmudh",
+    "mnemonic": "vmudh",
+    "status": "cited-external",
+    "why": "multiply S0.16 x S0.16, signed clamp",
+    "words": 11
+   },
+   "vmudl": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 9,
+     "funct": 4,
+     "vd": 5,
+     "vs": 2,
+     "vt": 4
+    },
+    "fields_example": "vmudl v4,v2,v31,e(5)",
+    "first": 1172,
+    "key": "vmudl",
+    "mnemonic": "vmudl",
+    "status": "cited-external",
+    "why": "multiply U0.16 x U0.16, signed clamp",
+    "words": 3
+   },
+   "vmudm": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 10,
+     "funct": 5,
+     "vd": 26,
+     "vs": 26,
+     "vt": 19
+    },
+    "fields_example": "vmudm v23,v23,v19,e(2)",
+    "first": 2668,
+    "key": "vmudm",
+    "mnemonic": "vmudm",
+    "status": "cited-external",
+    "why": "multiply S0.16 x U0.16, signed clamp",
+    "words": 4
+   },
+   "vmudn": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 11,
+     "funct": 6,
+     "vd": 16,
+     "vs": 16,
+     "vt": 19
+    },
+    "fields_example": "vmudn v3,v1,v31,e(3)",
+    "first": 1168,
+    "key": "vmudn",
+    "mnemonic": "vmudn",
+    "status": "cited-external",
+    "why": "multiply U0.16 x S0.16, signed clamp",
+    "words": 15
+   },
+   "vmulf": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 0,
+     "funct": 0,
+     "vd": 14,
+     "vs": 14,
+     "vt": 15
+    },
+    "fields_example": "vmulf v3,v3,v25",
+    "first": 1536,
+    "key": "vmulf",
+    "mnemonic": "vmulf",
+    "status": "cited-external",
+    "why": "multiply S1.15 x S1.15, rounding, signed clamp",
+    "words": 15
+   },
+   "vsar": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 8,
+     "funct": 29,
+     "vd": 22,
+     "vs": 15,
+     "vt": 22
+    },
+    "fields_example": "vsar v2,v5,v3,e(2)",
+    "first": 2268,
+    "key": "vsar",
+    "mnemonic": "vsar",
+    "status": "cited-external",
+    "why": "read a portion of the accumulator into a vector register",
+    "words": 10
+   },
+   "vxor": {
+    "cite": "vu_alu",
+    "fields": {
+     "element": 0,
+     "funct": 44,
+     "vd": 13,
+     "vs": 13,
+     "vt": 13
+    },
+    "fields_example": "vxor v0,v0,v0",
+    "first": 40,
+    "key": "vxor",
+    "mnemonic": "vxor",
+    "status": "cited-external",
+    "why": "bitwise xor",
+    "words": 16
    }
   }
+ },
+ "external_sources": {
+  "licence": "CC BY-SA-4.0 (N64brew Wiki); facts restated, no text reproduced",
+  "sources": [
+   [
+    "https://n64brew.dev/wiki/Reality_Signal_Processor/CPU_Core",
+    5539
+   ]
+  ],
+  "table_defects": [
+   "the transpose group lists `0x01 swv` while the scalar group lists `0x01 lsv/ssv`: one opcode cannot be both, so one of the two rows mis-states it. No word in this program uses the transpose group, so nothing here depends on which",
+   "the computational table omits `funct 0x11`, which this program uses twice; it is left unnamed and listed rather than guessed at"
+  ],
+  "why": "The local manual tabulates no RSP encoding \u2014 it delegates the SU to the R4000 manual by name (p44, p47) and says nothing about the vector unit's function codes. M223 therefore left all 254 vector words unnamed. M224 narrowed the rule rather than the refusal: an external table may be *used as a cited source* \u2014 attributed, no text reproduced, every consequence re-measured against the cartridge \u2014 which is what this project already does for OpenBiohazard2 (MIT) and libdragon (Unlicense). See docs/THIRD_PARTY.md 4b."
  },
  "identity": {
   "candidates": [
    {
     "against": [
-     "E2: the pair the manual gives the boot-ucode role names CPU code, not RSP code"
+     "E2: the pair the manual gives the boot-ucode role names CPU code, not RSP code",
+     "E8: the shape this candidate predicts is absent \u2014 no computed transfer exists in the program, so there is no command dispatch to find; the third prediction (work items read through DMEM structures the CPU filled) is the only one still standing"
     ],
     "name": "Nintendo libaudio aspMain (the AL* / alAudioFrame ABI)",
-    "verdict": "not established \u2014 the ABI's command opcodes cannot be read out of this blob without a table this repository does not hold",
+    "verdict": "refuted on the shape it predicts: a command list the ucode dispatches on, and this program dispatches on nothing (M224, manifests/rsp_iface.json). Not proven false \u2014 an ABI can be re-fronted \u2014 but the prediction was made and it failed",
     "would_predict": [
      "a task header whose microcode pointer and boot pointer both name RSP code (p137)",
      "a command list of fixed-format 64-bit commands the ucode dispatches on",
@@ -963,11 +807,17 @@
     "measurement": "the program's only four `lui` constants are .",
     "reading": "the last 0xc0 bytes build RDRAM addresses in code instead of taking them from a pointer, and 0x8016xxxx sits above this image's end. The scheme the manual describes is that the task header carries the pointer to the data to process (p137), so a hard-coded RDRAM address is a departure from it. It does not by itself name the ucode's author.",
     "status": "measured"
+   },
+   {
+    "id": "E8",
+    "measurement": "the first `what_would_decide` item was an RSP encoding table this repository could cite. It arrived in M224 and was applied in M225: 252 of the 254 vector words now carry a cited mnemonic, and the census says the units run a 16-bit fixed-point multiply-accumulate pipeline (%d multiply, %d multiply-accumulate, %d accumulator reads) in five cited formats. The same milestone measured the call structure: no computed transfer anywhere, every `jal` direct, and no load that selects a target.",
+    "reading": "the table did not make this ucode's identity decidable, and it decided *against* the first candidate's predicted shape rather than for it: the ABI that candidate describes predicts a command list the ucode dispatches on, and this program has no dispatch of any kind. What the table bought is the arithmetic \u2014 the mixer is a fixed-point MAC pipeline \u2014 which is a description of the units, not a name for the ucode.",
+    "status": "measured"
    }
   ],
   "verdict": "unresolved",
   "what_would_decide": [
-   "an RSP encoding table this repository could cite: it would name the 254 vector words and the COP0 registers, and the jal fan-out at 0x3c-0x2e0 would read as a command switch",
+   "ANSWERED (M224/M225): an RSP encoding table was cited, the 254 vector words are named and the COP0 registers have names and directions. It did not make the identity decidable \u2014 the jal fan-out did not read as a command switch, because there is no computed transfer at all (E8)",
    "a CPU-side consumer of the 0x800 bytes at 0x80136b50 (E6): what the ucode is expected to write there is an ABI fingerprint",
    "an independent copy of the same ucode from another N64 title: byte equality would settle provenance without a table"
   ]
@@ -983,12 +833,22 @@
  "program": {
   "dmem": {
    "above_4k": [],
-   "cop2_note": "the lwc2/swc2 immediate is not the same field as a scalar load's displacement: the words at 0x4a4/0x4a8 carry 0x2000/0x2001, which no 16-bit DMEM displacement can be, so the 125 vector transfers are excluded from these statistics instead of widening them",
+   "cop2_note": "retracted from M223: the lwc2/swc2 immediate is not a 16-bit displacement, it is a row opcode (15:11), an element (10:7) and a 7-bit offset (6:0) scaled by the row's access size, so all 125 vector transfers are DMEM accesses with a computable offset and are no longer excluded. Their absolute addresses need the base register's value, which is folded in manifests/rsp_iface.json rather than here",
    "distinct_offsets": 42,
-   "excluded_cop2_transfers": 125,
    "max": "0xd5c",
    "min": "0x0",
    "note": "the 16-bit displacements of lw/lbu/lhu/sb/sh/sw are DMEM offsets (p139: the RSP software can only access DMEM; p44: 4 KB of it). No offset is given a name: a name would have to come from the ucode's own layout, and nothing on the CPU side records it",
+   "vector_rows": {
+    "ldv": 39,
+    "llv": 1,
+    "lqv": 19,
+    "lrv": 14,
+    "lsv": 2,
+    "sdv": 4,
+    "sqv": 26,
+    "ssv": 20
+   },
+   "vector_transfers": 125,
    "words_with_displacement": 106
   },
   "entry": 0,
@@ -1447,8 +1307,8 @@
   },
   {
    "cpu_evidence": "none \u2014 the CPU never writes a vector register",
-   "what": "the vector unit's 254 words",
-   "why": "each carries a function code in bits 5:0 and an element in bits 24:21, and no document this repository holds maps either. The mixer's arithmetic is in those words; naming them would mean importing another architecture's table, so they stay unnamed and counted"
+   "what": "what the vector unit's arithmetic computes",
+   "why": "since M224 the 254 words are *named* \u2014 252 of them from a cited table, 2 refused because it has no row for their function code \u2014 but a name is not a meaning. `vmadh v2,v1,v0` says which instruction runs, not which signal it filters, and the mixer's structure is in the accumulator's use, which no document here describes"
   },
   {
    "cpu_evidence": "the task field that names it, and nothing else",
@@ -1657,5 +1517,39 @@
   },
   "written_by": "src/stage2/FUN_800a2e40.c (the corpus's only reference to the block); every store is re-decoded here and its base folded"
  },
- "tool": "rsp_decode.py"
+ "tool": "rsp_decode.py",
+ "vector_census": {
+  "by_fixed_point_format": {
+   "S0.16 x S0.16": 67,
+   "S0.16 x U0.16": 6,
+   "S1.15 x S1.15": 15,
+   "U0.16 x S0.16": 25,
+   "U0.16 x U0.16": 3
+  },
+  "by_kind": {
+   "accumulator read": 10,
+   "add": 47,
+   "bitwise": 24,
+   "lane move": 8,
+   "merge": 2,
+   "multiply": 48,
+   "multiply-accumulate": 68,
+   "select": 2
+  },
+  "by_su_vu_move": {
+   "mtc2": 43
+  },
+  "by_transfer_row": {
+   "ldv": 39,
+   "llv": 1,
+   "lqv": 19,
+   "lrv": 14,
+   "lsv": 2,
+   "sdv": 4,
+   "sqv": 26,
+   "ssv": 20
+  },
+  "named_words": 209,
+  "reading": "The arithmetic is a 16-bit fixed-point multiply-accumulate pipeline: 48 words multiply and 68 accumulate the product, in the formats the cited table names, and 10 read the accumulator back out. Saturating is not a separate instruction \u2014 the multiply opcodes clamp on extraction (cited) \u2014 so the mixer's headroom is decided by which format it picks per stage, which is exactly what the counts above report. This says what the units compute; it does not say what the mixer does with the result."
+ }
 }

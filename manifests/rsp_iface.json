@@ -153,7 +153,7 @@
     "exits": [
      "jr ra @ 0x874"
     ],
-    "instructions_at_head": "mtc2 a1,v31",
+    "instructions_at_head": "mtc2 a1,v31[e byte 6]",
     "kind": "re-entry point: reachable by falling into it from another target's body",
     "preceded_by": "0x440 `ori a1,zero,2` falls through into it",
     "reached_from": [
@@ -172,7 +172,7 @@
     ],
     "instructions_at_head": "ori a1,zero,1",
     "kind": "re-entry point: reachable by falling into it from another target's body",
-    "preceded_by": "0x454 `mtc2 a1,v31` falls through into it",
+    "preceded_by": "0x454 `mtc2 a1,v31[e byte 10]` falls through into it",
     "reached_from": [
      1008,
      1056,
@@ -223,7 +223,7 @@
     "exits": [
      "jr ra @ 0x874"
     ],
-    "instructions_at_head": "lwc2 v1,8192(a1)",
+    "instructions_at_head": "lqv v1,0(a1) [element 0, x16]",
     "kind": "re-entry point: reachable by falling into it from another target's body",
     "preceded_by": "0x804 `ori t0,zero,24` falls through into it",
     "reached_from": [
@@ -256,7 +256,7 @@
     ],
     "instructions_at_head": "addiu t6,t6,16",
     "kind": "re-entry point: reachable by falling into it from another target's body",
-    "preceded_by": "0x978 `cop2 e=9 vt=v1 vs=v6 vd=v4 funct=0x0f (unnamed)` falls through into it",
+    "preceded_by": "0x978 `vmadh v4,v6,v1,e(1)` falls through into it",
     "reached_from": [
      2300
     ]
@@ -271,9 +271,9 @@
     "exits": [
      "jr ra @ 0xc1c"
     ],
-    "instructions_at_head": "cop2 e=10 vt=v20 vs=v1 vd=v17 funct=0x28 (unnamed)",
+    "instructions_at_head": "vand v17,v1,v20,e(2)",
     "kind": "routine head",
-    "preceded_by": "0xa14 `cop2 e=9 vt=v20 vs=v2 vd=v16 funct=0x28 (unnamed)` falls through into it",
+    "preceded_by": "0xa14 `vand v16,v2,v20,e(1)` falls through into it",
     "reached_from": []
    },
    {
@@ -333,7 +333,7 @@
     ],
     "instructions_at_head": "addiu a1,a1,376",
     "kind": "routine head",
-    "preceded_by": "0xe6c `swc2 v2,6271(a1)` falls through into it",
+    "preceded_by": "0xe6c `sdv v2,127(a1) [element 0, x8]` falls through into it",
     "reached_from": []
    },
    {
@@ -345,9 +345,9 @@
     "exits": [
      "jr t0 @ 0xf34"
     ],
-    "instructions_at_head": "cop2 e=0 vt=v15 vs=v12 vd=v12 funct=0x00 (unnamed)",
+    "instructions_at_head": "vmulf v12,v12,v15",
     "kind": "re-entry point: reachable by falling into it from another target's body",
-    "preceded_by": "0xeb0 `lwc2 v16,8192(a2)` falls through into it",
+    "preceded_by": "0xeb0 `lqv v16,0(a2) [element 0, x16]` falls through into it",
     "reached_from": [
      3696
     ]
@@ -1714,7 +1714,7 @@
     "licence": "CC BY-SA-4.0 (N64brew Wiki)",
     "revision": 5539,
     "url": "https://n64brew.dev/wiki/Reality_Signal_Processor/CPU_Core",
-    "used_for": "the lwc2/swc2 field split and the access sizes for the vector rows. The vector ALU table is *not* applied here: naming the 254 vector words is the next step, not this one",
+    "used_for": "the lwc2/swc2 field split and the access sizes for the vector rows here; the vector instruction tables are applied in tools/rsp_decode.py (M225), which names 252 of the 254 words and refuses the 2 the table has no row for",
     "what": "the VU load/store and vector opcode tables, the 12-bit PC, and that branch-likely opcodes are not implemented"
    }
   ],
@@ -2908,13 +2908,13 @@
  "rsp_only": [
   {
    "cpu_evidence": "none \u2014 the CPU never writes a vector register",
-   "what": "the 254 vector-unit words",
-   "why": "each carries a function code in bits 5:0 and an element in bits 24:21; no document this repository holds maps either, so the arithmetic of the mixer stays unnamed. This tool counts and locates them and claims nothing about what they compute"
+   "what": "what the 254 vector-unit words compute",
+   "why": "M225 named 252 of them from a cited table and left 2 refused, so the *instructions* are known here; what they compute for the mixer is not. A name says which opcode runs, not which signal path it serves, and the structure is in the accumulator's use across the frame loop, which no document describes"
   },
   {
    "cpu_evidence": "the task block's pointer and count, and nothing about the transfer fields",
    "what": "which transfer field is the memory side and which the other side",
-   "why": "the register numbers written are measured ([0, 1, 2, 3, 4, 7]) and the values at every call site are folded, but assigning the fields their hardware roles would mean importing an SP register map this repository does not hold"
+   "why": "the register numbers written are measured ([0, 1, 2, 3, 4, 7]) and named from the cited map, and the values at every call site are folded \u2014 but which of the two address fields is the DMEM side is decided by the register assignment alone, because every value either side takes is under 0x1000 (see argument_order)"
   },
   {
    "cpu_evidence": "none \u2014 the CPU never writes IMEM after the task starts",
@@ -2930,15 +2930,18 @@
    576
   ],
   "by_row": {
-   "row 0x01": 22,
-   "row 0x02": 1,
-   "row 0x03": 43,
-   "row 0x04": 45,
-   "row 0x05": 14
+   "ldv": 39,
+   "llv": 1,
+   "lqv": 19,
+   "lrv": 14,
+   "lsv": 2,
+   "sdv": 4,
+   "sqv": 26,
+   "ssv": 20
   },
   "count": 125,
   "folded": 8,
-  "rule": "lwc2/swc2 carry the vector row in bits 15:11, an element index in 10:7 and a 7-bit offset in 6:0, and the address is base + offset * access_size (cited). M223 read bits 15:0 as a 16-bit signed displacement and excluded all of these accesses; that is retracted and the corrected addresses are below.",
+  "rule": "the row is in bits 15:11, the element in 10:7 and the offset in 6:0, and the address is base + offset * access_size (cited). The split and the row names are taken from tools/rsp_decode.py, which owns that decode; this tool folds the base register and nothing else. M223 read bits 15:0 as a 16-bit signed displacement and excluded all of these accesses, which is retracted.",
   "transfers": [
    {
     "addresses": [
@@ -2951,6 +2954,7 @@
     "offset": 0,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 3
    },
    {
@@ -2964,6 +2968,7 @@
     "offset": 1,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 4
    },
    {
@@ -2975,6 +2980,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 3,
     "why": "the base register t1 holds no folded constant"
    },
@@ -2987,6 +2993,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 3,
     "why": "the base register t5 holds no folded constant"
    },
@@ -2999,6 +3006,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 4,
     "why": "the base register t2 holds no folded constant"
    },
@@ -3011,6 +3019,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 4,
     "why": "the base register t6 holds no folded constant"
    },
@@ -3023,6 +3032,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 5,
     "why": "the base register t3 holds no folded constant"
    },
@@ -3035,6 +3045,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 5,
     "why": "the base register t7 holds no folded constant"
    },
@@ -3047,6 +3058,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 6,
     "why": "the base register t4 holds no folded constant"
    },
@@ -3059,6 +3071,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 6,
     "why": "the base register s0 holds no folded constant"
    },
@@ -3071,6 +3084,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 25,
     "why": "the base register s1 holds no folded constant"
    },
@@ -3083,6 +3097,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 25,
     "why": "the base register s5 holds no folded constant"
    },
@@ -3095,6 +3110,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 24,
     "why": "the base register s2 holds no folded constant"
    },
@@ -3107,6 +3123,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 24,
     "why": "the base register s6 holds no folded constant"
    },
@@ -3119,6 +3136,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 29,
     "why": "the base register s3 holds no folded constant"
    },
@@ -3131,6 +3149,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 29,
     "why": "the base register s7 holds no folded constant"
    },
@@ -3143,6 +3162,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 30,
     "why": "the base register s4 holds no folded constant"
    },
@@ -3155,6 +3175,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 30,
     "why": "the base register t8 holds no folded constant"
    },
@@ -3169,6 +3190,7 @@
     "offset": 0,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 27
    },
    {
@@ -3182,6 +3204,7 @@
     "offset": 1,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 26
    },
    {
@@ -3193,6 +3216,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 26,
     "why": "the base register gp holds no folded constant"
    },
@@ -3205,6 +3229,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 27,
     "why": "the base register k1 holds no folded constant"
    },
@@ -3217,6 +3242,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 25,
     "why": "the base register t9 holds no folded constant"
    },
@@ -3229,6 +3255,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 24,
     "why": "the base register k0 holds no folded constant"
    },
@@ -3241,6 +3268,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 26,
     "why": "the base register gp holds no folded constant"
    },
@@ -3253,6 +3281,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 25,
     "why": "the base register t9 holds no folded constant"
    },
@@ -3265,6 +3294,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 24,
     "why": "the base register k0 holds no folded constant"
    },
@@ -3277,6 +3307,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 27,
     "why": "the base register k1 holds no folded constant"
    },
@@ -3289,6 +3320,7 @@
     "offset": 0,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 3,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3301,6 +3333,7 @@
     "offset": 1,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 4,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3313,6 +3346,7 @@
     "offset": 2,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 5,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3325,6 +3359,7 @@
     "offset": 3,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 6,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3339,6 +3374,7 @@
     "offset": 1,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 5
    },
    {
@@ -3350,6 +3386,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 1,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3362,6 +3399,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 2,
     "why": "the base register a2 holds no folded constant"
    },
@@ -3374,6 +3412,7 @@
     "offset": 112,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3386,6 +3425,7 @@
     "offset": 113,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3398,6 +3438,7 @@
     "offset": 114,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3410,6 +3451,7 @@
     "offset": 115,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3422,6 +3464,7 @@
     "offset": 116,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3434,6 +3477,7 @@
     "offset": 117,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3446,6 +3490,7 @@
     "offset": 118,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3458,6 +3503,7 @@
     "offset": 119,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3470,6 +3516,7 @@
     "offset": 120,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3482,6 +3529,7 @@
     "offset": 121,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3494,6 +3542,7 @@
     "offset": 122,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3506,6 +3555,7 @@
     "offset": 123,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3518,6 +3568,7 @@
     "offset": 124,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3530,6 +3581,7 @@
     "offset": 125,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3542,6 +3594,7 @@
     "offset": 126,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3554,6 +3607,7 @@
     "offset": 127,
     "row": "ssv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -3566,6 +3620,7 @@
     "offset": 1,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 2,
     "why": "the base register t5 holds no folded constant"
    },
@@ -3578,6 +3633,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 3,
     "why": "the base register t5 holds no folded constant"
    },
@@ -3590,6 +3646,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 1,
     "why": "the base register t2 holds no folded constant"
    },
@@ -3602,6 +3659,7 @@
     "offset": 0,
     "row": "sdv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 3,
     "why": "the base register t5 holds no folded constant"
    },
@@ -3614,6 +3672,7 @@
     "offset": 1,
     "row": "sdv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 2,
     "why": "the base register t5 holds no folded constant"
    },
@@ -3626,6 +3685,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 2,
     "why": "the base register t4 holds no folded constant"
    },
@@ -3638,6 +3698,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 0,
     "why": "the base register t4 holds no folded constant"
    },
@@ -3650,6 +3711,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 3,
     "why": "the base register t5 holds no folded constant"
    },
@@ -3662,6 +3724,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 4,
     "why": "the base register t6 holds no folded constant"
    },
@@ -3676,6 +3739,7 @@
     "offset": 4,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 1
    },
    {
@@ -3689,6 +3753,7 @@
     "offset": 4,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 2
    },
    {
@@ -3702,6 +3767,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 3
    },
    {
@@ -3713,6 +3779,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 20,
     "why": "the base register t2 holds no folded constant"
    },
@@ -3725,6 +3792,7 @@
     "offset": 0,
     "row": "llv",
     "row_opcode": 2,
+    "scale": 4,
     "vt": 19,
     "why": "the base register t3 holds no folded constant"
    },
@@ -3737,6 +3805,7 @@
     "offset": 1,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 20,
     "why": "the base register t2 holds no folded constant"
    },
@@ -3749,6 +3818,7 @@
     "offset": 1,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 5,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3761,6 +3831,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 6,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3773,6 +3844,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 7,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3785,6 +3857,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 8,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3797,6 +3870,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 9,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3809,6 +3883,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 10,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3821,6 +3896,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 11,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3833,6 +3909,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 5,
     "why": "the base register t5 holds no folded constant"
    },
@@ -3845,6 +3922,7 @@
     "offset": 1,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 6,
     "why": "the base register t5 holds no folded constant"
    },
@@ -3857,6 +3935,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 7,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3869,6 +3948,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 8,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3881,6 +3961,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 9,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3893,6 +3974,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 10,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3905,6 +3987,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 11,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3917,6 +4000,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 12,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3929,6 +4013,7 @@
     "offset": 2,
     "row": "lrv",
     "row_opcode": 5,
+    "scale": 16,
     "vt": 13,
     "why": "the base register a1 holds no folded constant"
    },
@@ -3941,6 +4026,7 @@
     "offset": 0,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 21,
     "why": "the base register t4 holds no folded constant"
    },
@@ -3953,6 +4039,7 @@
     "offset": 1,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 22,
     "why": "the base register t4 holds no folded constant"
    },
@@ -3965,6 +4052,7 @@
     "offset": 2,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 21,
     "why": "the base register t4 holds no folded constant"
    },
@@ -3977,6 +4065,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 22,
     "why": "the base register t4 holds no folded constant"
    },
@@ -3989,6 +4078,7 @@
     "offset": 126,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 1,
     "why": "the base register t1 holds no folded constant"
    },
@@ -4001,6 +4091,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 1,
     "why": "the base register t1 holds no folded constant"
    },
@@ -4013,6 +4104,7 @@
     "offset": 0,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 0,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4025,6 +4117,7 @@
     "offset": 1,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 0,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4037,6 +4130,7 @@
     "offset": 2,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 0,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4049,6 +4143,7 @@
     "offset": 3,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 0,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4061,6 +4156,7 @@
     "offset": 0,
     "row": "lsv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register t3 holds no folded constant"
    },
@@ -4073,6 +4169,7 @@
     "offset": 5,
     "row": "lsv",
     "row_opcode": 1,
+    "scale": 2,
     "vt": 1,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4085,6 +4182,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 3,
     "why": "the base register a3 holds no folded constant"
    },
@@ -4097,6 +4195,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 7,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4109,6 +4208,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 12,
     "why": "the base register a2 holds no folded constant"
    },
@@ -4121,6 +4221,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 7,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4133,6 +4234,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 12,
     "why": "the base register a2 holds no folded constant"
    },
@@ -4145,6 +4247,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 7,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4157,6 +4260,7 @@
     "offset": 1,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 12,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4169,6 +4273,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 3,
     "why": "the base register a2 holds no folded constant"
    },
@@ -4181,6 +4286,7 @@
     "offset": 1,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 4,
     "why": "the base register a2 holds no folded constant"
    },
@@ -4193,6 +4299,7 @@
     "offset": 126,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 3,
     "why": "the base register a2 holds no folded constant"
    },
@@ -4205,6 +4312,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 4,
     "why": "the base register a2 holds no folded constant"
    },
@@ -4217,6 +4325,7 @@
     "offset": 8,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 15,
     "why": "the base register a3 holds no folded constant"
    },
@@ -4229,6 +4338,7 @@
     "offset": 8,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 15,
     "why": "the base register a3 holds no folded constant"
    },
@@ -4241,6 +4351,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 2,
     "why": "the base register a3 holds no folded constant"
    },
@@ -4253,6 +4364,7 @@
     "offset": 127,
     "row": "sdv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 2,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4265,6 +4377,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 7,
     "why": "the base register a1 holds no folded constant"
    },
@@ -4277,6 +4390,7 @@
     "offset": 0,
     "row": "sdv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 7,
     "why": "the base register a3 holds no folded constant"
    },
@@ -4289,6 +4403,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 7,
     "why": "the base register s1 holds no folded constant"
    },
@@ -4301,6 +4416,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 7,
     "why": "the base register s5 holds no folded constant"
    },
@@ -4313,6 +4429,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 12,
     "why": "the base register s2 holds no folded constant"
    },
@@ -4325,6 +4442,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 12,
     "why": "the base register s6 holds no folded constant"
    },
@@ -4337,6 +4455,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 13,
     "why": "the base register s3 holds no folded constant"
    },
@@ -4349,6 +4468,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 13,
     "why": "the base register s7 holds no folded constant"
    },
@@ -4361,6 +4481,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 14,
     "why": "the base register s4 holds no folded constant"
    },
@@ -4373,6 +4494,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 14,
     "why": "the base register t8 holds no folded constant"
    },
@@ -4385,6 +4507,7 @@
     "offset": 0,
     "row": "lqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 16,
     "why": "the base register a2 holds no folded constant"
    },
@@ -4397,6 +4520,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 7,
     "why": "the base register s1 holds no folded constant"
    },
@@ -4409,6 +4533,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 7,
     "why": "the base register s5 holds no folded constant"
    },
@@ -4421,6 +4546,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 12,
     "why": "the base register s2 holds no folded constant"
    },
@@ -4433,6 +4559,7 @@
     "offset": 0,
     "row": "ldv",
     "row_opcode": 3,
+    "scale": 8,
     "vt": 12,
     "why": "the base register s6 holds no folded constant"
    },
@@ -4445,6 +4572,7 @@
     "offset": 127,
     "row": "sqv",
     "row_opcode": 4,
+    "scale": 16,
     "vt": 16,
     "why": "the base register a2 holds no folded constant"
    }

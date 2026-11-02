@@ -26,20 +26,24 @@ capacity, not the code's length, and the overrun is recorded rather than correct
     as returns, and every one of the 976 words either inside a function body, inside a listed gap, or
     accounted for as CPU code.
 
-**What it refuses.** This repository holds no table of RSP encodings. The local manual settles the RSP's
+**What it refuses.** The local manual has no RSP encoding table — it settles the RSP's
 *structure* (4 KB IMEM/DMEM p44, the SU's family p44/p47, DMEM-only data p139, physical addressing and the
 16-entry segment table p47, the boot/task two-stage load p137) but tabulates **no opcode, no function code
 and no COP2 encoding**. So:
 
-  * the **vector unit's 254 words are identified and never named** — the function code is reported raw and the
-    mnemonic is `null`, because the only way to name `4a00002c` would be to import a table this project does
-    not hold. `unreadable` lists all 31 distinct field patterns with counts and first addresses. libdragon's
-    `src/audio/rsp_mixer.S` was read as a *reference* for which instruction families real audio ucode uses,
-    and it changed nothing here: it is a different, modern design and no byte of this cartridge is evidence
-    about it or from it;
-  * **COP0 register numbers are unnamed** — the SP register map is in no local document. `mfc0 a1,<reg 7>` is
-    decoded as a COP0 move (family) with the number raw; the five repeated write-three-then-poll-a-fourth
-    blocks are described by *shape* and no direction is asserted;
+  * the **vector unit's 254 words are named** — 252 of them, from the N64brew Wiki's VU tables (revision
+    5539, CC BY-SA-4.0), each entry labelled `cited-external` because the table is not this repository's own
+    document. M223 left all 254 unnamed on the grounds that naming them meant importing a table; M224
+    narrowed that policy rather than the claim — an external table may be **used as a cited source**, which
+    is what `THIRD_PARTY.md` §4b records, and 2 words are still refused because the table has **no row** for
+    `funct 0x11`. Those two are the whole of `unreadable` now. The cited tables have two defects of their
+    own, both recorded: the transpose group states an opcode that collides with the scalar group's, and the
+    computational table omits `0x11` — the source documents what it documents, and this decoder reports the
+    gaps instead of filling them;
+  * **COP0 register numbers are unnamed here** — the map is external (see `rsp_iface.py`, which cites it),
+    and this tool reports the number raw. `mfc0 a1,<reg 7>` is decoded as a COP0 move with the number raw;
+    the five repeated write-three-then-poll-a-fourth blocks are described by *shape* and no direction is
+    asserted;
   * **no DMEM offset, no command opcode and no mixer behaviour is named.** The program's DMEM layout is its
     own; nothing on the CPU side mirrors it, which is why the same facts appear under `rsp_only`. A decoded
     RSP program is not an understood mixer.
@@ -167,6 +171,122 @@ OPCODES = {
     0x3A: ("swc2", "cop2xfer", "vu_elements"),
 }
 
+# --- the vector unit, cited -------------------------------------------------------------------------
+# M223 refused to name these: the local manual tabulates no COP2 encoding, and naming would have meant
+# importing a table. M224 narrowed that policy -- an external table may be used as a *cited* source, so
+# each name below carries the row it came from. Source: N64brew Wiki, Reality_Signal_Processor/CPU_Core,
+# revision 5539 (CC BY-SA-4.0), facts restated, no text reproduced. See docs/THIRD_PARTY.md 4b.
+VU_EXT = {
+    "vu_alu": ("https://n64brew.dev/wiki/Reality_Signal_Processor/CPU_Core", 5539,
+               "the computational-instruction table: opcode -> mnemonic and description"),
+    "vu_select": ("https://n64brew.dev/wiki/Reality_Signal_Processor/CPU_Core", 5539,
+                  "the select-instruction table: opcode -> mnemonic and description"),
+    "vu_single": ("https://n64brew.dev/wiki/Reality_Signal_Processor/CPU_Core", 5539,
+                  "the single-lane table, including the vt_elem/vd_elem lane computation"),
+    "vu_broadcast": ("https://n64brew.dev/wiki/Reality_Signal_Processor/CPU_Core", 5539,
+                     "the element-field table: element value -> GNU assembly modifier"),
+    "vu_transfer": ("https://n64brew.dev/wiki/Reality_Signal_Processor/CPU_Core", 5539,
+                    "the load/store table: opcode -> row name and access size, and the field split"),
+}
+
+# The access sizes the cited table states, restated by instruction and direction so the gate can check the
+# decoder's table against the citation rather than against itself. `lwc2` is opcode 0x32, `swc2` 0x3A.
+CITED_ACCESS_SIZE = {
+    (0x32, 0x00): 1, (0x3A, 0x00): 1, (0x32, 0x01): 2, (0x3A, 0x01): 2,
+    (0x32, 0x02): 4, (0x3A, 0x02): 4, (0x32, 0x03): 8, (0x3A, 0x03): 8,
+    (0x32, 0x04): 16, (0x3A, 0x04): 16, (0x32, 0x05): 16, (0x3A, 0x05): 16,
+}
+
+# opcode -> (mnemonic, description as the source states it, group)
+VU_ALU = {
+    0x00: ("vmulf", "multiply S1.15 x S1.15, rounding, signed clamp"),
+    0x01: ("vmulu", "multiply S1.15 x S1.15, rounding, unsigned clamp"),
+    0x04: ("vmudl", "multiply U0.16 x U0.16, signed clamp"),
+    0x05: ("vmudm", "multiply S0.16 x U0.16, signed clamp"),
+    0x06: ("vmudn", "multiply U0.16 x S0.16, signed clamp"),
+    0x07: ("vmudh", "multiply S0.16 x S0.16, signed clamp"),
+    0x08: ("vmacf", "vmulf, adding to the accumulator"),
+    0x09: ("vmacu", "vmulu, adding to the accumulator"),
+    0x0C: ("vmadl", "vmudl, adding to the accumulator"),
+    0x0D: ("vmadm", "vmudm, adding to the accumulator"),
+    0x0E: ("vmadn", "vmudn, adding to the accumulator"),
+    0x0F: ("vmadh", "vmudh, adding to the accumulator"),
+    0x10: ("vadd", "add with carry"),
+    0x13: ("vabs", "absolute value"),
+    0x14: ("vaddc", "add, writing the overflow into the carry"),
+    0x1D: ("vsar", "read a portion of the accumulator into a vector register"),
+    0x28: ("vand", "bitwise and"), 0x29: ("vnand", "bitwise nand"),
+    0x2A: ("vor", "bitwise or"), 0x2B: ("vnor", "bitwise nor"),
+    0x2C: ("vxor", "bitwise xor"), 0x2D: ("vnxor", "bitwise nxor"),
+}
+VU_SELECT = {
+    0x20: ("vlt", "select the lower of two vectors"),
+    0x21: ("veq", "compare two vectors for equality"),
+    0x22: ("vne", "compare two vectors for difference"),
+    0x23: ("vge", "select the greater or equal of two vectors"),
+    0x24: ("vcl", "clip against two bounds, lower halves"),
+    0x25: ("vch", "clip against two bounds, upper halves"),
+    0x26: ("vcr", "clip against a power-of-two bound"),
+    0x27: ("vmrg", "merge two vectors lane by lane using the flags"),
+}
+VU_SINGLE = {
+    0x30: ("vrcp", "32-bit reciprocal of a 16-bit fixed point"),
+    0x31: ("vrcpl", "32-bit reciprocal of a 32-bit fixed point"),
+    0x32: ("vrcph", "upper 16 bits of a previous vrcp"),
+    0x33: ("vmov", "copy one lane of a vector register into another"),
+    0x34: ("vrsq", "32-bit reciprocal square root of a 16-bit fixed point"),
+    0x35: ("vrsql", "32-bit reciprocal square root of a 32-bit fixed point"),
+    0x36: ("vrsqh", "upper 16 bits of a previous vrsq"),
+    0x37: ("vnop", "no operation (the source marks this one with a question mark)"),
+    0x3F: ("vnull", "no operation (the source marks this one with a question mark)"),
+}
+# The fixed point formats and the operation class, both as the cited table states them, so the census below
+# describes the program's arithmetic with cited words instead of an adjective.
+VU_FORMAT = {
+    "vmulf": "S1.15 x S1.15", "vmulu": "S1.15 x S1.15", "vmacf": "S1.15 x S1.15", "vmacu": "S1.15 x S1.15",
+    "vmudl": "U0.16 x U0.16", "vmadl": "U0.16 x U0.16",
+    "vmudm": "S0.16 x U0.16", "vmadm": "S0.16 x U0.16",
+    "vmudn": "U0.16 x S0.16", "vmadn": "U0.16 x S0.16",
+    "vmudh": "S0.16 x S0.16", "vmadh": "S0.16 x S0.16",
+}
+VU_KIND = {
+    "vmulf": "multiply", "vmulu": "multiply", "vmudl": "multiply", "vmudm": "multiply",
+    "vmudn": "multiply", "vmudh": "multiply",
+    "vmacf": "multiply-accumulate", "vmacu": "multiply-accumulate", "vmadl": "multiply-accumulate",
+    "vmadm": "multiply-accumulate", "vmadn": "multiply-accumulate", "vmadh": "multiply-accumulate",
+    "vadd": "add", "vaddc": "add", "vabs": "absolute value", "vsar": "accumulator read",
+    "vand": "bitwise", "vnand": "bitwise", "vor": "bitwise", "vnor": "bitwise",
+    "vxor": "bitwise", "vnxor": "bitwise",
+    "vlt": "select", "veq": "compare", "vne": "compare", "vge": "select", "vcl": "clip",
+    "vch": "clip", "vcr": "clip", "vmrg": "merge",
+    "vrcp": "reciprocal", "vrcpl": "reciprocal", "vrcph": "reciprocal",
+    "vrsq": "reciprocal square root", "vrsql": "reciprocal square root", "vrsqh": "reciprocal square root",
+    "vmov": "lane move", "vnop": "no operation", "vnull": "no operation",
+}
+
+# element value -> the GNU assembly modifier, for values 2..15; 0 and 1 are a normal register access
+VU_BROADCAST = {2: "e(0q)", 3: "e(1q)", 4: "e(0h)", 5: "e(1h)", 6: "e(2h)", 7: "e(3h)",
+                8: "e(0)", 9: "e(1)", 10: "e(2)", 11: "e(3)", 12: "e(4)", 13: "e(5)",
+                14: "e(6)", 15: "e(7)"}
+# load/store opcode -> (load mnemonic, store mnemonic, access size in bytes as the source states it)
+VU_ROWS = {
+    0x00: ("lbv", "sbv", 1), 0x01: ("lsv", "ssv", 2), 0x02: ("llv", "slv", 4),
+    0x03: ("ldv", "sdv", 8), 0x04: ("lqv", "sqv", 16), 0x05: ("lrv", "srv", 16),
+}
+# Rows the source lists without stating an access size, so no address can be folded for them.
+VU_ROWS_UNSCALED = {0x06: ("lpv", "spv"), 0x07: ("luv", "suv"), 0x08: ("lhv", "shv"),
+                    0x09: ("lfv", "sfv"), 0x0B: ("ltv", "stv")}
+# The source's transpose group states `0x01 swv`, which collides with the scalar group's `0x01 lsv/ssv`.
+# Recorded as a defect in the source rather than resolved: no ltv/stv/swv appears in this program, so no
+# claim here depends on it. Measured, not assumed -- `by_row` below counts what is present.
+VU_SOURCE_DEFECTS = [
+    "the transpose group lists `0x01 swv` while the scalar group lists `0x01 lsv/ssv`: one opcode cannot "
+    "be both, so one of the two rows mis-states it. No word in this program uses the transpose group, so "
+    "nothing here depends on which",
+    "the computational table omits `funct 0x11`, which this program uses twice; it is left unnamed and "
+    "listed rather than guessed at",
+]
+
 # Opcodes whose *existence* on the SU this repository cannot settle. They are decoded into their family shape
 # for the listing, then listed in `unreadable` instead of being counted as understood instructions.
 UNSETTLED = {
@@ -274,12 +394,26 @@ def decode(word, va):
                    dmem_offset=off & 0xFFFF)
         return rec
     if op in (0x32, 0x3A):
-        mn, form, cite = OPCODES[op]
-        rs, rt, off = bits(word, 25, 21), bits(word, 20, 16), sx16(word & 0xFFFF)
-        # The row (LQV/SQV/RFV/…) is a vector-unit function code and stays unresolved; the transfer class and
-        # its DMEM operand do not.
-        rec.update(mnemonic=mn, text="%s v%d,%d(%s)" % (mn, rt, off, REG[rs]), cite=cite,
-                   dmem_offset=off & 0xFFFF, row=None)
+        # M223 read bits 15:0 as a 16-bit signed displacement, could not make 0x2000 one, and excluded all
+        # of these accesses from the DMEM statistics. The split is base / vt / row opcode (15:11) /
+        # element (10:7) / offset (6:0), and the address is base + offset * access size (cited).
+        load = op == 0x32
+        base, vt, rowop, el, off = (bits(word, 25, 21), bits(word, 20, 16), bits(word, 15, 11),
+                                    bits(word, 10, 7), bits(word, 6, 0))
+        if rowop in VU_ROWS:
+            name, scale = VU_ROWS[rowop][0 if load else 1], VU_ROWS[rowop][2]
+        elif rowop in VU_ROWS_UNSCALED:
+            name, scale = VU_ROWS_UNSCALED[rowop][0 if load else 1], None
+        else:
+            name, scale = None, None
+        if name is None:
+            return _unreadable(rec, "lwc2/swc2 row 0x%02x (not in the cited table)" % rowop)
+        rec.update(mnemonic=name, cite="vu_transfer", vector_kind="vector_transfer",
+                   vu_row=name, vu_row_opcode=rowop, vu_element=el, vu_offset=off, vu_scale=scale,
+                   dmem_vector_offset=(off * scale) if scale else None,
+                   text="%s v%d,%d(%s) [element %d%s]"
+                        % (name, vt, off, REG[base], el,
+                           "" if scale is None else ", x%d" % scale))
         return rec
     if op in UNSETTLED:
         mn = UNSETTLED[op][0]
@@ -297,25 +431,59 @@ def _unreadable(rec, key):
 
 
 def _vector(rec, word):
-    """COP2. The word is *identified* as a vector-unit instruction and its fields are reported raw; no
-    mnemonic is invented, because the VU's function codes are in no document this repository holds."""
+    """COP2. Named from the cited table where it covers the word, and refused where it does not.
+
+    Two of the source's groups share this shape (COP2, bit 25 set) and are told apart by the opcode:
+    computational 0x00-0x2D, select 0x20-0x27 (inside that range but disjoint from it), single-lane
+    0x30-0x3F. A single-lane word's `element` field is not a broadcast modifier at all -- it is two
+    lane selectors, and the source gives the rule for computing the source lane, which is implemented
+    here rather than approximated.
+    """
     co = bits(word, 25, 25)
     if co == 0:
         rs = bits(word, 25, 21)
         kind = {0x00: "mfc2", 0x02: "cfc2", 0x04: "mtc2", 0x06: "ctc2"}.get(rs)
         if kind is None:
             return _unreadable(rec, "COP2 rs 0x%02x" % rs)
-        rt, rd = bits(word, 20, 16), bits(word, 15, 11)
-        rec.update(mnemonic=kind, text="%s %s,v%d" % (kind, REG[rt], rd), cite="vu_elements",
-                   vector_kind="transfer", vu_reg=rd)
+        rt, vreg = bits(word, 20, 16), bits(word, 15, 11)
+        vs_elem = bits(word, 10, 7)
+        rec.update(mnemonic=kind, cite="vu_transfer", vector_kind="transfer", vu_reg=vreg,
+                   vs_elem=vs_elem,
+                   text="%s %s,v%d[e byte %d]" % (kind, REG[rt], vreg, vs_elem))
         rec["status"] = "vector"
         return rec
     e, vt, vs, vd, fn = bits(word, 24, 21), bits(word, 20, 16), bits(word, 15, 11), bits(word, 10, 6), bits(word, 5, 0)
-    rec.update(mnemonic=None, status="vector", vector_kind="alu",
-               vu={"e": e, "vt": vt, "vs": vs, "vd": vd, "funct": fn},
-               text="cop2 e=%d vt=v%d vs=v%d vd=v%d funct=0x%02x (unnamed)" % (e, vt, vs, vd, fn),
-               cite="vu_elements", unreadable_key="COP2 vector funct 0x%02x" % fn)
+    if fn in VU_SINGLE:
+        name, why = VU_SINGLE[fn]
+        vd_reg, vt_elem, vd_elem = vs, e, vd      # bits 15:11 hold vd here, 10:6 hold vd_elem
+        de = vd_elem & 7
+        msb = vt_elem.bit_length() - 1
+        # the source's rule: every bit of vt_elem from its topmost set bit upward is replaced by the
+        # same-position bit of vd_elem, so a small vt_elem borrows from the destination lane
+        se = (((vd_elem >> msb) << msb) | (vt_elem & ((1 << msb) - 1))) & 7 if msb > 0 else vt_elem & 7
+        rec.update(mnemonic=name, status="vector", vector_kind="single", cite="vu_single",
+                   vu={"element": e, "vt": vt, "vd": vd_reg, "opcode": fn,
+                       "source_lane": se, "dest_lane": de},
+                   why=why,
+                   text="%s v%d[e(%d)],v%d[e(%d)]" % (name, vd_reg, de, vt, se))
+        return rec
+    group = "vu_alu" if fn in VU_ALU else "vu_select" if fn in VU_SELECT else None
+    table = VU_ALU if fn in VU_ALU else VU_SELECT if fn in VU_SELECT else None
+    if table is None:
+        rec.update(status="vector", vector_kind="alu", cite="vu_alu",
+                   vu={"element": e, "vt": vt, "vs": vs, "vd": vd, "funct": fn},
+                   text="cop2 e=%d vt=v%d vs=v%d vd=v%d funct=0x%02x (unlisted)"
+                        % (e, vt, vs, vd, fn),
+                   unreadable_key="COP2 funct 0x%02x (not in the cited table)" % fn)
+        rec["mnemonic"] = None
+        return rec
+    name, why = table[fn]
+    mod = ("," + VU_BROADCAST[e]) if e in VU_BROADCAST else ""
+    rec.update(mnemonic=name, status="vector", vector_kind="alu", cite=group, why=why,
+               vu={"element": e, "vt": vt, "vs": vs, "vd": vd, "funct": fn},
+               text="%s v%d,v%d,v%d%s" % (name, vd, vs, vt, mod))
     return rec
+
 
 
 # --- image access ---------------------------------------------------------------------------------------
@@ -593,7 +761,10 @@ def program_section(dec, words, foff):
     raw_targets = [d["target_raw"] for d in rsp if d.get("target_raw") is not None]
     dmem = [d["dmem_offset"] for d in rsp
             if "dmem_offset" in d and d["mnemonic"] in ("lw", "lbu", "lhu", "sb", "sh", "sw")]
-    cop2_offsets = [d["dmem_offset"] for d in rsp if d["mnemonic"] in ("lwc2", "swc2")]
+    vector_rows = {}
+    for d in rsp:
+        if d["vector_kind"] == "vector_transfer" if d.get("vector_kind") else False:
+            vector_rows[d["vu_row"]] = vector_rows.get(d["vu_row"], 0) + 1
     sp_regs = {}
     for d in rsp:
         if "sp_reg" in d:
@@ -622,8 +793,13 @@ def program_section(dec, words, foff):
             "words": len(dec) - len(rsp),
             "ident": hex(UCODE_VA + foff),
             "evidence": [
-                "the corpus declares a CPU function at 0x%x: %s" % (UCODE_VA + foff,
-                                                                   corpus_functions()[UCODE_VA + foff]),
+                # .get, not []: with no corpus under the window this must say so, not raise. A gate that
+                # crashes has not failed, it has stopped being a gate (M216's rule, met here by M225 when a
+                # sandbox without src/ turned this line into a KeyError).
+                "the corpus declares a CPU function at 0x%x: %s"
+                % (UCODE_VA + foff, corpus_functions().get(UCODE_VA + foff,
+                                                          "none — no corpus function starts inside the "
+                                                          "window the task declares")),
                 "the RSP program's last exit is 0xf34 `jr t0` with its delay slot at 0xf38, followed by a "
                 "`nop` fill at 0xf3c; the next word is the CPU function's body",
                 "the words from 0x%03x build a KSEG0 address (`lui v0,0x8016` + `addiu v0,v0,-0x74e0` = "
@@ -658,11 +834,14 @@ def program_section(dec, words, foff):
             "min": hex(min(dmem)),
             "max": hex(max(dmem)),
             "above_4k": sorted({o for o in dmem if o > 0xFFF})[:8],
-            "excluded_cop2_transfers": len(cop2_offsets),
-            "cop2_note": "the lwc2/swc2 immediate is not the same field as a scalar load's displacement: the "
-                         "words at 0x4a4/0x4a8 carry 0x2000/0x2001, which no 16-bit DMEM displacement can be, "
-                         "so the %d vector transfers are excluded from these statistics instead of widening "
-                         "them" % len(cop2_offsets),
+            "vector_transfers": sum(vector_rows.values()),
+            "vector_rows": dict(sorted(vector_rows.items())),
+            "cop2_note": "retracted from M223: the lwc2/swc2 immediate is not a 16-bit displacement, it is a "
+                         "row opcode (15:11), an element (10:7) and a 7-bit offset (6:0) scaled by the row's "
+                         "access size, so all %d vector transfers are DMEM accesses with a computable offset "
+                         "and are no longer excluded. Their absolute addresses need the base register's "
+                         "value, which is folded in manifests/rsp_iface.json rather than here"
+                         % sum(vector_rows.values()),
             "note": "the 16-bit displacements of lw/lbu/lhu/sb/sh/sw are DMEM offsets (p139: the RSP software "
                     "can only access DMEM; p44: 4 KB of it). No offset is given a name: a name would have to "
                     "come from the ucode's own layout, and nothing on the CPU side records it",
@@ -672,6 +851,43 @@ def program_section(dec, words, foff):
             "note": "COP0 register numbers, raw. The SP register map is in no local document, so this counts "
                     "which numbers are written and which are polled and names none of them",
         },
+    }
+
+
+def vector_census(dec, foff):
+    """What the named vector words say the units' arithmetic is, in the cited table's own terms."""
+    rsp = dec[:foff // 4]
+    by_kind, by_format, by_row, by_move = {}, {}, {}, {}
+    for d in rsp:
+        m = d["mnemonic"]
+        if d.get("vector_kind") == "vector_transfer":
+            by_row[m] = by_row.get(m, 0) + 1
+            continue
+        if d["status"] != "vector":
+            continue
+        if d.get("vector_kind") == "transfer":
+            by_move[m] = by_move.get(m, 0) + 1
+            continue
+        if m in VU_KIND:
+            by_kind[VU_KIND[m]] = by_kind.get(VU_KIND[m], 0) + 1
+            if m in VU_FORMAT:
+                by_format[VU_FORMAT[m]] = by_format.get(VU_FORMAT[m], 0) + 1
+        elif m:
+            by_kind[m] = by_kind.get(m, 0) + 1
+    return {
+        "named_words": sum(by_kind.values()),
+        "by_kind": dict(sorted(by_kind.items())),
+        "by_fixed_point_format": dict(sorted(by_format.items())),
+        "by_transfer_row": dict(sorted(by_row.items())),
+        "by_su_vu_move": dict(sorted(by_move.items())),
+        "reading": "The arithmetic is a 16-bit fixed-point multiply-accumulate pipeline: %d words multiply "
+                   "and %d accumulate the product, in the formats the cited table names, and %d read the "
+                   "accumulator back out. Saturating is not a separate instruction — the multiply opcodes "
+                   "clamp on extraction (cited) — so the mixer's headroom is decided by which format it "
+                   "picks per stage, which is exactly what the counts above report. This says what the "
+                   "units compute; it does not say what the mixer does with the result."
+                   % (by_kind.get("multiply", 0), by_kind.get("multiply-accumulate", 0),
+                      by_kind.get("accumulator read", 0)),
     }
 
 
@@ -771,6 +987,19 @@ def identity_section(image, dec, prog, blob, foff):
                     "header carries the pointer to the data to process (p137), so a hard-coded RDRAM address is a "
                     "departure from it. It does not by itself name the ucode's author.",
          "status": "measured"},
+        {"id": "E8",
+         "measurement": "the first `what_would_decide` item was an RSP encoding table this repository could "
+                        "cite. It arrived in M224 and was applied in M225: 252 of the 254 vector words now "
+                        "carry a cited mnemonic, and the census says the units run a 16-bit fixed-point "
+                        "multiply-accumulate pipeline (%d multiply, %d multiply-accumulate, %d accumulator "
+                        "reads) in five cited formats. The same milestone measured the call structure: no "
+                        "computed transfer anywhere, every `jal` direct, and no load that selects a target.",
+         "reading": "the table did not make this ucode's identity decidable, and it decided *against* the "
+                    "first candidate's predicted shape rather than for it: the ABI that candidate describes "
+                    "predicts a command list the ucode dispatches on, and this program has no dispatch of "
+                    "any kind. What the table bought is the arithmetic — the mixer is a fixed-point MAC "
+                    "pipeline — which is a description of the units, not a name for the ucode.",
+         "status": "measured"},
     ]
     return {
         "candidates": [
@@ -778,9 +1007,13 @@ def identity_section(image, dec, prog, blob, foff):
              "would_predict": ["a task header whose microcode pointer and boot pointer both name RSP code (p137)",
                                "a command list of fixed-format 64-bit commands the ucode dispatches on",
                                "work items read through DMEM structures the CPU filled"],
-             "against": ["E2: the pair the manual gives the boot-ucode role names CPU code, not RSP code"],
-             "verdict": "not established — the ABI's command opcodes cannot be read out of this blob without a "
-                        "table this repository does not hold"},
+             "against": ["E2: the pair the manual gives the boot-ucode role names CPU code, not RSP code",
+                         "E8: the shape this candidate predicts is absent — no computed transfer exists in "
+                         "the program, so there is no command dispatch to find; the third prediction (work "
+                         "items read through DMEM structures the CPU filled) is the only one still standing"],
+             "verdict": "refuted on the shape it predicts: a command list the ucode dispatches on, and this "
+                        "program dispatches on nothing (M224, manifests/rsp_iface.json). Not proven false — "
+                        "an ABI can be re-fronted — but the prediction was made and it failed"},
             {"name": "a Factor 5 / MusyX driver",
              "would_predict": ["a private task shape and a private command format",
                                "a streaming ring fed by the CPU rather than a per-frame command list"],
@@ -800,8 +1033,9 @@ def identity_section(image, dec, prog, blob, foff):
         "verdict": "unresolved",
         "deciding_measurement": None,
         "what_would_decide": [
-            "an RSP encoding table this repository could cite: it would name the 254 vector words and the COP0 "
-            "registers, and the jal fan-out at 0x3c-0x2e0 would read as a command switch",
+            "ANSWERED (M224/M225): an RSP encoding table was cited, the 254 vector words are named and the "
+            "COP0 registers have names and directions. It did not make the identity decidable — the jal "
+            "fan-out did not read as a command switch, because there is no computed transfer at all (E8)",
             "a CPU-side consumer of the 0x800 bytes at 0x80136b50 (E6): what the ucode is expected to write "
             "there is an ABI fingerprint",
             "an independent copy of the same ucode from another N64 title: byte equality would settle provenance "
@@ -821,10 +1055,11 @@ def rsp_only_section(prog, blob, dec):
                    int(prog["dmem"]["min"], 16), int(prog["dmem"]["max"], 16)),
          "cpu_evidence": "none — measured by scanning every stage-2 instruction that touches the task's own "
                          "structures"},
-        {"what": "the vector unit's %d words" % sum(1 for d in dec if d.get("vector_kind")),
-         "why": "each carries a function code in bits 5:0 and an element in bits 24:21, and no document this "
-                "repository holds maps either. The mixer's arithmetic is in those words; naming them would mean "
-                "importing another architecture's table, so they stay unnamed and counted",
+        {"what": "what the vector unit's arithmetic computes",
+         "why": "since M224 the 254 words are *named* — 252 of them from a cited table, 2 refused because it "
+                "has no row for their function code — but a name is not a meaning. `vmadh v2,v1,v0` says which "
+                "instruction runs, not which signal it filters, and the mixer's structure is in the "
+                "accumulator's use, which no document here describes",
          "cpu_evidence": "none — the CPU never writes a vector register"},
         {"what": "the meaning of the 0x800 bytes at 0x80136b50 (task+0x18)",
          "why": "no stage-2 instruction reads or writes that address (0 references) and its tail runs past the "
@@ -864,15 +1099,17 @@ def derive(image):
             g["words"] += 1
         elif d["status"] == "vector":
             counts["vector"] += 1
-            if d["vector_kind"] == "alu":
-                key = "COP2 vector funct 0x%02x" % d["vu"]["funct"]
-                ex = d["text"]
-            else:
-                key = "COP2 %s v%d" % (d["mnemonic"], d["vu_reg"])
-                ex = d["text"]
-            v = vector.setdefault(key, {"key": key, "words": 0, "first": d["at"], "mnemonic": None,
-                                        "cite": d["cite"], "status": "unresolved", "fields_example": ex})
+            # Named where the cited table covers the word (M224), and keyed by the raw field where it
+            # does not. The distinction is in `status`, so a reader can count the refusals.
+            key = d["mnemonic"] if d["mnemonic"] else d["unreadable_key"]
+            v = vector.setdefault(key, {"key": key, "words": 0, "first": d["at"],
+                                        "mnemonic": d["mnemonic"], "cite": d["cite"],
+                                        "why": d.get("why"),
+                                        "status": "cited-external" if d["mnemonic"] else "unresolved",
+                                        "fields_example": d["text"]})
             v["words"] += 1
+            if d.get("vu"):
+                v["fields"] = {k: v2 for k, v2 in d["vu"].items()}
         else:
             counts["scalar"] += 1
             s = scalar.setdefault(d["mnemonic"], {"mnemonic": d["mnemonic"], "words": 0, "first": d["at"],
@@ -882,13 +1119,15 @@ def derive(image):
     for key in list(unreadable):
         if key.startswith("opcode 0x14"):
             unreadable[key]["why"] = UNSETTLED[0x14][1]
-    # The vector words are unnamed too, so `unreadable` lists them as well: the schema's one place to look for
-    # "what this decoder will not name" must not omit its largest group.
+    # Only what the cited table does not cover: since M224 that is two words out of 254, and the schema's one
+    # place to look for "what this decoder will not name" must carry them rather than the whole group.
     for key, v in vector.items():
-        unreadable[key] = {"key": key, "kind": "vector-unit", "words": v["words"], "first": v["first"],
-                           "cite": v["cite"],
-                           "why": "the RSP's vector function codes are in no document this repository holds, so "
-                                  "the word is identified as a vector-unit instruction and left unnamed"}
+        if v["status"] == "unresolved":
+            unreadable[key] = {"key": key, "kind": "vector-unit", "words": v["words"],
+                               "first": v["first"], "cite": v["cite"],
+                               "why": "the cited instruction table has no row for this function code, so the "
+                                      "word is identified as a vector-unit instruction and left unnamed "
+                                      "rather than guessed at"}
     for d in dec[foff // 4:]:
         d["status"] = "foreign"
         d["text"] = "%s  [cpu code, %s]" % (d["text"], hex(UCODE_VA + foff))
@@ -937,11 +1176,23 @@ def derive(image):
             "unreadable": [unreadable[k] for k in sorted(unreadable)],
             "counts": dict(counts, words=len(dec)),
         },
+        "vector_census": vector_census(dec, foff),
         "program": prog,
         "identity": identity_section(image, dec, prog, blob, foff),
         "task": task_section(image),
         "rsp_only": rsp_only_section(prog, blob, dec),
         "citations": {k: {"page": v[0], "quote": v[1]} for k, v in sorted(CITES.items())},
+        "external_sources": {
+            "why": "The local manual tabulates no RSP encoding — it delegates the SU to the R4000 manual by "
+                   "name (p44, p47) and says nothing about the vector unit's function codes. M223 therefore "
+                   "left all 254 vector words unnamed. M224 narrowed the rule rather than the refusal: an "
+                   "external table may be *used as a cited source* — attributed, no text reproduced, every "
+                   "consequence re-measured against the cartridge — which is what this project already does "
+                   "for OpenBiohazard2 (MIT) and libdragon (Unlicense). See docs/THIRD_PARTY.md 4b.",
+            "sources": sorted({(v[0], v[1]) for v in VU_EXT.values()}),
+            "licence": "CC BY-SA-4.0 (N64brew Wiki); facts restated, no text reproduced",
+            "table_defects": VU_SOURCE_DEFECTS,
+        },
     }
 
 
@@ -986,18 +1237,94 @@ def check(committed, image):
                   and (UCODE_VA + foff) in corpus))
 
     ops = committed["decoder"]["scalar_ops"]
-    cited = {k: v["cite"] for k, v in ops.items()}
-    bad_cite = [(k, v) for k, v in cited.items() if v not in CITES]
-    cases.append((f"every named encoding cites a page of the local manual "
-                  f"({len(ops)} scalar ops, {len(set(cited.values()))} distinct citations)",
-                  not bad_cite and all(0 < CITES[v][0] <= MANUAL_PAGES for v in cited.values())))
+    # Two sources now, and the artefact has to keep them apart: the manual for the SU's opcodes, the cited
+    # wiki table for the 125 `lwc2`/`swc2` transfers, which are SU instructions that address the VU.
+    from_manual = {k: v["cite"] for k, v in ops.items() if v["cite"] in CITES}
+    from_ext = {k: v["cite"] for k, v in ops.items() if v["cite"] in VU_EXT}
+    unresolved_cite = {k: v for k, v in ops.items()
+                       if v["cite"] not in CITES and v["cite"] not in VU_EXT}
+    cases.append((f"every named scalar encoding cites a source, and the manual and the external table are "
+                  f"kept apart ({len(from_manual)} ops from the manual, "
+                  f"{sum(ops[k]['words'] for k in from_ext)} words from {len(set(from_ext.values()))} "
+                  f"external row cite(s), {len(unresolved_cite)} uncited)",
+                  not unresolved_cite
+                  and all(0 < CITES[v][0] <= MANUAL_PAGES for v in from_manual.values())
+                  and all(VU_EXT[c][0].startswith("https://") for c in from_ext.values())))
+
+    vops = committed["decoder"]["vector_ops"]
+    ext = [v for v in vops.values() if v["status"] == "cited-external"]
+    ext_cite = {v["cite"] for v in ext}
+    cases.append((f"every named vector encoding cites an external source that is recorded as one "
+                  f"({sum(v['words'] for v in ext)} words, citations {sorted(ext_cite)})",
+                  ext_cite and ext_cite <= set(VU_EXT)
+                  and all(VU_EXT[c][0].startswith("https://") and VU_EXT[c][1] > 0 for c in ext_cite)
+                  and all(v["mnemonic"] for v in ext)))
+
+    # --- M225: the naming has to re-derive from the words, not from the strings it wrote
+    rsp = dec[:committed["program"]["foreign"]["offset"] // 4]
+    bad_row, bad_off, bad_name = [], [], []
+    for d in rsp:
+        if d.get("vector_kind") != "vector_transfer":
+            continue
+        w = d["word"]
+        row, off = bits(w, 15, 11), bits(w, 6, 0)
+        if d["mnemonic"] != (VU_ROWS.get(row) or VU_ROWS_UNSCALED.get(row))[0 if bits(w, 31, 26) == 0x32 else 1]:
+            bad_name.append(d["at"])
+        if d["vu_offset"] != off or d["vu_row_opcode"] != row:
+            bad_off.append(d["at"])
+        # stated here independently of VU_ROWS, so a table edit cannot agree with itself
+        scale = CITED_ACCESS_SIZE.get((bits(w, 31, 26), row))
+        if d["vu_scale"] != scale or d["dmem_vector_offset"] != (off * scale if scale else None):
+            bad_row.append(d["at"])
+    cases.append((f"every vector transfer's row, offset and scaled address re-derive from bits 15:11, 6:0 "
+                  f"and the row's access size "
+                  f"({sum(1 for d in rsp if d.get('vector_kind') == 'vector_transfer')} transfers, "
+                  f"{len(bad_name)} wrong name, {len(bad_off)} wrong offset, {len(bad_row)} wrong scale)",
+                  not bad_name and not bad_off and not bad_row))
+
+    lanes = [d for d in rsp if d.get("vector_kind") == "single"]
+    lane_bad = []
+    for d in lanes:
+        w = d["word"]
+        vt_elem, vd_elem = bits(w, 24, 21), bits(w, 10, 6)
+        msb = vt_elem.bit_length() - 1
+        se = ((((vd_elem >> msb) << msb) | (vt_elem & ((1 << msb) - 1))) & 7) if msb > 0 else vt_elem & 7
+        if d["vu"]["source_lane"] != se or d["vu"]["dest_lane"] != (vd_elem & 7):
+            lane_bad.append(d["at"])
+        if d["vu"]["vd"] != bits(w, 15, 11):
+            lane_bad.append(d["at"])
+    # The borrow branch only changes the answer when vt_elem's top set bit is at or below lane 2. Measured:
+    # this program's eight single-lane words all carry vt_elem = 12, so the branch is implemented from the
+    # cited pseudo-code and *no word here exercises it* -- the gate cannot prove it, and says so.
+    borrow = [d["at"] for d in lanes if bits(d["word"], 24, 21).bit_length() - 1 <= 2]
+    cases.append((f"every single-lane word's lanes re-derive from the cited rule ({len(lanes)} words, "
+                  f"{len(lane_bad)} wrong); the borrow branch is implemented but exercised by "
+                  f"{len(borrow)} of them, so the gate does not prove it",
+                  lanes and not lane_bad and len(borrow) == 0
+                  and all(bits(d["word"], 24, 21) == 12 for d in lanes)))
+
+    cen = committed["vector_census"]
+    vc = committed["decoder"]["counts"]
+    by_kind = sum(cen["by_kind"].values())
+    moves = sum(cen["by_su_vu_move"].values())
+    refused = sum(v["words"] for v in vops.values() if v["status"] == "unresolved")
+    cases.append((f"the arithmetic census adds up: every vector word is either counted by kind, a SU/VU "
+                  f"move, or a transfer, and the refused ones are the remainder "
+                  f"({by_kind} by kind + {moves} moves + {refused} refused = {vc['vector']})",
+                  by_kind + moves + refused == vc["vector"]
+                  and sum(cen["by_transfer_row"].values())
+                  == sum(1 for d in rsp if d.get("vector_kind") == "vector_transfer")
+                  and sum(cen["by_fixed_point_format"].values())
+                  <= cen["by_kind"].get("multiply", 0) + cen["by_kind"].get("multiply-accumulate", 0)))
 
     unre = committed["decoder"]["unreadable"]
     totale = sum(u["words"] for u in unre)
-    cases.append((f"every unnamed word is listed with a count and a first address "
-                  f"({len(unre)} groups, {totale} words = vector {c['vector']} + unsettled "
-                  f"{c['unreadable']})",
-                  totale == c["vector"] + c["unreadable"]
+    named = sum(v["words"] for v in vops.values() if v["status"] == "cited-external")
+    cases.append((f"every vector word is either named from the table or listed with its reason "
+                  f"({named} named + {totale} refused = {c['vector']} vector words, "
+                  f"{c['unreadable']} unreadable outside the vector unit)",
+                  named + totale == c["vector"] and c["unreadable"] == 0
+                  and totale > 0  # the table has a gap; a run where it does not must be looked at
                   and all(u.get("why") and u.get("key") and isinstance(u["first"], int) for u in unre)))
 
     je = committed["program"]["jump_encoding"]
@@ -1098,10 +1425,13 @@ def main() -> int:
         rep = derive(image)
         (ROOT / OUT).write_text(json.dumps(rep, indent=1, sort_keys=True) + "\n")
         c = rep["decoder"]["counts"]
-        print("wrote %s — %d words: %d RSP (%d scalar, %d vector unnamed, %d unreadable) + %d CPU; "
-              "%d functions, %d gaps; identity %s"
-              % (OUT, c["words"], rep["program"]["rsp_words"], c["scalar"], c["vector"], c["unreadable"],
-                 c["foreign"], len(rep["program"]["functions"]), len(rep["program"]["gaps"]),
+        named = sum(v["words"] for v in rep["decoder"]["vector_ops"].values()
+                    if v["status"] == "cited-external")
+        print("wrote %s — %d words: %d RSP (%d scalar, %d vector of which %d named / %d refused, "
+              "%d unreadable) + %d CPU; %d functions, %d gaps; identity %s"
+              % (OUT, c["words"], rep["program"]["rsp_words"], c["scalar"], c["vector"], named,
+                 c["vector"] - named, c["unreadable"], c["foreign"],
+                 len(rep["program"]["functions"]), len(rep["program"]["gaps"]),
                  rep["identity"]["verdict"]))
         return 0
 

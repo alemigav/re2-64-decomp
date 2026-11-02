@@ -43,9 +43,10 @@ fields carry an absolute target, the only indirect transfers are `jr` through a 
 ever reaches one. Any "command" would therefore have to be a compare chain on a value loaded from the
 published block — and the measurement is that the block's fields are sizes, counts and mode flags that
 select stages of a fixed sequence: 13 loads reach a conditional branch and not one of them indexes a
-target. The vector unit's 254 words stay unnamed (the next step, not this one), the two address fields'
-roles remain unresolved because every value either side takes is under 0x1000, and the 173 unreachable
-words are listed rather than explained.
+target. The two address fields' roles remain unresolved because every value either side takes is under
+0x1000, and the 173 unreachable words are listed rather than explained. (The vector unit's 254 words were
+unnamed when this tool was written; M225 named 252 of them from a cited table, so that entry is now about
+what the arithmetic *means* rather than what it is.)
 
 Usage:
   ./rsp_iface.py --write     # regenerate manifests/rsp_iface.json from the image
@@ -437,6 +438,15 @@ def _write_form(d):
     w = d["word"]
     op = rd.bits(w, 31, 26)
     m = d["mnemonic"]
+    # Whether the instruction writes a *GPR* is a property of the decoded record, not of its mnemonic:
+    # `lqv v3,0(at)` names v3 in the rt field and `vadd v2,v1,v0` names v0 there, and neither touches a
+    # GPR. The first version of this table matched on mnemonic strings and silently disqualified every
+    # base register once M225 gave the vector words their real names (M225).
+    vk = d.get("vector_kind")
+    if vk in ("alu", "single", "vector_transfer"):
+        return None, None
+    if vk == "transfer":
+        return (rd.bits(w, 20, 16), "other") if m in ("mfc2", "cfc2") else (None, None)
     if m in ("ori", "addiu", "andi", "xori"):
         return rd.bits(w, 20, 16), ("zero_imm" if rd.bits(w, 25, 21) == 0 else "reg_imm")
     if m == "lui":
@@ -889,50 +899,40 @@ def primitives(dec, consts, image):
 
 
 def vector_transfers(dec, consts):
-    """The `lwc2`/`swc2` words, decoded with their real field split — and what M223 read instead.
+    """The `lwc2`/`swc2` words, with the address the decoder's (corrected) field split implies.
 
-    M223 read these as a 16-bit signed displacement and, finding 0x2000 unreadable as one, excluded all
-    125 from the DMEM statistics. The split is side/base/vt/opcode/element/offset (cited), the offset is
-    7 bits and scaled by the access size, so every one of them is a DMEM access with a computable address.
+    The row, the element and the scaled offset come from `rsp_decode` — this function does **not** re-parse
+    the word, because a second parse that disagrees with the gate is how M219 went wrong. What it adds is
+    the one thing the decoder cannot know: whether the base register holds a foldable constant, and hence
+    the absolute DMEM address.
     """
-    ROWS = {0x00: ("lbv", "sbv", 1), 0x01: ("lsv", "ssv", 2), 0x02: ("llv", "slv", 4),
-            0x03: ("ldv", "sdv", 8), 0x04: ("lqv", "sqv", 16), 0x05: ("lrv", "srv", 16)}
-    PACKED = {0x06: ("lpv", "spv"), 0x07: ("luv", "suv"), 0x08: ("lhv", "shv"), 0x09: ("lfv", "sfv")}
     out, rows = [], {}
     for d in dec:
-        if d["mnemonic"] not in ("lwc2", "swc2"):
+        if d.get("vector_kind") != "vector_transfer":
             continue
-        w = d["word"]
-        base, vt = rd.bits(w, 25, 21), rd.bits(w, 20, 16)
-        op, el, off = rd.bits(w, 15, 11), rd.bits(w, 10, 7), rd.bits(w, 6, 0)
-        load = d["mnemonic"] == "lwc2"
-        if op in ROWS:
-            name = ROWS[op][0 if load else 1]
-            scale = ROWS[op][2]
-        elif op in PACKED:
-            name, scale = PACKED[op][0 if load else 1], None
-        else:
-            name, scale = "row 0x%02x (not in the cited load/store table)" % op, None
-        rec = {"at": d["at"], "row": name, "row_opcode": op, "element": el, "offset": off,
-               "base": rd.REG[base], "vt": vt, "load": load}
-        if scale is not None and base in consts:
-            rec["addresses"] = sorted({v + off * scale for v in consts[base]})
-        elif scale is None:
+        base = rd.bits(d["word"], 25, 21)
+        rec = {"at": d["at"], "row": d["vu_row"], "row_opcode": d["vu_row_opcode"],
+               "element": d["vu_element"], "offset": d["vu_offset"], "scale": d["vu_scale"],
+               "base": rd.REG[base], "vt": rd.bits(d["word"], 20, 16), "load": d["mnemonic"][0] == "l"}
+        if d["vu_scale"] is not None and base in consts:
+            rec["addresses"] = sorted({v + d["vu_offset"] * d["vu_scale"] for v in consts[base]})
+        elif d["vu_scale"] is None:
             rec["addresses"] = None
-            rec["why"] = "the source does not state the access size for this row, so no address is folded"
+            rec["why"] = "the cited table does not state this row's access size, so no address is folded"
         else:
             rec["addresses"] = None
             rec["why"] = "the base register %s holds no folded constant" % rd.REG[base]
-        rows[op] = rows.get(op, 0) + 1
+        rows[d["vu_row"]] = rows.get(d["vu_row"], 0) + 1
         out.append(rec)
     folded = [r for r in out if r["addresses"]]
     return {
-        "rule": "lwc2/swc2 carry the vector row in bits 15:11, an element index in 10:7 and a 7-bit "
-                "offset in 6:0, and the address is base + offset * access_size (cited). M223 read bits "
-                "15:0 as a 16-bit signed displacement and excluded all of these accesses; that is "
-                "retracted and the corrected addresses are below.",
+        "rule": "the row is in bits 15:11, the element in 10:7 and the offset in 6:0, and the address is "
+                "base + offset * access_size (cited). The split and the row names are taken from "
+                "tools/rsp_decode.py, which owns that decode; this tool folds the base register and nothing "
+                "else. M223 read bits 15:0 as a 16-bit signed displacement and excluded all of these "
+                "accesses, which is retracted.",
         "count": len(out),
-        "by_row": {("row 0x%02x" % k): v for k, v in sorted(rows.items())},
+        "by_row": dict(sorted(rows.items())),
         "folded": len(folded),
         "unfolded": len(out) - len(folded),
         "transfers": out,
@@ -1082,9 +1082,9 @@ def derive(image):
                          "opcodes are not implemented",
                  "url": "https://n64brew.dev/wiki/Reality_Signal_Processor/CPU_Core",
                  "revision": 5539, "licence": "CC BY-SA-4.0 (N64brew Wiki)",
-                 "used_for": "the lwc2/swc2 field split and the access sizes for the vector rows. The "
-                             "vector ALU table is *not* applied here: naming the 254 vector words is the "
-                             "next step, not this one"},
+                 "used_for": "the lwc2/swc2 field split and the access sizes for the vector rows here; "
+                             "the vector instruction tables are applied in tools/rsp_decode.py (M225), which "
+                             "names 252 of the 254 words and refuses the 2 the table has no row for"},
             ],
             "cross_checks": [
                 "the length values this program writes are all n-1 for a multiple of 8, which is what the "
@@ -1099,15 +1099,17 @@ def derive(image):
         "attribution": "docs/THIRD_PARTY.md section 4 records the two wiki pages, their licences and "
                        "exactly what was taken from them",
         "rsp_only": [
-            {"what": "the %d vector-unit words" % vec_words,
-             "why": "each carries a function code in bits 5:0 and an element in bits 24:21; no document "
-                    "this repository holds maps either, so the arithmetic of the mixer stays unnamed. "
-                    "This tool counts and locates them and claims nothing about what they compute",
+            {"what": "what the %d vector-unit words compute" % vec_words,
+             "why": "M225 named 252 of them from a cited table and left 2 refused, so the *instructions* are "
+                    "known here; what they compute for the mixer is not. A name says which opcode runs, not "
+                    "which signal path it serves, and the structure is in the accumulator's use across the "
+                    "frame loop, which no document describes",
              "cpu_evidence": "none — the CPU never writes a vector register"},
             {"what": "which transfer field is the memory side and which the other side",
-             "why": "the register numbers written are measured (%s) and the values at every call site are "
-                    "folded, but assigning the fields their hardware roles would mean importing an SP "
-                    "register map this repository does not hold" % prim["registers_written"],
+             "why": "the register numbers written are measured (%s) and named from the cited map, and the "
+                    "values at every call site are folded — but which of the two address fields is the DMEM "
+                    "side is decided by the register assignment alone, because every value either side "
+                    "takes is under 0x1000 (see argument_order)" % prim["registers_written"],
              "cpu_evidence": "the task block's pointer and count, and nothing about the transfer fields"},
             {"what": "the %d words no control-flow edge reaches" % flow["unreachable"],
              "why": "they are code (branches, calls and returns inside them) and nothing enters them under "
@@ -1252,7 +1254,8 @@ def check(committed, image):
     # --- the vector transfers ----------------------------------------------------------------------
     cases.append((f"the lwc2/swc2 field split is applied and the accesses M223 excluded are folded back "
                   f"in ({vec['count']} transfers, {vec['folded']} with an absolute address)",
-                  vec["count"] == sum(1 for d in dec if d["mnemonic"] in ("lwc2", "swc2"))
+                  vec["count"] == sum(1 for d in dec
+                                      if d.get("vector_kind") == "vector_transfer")
                   and vec["folded"] >= 4 and vec["folded"] + vec["unfolded"] == vec["count"]
                   and vec["address_range"] is not None
                   and 0 <= vec["address_range"][0] < vec["address_range"][1] < 0x1000))
@@ -1265,6 +1268,7 @@ def check(committed, image):
                   f"({dm['folded_accesses']} folded, {dm['opaque_accesses']} left opaque)",
                   dm["by_via"]["scalar"] + dm["opaque_accesses"]
                   == sum(1 for d in dec if d["mnemonic"] in ("lw", "lbu", "lhu", "sb", "sh", "sw"))
+                  and dm["by_via"]["vector"] == vec["folded"]
                   and dm["by_via"]["vector"] + vec["unfolded"] == vec["count"]
                   and dm["folded_accesses"] == dm["by_via"]["scalar"] + dm["by_via"]["vector"] > 0
                   and all(r["why"] for r in dm["opaque"]) and fresh["dmem_map"] == dm))
@@ -1294,13 +1298,23 @@ def check(committed, image):
                   and fresh["dispatch"] == disp))
 
     # --- classification completeness ---------------------------------------------------------------
-    unclassified = [d["at"] for d in dec if d["mnemonic"] and d["mnemonic"] not in
-                    ("jr", "jal", "j", "break", "nop") and _write_form(d) == (None, None)
-                    and d["mnemonic"] not in ("sw", "sh", "sb", "swc2", "mtc0", "mtc2", "ctc2", "lwc2",
-                                              "beq", "bne", "blez", "bgtz", "bltz", "bgez")]
-    cases.append((f"every word that writes a GPR is classified by the write-form table "
-                  f"({len(unclassified)} unclassified)",
-                  not unclassified))
+    # A word that writes a GPR must get a form; a word that writes none must be reported as writing none.
+    # Both sides are read off the decoded record, not off the mnemonic — the mnemonic route silently broke
+    # when M225 renamed the vector words (rsp_iface's own M224 defect, one layer on).
+    WRITES_A_GPR = ("ori", "addiu", "andi", "xori", "lui", "or", "addu", "sll", "srl", "sra", "subu",
+                    "and", "slt", "sltu", "lw", "lbu", "lhu", "mfc0", "mfc2", "cfc2")
+    NO_GPR = ("jr", "jal", "j", "break", "nop", "beq", "bne", "blez", "bgtz", "bltz", "bgez",
+              "sw", "sh", "sb", "mtc0", "mtc2", "ctc2")
+    unclassified = [{"at": d["at"], "text": d["text"]} for d in dec
+                    if d["mnemonic"] and d["mnemonic"] not in WRITES_A_GPR + NO_GPR
+                    and d.get("vector_kind") not in ("alu", "single", "vector_transfer", "transfer")
+                    and _write_form(d) == (None, None)]
+    misfiled = [{"at": d["at"], "text": d["text"]} for d in dec
+                if d["mnemonic"] in NO_GPR and _write_form(d)[0] is not None]
+    cases.append((f"every word is classified by the write-form table: the ones that write a GPR get a "
+                  f"form and the ones that do not are reported as writing none "
+                  f"({len(unclassified)} unclassified, {len(misfiled)} misfiled)",
+                  not unclassified and not misfiled))
 
     cases.append((f"every rsp_only entry says what is out of reach and what the CPU can say about it "
                   f"({len(committed['rsp_only'])} entries)",

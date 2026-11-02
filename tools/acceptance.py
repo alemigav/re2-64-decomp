@@ -18,6 +18,7 @@ Usage:
   ./acceptance.py --no-audit # defer the gate audit to verify.py, which grades it last
 """
 import argparse
+import importlib.util
 import os
 import re
 import subprocess
@@ -28,6 +29,21 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 
 CARTRIDGE = Path("rom/Resident Evil 2 (USA) (Rev 1).z64")
+
+
+def _audit_case_count():
+    """How many cases the gate audit has, read from its own list instead of pinned here.
+
+    M224 found this number stale (a typed 107 against a real 109) and fixed it by typing 112 — then M225
+    added three anchors and left the 112 behind, the same defect one milestone later. The number is a
+    property of `audit_gates.AUDITS`, so it is derived: one audit is one case (`total = len(AUDITS) `
+    `- skipped`), and with the cartridge present nothing skips. A pin that has to be remembered is not an
+    assertion, it is a habit.
+    """
+    spec = importlib.util.spec_from_file_location("audit_gates", Path(__file__).resolve().parent / "audit_gates.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return len(mod.AUDITS)
 
 # (name, command, expected case count, needs the cartridge). The cartridge is gitignored by design, so a
 # fresh clone — and therefore any CI runner — cannot supply it. Suites that need it report SKIP rather than
@@ -54,11 +70,11 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    # M224: this expectation had drifted — it said 107 while the audit ran 109, and nothing noticed
-    # because CI defers the audit to `verify.py` (`--no-audit`), which grades the audit by its own
-    # summary line rather than by this number. A full local `acceptance.py` failed on it, which is how
-    # it was found. The three M224 anchors take it to 112.
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 112, True),
+    # Derived, not pinned: M224 typed 107 against a real 109 and M225 typed 112 against a real 115, both
+    # invisible in CI because `--no-audit` defers this suite to `verify.py`, which grades it by its own
+    # summary line. See `_audit_case_count`.
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"],
+     _audit_case_count(), True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
@@ -104,7 +120,7 @@ SUITES = [
     ("voice decode (cartridge)", [sys.executable, "tools/voice_decode.py", "--check"], 9, True),
     ("voice sweep (cartridge)", [sys.executable, "tools/voice_sweep.py", "--check"], 12, True),
     ("voice descriptor (cartridge)", [sys.executable, "tools/voice_descriptor.py", "--check"], 29, True),
-    ("rsp ucode (cartridge)", [sys.executable, "tools/rsp_decode.py", "--check"], 18, True),
+    ("rsp ucode (cartridge)", [sys.executable, "tools/rsp_decode.py", "--check"], 22, True),
     # The interface between the task block the CPU publishes and the code the RSP runs (M224). It needs
     # the cartridge because every claim in it is a measurement of the unpacked stage-2 member.
     ("rsp interface (cartridge)", [sys.executable, "tools/rsp_iface.py", "--check"], 28, True),
