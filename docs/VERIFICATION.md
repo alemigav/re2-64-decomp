@@ -98,6 +98,31 @@ A cycle is not landed until all four of these are true, in this order:
    certificate's worktree hash equals the tree being committed, the verdict is `PASS` and the admission is
    clean. Edit one byte after verification and the hook runs the suite again — which is the point.
 
+### The order is load-bearing, and getting it wrong has cost three re-runs
+
+Steps 1→3 are in that order **because each one changes the tree the next one hashes**:
+
+* `ratchet.py --write` rewrites `fixtures/gates/ratchet.json`, so running it *after* `counts.py --check` means the
+  counts were checked against a baseline that no longer exists, and running it after `verify.py` means the
+  certificate describes a different tree and the hook re-runs the whole suite — five to eight minutes, twice, for
+  nothing. It happened in M221 and M219 for exactly this reason.
+* `counts.py --check` only reads, so it can run anywhere between them, but it must come **before** `verify.py`:
+  a stale number that verify discovers costs a full admission run to find a typo.
+* Anything that *writes* — regenerating a fixture, `ratchet --write`, re-seeding the milestone index — belongs in
+  steps 1–2. **A derived artefact is regenerated from its source, never hand-patched** (M221's commitment edited the
+  voice sweep twice mid-task; the fix was `--sweep`, not an edit).
+
+So the per-cycle sequence, in order, is:
+
+```sh
+python3 tools/preflight.py            # tier 1: counts, markers, index, ratchet drift, anchor lint  (seconds)
+python3 tools/ratchet.py --write      # accept the count change; the diff shows it
+python3 tools/counts.py --check       # the documents now quote the registry
+python3 tools/milestone_index.py --check && python3 tools/check_markers.py
+python3 tools/verify.py               # admission; writes the certificate for THIS tree
+git commit                            # the hook sees a matching certificate and skips the suite
+```
+
 Per *milestone*, the evidence is cheaper and still mandatory: the gate for the tool it touched, and a
 mutation that makes that gate fail for its intended reason. What is batched is the re-running of everything,
 never the proving of anything.

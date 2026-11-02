@@ -73,6 +73,8 @@ STEPS = [
      "every mutation's source anchor still exists and is unique"),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"],
      "the count gate can still fail"),
+    ("sound fixtures", [sys.executable, "tools/sound_fixtures.py", "--check"],
+     "the committed sound artefacts are internally consistent and unedited by hand"),
 ]
 
 # The same rule `acceptance.py` and `verify.py` use: the last `N/M` line is a tool's verdict.

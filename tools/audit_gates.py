@@ -422,6 +422,14 @@ AUDITS = [
     dict(name="script_population: a not-a-script entry is promoted to a heuristic candidate",
          tool="script_population.py", args=["--check"], file="manifests/script_population.json",
          old='"not_a_script": 514,', new='"not_a_script": 513,'),
+    # --- M221b: the fixture-only validator. Its whole point is catching a hand-edited artefact without the
+    # cartridge, so both mutations are exactly that: a clipped hash and a block ledger that stops closing.
+    dict(name="sound_fixtures: a clip hash is clipped by one character",
+         tool="sound_fixtures.py", args=["--check"], file="fixtures/sound/mort_sweep.json",
+         old='"pcm_sha256": "0a9d82150d63ba49214f8', new='"pcm_sha256": "0a9d82150d63ba49214f'),
+    dict(name="sound_fixtures: the block ledger stops closing",
+         tool="sound_fixtures.py", args=["--check"], file="fixtures/sound/mort_sweep.json",
+         old='"blocks_silent": 44144', new='"blocks_silent": 44145'),
     # --- M213b: the refusal work list. The claim is that every refusal is classified and every one lands in a
     # work item, so both mutations attack that link rather than the numbers.
     dict(name="vm_refusals: one refusal is filed under a kind with no work item",
