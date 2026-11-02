@@ -32,7 +32,8 @@ the subset test so list[5] is treated as its own set. Audit **53/53, 0 vacuous**
 |---|---|---|
 | A `0x8014e1e0` | list `[4]`, 736 sample keys | sample-keyed objects |
 | B `0x801521f0` | list `[5]`, 142 samples ↔ 148 parameters | the pairing |
-| C `0x80152a00` | list `[6]`, 65 tag-3 keys, with a length | sized tag-3 objects |
+| C `0x80152a00` | list `[6]`, 65 tag-3 keys, **key + rate** | tag-3 objects cached per rate |
 
-Still open: what a "sample" and a "parameter set" are *called* in the engine, and what cache C's length
+Answered since: cache C's third field is the **rate**, not a length. Still open: what a "sample"
+and a "parameter set" are *called* in the engine, and what cache C's old length
 means given the parameter records already carry their own size at `+12`.

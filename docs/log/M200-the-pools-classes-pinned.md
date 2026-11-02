@@ -17,7 +17,7 @@ shaped 32–56 / 16 / 3×1032 / 36–72 bytes — while the *roles* are the six 
   tag-3 only (the 241 fixed-16-byte records).
 - **code:** `FUN_800a86a0` walks the pool chain (key at `record+4`, accumulating offset, `-1` terminator)
   and dispatches list `[4]` → the cache at `0x8014e1e0`, list `[5]` → `0x801521f0`, and list `[6]` →
-  `0x80152a00`, the only one whose call passes a length read from the pool record at `+10`.
+  `0x80152a00`, the only one whose call also passes the `u16` at `+10` — **the rate**, not a length (corrected since).
 
 ## Two mutations, both vacuous first time
 
@@ -30,7 +30,7 @@ the audit caught it; the rule is that a mutation must change the *outcome*, not 
 ## What is still not established
 
 The *names*. Cache A is fed by sample keys and cache C by tag-3 keys with a length, which narrows them to
-"the sample-keyed cache" and "the sized cache over the 16-byte class" — but nothing yet says what those
+"the sample-keyed cache" and "the rate-keyed cache over the 16-byte class" — but nothing yet says what those
 16-byte records are, and cache B is fed by a mixed list. No name is claimed here.
 
 State: file table **91/91**, audit **50/50**, counts **36 suites / 458 cases** (22 / 218 runnable without the

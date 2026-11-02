@@ -298,6 +298,10 @@ AUDITS = [
          tool="file_table.py", args=["--check"], file="tools/file_table.py",
          old="                  len(_s5) == 290 and len(_t0) == 142 and len(_t3) == 148 and _t0 <= _s2))",
          new="                  len(_s5) == 290 and len(_t0) == 142 and len(_t3) == 148 and _t0 >= _s2))"),
+    dict(name="file_table: cache C's rate argument is no longer read",
+         tool="file_table.py", args=["--check"], file="tools/file_table.py",
+         old='                  "FUN_800ace1c(*psVar6,piVar5+3,*(undefined2*)((int)piVar5+10));" in _resn))',
+         new='                  "FUN_800ace1c(*psVar6,piVar5+3,*(undefined2*)((int)piVar5+99));" in _resn))'),
     # --- the counts gate (M180). Its `--check` runs on a repository that is by definition consistent, so
     # aiming at the comparison is invisible; the mutation is aimed at the *derived* number instead. The
     # second audit disables the phrasectomy in the self-test, so the "a deleted phrase is caught" case

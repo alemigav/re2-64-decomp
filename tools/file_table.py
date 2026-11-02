@@ -790,8 +790,7 @@ def check() -> int:
                   and _cls[0] == [0] and _cls[2] == [0] and _cls[4] == [3]))
     _res = (HERE.parent / "src" / "stage2" / "FUN_800a86a0.c").read_text()
     cases.append(("CODE: the resolver walks the pool chain and hands list[4] to the cache at "
-                  "0x8014e1e0, list[5] to 0x801521f0, and list[6] to the length-bearing one at "
-                  "0x80152a00",
+                  "0x8014e1e0, list[5] to 0x801521f0, and list[6] to the rate-keyed one at 0x80152a00",
                   all(f"FUN_800a{h}(" in _res for h in ("d0c0", "cbc0", "ce1c"))
                   and "param_1[4]" in _res and "param_1[5]" in _res and "param_1[6]" in _res
                   and "piVar5 + 3" in _res and "(int)piVar5 + 10" in _res))
@@ -846,6 +845,15 @@ def check() -> int:
     cases.append((f"list[5] is the sample-to-parameter pairing, not an independent set: {len(_t0)} "
                   f"sample keys and {len(_t3)} tag-3 keys, all of its sample keys also in list[2]",
                   len(_s5) == 290 and len(_t0) == 142 and len(_t3) == 148 and _t0 <= _s2))
+    # --- cache C's third field is the RATE, not a length. `piVar5` is an `int *`, so `piVar5 + 3`
+    # is record+12 (the payload pointer, pointing AT the size field) and `(int)piVar5 + 10` is record+10,
+    # which M201 established carries the sample rate. The entry is therefore {payload@12, key, rate,
+    # refcount}: the same key at a different rate is a different entry. This corrects the "length"
+    # wording that M200 and M202 shipped.
+    _resn = _res.replace(" ", "")
+    cases.append(("CODE: cache C is keyed by key AND rate — the resolver hands it record+12 as the "
+                  "payload and the u16 at record+10 as the third argument",
+                  "FUN_800ace1c(*psVar6,piVar5+3,*(undefined2*)((int)piVar5+10));" in _resn))
     # --- M191: the codec constants are also a committed fixture, so the prose that quotes them and the
     # measurement that produces them are checked against the same source. The cartridge-gated case runs
     # first: if the measurement ever moves, this fails before the documentation can drift with it.
