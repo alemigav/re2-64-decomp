@@ -105,6 +105,32 @@ If a rights holder objects to its presence, it will be removed on request.
 | three Nintendo SDK PDFs | copyrighted manuals, `.gitignore`d (`docs/*.pdf`); local reference only |
 | the cartridge | never committed, in any commit; only its SHA-256 appears, in `manifests/manifest.json` |
 
+## 4b. Cited as a specification: the RSP's register map and instruction tables (CC BY-SA-4.0)
+
+Two pages of the **N64brew Wiki** supply the one thing the local Programming Manual does not: the RSP's
+COP0 register numbers and the field split of the vector-unit instructions.
+
+| | |
+|---|---|
+| source | N64brew Wiki, <https://n64brew.dev/> (Miraheze) |
+| pages | `Reality_Signal_Processor/Interface`, revision **5376** (2024-03-19) — the register map, the length-is-bytes-minus-1 rule, the semaphore's read-sets-the-bit behaviour, the `SP_STATUS` write layout |
+| | `Reality_Signal_Processor/CPU_Core`, revision **5539** (2025-02-01) — the `lwc2`/`swc2` field split, the access sizes, the 12-bit PC, and that branch-likely opcodes are not implemented |
+| licence | **CC BY-SA-4.0** — <https://creativecommons.org/licenses/by-sa/4.0/> |
+| what was taken | **facts only**: register numbers and their names, bit-field boundaries, and stated behaviour. **No text is reproduced** and no wiki markup or code is copied |
+| where it appears | `tools/rsp_iface.py` (`SP_REGISTERS`, the `lwc2` row table) and `manifests/rsp_iface.json`, whose `external_sources` block carries the URLs, revisions and licences next to the claims that use them |
+
+The manual was asked first and answered clearly — it does not map these registers and says so: p115, "With
+the current software architecture, the application does not program the SP directly, and need not concern
+itself with IMEM and DMEM accesses", and its own index lists the header it defers device bit patterns to
+(`rcp.h`) against pages 110–111 only, which are the DP, VI, AI and PI status registers. So the wiki is used
+because the authority is genuinely absent, and every consequence drawn from it is re-measured against the
+cartridge rather than trusted: the length values the ucode writes are all bytes-1 with bytes a multiple of
+8, the two transfer directions are both present and each one is the direction the cited page gives its
+trigger register, and the vector transfers' corrected addresses all land inside DMEM. Those checks are what
+the citation rests on. **CC BY-SA-4.0 is share-alike for the licensed text; none of it is present here**,
+and the facts themselves are not copyrightable — the attribution is given because it is owed, not because
+it is a licence condition on this repository's own work.
+
 ## 5. How that is enforced rather than promised
 
 `tools/artefact_scan.py` (part of every push and every commit) reads the bytes of every tracked file and

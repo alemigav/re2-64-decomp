@@ -477,6 +477,21 @@ AUDITS = [
          # anchored on a prologue used by exactly one fragment, so flipping it removes that prologue from the
          # "already a function start" set and the claim fails; flipping a shared one would change nothing.
          old='"region_entry": "0x8006ebec",', new='"region_entry_in_corpus_false_marker": "0x8006ebec",'),
+    # --- M224: the RSP interface. Three anchors, each aimed at an outcome the artefact turns on: the
+    # 12-bit mask that puts the one synthesized link back inside the program, the two-value pointer
+    # that produces the parameter records, and the bytes-1 rule the cited register map states.
+    dict(name="rsp_iface: the synthesized link is not masked to IMEM's 12 bits",
+         tool="rsp_iface.py", args=["--check"], file="tools/rsp_iface.py",
+         old="            out.add(raw & 0xFFF)",
+         new="            out.add(raw)"),
+    dict(name="rsp_iface: the two-value pointer no longer yields parameter records",
+         tool="rsp_iface.py", args=["--check"], file="tools/rsp_iface.py",
+         old="        if len(vals) != 2 or reg == 0:",
+         new="        if True:"),
+    dict(name="rsp_iface: a DMA length is recorded as bytes instead of bytes-1",
+         tool="rsp_iface.py", args=["--check"], file="tools/rsp_iface.py",
+         old='                                        "bytes": val + 1,',
+         new='                                        "bytes": val,'),
     # --- M216: the anchor lint. Disabling the uniqueness check must fail the lint's own self-test, because
     # an anchor that matches two places is a mutation that is half-applied and never says so.
     dict(name="audit lint: a duplicated anchor is no longer reported",

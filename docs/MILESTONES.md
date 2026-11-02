@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-224 milestones are indexed. 151 of them have a note; the rest are rows in the log that cite
+225 milestones are indexed. 152 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -241,6 +241,7 @@ at the foot of this file.
 | 221 | **M221** — WP3: every one of the 588 voice clips, and 12 037 live comparison blocks | `docs/log/M221-wp3-the-whole-voice-bank.md` |
 | 222 | **M222** — WP3b: the voice descriptor, and the correction to my own `+0x1a4` | `docs/log/M222-wp3b-the-voice-descriptor.md` |
 | 223 | **M223** — the RSP ucode: decoded, and deliberately not named | `docs/log/M223-the-rsp-ucode-decoded-but-not-named.md` |
+| 224 | **M224** — the interface is a frame loop, not a command list | `docs/log/M224-the-interface-is-a-frame-loop-not-a-command-list.md` |
 
 ## The gaps, and why they are empty
 
