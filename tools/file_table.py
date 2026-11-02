@@ -449,6 +449,68 @@ def check() -> int:
                   f"({bad_smp} of {n_smp} samples has a majority failing)",
                   fails_total == 5441 and bad_smp == 0))
 
+    # --- M203: the words at +20 and +24 are a loop *start* and a loop *length*, not a start and an end.
+    # M193's table said "+20 loop start / +24 loop end", taken from a third-party description and never
+    # measured. The cartridge's own reader loads both as 32-bit words (`FUN_800ada34`), the voice setup
+    # computes the remainder as length - (word20 + word24) (`FUN_800a54ec`), and the mixer wraps to word20 and
+    # renders word24 - (pos - word20) more samples (`FUN_800a3bf4`) -- so the two words **add**, which a
+    # start/end pair would not. The data agrees on every looped record, and three independent falsifications
+    # are gated with it: a claim about arithmetic has to be able to fail arithmetic three ways.
+    _w20 = lambda r: struct.unpack_from(">I", r, 20)[0]
+    _w24 = lambda r: struct.unpack_from(">I", r, 24)[0]
+    _wlen = lambda r: struct.unpack_from(">I", r, 16)[0] & 0xFFFFFF
+    loop_start = [_w20(r) for r in srec[:n_smp]]
+    loop_len = [_w24(r) for r in srec[:n_smp]]
+    decl24 = [_wlen(r) for r in srec[:n_smp]]
+    loops = [(k, loop_start[k], loop_len[k], decl24[k]) for k in range(n_smp) if loop_len[k]]
+    silent = [loop_start[k] for k in range(n_smp) if not loop_len[k]]
+    stream_len = [((len(smp) - 256) // 40) * 64 for smp in smp_blobs]
+    n_loops = len(loops)
+    exact = sum(1 for _k, a, b, l in loops if a + b == l)
+
+    cases.append((f"{n_loops} of {n_smp} records name a loop; the other {n_smp - n_loops} carry 0 at +24 and "
+                  f"exactly 2 at +20 — one filler constant, so +20 is inert wherever +24 is 0",
+                  n_loops == 187 and len(silent) == 1005 and set(silent) == {2}))
+    cases.append((f"loop start + loop length stays inside the declared 24-bit length on {n_loops}/{n_loops} "
+                  f"records and lands exactly on it on {exact} — a start, a length, and the remainder after "
+                  f"both", all(a + b <= l for _k, a, b, l in loops) and exact == 112))
+    cases.append((f"REFUTED: +24 is not a loop end — that reading needs start < end, which fails on "
+                  f"{n_loops - sum(1 for _k, a, b, l in loops if a < b)}/{n_loops} records",
+                  sum(1 for _k, a, b, l in loops if a < b) == 123))
+    r32 = max((l - a - b) / l for _k, a, b, l in loops)
+    r16 = max((l - a - (b & 0xFFFF)) / l for _k, a, b, l in loops)
+    cases.append((f"the field is 32-bit: the longest remainder is {r32:.1%} of its sample, while truncating "
+                  f"+24 to 16 bits makes one {r16:.1%} — {sum(1 for b in loop_len if b > 0xFFFF)} records "
+                  f"carry a length above 65 535",
+                  r32 < 0.34 and r16 > 0.9 and sum(1 for b in loop_len if b > 0xFFFF) == 3))
+    cases.append((f"the loop region fits the decoded stream on {n_loops}/{n_loops} — start + length <= "
+                  f"frames x 64 — while only {sum(1 for k, a, b, _l in loops if a + b <= smp_len[k])} of "
+                  f"{n_loops} fit the sample's byte count, so the unit is a decoded sample",
+                  all(a + b <= stream_len[k] for k, a, b, _l in loops)
+                  and sum(1 for k, a, b, _l in loops if a + b <= smp_len[k]) == 4))
+
+    s_dir = (src / "stage2" / "FUN_800ada34.c").read_text()
+    cases.append(("CODE: the record reader takes +0x14 and +0x18 as 32-bit words and masks the length word "
+                  "with 0xffffff",
+                  "param_2[4] = *(undefined4 *)(iVar1 + 0x14);" in s_dir
+                  and "param_2[5] = *(undefined4 *)(iVar1 + 0x18);" in s_dir
+                  and "& 0xffffff" in s_dir))
+    s_setup = (src / "stage2" / "FUN_800a54ec.c").read_text()
+    cases.append(("CODE: the voice stores the remainder as length - (start + length), zeroed below 10",
+                  "uVar3 = *(int *)(iVar1 + 0x30) - (*(int *)(iVar1 + 0x34) + *(int *)(iVar1 + 0x38));"
+                  in s_setup))
+    s_mix = (src / "stage2" / "FUN_800a3bf4.c").read_text()
+    cases.append(("CODE: the mixer's loop end is start + length, and after the wrap it reads from start for "
+                  "length - (pos - start) more samples",
+                  "uVar8 = *(int *)(param_1 + 0x34) + uVar2;" in s_mix
+                  and "local_40 = (*(int *)(param_1 + 0x34) - local_48) + *(int *)(param_1 + 0x38);" in s_mix
+                  and "iVar10 = *(int *)(param_1 + 0x34) - local_48;" in s_mix))
+    s_off = (src / "stage2" / "FUN_800a59d0.c").read_text()
+    cases.append(("CODE: note-off clears one byte per voice, and the mixer consults it before dropping the "
+                  "loop to play the remainder",
+                  "_DAT_80143f0c + 1) = 0;" in s_off
+                  and "(param_1[1] == '\\0' && (*(int *)(param_1 + 0x3c) != 0))" in s_mix))
+
     # --- M185: the other three files of the sound family. `FUN_800a86a0` walks both SND_PROJ and
     # SND_POOL the same way — a u32 at the head is a *relative offset to the first record*, each record's
     # first u32 is the stride to the next, and `-1` ends the chain — so each is framed the same way id 1983
