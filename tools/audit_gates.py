@@ -378,6 +378,23 @@ AUDITS = [
     dict(name="handler_region: the extent queue drops one correction",
          tool="handler_region.py", args=["--check"], file="manifests/extent_corrections.json",
          old='"entry": "0x8006da14",', new='"entry": "0x8006da18",'),
+    # --- M214: the population partition. Two claims: the room-table category is exactly the rooms' file ids,
+    # and the "not a script" bucket is not a dumping ground.
+    dict(name="script_population: one room-table entry is not a room's file id",
+         tool="script_population.py", args=["--check"], file="manifests/script_population.json",
+         old='"room_table": 50,', new='"room_table": 49,'),
+    dict(name="script_population: a not-a-script entry is promoted to a heuristic candidate",
+         tool="script_population.py", args=["--check"], file="manifests/script_population.json",
+         old='"not_a_script": 514,', new='"not_a_script": 513,'),
+    # --- M213b: the refusal work list. The claim is that every refusal is classified and every one lands in a
+    # work item, so both mutations attack that link rather than the numbers.
+    dict(name="vm_refusals: one refusal is filed under a kind with no work item",
+         tool="vm_refusals.py", args=["--check"], file="manifests/vm_refusals.json",
+         old='"room": 6,\n   "file_id": 1887,\n   "kind": "unresolved_advance"',
+         new='"room": 6,\n   "file_id": 1887,\n   "kind": "unresolved_advances"'),
+    dict(name="vm_refusals: the refused total no longer matches the rows",
+         tool="vm_refusals.py", args=["--check"], file="manifests/vm_refusals.json",
+         old='"refused": 59,', new='"refused": 58,'),
     # --- M213: the decoder. The mutation that matters is the one the milestone forbids: an opcode with no
     # constant advance must raise as `unresolved`, never be skipped as one byte.
     dict(name="scd_vm: an opcode with no advance is skipped as one byte",
