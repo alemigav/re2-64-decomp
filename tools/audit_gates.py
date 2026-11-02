@@ -504,6 +504,21 @@ AUDITS = [
          # anchored on a prologue used by exactly one fragment, so flipping it removes that prologue from the
          # "already a function start" set and the claim fails; flipping a shared one would change nothing.
          old='"region_entry": "0x8006ebec",', new='"region_entry_in_corpus_false_marker": "0x8006ebec",'),
+    # --- M228: the dispatch-head census. Three anchors: the bound that sets the entry count, the
+    # sign-extended immediate that puts a table 0x10000 off (the M226 error, as a mutation), and the
+    # jal-site count that decides whether a head is a function boundary.
+    dict(name="dispatch_heads: every bound is read one too large",
+         tool="dispatch_heads.py", args=["--check"], file="tools/dispatch_heads.py",
+         old="                bound = wb & 0xFFFF",
+         new="                bound = (wb & 0xFFFF) + 1"),
+    dict(name="dispatch_heads: the table address is built with an unsigned immediate",
+         tool="dispatch_heads.py", args=["--check"], file="tools/dispatch_heads.py",
+         old="base = (hi + (sx16(wc & 0xFFFF) if opc == ADDIU else (wc & 0xFFFF))) & 0xFFFFFFFF",
+         new="base = (hi + (wc & 0xFFFF)) & 0xFFFFFFFF"),
+    dict(name="dispatch_heads: a head's jal call sites are not recorded",
+         tool="dispatch_heads.py", args=["--check"], file="tools/dispatch_heads.py",
+         old="            jal_sites.setdefault(((va + 4) & 0xF0000000) | ((w & 0x3FFFFFF) << 2), []).append(va)",
+         new="            jal_sites.setdefault(0, []).append(va)"),
     # --- M227: the extent-correction queue. Three anchors aimed at its own outcomes: the word-grid
     # alignment (whose absence is the bug this tool actually shipped first), the attribution of a store
     # to its own handler, and the reference class that makes one queued correction unsafe.
@@ -515,10 +530,13 @@ AUDITS = [
          tool="extent_audit.py", args=["--check"], file="tools/extent_audit.py",
          old='        kind = sites[0]["where"] if sites else "none"',
          new='        kind = "own_extent" if sites else "none"'),
-    dict(name="extent_audit: a jal-callable function is classified as a dispatch arm",
+    # re-aimed in M228: M227's classes were "jal_callable"/"dispatch_arm"/"unreferenced", and the head census
+    # replaced them with "dispatch_head"/"table_arm"/"branch_target" plus an orthogonal jal-site count. The
+    # mutation now attacks the count, because that is what decides safety.
+    dict(name="extent_audit: a swallowed function's jal call sites are not counted",
          tool="extent_audit.py", args=["--check"], file="tools/extent_audit.py",
-         old='            elif s in jal:\n                kind = "jal_callable"',
-         new='            elif s in jal:\n                kind = "dispatch_arm"'),
+         old='                "jal_sites": jal.get(s, 0),',
+         new='                "jal_sites": 0,'),
     # --- M226: the 0x36 dispatch table. Three anchors aimed at the artefact's own outcomes: the sign
     # extension that puts the table at 0x800b98e0 rather than 0x800c98e0, the bounds check that makes
     # five the entry count, and the shared tail that makes the advance 12.

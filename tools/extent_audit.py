@@ -84,15 +84,25 @@ def stores(image, lo, hi):
 
 
 def references(image):
-    """Every `jal` target in stage-2, and every value that appears anywhere as a 4-byte word."""
-    jal, pointers = set(), set()
+    """Every way a stage-2 address is referenced: `jal` targets, branch targets, and 4-byte words.
+
+    M227's version counted only `jal` targets and pointers, which called `0x8007188c` "unreferenced" when a
+    `bne` at 0x800717b0 reaches it — the class was wrong, not the code. Branch targets are measured here.
+    """
+    jal, branch, pointers = {}, set(), set()   # jal is target -> call-site count
     for off in range(0, len(image) - 3, 4):
         w = int.from_bytes(image[off:off + 4], "big")
+        va = rd.STAGE2_BASE + off
         pointers.add(w)
-        if (w >> 26) == JAL:
-            va = rd.STAGE2_BASE + off
-            jal.add(((va + 4) & 0xF0000000) | ((w & 0x3FFFFFF) << 2))
-    return jal, pointers
+        op = w >> 26
+        if op == 0x03:
+            t = ((va + 4) & 0xF0000000) | ((w & 0x3FFFFFF) << 2)
+            jal[t] = jal.get(t, 0) + 1
+        elif op in (0x01, 0x04, 0x05, 0x06, 0x07):
+            imm = w & 0xFFFF
+            imm = imm - 0x10000 if imm & 0x8000 else imm
+            branch.add((va + 4 + (imm << 2)) & 0xFFFFFFFF)
+    return jal, branch, pointers
 
 
 def _ranges():
@@ -155,12 +165,24 @@ def store_placement(image, ranges, handlers, queue):
     return out
 
 
-def queue_audit(ranges, queue, handlers, jal, pointers):
-    """Per entry: what it brings inside, what it swallows, and whether swallowing is safe."""
+HEADS = ROOT / "manifests" / "dispatch_heads.json"
+
+
+def queue_audit(ranges, queue, handlers, jal, branch, pointers):
+    """Per entry: what it brings inside, what it swallows, and whether swallowing is safe.
+
+    The reference classes are orthogonal: `kind` says how the address is named (a handler, a dispatch head, a
+    table arm, or nothing at all), and `jal_sites` says whether code *calls* it. Safety turns on the second:
+    a correction that swallows a function someone `jal`s deletes a call target from the corpus, and that is
+    the verdict's only hard failure. M227 conflated the two into one `jal_callable` label and so called a
+    dispatch head "a leaf function"; the head census (M228) separates them.
+    """
     starts = sorted(a for a, _b in ranges)
     ends = {a: b for a, b in ranges}
-    # the fixture is keyed by handler address; the records themselves carry no `handler` field
     handler_starts = {int(h, 16) for h in handlers}
+    heads = json.loads(HEADS.read_text())["entries"] if HEADS.exists() else []
+    head_of = {e["head_body"]["start"]: e for e in heads if e["head_body"]}
+    arms = {t for e in heads for t in e["targets"]}
     out = []
     for c in queue:
         ent, last = int(c["entry"], 16), int(c["last_end"], 16)
@@ -174,17 +196,29 @@ def queue_audit(ranges, queue, handlers, jal, pointers):
                 continue
             if s in handler_starts:
                 kind = "handler"
-            elif s in jal:
-                kind = "jal_callable"
-            elif s in pointers:
-                kind = "dispatch_arm"
+            elif s in head_of:
+                kind = "dispatch_head"
+            elif s in arms:
+                kind = "table_arm"
+            elif s in branch:
+                kind = "branch_target"
             else:
                 kind = "unreferenced"
-            swallowed.append({"start": s, "end": ends[s], "kind": kind})
-        unsafe = [x for x in swallowed if x["kind"] == "jal_callable"]
+            swallowed.append({
+                "start": s, "end": ends[s], "kind": kind,
+                "jal_sites": jal.get(s, 0),
+                "head_table": head_of[s]["table"] if s in head_of else None,
+            })
+        unsafe = [x for x in swallowed if x["jal_sites"]]
         unreferenced = [x for x in swallowed if x["kind"] == "unreferenced"]
-        if unsafe:
-            verdict = "unsafe: it would merge a function that a `jal` can call"
+        stop_before = unsafe[0]["start"] if unsafe else (unreferenced[0]["start"] if unreferenced else None)
+        if unsafe and stop_before == cur_end + 1:
+            # the strongest form: there is nothing to extend. The corpus already ends this function where the
+            # next called head begins, so the requested last_end is simply too far.
+            verdict = "drop: no valid extension — the function already ends where the next called head begins"
+        elif unsafe:
+            verdict = ("unsafe: it would merge a function that a `jal` can call; clip it before 0x%08x"
+                       % stop_before)
         elif unreferenced:
             verdict = "apply with care: one swallowed function is referenced nowhere in this image"
         else:
@@ -197,11 +231,10 @@ def queue_audit(ranges, queue, handlers, jal, pointers):
             "handlers_brought_inside": brought,
             "swallowed": swallowed,
             "swallowed_counts": {k: sum(1 for x in swallowed if x["kind"] == k)
-                                 for k in ("handler", "dispatch_arm", "jal_callable", "unreferenced")},
-            # the queue's own note calls all 21 "extents [that] must be extended". Measured: the ones that
-            # swallow nothing are plain extensions, and the rest are function *merges* -- a different edit
-            # with a different consequence, since a merge removes corpus entries.
+                                 for k in ("handler", "dispatch_head", "table_arm", "branch_target",
+                                           "unreferenced")},
             "shape": "extension" if not swallowed else "merge",
+            "must_stop_before": stop_before,
             "verdict": verdict,
         })
     return out
@@ -211,9 +244,9 @@ def derive(image):
     ranges = _ranges()
     handlers = json.loads(REGIONS.read_text())["handlers"]
     queue = json.loads(QUEUE.read_text())["corrections"]
-    jal, pointers = references(image)
+    jal, branch, pointers = references(image)
     places = store_placement(image, ranges, handlers, queue)
-    qaudit = queue_audit(ranges, queue, handlers, jal, pointers)
+    qaudit = queue_audit(ranges, queue, handlers, jal, branch, pointers)
     kinds = {}
     for p in places:
         kinds[p["kind"]] = kinds.get(p["kind"], 0) + 1
@@ -233,6 +266,8 @@ def derive(image):
                         "re-derived: 59 function_body, 76 fragment, 3 unresolved)",
             "queue": "manifests/extent_corrections.json (M212's 21 queued corrections)",
             "jal_targets": len(jal),
+            "heads": "manifests/dispatch_heads.json (M228: 86 bounds-checked dispatch heads, consumed so a "
+                     "swallowed start is named a head rather than 'a leaf the walk sailed past')",
             "grid": "range endpoints are last *bytes*, so every scan starts at the next word boundary; "
                     "a scan beginning at `end + 1` walks off the grid and silently finds nothing",
         },
@@ -329,20 +364,25 @@ def check(committed, image):
                   and sum(q["by_shape"].values()) == 21
                   and all((e["shape"] == "extension") == (not e["swallowed"]) for e in q["entries"])))
 
-    cases.append((f"every swallowed function start is classified by how it can be reached "
-                  f"({q['swallowed_total']} starts)",
+    cases.append((f"every swallowed function start is classified by how it can be reached, and nothing is "
+                  f"left unreferenced ({q['swallowed_total']} starts)",
                   q["swallowed_total"] == sum(len(e["swallowed"]) for e in q["entries"])
-                  and all(x["kind"] in ("handler", "dispatch_arm", "jal_callable", "unreferenced")
-                          for e in q["entries"] for x in e["swallowed"])))
+                  and all(x["kind"] in ("handler", "dispatch_head", "table_arm", "branch_target")
+                          for e in q["entries"] for x in e["swallowed"])
+                  and sum(e["swallowed_counts"]["unreferenced"] for e in q["entries"]) == 0))
 
-    # read from the fresh derivation, not the committed file: a case that only reads the artefact cannot see
-    # a change in how it is derived, and this one exists to notice exactly that
+    # read from the fresh derivation: a case that only reads the artefact cannot see a change in how it is
+    # derived, which is the defect M225 recorded and M227 repeated
     fq = fresh["queue"]["entries"]
-    unsafe = [e["entry"] for e in fq if e["verdict"].startswith("unsafe")]
-    cases.append((f"the entries that would merge a jal-callable function are named ({unsafe})",
-                  unsafe == ["0x80071744"]
-                  and all(any(x["kind"] == "jal_callable" for x in e["swallowed"])
-                          for e in fq if e["entry"] in unsafe)))
+    dropped = [e["entry"] for e in fq if e["verdict"].startswith("drop")]
+    cases.append((f"the entry with no valid extension is named, and said to be droppable ({dropped})",
+                  dropped == ["0x80071744"]
+                  and next(e for e in fq if e["entry"] == "0x80071744")["must_stop_before"]
+                  == next(e for e in fq if e["entry"] == "0x80071744")["current_end"] + 1))
+
+    cases.append(("the swallowed starts of the arm families are exactly their tables' entries",
+                  next(e for e in fq if e["entry"] == "0x80071180")["swallowed_counts"]["table_arm"] == 5
+                  and next(e for e in fq if e["entry"] == "0x8006e534")["swallowed_counts"]["table_arm"] == 7))
 
     cases.append((f"the verdict totals add up to the entry count "
                   f"({q['verdicts']}, {len(q['entries'])} entries)",

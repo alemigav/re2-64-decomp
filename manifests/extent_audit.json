@@ -3,6 +3,7 @@
   "base": "0x80018a80",
   "grid": "range endpoints are last *bytes*, so every scan starts at the next word boundary; a scan beginning at `end + 1` walks off the grid and silently finds nothing",
   "handlers": "manifests/handler_region.json (M212's classification, consumed rather than re-derived: 59 function_body, 76 fragment, 3 unresolved)",
+  "heads": "manifests/dispatch_heads.json (M228: 86 bounds-checked dispatch heads, consumed so a swallowed start is named a head rather than 'a leaf the walk sailed past')",
   "image": "assets/unpacked/00000_0014420_1172240.bin",
   "jal_targets": 1993,
   "queue": "manifests/extent_corrections.json (M212's 21 queued corrections)",
@@ -33,6 +34,7 @@
      "0x1f",
      "0x20"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x00",
      "0x01",
@@ -45,9 +47,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -69,6 +72,7 @@
      "0x0e",
      "0x1b"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x05",
      "0x06",
@@ -85,9 +89,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -100,6 +105,7 @@
      "0x10",
      "0x11"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x10",
      "0x11"
@@ -107,9 +113,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -129,6 +136,7 @@
      "0x1a",
      "0x1d"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x13",
      "0x14",
@@ -143,9 +151,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -161,6 +170,7 @@
      "0x24",
      "0x25"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x21",
      "0x22",
@@ -171,44 +181,59 @@
     "swallowed": [
      {
       "end": 2147935979,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147935968
      },
      {
       "end": 2147935987,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147935980
      },
      {
       "end": 2147935999,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147935988
      },
      {
       "end": 2147936007,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147936000
      },
      {
       "end": 2147936019,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147936008
      },
      {
       "end": 2147936031,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147936020
      },
      {
       "end": 2147936047,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147936032
      }
     ],
     "swallowed_counts": {
-     "dispatch_arm": 7,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 7,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -220,15 +245,17 @@
     "handlers_brought_inside": [
      "0x3c"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x3c"
     ],
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -240,15 +267,17 @@
     "handlers_brought_inside": [
      "0x61"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x61"
     ],
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -263,6 +292,7 @@
      "0x67",
      "0x68"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x2c",
      "0x3b",
@@ -272,9 +302,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -286,15 +317,17 @@
     "handlers_brought_inside": [
      "0x46"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x46"
     ],
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -306,15 +339,17 @@
     "handlers_brought_inside": [
      "0x48"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x48"
     ],
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -326,15 +361,17 @@
     "handlers_brought_inside": [
      "0x49"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x49"
     ],
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -350,6 +387,7 @@
      "0x32",
      "0x33"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x2f",
      "0x30",
@@ -360,9 +398,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -374,6 +413,7 @@
     "handlers_brought_inside": [
      "0x37"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x37"
     ],
@@ -381,34 +421,45 @@
     "swallowed": [
      {
       "end": 2147946971,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147946956
      },
      {
       "end": 2147947003,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147946972
      },
      {
       "end": 2147947035,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147947004
      },
      {
       "end": 2147947083,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147947036
      },
      {
       "end": 2147947239,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147947084
      }
     ],
     "swallowed_counts": {
-     "dispatch_arm": 5,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 5,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -422,6 +473,7 @@
      "0x40",
      "0x4a"
     ],
+    "must_stop_before": 2147948448,
     "opcodes": [
      "0x3f",
      "0x40",
@@ -431,47 +483,62 @@
     "swallowed": [
      {
       "end": 2147948507,
-      "kind": "jal_callable",
+      "head_table": 2148243704,
+      "jal_sites": 7,
+      "kind": "dispatch_head",
       "start": 2147948448
      },
      {
       "end": 2147948519,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147948508
      },
      {
       "end": 2147948551,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147948520
      },
      {
       "end": 2147948583,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147948552
      },
      {
       "end": 2147948631,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147948584
      },
      {
       "end": 2147948683,
-      "kind": "dispatch_arm",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "table_arm",
       "start": 2147948632
      },
      {
       "end": 2147948879,
-      "kind": "unreferenced",
+      "head_table": null,
+      "jal_sites": 0,
+      "kind": "branch_target",
       "start": 2147948684
      }
     ],
     "swallowed_counts": {
-     "dispatch_arm": 5,
+     "branch_target": 1,
+     "dispatch_head": 1,
      "handler": 0,
-     "jal_callable": 1,
-     "unreferenced": 1
+     "table_arm": 5,
+     "unreferenced": 0
     },
-    "verdict": "unsafe: it would merge a function that a `jal` can call"
+    "verdict": "drop: no valid extension \u2014 the function already ends where the next called head begins"
    },
    {
     "corrected_end": "0x80071e13",
@@ -485,6 +552,7 @@
      "0x5b",
      "0x66"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x41",
      "0x42",
@@ -496,9 +564,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -511,6 +580,7 @@
      "0x4f",
      "0x50"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x4f",
      "0x50"
@@ -518,9 +588,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -532,15 +603,17 @@
     "handlers_brought_inside": [
      "0x5f"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x5f"
     ],
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -555,6 +628,7 @@
      "0x78",
      "0x79"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x5d",
      "0x77",
@@ -564,9 +638,10 @@
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -585,6 +660,7 @@
      "0x7e",
      "0x7f"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x38",
      "0x6a",
@@ -597,19 +673,24 @@
     "swallowed": [
      {
       "end": 2147954019,
+      "head_table": null,
+      "jal_sites": 0,
       "kind": "handler",
       "start": 2147953924
      },
      {
       "end": 2147954139,
+      "head_table": null,
+      "jal_sites": 0,
       "kind": "handler",
       "start": 2147954020
      }
     ],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 2,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -629,6 +710,7 @@
      "0x84",
      "0x89"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x45",
      "0x70",
@@ -643,14 +725,17 @@
     "swallowed": [
      {
       "end": 2147955055,
+      "head_table": null,
+      "jal_sites": 0,
       "kind": "handler",
       "start": 2147954944
      }
     ],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 1,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
@@ -662,25 +747,27 @@
     "handlers_brought_inside": [
      "0x86"
     ],
+    "must_stop_before": null,
     "opcodes": [
      "0x86"
     ],
     "shape": "extension",
     "swallowed": [],
     "swallowed_counts": {
-     "dispatch_arm": 0,
+     "branch_target": 0,
+     "dispatch_head": 0,
      "handler": 0,
-     "jal_callable": 0,
+     "table_arm": 0,
      "unreferenced": 0
     },
     "verdict": "safe: every function it merges is reachable only through a table or is another handler"
    }
   ],
-  "reading": "a correction is not an extension: to reach its `last_end` it swallows every corpus function start in between, so each swallowed start is classified by how it can be reached. 20 entries may be applied as they stand, 1 needs a decision first.",
+  "reading": "a correction is not an extension: to reach its `last_end` it swallows every corpus function start in between, so each swallowed start is classified by how it can be reached. 20 entries may be applied as they stand, 0 needs a decision first.",
   "swallowed_total": 22,
   "verdicts": {
-   "safe": 20,
-   "unsafe": 1
+   "drop": 1,
+   "safe": 20
   }
  },
  "schema": "extent-audit/1",
