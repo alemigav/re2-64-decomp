@@ -54,7 +54,7 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 88, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 89, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
@@ -79,6 +79,8 @@ SUITES = [
     ("byte map (cartridge)", [sys.executable, "tools/classify_image.py", "--check-cartridge"], 2, True),
     ("call graph (cartridge)", [sys.executable, "tools/call_graph.py", "--check"], 8, True),
     ("opcode registry (cartridge)", [sys.executable, "tools/opcode_registry.py", "--check"], 17, True),
+    ("mutation anchors (repository)", [sys.executable, "tools/audit_gates.py", "--lint-self-test"], 4, False),
+    ("preflight (repository)", [sys.executable, "tools/preflight.py", "--self-test"], 6, False),
     ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 109, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a

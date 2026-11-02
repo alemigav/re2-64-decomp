@@ -41,8 +41,17 @@ AUDITS = [
     dict(name="walk_stream: name taken from list order instead of the chosen size",
          tool="walk_stream.py", args=["--self-test"],
          file="tools/walk_stream.py",
-         old="            same = [v for v in variants if v[1] == chosen]",
-         new="            same = []"),
+         # M216: this anchor was the bare `same = [...]` line, which appears twice in the file --
+         # `run_audit` replaces only the first occurrence, so half the mutation was never applied
+         # and nothing noticed. It now carries the branch it belongs to; `--lint` enforces that.
+         old="""            same = [v for v in variants if v[1] == chosen]
+            if same:
+                name = same[0][0]
+        elif not advances:""",
+         new="""            same = []
+            if same:
+                name = same[0][0]
+        elif not advances:"""),
     # --- the walk itself
     dict(name="walk_stream: unconditional jump is not followed",
          tool="rdram_fixture.py", args=[],
@@ -366,6 +375,11 @@ AUDITS = [
     dict(name="image inventory: a committed extent is edited by hand",
          tool="export_ranges.py", args=["--check-images"], file="fixtures/decomp/images.json",
          old='"size": 69952', new='"size": 69960'),
+    # --- M216: the anchor lint. Disabling the uniqueness check must fail the lint's own self-test, because
+    # an anchor that matches two places is a mutation that is half-applied and never says so.
+    dict(name="audit lint: a duplicated anchor is no longer reported",
+         tool="audit_gates.py", args=["--lint-self-test"], file="tools/audit_gates.py",
+         old='        elif n > ' '1:', new='        elif False:'),
     # --- M211/M215: the two derived artefacts this cycle adds. Each mutation attacks the property that makes
     # the artefact worth having: the registry's refusal to call a variable path a constant, and the graph's
     # refusal to invent a target.
@@ -622,11 +636,81 @@ def gated_tools() -> set:
     return out
 
 
+def lint(audits=None, root: Path = ROOT):
+    """Check every mutation's anchor *without running anything*: seconds, not minutes (M216).
+
+    A refactor that moves the source line a mutation anchors on turns that mutation into a BROKEN entry, which
+    is only discovered at the most expensive stage -- that happened twice in one cycle (M207's padding label,
+    M210's `<= CYCLE`). The property is cheap and total: the anchor still exists, it is unique, and the
+    replacement changes the text. Uniqueness matters because `run_audit` replaces only the first occurrence, so
+    a duplicated anchor is a mutation that is half-applied and never says so.
+    """
+    audits = AUDITS if audits is None else audits
+    missing, dup, noop = [], [], []
+    for a in audits:
+        p = root / a["file"]
+        if not p.exists():
+            missing.append((a["name"], f"{a['file']} is gone"))
+            continue
+        n = p.read_text().count(a["old"])
+        if n == 0:
+            missing.append((a["name"], f"anchor not found in {a['file']}"))
+        elif n > 1:
+            dup.append((a["name"], f"anchor appears {n}x in {a['file']}"))
+        elif a["old"] == a["new"]:
+            noop.append((a["name"], "mutation changes nothing"))
+    return [("every mutation's anchor still exists in the file it mutates", not missing, missing[:3]),
+            ("every anchor is unique, because run_audit replaces only the first occurrence", not dup, dup[:3]),
+            ("no mutation is a no-op", not noop, noop[:3])]
+
+
+def lint_self_test() -> int:
+    """The lint must report a missing anchor, a duplicated anchor and a no-op -- on synthetic entries."""
+    tmp = Path(tempfile.mkdtemp())
+    try:
+        (tmp / "f.txt").write_text("alpha\nbeta\ngamma\ndup dup\n")
+        synthetic = [dict(name="missing", file="f.txt", old="absent", new="x"),
+                     dict(name="duplicate", file="f.txt", old="dup", new="dap"),
+                     dict(name="noop", file="f.txt", old="alpha", new="alpha"),
+                     dict(name="good", file="f.txt", old="beta", new="BETA")]
+        got = {label: ok for label, ok, _d in lint(synthetic, root=tmp)}
+        cases = [("a missing anchor is reported", not got["every mutation's anchor still exists in the file it mutates"]),
+                 ("a duplicated anchor is reported", not got["every anchor is unique, because run_audit replaces only the first occurrence"]),
+                 ("a no-op mutation is reported", not got["no mutation is a no-op"])]
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    real = lint()
+    cases.append(("the repository's own mutations all lint clean", all(ok for _l, ok, _d in real)))
+    bad = 0
+    for label, ok in cases:
+        bad += not ok
+        print(f"  {'PASS' if ok else 'FAIL'} {label}")
+    for label, ok, detail in real:
+        if not ok:
+            print(f"       {label}: {detail}")
+    print(f"{len(cases) - bad}/{len(cases)} mutation-anchor case(s)")
+    return 1 if bad else 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--list", action="store_true", help="describe each audit and exit")
+    ap.add_argument("--lint", action="store_true",
+                    help="check every mutation's anchor exists and is unique, running nothing")
+    ap.add_argument("--lint-self-test", action="store_true", help="grade the lint itself")
     args = ap.parse_args()
+
+    if args.lint_self_test:
+        return lint_self_test()
+    if args.lint:
+        cases = lint()
+        bad = 0
+        for label, ok, detail in cases:
+            bad += not ok
+            print(f"  {'PASS' if ok else 'FAIL'} {label}" + (f" -- {detail}" if not ok else ""))
+        print(f"{len(cases) - bad}/{len(cases)} mutation-anchor case(s)")
+        return 1 if bad else 0
 
     if args.list:
         for a in AUDITS:

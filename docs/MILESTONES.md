@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-216 milestones are indexed. 140 of them have a note; the rest are rows in the log that cite
+217 milestones are indexed. 141 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **53 have no record at all** — 31–78, 80, 172, 212–214 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -232,6 +232,7 @@ at the foot of this file.
 | 213 | **M213** — *(no row, no note)* | no evidence in the tree |
 | 214 | **M214** — *(no row, no note)* | no evidence in the tree |
 | 215 | **M215** — a call graph whose edges carry their evidence, and whose unknown targets stay unknown | `docs/log/M215-a-call-graph-that-carries-its-evidence.md` |
+| 216 | **M216** — verification was costing more than the work, so it now has three tiers | `docs/log/M216-three-tiers-so-verification-stops-eating-the-work.md` |
 
 ## The gaps, and why they are empty
 

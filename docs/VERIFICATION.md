@@ -113,6 +113,35 @@ The two guards are deliberately two-sided, and neither is sufficient alone:
 having passed: `--write` will happily record a wrong number, and after that the ratchet defends the wrong
 number. The pair is the guarantee; either one alone is a filing system.
 
+## Three tiers, and what each may claim (M216)
+
+The expensive tier was being run for cheap defects: a stale count in a document, an audit mutation whose source
+anchor a refactor had moved, a milestone row without its note. Each of those is visible in seconds, and each was
+instead discovered after minutes. So the work is split by cost, and only the last tier may admit a landing.
+
+| tier | what runs | cost | what a pass means |
+|---|---|---|---|
+| **1 — preflight** | `tools/preflight.py`: counts, markers, milestone index, ratchet, the mutation-anchor lint, the counts self-test | **seconds** | nothing structural is stale. **Not admission.** |
+| **2 — integration** | `sh tools/ci.sh --no-audit`: every suite, the artefact scan, the cartridge digest, with the 88-mutation audit deferred | **~1–2 min** | the suites and the artefacts agree. Still **not** admission. |
+| **3 — admission** | `python3 tools/verify.py`: tier 2, then the gate audit as the last step, then the worktree certificate | **~5–6 min** | **admissible**: a result only counts if the gates that produced it have been shown to fail |
+
+Two rules follow from that table and they are the whole point of it:
+
+* **Run tier 1 after every edit.** It is cheaper than reading the diff carefully and it catches exactly the
+  defects that otherwise surface at tier 3.
+* **Run tier 3 once, on the tree that will be committed.** The certificate records the content hash of that
+  tree, so staging does not invalidate it and editing one byte does. That is what lets 4–6 milestones land as a
+  single commit without re-running anything.
+
+### The mutation-anchor lint
+
+Mutation testing is the most expensive thing this project does — each entry copies the tree and runs a tool — and
+it is also the most brittle, because a mutation anchors on an exact source line. `tools/audit_gates.py --lint`
+checks, in **under 0.1 s**, that every anchor still exists, that it is **unique** (an anchor matching two places
+is a mutation that is half-applied and never says so), and that it actually changes the text. It found a
+pre-existing duplicate on its first run. Run it in tier 1, and a refactor that breaks a mutation costs seconds
+instead of a whole verification cycle.
+
 ## What each procedure answers
 
 | procedure | question |
