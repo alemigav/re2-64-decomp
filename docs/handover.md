@@ -360,7 +360,12 @@ The emulator is no longer on the critical path. What is left is cartridge-side, 
   block (M193, refuted by M194's over-budget arithmetic and restored by M197, where 307 038 declared blocks
   parse to the end of all 588 records). The **2.42 %** tail was my own alignment error (M190), not a failure
   set. The **voice codec is transcribed and bit-exact** against the cartridge (M197–M199). What genuinely
-  remains: **what the pool's four key classes mean** now that the keys read as `[class][index]` (M188),
+  allows three of them to be **named, because the cartridge names them**: `SND_SMPDIR` (the sample
+  directory, which indexes class 0 at **1191/1192**), `SND_PROJ` (the project a sequence plays) and
+  `SND_POOL` (the container) — so *sample*, *project* and *pool* are its words, not mine. The 16-byte
+  class-3 record stays **unnamed**: nothing in the file table, the loader or the handlers labels it, so it
+  is described by its fields (rate `+10`, time `+8`, size `+12` ≤ 4096, level `+14`) and its role (the
+  record that 142 samples pair with, keyed by key+rate) and no further. Remains:
   and **why `SND_PROJ` has 418 song slots for 417 records** (M188). The 28-payload container at `0xb6248`
   has **no owning file-table entry** — it is not a file (M178);
 * **experiment B, step 2** — pointer provenance across functions. Step 1 (`tools/provenance.py`) is
