@@ -141,14 +141,15 @@ claim, and codified in [include/re2_formats.h](include/re2_formats.h) with a C v
 | voice bank header | `MORT` + u16 **block count** + u16 rate + u32 **length/4** = **12** bytes; a normal block is a fixed 260 bits (M193, corrected by M194/M197) |
 | voice codec | bit stream is LSB-first inside big-endian 32-bit words; per block 36 scale bits + 4 × (17 + 39); synthesis transcribed and bit-exact (M197–M199) |
 | directory record | 28 bytes: index, offset, rate, **declared length**, **loop start**, **loop end** (M193) |
-| key spaces | pool keys are `[class][index]` in four classes; `SND_PROJ`'s 417 records rotate from key 118; one key is absent and one reference dangles, and they are the same fact (M188) |
+| key spaces | pool keys are `[tag][index]` with the tag in the **top two bits** (`(key >> 14) & 3`); the four POOL **sections** are tagged 0, 3, 1, 2 in file order — sections are *storage*, while the roles are the **six lists** a `SND_PROJ` record carries; `SND_PROJ`'s 417 records rotate from key 118; one key is absent and one reference dangles, and they are the same fact (M188, corrected by M200) |
 
 The 17.6 MB is no longer unidentified, and neither codec is: the pool decodes to audio, and the voice
 bank's stream, its header (12 bytes) and its whole synthesis are transcribed and verified sample for
 sample against the cartridge. `u16@+4` is the `MORT` clip's **block count** at 160 samples per block,
 which is why every `payload/field` ratio sat under 32.5 bytes (260 bits per block). What genuinely
-remains: **what the pool's four key classes mean**, and the semantics a player would put on the loop
-points a directory record carries — not the format, which is now read end to end.
+remains: **what the 16-byte class-3 parameter record is called** — its fields (rate, time, size, level) and its
+role (the record 142 samples pair with) are measured, but the cartridge never labels it — and the semantics a
+player would put on the loop points a directory record carries — not the format, which is now read end to end.
 
 ## Layout
 
