@@ -538,6 +538,23 @@ def check():
          "has one", not frames and outside_frame == 0,
          "%s; %d frame setup(s) outside a body" % ("; ".join(frames[:4]), outside_frame))
 
+    # M212 queue: the extent corrections must be the artefact's own fragments, and every entry must already be
+    # a function start -- that is what makes "extend these 21" different from "seed 79 new functions".
+    ext_path = Path(EXTENTS)
+    if not ext_path.exists():
+        case("the next Ghidra run's queue (%s) exists" % EXTENTS, False, "missing -- run --write-extents")
+    else:
+        queue = json.loads(ext_path.read_text())
+        rows = queue.get("corrections") or []
+        qentries = {r["entry"] for r in rows}
+        covered = sum(r["handlers"] for r in rows)
+        frag_entries = {e.get("region_entry") for e in entries.values()
+                        if e.get("classification") == "fragment" and e.get("region_entry")}
+        frag_count = sum(1 for e in entries.values() if e.get("classification") == "fragment")
+        case("the queue names %d extent correction(s) covering all %d fragment handler(s), and every entry is "
+             "already a function start" % (len(rows), frag_count),
+             qentries == frag_entries and covered == frag_count,
+             "%d entries, %d handler(s)" % (len(qentries), covered))
     case("the committed file is exactly what --write produces",
          render(fresh) == Path(OUT).read_text(), "run --write")
 
@@ -555,14 +572,53 @@ def _report(cases):
     return 1 if any(verdict == "FAIL" for verdict, _label, _detail in cases) else 0
 
 
+def corrections(artefact):
+    """The queue for the next Ghidra run: the 21 functions whose extent must grow to contain the VM handlers.
+
+    M212 established that the 76 prologue-less handlers sit behind 21 frame setups that are **already**
+    function starts. So the corpus does not need seeds; it needs those 21 extents extended to the last handler
+    behind each one. This turns the finding into a machine-readable work item, small enough to read.
+    """
+    handlers = artefact["handlers"]
+    frags = {k: v for k, v in handlers.items() if v["classification"] == "fragment"}
+    by_entry = {}
+    for key, entry in frags.items():
+        by_entry.setdefault(entry["region_entry"], []).append((key, entry))
+    rows = []
+    for prologue, members in sorted(by_entry.items()):
+        last = max(int(e["end"], 16) for _k, e in members)
+        rows.append({"entry": prologue, "handlers": len(members),
+                     "first_handler": min(k for k, _e in members),
+                     "last_end": _hex(last),
+                     "extent_bytes": last - int(prologue, 16) + 4,
+                     "opcodes": sorted({o for _k, e in members for o in e["opcodes"]})})
+    return {"tool": "handler_region.py",
+            "note": ("M212, queued for the next Ghidra run: 21 functions whose extents must be extended so the "
+                     "Script VM's handlers fall inside them. No new seeds -- every entry address here is "
+                     "already a function in the corpus. Regenerate with handler_region.py --write-extents."),
+            "corrections": rows}
+
+
+EXTENTS = "manifests/extent_corrections.json"
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--write", action="store_true", help="regenerate %s" % OUT)
     ap.add_argument("--check", action="store_true", help="validate the committed artefact")
+    ap.add_argument("--write-extents", action="store_true",
+                    help="regenerate %s -- the next Ghidra run's queue" % EXTENTS)
     args = ap.parse_args()
-    if not (args.write or args.check):
-        ap.error("one of --write or --check is required")
+    if not (args.write or args.check or args.write_extents):
+        ap.error("one of --write, --write-extents or --check is required")
+
+    if args.write_extents:
+        rows = corrections(derive())["corrections"]
+        Path(EXTENTS).write_text(json.dumps(corrections(derive()), indent=1, sort_keys=True) + "\n")
+        print("%d extent correction(s) -> %s  (%d handler(s), %d byte(s) of extent)"
+              % (len(rows), EXTENTS, sum(r["handlers"] for r in rows), sum(r["extent_bytes"] for r in rows)))
+        return 0
 
     if args.write:
         artefact = derive()

@@ -8,7 +8,7 @@
 #
 # The cartridge is gitignored by design, so a fresh clone cannot supply it: check 3 reports SKIP and the
 # cartridge-dependent suites in check 1 report SKIP too. CI is therefore meaningful without the ROM —
-# 27 of 47 suites, 255 of 597 cases — and strictly stronger with it. Exit status is non-zero on any real
+# 27 of 48 suites, 255 of 633 cases — and strictly stronger with it. Exit status is non-zero on any real
 # failure. Both figures are asserted by `tools/counts.py`, which is why they are written on one line.
 set -u
 

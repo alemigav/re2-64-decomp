@@ -375,6 +375,15 @@ AUDITS = [
     dict(name="image inventory: a committed extent is edited by hand",
          tool="export_ranges.py", args=["--check-images"], file="fixtures/decomp/images.json",
          old='"size": 69952', new='"size": 69960'),
+    dict(name="handler_region: the extent queue drops one correction",
+         tool="handler_region.py", args=["--check"], file="manifests/extent_corrections.json",
+         old='"entry": "0x8006da14",', new='"entry": "0x8006da18",'),
+    # --- M213: the decoder. The mutation that matters is the one the milestone forbids: an opcode with no
+    # constant advance must raise as `unresolved`, never be skipped as one byte.
+    dict(name="scd_vm: an opcode with no advance is skipped as one byte",
+         tool="scd_vm.py", args=["--check"], file="tools/scd_vm.py",
+         old='    if cls == "unresolved":\n        raise UnresolvedAdvance(pc, op, (reg[op].get("note") or "").strip()[:120])',
+         new='    if cls == "unresolved":\n        pass'),
     # --- M212: the handler-region artefact. The two claims worth attacking are the region-entry walk (which
     # turns "79 handlers outside the corpus" into "21 prologues, all known") and its corpus test.
     # These two mutate the *artefact*, because mutating the tool only trips the "committed file equals a
