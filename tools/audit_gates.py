@@ -422,6 +422,18 @@ AUDITS = [
     dict(name="script_population: a not-a-script entry is promoted to a heuristic candidate",
          tool="script_population.py", args=["--check"], file="manifests/script_population.json",
          old='"not_a_script": 514,', new='"not_a_script": 513,'),
+    # --- M222: the voice descriptor. Aimed at the tool's constants rather than the artefact's strings,
+    # because the artefact's field lines are multi-line JSON and an anchor spanning them is fragile: both of
+    # my first attempts failed to match, and the lint caught it. Moving the slot stride and the ring size
+    # changes what every derived offset means, and the derivation comparison names it.
+    dict(name="voice_descriptor: the slot stride is off by four",
+         tool="voice_descriptor.py", args=["--check"], file="tools/voice_descriptor.py",
+         old="SLOT_BASE, SLOT_STRIDE, SLOT_COUNT, SLOT_END = 0x80158B20, 0x1228, 2, 0x8015AF70",
+         new="SLOT_BASE, SLOT_STRIDE, SLOT_COUNT, SLOT_END = 0x80158B20, 0x122C, 2, 0x8015AF70"),
+    dict(name="voice_descriptor: the DMA ring is a chunk short",
+         tool="voice_descriptor.py", args=["--check"], file="tools/voice_descriptor.py",
+         old="RING_OFF, RING_SIZE, CHUNK, FETCH_MASK, READ_MASK = 0x1A0, 0x1000, 0x400, 0xFF8, 0xFFC",
+         new="RING_OFF, RING_SIZE, CHUNK, FETCH_MASK, READ_MASK = 0x1A0, 0x0FFC, 0x400, 0xFF8, 0xFFC"),
     # --- M221b: the fixture-only validator. Its whole point is catching a hand-edited artefact without the
     # cartridge, so both mutations are exactly that: a clipped hash and a block ledger that stops closing.
     dict(name="sound_fixtures: a clip hash is clipped by one character",
