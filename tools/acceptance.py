@@ -40,7 +40,7 @@ SUITES = [
     ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8, False),
     ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 8, False),
     ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 12, False),
-    ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 21, False),
+    ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 22, False),
     ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 23, False),
     # `rdram_fixture.py` builds its bytes synthetically but walks them with `walk_stream.py`, which loads
     # the stage-2 image from `assets/unpacked/` — an unpacked cartridge member. Green locally, red on any
@@ -54,7 +54,7 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 97, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 99, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
@@ -85,6 +85,7 @@ SUITES = [
     ("script vm decoder (cartridge)", [sys.executable, "tools/scd_vm.py", "--check"], 33, True),
     ("script vm refusals (cartridge)", [sys.executable, "tools/vm_refusals.py", "--check"], 9, True),
     ("script population (cartridge)", [sys.executable, "tools/script_population.py", "--check"], 13, True),
+    ("sound project (cartridge)", [sys.executable, "tools/snd_proj.py", "--check"], 28, True),
     ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 109, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a

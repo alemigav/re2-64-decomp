@@ -50,6 +50,8 @@ MARKERS = [
     (HANDOVER, "## How to rebuild", "provision, data, decompile, fixtures, gates - in that order"),
     (HANDOVER, "## 5b. Who verifies what, and the three edits that cannot happen silently",
      "the ratchet's three invariants, and the contract for whoever owns verification"),
+    (HANDOVER, "## The script VM has a codename: TYRANT",
+     "the name, and the caveat that it is this project's, not Capcom's"),
     (HANDOVER, "## Immediate next step", "so a rebuilt session knows where it stands"),
     (LOG, "## Retractions carried by later milestones", "the table itself, and its context"),
     (LOG, "| retracted | by | what changed |", "the retraction table header, which must survive edits"),

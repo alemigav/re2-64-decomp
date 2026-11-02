@@ -378,6 +378,18 @@ AUDITS = [
     dict(name="handler_region: the extent queue drops one correction",
          tool="handler_region.py", args=["--check"], file="manifests/extent_corrections.json",
          old='"entry": "0x8006da14",', new='"entry": "0x8006da18",'),
+    # --- WP1: the sound project. Two claims worth attacking: the record-array width (12, not a key width) and
+    # the negative answer on command streams, which is what sends the macro search to the pool.
+    # Aimed at the tool, not the artefact: editing the committed JSON only trips the staleness case (and an
+    # extra key it does not read is not even that), which is how the first attempt came out VACUOUS. This
+    # mutation changes the derivation, so the row array really is read as u16 keys.
+    dict(name="snd_proj: the row array is derived as u16 keys",
+         tool="snd_proj.py", args=["--check"], file="tools/snd_proj.py",
+         old='        return {"width": 12, "count": count, "pad": pad, "closed": pos + 4 + 12 * count == end,',
+         new='        return {"width": 2, "count": count, "pad": pad, "closed": pos + 4 + 12 * count == end,'),
+    dict(name="snd_proj: a command stream is claimed where there is none",
+         tool="snd_proj.py", args=["--check"], file="manifests/snd_proj.json",
+         old='"command_streams": 0', new='"command_streams": 1'),
     # --- M214: the population partition. Two claims: the room-table category is exactly the rooms' file ids,
     # and the "not a script" bucket is not a dumping ground.
     dict(name="script_population: one room-table entry is not a room's file id",
