@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-221 milestones are indexed. 148 of them have a note; the rest are rows in the log that cite
+222 milestones are indexed. 149 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -238,6 +238,7 @@ at the foot of this file.
 | 218 | **M218** — WP1: the six project lists are named by their consumers, and the macro opcodes are not here | `docs/log/M218-the-six-project-lists-and-no-macros.md` |
 | 219 | **M219** — the base correction lands, and one claim survives it that I had already retracted | `docs/log/M219-the-base-correction-and-a-retraction-retracted.md` |
 | 220 | **M220** — WP2: the macro "opcodes" are the key's class tag, and the pool walk was one record late | `docs/log/M220-wp2-the-opcodes-are-the-tag.md` |
+| 221 | **M221** — WP3: every one of the 588 voice clips, and 12 037 live comparison blocks | `docs/log/M221-wp3-the-whole-voice-bank.md` |
 
 ## The gaps, and why they are empty
 

@@ -381,6 +381,15 @@ AUDITS = [
     dict(name="handler_region: the extent queue drops one correction",
          tool="handler_region.py", args=["--check"], file="manifests/extent_corrections.json",
          old='"entry": "0x8006da14",', new='"entry": "0x8006da18",'),
+    # --- WP3: the whole-bank sweep. One mutation at the recorded evidence (a clip's PCM hash) and one at the
+    # block arithmetic, because those are the two things the gate turns on.
+    dict(name="voice_sweep: one clip's recorded PCM hash is wrong",
+         tool="voice_sweep.py", args=["--check"], file="fixtures/sound/mort_sweep.json",
+         # anchored on clip 0's own hash line, because `"pcm_sha256"` appears 588 times
+         old='"pcm_sha256": "0a9d82150d63ba49214f8', new='"pcm_sha256": "ff9d82150d63ba49214f8'),
+    dict(name="voice_sweep: the silent-block count no longer closes",
+         tool="voice_sweep.py", args=["--check"], file="fixtures/sound/mort_sweep.json",
+         old='"blocks_silent": 44144', new='"blocks_silent": 44143'),
     # --- WP2: the four opcodes. The claim is that the opcode IS the key's class tag and that the dispatcher
     # reads the top two bits, so both mutations attack that reading rather than the numbers.
     dict(name="snd_macros: the opcode mask is widened past the top two bits",

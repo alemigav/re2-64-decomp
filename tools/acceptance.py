@@ -98,6 +98,7 @@ SUITES = [
     # needs the cartridge and an emulator, and it says so loudly rather than skipping when the emulator is
     # missing — a suite that goes quiet when its engine is absent is the failure this repository audits.
     ("voice decode (cartridge)", [sys.executable, "tools/voice_decode.py", "--check"], 9, True),
+    ("voice sweep (cartridge)", [sys.executable, "tools/voice_sweep.py", "--check"], 12, True),
     # The ratchet guards the registry itself. `--self-test` breaks each invariant on a synthetic root
     # (a lowered count, a deleted suite, an unbaselined addition, an edit to src/) and requires
     # detection; `--check` applies the same two invariants to this repository. Both are needed: without

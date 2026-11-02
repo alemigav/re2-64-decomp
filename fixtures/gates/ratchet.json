@@ -46,6 +46,7 @@
   "file table (cartridge)": 101,
   "sound decode (cartridge)": 7,
   "voice decode (cartridge)": 9,
+  "voice sweep (cartridge)": 12,
   "ratchet self-test": 10,
   "ratchet (repository)": 4,
   "counts self-test": 4,
