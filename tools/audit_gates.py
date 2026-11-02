@@ -375,6 +375,18 @@ AUDITS = [
     dict(name="image inventory: a committed extent is edited by hand",
          tool="export_ranges.py", args=["--check-images"], file="fixtures/decomp/images.json",
          old='"size": 69952', new='"size": 69960'),
+    # --- M212: the handler-region artefact. The two claims worth attacking are the region-entry walk (which
+    # turns "79 handlers outside the corpus" into "21 prologues, all known") and its corpus test.
+    # These two mutate the *artefact*, because mutating the tool only trips the "committed file equals a
+    # fresh derivation" case -- which proves the file is stale, not that the region-entry claim is load-bearing.
+    dict(name="handler_region: one fragment loses the frame setup behind it",
+         tool="handler_region.py", args=["--check"], file="manifests/handler_region.json",
+         old='"region_entry": "0x8006ecc0",', new='"region_entry": null,'),
+    dict(name="handler_region: one fragment's frame setup is claimed to be outside the corpus",
+         tool="handler_region.py", args=["--check"], file="manifests/handler_region.json",
+         # anchored on a prologue used by exactly one fragment, so flipping it removes that prologue from the
+         # "already a function start" set and the claim fails; flipping a shared one would change nothing.
+         old='"region_entry": "0x8006ebec",', new='"region_entry_in_corpus_false_marker": "0x8006ebec",'),
     # --- M216: the anchor lint. Disabling the uniqueness check must fail the lint's own self-test, because
     # an anchor that matches two places is a mutation that is half-applied and never says so.
     dict(name="audit lint: a duplicated anchor is no longer reported",
@@ -575,7 +587,16 @@ def run_audit(audit, keep: Path = None) -> tuple:
         build_env(tmp)
         target = tmp / audit["file"]
         if not target.exists():
-            return None, f"mutation target absent from the sandbox: {audit['file']}"
+            # Sixth occurrence of the same environment gap: a new mutation targets a file the sandbox does not
+            # copy (`manifests/handler_region.json` was the fifth), and the audit reports BROKEN for a reason
+            # that has nothing to do with the mutation. Rather than growing COPY_FILES one entry per
+            # milestone, seed any missing mutation target from the repository -- it is one file, read-only for
+            # the tool being run, and the mutation is written into the sandbox copy.
+            src = ROOT / audit["file"]
+            if not src.exists():
+                return None, f"mutation target does not exist in the repository: {audit['file']}"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, target)
         # `build_env` *links* src, build/elfs, rom and assets instead of copying them, so a mutation
         # aimed at a path under one of those edits the live repository. M205 did exactly that: an
         # audit of `src/INDEX.md` wrote through the link, left the worktree mutated and was then
