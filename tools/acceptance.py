@@ -48,13 +48,13 @@ SUITES = [
     ("synthetic-rdram walk", [sys.executable, "tools/rdram_fixture.py"], 7, True),
     ("room script (cartridge)", [sys.executable, "tools/room_script.py", "--check"], 4, True),
     ("script profile (cartridge)", [sys.executable, "tools/script_profile.py", "--check"], 5, True),
-    ("cfg reachability (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check"], 6, True),
+    ("cfg reachability (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check"], 7, True),
     ("room scripts only (cartridge)", [sys.executable, "tools/cfg_reach.py", "--check-rooms"], 3, True),
     ("01 41 container (cartridge)", [sys.executable, "tools/container_0141.py", "--check"], 29, True),
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 74, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 84, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
@@ -71,6 +71,12 @@ SUITES = [
     # The file table is the cartridge's whole file system, and it is mostly *not* zlib (M178). One
     # suite because the finding is one object: the census, the two files the 17.6 MB turned out to be,
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
+    ("byte map (repository)", [sys.executable, "tools/classify_image.py", "--check"], 6, False),
+    ("hook certificate (repository)", [sys.executable, "tools/hook_cert.py", "--self-test"], 6, False),
+    ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
+    ("analysis status (repository)", [sys.executable, "tools/analysis_status.py", "--check"], 7, False),
+    ("missed-function census (cartridge)", [sys.executable, "tools/find_missed_functions.py", "--check"], 2, True),
+    ("byte map (cartridge)", [sys.executable, "tools/classify_image.py", "--check-cartridge"], 2, True),
     ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 109, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a
@@ -91,7 +97,7 @@ SUITES = [
     # The counts are derived from this very list, so registering a suite changes them — and this suite
     # is the one that notices the docs no longer agree. It caught its own registration (M180).
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
-    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 21, False),
+    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 25, False),
     # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain
     # loop cannot: drop a result, reorder the report, or swallow a death. Its own `--self-test` does not
     # run SUITES, so registering it is not the recursion that `--check` would be.

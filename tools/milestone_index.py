@@ -41,6 +41,7 @@ GAPS = "fixtures/milestones/gaps.json"
 # Commit subjects are *committed*, never read from git at check time — the same reason `gaps.json` is:
 # a CI clone is shallow, so consulting history there would make the check fail on the environment rather
 # than on the record. `--seed-gaps` rebuilds both.
+CYCLE = 6          # milestones per cycle (docs/VERIFICATION.md: a cycle is the landing unit)
 COMMITS = "fixtures/milestones/commits.json"
 OUT = "docs/MILESTONES.md"
 MAX = 176                    # the highest milestone number with a row; gaps may extend below only
@@ -304,10 +305,14 @@ def check(root):
     highest = record_highest(root)
     fixture = root / COMMITS
     top = max(committed) if committed else 0
-    fresh = fixture.exists() and bool(committed) and highest - top <= 1
-    cases.append((f"the commit fixture is within one milestone of the record (commits reach {top}, "
-                  f"the record reaches {highest})", fresh,
-                  "within the one-milestone lag" if fresh else ("fixture missing" if not fixture.exists()
+    # M210: the lag is one **cycle**, not one milestone. Milestones are written and gated inside a cycle and
+    # land together in its single commit, so while a cycle is open the record legitimately runs ahead of the
+    # commit fixture by up to its size. The check still catches the thing it was built for -- a milestone whose
+    # commit never arrives -- because a lag beyond a full cycle means the row outlived its landing.
+    fresh = fixture.exists() and bool(committed) and highest - top <= CYCLE
+    cases.append((f"the commit fixture is within one cycle of the record (commits reach {top}, "
+                  f"the record reaches {highest}, cycle {CYCLE})", fresh,
+                  "within the cycle lag" if fresh else ("fixture missing" if not fixture.exists()
                                            else "stale — run tools/milestone_index.py --seed-gaps")))
     cases.append((f"{OUT} matches the log, the notes and the gaps", p.exists() and p.read_text() == expected,
                   "identical" if p.exists() and p.read_text() == expected
@@ -404,14 +409,15 @@ def self_test():
                   verdict(coverage(d, gaps=[]), "every M<n> in a commit subject") is False,
                   "M181-shaped gap detected"))
 
-    # 11. the other side: a row landed but the commit fixture was not re-seeded
+    # 11. the other side: rows landed but the commit fixture was not re-seeded. M210 widened the tolerance
+    # from one milestone to one *cycle* (rows are written inside a cycle and land in its single commit), so
+    # this case now needs a lag past a full cycle -- which is exactly the state it is meant to refuse.
     d = bed({LOG: log(("M1", "**one**", "`docs/format_notes.md`"), ("M2", "**two**", "`docs/format_notes.md`")),
              GAPS: '{"gaps": []}',
              COMMITS: json.dumps({"commits": [{"sha": "abc1234", "subject": "M1: one", "milestones": [1]}]})})
-    (d / LOG).write_text(log(("M1", "**one**", "`docs/format_notes.md`"), ("M2", "**two**", "`docs/format_notes.md`"),
-                             ("M3", "**three**", "`docs/format_notes.md`")))
-    cases.append(("a stale commit fixture is refused (two landings without re-seeding)",
-                  verdict(check(d), "the commit fixture is within one milestone") is False, "staleness detected"))
+    (d / LOG).write_text(log(*[(f"M{n}", f"**{n}**", "`docs/format_notes.md`") for n in range(1, CYCLE + 3)]))
+    cases.append(("a stale commit fixture is refused (a full cycle of landings without re-seeding)",
+                  verdict(check(d), "the commit fixture is within one cycle") is False, "staleness detected"))
 
     # 9. --check fails on a tampered output file
     d = bed({LOG: log(("M1", "**one**", "`docs/format_notes.md`")), GAPS: '{"gaps": []}'})

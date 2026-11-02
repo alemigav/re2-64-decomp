@@ -22,6 +22,7 @@ ground-truth RDRAM dumps. Nothing in the repo imports or requires it.
 | zlib members | **4 761**, 8 748 242 → 18 550 424 B; streams start `68 de` (16 KB window) | M9, `unpack_zlib.py` |
 | code images | **36** (boot + stage-2 + 34 overlays), **1 947 632 B** | M81 census |
 | decompiled corpus | **3 638 functions** over **3 678** ranges, **62.2 %** of the **1 947 632** image bytes inside a known body (**1 210 600 B**); the denominator is *image* bytes, not code — nothing here classifies code independently (M205) | M81–M84, `src/INDEX.md` |
+| the remaining image bytes | classified per word in `manifests/byte_map.json` (M207): **407 608 B padding**, **6 640 B** `DAT_`-named data, **964 B** jump tables, **321 820 B (16.5 %) unclassified**; precedence is fixed and its overlaps are counted | M207, `tools/classify_image.py` |
 | media | 1 227 MJPEG frames, 271 MPEG-1 blocks (24.4 MB + 15.8 MB), all verified | M10 |
 | the 17.6 MB | **identified — the sound family, ids 1979–1983**: id **1979** `0x0338fea`–`0x0b630fe` (8 560 916 B, a **588-record `MORT` bank** whose directory and record header are decoded) and id **1983** `0x0b73fbc`–`0x140ed7c` (9 022 912 B, **1 192 samples tiling it exactly**, order-2 ADPCM behind a 256-byte shared codebook); **17 583 828 B** together, both loaded by `FUN_800759d8` | M178, `tools/file_table.py` |
 | file table | **8 091** entries: 113 sentinels, 7 978 real — 4 852 zlib and **3 126 raw (58 270 043 B: the media)**; it is the file system, not a zlib manifest | M178 |
@@ -112,7 +113,8 @@ room overlay → BSS command buffer → *(0x800df92c) → context +0x145c → ct
 Measured conclusions:
 
 * command lengths are **per opcode**: **141 of 141** table entries advance the pointer themselves, in
-  **15 distinct** lengths from 1 to 40 (`0x44` and `0x4d` are the 22-byte family). The 18 reported at M99
+  **17 distinct lengths** from 1 to 40 (`0x44` and `0x4d` are the 22-byte family; M136 published 15 and the
+  30/38-byte advances arrive with the multi-advance handlers, M141/M210). The 18 reported at M99
   counted idiom sites outside the table, including two backward jumps in loop code. Opcodes `0x0f` and `0x12`
   are 2-byte **block** commands: they advance past a `[opcode][span]` header and run the inner block through
   `FUN_8006e1bc`, the block runner that has no table entry of its own (`--lens` prints the whole map);
@@ -166,7 +168,7 @@ eleven skipped suites are the ones that assert facts about RE2 itself — the co
 at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
 exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
-each run's job summary lists them. **A green CI run does not vouch for those 282 cases.**
+each run's job summary lists them. **A green CI run does not vouch for those 298 cases.**
 
 A route to close that gap *in a secret* was built and verified in M130 and then deliberately **not adopted**,
 because it means a copyrighted cartridge living in a CI secret store. M175 measured why it also does not work:
@@ -247,7 +249,7 @@ this project always called it: an optional external validator that nothing depen
 Everything below is measured and gated; the note in brackets is the argument, not a summary.
 
 **The script VM** (`docs/log/M136-command-length-map.md`, `M141`, `M143`, `M159`)
-141-entry opcode→handler table at `0x80113898`, every handler advancing `ctx+0x1c` itself: **15 distinct lengths**,
+141-entry opcode→handler table at `0x80113898`, every handler advancing `ctx+0x1c` itself: **17 distinct lengths**,
 1–40 B (`re2_scd_length` in `include/re2_formats.h`). 43 opcodes are named from the MIT-licensed PlayStation
 table; 17 more carry descriptor names this project inferred (`fixtures/scd/inferred_names.json`, printed with a
 leading `~`). `0x44 SceEmSet` is 22 B and **byte 3 is the enemy Id** — the operand M94 measured and M110 tracked
@@ -303,9 +305,9 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 36 suites, 504 cases
+python3 tools/acceptance.py         # 42 suites, 543 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
-python3 tools/audit_gates.py        # 74/74: every check must fail when its mechanism is disabled
+python3 tools/audit_gates.py        # 84/84: every check must fail when its mechanism is disabled
 python3 tools/ratchet.py --check    # the registry may not drift, and src/ may not move, silently
 python3 tools/ratchet.py --write    # ...accept the current state (required after any count change)
 python3 tools/counts.py --check     # the seven numbers, derived once and asserted in twelve places
@@ -314,7 +316,7 @@ python3 tools/counts.py --check     # the seven numbers, derived once and assert
 **A green CI run does not vouch for everything.** Twelve suites are cartridge-gated and report `SKIP`
 on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
 `cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
-`routine index bounds`, `file table`, `voice decode` and the gate audit — **282 of 504 cases**. Their enforcement is the
+`routine index bounds`, `file table`, `voice decode` and the gate audit — **298 of 543 cases**. Their enforcement is the
 pre-commit hook and a local run, and the CI job summary lists them by name.
 
 ## 5b. Who verifies what, and the three edits that cannot happen silently

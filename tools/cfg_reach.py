@@ -233,6 +233,16 @@ def survey(rom, res, entry_only=False, generous=False, only_ids=None):
             "reach_ops": reach_ops, "decoded_ops": decoded_ops, "runs_reach": runs_reach}
 
 
+def _scheduler_shape() -> bool:
+    p = HERE.parent / "src" / "stage2" / "FUN_8009b880.c"
+    if not p.exists():
+        return False
+    s = p.read_text()
+    return ("} while (iVar1 == 1);" in s
+            and "if ((iVar1 == 2) ||" in s
+            and "*(undefined4 *)(puVar2 + 0x1c) = *(undefined4 *)(iVar1 + -4);" in s)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -303,6 +313,11 @@ def main() -> int:
          hit["reached"] == total),
         ("restricting the seed to record 0 leaves a large fraction unreached, so the two modes differ",
          survey(rom, res, entry_only=True)["rec_hit"]["reached"] < 0.5 * total),
+        # M210: the scheduler contract -- 1 = run me again, 2 = yield -- was a *reading* with no gate since
+        # M152, and every reachability claim above rests on it. It is one loop in the interpreter, so it is
+        # pinned by its source shape: the `while (iVar1 == 1)`, the `iVar1 == 2` yield, and the frame pop.
+        ("CODE: FUN_8009b880 keeps the context only on a return of 1, yields on 2, and pops the frame at "
+         "ctx+0x140", _scheduler_shape()),
     ]
     passed = 0
     for label, ok in cases:

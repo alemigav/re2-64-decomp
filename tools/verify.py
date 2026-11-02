@@ -30,6 +30,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hook_cert  # noqa: E402  — the certificate writer the hook reads (M210)
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 CARTRIDGE = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
@@ -67,6 +70,15 @@ def verdict_of(text):
         if m:
             return int(m.group(1)), int(m.group(2))
     return None
+
+
+def _worktree_hash() -> str:
+    """The hash `tools/hook_cert.py` writes into a certificate (M210).
+
+    The report used to carry only a dirty *boolean*, which cannot answer "is the commit the tree that was
+    graded?". `verify.py` now records the hash and writes the certificate the hook reads.
+    """
+    return hook_cert.worktree_hash()
 
 
 def adjudicate(procedures, audit):
@@ -128,7 +140,8 @@ def report(as_json: bool) -> int:
     dirty = bool(subprocess.run(["git", "status", "--porcelain"], cwd=str(ROOT),
                                 capture_output=True, text=True).stdout.strip())
     out = {
-        "artifact": {"commit": sha or "(unknown)", "dirty": dirty, "cartridge": have_cart},
+        "artifact": {"commit": sha or "(unknown)", "dirty": dirty, "cartridge": have_cart,
+                     "worktree": _worktree_hash()},
         "procedures": [{"name": n, "exit": c, "detail": details[n]} for n, c, _v in results],
         "admission": {"gate_audit": f"{audit[0]}/{audit[1]}" if audit else None,
                       "vacuous": audit[2] if audit else None,
@@ -144,6 +157,11 @@ def report(as_json: bool) -> int:
     }
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text(json.dumps(out, indent=1) + "\n")
+    # M210: the certificate the pre-commit hook reads. Only a PASS with a clean admission is certifiable,
+    # and only for the worktree this run graded -- `hook_cert.valid` re-checks the hash at commit time.
+    cert = hook_cert.write("PASS" if verdict == "PASS" else verdict,
+                           "clean" if out["admission"]["admissible"] else "vacuous", commit=sha or "")
+    out["certificate"] = cert
     if as_json:
         print(json.dumps(out, indent=1))
     else:

@@ -44,6 +44,14 @@ CHECKS = [
     ("README.md",
      r"\*\*([\d\s,]+?)\s+functions\*\*\s+over\s+\*\*([\d\s,]+?)\*\*\s+ranges,\s+\*\*(\d+)\.(\d)\s+%\*\*\s+of\s+the\s+\*\*([\d\s,]+?)\*\*\s+image\s+bytes\s+inside\s+a\s+known\s+body\s+\(\*\*([\d\s,]+?)\s+B\*\*\)",
      ("functions", "ranges", "coverage_whole", "coverage_dec", "image_bytes", "covered_bytes"), 1),
+    ("README.md",
+     r"of\s+\*\*([\d\s,]+?)\s+functions\*\*,\s+\*\*([\d\s,]+?)\*\*\s+resolve\s+every\s+call\s+"
+     r"target(?:\s+in\s+their\s+bodies)?,\s+"
+     r"\*\*([\d\s,]+?)\*\*\s+carry\s+a\s+curated\s+name,\s+and\s+\*\*([\d\s,]+?)\*\*\s+have\s+behaviour\s+pinned",
+     ("functions", "status_f2", "status_named", "status_validated"), 1),
+    # M210: the published length count was 15 while the artifact measured 17, and nothing compared them.
+    ("README.md", r"\*\*(\d+) distinct instruction lengths\*\*", ("distinct_lengths",), 1),
+    ("docs/handover.md", r"\*\*(\d+) distinct(?: instruction)? lengths\*\*", ("distinct_lengths",), 2),
     ("docs/handover.md",
      r"\*\*([\d\s,]+?)\s+functions\*\*\s+over\s+\*\*([\d\s,]+?)\*\*\s+ranges,\s+\*\*(\d+)\.(\d)\s+%\*\*\s+of\s+the\s+\*\*([\d\s,]+?)\*\*\s+image\s+bytes\s+inside\s+a\s+known\s+body\s+\(\*\*([\d\s,]+?)\s+B\*\*\)",
      ("functions", "ranges", "coverage_whole", "coverage_dec", "image_bytes", "covered_bytes"), 2),
@@ -116,10 +124,25 @@ def derive(root: Path) -> dict:
         "codec_samples": _codec["sample_count"],
         "codec_groups_ok": _codec["groups_total"] - _codec["groups_failing"],
         "codec_groups_total": _codec["groups_total"],
+        "distinct_lengths": len({v["length"] for v in
+                                 json.loads((root / "fixtures" / "scd" / "profile.json").read_text())["opcodes"].values()
+                                 if v.get("length")}),
+        **_status(root),
         "tool_count": len([p for p in (root / "tools").iterdir()
                            if p.suffix in (".py", ".sh", ".c", ".swift")]),
         **_corpus(root),
     }
+
+
+def _status(root: Path) -> dict:
+    """The analysis ladder (M209), read from the committed status manifest.
+
+    `F2`, `named` and `validated` are three different claims about 3 638 functions, and quoting any one of them
+    as "understood" is the substitution this project keeps catching. They are derived here so a document
+    sentence cannot drift from the artifact that measures them.
+    """
+    t = json.loads((root / "manifests" / "analysis_status.json").read_text())["totals"]
+    return {"status_f2": t["F2"], "status_named": t["named"], "status_validated": t["validated"]}
 
 
 def _corpus(root: Path) -> dict:
@@ -185,7 +208,7 @@ def check(root: Path, quiet: bool = False):
     # past every body for thirty milestones. These two cases tie the generated files to the fixtures, so a
     # regeneration that reintroduces the arithmetic, or a tree that was never regenerated, fails here.
     index = root / "src" / "INDEX.md"
-    head = re.search(r"(\d[\d,]*) functions across (\d+) images, (\d[\d,]*) of (\d[\d,]*) (?:code|image) bytes",
+    head = re.search(r"(\d[\d,]*) functions across (\d+) images, (\d[\d,]*) of (\d[\d,]*) image bytes",
                      index.read_text()) if index.exists() else None
     if head is None:
         cases.append(("src/INDEX.md agrees with the derived corpus", False, "headline not found"))
@@ -201,6 +224,21 @@ def check(root: Path, quiet: bool = False):
         if m:
             sizes.append(int(m.group(1)))
     total = sum(sizes)
+    # M206: `code_index.json` published a 4-byte word count under a byte-shaped name. The per-image
+    # figures must now sum to the derived coverage, and covered + unclaimed must tile each image exactly --
+    # one invariant that catches both a word/byte slip and a body that was dropped from the map.
+    ci_path = root / "manifests" / "code_index.json"
+    if not ci_path.exists():
+        cases.append(("manifests/code_index.json tiles the images", False, "file missing"))
+    else:
+        imgs = json.loads(ci_path.read_text())["images"]
+        cov = sum(i["covered_bytes"] for i in imgs)
+        tile = [i["name"] for i in imgs if i["covered_bytes"] + i["unclaimed_bytes"] != i["size"]]
+        ok = cov == vals["covered_bytes"] and not tile and len(imgs) == vals["images"]
+        cases.append((f"manifests/code_index.json publishes bytes, not words — {cov:,} covered, "
+                      f"covered + unclaimed tiles all {len(imgs)} images", ok,
+                      "ok" if ok else f"covered {cov} vs {vals['covered_bytes']}; untiled {tile[:3]}"))
+
     ok = len(sizes) == vals["functions"] and total == vals["covered_bytes"]
     cases.append((f"the {len(sizes)} per-function headers sum to the covered bytes — {total:,} B, "
                   f"which is the union and not {total + 2384:,}", ok,
@@ -234,7 +272,9 @@ def self_test() -> int:
         # header line each would cost more than the check it protects. (A *mutation* must never
         # target a symlinked path -- see the guard in audit_gates.build_env.)
         for rel in ("fixtures/milestones/gaps.json", "fixtures/sound/codec.json",
-                    "fixtures/decomp/images.json", "fixtures/decomp/ranges.json"):
+                    "fixtures/decomp/images.json", "fixtures/decomp/ranges.json",
+                    "fixtures/scd/profile.json", "manifests/code_index.json",
+                    "manifests/analysis_status.json"):
             (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / rel, tmp / rel)
         (tmp / "src").symlink_to(ROOT / "src")

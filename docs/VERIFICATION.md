@@ -79,18 +79,28 @@ A gate is not finished when it passes. It is finished when it has been **shown t
 6. `python3 tools/counts.py --check` — the documented numbers follow from the registry, so this is the
    only step that needs the docs to be right.
 
-## Landing a milestone
+## Landing a cycle
 
-A milestone is not landed until all three of these are true on the commit that carries it — and that
-ordering is the answer to "did this land properly?", mechanically, instead of by recollection:
+**A cycle is the landing unit, not a milestone** (M210). A cycle is 4–6 milestones; each one keeps its own
+note and log row, but the expensive verification happens once, on the tree that the single cycle commit
+carries. The reason is cost, stated plainly: the audit alone is minutes, the hook re-runs the whole suite, and
+a milestone that turns out wrong inside a cycle is corrected in situ rather than by a new commit.
+
+A cycle is not landed until all four of these are true, in this order:
 
 1. **`tools/ratchet.py --write`** recorded the count change, so the new numbers are in
    `fixtures/gates/ratchet.json` and a later shrink is refused. M179 was the first customer: its
    `file table` 20 → 28 and `gate audit` 35 → 37 were refused until this step.
 2. **`tools/counts.py --check`** is clean, so the documents quote the numbers the registry now holds.
-3. **`python3 tools/verify.py`** reports `PASS` with a clean admission, and `build/verify-report.json`
-   names the same commit. If the report's `artifact.commit` is not the commit being landed, the report is
-   stale and the milestone has not been verified — it has been run at some point.
+3. **`python3 tools/verify.py`** reports `PASS` with a clean admission. Its report records the **worktree
+   hash** it graded, not merely a dirty flag, and writes `build/verify-cert.json`.
+4. **The commit's hook sees that certificate.** `tools/pre-commit.sh` skips the suite only when the
+   certificate's worktree hash equals the tree being committed, the verdict is `PASS` and the admission is
+   clean. Edit one byte after verification and the hook runs the suite again — which is the point.
+
+Per *milestone*, the evidence is cheaper and still mandatory: the gate for the tool it touched, and a
+mutation that makes that gate fail for its intended reason. What is batched is the re-running of everything,
+never the proving of anything.
 
 The two guards are deliberately two-sided, and neither is sufficient alone:
 

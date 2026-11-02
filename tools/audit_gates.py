@@ -167,7 +167,7 @@ AUDITS = [
     dict(name="milestone_index: a stale commit fixture is accepted",
          tool="milestone_index.py", args=["--self-test"],
          file="tools/milestone_index.py",
-         old="    fresh = fixture.exists() and bool(committed) and highest - top <= 1",
+         old="    fresh = fixture.exists() and bool(committed) and highest - top <= CYCLE",
          new="    fresh = True"),
     # --- the full CI tier: one mutation per leg, so neither the skip guard nor the digest check can rot
     dict(name="ci_full: the skip guard never fires",
@@ -350,6 +350,57 @@ AUDITS = [
          tool="file_table.py", args=["--check"], file="tools/file_table.py",
          old='"_DAT_80143f0c + 1) = 0;" in s_off',
          new='"_DAT_80143f0c + 2) = 0;" in s_off'),
+    # --- M210: the hook certificate. The mutation inverts the hash comparison, which must break the
+    # "a matching certificate validates" case -- otherwise the hook would skip the suite for any tree.
+    dict(name="hook_cert: the worktree hash comparison is inverted",
+         tool="hook_cert.py", args=["--self-test"], file="tools/hook_cert.py",
+         old='    if cert.get("worktree") != want_hash:', new='    if cert.get("worktree") == want_hash:'),
+    # --- M210: the scheduler contract, pinned by source shape after M152 left it ungated. The mutation
+    # changes the needle, so the case must report that the loop is not the one it claims.
+    dict(name="cfg_reach: the scheduler's return convention is no longer read",
+         tool="cfg_reach.py", args=["--check"], file="tools/cfg_reach.py",
+         old='    return ("} while (iVar1 == 1);" in s', new='    return ("} while (iVar1 == 2);" in s'),
+    # --- M210: the image inventory that had no producer. Mutating the committed fixture (not the tool) is
+    # the honest target: the case compares the fixture with a fresh distillation, so a hand-edited extent --
+    # the drift the missing generator allowed for a milestone -- must fail it.
+    dict(name="image inventory: a committed extent is edited by hand",
+         tool="export_ranges.py", args=["--check-images"], file="fixtures/decomp/images.json",
+         old='"size": 69952', new='"size": 69960'),
+    # --- M209: the analysis-status index. Two ways it could flatter the corpus: the naming axis counted
+    # without the curated-name rule, and the validated axis made free by an empty rule.
+    dict(name="analysis_status: every function counts as named",
+         tool="analysis_status.py", args=["--check"], file="tools/analysis_status.py",
+         old='            named = not f["name"].startswith(("FUN_", "func_"))',
+         new='            named = True'),
+    dict(name="analysis_status: the validated axis is never set",
+         tool="analysis_status.py", args=["--check"], file="tools/analysis_status.py",
+         old='            validated = fid in F4', new='            validated = False'),
+    # --- M208: the census that was a corpus generation stale. The mutation restores the `+4` that M205
+    # fixed, so the fresh derivation disagrees with the committed census and the drift case must fire.
+    dict(name="census: the covered set claims a word past every body again",
+         tool="find_missed_functions.py", args=["--check"], file="tools/find_missed_functions.py",
+         old='                    covered.update(range(int(r["start"], 16), int(r["end"], 16) + 1, 4))',
+         new='                    covered.update(range(int(r["start"], 16), int(r["end"], 16) + 4, 4))'),
+    # --- M207: the per-image byte map. Each mutation is a way the partition could lie: padding allowed to
+    # overwrite a function body (so the body total moves), the unclassified bucket renamed to data (so the
+    # hole disappears), and the padding run rounded out to the word boundary (so it stops being 0x00/0xFF).
+    dict(name="byte_map: padding overwrites a function body",
+         tool="classify_image.py", args=["--check-cartridge"], file="tools/classify_image.py",
+         old='            claimed.setdefault(w, ("padding", f"run of 0x{value:02x} in the unpacked image"))',
+         new='            claimed[w] = ("padding", f"run of 0x{value:02x} in the unpacked image")'),
+    dict(name="byte_map: the unclassified bucket is renamed to data",
+         tool="classify_image.py", args=["--check-cartridge"], file="tools/classify_image.py",
+         old='            cls, src = claimed.get(w, ("unclassified", "no artifact names it"))',
+         new='            cls, src = claimed.get(w, ("data_named", "no artifact names it"))'),
+    dict(name="byte_map: a padding run is rounded out to the word boundary",
+         tool="classify_image.py", args=["--check-cartridge"], file="tools/classify_image.py",
+         old='            start = i + (-i % 4)',
+         new='            start = i'),
+    # --- M206: the manifest that published a word count as `covered_bytes`. The mutation restores the
+    # word count, which the tiling case catches because covered + unclaimed then falls short of the image.
+    dict(name="counts: code_index's covered_bytes is a word count again",
+         tool="counts.py", args=["--check"], file="manifests/code_index.json",
+         old='"covered_bytes": 57636', new='"covered_bytes": 14409'),
     # --- the M205 coverage arithmetic. The published figure was one 4-byte word per function body too
     # high; these four mutations are the ways to reintroduce it or to undermine the derivation that now
     # catches it: an exclusive end one word too far, a union taken across images instead of within one
@@ -445,7 +496,11 @@ COPY = ["tools", "fixtures", "docs/log", ".github"]
 # the audit then recorded as a detection (M180). A missing input and a caught mutation look identical from
 # an exit code.
 COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md", "docs/MILESTONES.md",
-              "manifests/manifest.json", "README.md"]
+              "manifests/manifest.json", "manifests/code_index.json", "manifests/byte_map.json",
+              "manifests/jump_tables.json", "manifests/analysis_status.json", "README.md"]
+# `manifests/code_index.json` is here because `counts.py` now tiles the images with it (M206): without it
+# every audit of the counts gate would "detect" a missing file, which is the environment gap this file's
+# comment history already names four times.
 # `build/elfs` holds the built images and `src/` the decompiled corpus; both are read-only for every
 # audit, and a copy is 18 MB per audit for nothing. Not linking them was invisible until an image-
 # dependent tool was audited: the mutated copy failed on a missing `images.json`, not on its mutation.

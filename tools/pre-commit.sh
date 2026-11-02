@@ -25,6 +25,15 @@ if ! command -v python3 >/dev/null 2>&1; then
 	exit 1
 fi
 
+# M210 policy: a certificate from `verify.py` for *this exact worktree* means the suite has just been run
+# on the tree being committed, so re-running it would only cost five minutes. Anything else -- no
+# certificate, a different tree, a FAIL, a vacuous admission -- runs the suite as before.
+if python3 tools/hook_cert.py --valid >/dev/null 2>&1; then
+	python3 tools/hook_cert.py --valid
+	printf 'pre-commit: certified by tools/verify.py on this worktree — suite not re-run.\n'
+	exit 0
+fi
+
 if ! python3 -u tools/acceptance.py; then
 	printf '\n'
 	printf 'pre-commit: acceptance suite FAILED — commit blocked.\n'

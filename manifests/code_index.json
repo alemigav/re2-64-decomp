@@ -26,7 +26,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 14409,
+   "covered_words": 14409,
+   "covered_bytes": 57636,
    "coverage": 0.8239,
    "unclaimed_runs": 103,
    "unclaimed_bytes": 12316,
@@ -2928,7 +2929,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 140198,
+   "covered_words": 140198,
+   "covered_bytes": 560792,
    "coverage": 0.4784,
    "unclaimed_runs": 250,
    "unclaimed_bytes": 611448,
@@ -28750,7 +28752,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 8954,
+   "covered_words": 8954,
+   "covered_bytes": 35816,
    "coverage": 0.7263,
    "unclaimed_runs": 13,
    "unclaimed_bytes": 13496,
@@ -30231,7 +30234,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 5093,
+   "covered_words": 5093,
+   "covered_bytes": 20372,
    "coverage": 0.7318,
    "unclaimed_runs": 4,
    "unclaimed_bytes": 7468,
@@ -30900,7 +30904,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 4972,
+   "covered_words": 4972,
+   "covered_bytes": 19888,
    "coverage": 0.338,
    "unclaimed_runs": 3,
    "unclaimed_bytes": 38960,
@@ -31342,7 +31347,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 2617,
+   "covered_words": 2617,
+   "covered_bytes": 10468,
    "coverage": 0.4987,
    "unclaimed_runs": 3,
    "unclaimed_bytes": 10524,
@@ -31650,7 +31656,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 2164,
+   "covered_words": 2164,
+   "covered_bytes": 8656,
    "coverage": 0.5731,
    "unclaimed_runs": 2,
    "unclaimed_bytes": 6448,
@@ -31988,7 +31995,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 3002,
+   "covered_words": 3002,
+   "covered_bytes": 12008,
    "coverage": 0.885,
    "unclaimed_runs": 3,
    "unclaimed_bytes": 1560,
@@ -32390,7 +32398,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 12248,
+   "covered_words": 12248,
+   "covered_bytes": 48992,
    "coverage": 0.9401,
    "unclaimed_runs": 13,
    "unclaimed_bytes": 3120,
@@ -33567,7 +33576,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 5087,
+   "covered_words": 5087,
+   "covered_bytes": 20348,
    "coverage": 0.9591,
    "unclaimed_runs": 2,
    "unclaimed_bytes": 868,
@@ -35026,7 +35036,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 4515,
+   "covered_words": 4515,
+   "covered_bytes": 18060,
    "coverage": 0.9525,
    "unclaimed_runs": 9,
    "unclaimed_bytes": 900,
@@ -35949,7 +35960,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 6764,
+   "covered_words": 6764,
+   "covered_bytes": 27056,
    "coverage": 0.9394,
    "unclaimed_runs": 3,
    "unclaimed_bytes": 1744,
@@ -37050,7 +37062,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 4171,
+   "covered_words": 4171,
+   "covered_bytes": 16684,
    "coverage": 0.9244,
    "unclaimed_runs": 7,
    "unclaimed_bytes": 1364,
@@ -37784,7 +37797,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 5267,
+   "covered_words": 5267,
+   "covered_bytes": 21068,
    "coverage": 0.9312,
    "unclaimed_runs": 2,
    "unclaimed_bytes": 1556,
@@ -38684,7 +38698,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 6070,
+   "covered_words": 6070,
+   "covered_bytes": 24280,
    "coverage": 0.9544,
    "unclaimed_runs": 2,
    "unclaimed_bytes": 1160,
@@ -40198,7 +40213,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 1001,
+   "covered_words": 1001,
+   "covered_bytes": 4004,
    "coverage": 0.9408,
    "unclaimed_runs": 3,
    "unclaimed_bytes": 252,
@@ -40476,7 +40492,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 3476,
+   "covered_words": 3476,
+   "covered_bytes": 13904,
    "coverage": 0.9634,
    "unclaimed_runs": 10,
    "unclaimed_bytes": 528,
@@ -40824,7 +40841,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 6205,
+   "covered_words": 6205,
+   "covered_bytes": 24820,
    "coverage": 0.9511,
    "unclaimed_runs": 9,
    "unclaimed_bytes": 1276,
@@ -41449,7 +41467,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 1678,
+   "covered_words": 1678,
+   "covered_bytes": 6712,
    "coverage": 0.8685,
    "unclaimed_runs": 7,
    "unclaimed_bytes": 1016,
@@ -41770,7 +41789,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 4276,
+   "covered_words": 4276,
+   "covered_bytes": 17104,
    "coverage": 0.8769,
    "unclaimed_runs": 18,
    "unclaimed_bytes": 2400,
@@ -42574,7 +42594,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 4137,
+   "covered_words": 4137,
+   "covered_bytes": 16548,
    "coverage": 0.8765,
    "unclaimed_runs": 13,
    "unclaimed_bytes": 2332,
@@ -43294,7 +43315,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 116,
+   "covered_words": 116,
+   "covered_bytes": 464,
    "coverage": 1.0,
    "unclaimed_runs": 0,
    "unclaimed_bytes": 0,
@@ -43379,7 +43401,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 1187,
+   "covered_words": 1187,
+   "covered_bytes": 4748,
    "coverage": 0.9131,
    "unclaimed_runs": 7,
    "unclaimed_bytes": 452,
@@ -43718,7 +43741,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 5311,
+   "covered_words": 5311,
+   "covered_bytes": 21244,
    "coverage": 0.9532,
    "unclaimed_runs": 5,
    "unclaimed_bytes": 1044,
@@ -45023,7 +45047,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 2040,
+   "covered_words": 2040,
+   "covered_bytes": 8160,
    "coverage": 0.9341,
    "unclaimed_runs": 3,
    "unclaimed_bytes": 576,
@@ -45650,7 +45675,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 7159,
+   "covered_words": 7159,
+   "covered_bytes": 28636,
    "coverage": 0.968,
    "unclaimed_runs": 16,
    "unclaimed_bytes": 948,
@@ -46433,7 +46459,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 7323,
+   "covered_words": 7323,
+   "covered_bytes": 29292,
    "coverage": 0.9232,
    "unclaimed_runs": 15,
    "unclaimed_bytes": 2436,
@@ -47210,7 +47237,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 6087,
+   "covered_words": 6087,
+   "covered_bytes": 24348,
    "coverage": 0.9583,
    "unclaimed_runs": 4,
    "unclaimed_bytes": 1060,
@@ -48373,7 +48401,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 10243,
+   "covered_words": 10243,
+   "covered_bytes": 40972,
    "coverage": 0.9421,
    "unclaimed_runs": 20,
    "unclaimed_bytes": 2516,
@@ -49439,7 +49468,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 5111,
+   "covered_words": 5111,
+   "covered_bytes": 20444,
    "coverage": 0.9062,
    "unclaimed_runs": 9,
    "unclaimed_bytes": 2116,
@@ -50028,7 +50058,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 5184,
+   "covered_words": 5184,
+   "covered_bytes": 20736,
    "coverage": 0.9251,
    "unclaimed_runs": 20,
    "unclaimed_bytes": 1680,
@@ -50643,7 +50674,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 509,
+   "covered_words": 509,
+   "covered_bytes": 2036,
    "coverage": 0.5606,
    "unclaimed_runs": 6,
    "unclaimed_bytes": 1596,
@@ -50858,7 +50890,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 4554,
+   "covered_words": 4554,
+   "covered_bytes": 18216,
    "coverage": 0.9324,
    "unclaimed_runs": 3,
    "unclaimed_bytes": 1320,
@@ -51994,7 +52027,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 1174,
+   "covered_words": 1174,
+   "covered_bytes": 4696,
    "coverage": 0.923,
    "unclaimed_runs": 5,
    "unclaimed_bytes": 392,
@@ -52285,7 +52319,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 147,
+   "covered_words": 147,
+   "covered_bytes": 588,
    "coverage": 0.875,
    "unclaimed_runs": 1,
    "unclaimed_bytes": 84,
@@ -52353,7 +52388,8 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_bytes": 201,
+   "covered_words": 201,
+   "covered_bytes": 804,
    "coverage": 0.9136,
    "unclaimed_runs": 2,
    "unclaimed_bytes": 76,

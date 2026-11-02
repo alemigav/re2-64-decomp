@@ -81,6 +81,8 @@ def main() -> None:
     ap.add_argument("--decomp", default="build/decomp")
     ap.add_argument("--out", default="manifests/missed_functions.json")
     ap.add_argument("--seeds", default="build/seeds_extra")
+    ap.add_argument("--check", action="store_true",
+                    help="re-derive and compare with the committed census; write nothing")
     a = ap.parse_args()
 
     images = json.loads(Path(a.images).read_text())["images"]
@@ -118,8 +120,9 @@ def main() -> None:
                 candidates.extend(entry_before_prologue(words, base, p) for p in prologues)
 
         candidates = sorted(set(candidates))
-        (seeds_dir / f"{img['name']}.tsv").write_text(
-            "".join(f"{c:#010x}\tfunction\tFUN_{c:08x}\n" for c in candidates))
+        if not a.check:      # `--check` compares and writes nothing, seeds included
+            (seeds_dir / f"{img['name']}.tsv").write_text(
+                "".join(f"{c:#010x}\tfunction\tFUN_{c:08x}\n" for c in candidates))
         report["images"].append(dict(
             name=img["name"], unclaimed_runs=len(runs), candidates=len(candidates),
             candidate_bytes=4 * len(candidates),
@@ -128,6 +131,27 @@ def main() -> None:
         if candidates:
             print(f"{img['name']:>16}  {len(candidates):3d} candidate starts  "
                   f"in {sum(1 for r in runs if r['verdict'] == 'code'):3d} code-like runs")
+
+    if a.check:
+        # M208: the committed census was a whole corpus generation stale -- 265 runs / 24 candidates from
+        # an M83-era index, against 437 / 1 today -- and nothing compared the two. This is that comparison.
+        committed = json.loads(Path(a.out).read_text())
+        fresh = {i["name"]: (i["unclaimed_runs"], i["candidates"]) for i in report["images"]}
+        old = {i["name"]: (i["unclaimed_runs"], i["candidates"]) for i in committed["images"]}
+        drift = {k: (old.get(k), v) for k, v in fresh.items() if old.get(k) != v}
+        cands = [(i["name"], r["start"], r["bytes"]) for i in report["images"] for r in i["code_runs"]]
+        cases = [
+            (f"the committed census matches a fresh derivation on {len(fresh)}/{len(fresh)} images",
+             not drift, "ok" if not drift else f"drift: {list(drift.items())[:2]}"),
+            (f"the candidate set is pinned: {[(n, s, b) for n, s, b in cands]}",
+             cands == [("stage2", "0x8008bb10", 656)]),
+        ]
+        bad = 0
+        for label, ok, *rest in cases:
+            bad += not ok
+            print(f"  {'PASS' if ok else 'FAIL'} {label}" + (f" — {rest[0]}" if rest else ""))
+        print(f"{len(cases) - bad}/{len(cases)} census case(s)")
+        sys.exit(1 if bad else 0)
 
     Path(a.out).write_text(json.dumps(report, indent=1) + "\n")
     total = sum(i["candidates"] for i in report["images"])

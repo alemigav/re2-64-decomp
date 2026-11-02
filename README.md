@@ -1,7 +1,7 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **504-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **543-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
@@ -33,8 +33,15 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
   blocks, all verified byte-for-byte (M9/M10).
 * **The code corpus**: **36 images** (boot + stage-2 + 34 overlays, 1 947 632 B) censused from the cart's own
   load table, **3 638 functions** over **3 678** ranges, **62.2 %** of the **1 947 632** image bytes inside
-  a known body (**1 210 600 B**) — `src/`, `src/INDEX.md`.
-* **The script VM**: a 141-entry handler table, **15 distinct instruction lengths** from 1 to 40 bytes,
+  a known body (**1 210 600 B**) — `src/`, `src/INDEX.md`. The other 37.8 % is classified, not shrugged at
+  (M207): **407 608 B padding**, **6 640 B** data the decompiler names, **964 B** of jump tables, and
+  **321 820 B (16.5 %) unclassified** — a bucket that is published and never renamed `data` on a hunch.
+* **What is actually understood** (M209, derived by `tools/analysis_status.py`): of **3 638 functions**,
+  **3 551** resolve every call target in their bodies, **34** carry a curated name, and **12** have behaviour
+  pinned by a gate or an executed experiment — and all **12** of those are still called `FUN_…`, because a
+  name needs evidence of its own.
+* **The script VM**: a 141-entry handler table, **17 distinct instruction lengths** from 1 to 40 bytes
+  (M136 published 15; the 30- and 38-byte advances belong to the handlers that take more than one — M141/M210),
   decoded from the handlers' own behaviour rather than from a reference (M136–M156).
 * **Room population**: 256 table entries → 147 ids → 50 room scripts, proven before anything was modelled
   on it (M156–M158).
@@ -69,8 +76,8 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 22 suites / 222 of 504 cases run; the other 14 suites SKIP
-python3 tools/audit_gates.py     # 74/74 — every gate must fail when its mechanism is disabled
+python3 tools/acceptance.py      # 25 suites / 245 of 543 cases run; the other 17 suites SKIP
+python3 tools/audit_gates.py     # 84/84 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 21/21 — every doc anchor, heading and note pointer holds
 python3 tools/artefact_scan.py   # 5/5  — no tracked file is cartridge content
@@ -81,7 +88,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **282 of 504 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **298 of 543 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -98,7 +105,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**206** numbers, 0-205: **156** with a row, and **50** named gaps. The full index — every number, its title,
+**211** numbers, 0-210: **161** with a row, and **50** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -130,7 +137,7 @@ claim, and codified in [include/re2_formats.h](include/re2_formats.h) with a C v
 | format | state |
 |---|---|
 | cartridge | 67 108 864 B, header entry `0x80000480`, cart table at vram `0x80012150`, 66 records + a build stamp |
-| script VM | 141 handlers, 15 lengths (1–40 B), `0x44 SceEmSet` carries the enemy Id at byte 3, GoSub stride 2 |
+| script VM | 141 handlers, **17** lengths (1–40 B), `0x44 SceEmSet` carries the enemy Id at byte 3, GoSub stride 2 |
 | room population | 256 byte entries → 147 ids → 50 room scripts |
 | model container | `01 41` = format version **321**, self-relative offsets relocated by `FUN_800824b8` |
 | textures (T64) | `[0xBE1E][height][width][size][format][palette entries]` + RGBA5551 + raw 4/8-bpp indices |
@@ -156,10 +163,10 @@ samples, and 187 of the 1 192 records name one.
 ## Layout
 
 ```
-tools/       66 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+tools/       69 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    134 notes, one per milestone that has one
+docs/log/    139 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
