@@ -1,6 +1,6 @@
 /* boot_loader
  * image   boot (boot), base 0x80000480
- * address 0x80000598  body 0x80000598..0x800006b7  size 291 B
+ * address 0x80000598  body 0x80000598..0x800006b7  size 288 B
  * body sha256 a0c0e59cd613724c4c15428d1860cd310548e5c38f13f6ee773fb7efda14f1b1
  * provider record sha256 6db0a551e5968828cafcc6aced080387b6c233ebf5564850cc95df4206fd3ea3
  * callees 7 direct (7 in corpus)

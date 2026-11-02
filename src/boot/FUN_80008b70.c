@@ -1,6 +1,6 @@
 /* FUN_80008b70
  * image   boot (boot), base 0x80000480
- * address 0x80008b70  body 0x80008b70..0x80008d8f  size 547 B
+ * address 0x80008b70  body 0x80008b70..0x80008d8f  size 544 B
  * body sha256 becdc95474b664d4bc5e7c00e0817f6cbd38d56913ea65769856e294b7669309
  * provider record sha256 728b3d335d9b67a8e54d2ddd037920c162008d1bb74453603e751ed7a63a2cc0
  * callees 7 direct (7 in corpus)

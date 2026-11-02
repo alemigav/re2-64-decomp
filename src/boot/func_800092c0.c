@@ -1,6 +1,6 @@
 /* func_800092c0
  * image   boot (boot), base 0x80000480
- * address 0x800092c0  body 0x800092c0..0x8000946f  size 435 B
+ * address 0x800092c0  body 0x800092c0..0x8000946f  size 432 B
  * body sha256 e447b99da329a2f793202042f40f895ce9566b4d9ebeb1a14948f542247eeb46
  * provider record sha256 d3fc69ab5614585fc3b1ad1766539ce7b74fdf8cf73ae79e1670441727f5ad37
  * callees 3 direct (3 in corpus)

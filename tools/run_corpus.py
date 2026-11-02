@@ -122,7 +122,7 @@ def report() -> None:
             for x in doc["functions"]:
                 if x["body"]["available"]:
                     for r in x["body"]["ranges"]:
-                        covered.update(range(int(r["start"], 16), int(r["end"], 16) + 4, 4))
+                        covered.update(range(int(r["start"], 16), int(r["end"], 16) + 1, 4))
             return n, failed, len(covered) * 4
         bn, bf, bc = stats(bd)
         fn, ff, fc = stats(fd)

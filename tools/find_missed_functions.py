@@ -97,7 +97,7 @@ def main() -> None:
         for e in entries:
             if e["body"]["available"]:
                 for r in e["body"]["ranges"]:
-                    covered.update(range(int(r["start"], 16), int(r["end"], 16) + 4, 4))
+                    covered.update(range(int(r["start"], 16), int(r["end"], 16) + 1, 4))
 
         base, size = img["base"], img["size"]
         code = image_bytes(Path(a.elfs) / f"{img['name']}.elf", size)

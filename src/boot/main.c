@@ -1,6 +1,6 @@
 /* main
  * image   boot (boot), base 0x80000480
- * address 0x80000520  body 0x80000520..0x80000597  size 123 B
+ * address 0x80000520  body 0x80000520..0x80000597  size 120 B
  * body sha256 f693c9e99c2a546784f8198b2b82948f3e3de3ee31aac2ee44a0e2c3c7bcc8bb
  * provider record sha256 5a1dcb62ae9cb0c68c6a960b6f43db113c8347bd00b5c59ba3f9494fa1d6b8c1
  * callees 3 direct (3 in corpus)

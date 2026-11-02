@@ -1,6 +1,6 @@
 /* scene_load_state
  * image   stage2 (stage2), base 0x80018a80
- * address 0x800271d4  body 0x800271d4..0x800274e3  size 787 B
+ * address 0x800271d4  body 0x800271d4..0x800274e3  size 784 B
  * body sha256 a75efd6833e544b6cf5b7137b27ec98695fd7a4c568c7cfb708643cd395b044e
  * provider record sha256 9f5c825949f78a9f3ce72ca5f99ee405efa16d7fa41b49976369c2888df11a09
  * callees 20 direct (20 in corpus)

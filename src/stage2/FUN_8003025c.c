@@ -1,6 +1,6 @@
 /* FUN_8003025c
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8003025c  body 0x8003025c..0x80030323  size 203 B
+ * address 0x8003025c  body 0x8003025c..0x80030323  size 200 B
  * body sha256 89231560ec5ef57733fe27fdfed5052832d5c11c1f200ad91cf42c836049f098
  * provider record sha256 e6d37ccee75b6680c29b5102fe464b51812aee5db6ec1cee30a78f375df0b335
  * callees 2 direct (2 in corpus)

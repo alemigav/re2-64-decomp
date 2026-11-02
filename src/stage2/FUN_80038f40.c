@@ -1,6 +1,6 @@
 /* FUN_80038f40
  * image   stage2 (stage2), base 0x80018a80
- * address 0x80038f40  body 0x80038f40..0x80038f7b  size 63 B
+ * address 0x80038f40  body 0x80038f40..0x80038f7b  size 60 B
  * body sha256 070872d61f3c41111a68736df4cbec2ee95c3e5dcf3b4ec86bbad22cdef96091
  * provider record sha256 d7f6fc975421a7aa6368deb1e268936cac85da2de793842afdd74a20798cfee3
  * callees 0 direct (0 in corpus)

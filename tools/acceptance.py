@@ -54,7 +54,7 @@ SUITES = [
     ("exception path (cartridge)", [sys.executable, "tools/exception_path.py", "--check"], 8, True),
     ("t64info (C header)", [sys.executable, "tools/t64_selftest.py"], 4, True),
     ("routine index bounds (cartridge)", [sys.executable, "tools/routine_index.py"], 14, True),
-    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 69, True),
+    ("gate audit (mechanisms disabled)", [sys.executable, "tools/audit_gates.py"], 74, True),
     # CI cannot test the file that makes CI run: an invalid workflow is never scheduled, so nothing
     # reports it. This suite does — and it needs no cartridge, so a runner checks its own definition (M174).
     ("workflow lint", [sys.executable, "tools/workflow_lint.py"], 14, False),
@@ -91,7 +91,7 @@ SUITES = [
     # The counts are derived from this very list, so registering a suite changes them — and this suite
     # is the one that notices the docs no longer agree. It caught its own registration (M180).
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
-    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 17, False),
+    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 21, False),
     # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain
     # loop cannot: drop a result, reorder the report, or swallow a death. Its own `--self-test` does not
     # run SUITES, so registering it is not the recursion that `--check` would be.

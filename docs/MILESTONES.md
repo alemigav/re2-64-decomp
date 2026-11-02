@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-205 milestones are indexed. 132 of them have a note; the rest are rows in the log that cite
+206 milestones are indexed. 133 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -221,6 +221,7 @@ at the foot of this file.
 | 202 | **M202** — the four parameters named, and what feeds cache B | `docs/log/M202-the-parameters-and-the-pairing.md` |
 | 203 | **M203** — +20 and +24 are a loop start and a loop *length* | `docs/log/M203-loop-start-and-loop-length.md` |
 | 204 | **M204** — there is no +28: the record ends at +27 | `docs/log/M204-there-is-no-plus-28.md` |
+| 205 | **M205** — the coverage figure was one word per function body too high | `docs/log/M205-the-coverage-figure-was-one-word-high.md` |
 
 ## The gaps, and why they are empty
 

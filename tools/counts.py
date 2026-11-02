@@ -37,6 +37,16 @@ CHECKS = [
     ("README.md", r"# (\d+) suites / (\d+) of (\d+) cases run; the other (\d+) suites SKIP",
      ("runnable_suites", "runnable_cases", "total_cases", "gated_suites"), 1),
     ("README.md", r"tools/audit_gates\.py\s+# (\d+)/(\d+)", ("audit_cases",) * 2, 1),
+    # --- the corpus (M205). The figure this replaced -- 1 212 984 B, "62.3 %" -- was quoted for thirty
+    # milestones and never recomputed: `export_src.py` claimed one 4-byte word past every function body, so
+    # the union was 2 384 B high. These two sentences are now derived from `fixtures/decomp/` and must agree
+    # with the tool, which is the only thing that makes a headline number a claim rather than a habit.
+    ("README.md",
+     r"\*\*([\d\s,]+?)\s+functions\*\*\s+over\s+\*\*([\d\s,]+?)\*\*\s+ranges,\s+\*\*(\d+)\.(\d)\s+%\*\*\s+of\s+the\s+\*\*([\d\s,]+?)\*\*\s+image\s+bytes\s+inside\s+a\s+known\s+body\s+\(\*\*([\d\s,]+?)\s+B\*\*\)",
+     ("functions", "ranges", "coverage_whole", "coverage_dec", "image_bytes", "covered_bytes"), 1),
+    ("docs/handover.md",
+     r"\*\*([\d\s,]+?)\s+functions\*\*\s+over\s+\*\*([\d\s,]+?)\*\*\s+ranges,\s+\*\*(\d+)\.(\d)\s+%\*\*\s+of\s+the\s+\*\*([\d\s,]+?)\*\*\s+image\s+bytes\s+inside\s+a\s+known\s+body\s+\(\*\*([\d\s,]+?)\s+B\*\*\)",
+     ("functions", "ranges", "coverage_whole", "coverage_dec", "image_bytes", "covered_bytes"), 2),
     # The README quotes four more numbers that used to rot silently: the marker count, how much of the
     # milestone record exists, how many notes there are, and how many tools. Each is derived, not typed.
     ("README.md", r"tools/check_markers\.py\s+# (\d+)/(\d+)", ("marker_cases",) * 2, 1),
@@ -73,7 +83,7 @@ AUDIT_SUITE = "gate audit (mechanisms disabled)"
 
 
 def derive(root: Path) -> dict:
-    """The seven numbers, from the same `SUITES` list that `acceptance.py` executes."""
+    """Every asserted number: the suite totals from `acceptance.py`, the corpus from `fixtures/decomp/`."""
     path = root / "tools" / "acceptance.py"
     ns = {"__file__": str(path), "__name__": "_acceptance"}
     exec(compile(path.read_text(), str(path), "exec"), ns)
@@ -108,6 +118,40 @@ def derive(root: Path) -> dict:
         "codec_groups_total": _codec["groups_total"],
         "tool_count": len([p for p in (root / "tools").iterdir()
                            if p.suffix in (".py", ".sh", ".c", ".swift")]),
+        **_corpus(root),
+    }
+
+
+def _corpus(root: Path) -> dict:
+    """The corpus metrics, from committed fixtures only -- so CI can recompute them without a cartridge.
+
+    `fixtures/decomp/images.json` is the 36-image inventory (layout metadata, no bytes) and
+    `fixtures/decomp/ranges.json` is the provider's body ranges. Coverage is the union of the inclusive
+    body ranges over the image extents: `end - start + 1`, never `end - start + 4`, which is the M205 bug
+    that inflated this total by one 4-byte word per function body. The function count comes from the
+    committed tree itself, because the index that produced it is not committed.
+    """
+    images = json.loads((root / "fixtures" / "decomp" / "images.json").read_text())["images"]
+    ranges = json.loads((root / "fixtures" / "decomp" / "ranges.json").read_text())["images"]
+    # Per image, then summed: twenty overlays load at 0x80161cf0, so their body ranges share addresses.
+    # A single global set would collapse them and report 732 468 B -- 37.6 % -- which is the arithmetic
+    # M205 caught in its own first draft.
+    covered = 0
+    for name, pairs in ranges.items():
+        words = set()
+        for s, e in pairs:
+            words.update(range(int(s), int(e) + 1))
+        covered += len(words)
+    image_bytes = sum(i["size"] for i in images)
+    tenths = (1000 * covered + image_bytes // 2) // image_bytes if image_bytes else 0
+    return {
+        "images": len(images),
+        "image_bytes": image_bytes,
+        "functions": len(list((root / "src").glob("*/*.c"))),
+        "ranges": sum(len(v) for v in ranges.values()),
+        "covered_bytes": covered,
+        "coverage_whole": tenths // 10,
+        "coverage_dec": tenths % 10,
     }
 
 
@@ -135,6 +179,32 @@ def check(root: Path, quiet: bool = False):
             if got != want:
                 bad.append(f"{got} != {want}")
         cases.append((label, not bad, "; ".join(bad) if bad else f"{[vals[k] for k in keys]} ok"))
+
+    # --- the generated artifacts must agree with the derivation (M205). Quoting the numbers in the docs is
+    # not enough: the tree that publishes them is *written by a tool*, and that tool claimed one 4-byte word
+    # past every body for thirty milestones. These two cases tie the generated files to the fixtures, so a
+    # regeneration that reintroduces the arithmetic, or a tree that was never regenerated, fails here.
+    index = root / "src" / "INDEX.md"
+    head = re.search(r"(\d[\d,]*) functions across (\d+) images, (\d[\d,]*) of (\d[\d,]*) (?:code|image) bytes",
+                     index.read_text()) if index.exists() else None
+    if head is None:
+        cases.append(("src/INDEX.md agrees with the derived corpus", False, "headline not found"))
+    else:
+        got = [int(re.sub(r"[,\s]", "", g)) for g in head.groups()]
+        want = [vals["functions"], vals["images"], vals["covered_bytes"], vals["image_bytes"]]
+        cases.append((f"src/INDEX.md agrees with the derived corpus — {got[0]} functions, {got[1]} images, "
+                      f"{got[2]:,} of {got[3]:,} B", got == want, f"{got} != {want}" if got != want else "ok"))
+
+    sizes = []
+    for p in sorted((root / "src").glob("*/*.c")):
+        m = re.search(r"size (\d+) B", p.read_text()[:600])
+        if m:
+            sizes.append(int(m.group(1)))
+    total = sum(sizes)
+    ok = len(sizes) == vals["functions"] and total == vals["covered_bytes"]
+    cases.append((f"the {len(sizes)} per-function headers sum to the covered bytes — {total:,} B, "
+                  f"which is the union and not {total + 2384:,}", ok,
+                  "ok" if ok else f"{total} != {vals['covered_bytes']}"))
     if not quiet:
         passed = 0
         for label, ok, detail in cases:
@@ -159,9 +229,15 @@ def self_test() -> int:
             shutil.copytree(ROOT / d, tmp / d)
         # everything `derive()` reads, not just the milestones: this self-test has now failed twice on a
         # missing input, which is the audit-environment gap in miniature
-        for rel in ("fixtures/milestones/gaps.json", "fixtures/sound/codec.json"):
+        # M205 added three more inputs -- the image inventory, the body ranges and the generated tree.
+        # The tree is a symlink: this self-test only reads it, and copying 3 638 files to read one
+        # header line each would cost more than the check it protects. (A *mutation* must never
+        # target a symlinked path -- see the guard in audit_gates.build_env.)
+        for rel in ("fixtures/milestones/gaps.json", "fixtures/sound/codec.json",
+                    "fixtures/decomp/images.json", "fixtures/decomp/ranges.json"):
             (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / rel, tmp / rel)
+        (tmp / "src").symlink_to(ROOT / "src")
         for f in files + ["docs/reverse_engineering_log.md"]:
             (tmp / f).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / f, tmp / f)

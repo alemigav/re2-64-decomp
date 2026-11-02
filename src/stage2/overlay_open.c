@@ -1,6 +1,6 @@
 /* overlay_open
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8004cc5c  body 0x8004cc5c..0x8004cca7  size 79 B
+ * address 0x8004cc5c  body 0x8004cc5c..0x8004cca7  size 76 B
  * body sha256 f1b0104751bf8d920b784d4d5a655fc06ae56e7cb13bf8a9f0ebe3f153b3bb87
  * provider record sha256 b8e69da80e8a1f171bff07fef88bd603d26164bc149794c5d1885cd70606b0f8
  * callees 2 direct (2 in corpus)

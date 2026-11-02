@@ -1,7 +1,7 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **495-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **504-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
@@ -32,7 +32,8 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
 * **The container**: 4 761 zlib members, 8 748 242 → 18 550 424 B, plus 1 227 MJPEG frames and 271 MPEG-1
   blocks, all verified byte-for-byte (M9/M10).
 * **The code corpus**: **36 images** (boot + stage-2 + 34 overlays, 1 947 632 B) censused from the cart's own
-  load table, **3 638 functions** decompiled, **62.3 %** of code bytes claimed — `src/`, `src/INDEX.md`.
+  load table, **3 638 functions** over **3 678** ranges, **62.2 %** of the **1 947 632** image bytes inside
+  a known body (**1 210 600 B**) — `src/`, `src/INDEX.md`.
 * **The script VM**: a 141-entry handler table, **15 distinct instruction lengths** from 1 to 40 bytes,
   decoded from the handlers' own behaviour rather than from a reference (M136–M156).
 * **Room population**: 256 table entries → 147 ids → 50 room scripts, proven before anything was modelled
@@ -68,8 +69,8 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 22 suites / 218 of 495 cases run; the other 14 suites SKIP
-python3 tools/audit_gates.py     # 69/69 — every gate must fail when its mechanism is disabled
+python3 tools/acceptance.py      # 22 suites / 222 of 504 cases run; the other 14 suites SKIP
+python3 tools/audit_gates.py     # 74/74 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 21/21 — every doc anchor, heading and note pointer holds
 python3 tools/artefact_scan.py   # 5/5  — no tracked file is cartridge content
@@ -80,7 +81,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **277 of 495 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **282 of 504 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -97,7 +98,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**205** numbers, 0-204: **155** with a row, and **50** named gaps. The full index — every number, its title,
+**206** numbers, 0-205: **156** with a row, and **50** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -158,7 +159,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       66 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    133 notes, one per milestone that has one
+docs/log/    134 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

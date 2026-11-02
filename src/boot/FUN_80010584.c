@@ -1,6 +1,6 @@
 /* FUN_80010584
  * image   boot (boot), base 0x80000480
- * address 0x80010584  body 0x80010584..0x800106b7  size 311 B
+ * address 0x80010584  body 0x80010584..0x800106b7  size 308 B
  * body sha256 c9e27990e41d5edd70ae98ef8426dbc6273b44c8d73fe046946103cd5361a4d3
  * provider record sha256 923e15ea440d191c2e226e8a4a678c739ec5cd508214ce61a2423e59adbca9e8
  * callees 1 direct (1 in corpus)

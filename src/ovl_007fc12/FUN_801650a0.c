@@ -1,6 +1,6 @@
 /* FUN_801650a0
  * image   ovl_007fc12 (ovl), base 0x80161cf0
- * address 0x801650a0  body 0x801650a0..0x80165253  size 439 B
+ * address 0x801650a0  body 0x801650a0..0x80165253  size 436 B
  * body sha256 4d723a1460e036983af031a0657796b9f7c8a07c1d95aeda3d8e11641767bbb8
  * provider record sha256 b09ec41072b1a8815356083405be4ed115a6d340ab08511c84ca41381312d3f9
  * callees 3 direct (3 in corpus)

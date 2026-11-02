@@ -1,6 +1,6 @@
 /* inflate_init
  * image   boot (boot), base 0x80000480
- * address 0x80004550  body 0x80004550..0x80004593  size 71 B
+ * address 0x80004550  body 0x80004550..0x80004593  size 68 B
  * body sha256 9982576cc83e4af0b7e0dd07c2cdec82822b8a73a382027a83f5c90ceb4af93a
  * provider record sha256 f2acaca27c929f513be592e7d1ef70d124489082e1e9c4846e93525e197d5660
  * callees 2 direct (2 in corpus)

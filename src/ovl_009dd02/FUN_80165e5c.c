@@ -1,6 +1,6 @@
 /* FUN_80165e5c
  * image   ovl_009dd02 (ovl), base 0x80161cf0
- * address 0x80165e5c  body 0x80165e5c..0x80165f7b  size 291 B
+ * address 0x80165e5c  body 0x80165e5c..0x80165f7b  size 288 B
  * body sha256 b6f8c44df8941265f49c9f583641861345dff878a0c96805b182a8c47d1aa6b4
  * provider record sha256 571503f70780c0d7442851f0764be8399bc5bce04dae56637030298e5c5dd25a
  * callees 4 direct (4 in corpus)

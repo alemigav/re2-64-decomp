@@ -1,6 +1,6 @@
 /* pi_dma_raw
  * image   boot (boot), base 0x80000480
- * address 0x8000c870  body 0x8000c870..0x8000c93f  size 211 B
+ * address 0x8000c870  body 0x8000c870..0x8000c93f  size 208 B
  * body sha256 325c74eb6ef3232e3b638692fcc6d2bac1892ab85d5ac5fe350b667de72eff03
  * provider record sha256 f088cff23973276ced19f228ab00cb3638768cbac41ee744f6f75791c93449d7
  * callees 1 direct (1 in corpus)

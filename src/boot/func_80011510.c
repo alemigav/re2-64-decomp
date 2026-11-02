@@ -1,6 +1,6 @@
 /* func_80011510
  * image   boot (boot), base 0x80000480
- * address 0x80011510  body 0x80011510..0x800115a3  size 151 B
+ * address 0x80011510  body 0x80011510..0x800115a3  size 148 B
  * body sha256 87bf093466bcba6736df73abfdb8dbf68ca73aab4496548f1b5b76b541aff924
  * provider record sha256 8b5d2f1ada5ebb456ae5837ebb4928188231bdeebc8165fb4554ff64a2669401
  * callees 2 direct (2 in corpus)

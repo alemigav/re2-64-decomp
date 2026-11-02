@@ -1,6 +1,6 @@
 /* FUN_8000ec10
  * image   boot (boot), base 0x80000480
- * address 0x8000ec10  body 0x8000ec10..0x8000ec53  size 71 B
+ * address 0x8000ec10  body 0x8000ec10..0x8000ec53  size 68 B
  * body sha256 a7e03561031c67c00551da64c2ca8a9fcf1ebc1761d1b60bf843eb4c9a207e43
  * provider record sha256 9faf5e68ed8e92d8eaaa8968642098cf5e43f2b3d505a0df8426ccf2a9b62bf6
  * callees 2 direct (2 in corpus)

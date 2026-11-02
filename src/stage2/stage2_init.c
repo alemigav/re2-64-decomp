@@ -1,6 +1,6 @@
 /* stage2_init
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8004d190  body 0x8004d190..0x8004d31f  size 403 B
+ * address 0x8004d190  body 0x8004d190..0x8004d31f  size 400 B
  * body sha256 9d9121ea944dbf29d59448a05d68e9bc5a8d518f02105d1fa227c19d77d03ac9
  * provider record sha256 e8b24c84f9002b95570d857c93ca55dd62e9cf3539e36111da215957245265d2
  * callees 4 direct (4 in corpus)

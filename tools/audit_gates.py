@@ -350,6 +350,31 @@ AUDITS = [
          tool="file_table.py", args=["--check"], file="tools/file_table.py",
          old='"_DAT_80143f0c + 1) = 0;" in s_off',
          new='"_DAT_80143f0c + 2) = 0;" in s_off'),
+    # --- the M205 coverage arithmetic. The published figure was one 4-byte word per function body too
+    # high; these four mutations are the ways to reintroduce it or to undermine the derivation that now
+    # catches it: an exclusive end one word too far, a union taken across images instead of within one
+    # (twenty overlays share a base, so that collapses 478 132 B), a function count that stops counting,
+    # and a header sum allowed one word per range too high.
+    dict(name="counts: the coverage union uses an exclusive end one word too far",
+         tool="counts.py", args=["--check"], file="tools/counts.py",
+         old='            words.update(range(int(s), int(e) + 1))',
+         new='            words.update(range(int(s), int(e) + 4))'),
+    dict(name="counts: the per-image union is not reset between images",
+         tool="counts.py", args=["--check"], file="tools/counts.py",
+         old='    covered = 0\n    for name, pairs in ranges.items():\n        words = set()',
+         new='    covered = 0\n    words = set()\n    for name, pairs in ranges.items():'),
+    dict(name="counts: the function count stops matching source files",
+         tool="counts.py", args=["--check"], file="tools/counts.py",
+         old='        "functions": len(list((root / "src").glob("*/*.c"))),',
+         new='        "functions": len(list((root / "src").glob("*.c"))),'),
+    dict(name="counts: the header sum is allowed one word per range too high",
+         tool="counts.py", args=["--check"], file="tools/counts.py",
+         old='    ok = len(sizes) == vals["functions"] and total == vals["covered_bytes"]',
+         new='    ok = len(sizes) == vals["functions"] and total == vals["covered_bytes"] + 3 * vals["ranges"]'),
+    dict(name="counts: the generated index headline is no longer parsed",
+         tool="counts.py", args=["--check"], file="tools/counts.py",
+         old='(\\d+) images, (\\d[\\d,]*) of',
+         new='(\\d+) imagez, (\\d[\\d,]*) of'),
     # --- the M204 addressing cases. The claim is that nothing exists past byte 27, so the mutations are
     # the two ways a record could be wider than it is: a stride of 32 bytes instead of 28, and a member
     # that ends 8 bytes after the terminator. The third breaks the walker's own stride.
@@ -462,6 +487,14 @@ def run_audit(audit, keep: Path = None) -> tuple:
     try:
         build_env(tmp)
         target = tmp / audit["file"]
+        if not target.exists():
+            return None, f"mutation target absent from the sandbox: {audit['file']}"
+        # `build_env` *links* src, build/elfs, rom and assets instead of copying them, so a mutation
+        # aimed at a path under one of those edits the live repository. M205 did exactly that: an
+        # audit of `src/INDEX.md` wrote through the link, left the worktree mutated and was then
+        # judged on its own damage. A mutation must land inside the sandbox or not at all.
+        if not str(target.resolve()).startswith(str(tmp.resolve()) + "/"):
+            return None, f"mutation target resolves outside the sandbox: {audit['file']}"
         text = target.read_text()
         if audit["old"] not in text:
             return None, f"mutation anchor not found in {audit['file']}"

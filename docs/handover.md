@@ -21,7 +21,7 @@ ground-truth RDRAM dumps. Nothing in the repo imports or requires it.
 | cart table | vram `0x80012150`: 16-byte header `"OVERLAYTABLENUM"` + count `0x43`; records 1–66; record 67 = build-stamp descriptor; zlib tables from `0x80012590` | M81/M84/M92 |
 | zlib members | **4 761**, 8 748 242 → 18 550 424 B; streams start `68 de` (16 KB window) | M9, `unpack_zlib.py` |
 | code images | **36** (boot + stage-2 + 34 overlays), **1 947 632 B** | M81 census |
-| decompiled corpus | **3 638 functions**, **62.3 %** of code bytes claimed (1 212 984 of 1 947 632 B), `src/` + `src/INDEX.md` | M81–M84, `src/INDEX.md` |
+| decompiled corpus | **3 638 functions** over **3 678** ranges, **62.2 %** of the **1 947 632** image bytes inside a known body (**1 210 600 B**); the denominator is *image* bytes, not code — nothing here classifies code independently (M205) | M81–M84, `src/INDEX.md` |
 | media | 1 227 MJPEG frames, 271 MPEG-1 blocks (24.4 MB + 15.8 MB), all verified | M10 |
 | the 17.6 MB | **identified — the sound family, ids 1979–1983**: id **1979** `0x0338fea`–`0x0b630fe` (8 560 916 B, a **588-record `MORT` bank** whose directory and record header are decoded) and id **1983** `0x0b73fbc`–`0x140ed7c` (9 022 912 B, **1 192 samples tiling it exactly**, order-2 ADPCM behind a 256-byte shared codebook); **17 583 828 B** together, both loaded by `FUN_800759d8` | M178, `tools/file_table.py` |
 | file table | **8 091** entries: 113 sentinels, 7 978 real — 4 852 zlib and **3 126 raw (58 270 043 B: the media)**; it is the file system, not a zlib manifest | M178 |
@@ -166,7 +166,7 @@ eleven skipped suites are the ones that assert facts about RE2 itself — the co
 at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
 exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
-each run's job summary lists them. **A green CI run does not vouch for those 277 cases.**
+each run's job summary lists them. **A green CI run does not vouch for those 282 cases.**
 
 A route to close that gap *in a secret* was built and verified in M130 and then deliberately **not adopted**,
 because it means a copyrighted cartridge living in a CI secret store. M175 measured why it also does not work:
@@ -303,9 +303,9 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 36 suites, 495 cases
+python3 tools/acceptance.py         # 36 suites, 504 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
-python3 tools/audit_gates.py        # 69/69: every check must fail when its mechanism is disabled
+python3 tools/audit_gates.py        # 74/74: every check must fail when its mechanism is disabled
 python3 tools/ratchet.py --check    # the registry may not drift, and src/ may not move, silently
 python3 tools/ratchet.py --write    # ...accept the current state (required after any count change)
 python3 tools/counts.py --check     # the seven numbers, derived once and asserted in twelve places
@@ -314,7 +314,7 @@ python3 tools/counts.py --check     # the seven numbers, derived once and assert
 **A green CI run does not vouch for everything.** Twelve suites are cartridge-gated and report `SKIP`
 on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
 `cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
-`routine index bounds`, `file table`, `voice decode` and the gate audit — **277 of 495 cases**. Their enforcement is the
+`routine index bounds`, `file table`, `voice decode` and the gate audit — **282 of 504 cases**. Their enforcement is the
 pre-commit hook and a local run, and the CI job summary lists them by name.
 
 ## 5b. Who verifies what, and the three edits that cannot happen silently
@@ -385,7 +385,7 @@ The emulator is no longer on the critical path. What is left is cartridge-side, 
 * **experiment C** — resource structures: what the 4 761 zlib members are, beyond the 36 code images and the
   verified media;
 * `README.md` was rewritten in M177 as a frontpage (what is verified, how to run the gate without the
-  ROM, the licence and the legal notice); `src/` is **3 638** functions at **62.3 %** of code bytes.
+  ROM, the licence and the legal notice); `src/` holds **3 638 functions** over **3 678** ranges, **62.2 %** of the **1 947 632** image bytes inside a known body (**1 210 600 B**).
 
 Reading any future dump, if one ever appears, is still one command per tool:
 

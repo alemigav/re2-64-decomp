@@ -151,7 +151,7 @@ def main() -> None:
             ranges = e["body"]["ranges"] if e["body"]["available"] else []
             for r in ranges:
                 s, t = int(r["start"], 16), int(r["end"], 16)
-                covered.update(range(s, t + 4, 4))
+                covered.update(range(s, t + 1, 4))
             body = rename_references(
                 strip_provider_preamble(
                     (Path(a.decomp) / img["name"] / e["relative_path"]).read_text()), gnames)
@@ -167,7 +167,7 @@ def main() -> None:
             header = (f"/* {name}\n"
                       f" * image   {img['name']} ({img['role']}), base {img['base']:#010x}\n"
                       f" * address {e['address']}  body {span}  size "
-                      f"{sum(int(r['end'], 16) - int(r['start'], 16) + 4 for r in ranges)} B\n"
+                      f"{sum(int(r['end'], 16) - int(r['start'], 16) + 1 for r in ranges)} B\n"
                       f" * body sha256 {body_sha}\n"
                       f" * provider record sha256 {e.get('sha256', '-')}\n"
                       f" * callees {len(callees)} direct "
@@ -176,7 +176,7 @@ def main() -> None:
                       f" */\n")
             (outdir / fname).write_text(header + body)
             functions.append(dict(address=e["address"], name=name, file=str(outdir / fname),
-                                  size=sum(int(r["end"], 16) - int(r["start"], 16) + 4
+                                  size=sum(int(r["end"], 16) - int(r["start"], 16) + 1
                                            for r in ranges),
                                   sha256=body_sha, provider_sha256=e.get("sha256", ""),
                                   status=e["status"],

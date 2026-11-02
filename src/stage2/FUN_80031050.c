@@ -1,6 +1,6 @@
 /* FUN_80031050
  * image   stage2 (stage2), base 0x80018a80
- * address 0x80031050  body 0x80031050..0x800310af  size 99 B
+ * address 0x80031050  body 0x80031050..0x800310af  size 96 B
  * body sha256 3f041bdf7e349cbcc1f3062d74f2b52c8bd1142a289a1066c97b3aa78e9f4a69
  * provider record sha256 d5b00ff49adbd35112264e1185b35501ee3318e69cc239fbd153d3dd2f42af5c
  * callees 1 direct (1 in corpus)

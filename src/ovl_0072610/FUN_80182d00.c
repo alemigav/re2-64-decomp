@@ -1,6 +1,6 @@
 /* FUN_80182d00
  * image   ovl_0072610 (ovl), base 0x8017b410
- * address 0x80182d00  body 0x80182d00..0x80182f77  size 635 B
+ * address 0x80182d00  body 0x80182d00..0x80182f77  size 632 B
  * body sha256 09fbec743a3c07fdaad8341f53670fcd96842a331588f832716623f0129ce852
  * provider record sha256 cc195ef514f6f584d1a9b55e690821fe08432aae65c0e490c8a900a49b5ad545
  * callees 0 direct (0 in corpus)

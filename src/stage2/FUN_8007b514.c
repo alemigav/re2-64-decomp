@@ -1,6 +1,6 @@
 /* FUN_8007b514
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8007b514  body 0x8007b514..0x8007b9ff  size 1263 B
+ * address 0x8007b514  body 0x8007b514..0x8007b9ff  size 1260 B
  * body sha256 23b5221d446c1273d0eec78393d59f428d9ca0d4df82dd8eabf34ecb81d397a6
  * provider record sha256 24e0ed34a4daa1ab110f24c303b0bc2817e708b48c3c9f82202fdb299df7b7b3
  * callees 4 direct (4 in corpus)

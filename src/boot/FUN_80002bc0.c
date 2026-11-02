@@ -1,6 +1,6 @@
 /* FUN_80002bc0
  * image   boot (boot), base 0x80000480
- * address 0x80002bc0  body 0x80002bc0..0x80002f7b  size 959 B
+ * address 0x80002bc0  body 0x80002bc0..0x80002f7b  size 956 B
  * body sha256 c1ab7775015ad826c04d632fb93e0b55272888919fabb9b884c405171829b318
  * provider record sha256 b5c63cf46323f650c3d55cece3458e6eba882bd9ca8ccfe8dce9eabf7ef29088
  * callees 0 direct (0 in corpus)
