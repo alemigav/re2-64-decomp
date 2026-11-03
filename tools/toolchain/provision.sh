@@ -245,7 +245,10 @@ patch_gcc281_fp() {
 	[ -f "$src/varasm.c" ] || { printf 'gcc 2.8.1: SKIP fp patch, sources missing\n'; return 0; }
 	grep -q 'M261' "$src/varasm.c" && return 0
 	python3 "$root/tools/toolchain/patch_gcc281_fp.py" "$src" || return 1
-	touch "$src/varasm.c" "$src/real.h"
+	# 2.8.1's Makefile carries no header dependencies, so patching a target macro leaves varasm.o stale and
+	# the change silently does nothing (M265: the pool stayed before the function until varasm.c was touched).
+	touch "$src/varasm.c" "$src/function.c" "$src/real.h" \
+	      "$src/config/mips/mips.c" "$src/config/mips/mips.h"
 }
 
 build_gcc281() {

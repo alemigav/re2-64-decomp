@@ -22,6 +22,32 @@ EDITS = [
     ('varasm.c', '\t  bcopy ((char *) &CONST_DOUBLE_LOW (x), (char *) &u, sizeof u);\n\t  assemble_real (u.d, pool->mode);', '\t  REAL_VALUE_FROM_CONST_DOUBLE (u.d, x);\n\t  assemble_real (u.d, pool->mode);'),
 ]
 
+# M265: the two changes the constant-pool matching needs, and they are coupled -- each alone moves p8 *away* from
+# the image. (a) the cartridge contains zero `mtc1 $at` in 1.9 MB, so its compiler never took the `li.s`/`li.d`
+# immediate path and every float constant came from memory; (b) the image's .rodata is `[table][pool]`, which only
+# happens if the pool is emitted *after* the function body.
+EDITS += [
+    ("config/mips/mips.c",
+     """  if (op == CONST0_RTX (mode))
+    return TRUE;
+
+  /* ??? li.s does not work right with SGI's Irix 6 assembler.  */""",
+     """  if (op == CONST0_RTX (mode))
+    return TRUE;
+
+  /* M265: the cartridge contains **no `li.s`/`li.d` expansion at all** -- zero `mtc1 $at` in 1.9 MB of text --
+     so the original compiler never took the immediate path for a float constant: every one is loaded from the
+     pool. Returning FALSE makes this build place them the same way. Placement only; the pool word's *value* is
+     the separate M261 fix. This is coupled with CONSTANT_POOL_BEFORE_FUNCTION below: alone it grows the pool in
+     front of the jump table and shifts every table reference (p8 134/139 against 136/139).  */
+  return FALSE;
+
+  /* ??? li.s does not work right with SGI's Irix 6 assembler.  */"""),
+    ("config/mips/mips.h",
+     '#define ASM_OUTPUT_FLOAT(STREAM,VALUE)\t\t\t\t\t\\\n  mips_output_float (STREAM, VALUE)\n',
+     "/* M265: the image's .rodata is [jump table][constant pool], so the pool has to be emitted after the\n   function body. The default (varasm.c) puts it before the body, which makes it [pool][table] and shifts every\n   table reference once the pool is non-empty -- and it is non-empty now that float constants are pooled.  */\n\n#define CONSTANT_POOL_BEFORE_FUNCTION 0\n\n#define ASM_OUTPUT_FLOAT(STREAM,VALUE)\t\t\t\t\t\\\n  mips_output_float (STREAM, VALUE)\n"),
+]
+
 
 def main(argv):
     if len(argv) != 2:

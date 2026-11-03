@@ -689,37 +689,35 @@ def p8_function():
 
 
 def fp_pool_check():
-    """The instrument's own float path: a *pool* constant must carry its real bits (M261).
+    """The instrument's float path: constants must go to the pool, and the pool must carry their real bits.
 
-    Not a cartridge probe -- a check on the compiler. gcc 2.8.1 on a 64-bit host stored the emulator's packed
-    internal form where the two 32-bit target-pattern words belong, so every constant-pool float came out as
-    `0`, and that had a second consequence nobody predicted: `mips_const_double_ok` reads the same words to
-    decide whether an SF constant may be an immediate, so it said no and `li.s` was never chosen. The two
-    symptoms are checked separately, because a rebuilt compiler can fix one and not the other:
-    `3.0e38f` is outside the range that predicate accepts, so it *must* go to the pool, and its bits are
-    compared against the IEEE pattern rather than against the image.
+    Not a cartridge probe -- a check on the compiler, and it encodes the two things M261/M265 measured. (a) The
+    image contains **zero `mtc1 $at` in 1.9 MB**, i.e. no `li.s`/`li.d` expansion anywhere, so its compiler never
+    took the immediate path for a float constant: ours must not either. (b) The pool word must be the real IEEE
+    pattern; before M261 every one of them was `0`. Both are asserted because a rebuilt compiler can get one
+    right and the other wrong -- which is exactly what happened between M261 and M265.
     """
     cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
     if not cc1.exists():
         return None
     out = {}
-    for tag, source, expect in (("pool", "float probe_fp(float x) { return x * 3.0e38f; }", "0x7f61b1e6"),
-                                ("small", "float probe_fp2(float x) { return x * 30.0f; }", None)):
+    for tag, source, expect in (("big", "float probe_fp(float x) { return x * 3.0e38f; }", "0x7f61b1e6"),
+                                ("small", "float probe_fp2(float x) { return x * 4.0f; }", "0x40800000")):
         c = WORK / ("fp_%s.c" % tag)
         c.parent.mkdir(parents=True, exist_ok=True)
         c.write_text(source + "\n")
         s = c.with_suffix(".s")
-        if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+        if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                           capture_output=True).returncode:
             return None
         text = s.read_text()
-        if expect is None:
-            out[tag] = "li.s" in text
-        else:
-            words = re.findall(r"^\s*\.word\s+(0x[0-9a-fA-F]+)", text, re.M)
-            out[tag] = words[0] if words else None
-    out["ok"] = out.get("pool") == "0x7f61b1e6"
-    out["li"] = bool(out.get("small"))
+        words = re.findall(r"^\s*\.word\s+(0x[0-9a-fA-F]+)", text, re.M)
+        out[tag] = words[0] if words else None
+        out[tag + "_inline"] = "li.s" in text
+    # the image itself: no li.s expansion exists anywhere in it
+    image = IMAGE.read_bytes()[: (IMAGE.stat().st_size // 4) * 4]
+    words = struct.unpack(">%dI" % (len(image) // 4), image)
+    out["image_li_s"] = sum(1 for w in words if (w & 0xFFE007FF) == 0x44800800)
     return out
 
 
@@ -876,11 +874,14 @@ def check():
                   f".rodata" if p8f else "p8 table: not run",
                   bool(p8f) and p8f["table_words"] == 6))
 
-    cases.append((f"a constant-pool float carries its real bits: 3.0e38f emits {fpf['pool']} against the IEEE "
-                  f"0x7f61b1e6 (it was 0x00000000 before M261), and a small constant still becomes `li.s` "
-                  f"({fpf['li']}) -- the two symptoms of the same defect, checked apart"
+    cases.append((f"float constants go to the pool, as the image does, and carry their real bits: "
+                  f"4.0f emits {fpf['small']} and 3.0e38f emits {fpf['big']} against IEEE "
+                  f"0x40800000/0x7f61b1e6, with no `li.s` in either ({not fpf['small_inline']} and "
+                  f"{not fpf['big_inline']}) -- and the image itself has {fpf['image_li_s']} `mtc1 $at` "
+                  f"in its whole 1.9 MB, so it never used the immediate path either"
                   if fpf else "fp pool: not run",
-                  bool(fpf) and fpf["ok"] and fpf["li"]))
+                  bool(fpf) and fpf["small"] == "0x40800000" and fpf["big"] == "0x7f61b1e6"
+                  and not fpf["small_inline"] and not fpf["big_inline"] and fpf["image_li_s"] == 0))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
