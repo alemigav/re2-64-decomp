@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-275 milestones are indexed. 197 of them have a note; the rest are rows in the log that cite
+276 milestones are indexed. 198 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -292,6 +292,7 @@ at the foot of this file.
 | 272 | **M272** — the 167-word state machine: byte-exact, and three shape levers that are discriminators | `docs/log/M272-the-167-word-state-machine-byte-exact.md` |
 | 273 | **M273** — the progress map: generated, gated, and honest about being mostly empty | `docs/log/M273-the-progress-map-generated-and-gated.md` |
 | 274 | **M274** — the 206-word twelve-arm machine: the widest dispatch, byte-exact, and four single-word discriminators | `docs/log/M274-the-206-word-twelve-arm-machine.md` |
+| 275 | **M275** — 0x8007e590, an honest partial: three regions exact, the 113-word arm still open | `docs/log/M275-0x8007e590-an-honest-partial.md` |
 
 ## The gaps, and why they are empty
 
