@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "14a33d2",
+   "subject": "M258: the rule that sinks that store is not in mips.c",
+   "milestones": [
+    258
+   ]
+  },
+  {
    "sha": "3fd17c7",
    "subject": "M257: p7 recovered (60/84, table 8/8) and cc1 cannot parse a comment",
    "milestones": [

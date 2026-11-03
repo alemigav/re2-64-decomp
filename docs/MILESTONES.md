@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-259 milestones are indexed. 181 of them have a note; the rest are rows in the log that cite
+260 milestones are indexed. 182 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -276,6 +276,7 @@ at the foot of this file.
 | 256 | **M256** — the permuter plateaued at 1 900; the fix it could not find was one operand order | `docs/log/M256-the-permuter-plateau-and-the-operand-that-moved.md` |
 | 257 | **M257** — p7 recovered: 60 of 84 words, a table that matches 8 of 8, and the toolchain fact that blocks stage 5 | `docs/log/M257-p7-recovered-and-the-toolchain-fact-that-blocks-stage-5.md` |
 | 258 | **M258** — the rule that sinks that store is not in mips.c, and it is a dependence gcc drops | `docs/log/M258-the-rule-that-sinks-that-store.md` |
+| 259 | **M259** — the permuter's 1 780 is not a matching improvement: its score and the byte diff disagree | `docs/log/M259-the-permuters-1780-moves-no-words.md` |
 
 ## The gaps, and why they are empty
 
