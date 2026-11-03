@@ -356,6 +356,12 @@
   "rule": "entry 0 is a skipped slot; bit 15 selects 8 kHz, bit 14:0 are the clip index",
   "tables": "(&PTR_PTR_80119e20)[0] = 0x80119de0, [1] = 0x80119e00, selected by `FUN_800762b0` with the sign bit of 0x800e110c and the array with DAT_800e8ca8 + 1"
  },
+ "last_array_rule": {
+  "base": "0x801158ec",
+  "flagged": 6,
+  "flagged_pointing_at_8k_records": 6,
+  "unflagged_pointing_at_8k_records": 1
+ },
  "length_histogram": {
   "14": 1,
   "16": 2,
@@ -371,6 +377,12 @@
   "72": 1,
   "84": 1
  },
+ "mixed_clips": {
+  "61": [
+   2,
+   1
+  ]
+ },
  "not_claimed": [
   "which scene uses which list: the selection is `DAT_800e8ca8 + 1` into the chosen bank, and what writes that index is a run-time value (0, 2 and 0x1c appear in the corpus) this project has not tied to a room number",
   "that a 'scene' is a room, or that the two banks are two scenarios",
@@ -378,6 +390,13 @@
   "that bit 15 is the *only* rate source: it agrees with the record on 673 of 674 entries and disagrees on one, so the loader may prefer the record",
   "that the absent 48 means nobody ever had 48 entries: the lengths are 14..72 with 22, 52 and 60 repeated, and 48 is simply not among them"
  ],
+ "rate_cross": {
+  "expected_if_unrelated": 61.4,
+  "flag_clear_record_16k": 635,
+  "flag_clear_record_8k": 1,
+  "flag_set_record_16k": 0,
+  "flag_set_record_8k": 38
+ },
  "reading": "the per-scene voice lists are **in the image**: **16** distinct u16 arrays of **14..84** entries behind two pointer tables of [16, 8], and the entries are clip indices whose bit 15 predicts the target record's own rate on **674 of 674** (1 mismatch) \u2014 38 at 8 kHz, the rest at 16 kHz, and the exception is clip 61 in the last array, which lacks the flag while its own record declares 8 kHz. So `0x59 XaOn` -> list[bank][idx] -> clip -> MORT -> PCM is closed, and the byte the command also passes stays dead.",
  "schema": "voice-lists/1",
  "tables": {

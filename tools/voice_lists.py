@@ -101,6 +101,8 @@ def derive():
     records = {r[0]: r for r in V.records()}
     arrays, entries, zeros, flagged, mismatched, unresolved = [], 0, 0, 0, 0, 0
     mismatches_list = []
+    cross = Counter()              # (flag set?, record rate) -> references: the table that decides "selector" vs "noise"
+    per_clip = {}                  # clip -> [flagged refs, unflagged refs]
     for addr, end in zip(addrs, bounds):
         if end is None:
             values = []
@@ -121,6 +123,10 @@ def derive():
         bad = [c for c in clips if c not in records]
         rate_bad = [c for c, v in zip(clips, nonzero) if c in records and records[c][2] != want[v]]
         for c, v in zip(clips, nonzero):
+            if c in records:
+                cross[(bool(v & RATE_FLAG), records[c][2])] += 1
+                slot = per_clip.setdefault(c, [0, 0])
+                slot[0 if v & RATE_FLAG else 1] += 1
             if c in records and records[c][2] != want[v]:
                 mismatches_list.append({"array": "0x%08x" % addr, "entry": v, "clip": c,
                                         "flag_says": want[v], "record_says": records[c][2],
@@ -176,6 +182,34 @@ def derive():
                    "unresolved": unresolved, "rate_mismatches": mismatched,
                    "clips": len(records)},
         "exceptions": mismatches_list,
+        # The flag could be a rate selector or decoration. Under "decoration" the disagreements with the
+        # records would number `expected_if_unrelated`; they number one, so it is a selector -- and the one
+        # disagreement is then a fact about the data rather than about the flag.
+        "rate_cross": {
+            "flag_set_record_8k": cross[(True, 8000)],
+            "flag_set_record_16k": cross[(True, 16000)],
+            "flag_clear_record_8k": cross[(False, 8000)],
+            "flag_clear_record_16k": cross[(False, 16000)],
+            "expected_if_unrelated": round(
+                (cross[(True, 8000)] + cross[(True, 16000)]) * sum(1 for r in records.values() if r[2] == 16000)
+                / len(records)
+                + (cross[(False, 8000)] + cross[(False, 16000)])
+                * sum(1 for r in records.values() if r[2] == 8000) / len(records), 1),
+        },
+        # a clip referenced both ways is the only shape that can make one entry odd rather than the rule odd
+        "mixed_clips": {str(c): v for c, v in sorted(per_clip.items()) if v[0] and v[1]},
+        "last_array_rule": {
+            "base": "0x%08x" % addrs[-1],
+            "flagged": arrays[-1]["at_8k"],
+            "flagged_pointing_at_8k_records": sum(
+                1 for v in [u16(image, addrs[-1] + 2 * i) for i in range(arrays[-1]["length"])]
+                if v and v & RATE_FLAG and (v & (RATE_FLAG - 1)) in records
+                and records[v & (RATE_FLAG - 1)][2] == 8000),
+            "unflagged_pointing_at_8k_records": sum(
+                1 for v in [u16(image, addrs[-1] + 2 * i) for i in range(arrays[-1]["length"])]
+                if v and not v & RATE_FLAG and (v & (RATE_FLAG - 1)) in records
+                and records[v & (RATE_FLAG - 1)][2] == 8000),
+        },
         "forty_eight": {"arrays_of_48": [a["base"] for a in arrays if a["length"] == 48],
                         "lengths": [min(lengths), max(lengths)]},
         "chain": chain,
@@ -255,6 +289,27 @@ def check(committed):
                   chain["clip"] < t["clips"]
                   and chain["rate_flag_says"] == chain["record_rate"]
                   and chain["samples"] > 0))
+
+    cr = fresh["rate_cross"]
+    cases.append((f"bit 15 is a rate selector and not decoration: {cr['flag_set_record_8k']} flagged references "
+                  f"point at 8 kHz records and {cr['flag_set_record_16k']} at 16 kHz ones, where an unrelated "
+                  f"flag would disagree {cr['expected_if_unrelated']} times and disagrees "
+                  f"{cr['flag_set_record_16k'] + cr['flag_clear_record_8k']}",
+                  cr["flag_set_record_8k"] == 38 and cr["flag_set_record_16k"] == 0
+                  and cr["flag_clear_record_8k"] == 1 and cr["flag_clear_record_16k"] == 635
+                  and 50 < cr["expected_if_unrelated"] < 70))
+
+    last = fresh["last_array_rule"]
+    cases.append((f"the one disagreement is inside a list that otherwise follows the rule: {last['base']} flags "
+                  f"{last['flagged']} entries and all {last['flagged_pointing_at_8k_records']} of them point at "
+                  f"8 kHz records, while its {last['unflagged_pointing_at_8k_records']} unflagged one is the "
+                  f"exception",
+                  last["flagged"] == last["flagged_pointing_at_8k_records"] == 6
+                  and last["unflagged_pointing_at_8k_records"] == 1))
+
+    cases.append((f"clip 61 is the only clip in the bank referenced both ways ({fresh['mixed_clips']}), which is "
+                  f"what makes one entry odd rather than the rule odd",
+                  fresh["mixed_clips"] == {"61": [2, 1]}))
 
     cases.append((f"48 is not a length here either ({fresh['forty_eight']['arrays_of_48']} arrays of 48, "
                   f"lengths {sorted(set(fresh['length_histogram']))})",

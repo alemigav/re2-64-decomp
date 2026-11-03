@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-237 milestones are indexed. 164 of them have a note; the rest are rows in the log that cite
+238 milestones are indexed. 165 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -254,6 +254,7 @@ at the foot of this file.
 | 234 | **M234** — the record-table families: two script ranges, one undecoded container, and no 48 | `docs/log/M234-the-record-table-families.md` |
 | 235 | **M235** — loop discontinuities: there are none, and the reason is silence | `docs/log/M235-loop-discontinuities.md` |
 | 236 | **M236** — the per-scene voice lists are in the image, and bit 15 proves it | `docs/log/M236-the-per-scene-voice-lists.md` |
+| 237 | **M237** — the clip-61 rate exception: real in the data, and not a reading error | `docs/log/M237-the-clip-61-rate-exception.md` |
 
 ## The gaps, and why they are empty
 
