@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "ab44389",
+   "subject": "M246: the compile-probe corpus -- IDO refuted, and the SDK names the real compiler",
+   "milestones": [
+    246
+   ]
+  },
+  {
    "sha": "459ae97",
    "subject": "M245: both toolchains run -- IDO 5.3 and 7.1 native, and GNU as/ld for mips",
    "milestones": [

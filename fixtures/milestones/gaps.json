@@ -324,16 +324,6 @@
    "n": 244,
    "status": "unrecorded",
    "evidence": []
-  },
-  {
-   "n": 245,
-   "status": "commit-only",
-   "evidence": [
-    {
-     "sha": "459ae97",
-     "subject": "M245: both toolchains run -- IDO 5.3 and 7.1 native, and GNU as/ld for mips"
-    }
-   ]
   }
  ]
 }

@@ -79,6 +79,9 @@ doctor() {
 			printf 'SKIP IDO %s native   not recompiled yet (needs gmake and the IRIX binaries)\n' "$v"
 		fi
 	done
+	if [ -x "$TC/mips-gcc-2.7.2/bin/cc1" ]; then
+		printf 'PASS gcc 2.7.2       %s/mips-gcc-2.7.2/bin/cc1 (mipse-ultra-gcc; the one that matches)\n' "$TC"
+	fi
 	if [ -x "$TC/ido-7.1/cc" ]; then
 		USR_LIB="$root/$TC/ido-7.1" "$TC/ido-7.1/cc" -c -O2 -non_shared -G 0 -mips2 \
 			-o "$TC/probe.o" "$TC/probe.c" 2>/dev/null && \
@@ -173,6 +176,35 @@ build_binutils() {
 	printf 'binutils: installed to %s\n' "$TC/binutils"
 }
 
+build_gcc272() {
+	# gcc 2.7.2.3 for mips-elf: the SDK's own makefiles name `CC = gcc` with `-O -G 0`, and the probe corpus
+	# confirms it (3 of 4 probes byte-exact against IDO's 1). Building a 1996 compiler on a 2026 host took six
+	# patches, all recorded in docs/TOOLCHAIN.md; none of them touch code generation.
+	src="$TC/src/gcc-2.7.2.3"
+	out="$TC/mips-gcc-2.7.2"
+	[ -x "$out/bin/cc1" ] && { printf 'gcc 2.7.2: already built\n'; return 0; }
+	if [ ! -d "$src" ]; then
+		printf 'gcc 2.7.2: SKIP sources missing (build/toolchain/src/gcc-2.7.2.3)\n'
+		return 0
+	fi
+	if ! command -v gcc-16 >/dev/null 2>&1 && ! command -v gcc >/dev/null 2>&1; then
+		printf 'gcc 2.7.2: SKIP needs a GCC host compiler (clang rejects 1996 idioms: lvalue casts, obstack macros)\n'
+		return 0
+	fi
+	host_cc=$(command -v gcc-16 || command -v gcc)
+	mkdir -p "$out/bin" "$TC/src/gcc-build"
+	( cd "$TC/src/gcc-build" && \
+	  ../gcc-2.7.2.3/configure --target=mips-elf --with-gnu-as --with-gnu-ld --disable-libgcc \
+	      --disable-multilib --enable-languages=c >"$root/$TC/gcc-config.log" 2>&1 && \
+	  make -j"$JOBS" LANGUAGES=c CLIB="-lm" \
+	       CC="$host_cc -std=gnu89 -fcommon -w -I$root/$TC/src/hostshim" >"$root/$TC/gcc-build.log" 2>&1 ) || {
+		printf 'gcc 2.7.2: FAIL — see %s (the enquire/deduced steps want .stabs and fail harmlessly; cc1 is what matters)\n' "$TC/gcc-build.log" >&2
+	}
+	[ -x "$TC/src/gcc-build/cc1" ] || { printf 'gcc 2.7.2: FAIL cc1 was not produced\n' >&2; return 1; }
+	cp "$TC/src/gcc-build/cc1" "$out/bin/cc1"
+	printf 'gcc 2.7.2: cc1 in %s/bin (the driver xgcc exists but execs the host cc; call cc1 directly)\n' "$out"
+}
+
 build_ido() {
 	# The recompiler turns the ORIGINAL IRIX binaries into host programs, so it needs them as input. They are
 	# not fetched here: the owner supplies them, either as the project zip (`IDO_RECOMP_ZIP`, which happens to
@@ -217,6 +249,6 @@ build_ido() {
 
 if [ "$MODE" != "--doctor" ]; then
 	mkdir -p "$TC"
-	build_binutils && build_ido
+	build_binutils && build_gcc272 && build_ido
 fi
 doctor

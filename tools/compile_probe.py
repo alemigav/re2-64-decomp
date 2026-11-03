@@ -27,6 +27,7 @@ Usage:
 """
 import argparse
 import json
+import re
 import struct
 import subprocess
 import sys
@@ -47,14 +48,17 @@ PROBES = [
     ("p3", "extern int D_800314CC;\nextern int D_800344C0;\n"
            "void probe_cond_store(void) { if (D_800314CC == 0) { D_800344C0 = 1; } }",
      0x80025D60, 32, "conditional global store (relocation-bearing)"),
-    ("p4", "void probe_copy(char *d, char *s, int n) { char *e = d + n; while (d < e) { *d++ = *s++; } }",
-     0x80082474, 36, "byte-copy loop (delayed branch)"),
+    ("p4", "void probe_copy(char *d, char *s, int n) { char *e = d + n; do { *d++ = *s++; } while (d < e); }",
+     0x80082474, 36, "byte-copy loop (delayed branch; the do-while form is the one that matches)"),
     ("p5", "int probe_ident(int a) { return a; }", None, 0, "identity (the move idiom)"),
 ]
-# (label, toolchain directory, flags) -- the label carries the flags because the directory cannot
-PROFILES = [("ido-5.3 G0", "ido-5.3", ["-O2", "-non_shared", "-mips2", "-G", "0"]),
-            ("ido-7.1 G0", "ido-7.1", ["-O2", "-non_shared", "-mips2", "-G", "0"]),
-            ("ido-7.1 G8", "ido-7.1", ["-O2", "-non_shared", "-mips2", "-G", "8"])]
+# (label, kind, toolchain directory, flags). `kind` picks the pipeline: IDO's `cc` assembles with its own as1;
+# gcc 2.7.2's `cc1` emits assembly that needs an assembler, and its `move` pseudo-instruction is expanded by
+# *that* assembler -- modern gas picks `or`, the cartridge has `addu`, so the pipeline normalises it (below).
+PROFILES = [("ido-5.3 G0", "ido", "ido-5.3", ["-O2", "-non_shared", "-mips2", "-G", "0"]),
+            ("ido-7.1 G0", "ido", "ido-7.1", ["-O2", "-non_shared", "-mips2", "-G", "0"]),
+            ("gcc2.7.2 -O", "gcc", "mips-gcc-2.7.2", ["-O", "-G", "0"]),
+            ("gcc2.7.2 -O2", "gcc", "mips-gcc-2.7.2", ["-O2", "-G", "0"])]
 
 
 def text_of(obj):
@@ -74,18 +78,43 @@ def text_of(obj):
     return b""
 
 
-def compile_probe(directory, flags, pid, out):
-    cc = TC / directory / "cc"
-    if not cc.exists():
-        return None, "no toolchain at %s" % cc.relative_to(ROOT)
+MOVE = re.compile(r"^(\s*)move(\s+)(\$\d+),(\$\d+)\s*$", re.M)
+GAS = TC / "binutils" / "bin"
+
+
+def compile_probe(directory, flags, pid, out, kind="ido"):
     cfile = WORK / ("%s.c" % pid)
     cfile.parent.mkdir(parents=True, exist_ok=True)
     cfile.write_text(PROBES_BY_ID[pid][1] + "\n")
-    env = {"USR_LIB": str(cc.parent), "PATH": "/usr/bin:/bin"}
-    proc = subprocess.run([str(cc), "-c"] + flags + ["-o", str(out), str(cfile)],
-                          capture_output=True, text=True, env=env)
+    if kind == "ido":
+        cc = TC / directory / "cc"
+        if not cc.exists():
+            return None, "no toolchain at %s" % cc.relative_to(ROOT)
+        env = {"USR_LIB": str(cc.parent), "PATH": "/usr/bin:/bin"}
+        proc = subprocess.run([str(cc), "-c"] + flags + ["-o", str(out), str(cfile)],
+                              capture_output=True, text=True, env=env)
+        if proc.returncode:
+            return None, "compile failed"
+        return text_of(out), None
+    # gcc 2.7.2: cc1 emits assembly, then an assembler encodes it. The `move` pseudo-instruction is expanded by
+    # the assembler, and the cartridge's expansion is `addu rd,rs,$zero` where modern gas chooses `or`. The
+    # pipeline reproduces the cartridge's expansion explicitly rather than pretending the difference is codegen.
+    cc1 = TC / directory / "bin" / "cc1"
+    gas = GAS / "mips-linux-gnu-as"
+    if not cc1.exists():
+        return None, "no cc1 at %s" % cc1.relative_to(ROOT)
+    asm = WORK / ("%s_%s.s" % (pid, directory))
+    proc = subprocess.run([str(cc1), "-quiet"] + flags + ["-mips2", str(cfile), "-o", str(asm)],
+                          capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"})
     if proc.returncode:
-        return None, (proc.stdout + proc.stderr).strip().splitlines()[:1][0] if proc.stdout + proc.stderr else "compile failed"
+        return None, "cc1 failed"
+    text = asm.read_text()
+    text = MOVE.sub(r"\1addu\2\3,\4,$0", text)
+    asm.write_text(text)
+    proc = subprocess.run([str(gas), "-EB", "-mips2", "-o", str(out), str(asm)],
+                          capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"})
+    if proc.returncode:
+        return None, "assemble failed"
     return text_of(out), None
 
 
@@ -129,9 +158,9 @@ def check():
         if addr is None:
             continue
         want = image[addr - BASE:addr - BASE + size]
-        for profile, directory, flags in PROFILES:
-            work = WORK / ("%s_%s.o" % (pid, profile.replace(" ", "_")))
-            got, err = compile_probe(directory, flags, pid, work)
+        for profile, kind, directory, flags in PROFILES:
+            work = WORK / ("%s_%s.o" % (pid, profile.replace(" ", "_").replace(".", "")))
+            got, err = compile_probe(directory, flags, pid, work, kind)
             if err:
                 rows.append((pid, profile, "no-toolchain", err))
                 continue
@@ -165,9 +194,9 @@ def check():
     # and IDO is refuted by that, not by a byte diff
     ido_or = None
     probe5 = PROBES_BY_ID["p5"]
-    for profile, directory, flags in PROFILES:
-        work = WORK / ("p5_%s.o" % profile.replace(" ", "_"))
-        got, err = compile_probe(directory, flags, "p5", work)
+    for profile, kind, directory, flags in PROFILES:
+        work = WORK / ("p5_%s.o" % profile.replace(" ", "_").replace(".", ""))
+        got, err = compile_probe(directory, flags, "p5", work, kind)
         if not err and len(got) >= 8:
             ido_or = struct.unpack_from(">I", got, 4)[0] & 0x3F
             break
@@ -175,10 +204,22 @@ def check():
                   f"`addu` (0x21), so IDO does not match this target",
                   ido_or == 0x25))
 
+    # which profile actually reproduces the image
+    per_profile = {}
+    for _pid, profile, verdict, _detail in rows:
+        per_profile.setdefault(profile, [0, 0])
+        per_profile[profile][0] += verdict == "MATCH"
+        per_profile[profile][1] += 1
+    gcc_best = max((v[0] for k, v in per_profile.items() if k.startswith("gcc")), default=0)
+    ido_best = max((v[0] for k, v in per_profile.items() if k.startswith("ido")), default=0)
+    cases.append((f"gcc 2.7.2 reproduces {gcc_best} of 4 probes byte-for-byte against IDO's {ido_best} "
+                  f"({ {k: '%d/%d' % tuple(v) for k, v in sorted(per_profile.items())} })",
+                  gcc_best >= 3 and ido_best <= 1))
+
     # 5.3 and 7.1 are not two hypotheses
     same = all(r53[2] == r71[2] and r53[3] == r71[3] for r53, r71 in
                zip([r for r in rows if r[1].startswith("ido-5.3")],
-                   [r for r in rows if r[1].startswith("ido-7.1") and "G0" in r[1]]))
+                   [r for r in rows if r[1].startswith("ido-7.1")]))
     cases.append(("IDO 5.3 and 7.1 emit identical code on every probe, so they are one hypothesis",
                   same))
 
