@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "af24d04",
+   "subject": "M263: -mcpu=r4300 -- p7 is byte-exact and the \"unreachable\" residues were a build flag",
+   "milestones": [
+    263
+   ]
+  },
+  {
    "sha": "c77b274",
    "subject": "M262: the last p7 hunk is unreachable from the source",
    "milestones": [

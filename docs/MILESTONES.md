@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-264 milestones are indexed. 186 of them have a note; the rest are rows in the log that cite
+265 milestones are indexed. 187 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -281,6 +281,7 @@ at the foot of this file.
 | 261 | **M261** — the FP pool bug is a 64-bit-host bug, and fixing it changed *codegen*, not just data | `docs/log/M261-the-fp-pool-fix-and-its-second-symptom.md` |
 | 262 | **M262** — the last p7 hunk is unreachable from the source: five variants, one object | `docs/log/M262-the-last-p7-hunk-is-unreachable-from-the-source.md` |
 | 263 | **M263** — `-mcpu=r4300`: p7 is byte-exact, and the "unreachable" residues were a build flag | `docs/log/M263-mcpu-r4300-p7-byte-exact.md` |
+| 264 | **M264** — re-read under the r4300 cost model: p6 is byte-exact too, and p8's last difference is a placement | `docs/log/M264-reread-p6-exact-p8-is-a-placement.md` |
 
 ## The gaps, and why they are empty
 

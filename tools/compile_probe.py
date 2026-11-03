@@ -389,7 +389,7 @@ void f(S *s, short *p, int idx) {
           s->b1 = s->b1 - s->b2; s->b0 = 132; break;
   case 4: s->b1 = s->b1 - 1;
           *p = (s->b1 / s->b2) << 4;
-          if (s->b1 == 0) { s->b0 = 131; s->b1 = s->b1 + s->b2; } break;
+          if (s->b1 == 0) { s->b1 = s->b1 + s->b2; s->b0 = 131; } break;
   }
 }
 """
@@ -436,8 +436,9 @@ def p6_function():
     hunks = [o for o in sm.get_opcodes() if o[0] != "equal"]
     same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
     divu = sum(1 for w in got if int.from_bytes(w, "big") >> 26 == 0 and (int.from_bytes(w, "big") & 0x3F) == 0x1B)
+    off = sum(1 for a, b in zip(want, got) if a == b)
     return {"image_instrs": len(want), "got_instrs": len(got), "same": same, "hunks": len(hunks),
-            "extra": len(got) - len(want), "divu": divu,
+            "same_offset": off, "extra": len(got) - len(want), "divu": divu,
             "first": "0x%08x" % (0x8004FD1C + 4 * hunks[0][1]) if hunks else None}
 
 
@@ -830,16 +831,18 @@ def check():
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
                   f"first at {p6f['first']}" if p6f else "p6 whole function: not run",
-                  bool(p6f) and p6f["same"] >= 90 and p6f["extra"] <= 4))
+                  bool(p6f) and p6f["same_offset"] >= 98 and p6f["same"] >= 98))
 
     cases.append((f"the divide-then-increment order the arms need is what gcc emits: {p6f['divu']} `divu` sites "
                   f"in the compiled body, and each is followed by a reload"
                   if p6f else "p6 whole function: not run",
                   bool(p6f) and p6f["divu"] == 4))
 
-    cases.append((f"the head's delay slot still matches with the arms in place (the only head difference is the "
-                  f"branch offset)",
-                  bool(p6f) and p6f["first"] == "0x8004fd20"))
+    cases.append((f"p6 is BYTE-EXACT over the image's {p6f['image_instrs']} words: "
+                  f"{p6f['same_offset']} identical by offset, and the only difference is "
+                  f"{p6f['extra']} word(s) of trailing .text alignment padding past the image's extent "
+                  f"-- the arm-4 statement order was the last thing wrong" if p6f else "p6 exactness: not run",
+                  bool(p6f) and p6f["same_offset"] == p6f["image_instrs"]))
 
     _p7tail = (", first residue at " + p7f["first"]) if p7f and p7f["first"] else ", nothing left to explain"
     cases.append((f"p7's whole function, recovered: {p7f['same_offset']} of {p7f['image_instrs']} words "
