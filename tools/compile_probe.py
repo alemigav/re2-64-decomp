@@ -361,6 +361,72 @@ def head_probe(spec):
             "table_pad_is_layout": pad is not None and pad % 8 == 0}
 
 
+# p6 as a whole function: the head and its five arms recovered from the disassembly. This is the only probe that
+# compares the delay slot, because the slot is filled from the arms -- here the arms use the pointer and gcc puts
+# it in `a3`, which is exactly what the image does.
+P6_SOURCE = """typedef struct { unsigned char b0, b1, b2, b3; } S;
+void f(S *s, short *p, int idx) {
+  switch (idx) {
+  case 0: *p = s->b3 << 4; break;
+  case 1: *p = (s->b1 / s->b2) << 4;
+          if (s->b1 == s->b2 * s->b3 - 1) break;
+          s->b1 = s->b1 + 1; break;
+  case 2: *p = (s->b1 / s->b2) << 4;
+          s->b1 = s->b1 + 1;
+          if ((unsigned char)s->b1 != s->b2 * s->b3) break;
+          s->b1 = 0; break;
+  case 3: *p = (s->b1 / s->b2) << 4;
+          s->b1 = s->b1 + 1;
+          if ((unsigned char)s->b1 != s->b2 * s->b3) break;
+          s->b1 = s->b1 - s->b2; s->b0 = 132; break;
+  case 4: s->b1 = s->b1 - 1;
+          *p = (s->b1 / s->b2) << 4;
+          if (s->b1 == 0) { s->b0 = 131; s->b1 = s->b1 + s->b2; } break;
+  }
+}
+"""
+P6_REGIONS = [("head", 0x8004FD1C, 40), ("arm0", 0x8004FD44, 16), ("arm1", 0x8004FD54, 76),
+              ("arm2", 0x8004FDA0, 84), ("arm3", 0x8004FDF4, 92), ("arm4", 0x8004FE50, 84)]
+
+
+def p6_function():
+    """Compile the recovered whole function and report it region by region."""
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p6full.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P6_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(o), str(s)], capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    ld.write_text("SECTIONS {\n  . = 0x8004FD1C;\n  .text : { *(.text) }\n  . = 0x800B8BD0;\n"
+                  "  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) "
+                  "*(.comment) *(.pdr) *(.data) *(.bss) *(.mdebug) }\n}\n")
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    blob = text_of(elf)
+    rows, total_same, total = [], 0, 0
+    for name, addr, size in P6_REGIONS:
+        w = image[addr - BASE:addr - BASE + size]
+        g = blob[addr - 0x8004FD1C:addr - 0x8004FD1C + size]
+        same = sum(1 for i in range(0, min(len(w), len(g)), 4) if w[i:i + 4] == g[i:i + 4])
+        first = next((i for i in range(0, min(len(w), len(g)), 4) if w[i:i + 4] != g[i:i + 4]), None)
+        rows.append({"region": name, "same": same, "words": size // 4,
+                     "first": ("0x%08x" % (addr + first)) if first is not None else None})
+        total_same += same
+        total += size // 4
+    return {"rows": rows, "same": total_same, "words": total, "size": len(blob)}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -461,6 +527,21 @@ def check():
                f"idx {spec['index']}: bound+shift {'match' if pr['match'] else 'DIFFER'}, table "
                f"{'at the image address' if pr['table_match'] else 'at +%d (object .rodata pad)' % pr['table_pad']}")
         cases.append((row, pr["match"]))
+
+    p6f = p6_function()
+    head = p6f["rows"][0] if p6f else None
+    arm0 = p6f["rows"][1] if p6f else None
+    cases.append((f"recovering p6's arms makes the delay slot match: the head is {head['same']}/{head['words']} "
+                  f"with the only difference at {head['first']} (the branch offset, i.e. the arms' total size), "
+                  f"and arm0 is {arm0['same']}/{arm0['words']} exactly"
+                  if p6f else "p6 whole function: not run",
+                  bool(p6f) and head["same"] == head["words"] - 1 and head["first"] == "0x8004fd20"
+                  and arm0["same"] == arm0["words"]))
+
+    cases.append((f"the rest of p6 is a reconstruction in progress, reported as numbers "
+                  f"({p6f['same']}/{p6f['words']} words, compiled {p6f['size']} B against 392 B)"
+                  if p6f else "p6 whole function: not run",
+                  bool(p6f) and 20 <= p6f["same"] < p6f["words"]))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
