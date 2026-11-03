@@ -687,6 +687,41 @@ def p8_function():
             "hunks": hunks, "arm0": arm0, "table_at": table_at, "table_words": 6 if table_at is not None else 0}
 
 
+def fp_pool_check():
+    """The instrument's own float path: a *pool* constant must carry its real bits (M261).
+
+    Not a cartridge probe -- a check on the compiler. gcc 2.8.1 on a 64-bit host stored the emulator's packed
+    internal form where the two 32-bit target-pattern words belong, so every constant-pool float came out as
+    `0`, and that had a second consequence nobody predicted: `mips_const_double_ok` reads the same words to
+    decide whether an SF constant may be an immediate, so it said no and `li.s` was never chosen. The two
+    symptoms are checked separately, because a rebuilt compiler can fix one and not the other:
+    `3.0e38f` is outside the range that predicate accepts, so it *must* go to the pool, and its bits are
+    compared against the IEEE pattern rather than against the image.
+    """
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    if not cc1.exists():
+        return None
+    out = {}
+    for tag, source, expect in (("pool", "float probe_fp(float x) { return x * 3.0e38f; }", "0x7f61b1e6"),
+                                ("small", "float probe_fp2(float x) { return x * 30.0f; }", None)):
+        c = WORK / ("fp_%s.c" % tag)
+        c.parent.mkdir(parents=True, exist_ok=True)
+        c.write_text(source + "\n")
+        s = c.with_suffix(".s")
+        if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+                          capture_output=True).returncode:
+            return None
+        text = s.read_text()
+        if expect is None:
+            out[tag] = "li.s" in text
+        else:
+            words = re.findall(r"^\s*\.word\s+(0x[0-9a-fA-F]+)", text, re.M)
+            out[tag] = words[0] if words else None
+    out["ok"] = out.get("pool") == "0x7f61b1e6"
+    out["li"] = bool(out.get("small"))
+    return out
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -791,6 +826,7 @@ def check():
     p6f = p6_function()
     p7f = p7_function()
     p8f = p8_function()
+    fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
                   f"first at {p6f['first']}" if p6f else "p6 whole function: not run",
@@ -826,10 +862,15 @@ def check():
                   f"is {p8f['arm0']} of 27 -- byte-exact" if p8f else "p8 whole function: not run",
                   bool(p8f) and p8f["same_offset"] >= 116 and p8f["arm0"] == 27))
 
-    cases.append((f"p8's jump table matches all 6 arm addresses by content, found {p8f['table_at']} words into "
-                  f".rodata because the constant pool is emitted before it -- the image has [table][pool]"
-                  if p8f else "p8 table: not run",
+    cases.append((f"p8's jump table matches all 6 arm addresses by content, {p8f['table_at']} words into "
+                  f".rodata" if p8f else "p8 table: not run",
                   bool(p8f) and p8f["table_words"] == 6))
+
+    cases.append((f"a constant-pool float carries its real bits: 3.0e38f emits {fpf['pool']} against the IEEE "
+                  f"0x7f61b1e6 (it was 0x00000000 before M261), and a small constant still becomes `li.s` "
+                  f"({fpf['li']}) -- the two symptoms of the same defect, checked apart"
+                  if fpf else "fp pool: not run",
+                  bool(fpf) and fpf["ok"] and fpf["li"]))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

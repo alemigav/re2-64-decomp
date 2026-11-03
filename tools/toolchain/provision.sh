@@ -238,6 +238,16 @@ build_gcc272() {
 	printf 'gcc 2.7.2: cc1 in %s/bin (the driver xgcc exists but execs the host cc; call cc1 directly)\n' "$out"
 }
 
+# M261: gcc 2.8.1 stores the constant-pool float in the emulator's packed internal form when the host is 64-bit
+# (`sizeof u == 2 * sizeof (HOST_WIDE_INT)` is 8 == 16), so every pool float came out as 0 and `li.s` was never
+# chosen. The patch is a tracked script because it is three coordinated edits and every anchor must match once.
+patch_gcc281_fp() {
+	[ -f "$src/varasm.c" ] || { printf 'gcc 2.8.1: SKIP fp patch, sources missing\n'; return 0; }
+	grep -q 'M261' "$src/varasm.c" && return 0
+	python3 "$root/tools/toolchain/patch_gcc281_fp.py" "$src" || return 1
+	touch "$src/varasm.c" "$src/real.h"
+}
+
 build_gcc281() {
 	# gcc 2.8.1 (1998) is the compiler that matches: 4 of 4 probes byte-for-byte where 2.7.2 cannot do the
 	# store's address materialisation. Five patches, all recorded in docs/TOOLCHAIN.md, none of them codegen.
@@ -250,6 +260,7 @@ build_gcc281() {
 	fi
 	host_cc=$(command -v gcc-16 || command -v gcc) || { printf 'gcc 2.8.1: SKIP no GCC host compiler\n'; return 0; }
 	mkdir -p "$out/bin" "$TC/src/gcc28-build"
+	patch_gcc281_fp || return 1
 	( cd "$TC/src/gcc28-build" && \
 	  CC="$host_cc -std=gnu89 -fcommon -w -I$root/$TC/src/hostshim" \
 	    ../gcc-2.8.1/configure --target=mips-elf --with-gnu-as --with-gnu-ld --disable-libgcc \
