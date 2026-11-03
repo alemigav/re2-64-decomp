@@ -2,6 +2,27 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "191222f",
+   "subject": "M231: the window was never the problem -- 35 local heads, and a fold that was too narrow",
+   "milestones": [
+    231
+   ]
+  },
+  {
+   "sha": "b12fc7b",
+   "subject": "M230: what the eighty-three non-script heads dispatch on",
+   "milestones": [
+    230
+   ]
+  },
+  {
+   "sha": "fdb6ac3",
+   "subject": "M229: the last three unresolved handlers, and the rule that was missing",
+   "milestones": [
+    229
+   ]
+  },
+  {
    "sha": "a71324b",
    "subject": "M228: eighty-six dispatch heads, and the queue entry that has no valid extension",
    "milestones": [

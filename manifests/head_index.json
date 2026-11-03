@@ -1421,7 +1421,7 @@
  "inputs": {
   "heads": "manifests/dispatch_heads.json (M228)",
   "image": "assets/unpacked/00000_0014420_1172240.bin",
-  "rule": "the `sltiu` bounding the index, then up to 10 backwards steps through shift/mask/add/move and one load; the source is classified only when the chain bottoms out on something this image names, and `unknown`/`local` otherwise",
+  "rule": "the `sltiu` bounding the index, then up to 10 backwards steps through shift/mask/add and one load; the source is classified only when the chain bottoms out on something this image names, and `unknown`/`local` otherwise",
   "window": "the head's corpus body where one covers the dispatch, else at most 0x100 bytes behind it \u2014 a bounded window, and the artefact reports what the bound cost"
  },
  "non_script_heads": {

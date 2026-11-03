@@ -429,12 +429,14 @@ AUDITS = [
     dict(name="rsp_decode: the jump target is masked to 11 bits instead of IMEM's 12",
          tool="rsp_decode.py", args=["--check"], file="tools/rsp_decode.py",
          old="    return raw, raw & 0xFFF", new="    return raw, raw & 0x7FF"),
-    # --- M225: naming the vector unit. Three anchors, each aimed at an outcome: the lane rule the cited
-    # page states (including its borrow), and the row/offset split that replaced M223's 16-bit displacement.
-    dict(name="rsp_decode: the single-lane source lane ignores the vt_elem/vd_elem borrow",
-         tool="rsp_decode.py", args=["--check"], file="tools/rsp_decode.py",
-         old="        se = (((vd_elem >> msb) << msb) | (vt_elem & ((1 << msb) - 1))) & 7 if msb > 0 else vt_elem & 7",
-         new="        se = vt_elem & 7"),
+    # --- M225: naming the vector unit. Two anchors, each aimed at an outcome: the row/offset split that
+    # replaced M223's 16-bit displacement, and the access size that scales a transfer's address.
+    # There is deliberately **no** anchor for the `vt_elem`/`vd_elem` lane rule, and the reason is arithmetic:
+    # every one of this program's eight single-lane words carries `vt_elem = 12`, so `msb = 3` and the rule
+    # reduces to `(((vd_elem >> 3) << 3) | (vt_elem & 7)) & 7`, in which the last `& 7` masks away every bit
+    # the borrow could contribute. Neither half of the ternary can change an answer here -- M232 tried both
+    # and the positive control reported both VACUOUS. The rule stays implemented from the cited page and the
+    # case publishes that it is exercised by zero words.
     dict(name="rsp_decode: a vector transfer's offset is read as a 16-bit displacement again",
          tool="rsp_decode.py", args=["--check"], file="tools/rsp_decode.py",
          old="                                    bits(word, 10, 7), bits(word, 6, 0))",
@@ -522,6 +524,37 @@ AUDITS = [
          tool="head_index.py", args=["--check"], file="tools/head_index.py",
          old="        if op in (0x20, 0x21, 0x23, 0x24, 0x25):               # lb/lh/lw/lbu/lhu",
          new="        if op in (0x20, 0x23, 0x24, 0x25):                     # lb/lh/lw/lbu/lhu"),
+    # --- M231: the fold's five widenings. The three anchors above were written for M230's *narrow* fold and
+    # still passed after M231 widened it, because widening happens underneath them: a head that used to be
+    # `local` simply moved to `global`, and each mutation kept failing for its original reason. Every anchor
+    # below closes one widening M231 added, so if one is removed the count that widening explains must fall.
+    dict(name="head_index: a bare `lui` is not a complete base, so a global built in two instructions is "
+         "refused",
+         tool="head_index.py", args=["--check"], file="tools/head_index.py",
+         old='    if op == 0x0F:                                     # lui: a constant, possibly completed later\n'
+             '        return {"kind": "const", "value": (w & 0xFFFF) << 16}',
+         new='    if op == 0x0F:                                     # lui: a constant, possibly completed later\n'
+             '        return None'),
+    dict(name="head_index: the fold does not add two constants, so a `lui`+`lui`+`addu` base is refused",
+         tool="head_index.py", args=["--check"], file="tools/head_index.py",
+         old='        if a and b and a["kind"] == "const" and b["kind"] == "const":\n'
+             '            return {"kind": "const", "value": (a["value"] + b["value"]) & 0xFFFFFFFF}',
+         new='        if a and b and a["kind"] == "const" and b["kind"] == "const":\n'
+             '            return None'),
+    # There is deliberately **no** anchor for `addu rd,rs,zero` move propagation. M231 claimed six heads came
+    # from it; M232 instrumented the branch and it is taken zero times by all 86 heads, so it was dead code
+    # and has been deleted. A guard over a branch that no input reaches can only ever be vacuous -- the two
+    # rounds it took to learn that (a mutation on the commuted half, then on the real half, both no-ops) are
+    # the reason the positive control now exists: it said VACUOUS instead of PASS on the first try.
+    dict(name="head_index: the chase depth goes back to 3, so a four-link chain is refused",
+         tool="head_index.py", args=["--check"], file="tools/head_index.py",
+         old="    if depth > 6:\n        return None",
+         new="    if depth > 3:\n        return None"),
+    dict(name="head_index: `sp` is not named as a stack base, so a frame slot is refused",
+         tool="head_index.py", args=["--check"], file="tools/head_index.py",
+         old='    if reg == SP:\n        return {"kind": "stack", "register": "sp"}\n'
+             "    earlier = [v for v in table.get(reg, []) if v < at]",
+         new="    earlier = [v for v in table.get(reg, []) if v < at]"),
     # --- M228: the dispatch-head census. Three anchors: the bound that sets the entry count, the
     # sign-extended immediate that puts a table 0x10000 off (the M226 error, as a mutation), and the
     # jal-site count that decides whether a head is a function boundary.
@@ -729,24 +762,30 @@ AUDITS = [
 # things a mutated tool must be able to read; the heavy ones are symlinked
 # `.github` is copied rather than linked because the workflow lint reads it — an audit of that lint that
 # runs in an environment with no workflows passes for the wrong reason, which is how this list grew (M174).
-COPY = ["tools", "fixtures", "docs/log", ".github"]
+COPY = ["tools", "fixtures", "docs/log", ".github", "manifests"]
+# `manifests/` is a *directory* here, and that is the M232 fix. It used to be a hand-grown list of five
+# artefacts, added one per milestone as each was missed — and the list was wrong again every time: the
+# positive control added in M232 found **49 of 132 audits** had been passing because the tool under audit
+# could not read its own artefact in the sandbox and exited non-zero *before any mutation was tested*. The
+# whole sound and vector arcs (M184-M231) were in that set. Enumerating the sixth, seventh and eighth file
+# would have been the third round of the same mistake; copying the directory is the same cost (0.05 s) and
+# cannot drift. The positive control below stays, because a directory can still be the wrong one.
 # `docs/MILESTONES.md` is here because a check of it runs: without the file, every audit of
 # `milestone_index.py` "detects" a missing output and proves nothing (fifth environment gap in this arc,
 # after build/elfs, src, .github/ and the shell interpreter).
 # `README.md` is here because the counts gate reads it: the sixth environment gap in this arc if it is
 # missing, and the failure it produced was a FileNotFoundError inside a *different* tool's self-test, which
 # the audit then recorded as a detection (M180). A missing input and a caught mutation look identical from
-# an exit code.
-COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md", "docs/MILESTONES.md",
-              "manifests/manifest.json", "manifests/code_index.json", "manifests/byte_map.json",
-              "manifests/jump_tables.json", "manifests/analysis_status.json", "README.md"]
-# `manifests/code_index.json` is here because `counts.py` now tiles the images with it (M206): without it
-# every audit of the counts gate would "detect" a missing file, which is the environment gap this file's
-# comment history already names four times.
+# an exit code — which is the whole reason the positive control exists.
+COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md", "docs/MILESTONES.md", "README.md"]
 # `build/elfs` holds the built images and `src/` the decompiled corpus; both are read-only for every
 # audit, and a copy is 18 MB per audit for nothing. Not linking them was invisible until an image-
 # dependent tool was audited: the mutated copy failed on a missing `images.json`, not on its mutation.
-LINK = ["rom", "assets", "build/elfs", "src"]
+# `build/decomp` and `.venv` are M232 additions found by the positive control: `census`/`call_graph` read the
+# Ghidra decompile index, and `voice_sweep` looks for `unicorn` in `./.venv/bin/python` and reports no
+# interpreter when the sandbox has no `.venv` — a missing toolchain that read, through an exit code, as a
+# caught mutation. `.venv` is only ever *run*, never written, so a link is enough.
+LINK = ["rom", "assets", "build/elfs", "build/decomp", "src", ".venv"]
 
 
 def build_env(dst: Path) -> None:
@@ -807,12 +846,26 @@ def run_audit(audit, keep: Path = None) -> tuple:
         mutated = text.replace(audit["old"], audit["new"], 1)
         if mutated == text:
             return None, "mutation changed nothing"
-        target.write_text(mutated)
         # `interp` defaults to Python, but a gate written in shell must be run by shell: with the wrong
         # interpreter the mutated copy fails on a `SyntaxError` and the audit reports a detection that has
         # nothing to do with the mutation. Both M176 gates are shell, and both were vacuous until this
         # default existed. (Fourth time in this arc that an audit environment was wrong for the tool.)
         interp = audit.get("interp", sys.executable)
+        # The positive control, and it must run *before* the mutation is written -- the first version of it
+        # ran after, so it graded the mutated tool and reported every single audit BROKEN, which is how this
+        # comment got written. The point: a mutation can only be judged in a sandbox where the tool *works*.
+        # That gap was patched by hand seven times in this file's history (each `COPY_FILES` entry above is
+        # one) and M232 found it had silently swallowed **every** `head_index` audit, whose artefact was
+        # never copied: the mutated tool died on `FileNotFoundError` before reaching a case, and exit 1 read
+        # as a caught mutation. Growing the list an eighth time would not fix the class, so the pristine run
+        # is now a mechanism. It costs one extra run per audit and it names the sandbox, not the mutation.
+        control = subprocess.run([interp, str(tmp / "tools" / audit["tool"])] + audit["args"],
+                                 capture_output=True, text=True, cwd=str(tmp))
+        if control.returncode != 0:
+            lines = (control.stdout + control.stderr).splitlines()
+            why = next((l for l in reversed(lines) if l.strip()), "")
+            return None, f"the unmutated tool already fails in the sandbox, so nothing is judged: {why[:120]}"
+        target.write_text(mutated)
         proc = subprocess.run([interp, str(tmp / "tools" / audit["tool"])] + audit["args"],
                               capture_output=True, text=True, cwd=str(tmp))
         out = proc.stdout + proc.stderr

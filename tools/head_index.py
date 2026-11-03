@@ -7,7 +7,7 @@ answers it per head with a **bounded** trace — bounded on purpose, because a w
 (M212, M227, M229) and the honest report is `unknown` rather than a guess.
 
 For each head it takes the `sltiu` that bounds the index, follows the register it tests backwards through
-shift/mask/add/move and one load, and reports:
+shift/mask/add and one load, and reports:
 
   * **the transform**, in order — `srl 8`, `andi 0xff`, `addiu -1` — because a 1-based sub-opcode and a
     zero-based one are different interfaces;
@@ -147,12 +147,12 @@ def _base_origin(image, reg, at, table, ctxs, depth):
         b = _base_origin(image, rt, va, table, ctxs, depth + 1)
         if a and b and a["kind"] == "const" and b["kind"] == "const":
             return {"kind": "const", "value": (a["value"] + b["value"]) & 0xFFFFFFFF}
-        # `addu rd,rs,zero` is a move: propagate the source's origin rather than refusing. Six of the last nine
-        # `local` heads are exactly this -- the head's base is a callee-saved copy of an argument (M231)
-        if a and a["kind"] == "const" and a["value"] == 0:
-            return b
-        if b and b["kind"] == "const" and b["value"] == 0:
-            return a
+        # `addu rd,rs,zero` was handled here as a move until M232, on M231's reading that six `local` heads
+        # were "a callee-saved copy of an argument". Instrumented, the branch is taken **zero times** by all
+        # 86 heads, and deleting it leaves every classification identical: no head's base is ever computed
+        # through an `addu`. `trace()` already follows `rs` through an `addu` (the `op == 0` case below), so
+        # the move was never needed here, and M231's attribution was to the wrong mechanism. Retracted in
+        # M232 and removed rather than kept as a comment.
         return None
     if rs in ctxs:
         return {"kind": "ctx_base"}
@@ -320,7 +320,7 @@ def derive(image):
         "inputs": {
             "image": str(rd.IMAGE.relative_to(ROOT)),
             "heads": "manifests/dispatch_heads.json (M228)",
-            "rule": "the `sltiu` bounding the index, then up to %d backwards steps through shift/mask/add/move "
+            "rule": "the `sltiu` bounding the index, then up to %d backwards steps through shift/mask/add "
                     "and one load; the source is classified only when the chain bottoms out on something this "
                     "image names, and `unknown`/`local` otherwise" % TRACE_STEPS,
             "window": "the head's corpus body where one covers the dispatch, else at most 0x%x bytes behind "
