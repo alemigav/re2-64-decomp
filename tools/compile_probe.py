@@ -78,7 +78,7 @@ PROFILES = [("ido-5.3 G0", "ido", "ido-5.3", ["-O2", "-non_shared", "-mips2", "-
             ("gcc2.8.1 -O2", "gcc", "mips-gcc-2.8.1", ["-O2", "-G", "0"])]
 
 
-def text_of(obj):
+def text_of(obj, name=".text"):
     d = Path(obj).read_bytes()
     if d[:4] != b"\x7fELF":
         return b""
@@ -90,7 +90,7 @@ def text_of(obj):
     stroff = secs[strndx][4]
     for s in secs:
         end = d.index(b"\0", stroff + s[0])
-        if d[stroff + s[0]:end] == b".text":
+        if d[stroff + s[0]:end] == name.encode():
             return d[s[4]:s[4] + s[5]]
     return b""
 
@@ -432,6 +432,138 @@ def p6_function():
             "first": "0x%08x" % (0x8004FD1C + 4 * hunks[0][1]) if hunks else None}
 
 
+
+# p7 as a whole function: the recovery done for p6, on the head whose bound is **7** and whose index is the byte at
+# `ctx+6`. Two things make it a different question from p6: its seven arms live inside ONE contiguous 336-byte
+# range rather than in six separate corpus functions, and two of them fall through (`0` into `1`, `4` into `5`),
+# so the image's table entries land mid-arm. The three externs and both callees must be *placed* at their image
+# addresses, or the link has nothing to compare.
+P7_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef unsigned int   u32;
+
+struct Ctx {
+    u32 f0;
+    u16 f4;
+    u8  mode;
+    u8  f7;
+    u8  pad[0x1d8];
+    u32 f1e0;
+    u32 f1e4;
+    u32 f1e8;
+};
+
+extern u8 D_800C76B0[];
+extern u8 D_8012BFA8[];
+extern u8 D_80131780[];
+
+extern int  FUN_80089d54(struct Ctx *s, int a1, void *tbl, u32 flags);
+extern void FUN_800551e0(void);
+
+void FUN_80057e1c(struct Ctx *s, int a1, void *tbl)
+{
+    u8 *q;
+
+    switch (s->mode) {
+    case 0: {
+        u8 *dev;
+        s->f1e8 = 0x06000700;
+        s->mode = 1;
+        s->f1e0 = 0;
+        dev = D_800C76B0;
+        *(u32 *)(dev + 0x18000 + 0x1a5c) |= 0xc0;
+        }
+
+    case 1:
+        s->mode += FUN_80089d54(s, a1, tbl, 0x200);
+        break;
+    case 2: {
+        u8 *dev;
+        D_8012BFA8[0] = 2;
+        dev = D_800C76B0;
+        *(u32 *)(dev + 0x18000 + 0x1a5c) |= 0x8000;
+        D_80131780[0] = 1;
+        q = D_80131780;
+        *(u32 *)(q + 0x44) = *(u32 *)(dev + 0x18000 + 0x1a60);
+        s->mode = 3;
+        break;
+    }
+    case 3:
+        break;
+    case 4:
+        s->f1e8 = 0x06000700;
+        s->mode = 5;
+
+    case 5:
+        s->mode += FUN_80089d54(s, a1, tbl, 0x10200);
+        break;
+    case 6: {
+        u8 *dev;
+        FUN_800551e0();
+        *(u32 *)&s->f4 = 0x01000000;
+        dev = D_800C76B0;
+        *(u32 *)(dev + 0x18000 + 0x1a5c) &= ~0x80;
+        *(u32 *)(dev + 0x18000 + 0x1a5c) &= ~0x40;
+        break;
+    }
+    }
+}"""
+P7_TABLE = 0x800B8F78
+P7_SYMS = [("D_800C76B0", 0x800C76B0), ("D_8012BFA8", 0x8012BFA8), ("D_80131780", 0x80131780),
+           ("FUN_80089d54", 0x80089D54), ("FUN_800551e0", 0x800551E0)]
+
+
+def p7_function():
+    """Compile the recovered p7 and compare 84 words of text plus the 8-word jump table.
+
+    Two numbers on purpose: the text is the reconstruction's business and the table is the *link's*, so
+    conflating them would let a correct table hide a wrong arm. `objcopy --set-section-alignment` is required
+    because binutils 2.7's `as` leaves `.text` at 16-byte alignment, which shifts the whole function by 4 bytes
+    and makes every word look different for a reason that has nothing to do with the C.
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p7full.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P7_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(o), str(s)], capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in P7_SYMS)
+    ld.write_text("ENTRY(f_probe)\nSECTIONS {\n  . = 0x80057E1C;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B8F78;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo, hi = 0x80057E1C, 0x80057F6C
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range((hi - lo) // 4)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    hunks = [o for o in sm.get_opcodes() if o[0] != "equal"]
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    tw = [image[P7_TABLE - BASE + 4 * i:P7_TABLE - BASE + 4 * i + 4] for i in range(8)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(len(ro) // 4)][:8]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    return {"image_instrs": len(want), "got_instrs": len(got), "same": same, "hunks": len(hunks),
+            "same_offset": off,
+            "extra": len(got) - len(want), "table_same": sum(1 for a, b in zip(tw, gw) if a == b),
+            "first": "0x%08x" % (lo + 4 * hunks[0][1]) if hunks else None}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -534,6 +666,7 @@ def check():
         cases.append((row, pr["match"]))
 
     p6f = p6_function()
+    p7f = p7_function()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
                   f"first at {p6f['first']}" if p6f else "p6 whole function: not run",
@@ -547,6 +680,16 @@ def check():
     cases.append((f"the head's delay slot still matches with the arms in place (the only head difference is the "
                   f"branch offset)",
                   bool(p6f) and p6f["first"] == "0x8004fd20"))
+
+    cases.append((f"p7's whole function, recovered: {p7f['same_offset']} of {p7f['image_instrs']} words "
+                  f"identical by offset and {p7f['same']} aligned by content ({p7f['hunks']} hunk(s), first at "
+                  f"{p7f['first']}) -- both residues are instruction permutations, not wrong operations"
+                  if p7f else "p7 whole function: not run",
+                  bool(p7f) and p7f["same_offset"] >= 60 and p7f["same"] >= 64 and p7f["hunks"] <= 6))
+
+    cases.append((f"p7's jump table lands on the image's own 0x800b8f78 and matches {p7f['table_same']} of 8 words "
+                  f"only because the linker places it, not the source" if p7f else "p7 table: not run",
+                  bool(p7f) and p7f["table_same"] == 8))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
