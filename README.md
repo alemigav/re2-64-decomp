@@ -112,7 +112,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**280** numbers, 0-279: **224** with a row, and **56** named gaps. The full index — every number, its title,
+**281** numbers, 0-280: **225** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -135,7 +135,7 @@ worth reading before you believe any older note.
 | P13 | M211–M222 | the script VM's opcode registry, a call graph whose edges carry evidence, verification split into tiers, `TYRANT` named as a codename, and the three work packages that closed the sound family |
 | P14 | M223–M230 | the RSP microcode decoded and deliberately not named; the interface read as a frame loop; the vector unit named 252 of 254; the dispatch-head queue resolved |
 | P15 | M231–M250 | **the toolchain identified**: the sound backlog closed, a verification prototype (warm quarter-second), splat's rehearsal on the boot image, binutils 2.7 and IDO built natively, IDO refuted by a move census, gcc 2.7.2 then **gcc 2.8.1** reproducing every probe |
-| P16 | **M251–M279** | **whole functions reproduced from the image**: the compile-probe corpus, eight functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`), **six byte-exact**, and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
+| P16 | **M251–M280** | **whole functions reproduced from the image**: the compile-probe corpus, eight functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`), **six byte-exact**, and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -223,7 +223,7 @@ ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 3638 functions across 36 images · █ 6 reproduced byte-for-byte (0.16%) · ▓ 2 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M279)
+the record — one bar per phase, from the phase table's own ranges (M0–M280)
 
 P0   M0  │██│ 10
 P1   M10 │████│ 21
@@ -241,7 +241,7 @@ P12  M200│██│ 11
 P13  M211│██│ 12
 P14  M223│█│ 8
 P15  M231│███│ 20
-P16  M251│█████│ 29
+P16  M251│█████│ 30
 ```
 <!-- progress-map:end -->
 
@@ -283,7 +283,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       98 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    204 notes, one per milestone that has one
+docs/log/    205 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "da5a461",
+   "subject": "M279: 0x8007e590 enters the probe at 226/229 -- partial pin plus a regional assertion",
+   "milestones": [
+    279
+   ]
+  },
+  {
    "sha": "3d0f501",
    "subject": "M278: 0x8007e590 at 226/229 -- copy block and both table reads exact, no-default switch",
    "milestones": [
