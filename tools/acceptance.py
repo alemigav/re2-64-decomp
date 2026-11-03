@@ -107,6 +107,9 @@ SUITES = [
     ("script population (cartridge)", [sys.executable, "tools/script_population.py", "--check"], 13, True),
     ("sound project (cartridge)", [sys.executable, "tools/snd_proj.py", "--check"], 28, True),
     ("sound macros (cartridge)", [sys.executable, "tools/snd_macros.py", "--check"], 24, True),
+    # M233: the six script commands that reach the sound subsystem, read from their handlers. Needs
+    # stage-2 bytes and build/elfs/boot.elf -- the one call that leaves the image lands in boot.
+    ("sound commands (cartridge)", [sys.executable, "tools/sound_ops.py", "--check"], 10, True),
     ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 101, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a

@@ -555,6 +555,26 @@ AUDITS = [
          old='    if reg == SP:\n        return {"kind": "stack", "register": "sp"}\n'
              "    earlier = [v for v in table.get(reg, []) if v < at]",
          new="    earlier = [v for v in table.get(reg, []) if v < at]"),
+    # --- M233: the sound-command census. Three anchors, each closing one step of the dataflow the six
+    # operand layouts rest on: the context pointer copied into a callee-saved register (`s1 = a0`), the
+    # invalidation that stops an alias at the instruction which rewrites it (0x83 rebuilds v0 as 0x800df6b0
+    # and then reads 0x1c7e(v0)), and the advance read off the store rather than off the registry.
+    dict(name="sound_ops: the context pointer is not followed through a move, so no command pointer is found",
+         tool="sound_ops.py", args=["--check"], file="tools/sound_ops.py",
+         old='                special = "ctxmove"\n                ctx.add(rdx)',
+         new='                special = None\n                ctx.add(rdx)'),
+    # the invalidation anchor was twice a no-op here, so this one closes the load set instead: `lhu` is the
+    # halfword form 0x59's `u16` operand and 0x85's region mask are both read with, and dropping it loses two
+    # operand layouts at once. (The invalidation itself cannot be isolated: the advance branch discards the
+    # register on its own, so disarming the general rule leaves 0x83's rebuilt base invisible anyway.)
+    dict(name="sound_ops: lhu leaves the load set, so a halfword operand disappears",
+         tool="sound_ops.py", args=["--check"], file="tools/sound_ops.py",
+         old='LOAD = {0x20: "lb", 0x21: "lh", 0x23: "lw", 0x24: "lbu", 0x25: "lhu"}',
+         new='LOAD = {0x20: "lb", 0x21: "lh", 0x23: "lw", 0x24: "lbu"}'),
+    dict(name="sound_ops: the advance is taken from the registry instead of from the store",
+         tool="sound_ops.py", args=["--check"], file="tools/sound_ops.py",
+         old="                    advance = sx16(wb & 0xFFFF)",
+         new="                    advance = None"),
     # --- M228: the dispatch-head census. Three anchors: the bound that sets the entry count, the
     # sign-extended immediate that puts a table 0x10000 off (the M226 error, as a mutation), and the
     # jal-site count that decides whether a head is a function boundary.
