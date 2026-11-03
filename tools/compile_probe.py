@@ -453,6 +453,8 @@ struct Ctx {
     u32 f1e8;
 };
 
+struct Dev { u8 pad[0x1a5c]; u32 reg; u32 reg2; };
+
 extern u8 D_800C76B0[];
 extern u8 D_8012BFA8[];
 extern u8 D_80131780[];
@@ -471,7 +473,7 @@ void FUN_80057e1c(struct Ctx *s, int a1, void *tbl)
         s->mode = 1;
         s->f1e0 = 0;
         dev = D_800C76B0;
-        *(u32 *)(dev + 0x18000 + 0x1a5c) |= 0xc0;
+        ((struct Dev *)(dev + 0x18000))->reg |= 0xc0;
         }
 
     case 1:
@@ -481,10 +483,10 @@ void FUN_80057e1c(struct Ctx *s, int a1, void *tbl)
         u8 *dev;
         D_8012BFA8[0] = 2;
         dev = D_800C76B0;
-        *(u32 *)(dev + 0x18000 + 0x1a5c) |= 0x8000;
+        ((struct Dev *)(dev + 0x18000))->reg |= 0x8000;
         D_80131780[0] = 1;
         q = D_80131780;
-        *(u32 *)(q + 0x44) = *(u32 *)(dev + 0x18000 + 0x1a60);
+        *(u32 *)(q + 0x44) = ((struct Dev *)(dev + 0x18000))->reg2;
         s->mode = 3;
         break;
     }
@@ -502,8 +504,8 @@ void FUN_80057e1c(struct Ctx *s, int a1, void *tbl)
         FUN_800551e0();
         *(u32 *)&s->f4 = 0x01000000;
         dev = D_800C76B0;
-        *(u32 *)(dev + 0x18000 + 0x1a5c) &= ~0x80;
-        *(u32 *)(dev + 0x18000 + 0x1a5c) &= ~0x40;
+        ((struct Dev *)(dev + 0x18000))->reg &= ~0x80;
+        ((struct Dev *)(dev + 0x18000))->reg &= ~0x40;
         break;
     }
     }
@@ -561,6 +563,7 @@ def p7_function():
     return {"image_instrs": len(want), "got_instrs": len(got), "same": same, "hunks": len(hunks),
             "same_offset": off,
             "extra": len(got) - len(want), "table_same": sum(1 for a, b in zip(tw, gw) if a == b),
+            "arm0": sum(1 for i in range(14) if want[14 + i] == got[14 + i]),
             "first": "0x%08x" % (lo + 4 * hunks[0][1]) if hunks else None}
 
 
@@ -685,7 +688,13 @@ def check():
                   f"identical by offset and {p7f['same']} aligned by content ({p7f['hunks']} hunk(s), first at "
                   f"{p7f['first']}) -- both residues are instruction permutations, not wrong operations"
                   if p7f else "p7 whole function: not run",
-                  bool(p7f) and p7f["same_offset"] >= 60 and p7f["same"] >= 64 and p7f["hunks"] <= 6))
+                  bool(p7f) and p7f["same_offset"] >= 74 and p7f["same"] >= 75 and p7f["hunks"] <= 2))
+
+    cases.append((f"p7's case 0 is byte-exact ({p7f['arm0']} of 14 words) once the device window is a "
+                  f"struct member: a mixed struct/non-struct pair is a dependence gcc 2.8.1 drops, so the "
+                  f"scheduler hoists the load past the two stores"
+                  if p7f else "p7 case 0: not run",
+                  bool(p7f) and p7f["arm0"] == 14))
 
     cases.append((f"p7's jump table lands on the image's own 0x800b8f78 and matches {p7f['table_same']} of 8 words "
                   f"only because the linker places it, not the source" if p7f else "p7 table: not run",
