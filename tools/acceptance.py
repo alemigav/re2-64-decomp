@@ -99,6 +99,9 @@ SUITES = [
     # M242: the matching comparator, proved on the real bytes -- an ELF against the member it was built
     # from, and a one-word perturbation located and attributed. Needs build/elfs and the assets.
     ("match diff (cartridge)", [sys.executable, "tools/match_diff.py", "--self-test"], 4, True),
+    # M243: the splat dress rehearsal on the boot image -- the split tiles it, the map reassembles it, and
+    # the built ELF still equals the cartridge. Needs the cartridge, build/elfs and assets/.
+    ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     ("analysis status (repository)", [sys.executable, "tools/analysis_status.py", "--check"], 7, False),
     ("missed-function census (cartridge)", [sys.executable, "tools/find_missed_functions.py", "--check"], 2, True),
