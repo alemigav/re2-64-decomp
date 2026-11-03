@@ -7,8 +7,8 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-240 milestones are indexed. 167 of them have a note; the rest are rows in the log that cite
-`docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
+247 milestones are indexed. 168 of them have a note; the rest are rows in the log that cite
+`docs/format_notes.md` instead. **57 have no record at all** — 24, 31–78, 80, 172, 240–245 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
 
@@ -40,7 +40,7 @@ at the foot of this file.
 | 22 | **M22** — Scheduler increment | `format_notes.md` §5b |
 | 23 | **M23** (i) — COP1/FPU added (float32 rounding, mfc1/mtc1, bc1, S/D arithmetic, cvt, compares, lwc1/ldc… | `format_notes.md` §5b |
 | 23 | **M23** (ii) — Experiment A | `format_notes.md` §5b |
-| 24 | **M24** — FPRs corrected to 32x64-bit raw with S in the low half (and the arithmetic block's float-… | `format_notes.md` §5b |
+| 24 | **M24** — *(no row, no note)* | no evidence in the tree |
 | 25 | **M25** — Constant scan | `format_notes.md` §5b |
 | 26 | **M26** — Execution checkpoints | `format_notes.md` §5b |
 | 27 | **M27** — Send-site census | `format_notes.md` §5b |
@@ -257,12 +257,19 @@ at the foot of this file.
 | 237 | **M237** — the clip-61 rate exception: real in the data, and not a reading error | `docs/log/M237-the-clip-61-rate-exception.md` |
 | 238 | **M238** — the sampler record decoded, and the six frames the decoder never sees | `docs/log/M238-the-sampler-record-and-the-six-skipped-frames.md` |
 | 239 | **M239** — the prefix is 256 after all: M238's central claim was wrong, and the patch it implied must not be made | `docs/log/M239-the-prefix-is-256.md` |
+| 240 | **M240** — *(no row, no note)* | commit only: `a5a76ad` “M240: a verification prototype that discovers inputs and caches on content” |
+| 241 | **M241** — *(no row, no note)* | commit only: `4f48acb` “M241: include/tyrant.h -- the Script VM as types, generated from the registry” |
+| 242 | **M242** — *(no row, no note)* | commit only: `95fe500` “M242: match_diff.py -- name the first differing instruction, proved both ways” |
+| 243 | **M243** — *(no row, no note)* | commit only: `8323b0e` “M243: the splat dress rehearsal on the boot image -- map verified, assembler absent” |
+| 244 | **M244** — *(no row, no note)* | no evidence in the tree |
+| 245 | **M245** — *(no row, no note)* | commit only: `459ae97` “M245: both toolchains run -- IDO 5.3 and 7.1 native, and GNU as/ld for mips” |
+| 246 | **M246** — the compile-probe corpus: IDO is refuted, and 5.3 and 7.1 are the same compiler | `docs/log/M246-the-compile-probe-corpus.md` |
 
 ## The gaps, and why they are empty
 
-**50** milestone numbers have neither a row in `docs/reverse_engineering_log.md` nor a note in `docs/log/`. The project did not keep a note for every number it used: much of the middle work was recorded in `docs/format_notes.md` and in commit messages instead, and the log's own numbering runs M10–M30 in that style before resuming per-milestone notes at M81.
+**57** milestone numbers have neither a row in `docs/reverse_engineering_log.md` nor a note in `docs/log/`. The project did not keep a note for every number it used: much of the middle work was recorded in `docs/format_notes.md` and in commit messages instead, and the log's own numbering runs M10–M30 in that style before resuming per-milestone notes at M81.
 
-* **M48, M51, M78, M172** survive only as commit subjects, quoted above. Nothing further is known about them, so nothing further is written.
-* **31–47, 49–50, 52–77, 80** have no evidence in the tree at all — no row, no note, no commit that names them.
+* **M48, M51, M78, M172, M240, M241, M242, M243, M245** survive only as commit subjects, quoted above. Nothing further is known about them, so nothing further is written.
+* **24, 31–47, 49–50, 52–77, 80, 244** have no evidence in the tree at all — no row, no note, no commit that names them.
 
 None of these gaps is reconstructed after the fact. A note written from guesswork would be indistinguishable from a note written from measurement, and this project's whole claim is that the difference is visible.

@@ -2,6 +2,11 @@
  "note": "Milestones with no row and no note in docs/. Seeded by `tools/milestone_index.py --seed-gaps`; never read from git at check time, because a CI clone is shallow.",
  "gaps": [
   {
+   "n": 24,
+   "status": "unrecorded",
+   "evidence": []
+  },
+  {
    "n": 31,
    "status": "unrecorded",
    "evidence": []
@@ -272,6 +277,61 @@
     {
      "sha": "c26d44a",
      "subject": "M172: consolidate for a rebuild \u2014 the format header, its C validator, and the start-here doc"
+    }
+   ]
+  },
+  {
+   "n": 240,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "a5a76ad",
+     "subject": "M240: a verification prototype that discovers inputs and caches on content"
+    }
+   ]
+  },
+  {
+   "n": 241,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "4f48acb",
+     "subject": "M241: include/tyrant.h -- the Script VM as types, generated from the registry"
+    }
+   ]
+  },
+  {
+   "n": 242,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "95fe500",
+     "subject": "M242: match_diff.py -- name the first differing instruction, proved both ways"
+    }
+   ]
+  },
+  {
+   "n": 243,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "8323b0e",
+     "subject": "M243: the splat dress rehearsal on the boot image -- map verified, assembler absent"
+    }
+   ]
+  },
+  {
+   "n": 244,
+   "status": "unrecorded",
+   "evidence": []
+  },
+  {
+   "n": 245,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "459ae97",
+     "subject": "M245: both toolchains run -- IDO 5.3 and 7.1 native, and GNU as/ld for mips"
     }
    ]
   }

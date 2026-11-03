@@ -41,7 +41,32 @@ linker), which is what the game was actually built with; the recompiler makes th
 needed only if a probe wants splat's GNU-dialect output. Two assemblers, one of them the original, is a better
 position than one.
 
-## 2. The compiler — proprietary, and not fetched by this repository
+## 2. The compiler — named by the SDK's own makefiles, still not runnable here
+
+The owner supplied the **Nintendo 64 Developers Toolkit v5.2** disc (M247). It is a Mode-2 raw CD image; once
+the sector framing is stripped it mounts, and inside:
+
+| path | what it is |
+|---|---|
+| `pc/basic/data1.cab` (InstallShield, `unshield`) | 811 files: `NuSTD`, `NuSystem`, `misc` — the libraries and tools, **no compiler** |
+| `sgi/n64kit52.tar` | the IRIX kit: `ccbl`, `HVQ`, `niff`, `nustd`, `nusys`, `misc` — again libraries, no `cc1` |
+
+So the toolchain binary is not on this disc; what *is* on it is the build contract, and that is worth as much:
+
+```
+NuSTD/src/makefile:   CC = gcc          CFLAGS = -c -O -G 0 $(WFLAGS) ...
+                      INCLUDES = -I$(GCCDIR)/mipse/include
+NuSystem/sample/…:    LDFLAGS = … -L$(GCCDIR)/mipse/lib -lkmc
+```
+
+`gcc` for the **`mipse`** target (big-endian MIPS), **`-O` — not `-O2`** — and **`-G 0`**, with the runtime
+named `-lkmc`. That corroborates the census that refuted IDO (§ below) and fixes the next profile to test.
+
+To *run* it the options are, in order of cost: wine over the Windows-hosted gcc (not on this disc either), or a
+native build of gcc 2.7.2 for the host — `n64chain` and `modern-n64-sdk` exist for exactly that, and they are
+the next provisioning target. Until one of those exists, the probe corpus can test IDO and nothing else.
+
+## 2b. The compiler question as it stood before the disc
 
 The candidate set for a 1999 N64 title is small and none of it is guessable:
 

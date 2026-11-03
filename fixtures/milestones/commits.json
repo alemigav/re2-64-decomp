@@ -2,6 +2,49 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "459ae97",
+   "subject": "M245: both toolchains run -- IDO 5.3 and 7.1 native, and GNU as/ld for mips",
+   "milestones": [
+    245
+   ]
+  },
+  {
+   "sha": "8323b0e",
+   "subject": "M243: the splat dress rehearsal on the boot image -- map verified, assembler absent",
+   "milestones": [
+    243
+   ]
+  },
+  {
+   "sha": "95fe500",
+   "subject": "M242: match_diff.py -- name the first differing instruction, proved both ways",
+   "milestones": [
+    242
+   ]
+  },
+  {
+   "sha": "4f48acb",
+   "subject": "M241: include/tyrant.h -- the Script VM as types, generated from the registry",
+   "milestones": [
+    241
+   ]
+  },
+  {
+   "sha": "a5a76ad",
+   "subject": "M240: a verification prototype that discovers inputs and caches on content",
+   "milestones": [
+    240
+   ]
+  },
+  {
+   "sha": "df71e21",
+   "subject": "M239: the prefix is 256 after all -- M238 was wrong, and the patch it implied must not be made",
+   "milestones": [
+    238,
+    239
+   ]
+  },
+  {
    "sha": "01d0eff",
    "subject": "M238: the sampler record decoded, and the six frames the decoder never sees",
    "milestones": [
