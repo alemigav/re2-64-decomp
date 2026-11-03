@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-253 milestones are indexed. 174 of them have a note; the rest are rows in the log that cite
+254 milestones are indexed. 175 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -269,6 +269,7 @@ at the foot of this file.
 | 250 | **M250** — gcc 2.8.1: four of four probes byte-exact, and the compiler is identified | `docs/log/M250-gcc-281-four-of-four.md` |
 | 251 | **M251** — the four extra classes: the cartridge has no cheap probe for any of them | `docs/log/M251-the-four-classes-refused.md` |
 | 252 | **M252** — the linked switch head: the dispatch sequence is exact, and the one differing instruction is the arms' | `docs/log/M252-the-linked-switch-head.md` |
+| 253 | **M253** — three more dispatch heads: bounds 5/6/7/7, four index sources, and two layout facts | `docs/log/M253-three-more-dispatch-heads.md` |
 
 ## The gaps, and why they are empty
 

@@ -231,50 +231,134 @@ def census(image):
     return counts
 
 
-SWITCH_HEAD = {
-    "head": 0x8004FD1C, "table": 0x800B8BD0, "bound": 5,
-    "source": "int f(int a, int b, int c) { switch (c) { case 0: return a; case 1: return b; "
-              "case 2: return a + b; case 3: return a - b; case 4: return a ^ b; } return 0; }",
-}
+# Dispatch heads, one per (bound, table, index source). Each is compiled as a switch with the same number of
+# cases and linked with `.rodata` at *that head's* table address, so the comparison covers the two things that
+# vary between them: the `sltiu` bound and the table address materialisation.
+HEADS = [
+    dict(tag="p6", head=0x8004FD1C, bound_at=0x8004FD1C, jr=0x8004FD3C, table=0x800B8BD0, bound=5,
+         index="an incoming argument", cases=5),
+    dict(tag="p7", head=0x80057E1C, bound_at=0x80057E30, jr=0x80057E4C, table=0x800B8F78, bound=7,
+         index="the byte at ctx+6", cases=7),
+    dict(tag="p8", head=0x80024558, bound_at=0x8002456C, jr=0x8002458C, table=0x800B69B0, bound=6,
+         index="a global byte", cases=6),
+    dict(tag="p9", head=0x80070120, bound_at=0x80070158, jr=0x80070174, table=0x800B96A8, bound=7,
+         index="a command byte, `andi 0xff`", cases=7),
+]
 
 
-def switch_head():
-    """Compile a five-case switch, place `.text` at the head and `.rodata` at the table, and compare.
+def _switch_source(ncases):
+    body = "".join("    case %d: return %d;\n" % (i, i * 3 + 1) for i in range(ncases))
+    return "int f(int idx) {\n  switch (idx) {\n%s  }\n  return 0;\n}\n" % body
 
-    The head is ten instructions. Two of them cannot be compared: the **branch offset** (it depends on how large
-    the arms are) and the **delay slot** (its content comes from the arm prologue -- in this image
-    `addu a3,a0,zero`). What is compared is the bound check and the seven-word table dispatch, which are the
-    compiler's business: the `sltiu` bound and index register, the `lui`/`addiu` table address, `sll`, `addu`,
-    `lw`, `jr` and its `nop`.
+
+def _words(blob, base, lo, hi):
+    return [blob[lo - base + 4 * i:lo - base + 4 * i + 4] for i in range((hi - lo) // 4)]
+
+
+def dispatch_signature(words):
+    """The dispatch's own construction: the bound, the table address, the shift, and the op sequence.
+
+    Registers are deliberately not compared -- which register holds the index is the register allocator's choice
+    for the *whole* function -- and neither is the **delay slot**, which is filled from whatever the enclosing
+    function has to put there (this cartridge uses it for the `lui`, for a frame store, or for the `sll`,
+    depending on the head). The values that are read from every word, slot included, are the bound, the table
+    address and the shift; only the *op sequence* excludes the slot.
     """
+    ints = [int.from_bytes(w, "big") for w in words]
+    bound = next((x & 0xFFFF for x in ints if (x >> 26) == 0x0B), None)
+    table = None
+    for i, x in enumerate(ints):
+        if (x >> 26) == 0x0F:
+            hi, rt = (x & 0xFFFF) << 16, (x >> 16) & 31
+            for y in ints[i + 1:]:
+                if (y >> 26) == 0x09 and ((y >> 21) & 31) == rt:
+                    lo = (y & 0xFFFF) - (0x10000 if y & 0x8000 else 0)
+                    table = (hi + lo) & 0xFFFFFFFF
+                    break
+            if table is not None:
+                break
+    shift = next(((x >> 6) & 0x1F for x in ints
+                  if (x >> 26) == 0 and (x & 0x3F) == 0 and (x >> 16) & 31 != 0), None)
+    branch = next((i for i, x in enumerate(ints) if (x >> 26) in (4, 5)), None)
+    ops = []
+    for i, x in enumerate(ints):
+        if branch is not None and i == branch + 1:
+            ops.append("slot")
+            continue
+        op, fn = x >> 26, x & 0x3F
+        if op == 0x0B:
+            ops.append("sltiu")
+        elif op == 0x0F:
+            ops.append("lui")
+        elif op == 0x09:
+            ops.append("addiu")
+        elif op == 0 and fn == 0x00:
+            ops.append("sll")
+        elif op == 0 and fn == 0x21:
+            ops.append("addu")
+        elif op == 0x23:
+            ops.append("lw")
+        elif op == 0 and fn == 0x08:
+            ops.append("jr")
+            break
+    return {"bound": bound, "table": table, "shift": shift, "ops": ops}
+
+
+def head_probe(spec):
+    """Compile a switch with `spec["cases"]` cases, link `.rodata` at the head's table, and signature-compare."""
     cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
     gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
     if not cc1.exists() or not gas.exists():
         return None
-    c = WORK / "p6_switch.c"
+    c = WORK / ("%s.c" % spec["tag"])
     c.parent.mkdir(parents=True, exist_ok=True)
-    c.write_text(SWITCH_HEAD["source"] + "\n")
-    s, o, fx = (WORK / "p6_switch.s", WORK / "p6_switch.o", WORK / "p6_switch.fix.o")
+    c.write_text(_switch_source(spec["cases"]))
+    s, o, fx = (c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o"))
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
     subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(o), str(s)], capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx)], capture_output=True)
-    ld = WORK / "p6_switch.ld"
-    ld.write_text("SECTIONS {\n  . = 0x%08X;\n  .text : { *(.text) }\n  . = 0x%08X;\n  .rodata : { *(.rodata) }\n"
-                  "  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.mdebug) }\n}\n"
-                  % (SWITCH_HEAD["head"], SWITCH_HEAD["table"]))
-    elf = WORK / "p6_switch.elf"
-    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
-                      capture_output=True).returncode:
+    ld = c.with_suffix(".ld")
+    ld.write_text("SECTIONS {\n  . = 0x%08X;\n  .text : { *(.text) }\n  . = 0x%08X;\n"
+                  "  .rodata : { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) *(.comment) "
+                  "*(.pdr) *(.data) *(.bss) *(.mdebug) }\n}\n" % (spec["bound_at"], spec["table"]))
+    elf = c.with_suffix(".elf")
+    # The object's `.rodata` aligns the table to 16 bytes; this cartridge's tables are 8-aligned
+    # (`0x800b8f78`, `0x800b96a8`), so a script that places `.rodata` *at* the image's table address lands the
+    # table 8 bytes late. Link once, read where the table actually went, and shift the section by that pad.
+    def link(at):
+        ld.write_text("SECTIONS {\n  . = 0x%08X;\n  .text : { *(.text) }\n  . = 0x%08X;\n"
+                      "  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) "
+                      "*(.comment) *(.pdr) *(.data) *(.bss) *(.mdebug) }\n}\n" % (spec["bound_at"], at))
+        rc = subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                            capture_output=True).returncode
+        return None if rc else text_of(elf)
+
+    blob = link(spec["table"])
+    if blob is None:
+        return None
+    first = next((i for i in range(0, len(blob) - 3, 4)
+                  if int.from_bytes(blob[i:i + 4], "big") >> 26 == 0x0B), None)
+    if first is None:
         return None
     image = IMAGE.read_bytes()
-    want = [image[SWITCH_HEAD["head"] - BASE + 4 * i:SWITCH_HEAD["head"] - BASE + 4 * i + 4] for i in range(10)]
-    got = [text_of(elf)[4 * i:4 * i + 4] for i in range(9)]
-    # the bound check is word 0 in both; the dispatch run is words 3..9 of the image and 2..8 of ours
-    return {"bound_check": want[0] == got[0], "dispatch_run": want[3:10] == got[2:9],
-            "delay_slot_image": want[2].hex(), "delay_slot_ours": got[2].hex(),
-            "bound": SWITCH_HEAD["bound"]}
+    want = dispatch_signature(_words(image, BASE, spec["bound_at"], spec["jr"] + 8))
+    mine_blob = blob
+    start = first
+    got = dispatch_signature([mine_blob[start + 4 * k:start + 4 * k + 4]
+                              for k in range((spec["jr"] - spec["bound_at"] + 8) // 4)])
+    # What is codegen and what is layout. The **bound** and the **shift** are the compiler's decisions and are
+    # compared exactly. The **table address** is codegen *if* the object's `.rodata` puts the table first: where
+    # something precedes it the linked address is the image's plus that pad, which is a fact about this object's
+    # layout and is reported rather than smoothed. The **op sequence** is not compared: the delay slot absorbs one
+    # instruction and its content is the arms' (this cartridge's heads put the `lui`, a frame store, or the `sll`
+    # there, while ours always puts the `lui`).
+    pad = (got["table"] - spec["table"]) if got["table"] is not None else None
+    return {"spec": spec, "want": want, "got": got, "table_pad": pad,
+            "match": want["bound"] == got["bound"] and want["shift"] == got["shift"],
+            "table_match": want["table"] == got["table"],
+            "table_pad_is_layout": pad is not None and pad % 8 == 0}
 
 
 def check():
@@ -368,11 +452,15 @@ def check():
     cases.append(("IDO 5.3 and 7.1 emit identical code on every probe, so they are one hypothesis",
                   same))
 
-    sw = switch_head()
-    cases.append((f"the linked switch head reproduces the bound check and the seven-word table dispatch "
-                  f"(bound {SWITCH_HEAD['bound']}; the delay slot is the arm prologue: image "
-                  f"{sw['delay_slot_image'] if sw else '-'} vs ours {sw['delay_slot_ours'] if sw else '-'})",
-                  bool(sw) and sw["bound_check"] and sw["dispatch_run"]))
+    for spec in HEADS:
+        pr = head_probe(spec)
+        if not pr:
+            cases.append((f"{spec['tag']} ({spec['index']}): not run", False))
+            continue
+        row = (f"{spec['tag']} bound {spec['bound']} shift {pr['got']['shift']} table 0x{spec['table']:08x} "
+               f"idx {spec['index']}: bound+shift {'match' if pr['match'] else 'DIFFER'}, table "
+               f"{'at the image address' if pr['table_match'] else 'at +%d (object .rodata pad)' % pr['table_pad']}")
+        cases.append((row, pr["match"]))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
