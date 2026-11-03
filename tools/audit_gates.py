@@ -628,14 +628,16 @@ AUDITS = [
     # --- M238: the SND_SMPDIR record and the sample prefix. Three anchors, each a mechanism a published
     # number rests on: the 16-byte prefix (the shipped value, 256, is the mutation), the low nibble bound
     # that makes a predictor byte legal, and the 24-bit count.
-    dict(name="smpdir: the prefix goes back to 256, so the grid sits six frames late",
+    # aimed at the arithmetic, not the constant: mutating `BLOCK` itself crashes the 128-int16 magnitude read,
+    # and a mutation that crashes proves only that the code is fragile (M226's lesson, met again here)
+    dict(name="smpdir: the grid is counted from 16 bytes, the model M238 retracted",
          tool="smpdir.py", args=["--check"], file="tools/smpdir.py",
-         old="PREFIX = 16                 # measured: the frame grid starts here in every sample but the first",
-         new="PREFIX = 256                # measured: the frame grid starts here in every sample but the first"),
-    dict(name="smpdir: a predictor byte's low nibble is unbounded, so illegal frame-0 headers count as legal",
+         old='    frames = [(r["stored"] - BLOCK) // FRAME for r in rows]',
+         new='    frames = [(r["stored"] - 16) // FRAME for r in rows]'),
+    dict(name="smpdir: the legality census is anchored at the block, so the non-framed region disappears",
          tool="smpdir.py", args=["--check"], file="tools/smpdir.py",
-         old="    return (byte >> 4) <= 7 and (byte & 0xF) <= 12",
-         new="    return (byte >> 4) <= 7"),
+         old="                at = r[\"offset\"] + 16 + i * FRAME + 8 + run * 16",
+         new="                at = r[\"offset\"] + BLOCK + i * FRAME + 8 + run * 16"),
     dict(name="smpdir: the count is read as 16 bits, so every long sample's declared length truncates",
          tool="smpdir.py", args=["--check"], file="tools/smpdir.py",
          old='            "count": struct.unpack_from(">I", directory, at + 16)[0] & 0x00FFFFFF,',

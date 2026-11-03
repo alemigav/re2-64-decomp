@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-239 milestones are indexed. 166 of them have a note; the rest are rows in the log that cite
+240 milestones are indexed. 167 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -256,6 +256,7 @@ at the foot of this file.
 | 236 | **M236** — the per-scene voice lists are in the image, and bit 15 proves it | `docs/log/M236-the-per-scene-voice-lists.md` |
 | 237 | **M237** — the clip-61 rate exception: real in the data, and not a reading error | `docs/log/M237-the-clip-61-rate-exception.md` |
 | 238 | **M238** — the sampler record decoded, and the six frames the decoder never sees | `docs/log/M238-the-sampler-record-and-the-six-skipped-frames.md` |
+| 239 | **M239** — the prefix is 256 after all: M238's central claim was wrong, and the patch it implied must not be made | `docs/log/M239-the-prefix-is-256.md` |
 
 ## The gaps, and why they are empty
 

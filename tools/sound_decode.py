@@ -6,7 +6,7 @@ read as a specification, no code copied. The algorithm is a fact about the cartr
 independent implementation of it in Python, written from the description and validated against the
 cartridge's own directory data.
 
-    sample data (id 1983) := [256-byte codebook] then N * 40-byte frames
+    sample data (id 1983) := [256-byte block] then N * 40-byte frames
 
     codebook  8 order-2 predictors; a2 = int16 at p*32, a1 = int16 at p*32 + 16
     frame     two 20-byte runs; per run:

@@ -1,27 +1,101 @@
 {
- "frame_zero": {
-  "hidden_by_the_256_skip": true,
-  "run0_header_0xff": 353,
-  "run0_header_illegal": 568,
-  "run1_header_illegal": 582,
-  "run1_header_over_0x7f": 582,
-  "samples": 1192
+ "block": {
+  "bytes": 256,
+  "stored_length_minus_block_divisible_by_40": 1192,
+  "stored_length_mod_40": {
+   "16": 1192
+  },
+  "why_16_looked_like_the_prefix": "256 = 6*40 + 16"
+ },
+ "block_is_not_audio": {
+  "best_correlation_with_decoded_head": 0.419,
+  "best_correlation_with_decoded_tail": 0.465,
+  "clips_compared": 50,
+  "decoded_audio_peak_max": 32768,
+  "decoded_audio_peak_median": 32768,
+  "fraction_over_4096": 0.0681,
+  "magnitude_max": 17696,
+  "magnitude_median": 397,
+  "magnitude_p99": 9069
+ },
+ "block_refutations": {
+  "copy_trials": 63,
+  "literal_copy_of_previous_sample": 0,
+  "seed_for_frame0": 2,
+  "seed_trials": 1191
+ },
+ "frame_index_legality": {
+  "0": {
+   "fraction": 0.4828,
+   "illegal": 1151,
+   "runs": 2384
+  },
+  "1": {
+   "fraction": 0.5155,
+   "illegal": 1229,
+   "runs": 2384
+  },
+  "10": {
+   "fraction": 0.0,
+   "illegal": 0,
+   "runs": 2370
+  },
+  "2": {
+   "fraction": 0.4224,
+   "illegal": 1007,
+   "runs": 2384
+  },
+  "3": {
+   "fraction": 0.5478,
+   "illegal": 1306,
+   "runs": 2384
+  },
+  "4": {
+   "fraction": 0.3926,
+   "illegal": 936,
+   "runs": 2384
+  },
+  "5": {
+   "fraction": 0.4908,
+   "illegal": 1170,
+   "runs": 2384
+  },
+  "6": {
+   "fraction": 0.0,
+   "illegal": 0,
+   "runs": 2384
+  },
+  "7": {
+   "fraction": 0.0,
+   "illegal": 0,
+   "runs": 2384
+  },
+  "8": {
+   "fraction": 0.0,
+   "illegal": 0,
+   "runs": 2382
+  },
+  "9": {
+   "fraction": 0.0,
+   "illegal": 0,
+   "runs": 2378
+  }
  },
  "grid": {
   "declared_count_fits_below_grid": 1192,
   "frames": [
-   8,
-   2000
+   2,
+   1994
   ],
   "samples_available_minus_declared": [
-   122,
-   519
+   72,
+   135
   ],
-  "slack_median": 488
+  "slack_median": 104
  },
  "inputs": {
   "directory": "cartridge id 1982 (SND_SMPDIR), 1192 x 28 B + terminator",
-  "rule": "a record is `u16 index | u16 0 | u32 offset | u32 0 | u16 15360 | u16 rate | u8 3 | u24 count | u32 f1 | u32 f2`; the frame grid starts 16 B into a sample (the first sample's extent carries the 256-byte codebook first)",
+  "rule": "a record is `u16 index, u16 0, u32 offset, u32 0, u16 15360, u16 rate, u8 3, u24 count, u32 f1, u32 f2`; a sample is a 256-byte block followed by 40-byte nibble frames, and the declared count is a sample count",
   "sample_data": "cartridge id 1983, 9022912 B"
  },
  "loop_candidates": {
@@ -34,193 +108,12 @@
   "pair_(2,0)_records": 1005
  },
  "not_claimed": [
+  "what the 256-byte block holds: it is not audio, not the clip's head or tail, not a seed for frame 0's history (2 of 1191) and not a copy of the previous sample (0 of 63) -- four refutations and no positive reading",
   "that f1/f2 are loop start and end: 64 of the 187 records with f2 > 0 have f1 >= f2, and no ordering convention repairs all of them",
-  "what the 16-byte prefix holds: it is neither a seed for frame 0's history (2 of 1191 match) nor a literal copy of the previous sample's bytes (0 of 63)",
-  "that frame 0's illegal predictors are damage rather than a different block form for the first frame of those samples -- it is reported, with both runs' counts, and neither reading is adopted",
+  "that the trailing slack (72..135 samples beyond the declared count) is padding rather than an unused final frame",
   "anything about how the samples sound"
  ],
- "prefix": {
-  "codebook_bytes": 256,
-  "codebook_holds_sample_zero": true,
-  "measured": 16,
-  "phase_sweep": {
-   "1": {
-    "best": 0.994,
-    "best_other_phase": 0.741,
-    "best_phase": 16
-   },
-   "1000": {
-    "best": 0.939,
-    "best_other_phase": 0.797,
-    "best_phase": 16
-   },
-   "1037": {
-    "best": 0.995,
-    "best_other_phase": 0.732,
-    "best_phase": 16
-   },
-   "1074": {
-    "best": 0.995,
-    "best_other_phase": 0.715,
-    "best_phase": 16
-   },
-   "1111": {
-    "best": 0.992,
-    "best_other_phase": 0.761,
-    "best_phase": 16
-   },
-   "112": {
-    "best": 0.969,
-    "best_other_phase": 0.721,
-    "best_phase": 16
-   },
-   "1148": {
-    "best": 0.987,
-    "best_other_phase": 0.706,
-    "best_phase": 16
-   },
-   "1185": {
-    "best": 0.964,
-    "best_other_phase": 0.648,
-    "best_phase": 16
-   },
-   "149": {
-    "best": 0.959,
-    "best_other_phase": 0.719,
-    "best_phase": 16
-   },
-   "186": {
-    "best": 0.95,
-    "best_other_phase": 0.742,
-    "best_phase": 16
-   },
-   "223": {
-    "best": 1.0,
-    "best_other_phase": 0.739,
-    "best_phase": 16
-   },
-   "260": {
-    "best": 0.993,
-    "best_other_phase": 0.713,
-    "best_phase": 16
-   },
-   "297": {
-    "best": 0.946,
-    "best_other_phase": 0.723,
-    "best_phase": 16
-   },
-   "334": {
-    "best": 0.998,
-    "best_other_phase": 0.733,
-    "best_phase": 16
-   },
-   "371": {
-    "best": 0.995,
-    "best_other_phase": 0.717,
-    "best_phase": 16
-   },
-   "38": {
-    "best": 0.987,
-    "best_other_phase": 0.722,
-    "best_phase": 16
-   },
-   "408": {
-    "best": 0.971,
-    "best_other_phase": 0.76,
-    "best_phase": 16
-   },
-   "445": {
-    "best": 0.966,
-    "best_other_phase": 0.722,
-    "best_phase": 16
-   },
-   "482": {
-    "best": 0.992,
-    "best_other_phase": 0.711,
-    "best_phase": 16
-   },
-   "519": {
-    "best": 0.945,
-    "best_other_phase": 0.718,
-    "best_phase": 16
-   },
-   "556": {
-    "best": 0.959,
-    "best_other_phase": 0.692,
-    "best_phase": 16
-   },
-   "593": {
-    "best": 0.963,
-    "best_other_phase": 0.75,
-    "best_phase": 16
-   },
-   "630": {
-    "best": 0.996,
-    "best_other_phase": 0.665,
-    "best_phase": 16
-   },
-   "667": {
-    "best": 0.972,
-    "best_other_phase": 0.721,
-    "best_phase": 16
-   },
-   "704": {
-    "best": 0.968,
-    "best_other_phase": 0.721,
-    "best_phase": 16
-   },
-   "741": {
-    "best": 0.977,
-    "best_other_phase": 0.738,
-    "best_phase": 16
-   },
-   "75": {
-    "best": 0.993,
-    "best_other_phase": 0.72,
-    "best_phase": 16
-   },
-   "778": {
-    "best": 0.974,
-    "best_other_phase": 0.706,
-    "best_phase": 16
-   },
-   "815": {
-    "best": 0.993,
-    "best_other_phase": 0.713,
-    "best_phase": 16
-   },
-   "852": {
-    "best": 0.931,
-    "best_other_phase": 0.707,
-    "best_phase": 16
-   },
-   "889": {
-    "best": 0.978,
-    "best_other_phase": 0.727,
-    "best_phase": 16
-   },
-   "926": {
-    "best": 0.897,
-    "best_other_phase": 0.662,
-    "best_phase": 16
-   },
-   "963": {
-    "best": 0.973,
-    "best_other_phase": 0.699,
-    "best_phase": 16
-   }
-  },
-  "stored_length_mod_40": {
-   "16": 1192
-  }
- },
- "prefix_refutations": {
-  "copy_trials": 63,
-  "literal_copy_of_previous_sample": 0,
-  "seed_for_frame0": 2,
-  "seed_trials": 1191
- },
- "reading": "the record is decoded and two of its fields are constants on all **1192** records (15360 and the codec byte 3); every stored length is `16 (mod 40)` and the frame grid sits at that 16-byte boundary (**97-99.5 %** legal headers against **<=75 %** at any other phase), so the 256-byte skip the decoder performs is **six frames too far** on every sample after the first. `f1`/`f2` are positions inside the sample but are **not established as loop points**: 1005 records carry `(2,0)` and 123 of the 187 with `f2 > 0` are ordered.",
+ "reading": "the record is decoded and two fields are constant on all **1192** records (15360 and the codec byte 3). A sample is a **256-byte block** followed by 40-byte nibble frames: legality by frame index steps from **39-55 %** illegal at frames 0-5 to **0 of 2384** from frame 6 on, and the declared count sits **72..135** below the grid on 1192 of 1192. The block is **not audio** (median magnitude 397, max 17696, against a decoded peak of 32768) and is not the clip's head or tail, so `sound_decode.py`'s 256-byte skip is correct.",
  "record_fields": {
   "codec_values": {
    "3": 1192

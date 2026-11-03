@@ -52,8 +52,8 @@ _spec.loader.exec_module(SD)
 RECORD = 28
 FRAME = 40
 SAMPLES_PER_FRAME = 64
-PREFIX = 16                 # measured: the frame grid starts here in every sample but the first
-BOOK = 256                  # the codebook, inside sample 0's extent
+BLOCK = 256                 # the per-sample block before the frames: not audio, not nibble frames
+FRAME_INDEX_CENSUS = 11     # how many frame slots the legality census covers
 PHASE_SAMPLE = 32           # how many clips the phase sweep covers (1192 x 40 phases is not worth its cost)
 
 
@@ -75,6 +75,18 @@ def records(directory):
             "zero8": struct.unpack_from(">I", directory, at + 8)[0],
         })
     return out
+
+
+def corr_between(x, y):
+    """Pearson correlation of two sequences over their common prefix."""
+    n = min(len(x), len(y))
+    if n < 8:
+        return 0.0
+    a, b = x[:n], y[:n]
+    ma, mb = sum(a) / n, sum(b) / n
+    num = sum((u - ma) * (v - mb) for u, v in zip(a, b))
+    den = (sum((u - ma) ** 2 for u in a) * sum((v - mb) ** 2 for v in b)) ** 0.5
+    return num / den if den else 0.0
 
 
 def legal_header(byte):
@@ -104,40 +116,49 @@ def derive():
         r["stored"] = ends[i] - r["offset"]
 
     lengths_mod = Counter(r["stored"] % FRAME for r in rows)
-    prefixes = [PREFIX if r["index"] > 1 else BOOK for r in rows]
-    frames = [(r["stored"] - p) // FRAME for r, p in zip(rows, prefixes)]
+    frames = [(r["stored"] - BLOCK) // FRAME for r in rows]
     slack = [f * SAMPLES_PER_FRAME - r["count"] for f, r in zip(frames, rows)]
 
-    sweep = {}
-    for k in range(0, len(rows), max(1, len(rows) // PHASE_SAMPLE)):
-        r = rows[k]
-        phases = phase_sweep(data, r["offset"], r["stored"])
-        if phases:
-            top = max(phases.values())
-            sweep[str(r["index"])] = {
-                "best_phase": max(phases, key=phases.get),
-                "best": top,
-                "best_other_phase": max(v for p, v in phases.items() if p != PREFIX),
-            }
-
-    # frame 0's two predictor bytes: the two-run reading needs both to be legal, and on about half the bank
-    # neither is -- so the *first* frame is not a well-formed frame, whichever reading you take
-    run0, run1 = [], []
+    # Legality by frame index, with the grid anchored at +16. Frames 0-5 land in the 256-byte block and are
+    # not predictor-framed at all; frames 6+ are the audio. This is the census that distinguishes a 16-byte
+    # prefix from a 256-byte block, which `stored % 40 == 16` cannot because 256 = 6*40 + 16.
+    illegal, total = Counter(), Counter()
     for r in rows:
-        at = r["offset"] + prefixes[r["index"] - 1]
-        if at + FRAME <= len(data):
-            run0.append(data[at + 8])
-            run1.append(data[at + 24])
+        n = (r["stored"] - 16) // FRAME
+        for i in range(min(n, FRAME_INDEX_CENSUS)):
+            for run in (0, 1):
+                at = r["offset"] + 16 + i * FRAME + 8 + run * 16
+                total[i] += 1
+                if not legal_header(data[at]):
+                    illegal[i] += 1
+
+    # The block's own magnitudes, against the decoded audio's, and against the clip's head and tail.
+    mag = []
+    for r in rows:
+        mag.extend(abs(v) for v in struct.unpack(">128h", data[r["offset"]:r["offset"] + BLOCK]))
+    mag.sort()
+    head_tail = []
+    for k in range(0, len(rows), 24):
+        r = rows[k]
+        block = list(struct.unpack(">128h", data[r["offset"]:r["offset"] + BLOCK]))
+        decoded = SD.decode(data[r["offset"]:ends[k]], data[:BLOCK])
+        if len(decoded) < 256:
+            continue
+        head_tail.append([round(corr_between(block, decoded[:128]), 3),
+                          round(corr_between(block, decoded[-128:]), 3)])
+    audio_peak = []
+    for k in range(0, len(rows), 24):
+        out = SD.decode(data[rows[k]["offset"]:ends[k]], data[:BLOCK])[:1000]
+        if out:
+            audio_peak.append(max(abs(v) for v in out))
 
     loop_pair = Counter((r["f1"], r["f2"]) for r in rows)
     nonzero = [r for r in rows if r["f2"] > 0]
     ordered = [r for r in nonzero if r["f1"] < r["f2"]]
 
-    # the refutations that keep the 16-byte prefix open
     seed = 0
     for k in range(1, len(rows)):
-        r = rows[k]
-        at = r["offset"]
+        at = rows[k]["offset"]
         pre = struct.unpack(">8h", data[at:at + 16])
         f0 = struct.unpack(">4h", data[at + 16:at + 24])
         if (pre[6], pre[7]) == (f0[0], f0[1]):
@@ -154,9 +175,9 @@ def derive():
         "inputs": {
             "directory": "cartridge id 1982 (SND_SMPDIR), %d x %d B + terminator" % (len(rows), RECORD),
             "sample_data": "cartridge id 1983, %d B" % len(data),
-            "rule": "a record is `u16 index | u16 0 | u32 offset | u32 0 | u16 15360 | u16 rate | u8 3 | "
-                    "u24 count | u32 f1 | u32 f2`; the frame grid starts %d B into a sample (the first "
-                    "sample's extent carries the %d-byte codebook first)" % (PREFIX, BOOK),
+            "rule": "a record is `u16 index, u16 0, u32 offset, u32 0, u16 15360, u16 rate, u8 3, u24 count, "
+                    "u32 f1, u32 f2`; a sample is a %d-byte block followed by 40-byte nibble frames, and the "
+                    "declared count is a sample count" % BLOCK,
         },
         "record_fields": {
             "index_sequential": [r["index"] for r in rows] == list(range(1, len(rows) + 1)),
@@ -167,26 +188,34 @@ def derive():
             "rates": len(set(r["rate"] for r in rows)),
             "count_range": [min(r["count"] for r in rows), max(r["count"] for r in rows)],
         },
-        "prefix": {
-            "measured": PREFIX,
+        "block": {
+            "bytes": BLOCK,
+            "stored_length_minus_block_divisible_by_40": sum(
+                1 for r in rows if (r["stored"] - BLOCK) % FRAME == 0),
             "stored_length_mod_40": dict(sorted(lengths_mod.items())),
-            "phase_sweep": sweep,
-            "codebook_bytes": BOOK,
-            "codebook_holds_sample_zero": rows[0]["offset"] == 0,
+            "why_16_looked_like_the_prefix": "%d = 6*%d + 16" % (BLOCK, FRAME),
+        },
+        "frame_index_legality": {
+            str(i): {"illegal": illegal[i], "runs": total[i],
+                     "fraction": round(illegal[i] / total[i], 4) if total[i] else None}
+            for i in range(FRAME_INDEX_CENSUS)
+        },
+        "block_is_not_audio": {
+            "magnitude_median": mag[len(mag) // 2],
+            "magnitude_p99": mag[len(mag) * 99 // 100],
+            "magnitude_max": mag[-1],
+            "fraction_over_4096": round(sum(1 for m in mag if m > 4096) / len(mag), 4),
+            "decoded_audio_peak_median": sorted(audio_peak)[len(audio_peak) // 2] if audio_peak else None,
+            "decoded_audio_peak_max": max(audio_peak) if audio_peak else None,
+            "best_correlation_with_decoded_head": max((h for h, _t in head_tail), default=None),
+            "best_correlation_with_decoded_tail": max((t2 for _h, t2 in head_tail), default=None),
+            "clips_compared": len(head_tail),
         },
         "grid": {
-            "frames": [min(frames), max(frames)] if frames else None,
+            "frames": [min(frames), max(frames)],
             "samples_available_minus_declared": [min(slack), max(slack)],
             "slack_median": sorted(slack)[len(slack) // 2],
             "declared_count_fits_below_grid": sum(1 for v in slack if v >= 0),
-        },
-        "frame_zero": {
-            "run0_header_illegal": sum(1 for b in run0 if not legal_header(b)),
-            "run1_header_illegal": sum(1 for b in run1 if not legal_header(b)),
-            "run0_header_0xff": sum(1 for b in run0 if b == 0xFF),
-            "run1_header_over_0x7f": sum(1 for b in run1 if b >= 0x80),
-            "samples": len(run1),
-            "hidden_by_the_256_skip": True,
         },
         "loop_candidates": {
             "pair_(2,0)_records": loop_pair[(2, 0)],
@@ -197,26 +226,28 @@ def derive():
             "f2_below_or_equal_count": sum(1 for r in rows if r["f2"] <= r["count"]),
             "distinct_pairs": len(loop_pair),
         },
-        "prefix_refutations": {
+        "block_refutations": {
             "seed_for_frame0": seed,
             "seed_trials": len(rows) - 1,
             "literal_copy_of_previous_sample": tail_copy,
             "copy_trials": min(63, len(rows) - 1),
         },
-        "reading": "the record is decoded and two of its fields are constants on all **%d** records (15360 and "
-                   "the codec byte 3); every stored length is `16 (mod 40)` and the frame grid sits at that "
-                   "16-byte boundary (**97-99.5 %%** legal headers against **<=75 %%** at any other phase), so "
-                   "the %d-byte skip the decoder performs is **six frames too far** on every sample after the "
-                   "first. `f1`/`f2` are positions inside the sample but are **not established as loop points**: "
-                   "%d records carry `(2,0)` and %d of the %d with `f2 > 0` are ordered."
-                   % (len(rows), BOOK, loop_pair[(2, 0)], len(ordered), len(nonzero)),
+        "reading": "the record is decoded and two fields are constant on all **%d** records (15360 and the codec "
+                   "byte 3). A sample is a **%d-byte block** followed by 40-byte nibble frames: legality by frame "
+                   "index steps from **39-55 %%** illegal at frames 0-5 to **0 of %d** from frame 6 on, and the "
+                   "declared count sits **%d..%d** below the grid on 1192 of 1192. The block is **not audio** "
+                   "(median magnitude %d, max %d, against a decoded peak of %d) and is not the clip's head or "
+                   "tail, so `sound_decode.py`'s 256-byte skip is correct."
+                   % (len(rows), BLOCK, total[6], min(slack), max(slack),
+                      mag[len(mag) // 2], mag[-1], max(audio_peak) if audio_peak else 0),
         "not_claimed": [
+            "what the 256-byte block holds: it is not audio, not the clip's head or tail, not a seed for frame "
+            "0's history (2 of 1191) and not a copy of the previous sample (0 of 63) -- four refutations and "
+            "no positive reading",
             "that f1/f2 are loop start and end: 64 of the 187 records with f2 > 0 have f1 >= f2, and no "
             "ordering convention repairs all of them",
-            "what the 16-byte prefix holds: it is neither a seed for frame 0's history (2 of 1191 match) nor a "
-            "literal copy of the previous sample's bytes (0 of 63)",
-            "that frame 0's illegal predictors are damage rather than a different block form for the first "
-            "frame of those samples -- it is reported, with both runs' counts, and neither reading is adopted",
+            "that the trailing slack (72..135 samples beyond the declared count) is padding rather than an "
+            "unused final frame",
             "anything about how the samples sound",
         ],
     }
@@ -229,9 +260,10 @@ def normalise(obj):
 def check(committed):
     fresh = derive()
     f = fresh["record_fields"]
-    p = fresh["prefix"]
+    b = fresh["block"]
+    leg = fresh["frame_index_legality"]
     g = fresh["grid"]
-    t = fresh["frame_zero"]
+    na = fresh["block_is_not_audio"]
     loop = fresh["loop_candidates"]
     cases = []
 
@@ -241,34 +273,35 @@ def check(committed):
                   and f["zero2_all"] and f["zero8_all"] and f["index_sequential"]
                   and normalise(committed) == normalise(fresh)))
 
-    cases.append((f"every stored length is 16 mod 40 ({p['stored_length_mod_40']}), so a sample is "
-                  f"`16 + 40*N` and not `256 + 40*N`",
-                  p["stored_length_mod_40"] == {16: 1192} and p["measured"] == 16))
+    cases.append((f"every sample is a 256-byte block plus whole frames "
+                  f"((L - 256) % 40 == 0 on {b['stored_length_minus_block_divisible_by_40']} of 1192), and the "
+                  f"declared count sits {g['samples_available_minus_declared'][0]}.."
+                  f"{g['samples_available_minus_declared'][1]} below the grid",
+                  b["stored_length_minus_block_divisible_by_40"] == 1192
+                  and g["declared_count_fits_below_grid"] == 1192
+                  and 0 < g["samples_available_minus_declared"][0] < 200))
 
-    sweeps = p["phase_sweep"].values()
-    cases.append((f"the frame grid is at phase 16: legal headers on {min(s['best'] for s in sweeps):.3f} to "
-                  f"{max(s['best'] for s in sweeps):.3f} of frames there, at most "
-                  f"{max(s['best_other_phase'] for s in sweeps):.3f} anywhere else",
-                  all(s["best_phase"] == 16 for s in sweeps)
-                  and min(s["best"] for s in sweeps) > 0.85
-                  and max(s["best_other_phase"] for s in sweeps) < 0.82))
+    early = [leg[str(i)]["fraction"] for i in range(6)]
+    late = [leg[str(i)]["fraction"] for i in range(6, FRAME_INDEX_CENSUS)]
+    cases.append((f"the block is not nibble-framed: illegal predictors on {min(early):.0%}-{max(early):.0%} of "
+                  f"runs at frames 0-5 and on {sum(leg[str(i)]['illegal'] for i in range(6, FRAME_INDEX_CENSUS))}"
+                  f" runs from frame 6 on — a step at exactly +{BLOCK}",
+                  min(early) > 0.30 and max(early) < 0.60 and all(v == 0 for v in late)))
 
-    cases.append((f"the 256-byte codebook sits inside sample 0's extent, which is why 256 looked like the "
-                  f"prefix ({p['codebook_bytes']} = 6*40 + 16)",
-                  p["codebook_holds_sample_zero"] and p["codebook_bytes"] == 256))
+    cases.append((f"`16 mod 40` is why a phase test cannot separate 16 from 256 ({b['why_16_looked_like_the_prefix']}"
+                  f"), so the artefact says so instead of trusting the modulus",
+                  b["stored_length_mod_40"] == {16: 1192} and b["bytes"] == 256))
 
-    cases.append((f"6 frames = 384 samples per sample are skipped by that prefix on every sample after the "
-                  f"first, and the declared counts sit {g['samples_available_minus_declared'][0]}.."
-                  f"{g['samples_available_minus_declared'][1]} below the grid (median {g['slack_median']})",
-                  g["declared_count_fits_below_grid"] == 1192
-                  and 100 <= g["samples_available_minus_declared"][0]
-                  and g["samples_available_minus_declared"][1] < 640))
+    cases.append((f"the block is not audio: magnitudes median {na['magnitude_median']}, max "
+                  f"{na['magnitude_max']}, against a decoded peak of {na['decoded_audio_peak_median']}.."
+                  f"{na['decoded_audio_peak_max']}",
+                  na["magnitude_max"] < na["decoded_audio_peak_max"]
+                  and na["magnitude_median"] < 1000 and na["fraction_over_4096"] < 0.15))
 
-    cases.append((f"frame 0 is not a well-formed frame on about half the bank: its run-0 predictor is illegal "
-                  f"on {t['run0_header_illegal']} samples ({t['run0_header_0xff']} of them 0xff) and its run-1 "
-                  f"predictor on {t['run1_header_illegal']} ({t['run1_header_over_0x7f']} of them over 0x7f) — "
-                  f"and the 256-byte skip is why no run has ever seen either",
-                  t["run0_header_illegal"] == 568 and t["run1_header_illegal"] == 582))
+    cases.append((f"and it is not the clip's head or tail (best correlation {na['best_correlation_with_decoded_head']}"
+                  f" / {na['best_correlation_with_decoded_tail']} over {na['clips_compared']} clips)",
+                  na["best_correlation_with_decoded_head"] < 0.6
+                  and na["best_correlation_with_decoded_tail"] < 0.6))
 
     cases.append((f"f1/f2 are positions inside the sample: below the declared count on "
                   f"{loop['f1_below_count']} and {loop['f2_below_or_equal_count']} of 1192",
@@ -280,12 +313,12 @@ def check(committed):
                   loop["pair_(2,0)_records"] == 1005 and loop["f2_positive"] == 187
                   and loop["f1_lt_f2"] == 123 and loop["f1_ge_f2"] == 64))
 
-    ref = fresh["prefix_refutations"]
-    cases.append((f"the 16-byte prefix is not a seed and not a copy (seed {ref['seed_for_frame0']} of "
+    ref = fresh["block_refutations"]
+    cases.append((f"the block is not a seed and not a copy (seed {ref['seed_for_frame0']} of "
                   f"{ref['seed_trials']}, copy {ref['literal_copy_of_previous_sample']} of {ref['copy_trials']})",
                   ref["seed_for_frame0"] <= 5 and ref["literal_copy_of_previous_sample"] == 0))
 
-    cases.append(("every decoder says what is not claimed",
+    cases.append(("every reading says what is not claimed",
                   len(committed["not_claimed"]) >= 4))
     return cases
 
@@ -305,8 +338,9 @@ def main() -> int:
     if a.write:
         rep = derive()
         OUT.write_text(json.dumps(rep, indent=1, sort_keys=True) + "\n")
-        print("wrote %s — prefix %d, lengths %s, slack %s, loop pairs (2,0)=%d ordered=%d/%d"
-              % (OUT, rep["prefix"]["measured"], rep["prefix"]["stored_length_mod_40"],
+        print("wrote %s — block %d, lengths-256 %s, slack %s, loop pairs (2,0)=%d ordered=%d/%d"
+              % (OUT, rep["block"]["bytes"],
+                 rep["block"]["stored_length_minus_block_divisible_by_40"],
                  rep["grid"]["samples_available_minus_declared"],
                  rep["loop_candidates"]["pair_(2,0)_records"], rep["loop_candidates"]["f1_lt_f2"],
                  rep["loop_candidates"]["f2_positive"]))
@@ -315,12 +349,11 @@ def main() -> int:
     if a.list:
         rep = derive()
         print("record fields:", json.dumps(rep["record_fields"]))
-        print("prefix:", rep["prefix"]["measured"], "lengths mod 40:", rep["prefix"]["stored_length_mod_40"])
+        print("block:", rep["block"])
+        print("legality by frame index:", json.dumps(rep["frame_index_legality"]))
         print("grid slack:", rep["grid"]["samples_available_minus_declared"], "median", rep["grid"]["slack_median"])
-        print("frame0 byte24 >= 0x80 on:", rep["two_run_reading"]["frame0_second_header_over_0x7f"], "samples")
+        print("block is not audio:", json.dumps(rep["block_is_not_audio"]))
         print("loop candidates:", json.dumps(rep["loop_candidates"]))
-        for k, v in list(rep["prefix"]["phase_sweep"].items())[:4]:
-            print("   sample", k, v)
         return 0
 
     if not a.check:
