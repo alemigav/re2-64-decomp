@@ -1002,6 +1002,200 @@ def p59868_function():
             "arms_exact": arms_exact}
 
 
+
+# The widest dispatch recovered so far: 206 words, bound **12**, index `lbu 6(ctx)`, twelve arms from 32 words down
+# to 9, and a shared 5-word tail. It is the state machine that runs *immediately before* 0x80059868 in the same
+# module -- its last word is 0x80059864 and the other function starts at 0x80059868 -- so they share the `Ctx` layout
+# and the device idiom, and this one's source reuses them. Three facts are pinned by single words here: a negative
+# constant stored into a `u16` field must arrive as a *signed* value (`addiu rt,zero,-800`, not `ori rt,zero,0xfce0`),
+# two structurally identical clamps in one function need **opposite** comparisons (`blez` here, `bgez` eight cases
+# later), and a `* k` is visible in the shamt of the `sll` feeding its `addu` (this function's is `* 5`, its
+# neighbour's `* 3`).
+P59530_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
+
+struct Ctx {
+    u32 f0;
+    u16 f4;
+    u8  mode;
+    u8  f7;
+    u8  pad8[0x28 - 0x8];
+    u8  f28[0x1a4 - 0x28];
+    u32 f1a4;
+    u8  pad1a8[4];
+    u32 f1ac;
+    u8  pad1b0[0x1e0 - 0x1b0];
+    u16 f1e0;
+    s16 f1e2;
+    s16 f1e4;
+    u8  pad1e6[2];
+    union {
+        u32 w;
+        u8  b[4];
+    } f1e8;
+    u8  pad1ec[0x1f2 - 0x1ec];
+    s16 f1f2;
+    u16 f1f4;
+    u8  pad1f6[0x218 - 0x1f6];
+    u32 f218;
+    u8  pad21c[0x224 - 0x21c];
+    u32 f224;
+    u32 f228;
+    u8  pad22c[0x25c - 0x22c];
+    u8  f25c;
+    u8  pad25d[0x26f - 0x25d];
+    u8  f26f;
+};
+
+extern void FUN_80077adc(u32 a0, void *a1);
+extern void FUN_80032b5c(void *a0, u32 a1);
+extern int  FUN_80089d54(struct Ctx *a0, u32 a1, u32 a2, u32 a3);
+extern int  FUN_800331b8(void);
+extern void FUN_800551e0(void);
+extern void FUN_80052bd0(u32 a0, u32 a1);
+extern void FUN_80052c6c(u32 a0, u32 a1, u32 a2);
+
+void FUN_80059530(struct Ctx *s)
+{
+    switch (s->mode) {
+    case 0:
+        s->f1e8.w = 0x02000300;
+        s->mode = 1;
+        *(s16 *)&s->f1e0 = -800;
+        s->f1e2 = 0;
+        s->f1e4 = 0;
+        s->f26f |= 0x80;
+        s->f25c |= 0x12;
+        FUN_80077adc(0x04010001, s->f28);
+        s->f0 &= ~4;
+
+    case 1:
+        if (!s->f1e8.b[2])
+            s->mode = 2;
+        FUN_80032b5c(s, 0);
+        FUN_80089d54(s, s->f224, s->f228, 0x400);
+        s->f1e0 += 150;
+        if (s->f1ac & 1)
+            s->mode = 5;
+        break;
+    case 2:
+        s->f1e8.w = 0x03000300;
+        s->mode = 3;
+        FUN_80077adc(0x022a0001, s->f28);
+
+    case 3:
+        FUN_80032b5c(s, 0);
+        s->mode += FUN_80089d54(s, s->f224, s->f228, 0x400);
+        s->f1e0 += 15;
+        if ((s16)s->f1e0 > 0)
+            s->f1e0 = 0;
+        break;
+    case 4:
+        FUN_800551e0();
+        *(u32 *)&s->f4 = 0x01000000;
+        s->f26f = 0;
+        s->f25c &= 0xed;
+        break;
+    case 5:
+        s->f1e8.w = 0x00000300;
+        s->mode = 6;
+        FUN_80077adc(0x02290001, s->f28);
+        FUN_80077adc(0x04020001, s->f28);
+        FUN_80052bd0(1, 0);
+        FUN_80052c6c(5, 250, 0);
+
+    case 6:
+        s->mode += FUN_80089d54(s, s->f224, s->f228, 0x400);
+        break;
+    case 7:
+        s->f1e8.w = 0x04000300;
+        s->mode = 8;
+        s->f1f4 = 30;
+        if (s->f1f2 < 150)
+            s->f1f4 = 60;
+        if (s->f1f2 < 70)
+            s->f1f4 += 50;
+        if (s->f1f2 < 30)
+            s->f1f4 += 50;
+        if (s->f1f2 == 0)
+            s->f1f4 += 100;
+
+    case 8:
+        FUN_80089d54(s, s->f224, s->f228, 0x10400);
+        s->f1f4 -= FUN_800331b8() * 5 + 1;
+        if ((s16)s->f1f4 < 0)
+            s->mode = 9;
+        break;
+    case 9:
+        s->f1e8.w = 0x01000300;
+        s->mode = 10;
+        s->f26f = 0;
+
+    case 10:
+        if (FUN_80089d54(s, s->f224, s->f228, 0x400) != 0) {
+            s->mode = 11;
+            s->f1e8.w = 0x06000300;
+        }
+        break;
+    case 11:
+        if (FUN_80089d54(s, s->f1a4, s->f218, 0x10400) != 0)
+            s->mode = 4;
+        break;
+    }
+}"""
+P59530_TABLE = 0x800B9010
+P59530_WORDS = 206
+P59530_SYMS = [("FUN_80077adc", 0x80077ADC), ("FUN_80032b5c", 0x80032B5C), ("FUN_80089d54", 0x80089D54),
+               ("FUN_800331b8", 0x800331B8), ("FUN_800551e0", 0x800551E0), ("FUN_80052bd0", 0x80052BD0),
+               ("FUN_80052c6c", 0x80052C6C)]
+
+
+def p59530_function():
+    """Compile the twelve-arm state machine and compare its 206 words plus the 12-word jump table."""
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p59530.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P59530_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in P59530_SYMS)
+    ld.write_text("ENTRY(f_probe)\nSECTIONS {\n  . = 0x80059530;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B9010;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo, n = 0x80059530, P59530_WORDS
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    tw = [image[P59530_TABLE - BASE + 4 * i:P59530_TABLE - BASE + 4 * i + 4] for i in range(12)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(12)]
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
+            "extra": len(got) - n, "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -1108,6 +1302,7 @@ def check():
     p8f = p8_function()
     p9f = p9_function()
     p167f = p59868_function()
+    p59530f = p59530_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -1189,6 +1384,17 @@ def check():
                   f"0x800b9040, and .rodata holds nothing else -- the function has no pool literal at all"
                   if p167f else "0x80059868 table: not run",
                   bool(p167f) and p167f["table_same"] == 8))
+
+    cases.append((f"the {p59530f['image_instrs']}-word twelve-arm state machine at 0x80059530 is "
+                  f"BYTE-EXACT: {p59530f['same_offset']} identical by offset and {p59530f['same']} by "
+                  f"content, the widest dispatch recovered -- twelve arms and a shared tail, and it needs "
+                  f"a signed store into a u16 field and opposite clamp directions two cases apart"
+                  if p59530f else "0x80059530: not run",
+                  bool(p59530f) and p59530f["same_offset"] == p59530f["image_instrs"]))
+
+    cases.append((f"its jump table matches {p59530f['table_same']} of 12 words at the image's own "
+                  f"0x800b9010" if p59530f else "0x80059530 table: not run",
+                  bool(p59530f) and p59530f["table_same"] == 12))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

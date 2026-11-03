@@ -39,6 +39,7 @@ MATCHED = {
     0x80057E1C: ("exact", "84 words, p7: a seven-arm state machine"),
     0x80070120: ("exact", "46 words, p9: a predicate dispatcher"),
     0x80059868: ("exact", "167 words: a seven-state game-state machine"),
+    0x80059530: ("exact", "206 words: a twelve-arm state machine"),
     0x80024558: ("recovered", "139 words, 136 exact: three words, all allocation"),
 }
 
