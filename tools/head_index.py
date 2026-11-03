@@ -92,33 +92,67 @@ def ctx_registers(image, lo, hi):
     return held
 
 
-def _base_origin(image, reg, at, table, ctxs, depth):
-    """What a load's base register is, one step further back: ctx, a global, the command pointer, or None.
+CALLEE_SAVED = (16, 17, 18, 19, 20, 21, 22, 23, 30, 28)     # s0-s7, fp, gp
+SP = 29
 
-    M230's first version stopped at the first load and called 33 heads `local`. Those are pointer chases:
-    `lw v0,0x1c(a0)` (the command pointer) then `lhu a1,4(v0)` is a *command field*, and it only looks local
-    if the chase is not followed. The recursion is bounded at `depth`, and a chase that runs out of window is
-    reported as such rather than guessed.
+
+def _base_origin(image, reg, at, table, ctxs, depth):
+    """What a load's base register is, one step further back.
+
+    M231 generalised this from "a `lui` plus one `addiu`" to a small constant fold, because the game builds its
+    globals two ways: `lui v0,0x800c` + `addiu v0,v0,30384` (low half in the instruction) and
+    `lui v0,0x800c` + `addiu` then `lui v1,0x0002` + `addu v0,v0,v1` (low half added as a second constant).
+    M226 met the same thing in the ucode's task pointer. A bare `lui` is a complete base too, with the
+    displacement supplying the low half.
+
+    And it now names what it can: a callee-saved register this function never writes was set by the caller
+    (`inherited`), and a base of `sp` is a stack slot (`stack`). Both are answers, not refusals.
     """
-    if depth > 2:
+    # 3 was too shallow: `s2 <- addiu s2,v0,7826` then `v0 <- ...` then `lui` is four links, and the guard
+    # turned a resolvable global into a refusal (M231). 6 covers every chain this image has.
+    if depth > 6:
         return None
+    if reg == 0:
+        return {"kind": "const", "value": 0}
+    # `sp` is a stack slot whenever it is a base, and it always has a definition (the frame adjustment), so
+    # this cannot wait for the "never written" test below (M231)
+    if reg == SP:
+        return {"kind": "stack", "register": "sp"}
     earlier = [v for v in table.get(reg, []) if v < at]
     if not earlier:
-        return {"kind": "argument", "register": rd.REG[reg]} if reg in (4, 5, 6, 7) else None
+        if reg in (4, 5, 6, 7):
+            return {"kind": "argument", "register": rd.REG[reg]}
+        if reg in CALLEE_SAVED:
+            return {"kind": "inherited", "register": rd.REG[reg]}
+        if reg == SP:
+            return {"kind": "stack", "register": "sp"}
+        return None
     va = max(earlier)
     w = word_at(image, va)
     op, rs, rt = w >> 26, bits(w, 25, 21), bits(w, 20, 16)
-    if op in (0x20, 0x21, 0x23, 0x24, 0x25) and (w & 0xFFFF) == CTX_CMDPTR and rs in ctxs:
-        return {"kind": "command_pointer", "note": "the pointer at ctx+0x1c"}
     if op in (0x20, 0x21, 0x23, 0x24, 0x25):
+        if (w & 0xFFFF) == CTX_CMDPTR and rs in ctxs:
+            return {"kind": "command_pointer", "note": "the pointer at ctx+0x1c"}
         return _base_origin(image, rs, va, table, ctxs, depth + 1)
-    if op == 0x0F:
-        addr = (w & 0xFFFF) << 16
-        for k in range(1, 4):
-            aw = word_at(image, va + 4 * k)
-            if (aw >> 26) in (0x09, 0x0D) and bits(aw, 25, 21) == rt:
-                addr += (sx16(aw & 0xFFFF) if (aw >> 26) == 0x09 else (aw & 0xFFFF))
-                return {"kind": "global_base", "address": addr & 0xFFFFFFFF}
+    if op == 0x0F:                                     # lui: a constant, possibly completed later
+        return {"kind": "const", "value": (w & 0xFFFF) << 16}
+    if op in (0x09, 0x0D):                             # addiu/ori rt,rs,imm
+        inner = _base_origin(image, rs, va, table, ctxs, depth + 1)
+        if inner and inner["kind"] == "const":
+            imm = sx16(w & 0xFFFF) if op == 0x09 else (w & 0xFFFF)
+            return {"kind": "const", "value": (inner["value"] + imm) & 0xFFFFFFFF}
+        return None
+    if op == 0 and bits(w, 5, 0) == 0x21:              # addu rd,rs,rt: a sum of two constants
+        a = _base_origin(image, rs, va, table, ctxs, depth + 1)
+        b = _base_origin(image, rt, va, table, ctxs, depth + 1)
+        if a and b and a["kind"] == "const" and b["kind"] == "const":
+            return {"kind": "const", "value": (a["value"] + b["value"]) & 0xFFFFFFFF}
+        # `addu rd,rs,zero` is a move: propagate the source's origin rather than refusing. Six of the last nine
+        # `local` heads are exactly this -- the head's base is a callee-saved copy of an argument (M231)
+        if a and a["kind"] == "const" and a["value"] == 0:
+            return b
+        if b and b["kind"] == "const" and b["value"] == 0:
+            return a
         return None
     if rs in ctxs:
         return {"kind": "ctx_base"}
@@ -168,10 +202,18 @@ def trace(image, reg, at, table, ctxs):
             if origin["kind"] == "command_pointer":
                 return transform, {"kind": "command_field", "offset": disp, "width": width,
                                    "note": "u%d[cmd+%d]" % (width * 8, disp)}
-            if origin["kind"] == "global_base":
-                addr = (origin["address"] + disp) & 0xFFFFFFFF
+            if origin["kind"] == "const":
+                addr = (origin["value"] + disp) & 0xFFFFFFFF
                 return transform, {"kind": "global", "offset": addr, "width": width,
                                    "note": "a %d-byte read at 0x%08x" % (width, addr)}
+            if origin["kind"] == "inherited":
+                return transform, {"kind": "inherited_pointer", "offset": disp, "width": width,
+                                   "register": origin["register"],
+                                   "note": "a field at +0x%x off %s, which this function never writes: the "
+                                           "pointer came in from the caller" % (disp, origin["register"])}
+            if origin["kind"] == "stack":
+                return transform, {"kind": "stack_field", "offset": disp, "width": width,
+                                   "note": "a stack slot at +0x%x off sp" % disp}
             if origin["kind"] == "ctx_base":
                 return transform, {"kind": "ctx_pointer_field", "offset": disp, "width": width,
                                    "note": "a field at +0x%x off a pointer held in the context" % disp}
@@ -324,7 +366,8 @@ def check(committed, image):
                   f"({committed['by_kind']})",
                   set(committed["by_kind"]) <= {"command_field", "ctx_field", "argument", "global",
                                                 "local", "unknown", "constant", "command_pointer",
-                                                "ctx_pointer_field", "argument_pointer_field"}
+                                                "ctx_pointer_field", "argument_pointer_field",
+                                                "inherited_pointer", "stack_field"}
                   and committed["by_kind"].get("command_field", 0) > 0
                   and committed["by_kind"].get("argument", 0) > 0))
 

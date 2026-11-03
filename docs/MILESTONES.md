@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-231 milestones are indexed. 158 of them have a note; the rest are rows in the log that cite
+232 milestones are indexed. 159 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -248,6 +248,7 @@ at the foot of this file.
 | 228 | **M228** — eighty-six dispatch heads, and the queue entry that has no valid extension | `docs/log/M228-eighty-six-dispatch-heads.md` |
 | 229 | **M229** — the last three unresolved handlers, and the rule that was missing | `docs/log/M229-the-last-three-unresolved-handlers.md` |
 | 230 | **M230** — what the eighty-three non-script heads dispatch on | `docs/log/M230-what-the-heads-dispatch-on.md` |
+| 231 | **M231** — the window was never the problem: 35 `local` heads, and a fold that was too narrow | `docs/log/M231-the-window-was-never-the-problem.md` |
 
 ## The gaps, and why they are empty
 

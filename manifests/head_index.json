@@ -5,8 +5,9 @@
   "command_field": 7,
   "constant": 3,
   "ctx_field": 19,
-  "global": 2,
-  "local": 35,
+  "global": 32,
+  "local": 4,
+  "stack_field": 1,
   "unknown": 2
  },
  "heads": [
@@ -18,9 +19,9 @@
    "index_register": "v1",
    "jr": 2147632524,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x-6dc4 off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": -28100,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800e923c",
+    "offset": 2148438588,
     "width": 1
    },
    "table": 2148231600,
@@ -34,9 +35,9 @@
    "index_register": "v1",
    "jr": 2147633172,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x-6dc4 off v1, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": -28100,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800e923c",
+    "offset": 2148438588,
     "width": 1
    },
    "table": 2148231648,
@@ -98,9 +99,9 @@
    "index_register": "v1",
    "jr": 2147722756,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off v1, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800f0002",
+    "offset": 2148466690,
     "width": 1
    },
    "table": 2148239128,
@@ -114,9 +115,9 @@
    "index_register": "v1",
    "jr": 2147731108,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x12 off v1, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 18,
+    "kind": "global",
+    "note": "a 2-byte read at 0x800f0012",
+    "offset": 2148466706,
     "width": 2
    },
    "table": 2148239200,
@@ -130,9 +131,9 @@
    "index_register": "v1",
    "jr": 2147733152,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x12 off v1, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 18,
+    "kind": "global",
+    "note": "a 2-byte read at 0x800f0012",
+    "offset": 2148466706,
     "width": 2
    },
    "table": 2148239240,
@@ -146,9 +147,9 @@
    "index_register": "a0",
    "jr": 2147744496,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800f0002",
+    "offset": 2148466690,
     "width": 1
    },
    "table": 2148239272,
@@ -162,9 +163,9 @@
    "index_register": "v1",
    "jr": 2147747264,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800f0002",
+    "offset": 2148466690,
     "width": 1
    },
    "table": 2148239296,
@@ -178,9 +179,9 @@
    "index_register": "v1",
    "jr": 2147791112,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x-6e7e off v1, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": -28286,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800e9182",
+    "offset": 2148438402,
     "width": 1
    },
    "table": 2148239944,
@@ -243,9 +244,9 @@
    "index_register": "v1",
    "jr": 2147825224,
    "source": {
-    "kind": "local",
-    "note": "a field at +0xf5a off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 3930,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800e860a",
+    "offset": 2148435466,
     "width": 1
    },
    "table": 2148240392,
@@ -261,9 +262,9 @@
    "index_register": "s3",
    "jr": 2147828232,
    "source": {
-    "kind": "local",
-    "note": "a field at +0xf59 off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 3929,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800e8609",
+    "offset": 2148435465,
     "width": 1
    },
    "table": 2148240704,
@@ -277,9 +278,9 @@
    "index_register": "s3",
    "jr": 2147830420,
    "source": {
-    "kind": "local",
-    "note": "a field at +0xf59 off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 3929,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800e8609",
+    "offset": 2148435465,
     "width": 1
    },
    "table": 2148241144,
@@ -469,9 +470,9 @@
    "index_register": "v1",
    "jr": 2147904240,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x8 off s2, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 8,
+    "kind": "global",
+    "note": "a 2-byte read at 0x800df6b8",
+    "offset": 2148398776,
     "width": 2
    },
    "table": 2148242080,
@@ -487,9 +488,9 @@
    "index_register": "v1",
    "jr": 2147918276,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x8 off s2, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 8,
+    "kind": "global",
+    "note": "a 2-byte read at 0x800df6b8",
+    "offset": 2148398776,
     "width": 2
    },
    "table": 2148242136,
@@ -520,8 +521,8 @@
    "index_register": "v1",
    "jr": 2147927060,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x20 off sp, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
+    "kind": "stack_field",
+    "note": "a stack slot at +0x20 off sp",
     "offset": 32,
     "width": 4
    },
@@ -536,9 +537,9 @@
    "index_register": "v1",
    "jr": 2147927356,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x277e off t1, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 10110,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8011277e",
+    "offset": 2148607870,
     "width": 1
    },
    "table": 2148242696,
@@ -816,9 +817,9 @@
    "index_register": "a0",
    "jr": 2147961020,
    "source": {
-    "kind": "local",
-    "note": "a field at +0xf6d off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 3949,
+    "kind": "global",
+    "note": "a 1-byte read at 0x800e861d",
+    "offset": 2148435485,
     "width": 1
    },
    "table": 2148243920,
@@ -978,9 +979,9 @@
    "index_register": "v1",
    "jr": 2148057556,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x15f8 off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 5624,
+    "kind": "global",
+    "note": "a 2-byte read at 0x800e8ca8",
+    "offset": 2148437160,
     "width": 2
    },
    "table": 2148245168,
@@ -994,9 +995,9 @@
    "index_register": "v1",
    "jr": 2148063464,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off s1, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9a",
+    "offset": 2148712346,
     "width": 1
    },
    "table": 2148245248,
@@ -1010,9 +1011,9 @@
    "index_register": "v1",
    "jr": 2148065180,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x4 off s0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 4,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9c",
+    "offset": 2148712348,
     "width": 1
    },
    "table": 2148245272,
@@ -1044,9 +1045,9 @@
    "index_register": "a0",
    "jr": 2148066052,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x4 off s2, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 4,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9c",
+    "offset": 2148712348,
     "width": 1
    },
    "table": 2148245352,
@@ -1060,9 +1061,9 @@
    "index_register": "v1",
    "jr": 2148069648,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x4 off s2, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 4,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9c",
+    "offset": 2148712348,
     "width": 1
    },
    "table": 2148245400,
@@ -1076,9 +1077,9 @@
    "index_register": "v1",
    "jr": 2148070584,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off s4, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9a",
+    "offset": 2148712346,
     "width": 1
    },
    "table": 2148245472,
@@ -1092,9 +1093,9 @@
    "index_register": "v1",
    "jr": 2148075344,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off s0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9a",
+    "offset": 2148712346,
     "width": 1
    },
    "table": 2148245552,
@@ -1136,9 +1137,9 @@
    "index_register": "v1",
    "jr": 2148082960,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x358a off a2, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 13706,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012f522",
+    "offset": 2148726050,
     "width": 1
    },
    "table": 2148245688,
@@ -1152,9 +1153,9 @@
    "index_register": "v1",
    "jr": 2148084336,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off s2, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9a",
+    "offset": 2148712346,
     "width": 1
    },
    "table": 2148245712,
@@ -1168,9 +1169,9 @@
    "index_register": "v1",
    "jr": 2148093428,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off s1, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9a",
+    "offset": 2148712346,
     "width": 1
    },
    "table": 2148245760,
@@ -1184,9 +1185,9 @@
    "index_register": "v1",
    "jr": 2148095600,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x2 off s0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 2,
+    "kind": "global",
+    "note": "a 1-byte read at 0x8012bf9a",
+    "offset": 2148712346,
     "width": 1
    },
    "table": 2148245848,
@@ -1201,8 +1202,8 @@
    "jr": 2148113004,
    "source": {
     "kind": "global",
-    "note": "a 1-byte read at 0x8013177f",
-    "offset": 2148734847,
+    "note": "a 1-byte read at 0x80131780",
+    "offset": 2148734848,
     "width": 1
    },
    "table": 2148246448,
@@ -1218,9 +1219,9 @@
    "index_register": "v1",
    "jr": 2148126796,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x272e off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 10030,
+    "kind": "global",
+    "note": "a 2-byte read at 0x8013272e",
+    "offset": 2148738862,
     "width": 2
    },
    "table": 2148246616,
@@ -1234,9 +1235,9 @@
    "index_register": "v1",
    "jr": 2148128936,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x272e off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 10030,
+    "kind": "global",
+    "note": "a 2-byte read at 0x8013272e",
+    "offset": 2148738862,
     "width": 2
    },
    "table": 2148246664,
@@ -1250,9 +1251,9 @@
    "index_register": "v1",
    "jr": 2148130436,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x272e off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 10030,
+    "kind": "global",
+    "note": "a 2-byte read at 0x8013272e",
+    "offset": 2148738862,
     "width": 2
    },
    "table": 2148246712,
@@ -1266,9 +1267,9 @@
    "index_register": "v1",
    "jr": 2148136520,
    "source": {
-    "kind": "local",
-    "note": "a field at +0x44c4 off v0, which this head's own code does not define: the enclosing function set it, so the head is inlined in a larger one and the dataflow starts before the body boundary",
-    "offset": 17604,
+    "kind": "global",
+    "note": "a 4-byte read at 0x801344c4",
+    "offset": 2148746436,
     "width": 4
    },
    "table": 2148246912,
@@ -1389,8 +1390,8 @@
    "jr": 2148206200,
    "source": {
     "kind": "global",
-    "note": "a 4-byte read at 0x801514e0",
-    "offset": 2148865248,
+    "note": "a 4-byte read at 0x80158a70",
+    "offset": 2148895344,
     "width": 4
    },
    "table": 2148247752,
@@ -1430,8 +1431,9 @@
    "command_field": 5,
    "constant": 3,
    "ctx_field": 19,
-   "global": 2,
-   "local": 35,
+   "global": 32,
+   "local": 4,
+   "stack_field": 1,
    "unknown": 2
   },
   "count": 83
@@ -1441,7 +1443,7 @@
   "the `local`/`unknown` heads: their index bottoms out on a base the trace cannot resolve, and the count is published rather than the gap filled in",
   "that a `command_field` index is a script opcode: an opcode sub-field and a data byte read through the same pointer look identical here"
  ],
- "reading": "7 heads dispatch on a byte or word of the **command stream** (`u8[cmd+k]` / `u16[cmd+k]`) and 19 on a **field of the context**; 16 take an **argument** as the index directly, which is what a C-level switch compiled to a table looks like; 2 read a **global**; and 37 are `local`/`unknown`, where the bounded trace refuses rather than guesses.",
+ "reading": "7 heads dispatch on a byte or word of the **command stream** (`u8[cmd+k]` / `u16[cmd+k]`) and 19 on a **field of the context**; 16 take an **argument** as the index directly, which is what a C-level switch compiled to a table looks like; 32 read a **global**; and 6 are `local`/`unknown`, where the bounded trace refuses rather than guesses.",
  "schema": "head-index/1",
  "script_heads": {
   "by_kind": {
