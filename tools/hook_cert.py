@@ -83,10 +83,16 @@ def valid(want_hash, cert):
         return False, "no certificate"
     if cert.get("worktree") != want_hash:
         return False, "the certificate is for a different worktree"
-    if cert.get("verdict") != "PASS":
-        return False, f"verdict {cert.get('verdict')!r} is not PASS"
-    if cert.get("admission") != "clean":
+    verdict = cert.get("verdict")
+    if verdict not in ("PASS", "PASS-FAST"):
+        return False, f"verdict {verdict!r} is neither PASS nor PASS-FAST"
+    if verdict == "PASS" and cert.get("admission") != "clean":
         return False, f"admission {cert.get('admission')!r} is not clean"
+    if verdict == "PASS-FAST":
+        # M240: the fast tier certifies that the fixtures ran on this tree -- it does not, and must not
+        # pretend to, certify admission. The certificate says which, and so does this message.
+        return True, (f"certified PASS-FAST on worktree {want_hash[:12]} (fixtures only; "
+                      f"admission not run -- `verify.py --full` before pushing)")
     return True, f"certified PASS on worktree {want_hash[:12]}"
 
 
@@ -97,6 +103,12 @@ def self_test() -> int:
         ("a different worktree does not", not valid("abc124", good)[0]),
         ("a FAIL verdict does not", not valid("abc123", dict(good, verdict="FAIL"))[0]),
         ("a vacuous admission does not", not valid("abc123", dict(good, admission="vacuous"))[0]),
+        ("a PASS-FAST certificate validates for a commit",
+         valid("abc123", dict(good, verdict="PASS-FAST", admission="not-run"))[0]),
+        ("a PASS-FAST certificate says admission was not run",
+         "admission not run" in valid("abc123", dict(good, verdict="PASS-FAST", admission="not-run"))[1]),
+        ("a PASS-FAST for another worktree does not",
+         not valid("abc124", dict(good, verdict="PASS-FAST", admission="not-run"))[0]),
         ("a missing certificate does not", not valid("abc123", None)[0]),
         ("a dirty-but-matching certificate does validate", valid("abc123", good)[0]),
     ]

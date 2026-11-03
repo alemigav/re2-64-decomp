@@ -92,7 +92,7 @@ SUITES = [
     # suite because the finding is one object: the census, the two files the 17.6 MB turned out to be,
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
     ("byte map (repository)", [sys.executable, "tools/classify_image.py", "--check"], 6, False),
-    ("hook certificate (repository)", [sys.executable, "tools/hook_cert.py", "--self-test"], 6, False),
+    ("hook certificate (repository)", [sys.executable, "tools/hook_cert.py", "--self-test"], 9, False),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     ("analysis status (repository)", [sys.executable, "tools/analysis_status.py", "--check"], 7, False),
     ("missed-function census (cartridge)", [sys.executable, "tools/find_missed_functions.py", "--check"], 2, True),
@@ -196,6 +196,15 @@ def tally(lines):
 # a few hundred MiB. The default stays 1, and CI never sets it — the suite is a gate, not a benchmark.
 MAX_JOBS = 4
 
+# M240: the fast tier. Measured per suite on this machine: `voice sweep` **46 s** (it emulates the cartridge's
+# own synthesis under Unicorn for five clips), `provenance acceptance` **19 s** (it hashes src/), `routine index
+# bounds` **8 s**, `file table` **4.3 s** — against a sub-second median for the other 63. Those four are the
+# whole difference between a 12-minute commit and a ~30-second one, so they are named here as a measurement,
+# not a preference, and `--tier fast` drops exactly them.
+# `--tier all` (the default) is unchanged, so no existing caller can accidentally get less than it asked for.
+HEAVY_SUITES = ("voice sweep (cartridge)", "file table (cartridge)",
+                "provenance acceptance", "routine index bounds (cartridge)")
+
 
 def jobs_of(raw):
     """Clamp a JOBS value to 1..MAX_JOBS. An unparseable value is 1 — a pool with no workers would
@@ -265,6 +274,8 @@ def sweep(entries, jobs, have_cart, skip_audit, emit=None):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("-v", "--verbose", action="store_true")
+    ap.add_argument("--tier", choices=("all", "fast"), default="all",
+                    help="`fast` drops the suites whose cost dominates the run (see HEAVY_SUITES)")
     ap.add_argument("--no-audit", action="store_true",
                     help="defer the gate audit to verify.py (which runs it last, as admission)")
     ap.add_argument("--self-test", action="store_true",
@@ -274,11 +285,16 @@ def main():
         return self_test()
 
     have_cart = (HERE.parent / CARTRIDGE).exists()
+    suites = SUITES
+    if args.tier == "fast":
+        suites = [s for s in SUITES if s[0] not in HEAVY_SUITES]
+        print("tier: fast — %d heavy suite(s) held back: %s" % (
+            len(SUITES) - len(suites), ", ".join(HEAVY_SUITES)))
     print("cartridge: %s" % ("present" if have_cart else
                              "ABSENT — suites that need it will report SKIP"))
     print("%-24s %-10s %s" % ("suite", "cases", "verdict"))
     lines, failures, skipped, deferred, verbose = sweep(
-        SUITES, jobs_from_env(), have_cart, args.no_audit, emit=print)
+        suites, jobs_from_env(), have_cart, args.no_audit, emit=print)
     if args.verbose:
         for text in verbose:
             print(text)
@@ -288,7 +304,7 @@ def main():
         for name, why in failures:
             print("FAIL %s: %s" % (name, why))
         return 1
-    ran = [s for s in SUITES if not (s[3] and not have_cart)
+    ran = [s for s in suites if not (s[3] and not have_cart)
            and not (args.no_audit and s[0] == AUDIT_SUITE)]
     tail = "" if not skipped else "; %d skipped for want of the cartridge" % skipped
     if deferred:

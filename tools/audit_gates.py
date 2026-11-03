@@ -1051,6 +1051,27 @@ def lint_self_test() -> int:
     return 1 if bad else 0
 
 
+def _one(audit):
+    """Run one audit in a worker. Module-level so `multiprocessing` can pickle it by name."""
+    return audit["name"], run_audit(audit)
+
+
+def run_all(audits, jobs):
+    """Every audit, `jobs` at a time, returned **in registry order**.
+
+    The audits are independent by construction — each builds its own sandbox and mutates its own copy — so
+    the order they finish in is not a fact about anything. Collecting by index keeps the report identical to
+    a serial run, which is the same contract `acceptance.py` states for its pool (M240).
+    """
+    if jobs <= 1 or len(audits) <= 1:
+        return [_one(a) for a in audits]
+    import multiprocessing
+    methods = multiprocessing.get_all_start_methods()
+    ctx = multiprocessing.get_context("fork" if "fork" in methods else "spawn")
+    with ctx.Pool(jobs) as pool:
+        return pool.map(_one, audits)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -1058,6 +1079,8 @@ def main() -> int:
     ap.add_argument("--lint", action="store_true",
                     help="check every mutation's anchor exists and is unique, running nothing")
     ap.add_argument("--lint-self-test", action="store_true", help="grade the lint itself")
+    ap.add_argument("--jobs", type=int, default=4,
+                    help="audits run concurrently; the report is identical at any value (default 4)")
     args = ap.parse_args()
 
     if args.lint_self_test:
@@ -1081,12 +1104,14 @@ def main() -> int:
     passed = 0
     vacuous = []
     broken = []
+    runnable = [a for a in AUDITS if a["tool"] not in gated]
     for a in AUDITS:
         if a["tool"] in gated:
             skipped.append(a["name"])
             print(f"  SKIP     {a['name']} — needs the cartridge, so its mutation cannot be demonstrated here")
-            continue
-        detected, detail = run_audit(a)
+    outcomes = dict(run_all(runnable, max(1, args.jobs)))
+    for a in runnable:
+        detected, detail = outcomes[a["name"]]
         if detected is None:
             broken.append((a["name"], detail))
             print(f"  BROKEN   {a['name']}: {detail}")

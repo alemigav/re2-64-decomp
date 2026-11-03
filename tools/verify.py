@@ -25,6 +25,7 @@ the tree as it actually is at the end of the run.
 """
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -38,6 +39,18 @@ ROOT = HERE.parent
 CARTRIDGE = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 REPORT = ROOT / "build" / "verify-report.json"
 
+# M240: two tiers, because one tier at the full price is why a commit cost twelve minutes.
+#
+#   fast (default)  the same procedures, minus the four suites whose cost dominates the run and minus
+#                   admission. Measured end to end on this machine: **~19 s**. It does not admit anything --
+#                   the verdict says PASS-FAST and the certificate records `admission: not-run`.
+#   full (--full)   everything, admission included. The audit is parallel now (`--jobs`), so this is ~2-3 min
+#                   rather than ~12.
+#
+# The rule is untouched: a result is only *admissible* when the gate audit passed. What changed is where that
+# happens -- at push/nightly instead of on every commit -- and the word "admissible" is still the only thing
+# that licenses a claim.
+FAST = "--tier", "fast"
 PROCEDURES = [
     # `--no-audit`: this run grades the audit itself, below and last, against the tree as it ends. Letting
     # the acceptance sweep run it too made the repository's most expensive check cost twice (M196).
@@ -58,8 +71,8 @@ SKIP = re.compile(r"Skipped for want of the cartridge|SKIP \(needs the cartridge
 CI_SUMMARY = re.compile(r"all (\d+) runnable suite\(s\) pass \((\d+) cases\)")
 
 
-def run(cmd):
-    proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
+def run(cmd, env=None):
+    proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, env=env)
     return proc.returncode, proc.stdout + proc.stderr
 
 
@@ -104,10 +117,15 @@ def adjudicate(procedures, audit):
     return "PASS", f"every procedure passed and the gate audit is {ap}/{at} with nothing vacuous"
 
 
-def collect():
+def collect(tier="fast"):
     results, screens, details = [], {}, {}
+    env = dict(os.environ)
+    if tier == "fast":
+        env["JOBS"] = "4"                      # measured: 29.6 s at JOBS=1 -> 15.7 s at JOBS=4
     for name, cmd, _why in PROCEDURES:
-        code, out = run(cmd)
+        if name == "ci" and tier == "fast":
+            cmd = cmd + list(FAST)
+        code, out = run(cmd, env=env)
         m = CI_SUMMARY.search(out)
         if name == "ci" and m:
             suites, cases = int(m.group(1)), int(m.group(2))
@@ -118,6 +136,9 @@ def collect():
             v = verdict_of(out)
             details[name] = f"{v[0]}/{v[1]}" if v else "-"
         screens[name] = out
+    if tier == "fast":
+        # admission is not run at all here, and the report says so rather than implying a clean audit
+        return results, screens, None, details
     code, out = run(ADMISSION[1])
     m = AUDIT.search(out)
     ms = AUDIT_SKIP.search(out)
@@ -130,9 +151,19 @@ def collect():
     return results, screens, audit, details
 
 
-def report(as_json: bool) -> int:
-    results, screens, audit, details = collect()
-    verdict, why = adjudicate(results, audit)
+def report(as_json: bool, tier="fast") -> int:
+    results, screens, audit, details = collect(tier)
+    if tier == "fast":
+        failed = [(n, c) for n, c, _ in results if c != 0]
+        partial = [n for n, _, v in results if v is not None and v[0] != v[1]]
+        verdict, why = (("FAIL", "procedures failed: " + ", ".join(f"{n} (exit {c})" for n, c in failed))
+                        if failed else
+                        ("FAIL", "procedures reported fewer cases than they ran: " + ", ".join(partial))
+                        if partial else
+                        ("PASS-FAST", "the fast tier passed; admission (the gate audit) was NOT run, so "
+                                      "nothing here is admissible until `verify.py --full` passes"))
+    else:
+        verdict, why = adjudicate(results, audit)
     have_cart = CARTRIDGE.exists()
     skipped = bool(SKIP.search(screens["ci"]))
     sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(ROOT),
@@ -150,17 +181,22 @@ def report(as_json: bool) -> int:
                       "admissible": verdict != "INCONCLUSIVE"},
         "verdict": verdict,
         "why": why,
-        "coverage": "partial" if (skipped or (audit and audit[4])) else "full",
-        "note": ("cartridge-gated suites SKIPped: any claim that depends on them is INCONCLUSIVE here"
+        "coverage": ("fast" if tier == "fast" else
+                     "partial" if (skipped or (audit and audit[4])) else "full"),
+        "note": ("fast tier: four heavy suites held back and admission not run -- `--full` for the whole thing"
+                 if tier == "fast" else
+                 "cartridge-gated suites SKIPped: any claim that depends on them is INCONCLUSIVE here"
                  if (skipped or (audit and audit[4])) else "all suites ran"),
         "blocks_milestone": verdict != "PASS",
+        "tier": tier,
     }
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text(json.dumps(out, indent=1) + "\n")
     # M210: the certificate the pre-commit hook reads. Only a PASS with a clean admission is certifiable,
     # and only for the worktree this run graded -- `hook_cert.valid` re-checks the hash at commit time.
     cert = hook_cert.write("PASS" if verdict == "PASS" else verdict,
-                           "clean" if out["admission"]["admissible"] else "vacuous", commit=sha or "")
+                           ("clean" if out["admission"]["admissible"] else "vacuous")
+                           if tier == "full" else "not-run", commit=sha or "")
     out["certificate"] = cert
     if as_json:
         print(json.dumps(out, indent=1))
@@ -171,13 +207,14 @@ def report(as_json: bool) -> int:
         for p in out["procedures"]:
             print(f"  {p['name']:10s} {p['detail']:>28s}  {p['exit']}")
         sk = out["admission"]["skipped_no_cartridge"] or 0
-        print(f"  admission  gate audit {out['admission']['gate_audit'] or '-'}, "
-              f"{out['admission']['vacuous']} vacuous, {out['admission']['broken']} broken"
+        print(f"  admission  gate audit {out['admission']['gate_audit'] or 'NOT RUN'}, "
+              f"{out['admission']['vacuous'] if out['admission']['vacuous'] is not None else '-'} vacuous, "
+              f"{out['admission']['broken'] if out['admission']['broken'] is not None else '-'} broken"
               + (f", {sk} skipped" if sk else ""))
         print(f"\nVERDICT {verdict} — {why}")
         print(f"coverage {out['coverage']}: {out['note']}")
         print(f"report written to {REPORT}")
-    return 0 if verdict == "PASS" else 1
+    return 0 if verdict in ("PASS", "PASS-FAST") else 1
 
 
 def self_test() -> int:
@@ -217,9 +254,11 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--full", action="store_true",
+                    help="run admission too (the gate audit) — pre-push/nightly, not every commit")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
-    return self_test() if args.self_test else report(args.json)
+    return self_test() if args.self_test else report(args.json, "full" if args.full else "fast")
 
 
 if __name__ == "__main__":
