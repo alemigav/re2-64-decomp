@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "abbbf02",
+   "subject": "M269: hoist + no-dedup tried together -- p8 got worse; docs brought up to date",
+   "milestones": [
+    269
+   ]
+  },
+  {
    "sha": "72e6ac6",
    "subject": "M268: the mixed-constant test is negative, and it withdraws two of my claims",
    "milestones": [
