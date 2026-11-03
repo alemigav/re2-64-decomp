@@ -1196,6 +1196,114 @@ def p59530_function():
             "extra": len(got) - n, "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
 
 
+
+# The first target whose dispatch is on an **offset domain**: the index is `(cmd & 0xff) - 128`, not a raw byte, so
+# cases are `0x80..0x85` and the table's 7th word is never read. 53 words, and the head does most of the work -- it
+# clamps the third argument into `[0, 0x3fff]` before the switch. Four shape facts are pinned by it: a clamp written
+# as a **ternary** reproduces `bltz … slti … beqzl` where an if/else-if gets the first branch inverted; a **truncation**
+# `(u8)x` is not a mask `x & 0xff` (cc1 reuses a live `li v0,255` and emits `and rd,rs,v0`); two separate `slti`s mean
+# **nested ifs** rather than a folded range test; and a switch phi landing in `a0` rather than `t0` is the signal that
+# an incoming parameter is **still live to a later call** -- here param0 is the call's own first argument.
+PACAE4_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
+
+struct Snd {
+    u8 pad0[0x4a];
+    u8 f4a;
+    u8 f4b;
+};
+
+extern void FUN_800ab7e0(u32 a0, u32 a1, u32 a2, u16 a3);
+
+void FUN_800acae4(struct Snd *s, u32 cmd, s16 v)
+{
+    int c;
+    u32 id;
+
+    id = (u32)s;
+    v = v < 0 ? 0 : (v >= 0x4000 ? 0x3fff : v);
+    c = cmd;
+    switch (cmd & 0xff) {
+    case 0x80:
+        c = 0x80;
+        break;
+    case 0x81:
+        c = 0x82;
+        break;
+    case 0x82:
+        c = 0xa0;
+        break;
+    case 0x83:
+        c = 0xa1;
+        break;
+    case 0x84:
+        c = 0x83;
+        break;
+    case 0x85:
+        c = 0x84;
+        break;
+    }
+    if ((c & 0xff) < 0xa2) {
+        if ((c & 0xff) >= 0xa0)
+            return;
+    }
+    if (s->f4a == 0xff)
+        return;
+    id = (u8)cmd;
+    cmd = s->f4a;
+    FUN_800ab7e0(id, cmd, s->f4b, v);
+}"""
+PACAE4_TABLE = 0x800BA890
+PACAE4_WORDS = 53
+PACAE4_SYMS = [("FUN_800ab7e0", 0x800AB7E0)]
+
+
+def pacae4_function():
+    """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "pacae4.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(PACAE4_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in PACAE4_SYMS)
+    ld.write_text("ENTRY(f_probe)\nSECTIONS {\n  . = 0x800acae4;\n  .text : { *(.text) }\n"
+                  "  . = 0x800BA890;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo, n = 0x800ACAE4, PACAE4_WORDS
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    tw = [image[PACAE4_TABLE - BASE + 4 * i:PACAE4_TABLE - BASE + 4 * i + 4] for i in range(7)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(7)]
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
+            "extra": len(got) - n, "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -1303,6 +1411,7 @@ def check():
     p9f = p9_function()
     p167f = p59868_function()
     p59530f = p59530_function()
+    pacae4f = pacae4_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -1395,6 +1504,16 @@ def check():
     cases.append((f"its jump table matches {p59530f['table_same']} of 12 words at the image's own "
                   f"0x800b9010" if p59530f else "0x80059530 table: not run",
                   bool(p59530f) and p59530f["table_same"] == 12))
+
+    cases.append((f"the {pacae4f['image_instrs']}-word clamp-then-dispatch predicate at 0x800acae4 is "
+                  f"BYTE-EXACT: {pacae4f['same_offset']} identical by offset and {pacae4f['same']} by "
+                  f"content -- the first target that dispatches on an offset domain, `(cmd & 0xff) - 128`"
+                  if pacae4f else "0x800acae4: not run",
+                  bool(pacae4f) and pacae4f["same_offset"] == pacae4f["image_instrs"]))
+
+    cases.append((f"its jump table matches {pacae4f['table_same']} of 7 words at the image's own "
+                  f"0x800ba890" if pacae4f else "0x800acae4 table: not run",
+                  bool(pacae4f) and pacae4f["table_same"] == 7))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
