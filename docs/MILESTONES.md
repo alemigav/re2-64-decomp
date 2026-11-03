@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-234 milestones are indexed. 161 of them have a note; the rest are rows in the log that cite
+235 milestones are indexed. 162 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **50 have no record at all** — 31–78, 80, 172 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -251,6 +251,7 @@ at the foot of this file.
 | 231 | **M231** — the window was never the problem: 35 `local` heads, and a fold that was too narrow | `docs/log/M231-the-window-was-never-the-problem.md` |
 | 232 | **M232** — the audit was not testing anything: 49 of 132 mutations were never run | `docs/log/M232-the-audit-that-was-not-testing-anything.md` |
 | 233 | **M233** — the sound commands: six opcodes, one that plays nothing, and one dead operand | `docs/log/M233-the-sound-commands.md` |
+| 234 | **M234** — the record-table families: two script ranges, one undecoded container, and no 48 | `docs/log/M234-the-record-table-families.md` |
 
 ## The gaps, and why they are empty
 

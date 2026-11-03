@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "eef738c",
+   "subject": "M233: the sound commands -- six opcodes, one that plays nothing, and one dead operand",
+   "milestones": [
+    233
+   ]
+  },
+  {
    "sha": "6b30ee9",
    "subject": "M232: the audit was not testing anything -- 49 of 132 mutations were never run",
    "milestones": [

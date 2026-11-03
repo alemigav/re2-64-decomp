@@ -575,6 +575,25 @@ AUDITS = [
          tool="sound_ops.py", args=["--check"], file="tools/sound_ops.py",
          old="                    advance = sx16(wb & 0xFFFF)",
          new="                    advance = None"),
+    # --- M234: the asset-family census. Three anchors, each a mechanism the two script ranges rest on: the
+    # count rule (the table's first entry *is* its size, so `end/2` is the count and `end/2 - 1` reads the
+    # same table one entry short -- the error this file made first), the first-entry invariant that makes the
+    # shape self-describing, and the opcode ceiling that turns "these bytes look like offsets" into "these
+    # record entries are script opcodes".
+    dict(name="asset_families: the record count is read one low, so every table loses its first entry",
+         tool="asset_families.py", args=["--check"], file="tools/asset_families.py",
+         old="    count = end // 2", new="    count = end // 2 - 1"),
+    # the first-entry invariant cannot be mutated *loosely* -- every accepted member already satisfies
+    # `offsets[0] == end`, so relaxing it to `<` admits nothing and changes nothing (a no-op on this data,
+    # which is why the third anchor closes the threshold instead: at a floor of 1 the signature stops being
+    # specific, 416 members with 164 outside the two ranges).
+    dict(name="asset_families: the record floor goes to 1, so the signature stops being specific",
+         tool="asset_families.py", args=["--check"], file="tools/asset_families.py",
+         old="def record_table(block, floor=3):", new="def record_table(block, floor=1):"),
+    dict(name="asset_families: the opcode ceiling drops to 64, so real record entries fail the test",
+         tool="asset_families.py", args=["--check"], file="tools/asset_families.py",
+         old="OPCODE_SPACE = 141                 # walk_stream.py refuses a first byte at or above this",
+         new="OPCODE_SPACE = 64                  # walk_stream.py refuses a first byte at or above this"),
     # --- M228: the dispatch-head census. Three anchors: the bound that sets the entry count, the
     # sign-extended immediate that puts a table 0x10000 off (the M226 error, as a mutation), and the
     # jal-site count that decides whether a head is a function boundary.

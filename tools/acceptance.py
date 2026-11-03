@@ -111,6 +111,9 @@ SUITES = [
     # stage-2 bytes and build/elfs/boot.elf -- the one call that leaves the image lands in boot.
     ("sound commands (cartridge)", [sys.executable, "tools/sound_ops.py", "--check"], 10, True),
     ("file table (cartridge)", [sys.executable, "tools/file_table.py", "--check"], 101, True),
+    # M234: the record-table families -- two script ranges, one undecoded container, and the 48-record
+    # claim answered negatively. Needs the cartridge: it decompresses every real entry.
+    ("asset families (cartridge)", [sys.executable, "tools/asset_families.py", "--check"], 11, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a
     # specification, no code copied); see THIRD_PARTY.md.
