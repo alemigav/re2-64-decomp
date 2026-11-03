@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-268 milestones are indexed. 190 of them have a note; the rest are rows in the log that cite
+269 milestones are indexed. 191 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -285,6 +285,7 @@ at the foot of this file.
 | 265 | **M265** — both patches together: the pool lands where the image's does, and p8's residue changes kind | `docs/log/M265-both-patches-the-pool-lands-where-the-images-does.md` |
 | 266 | **M266** — `-msplit-addresses` is refuted, and case 3/4 is an unsigned conversion | `docs/log/M266-split-addresses-refuted-and-case34-is-unsigned.md` |
 | 267 | **M267** — the duplicate pool entry is systematic, and removing dedup is not how to match it | `docs/log/M267-the-duplicate-pool-entry-is-systematic.md` |
+| 268 | **M268** — the mixed-constant test: duplication is uniform, and "the image dedups floats" was wrong | `docs/log/M268-the-mixed-constant-test-and-two-withdrawals.md` |
 
 ## The gaps, and why they are empty
 
