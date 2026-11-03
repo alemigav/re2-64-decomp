@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "bdc3773",
+   "subject": "M265: both patches together -- the pool lands where the image's does",
+   "milestones": [
+    265
+   ]
+  },
+  {
    "sha": "4b680f2",
    "subject": "M264: re-read under the r4300 cost model -- p6 is byte-exact too",
    "milestones": [
