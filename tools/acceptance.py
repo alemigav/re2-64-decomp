@@ -117,6 +117,9 @@ SUITES = [
     # M235: the loop-discontinuity claim, measured and refuted. Gates a 5-clip stratum and reads the
     # whole-bank aggregates from the committed artefact, like voice_sweep.py.
     ("voice loops (cartridge)", [sys.executable, "tools/voice_loops.py", "--check"], 7, True),
+    # M236: the per-scene voice lists in the image, and the rate bit that proves they index the clip
+    # bank. Needs stage-2 bytes and the MORT bank.
+    ("voice lists (cartridge)", [sys.executable, "tools/voice_lists.py", "--check"], 9, True),
     # The pool decoder, validated by the one discriminator that matters: the shared codebook decodes
     # audio and a per-sample book does not. Established with reference to re2studio (GPL-3.0, read as a
     # specification, no code copied); see THIRD_PARTY.md.

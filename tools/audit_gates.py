@@ -607,6 +607,20 @@ AUDITS = [
     dict(name="voice_loops: the last sample is read as the first, so every clip looks silence-bounded",
          tool="voice_loops.py", args=["--check"], file="tools/voice_loops.py",
          old='        "last": samples[-1],', new='        "last": samples[0],'),
+    # --- M236: the per-scene voice lists. Three anchors, each a mechanism the resolution rests on: the rate
+    # bit and the index mask that together turn a `u16` into (clip, rate), and the sentinel that bounds the
+    # last array -- which has no next pointer to bound it, so the region constant did it and reported 138
+    # entries for an 84-entry array.
+    dict(name="voice_lists: bit 15 stops selecting the rate, so the flag agrees with nothing",
+         tool="voice_lists.py", args=["--check"], file="tools/voice_lists.py",
+         old="RATE_FLAG = 0x8000", new="RATE_FLAG = 0x4000"),
+    dict(name="voice_lists: the index mask widens, so entries stop being clip indices",
+         tool="voice_lists.py", args=["--check"], file="tools/voice_lists.py",
+         old="        clips = [v & (RATE_FLAG - 1) for v in nonzero]",
+         new="        clips = [v for v in nonzero]"),
+    dict(name="voice_lists: the last array is bounded by the region instead of its sentinel",
+         tool="voice_lists.py", args=["--check"], file="tools/voice_lists.py",
+         old="                if v is None or v == END:", new="                if v is None:"),
     # --- M228: the dispatch-head census. Three anchors: the bound that sets the entry count, the
     # sign-extended immediate that puts a table 0x10000 off (the M226 error, as a mutation), and the
     # jal-site count that decides whether a head is a function boundary.
