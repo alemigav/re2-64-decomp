@@ -594,6 +594,19 @@ AUDITS = [
          tool="asset_families.py", args=["--check"], file="tools/asset_families.py",
          old="OPCODE_SPACE = 141                 # walk_stream.py refuses a first byte at or above this",
          new="OPCODE_SPACE = 64                  # walk_stream.py refuses a first byte at or above this"),
+    # --- M235: the loop-discontinuity sweep. Three anchors, each a number the stratum case re-derives: the
+    # control boundary (which has to be a *different* boundary from the wrap, or the test grades itself), the
+    # percentile the comparison is made against, and the last sample itself.
+    dict(name="voice_loops: the control boundary is the wrap, so the test grades itself",
+         tool="voice_loops.py", args=["--check"], file="tools/voice_loops.py",
+         old='        "mid_gap": abs(samples[mid] - samples[mid - 1]),',
+         new='        "mid_gap": abs(samples[0] - samples[-1]),'),
+    dict(name="voice_loops: the comparison percentile drops to the median, so every wrap is an outlier",
+         tool="voice_loops.py", args=["--check"], file="tools/voice_loops.py",
+         old="PERCENTILE = 0.99", new="PERCENTILE = 0.50"),
+    dict(name="voice_loops: the last sample is read as the first, so every clip looks silence-bounded",
+         tool="voice_loops.py", args=["--check"], file="tools/voice_loops.py",
+         old='        "last": samples[-1],', new='        "last": samples[0],'),
     # --- M228: the dispatch-head census. Three anchors: the bound that sets the entry count, the
     # sign-extended immediate that puts a table 0x10000 off (the M226 error, as a mutation), and the
     # jal-site count that decides whether a head is a function boundary.
