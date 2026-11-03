@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "adee139",
+   "subject": "M250: gcc 2.8.1 -- four of four probes byte-exact, and the compiler is identified",
+   "milestones": [
+    250
+   ]
+  },
+  {
    "sha": "e0a74fc",
    "subject": "M249: the SDK-era assembler -- move explained, and p3's residue is not the assembler",
    "milestones": [

@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-251 milestones are indexed. 172 of them have a note; the rest are rows in the log that cite
+252 milestones are indexed. 173 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -267,6 +267,7 @@ at the foot of this file.
 | 248 | **M248** — the linked comparison: p3 resolves and the residue is two words, in the assembler | `docs/log/M248-the-linked-comparison.md` |
 | 249 | **M249** — the SDK-era assembler: `move` explained, and p3's residue is not the assembler | `docs/log/M249-the-sdk-era-assembler.md` |
 | 250 | **M250** — gcc 2.8.1: four of four probes byte-exact, and the compiler is identified | `docs/log/M250-gcc-281-four-of-four.md` |
+| 251 | **M251** — the four extra classes: the cartridge has no cheap probe for any of them | `docs/log/M251-the-four-classes-refused.md` |
 
 ## The gaps, and why they are empty
 

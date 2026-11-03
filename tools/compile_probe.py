@@ -42,6 +42,20 @@ BASE = 0x80018A80
 WORK = ROOT / "build" / "probe"
 
 # (id, source, address, size, class). Addresses are real stage-2 functions chosen by shape, not by address.
+# The four codegen classes the corpus does NOT cover, and why. This is a refusal with a measurement behind
+# it, not an omission: a probe needs a real function whose C is recoverable, and for these four the cartridge
+# does not supply one at the sizes that make reconstruction cheap.
+CLASSES_WITHOUT_A_PROBE = {
+    "switch -> jump table": "the 86 dispatch heads in manifests/dispatch_heads.json are the switch shape, but "
+                            "their arms are the table's relocations: comparing one needs the arms placed at "
+                            "their real addresses, i.e. a per-function link, not a snippet",
+    "struct copy": "no function in the 36 images copies three consecutive words between two pointers, and the "
+                   "eight-word copy this corpus can compile (0 hits in every image) is not there either",
+    "integer divide": "candidate 0x8006e8bc is a *fragment*: it loads through s1, divides by s0 and ends in "
+                      "`j 0x8006b...` — a tail jump, so the range boundary is inside a larger function",
+    "floating point": "candidate 0x80083e60 is a fragment too: it computes with f2, which no argument "
+                      "register carries, so its inputs come from before the range start",
+}
 PROBES = [
     ("p1", "void probe_empty(void) {}", 0x80029390, 8, "empty body"),
     ("p2", "int probe_second(int a, int b) { return b; }", 0x80035E34, 8, "return an argument"),
@@ -309,6 +323,11 @@ def check():
     cases.append(("IDO 5.3 and 7.1 emit identical code on every probe, so they are one hypothesis",
                   same))
 
+    cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} uncovered codegen classes are refused with a reason, "
+                  f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
+                  len(CLASSES_WITHOUT_A_PROBE) == 4
+                  and all(len(v) > 40 for v in CLASSES_WITHOUT_A_PROBE.values())))
+
     bad = sum(1 for _l, ok in cases if not ok)
     print("%-4s %-13s %-10s %s" % ("prb", "profile", "verdict", "detail"))
     for pid, profile, verdict, detail in rows:
@@ -329,6 +348,9 @@ def main() -> int:
     if args.list:
         for pid, src, addr, size, cls in PROBES:
             print("%-3s %-46s %s" % (pid, cls, ("0x%08x %d B" % (addr, size)) if addr else "-"))
+        print("\nclasses with no probe, and why:")
+        for cls, why in CLASSES_WITHOUT_A_PROBE.items():
+            print("   %-22s %s" % (cls, why[:96]))
         return 0
     if not args.check:
         ap.error("one of --check, --list is required")
