@@ -46,9 +46,8 @@ WORK = ROOT / "build" / "probe"
 # it, not an omission: a probe needs a real function whose C is recoverable, and for these four the cartridge
 # does not supply one at the sizes that make reconstruction cheap.
 CLASSES_WITHOUT_A_PROBE = {
-    "switch -> jump table": "the 86 dispatch heads in manifests/dispatch_heads.json are the switch shape, but "
-                            "their arms are the table's relocations: comparing one needs the arms placed at "
-                            "their real addresses, i.e. a per-function link, not a snippet",
+    # the switch class is probed by `switch_head()` below rather than by the generic loop: it needs the jump
+    # table placed at the image's table address, which the generic link script does not do.
     "struct copy": "no function in the 36 images copies three consecutive words between two pointers, and the "
                    "eight-word copy this corpus can compile (0 hits in every image) is not there either",
     "integer divide": "candidate 0x8006e8bc is a *fragment*: it loads through s1, divides by s0 and ends in "
@@ -232,6 +231,52 @@ def census(image):
     return counts
 
 
+SWITCH_HEAD = {
+    "head": 0x8004FD1C, "table": 0x800B8BD0, "bound": 5,
+    "source": "int f(int a, int b, int c) { switch (c) { case 0: return a; case 1: return b; "
+              "case 2: return a + b; case 3: return a - b; case 4: return a ^ b; } return 0; }",
+}
+
+
+def switch_head():
+    """Compile a five-case switch, place `.text` at the head and `.rodata` at the table, and compare.
+
+    The head is ten instructions. Two of them cannot be compared: the **branch offset** (it depends on how large
+    the arms are) and the **delay slot** (its content comes from the arm prologue -- in this image
+    `addu a3,a0,zero`). What is compared is the bound check and the seven-word table dispatch, which are the
+    compiler's business: the `sltiu` bound and index register, the `lui`/`addiu` table address, `sll`, `addu`,
+    `lw`, `jr` and its `nop`.
+    """
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p6_switch.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(SWITCH_HEAD["source"] + "\n")
+    s, o, fx = (WORK / "p6_switch.s", WORK / "p6_switch.o", WORK / "p6_switch.fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(o), str(s)], capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx)], capture_output=True)
+    ld = WORK / "p6_switch.ld"
+    ld.write_text("SECTIONS {\n  . = 0x%08X;\n  .text : { *(.text) }\n  . = 0x%08X;\n  .rodata : { *(.rodata) }\n"
+                  "  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.mdebug) }\n}\n"
+                  % (SWITCH_HEAD["head"], SWITCH_HEAD["table"]))
+    elf = WORK / "p6_switch.elf"
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    want = [image[SWITCH_HEAD["head"] - BASE + 4 * i:SWITCH_HEAD["head"] - BASE + 4 * i + 4] for i in range(10)]
+    got = [text_of(elf)[4 * i:4 * i + 4] for i in range(9)]
+    # the bound check is word 0 in both; the dispatch run is words 3..9 of the image and 2..8 of ours
+    return {"bound_check": want[0] == got[0], "dispatch_run": want[3:10] == got[2:9],
+            "delay_slot_image": want[2].hex(), "delay_slot_ours": got[2].hex(),
+            "bound": SWITCH_HEAD["bound"]}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -323,9 +368,15 @@ def check():
     cases.append(("IDO 5.3 and 7.1 emit identical code on every probe, so they are one hypothesis",
                   same))
 
-    cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} uncovered codegen classes are refused with a reason, "
+    sw = switch_head()
+    cases.append((f"the linked switch head reproduces the bound check and the seven-word table dispatch "
+                  f"(bound {SWITCH_HEAD['bound']}; the delay slot is the arm prologue: image "
+                  f"{sw['delay_slot_image'] if sw else '-'} vs ours {sw['delay_slot_ours'] if sw else '-'})",
+                  bool(sw) and sw["bound_check"] and sw["dispatch_run"]))
+
+    cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
-                  len(CLASSES_WITHOUT_A_PROBE) == 4
+                  len(CLASSES_WITHOUT_A_PROBE) == 3
                   and all(len(v) > 40 for v in CLASSES_WITHOUT_A_PROBE.values())))
 
     bad = sum(1 for _l, ok in cases if not ok)
