@@ -390,7 +390,14 @@ P6_REGIONS = [("head", 0x8004FD1C, 40), ("arm0", 0x8004FD44, 16), ("arm1", 0x800
 
 
 def p6_function():
-    """Compile the recovered whole function and report it region by region."""
+    """Compile the recovered whole function and diff it **content-aligned**.
+
+    The first version sliced both sides at the image's region addresses, which silently compares misaligned code
+    the moment any region differs in size — arms 2-4 read as 0/21 while in fact starting 8 bytes later with the
+    same instructions. `SequenceMatcher` over the instruction sequences is the honest comparison: it says how many
+    instructions differ and where, rather than pretending the offsets line up.
+    """
+    import difflib
     cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
     gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
     if not cc1.exists() or not gas.exists():
@@ -414,17 +421,15 @@ def p6_function():
         return None
     image = IMAGE.read_bytes()
     blob = text_of(elf)
-    rows, total_same, total = [], 0, 0
-    for name, addr, size in P6_REGIONS:
-        w = image[addr - BASE:addr - BASE + size]
-        g = blob[addr - 0x8004FD1C:addr - 0x8004FD1C + size]
-        same = sum(1 for i in range(0, min(len(w), len(g)), 4) if w[i:i + 4] == g[i:i + 4])
-        first = next((i for i in range(0, min(len(w), len(g)), 4) if w[i:i + 4] != g[i:i + 4]), None)
-        rows.append({"region": name, "same": same, "words": size // 4,
-                     "first": ("0x%08x" % (addr + first)) if first is not None else None})
-        total_same += same
-        total += size // 4
-    return {"rows": rows, "same": total_same, "words": total, "size": len(blob)}
+    want = [image[0x8004FD1C - BASE + 4 * i:0x8004FD1C - BASE + 4 * i + 4] for i in range((0x8004FEA4 - 0x8004FD1C) // 4)]
+    got = [blob[4 * i:4 * i + 4] for i in range(len(blob) // 4)]
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    hunks = [o for o in sm.get_opcodes() if o[0] != "equal"]
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    divu = sum(1 for w in got if int.from_bytes(w, "big") >> 26 == 0 and (int.from_bytes(w, "big") & 0x3F) == 0x1B)
+    return {"image_instrs": len(want), "got_instrs": len(got), "same": same, "hunks": len(hunks),
+            "extra": len(got) - len(want), "divu": divu,
+            "first": "0x%08x" % (0x8004FD1C + 4 * hunks[0][1]) if hunks else None}
 
 
 def check():
@@ -529,19 +534,19 @@ def check():
         cases.append((row, pr["match"]))
 
     p6f = p6_function()
-    head = p6f["rows"][0] if p6f else None
-    arm0 = p6f["rows"][1] if p6f else None
-    cases.append((f"recovering p6's arms makes the delay slot match: the head is {head['same']}/{head['words']} "
-                  f"with the only difference at {head['first']} (the branch offset, i.e. the arms' total size), "
-                  f"and arm0 is {arm0['same']}/{arm0['words']} exactly"
-                  if p6f else "p6 whole function: not run",
-                  bool(p6f) and head["same"] == head["words"] - 1 and head["first"] == "0x8004fd20"
-                  and arm0["same"] == arm0["words"]))
+    cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
+                  f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
+                  f"first at {p6f['first']}" if p6f else "p6 whole function: not run",
+                  bool(p6f) and p6f["same"] >= 80 and p6f["extra"] <= 8))
 
-    cases.append((f"the rest of p6 is a reconstruction in progress, reported as numbers "
-                  f"({p6f['same']}/{p6f['words']} words, compiled {p6f['size']} B against 392 B)"
+    cases.append((f"the divide-then-increment order the arms need is what gcc emits: {p6f['divu']} `divu` sites "
+                  f"in the compiled body, and each is followed by a reload"
                   if p6f else "p6 whole function: not run",
-                  bool(p6f) and 20 <= p6f["same"] < p6f["words"]))
+                  bool(p6f) and p6f["divu"] == 4))
+
+    cases.append((f"the head's delay slot still matches with the arms in place (the only head difference is the "
+                  f"branch offset)",
+                  bool(p6f) and p6f["first"] == "0x8004fd20"))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
