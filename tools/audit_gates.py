@@ -504,6 +504,24 @@ AUDITS = [
          # anchored on a prologue used by exactly one fragment, so flipping it removes that prologue from the
          # "already a function start" set and the claim fails; flipping a shared one would change nothing.
          old='"region_entry": "0x8006ebec",', new='"region_entry_in_corpus_false_marker": "0x8006ebec",'),
+    # --- M230: the index provenance. Three anchors: the chase that turns a "local" into a command
+    # field, the ctx test ordered after the def lookup (the bug that mis-called 0x36 an argument), and
+    # the width table that makes a byte and a halfword distinguishable.
+    dict(name="head_index: a load's base is not chased, so every pointer read becomes local",
+         tool="head_index.py", args=["--check"], file="tools/head_index.py",
+         old="            origin = _base_origin(image, rs, va, table, ctxs, 0)",
+         new="            origin = None"),
+    dict(name="head_index: the ctx test runs before the def lookup, so a redefined a0 reads as the "
+         "context pointer",
+         tool="head_index.py", args=["--check"], file="tools/head_index.py",
+         old="        if cur in ctxs and not earlier:",
+         new="        if cur in ctxs:"),
+    # aimed at the *guard*, not the width table: dropping the entry alone raises KeyError, and a mutation that
+    # crashes proves only that the code is fragile (M226's lesson, met again here)
+    dict(name="head_index: lh leaves the load set, so halfword reads go unhandled",
+         tool="head_index.py", args=["--check"], file="tools/head_index.py",
+         old="        if op in (0x20, 0x21, 0x23, 0x24, 0x25):               # lb/lh/lw/lbu/lhu",
+         new="        if op in (0x20, 0x23, 0x24, 0x25):                     # lb/lh/lw/lbu/lhu"),
     # --- M228: the dispatch-head census. Three anchors: the bound that sets the entry count, the
     # sign-extended immediate that puts a table 0x10000 off (the M226 error, as a mutation), and the
     # jal-site count that decides whether a head is a function boundary.

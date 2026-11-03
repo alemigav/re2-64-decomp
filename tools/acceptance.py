@@ -127,6 +127,8 @@ SUITES = [
     ("extent audit (cartridge)", [sys.executable, "tools/extent_audit.py", "--check"], 14, True),
     # The dispatch-head class the two extent questions turned out to share (M228).
     ("dispatch heads (cartridge)", [sys.executable, "tools/dispatch_heads.py", "--check"], 9, True),
+    # What each head dispatches on — the index traced to its source (M230).
+    ("head index (cartridge)", [sys.executable, "tools/head_index.py", "--check"], 9, True),
     ("rsp ucode (cartridge)", [sys.executable, "tools/rsp_decode.py", "--check"], 22, True),
     # The interface between the task block the CPU publishes and the code the RSP runs (M224). It needs
     # the cartridge because every claim in it is a measurement of the unpacked stage-2 member.
