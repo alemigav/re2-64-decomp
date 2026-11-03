@@ -60,7 +60,9 @@ PROBES = [
 PROFILES = [("ido-5.3 G0", "ido", "ido-5.3", ["-O2", "-non_shared", "-mips2", "-G", "0"]),
             ("ido-7.1 G0", "ido", "ido-7.1", ["-O2", "-non_shared", "-mips2", "-G", "0"]),
             ("gcc2.7.2 -O", "gcc", "mips-gcc-2.7.2", ["-O", "-G", "0"]),
-            ("gcc2.7.2 -O2", "gcc", "mips-gcc-2.7.2", ["-O2", "-G", "0"])]
+            ("gcc2.7.2 -O2", "gcc", "mips-gcc-2.7.2", ["-O2", "-G", "0"]),
+            ("gcc2.8.1 -O", "gcc", "mips-gcc-2.8.1", ["-O", "-G", "0"]),
+            ("gcc2.8.1 -O2", "gcc", "mips-gcc-2.8.1", ["-O2", "-G", "0"])]
 
 
 def text_of(obj):
@@ -282,18 +284,23 @@ def check():
         per_profile[profile][0] += verdict == "MATCH"
         per_profile[profile][1] += 1
     gcc_best = max((v[0] for k, v in per_profile.items() if k.startswith("gcc")), default=0)
+    g28 = max((v[0] for k, v in per_profile.items() if k.startswith("gcc2.8.1")), default=0)
+    g27 = max((v[0] for k, v in per_profile.items() if k.startswith("gcc2.7.2")), default=0)
     ido_best = max((v[0] for k, v in per_profile.items() if k.startswith("ido")), default=0)
-    cases.append((f"gcc 2.7.2 reproduces {gcc_best} of 4 probes byte-for-byte against IDO's {ido_best} "
+    cases.append((f"gcc 2.8.1 reproduces {g28} of 4 probes byte-for-byte (gcc 2.7.2: {gcc_best}, IDO: {ido_best})",
+                  g28 >= 4))
+    cases.append((f"gcc 2.7.2 reproduces {g27} of 4 (it cannot do p3) against IDO's {ido_best} "
                   f"({ {k: '%d/%d' % tuple(v) for k, v in sorted(per_profile.items())} })",
-                  gcc_best >= 3 and ido_best <= 1))
+                  g27 == 3 and ido_best <= 1))
 
     # p3 links now, and its residue is the *assembler's* store expansion, not the compiler's: the image has
     # `lui v1` hoisted into the beq delay slot and sw through v1; we get the same three operations with the
     # address in the assembler temp and the slot filled by the addiu. Reported as numbers, not smoothed.
-    p3 = next((r for r in rows if r[0] == "p3" and r[1].startswith("gcc")), None)
-    cases.append((f"p3 is compared after linking (object padding gone, relocations resolved): "
-                  f"{p3[2] if p3 else 'no row'}; the residue is the store's address expansion",
-                  p3 is not None and not p3[3].startswith("no ")))
+    p3 = {r[1]: r[2] for r in rows if r[0] == "p3"}
+    cases.append((f"p3 is compared **after linking** and the version decides it: {p3} — 2.8.1 materialises the "
+                  f"store's address into a general register and schedules it into the delay slot, 2.7.2 leaves it "
+                  f"to the assembler's temp",
+                  p3.get("gcc2.8.1 -O2") == "MATCH" and p3.get("gcc2.7.2 -O2") == "differ"))
 
     # 5.3 and 7.1 are not two hypotheses
     same = all(r53[2] == r71[2] and r53[3] == r71[3] for r53, r71 in

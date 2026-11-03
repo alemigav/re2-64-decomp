@@ -82,8 +82,11 @@ doctor() {
 	if [ -x "$TC/src/bu27-build/gas/as.new" ]; then
 		printf 'PASS as 2.7 (SDK-era) %s/src/bu27-build/gas/as.new — expands `move` to `addu`, as the cartridge does\n' "$TC"
 	fi
+	if [ -x "$TC/mips-gcc-2.8.1/bin/cc1" ]; then
+		printf 'PASS gcc 2.8.1       %s/mips-gcc-2.8.1/bin/cc1 (4/4 probes; this is the matching compiler)\n' "$TC"
+	fi
 	if [ -x "$TC/mips-gcc-2.7.2/bin/cc1" ]; then
-		printf 'PASS gcc 2.7.2       %s/mips-gcc-2.7.2/bin/cc1 (mipse-ultra-gcc; the one that matches)\n' "$TC"
+		printf 'PASS gcc 2.7.2       %s/mips-gcc-2.7.2/bin/cc1 (3/4 probes; p3 needs 2.8.1)\n' "$TC"
 	fi
 	if [ -x "$TC/ido-7.1/cc" ]; then
 		USR_LIB="$root/$TC/ido-7.1" "$TC/ido-7.1/cc" -c -O2 -non_shared -G 0 -mips2 \
@@ -235,6 +238,41 @@ build_gcc272() {
 	printf 'gcc 2.7.2: cc1 in %s/bin (the driver xgcc exists but execs the host cc; call cc1 directly)\n' "$out"
 }
 
+build_gcc281() {
+	# gcc 2.8.1 (1998) is the compiler that matches: 4 of 4 probes byte-for-byte where 2.7.2 cannot do the
+	# store's address materialisation. Five patches, all recorded in docs/TOOLCHAIN.md, none of them codegen.
+	src="$TC/src/gcc-2.8.1"
+	out="$TC/mips-gcc-2.8.1"
+	[ -x "$out/bin/cc1" ] && { printf 'gcc 2.8.1: already built\n'; return 0; }
+	if [ ! -d "$src" ]; then
+		printf 'gcc 2.8.1: SKIP sources missing (build/toolchain/src/gcc-2.8.1)\n'
+		return 0
+	fi
+	host_cc=$(command -v gcc-16 || command -v gcc) || { printf 'gcc 2.8.1: SKIP no GCC host compiler\n'; return 0; }
+	mkdir -p "$out/bin" "$TC/src/gcc28-build"
+	( cd "$TC/src/gcc28-build" && \
+	  CC="$host_cc -std=gnu89 -fcommon -w -I$root/$TC/src/hostshim" \
+	    ../gcc-2.8.1/configure --target=mips-elf --with-gnu-as --with-gnu-ld --disable-libgcc \
+	        --disable-multilib --enable-languages=c >"$root/$TC/gcc28-config.log" 2>&1 ) || {
+		printf 'gcc 2.8.1: FAIL configure — see %s\n' "$TC/gcc28-config.log" >&2
+		return 1
+	}
+	# `cc1` includes `config.h`, which configure writes with host macros only; the target macros live in tm.h
+	# and 2.8.1's build expects them there. Appending the include is what makes cc1 compile at all.
+	grep -q 'include "tm.h"' "$TC/src/gcc28-build/config.h" || \
+		echo '#include "tm.h"' >> "$TC/src/gcc28-build/config.h"
+	( cd "$TC/src/gcc28-build" && \
+	  make -j1 cc1 LANGUAGES=c CLIB="-lm" \
+	       CC="$host_cc -std=gnu89 -fcommon -w -I$root/$TC/src/hostshim" \
+	       >"$root/$TC/gcc28-build.log" 2>&1 ) || {
+		printf 'gcc 2.8.1: FAIL — see %s\n' "$TC/gcc28-build.log" >&2
+		return 1
+	}
+	[ -x "$TC/src/gcc28-build/cc1" ] || { printf 'gcc 2.8.1: FAIL cc1 was not produced\n' >&2; return 1; }
+	cp "$TC/src/gcc28-build/cc1" "$out/bin/cc1"
+	printf 'gcc 2.8.1: cc1 in %s/bin (the matching compiler)\n' "$out"
+}
+
 build_ido() {
 	# The recompiler turns the ORIGINAL IRIX binaries into host programs, so it needs them as input. They are
 	# not fetched here: the owner supplies them, either as the project zip (`IDO_RECOMP_ZIP`, which happens to
@@ -279,6 +317,6 @@ build_ido() {
 
 if [ "$MODE" != "--doctor" ]; then
 	mkdir -p "$TC"
-	build_binutils && build_binutils27 && build_gcc272 && build_ido
+	build_binutils && build_binutils27 && build_gcc272 && build_gcc281 && build_ido
 fi
 doctor
