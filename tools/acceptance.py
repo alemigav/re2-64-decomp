@@ -114,6 +114,8 @@ SUITES = [
     # M234: the record-table families -- two script ranges, one undecoded container, and the 48-record
     # claim answered negatively. Needs the cartridge: it decompresses every real entry.
     ("asset families (cartridge)", [sys.executable, "tools/asset_families.py", "--check"], 11, True),
+    # M238: the SND_SMPDIR record and the 16-byte sample prefix. Needs the cartridge.
+    ("smpdir record (cartridge)", [sys.executable, "tools/smpdir.py", "--check"], 10, True),
     # M235: the loop-discontinuity claim, measured and refuted. Gates a 5-clip stratum and reads the
     # whole-bank aggregates from the committed artefact, like voice_sweep.py.
     ("voice loops (cartridge)", [sys.executable, "tools/voice_loops.py", "--check"], 7, True),

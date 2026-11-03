@@ -1,0 +1,242 @@
+{
+ "frame_zero": {
+  "hidden_by_the_256_skip": true,
+  "run0_header_0xff": 353,
+  "run0_header_illegal": 568,
+  "run1_header_illegal": 582,
+  "run1_header_over_0x7f": 582,
+  "samples": 1192
+ },
+ "grid": {
+  "declared_count_fits_below_grid": 1192,
+  "frames": [
+   8,
+   2000
+  ],
+  "samples_available_minus_declared": [
+   122,
+   519
+  ],
+  "slack_median": 488
+ },
+ "inputs": {
+  "directory": "cartridge id 1982 (SND_SMPDIR), 1192 x 28 B + terminator",
+  "rule": "a record is `u16 index | u16 0 | u32 offset | u32 0 | u16 15360 | u16 rate | u8 3 | u24 count | u32 f1 | u32 f2`; the frame grid starts 16 B into a sample (the first sample's extent carries the 256-byte codebook first)",
+  "sample_data": "cartridge id 1983, 9022912 B"
+ },
+ "loop_candidates": {
+  "distinct_pairs": 188,
+  "f1_below_count": 1192,
+  "f1_ge_f2": 64,
+  "f1_lt_f2": 123,
+  "f2_below_or_equal_count": 1192,
+  "f2_positive": 187,
+  "pair_(2,0)_records": 1005
+ },
+ "not_claimed": [
+  "that f1/f2 are loop start and end: 64 of the 187 records with f2 > 0 have f1 >= f2, and no ordering convention repairs all of them",
+  "what the 16-byte prefix holds: it is neither a seed for frame 0's history (2 of 1191 match) nor a literal copy of the previous sample's bytes (0 of 63)",
+  "that frame 0's illegal predictors are damage rather than a different block form for the first frame of those samples -- it is reported, with both runs' counts, and neither reading is adopted",
+  "anything about how the samples sound"
+ ],
+ "prefix": {
+  "codebook_bytes": 256,
+  "codebook_holds_sample_zero": true,
+  "measured": 16,
+  "phase_sweep": {
+   "1": {
+    "best": 0.994,
+    "best_other_phase": 0.741,
+    "best_phase": 16
+   },
+   "1000": {
+    "best": 0.939,
+    "best_other_phase": 0.797,
+    "best_phase": 16
+   },
+   "1037": {
+    "best": 0.995,
+    "best_other_phase": 0.732,
+    "best_phase": 16
+   },
+   "1074": {
+    "best": 0.995,
+    "best_other_phase": 0.715,
+    "best_phase": 16
+   },
+   "1111": {
+    "best": 0.992,
+    "best_other_phase": 0.761,
+    "best_phase": 16
+   },
+   "112": {
+    "best": 0.969,
+    "best_other_phase": 0.721,
+    "best_phase": 16
+   },
+   "1148": {
+    "best": 0.987,
+    "best_other_phase": 0.706,
+    "best_phase": 16
+   },
+   "1185": {
+    "best": 0.964,
+    "best_other_phase": 0.648,
+    "best_phase": 16
+   },
+   "149": {
+    "best": 0.959,
+    "best_other_phase": 0.719,
+    "best_phase": 16
+   },
+   "186": {
+    "best": 0.95,
+    "best_other_phase": 0.742,
+    "best_phase": 16
+   },
+   "223": {
+    "best": 1.0,
+    "best_other_phase": 0.739,
+    "best_phase": 16
+   },
+   "260": {
+    "best": 0.993,
+    "best_other_phase": 0.713,
+    "best_phase": 16
+   },
+   "297": {
+    "best": 0.946,
+    "best_other_phase": 0.723,
+    "best_phase": 16
+   },
+   "334": {
+    "best": 0.998,
+    "best_other_phase": 0.733,
+    "best_phase": 16
+   },
+   "371": {
+    "best": 0.995,
+    "best_other_phase": 0.717,
+    "best_phase": 16
+   },
+   "38": {
+    "best": 0.987,
+    "best_other_phase": 0.722,
+    "best_phase": 16
+   },
+   "408": {
+    "best": 0.971,
+    "best_other_phase": 0.76,
+    "best_phase": 16
+   },
+   "445": {
+    "best": 0.966,
+    "best_other_phase": 0.722,
+    "best_phase": 16
+   },
+   "482": {
+    "best": 0.992,
+    "best_other_phase": 0.711,
+    "best_phase": 16
+   },
+   "519": {
+    "best": 0.945,
+    "best_other_phase": 0.718,
+    "best_phase": 16
+   },
+   "556": {
+    "best": 0.959,
+    "best_other_phase": 0.692,
+    "best_phase": 16
+   },
+   "593": {
+    "best": 0.963,
+    "best_other_phase": 0.75,
+    "best_phase": 16
+   },
+   "630": {
+    "best": 0.996,
+    "best_other_phase": 0.665,
+    "best_phase": 16
+   },
+   "667": {
+    "best": 0.972,
+    "best_other_phase": 0.721,
+    "best_phase": 16
+   },
+   "704": {
+    "best": 0.968,
+    "best_other_phase": 0.721,
+    "best_phase": 16
+   },
+   "741": {
+    "best": 0.977,
+    "best_other_phase": 0.738,
+    "best_phase": 16
+   },
+   "75": {
+    "best": 0.993,
+    "best_other_phase": 0.72,
+    "best_phase": 16
+   },
+   "778": {
+    "best": 0.974,
+    "best_other_phase": 0.706,
+    "best_phase": 16
+   },
+   "815": {
+    "best": 0.993,
+    "best_other_phase": 0.713,
+    "best_phase": 16
+   },
+   "852": {
+    "best": 0.931,
+    "best_other_phase": 0.707,
+    "best_phase": 16
+   },
+   "889": {
+    "best": 0.978,
+    "best_other_phase": 0.727,
+    "best_phase": 16
+   },
+   "926": {
+    "best": 0.897,
+    "best_other_phase": 0.662,
+    "best_phase": 16
+   },
+   "963": {
+    "best": 0.973,
+    "best_other_phase": 0.699,
+    "best_phase": 16
+   }
+  },
+  "stored_length_mod_40": {
+   "16": 1192
+  }
+ },
+ "prefix_refutations": {
+  "copy_trials": 63,
+  "literal_copy_of_previous_sample": 0,
+  "seed_for_frame0": 2,
+  "seed_trials": 1191
+ },
+ "reading": "the record is decoded and two of its fields are constants on all **1192** records (15360 and the codec byte 3); every stored length is `16 (mod 40)` and the frame grid sits at that 16-byte boundary (**97-99.5 %** legal headers against **<=75 %** at any other phase), so the 256-byte skip the decoder performs is **six frames too far** on every sample after the first. `f1`/`f2` are positions inside the sample but are **not established as loop points**: 1005 records carry `(2,0)` and 123 of the 187 with `f2 > 0` are ordered.",
+ "record_fields": {
+  "codec_values": {
+   "3": 1192
+  },
+  "const12_values": {
+   "15360": 1192
+  },
+  "count_range": [
+   43,
+   127487
+  ],
+  "index_sequential": true,
+  "rates": 15,
+  "zero2_all": true,
+  "zero8_all": true
+ },
+ "schema": "smpdir/1",
+ "tool": "smpdir.py"
+}

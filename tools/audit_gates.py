@@ -625,6 +625,21 @@ AUDITS = [
     dict(name="voice_lists: the last array is bounded by the region instead of its sentinel",
          tool="voice_lists.py", args=["--check"], file="tools/voice_lists.py",
          old="                if v is None or v == END:", new="                if v is None:"),
+    # --- M238: the SND_SMPDIR record and the sample prefix. Three anchors, each a mechanism a published
+    # number rests on: the 16-byte prefix (the shipped value, 256, is the mutation), the low nibble bound
+    # that makes a predictor byte legal, and the 24-bit count.
+    dict(name="smpdir: the prefix goes back to 256, so the grid sits six frames late",
+         tool="smpdir.py", args=["--check"], file="tools/smpdir.py",
+         old="PREFIX = 16                 # measured: the frame grid starts here in every sample but the first",
+         new="PREFIX = 256                # measured: the frame grid starts here in every sample but the first"),
+    dict(name="smpdir: a predictor byte's low nibble is unbounded, so illegal frame-0 headers count as legal",
+         tool="smpdir.py", args=["--check"], file="tools/smpdir.py",
+         old="    return (byte >> 4) <= 7 and (byte & 0xF) <= 12",
+         new="    return (byte >> 4) <= 7"),
+    dict(name="smpdir: the count is read as 16 bits, so every long sample's declared length truncates",
+         tool="smpdir.py", args=["--check"], file="tools/smpdir.py",
+         old='            "count": struct.unpack_from(">I", directory, at + 16)[0] & 0x00FFFFFF,',
+         new='            "count": struct.unpack_from(">I", directory, at + 16)[0] & 0x0000FFFF,'),
     # --- M228: the dispatch-head census. Three anchors: the bound that sets the entry count, the
     # sign-extended immediate that puts a table 0x10000 off (the M226 error, as a mutation), and the
     # jal-site count that decides whether a head is a function boundary.
