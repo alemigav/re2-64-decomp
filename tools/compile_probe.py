@@ -45,9 +45,11 @@ WORK = ROOT / "build" / "probe"
 PROBES = [
     ("p1", "void probe_empty(void) {}", 0x80029390, 8, "empty body"),
     ("p2", "int probe_second(int a, int b) { return b; }", 0x80035E34, 8, "return an argument"),
-    ("p3", "extern int D_800314CC;\nextern int D_800344C0;\n"
-           "void probe_cond_store(void) { if (D_800314CC == 0) { D_800344C0 = 1; } }",
-     0x80025D60, 32, "conditional global store (relocation-bearing)"),
+    # the image branches `beq` (skip the store when zero), so the source condition is `!= 0`; the globals are
+    # named by their real addresses, which is what lets the linker script place them from the names
+    ("p3", "extern int D_801314CC;\nextern int D_801344C0;\n"
+           "void probe_cond_store(void) { if (D_801314CC != 0) { D_801344C0 = 1; } }",
+     0x80025D60, 32, "conditional global store (relocation-bearing -- compared after linking)"),
     ("p4", "void probe_copy(char *d, char *s, int n) { char *e = d + n; do { *d++ = *s++; } while (d < e); }",
      0x80082474, 36, "byte-copy loop (delayed branch; the do-while form is the one that matches)"),
     ("p5", "int probe_ident(int a) { return a; }", None, 0, "identity (the move idiom)"),
@@ -80,9 +82,55 @@ def text_of(obj):
 
 MOVE = re.compile(r"^(\s*)move(\s+)(\$\d+),(\$\d+)\s*$", re.M)
 GAS = TC / "binutils" / "bin"
+SYM = re.compile(r"^D_([0-9A-Fa-f]{8})$")
 
 
-def compile_probe(directory, flags, pid, out, kind="ido"):
+def undefined_symbols(obj):
+    """Names the object needs from outside, so a linker script can place them.
+
+    This project already names globals by address (`D_801314CC`), so the script can be generated from the names
+    instead of maintained by hand -- and if a name does not carry an address, linking fails loudly rather than
+    silently placing it at zero.
+    """
+    d = Path(obj).read_bytes()
+    if d[:4] != b"\x7fELF":
+        return []
+    shoff, = struct.unpack_from(">I", d, 32)
+    shentsize, = struct.unpack_from(">H", d, 46)
+    shnum, = struct.unpack_from(">H", d, 48)
+    secs = [struct.unpack_from(">10I", d, shoff + i * shentsize) for i in range(shnum)]
+    out = []
+    for s in secs:
+        if s[1] != 2:                      # SHT_SYMTAB
+            continue
+        strtab = secs[s[6]][4]
+        for i in range(s[5] // 16):
+            name_off, value, size, info, other, shndx = struct.unpack_from(">IIIBBH", d, s[4] + i * 16)
+            end = d.index(b"\0", strtab + name_off)
+            name = d[strtab + name_off:end].decode("latin-1")
+            if shndx == 0 and value == 0 and name:      # SHN_UNDEF
+                out.append(name)
+    return out
+
+
+def link_script(probe_addr, obj, workdir):
+    names = undefined_symbols(obj)
+    lines = ["ENTRY(_start)", "SECTIONS {", "  . = 0x%08X;" % probe_addr,
+             "  .text : { *(.text) }",
+             '  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) *(.comment) *(.pdr) *(.sbss) *(.bss) *(.data) }',
+             "}"]
+    head = []
+    for n in names:
+        m = SYM.match(n)
+        if not m:
+            return None, "undefined symbol %r carries no address in its name" % n
+        head.append("%s = 0x%s;" % (n, m.group(1)))
+    script = workdir / ("%s_%s.ld" % (workdir.name, probe_addr))
+    script.write_text("\n".join(head + lines) + "\n")
+    return script, None
+
+
+def compile_probe(directory, flags, pid, out, kind="ido", flags_addr=None):
     cfile = WORK / ("%s.c" % pid)
     cfile.parent.mkdir(parents=True, exist_ok=True)
     cfile.write_text(PROBES_BY_ID[pid][1] + "\n")
@@ -111,11 +159,21 @@ def compile_probe(directory, flags, pid, out, kind="ido"):
     text = asm.read_text()
     text = MOVE.sub(r"\1addu\2\3,\4,$0", text)
     asm.write_text(text)
-    proc = subprocess.run([str(gas), "-EB", "-mips2", "-o", str(out), str(asm)],
+    proc = subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(out), str(asm)],
                           capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"})
     if proc.returncode:
         return None, "assemble failed"
-    return text_of(out), None
+    if flags_addr is None:
+        return text_of(out), None
+    script, err = link_script(flags_addr, out, WORK)
+    if err:
+        return None, err
+    elf = out.with_suffix(".elf")
+    proc = subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(script), "-o", str(elf), str(out)],
+                          capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"})
+    if proc.returncode:
+        return None, "link failed"
+    return text_of(elf), None
 
 
 PROBES_BY_ID = {}
@@ -160,7 +218,7 @@ def check():
         want = image[addr - BASE:addr - BASE + size]
         for profile, kind, directory, flags in PROFILES:
             work = WORK / ("%s_%s.o" % (pid, profile.replace(" ", "_").replace(".", "")))
-            got, err = compile_probe(directory, flags, pid, work, kind)
+            got, err = compile_probe(directory, flags, pid, work, kind, flags_addr=addr)
             if err:
                 rows.append((pid, profile, "no-toolchain", err))
                 continue
@@ -215,6 +273,14 @@ def check():
     cases.append((f"gcc 2.7.2 reproduces {gcc_best} of 4 probes byte-for-byte against IDO's {ido_best} "
                   f"({ {k: '%d/%d' % tuple(v) for k, v in sorted(per_profile.items())} })",
                   gcc_best >= 3 and ido_best <= 1))
+
+    # p3 links now, and its residue is the *assembler's* store expansion, not the compiler's: the image has
+    # `lui v1` hoisted into the beq delay slot and sw through v1; we get the same three operations with the
+    # address in the assembler temp and the slot filled by the addiu. Reported as numbers, not smoothed.
+    p3 = next((r for r in rows if r[0] == "p3" and r[1].startswith("gcc")), None)
+    cases.append((f"p3 is compared after linking (object padding gone, relocations resolved): "
+                  f"{p3[2] if p3 else 'no row'}; the residue is the store's address expansion",
+                  p3 is not None and not p3[3].startswith("no ")))
 
     # 5.3 and 7.1 are not two hypotheses
     same = all(r53[2] == r71[2] and r53[3] == r71[3] for r53, r71 in
