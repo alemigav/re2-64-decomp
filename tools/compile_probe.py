@@ -82,6 +82,9 @@ def text_of(obj):
 
 MOVE = re.compile(r"^(\s*)move(\s+)(\$\d+),(\$\d+)\s*$", re.M)
 GAS = TC / "binutils" / "bin"
+# The SDK-era assembler, if it has been built: binutils 2.7's `as` expands `move` to `addu` on its own, which is
+# the cartridge's idiom, so the pipeline prefers it and only falls back to modern gas + an explicit rewrite.
+AS27 = TC / "src" / "bu27-build" / "gas" / "as.new"
 SYM = re.compile(r"^D_([0-9A-Fa-f]{8})$")
 
 
@@ -148,7 +151,7 @@ def compile_probe(directory, flags, pid, out, kind="ido", flags_addr=None):
     # the assembler, and the cartridge's expansion is `addu rd,rs,$zero` where modern gas chooses `or`. The
     # pipeline reproduces the cartridge's expansion explicitly rather than pretending the difference is codegen.
     cc1 = TC / directory / "bin" / "cc1"
-    gas = GAS / "mips-linux-gnu-as"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
     if not cc1.exists():
         return None, "no cc1 at %s" % cc1.relative_to(ROOT)
     asm = WORK / ("%s_%s.s" % (pid, directory))
@@ -156,13 +159,23 @@ def compile_probe(directory, flags, pid, out, kind="ido", flags_addr=None):
                           capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"})
     if proc.returncode:
         return None, "cc1 failed"
-    text = asm.read_text()
-    text = MOVE.sub(r"\1addu\2\3,\4,$0", text)
-    asm.write_text(text)
+    if gas == GAS / "mips-linux-gnu-as":
+        # only modern gas needs this: binutils 2.7 already expands `move` to `addu`
+        text = asm.read_text()
+        asm.write_text(MOVE.sub(r"\1addu\2\3,\4,$0", text))
     proc = subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(out), str(asm)],
                           capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"})
     if proc.returncode:
         return None, "assemble failed"
+    if gas == AS27:
+        # binutils 2.7 writes a `.symtab` whose sh_info modern ld rejects ("local symbol at index N >= sh_info"),
+        # so the object is rewritten by 2.42's objcopy before linking. Its own ld 2.7 builds but produces an
+        # empty file on this host, which is recorded in docs/TOOLCHAIN.md rather than worked around silently.
+        fixed = out.with_suffix(".fix.o")
+        subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(out), str(fixed)],
+                       capture_output=True, text=True)
+        if fixed.exists():
+            out = fixed
     if flags_addr is None:
         return text_of(out), None
     script, err = link_script(flags_addr, out, WORK)

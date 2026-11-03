@@ -79,6 +79,9 @@ doctor() {
 			printf 'SKIP IDO %s native   not recompiled yet (needs gmake and the IRIX binaries)\n' "$v"
 		fi
 	done
+	if [ -x "$TC/src/bu27-build/gas/as.new" ]; then
+		printf 'PASS as 2.7 (SDK-era) %s/src/bu27-build/gas/as.new — expands `move` to `addu`, as the cartridge does\n' "$TC"
+	fi
 	if [ -x "$TC/mips-gcc-2.7.2/bin/cc1" ]; then
 		printf 'PASS gcc 2.7.2       %s/mips-gcc-2.7.2/bin/cc1 (mipse-ultra-gcc; the one that matches)\n' "$TC"
 	fi
@@ -176,6 +179,33 @@ build_binutils() {
 	printf 'binutils: installed to %s\n' "$TC/binutils"
 }
 
+build_binutils27() {
+	# binutils 2.7 (1996): the SDK-era `as`. It matters because it expands `move` to `addu` on its own, which is
+	# the cartridge's idiom -- modern gas picks `or`. Built from ftp.gnu.org/gnu/binutils (old-gnu/ is gone).
+	src="$TC/src/binutils-2.7"
+	out="$TC/src/bu27-build"
+	[ -x "$out/gas/as.new" ] && { printf 'binutils 2.7: already built\n'; return 0; }
+	if [ ! -d "$src" ]; then
+		printf 'binutils 2.7: SKIP sources missing (build/toolchain/src/binutils-2.7)\n'
+		return 0
+	fi
+	host_cc=$(command -v gcc-16 || command -v gcc) || { printf 'binutils 2.7: SKIP no GCC host compiler\n'; return 0; }
+	mkdir -p "$out"
+	# 1996's configure calls config.sub with old-style multiple arguments, which a modern config.sub rejects;
+	# 2.42's copies accept both, and 2.7's own do not recognise aarch64-apple-darwin.
+	if [ -f "$TC/src/binutils-2.42/config.sub" ]; then
+		cp "$TC/src/binutils-2.42/config.sub" "$TC/src/binutils-2.42/config.guess" "$src/" 2>/dev/null
+	fi
+	( cd "$out" && CC="$host_cc -std=gnu89 -fcommon -w -I$root/$TC/src/hostshim" \
+	    ../binutils-2.7/configure --target=mips-elf --disable-nls --disable-werror >"$root/$TC/bu27-config.log" 2>&1 && \
+	  make -j"$JOBS" all-gas all-ld CC="$host_cc -std=gnu89 -fcommon -w -I$root/$TC/src/hostshim" \
+	       >"$root/$TC/bu27-build.log" 2>&1 ) || {
+		printf 'binutils 2.7: FAIL — see %s (needs one const patch on sys_nerr/sys_errlist)\n' "$TC/bu27-build.log" >&2
+		return 1
+	}
+	printf 'binutils 2.7: gas in %s/gas/as.new (its ld builds but writes an empty file on this host)\n' "$out"
+}
+
 build_gcc272() {
 	# gcc 2.7.2.3 for mips-elf: the SDK's own makefiles name `CC = gcc` with `-O -G 0`, and the probe corpus
 	# confirms it (3 of 4 probes byte-exact against IDO's 1). Building a 1996 compiler on a 2026 host took six
@@ -249,6 +279,6 @@ build_ido() {
 
 if [ "$MODE" != "--doctor" ]; then
 	mkdir -p "$TC"
-	build_binutils && build_gcc272 && build_ido
+	build_binutils && build_binutils27 && build_gcc272 && build_ido
 fi
 doctor

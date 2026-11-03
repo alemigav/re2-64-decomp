@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-249 milestones are indexed. 170 of them have a note; the rest are rows in the log that cite
+250 milestones are indexed. 171 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -265,6 +265,7 @@ at the foot of this file.
 | 246 | **M246** — the compile-probe corpus: IDO is refuted, and 5.3 and 7.1 are the same compiler | `docs/log/M246-the-compile-probe-corpus.md` |
 | 247 | **M247** — gcc 2.7.2 matches: three of four probes byte-for-byte, against IDO's one | `docs/log/M247-gcc-272-matches.md` |
 | 248 | **M248** — the linked comparison: p3 resolves and the residue is two words, in the assembler | `docs/log/M248-the-linked-comparison.md` |
+| 249 | **M249** — the SDK-era assembler: `move` explained, and p3's residue is not the assembler | `docs/log/M249-the-sdk-era-assembler.md` |
 
 ## The gaps, and why they are empty
 

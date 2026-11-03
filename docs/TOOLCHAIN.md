@@ -94,6 +94,28 @@ compiled against anything.
 | the emitted asm assembles | assemble it and compare the object's `.text` with the image | **possible now** — two assemblers exist; not yet run on splat's output |
 | C compiles back to the original bytes | one function, one compiler profile, byte equality | **possible now** — IDO 5.3 and 7.1 both run; the measurement has not been made |
 
+## 3b. The SDK-era assembler (M249)
+
+`binutils 2.7` (1996) is built at `build/toolchain/src/bu27-build`, and it settles a question M247 could not:
+
+| tool | `int f(int a){return a;}` | the cartridge |
+|---|---|---|
+| **binutils 2.7 `as`** | `00801021` **`addu`** | `addu` |
+| binutils 2.42 `as` | `00801025` `or` | — |
+| IDO's own `as1` | `00801025` `or` | — |
+
+So the corpus no longer normalises `move` when the 2.7 assembler is present: the real tool does what the cartridge
+does. With it, p1/p2/p4 are byte-exact and p3 is 6 of 8 (M249).
+
+Two host problems, both recorded rather than papered over:
+
+- **2.7's `ld` writes an empty file on this host.** It builds, runs, and produces zero bytes. Linking therefore
+  uses 2.42's `ld`, with 2.42's `objcopy` first — 2.7 writes a `.symtab` whose `sh_info` modern `ld` rejects
+  (*"local symbol at index N >= sh_info"*), and `objcopy` rewrites exactly that.
+- **2.7's `configure` needs a modern `config.sub`.** It calls it with old-style multiple arguments, which a
+  current `config.sub` rejects and which 2.7's own cannot answer for `aarch64-apple-darwin`; 2.42's copies work
+  for both.
+
 ## 4. The compile probe, ready to run
 
 When the toolchain exists, the first experiment is not "decompile a function" but "which compiler reproduces
