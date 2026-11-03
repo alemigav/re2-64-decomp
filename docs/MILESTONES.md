@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-282 milestones are indexed. 204 of them have a note; the rest are rows in the log that cite
+283 milestones are indexed. 205 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -299,6 +299,7 @@ at the foot of this file.
 | 279 | **M279** — `0x8007e590` enters the probe at 226 of 229, as a *partial* pin with a regional assertion | `docs/log/M279-0x8007e590-in-the-probe-at-226-of-229.md` |
 | 280 | **M280** — `0x800701d8`: 44 cases written, 28 of 141, and a residual that is the compiler, not the C | `docs/log/M280-0x800701d8-44-cases-and-a-compiler-gap.md` |
 | 281 | **M281** — `as -g`: the missing assembler flag, and `0x800701d8` byte-exact at 141 of 141 | `docs/log/M281-as-g-the-missing-assembler-flag.md` |
+| 282 | **M282** — the gas flag ladder, and a correction to M281: `-O0` cannot work, `-O10` can | `docs/log/M282-the-gas-flag-ladder-and-a-correction.md` |
 
 ## The gaps, and why they are empty
 
