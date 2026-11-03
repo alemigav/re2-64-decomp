@@ -42,7 +42,7 @@ linker), which is what the game was actually built with; the recompiler makes th
 needed only if a probe wants splat's GNU-dialect output. Two assemblers, one of them the original, is a better
 position than one.
 
-## 2. The compiler — named by the SDK's own makefiles, still not runnable here
+## 2. The compiler — named by the SDK's own makefiles, and now runnable and proven
 
 The owner supplied the **Nintendo 64 Developers Toolkit v5.2** disc (M247). It is a Mode-2 raw CD image; once
 the sector framing is stripped it mounts, and inside:
@@ -52,7 +52,10 @@ the sector framing is stripped it mounts, and inside:
 | `pc/basic/data1.cab` (InstallShield, `unshield`) | 811 files: `NuSTD`, `NuSystem`, `misc` — the libraries and tools, **no compiler** |
 | `sgi/n64kit52.tar` | the IRIX kit: `ccbl`, `HVQ`, `niff`, `nustd`, `nusys`, `misc` — again libraries, no `cc1` |
 
-So the toolchain binary is not on this disc; what *is* on it is the build contract, and that is worth as much:
+So the toolchain binary is not on this disc; what *is* on it is the build contract. **The compiler is now built
+from GNU source and proven** (see §4 for the flags and the evidence, and `tools/toolchain/provision.sh` for the
+recipes) — the disc settled *which* compiler, the build settled *that* it reproduces the cartridge. What the disc
+gives is:
 
 ```
 NuSTD/src/makefile:   CC = gcc          CFLAGS = -c -O -G 0 $(WFLAGS) ...
@@ -117,17 +120,29 @@ Two host problems, both recorded rather than papered over:
   current `config.sub` rejects and which 2.7's own cannot answer for `aarch64-apple-darwin`; 2.42's copies work
   for both.
 
-## 4. The compile probe, ready to run
+## 4. The compile probe, run — and what it settled
 
-When the toolchain exists, the first experiment is not "decompile a function" but "which compiler reproduces
-code we already understand". The probe corpus should be chosen by codegen class, not by address:
+The corpus was built the way this section used to argue it should be, and it answered the question.
 
-- a leaf function with two arguments and no stack frame;
-- a function with a save/restore frame (`addiu sp,sp,-N` + `sw ra`);
-- a `switch` that compiled to a jump table (the corpus has 86 dispatch heads — `manifests/dispatch_heads.json`);
-- a struct copy, where field widths and ordering show up immediately;
-- a loop with a delayed branch (`bne` + delay slot), where scheduling is visible.
+**Chosen by codegen class, not by address**, and now also by *function*: four generic probes (an empty body, a
+returned argument, a linked conditional global store, and a byte-copy loop) plus three whole functions recovered
+from the disassembly — `0x8004fd1c`, `0x80057e1c` and `0x80024558`, whose arms are a state machine, a second state
+machine and a block of Gfx command packets. Four codegen classes are **refused with a measurement** rather than
+probed with weakened C, which is the honest outcome when the cartridge has no cheap example.
 
-Each probe is a small C file plus the image's expected bytes, and the verdict is `match_diff.py`'s: the first
-differing instruction, not a hash. A compiler profile that reproduces three of five classes is a lead; one that
-reproduces none is a refutation worth publishing before anyone translates another function.
+**What it settled**, each by measurement rather than by reading:
+
+- **IDO is refuted**, and not by preference: for `int f(int a){return a;}` it emits `or v0,a0,zero`, while the
+  cartridge contains `addu rd,rs,zero` 8 501 times and `or rd,rs,zero` zero times.
+- **gcc 2.8.1 for `mips-elf` at `-O2 -G 0 -mips2 -mcpu=r4300`** reproduces every probe, and **binutils 2.7** is the
+  assembler that expands `move` to `addu`. `-mcpu=r4300` is not optional on either: on the compiler it selects the
+  load's `READY-DELAY` and therefore the instruction order, on the assembler it stops hazard `nop`s after `mtc1`.
+- **Two places where the image contradicts what the disc's makefile implies.** The kit's makefile says `CC = gcc`
+  with `CFLAGS = -c -O -G 0`, but `-O2` is what reproduces the image (`-O` misses by 10 words on the two
+  byte-exact functions), so either that makefile is the libraries' contract rather than the game's, or the game
+  was built with different flags. And the image's constant pool holds **no `li.s` expansion anywhere** — a scan of
+  the whole 1.9 MB finds zero `mtc1 $at` — so the original compiler never took the float-immediate path, which
+  vanilla 2.8.1 does and which therefore has to be patched out.
+- **Two whole functions are byte-exact**, and a third differs in three words whose causes are known and recorded.
+
+The verdict is still `match_diff.py`'s: the first differing instruction, never a hash.
