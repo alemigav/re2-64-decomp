@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-263 milestones are indexed. 185 of them have a note; the rest are rows in the log that cite
+264 milestones are indexed. 186 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -280,6 +280,7 @@ at the foot of this file.
 | 260 | **M260** — p8 recovered (116 of 139, best arm byte-exact) and two defects in our own toolchain | `docs/log/M260-p8-recovered-and-two-defects-in-our-own-toolchain.md` |
 | 261 | **M261** — the FP pool bug is a 64-bit-host bug, and fixing it changed *codegen*, not just data | `docs/log/M261-the-fp-pool-fix-and-its-second-symptom.md` |
 | 262 | **M262** — the last p7 hunk is unreachable from the source: five variants, one object | `docs/log/M262-the-last-p7-hunk-is-unreachable-from-the-source.md` |
+| 263 | **M263** — `-mcpu=r4300`: p7 is byte-exact, and the "unreachable" residues were a build flag | `docs/log/M263-mcpu-r4300-p7-byte-exact.md` |
 
 ## The gaps, and why they are empty
 

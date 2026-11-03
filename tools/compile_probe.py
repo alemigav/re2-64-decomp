@@ -81,8 +81,8 @@ PROFILES = [("ido-5.3 G0", "ido", "ido-5.3", ["-O2", "-non_shared", "-mips2", "-
             ("ido-7.1 G0", "ido", "ido-7.1", ["-O2", "-non_shared", "-mips2", "-G", "0"]),
             ("gcc2.7.2 -O", "gcc", "mips-gcc-2.7.2", ["-O", "-G", "0"]),
             ("gcc2.7.2 -O2", "gcc", "mips-gcc-2.7.2", ["-O2", "-G", "0"]),
-            ("gcc2.8.1 -O", "gcc", "mips-gcc-2.8.1", ["-O", "-G", "0"]),
-            ("gcc2.8.1 -O2", "gcc", "mips-gcc-2.8.1", ["-O2", "-G", "0"])]
+            ("gcc2.8.1 -O", "gcc", "mips-gcc-2.8.1", ["-O", "-G", "0", "-mcpu=r4300"]),
+            ("gcc2.8.1 -O2", "gcc", "mips-gcc-2.8.1", ["-O2", "-G", "0", "-mcpu=r4300"])]
 
 
 def text_of(obj, name=".text"):
@@ -321,7 +321,7 @@ def head_probe(spec):
     c.parent.mkdir(parents=True, exist_ok=True)
     c.write_text(_switch_source(spec["cases"]))
     s, o, fx = (c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o"))
-    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
     subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
@@ -414,7 +414,7 @@ def p6_function():
     c.parent.mkdir(parents=True, exist_ok=True)
     c.write_text(P6_SOURCE)
     s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
-    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
     subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
@@ -541,7 +541,7 @@ def p7_function():
     c.parent.mkdir(parents=True, exist_ok=True)
     c.write_text(P7_SOURCE)
     s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
-    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
     subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
@@ -649,7 +649,7 @@ def p8_function():
     c.parent.mkdir(parents=True, exist_ok=True)
     c.write_text(P8_SOURCE)
     s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
-    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
     subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
@@ -830,7 +830,7 @@ def check():
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
                   f"first at {p6f['first']}" if p6f else "p6 whole function: not run",
-                  bool(p6f) and p6f["same"] >= 82 and p6f["extra"] <= 6))
+                  bool(p6f) and p6f["same"] >= 90 and p6f["extra"] <= 4))
 
     cases.append((f"the divide-then-increment order the arms need is what gcc emits: {p6f['divu']} `divu` sites "
                   f"in the compiled body, and each is followed by a reload"
@@ -841,11 +841,18 @@ def check():
                   f"branch offset)",
                   bool(p6f) and p6f["first"] == "0x8004fd20"))
 
+    _p7tail = (", first residue at " + p7f["first"]) if p7f and p7f["first"] else ", nothing left to explain"
     cases.append((f"p7's whole function, recovered: {p7f['same_offset']} of {p7f['image_instrs']} words "
-                  f"identical by offset and {p7f['same']} aligned by content ({p7f['hunks']} hunk(s), first at "
-                  f"{p7f['first']}) -- both residues are instruction permutations, not wrong operations"
-                  if p7f else "p7 whole function: not run",
-                  bool(p7f) and p7f["same_offset"] >= 74 and p7f["same"] >= 75 and p7f["hunks"] <= 2))
+                  f"identical by offset and {p7f['same']} aligned by content ({p7f['hunks']} hunk(s)"
+                  f"{_p7tail})" if p7f else "p7 whole function: not run",
+                  bool(p7f) and p7f["same_offset"] == 84 and p7f["hunks"] == 0))
+
+    cases.append((f"p7 is the first whole function reproduced BYTE-FOR-BYTE from reconstructed C: "
+                  f"{p7f['same_offset']} of {p7f['image_instrs']} words identical by offset and "
+                  f"{p7f['hunks']} hunks -- which needs `-mcpu=r4300` on cc1, because the cpu selects the load "
+                  f"READY-DELAY (2 on r4300, 3 on the default) and with it the scheduler costs"
+                  if p7f else "p7 exactness: not run",
+                  bool(p7f) and p7f["same_offset"] == p7f["image_instrs"] and p7f["hunks"] == 0))
 
     cases.append((f"p7's case 0 is byte-exact ({p7f['arm0']} of 14 words) once the device window is a "
                   f"struct member: a mixed struct/non-struct pair is a dependence gcc 2.8.1 drops, so the "
@@ -860,7 +867,7 @@ def check():
     cases.append((f"p8's whole function, recovered: {p8f['same_offset']} of {p8f['image_instrs']} words identical "
                   f"by offset and {p8f['same']} aligned by content ({p8f['hunks']} hunk(s)); its 27-word first arm "
                   f"is {p8f['arm0']} of 27 -- byte-exact" if p8f else "p8 whole function: not run",
-                  bool(p8f) and p8f["same_offset"] >= 116 and p8f["arm0"] == 27))
+                  bool(p8f) and p8f["same_offset"] >= 136 and p8f["arm0"] == 27))
 
     cases.append((f"p8's jump table matches all 6 arm addresses by content, {p8f['table_at']} words into "
                   f".rodata" if p8f else "p8 table: not run",
