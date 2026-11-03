@@ -1259,6 +1259,186 @@ PACAE4_TABLE = 0x800BA890
 PACAE4_WORDS = 53
 PACAE4_SYMS = [("FUN_800ab7e0", 0x800AB7E0)]
 
+P7E590_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+
+struct Ctx {
+    u32 f0;
+    u8 pad4;
+    u8 f5;
+    u8 f6;
+    u8 f7;
+    u8 f8;
+    u8 pad9[0x2a - 0x9];
+    u16 f2a;
+    u32 f2c;
+    u8 pad30[0x32 - 0x30];
+    u16 f32;
+    u16 f34;
+    u16 f36;
+    u16 f38;
+    u8 pad3a[0x66 - 0x3a];
+    u16 f66;
+    u8 pad68[0x1a2 - 0x68];
+    u8 f1a2;
+    u8 pad1a3[0x1b4 - 0x1a3];
+    u16 f1b4;
+    u16 f1b6;
+    u8 pad1b8[0x1e0 - 0x1b8];
+    u16 f1e0;
+    u8 pad1e2[0x1e8 - 0x1e2];
+    union {
+        u32 w;
+        u8 b[4];
+    } f1e8;
+    u8 pad1ec[0x214 - 0x1ec];
+    u32 f214;
+    u8 pad218[0x21c - 0x218];
+    u32 f21c;
+    u32 f220;
+    u8 pad224[0x22c - 0x224];
+    u32 f22c;
+    u32 f230;
+    u8 pad234[0x25e - 0x234];
+    u16 f25e;
+    u8 pad260[0x26f - 0x260];
+    u8 f26f;
+    u8 pad270[0x2b0 - 0x270];
+    u16 f2b0;
+};
+
+extern u8 D_800C76B0[];
+extern u16 D_8010BA78[];
+extern int FUN_80089d54(struct Ctx *s, u32 a1, u32 a2, u32 a3);
+extern void FUN_80032b5c(struct Ctx *s, u32 a1);
+extern int FUN_800331b8(void);
+extern void FUN_800551e0(void);
+extern void FUN_80077f30(u32 a0, u32 a1, struct Ctx *s);
+
+void FUN_8007e590(struct Ctx *s)
+{
+    switch (s->f7) {
+    case 0: {
+        u16 t;
+        u32 g;
+
+        s->f7 = 1;
+        s->f1e8.b[0] = 6;
+        if (s->f6 & 2)
+            s->f1e8.b[0] = 7;
+        t = s->f2b0;
+        g = s->f0;
+        s->f1e8.b[2] = 7;
+        s->f1e8.b[1] = 0;
+        s->f1e8.w = 0x700;
+        s->f1e0 = 50;
+        *(u16 *)((u8 *)s + 0x66) = t;
+        s->f0 = g | 4;
+        }
+
+    case 1:
+        FUN_80089d54(s, s->f21c, s->f220, 0x200);
+        if (*(u16 *)((u8 *)s + 0x66) & 0x200)
+            *(u16 *)((u8 *)s + 0x66) += (*(u16 *)((u8 *)s + 0x66) >> 2) & 0xff;
+        else
+            *(u16 *)((u8 *)s + 0x66) -= (*(u16 *)((u8 *)s + 0x66) >> 2) & 0xff;
+        if (*(u16 *)((u8 *)s + 0x66) & 0x3e0)
+            return;
+        *(u16 *)((u8 *)s + 0x66) &= 0xff00;
+        s->f7 = 2;
+        if (!(s->f6 & 2))
+            return;
+        s->f7 = 0;
+        s->f5 = s->f5 + 1;
+        return;
+    case 2:
+        s->f7 = 3;
+        s->f1e8.b[0] = 6;
+        s->f1e8.b[2] = 3;
+
+    case 3: {
+        u8 c;
+
+        if (s->f1e8.b[1] == 17) {
+            s->f26f = s->f26f | 0x80;
+        }
+        c = s->f8;
+        if (c == 69 || c == 79) {
+            if (s->f1e8.b[1] == 99) {
+                s->f1e8.b[2] = 0;
+                if (s->f8 < 16)
+                    s->f1e0 = D_8010BA78[s->f8 + 16];
+                else
+                    s->f1e0 = D_8010BA78[s->f8 - 64];
+                FUN_80032b5c(s, 0);
+                s->f2c -= 1800;
+                s->f25e -= 1800;
+                s->f1a2 = s->f1a2 + 1;
+                s->f34 = s->f1b4 = s->f2a;
+                s->f38 = s->f1b6 = s->f32;
+                s->f36 = *(u16 *)((u8 *)s + 0x2e);
+            }
+            if (s->f1e8.b[1] == 119) {
+                s->f26f = s->f26f & 0x7f;
+                s->f0 = s->f0 & ~4;
+            }
+        } else {
+            if (s->f1e8.b[1] == 29) {
+                if (c < 16)
+                    s->f1e0 = D_8010BA78[s->f8 + 16];
+                else
+                    s->f1e0 = D_8010BA78[s->f8 - 64];
+                FUN_80032b5c(s, 0);
+                s->f2c -= 1800;
+                s->f25e -= 1800;
+                s->f1a2 = s->f1a2 + 1;
+                s->f34 = s->f1b4 = s->f2a;
+                s->f38 = s->f1b6 = s->f32;
+                s->f36 = *(u16 *)((u8 *)s + 0x2e);
+            }
+            if (s->f1e8.b[1] == 49) {
+                s->f26f = s->f26f & 0x7f;
+                s->f0 = s->f0 & ~4;
+            }
+        }
+        s->f7 = s->f7 + FUN_80089d54(s, s->f22c, s->f230, 0x400);
+        break;
+    }
+    case 4: {
+        u8 *dev = D_800C76B0;
+
+        if (!((*(u32 *)(dev + 0x18000 + 0x1a5c) & 0x10000000)
+              && s == (struct Ctx *)*(u32 *)(dev + 0x18000 + 0x1d3c)))
+            s->f5 = (s->f5 == 22) ? 4 : 5;
+        else
+            s->f5 = 0;
+        s->f6 = 0;
+        s->f7 = 0;
+        return;
+    }
+    }
+    {
+        u32 v = *(u32 *)s->f214;
+
+        if (v & 0x4000) {
+            u32 b = (v & 0x2000) >> 13;
+            u8 *dev;
+
+            FUN_80077f30(1, b * 3 + 4, s);
+            dev = D_800C76B0;
+            *(u16 *)(dev + 0x18000 + 0x1a7a) |= 4;
+        }
+    }
+}"""
+P7E590_TABLE = 0x800B9C78
+P7E590_WORDS = 229
+P7E590_CASE3 = 0x8007E6A8
+P7E590_CASE3_WORDS = 113
+P7E590_SYMS = [("D_800C76B0", 0x800C76B0), ("D_8010BA78", 0x8010BA78),
+               ("FUN_80089d54", 0x80089D54), ("FUN_80032b5c", 0x80032B5C),
+               ("FUN_80077f30", 0x80077F30)]
+
 
 def pacae4_function():
     """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
@@ -1302,6 +1482,58 @@ def pacae4_function():
     gw = [ro[4 * i:4 * i + 4] for i in range(7)]
     return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
             "extra": len(got) - n, "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
+
+
+def p7e590_function():
+    """Compile the 229-word seven-arm switch and compare it, its 113-word case-3 arm and its jump table.
+
+    Deliberately a *partial* pin, like p8: 226 of 229 words are identical by offset and the three that are not
+    are one register in case 4's value select (`li a0,5` where the image has `li v0,5`), which fifteen
+    restructurings did not move (M278 section 4). The pin is `>=` so an improvement passes and a regression fails.
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p7e590.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P7E590_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in P7E590_SYMS)
+    ld.write_text("ENTRY(FUN_8007e590)\nSECTIONS {\n  . = 0x8007e590;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B9C78;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo, n = 0x8007E590, P7E590_WORDS
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    c3 = (P7E590_CASE3 - lo) // 4
+    case3 = sum(1 for i in range(P7E590_CASE3_WORDS) if got[c3 + i] == want[c3 + i])
+    tw = [image[P7E590_TABLE - BASE + 4 * i:P7E590_TABLE - BASE + 4 * i + 4] for i in range(6)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(6)]
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
+            "extra": len(got) - n, "case3": case3,
+            "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
 
 
 def check():
@@ -1412,6 +1644,7 @@ def check():
     p167f = p59868_function()
     p59530f = p59530_function()
     pacae4f = pacae4_function()
+    p7e590f = p7e590_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -1514,6 +1747,18 @@ def check():
     cases.append((f"its jump table matches {pacae4f['table_same']} of 7 words at the image's own "
                   f"0x800ba890" if pacae4f else "0x800acae4 table: not run",
                   bool(pacae4f) and pacae4f["table_same"] == 7))
+
+    cases.append((f"the {p7e590f['image_instrs']}-word seven-arm switch at 0x8007e590 is recovered to "
+                  f"{p7e590f['same_offset']} words identical by offset and {p7e590f['same']} by content "
+                  f"({p7e590f['hunks']} hunk(s)): its 113-word case-3 arm is {p7e590f['case3']} of 113, the "
+                  f"device-update tail is exact, and the three words left are one register in case 4's select"
+                  if p7e590f else "0x8007e590: not run",
+                  bool(p7e590f) and p7e590f["same_offset"] >= 226 and p7e590f["case3"] == 113))
+
+    cases.append((f"its jump table matches {p7e590f['table_same']} of 6 words at the image's own 0x800b9c78, "
+                  f"the sixth zero because the bound is 5 and the out-of-range arm is the code after the "
+                  f"switch" if p7e590f else "0x8007e590 table: not run",
+                  bool(p7e590f) and p7e590f["table_same"] == 6))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

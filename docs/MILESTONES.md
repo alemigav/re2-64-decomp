@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-279 milestones are indexed. 201 of them have a note; the rest are rows in the log that cite
+280 milestones are indexed. 202 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -296,6 +296,7 @@ at the foot of this file.
 | 276 | **M276** — 0x800acae4: the streak held, and four shape facts a 53-word function can pin | `docs/log/M276-0x800acae4-clamp-then-dispatch.md` |
 | 277 | **M277** — `0x8007e590`, second pass: every region now the right size, the default arm exact, and two errors that were reading, not reconstruction | `docs/log/M277-0x8007e590-regions-sized-and-two-found-by-wrong-address.md` |
 | 278 | **M278** — `0x8007e590` at 226 of 229: the copy block, both table reads, and a switch with no `default` | `docs/log/M278-0x8007e590-226-of-229-transposition-and-exit-kind.md` |
+| 279 | **M279** — `0x8007e590` enters the probe at 226 of 229, as a *partial* pin with a regional assertion | `docs/log/M279-0x8007e590-in-the-probe-at-226-of-229.md` |
 
 ## The gaps, and why they are empty
 
