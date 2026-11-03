@@ -4,8 +4,11 @@ Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** �
 pseudocode, and a **988-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
-**This is not a matching build.** A 64 MB cartridge is a community-scale effort, so the project is staged to
-be useful at every step instead: formats decoded, a full pseudocode corpus, the script VM, the texture
+**This is not a matching build** — of the whole cartridge. But that sentence is no longer the only thing the
+project can say about the matching question: the compiler that produced this game has been **identified and
+reproduced**, and whole functions are now reconstructed from the image and recompiled **to the byte** (see
+[The matching build](#the-matching-build)). Finishing 64 MB is still a community-scale effort, so the project
+stays staged to be useful at every step: formats decoded, a full pseudocode corpus, the script VM, the texture
 container, the audio filesystem, and a gate that refuses to let a number rot — plus a verifier that will not
 report `PASS` unless the gates themselves have been shown to fail.
 
@@ -109,7 +112,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**267** numbers, 0-266: **211** with a row, and **56** named gaps. The full index — every number, its title,
+**268** numbers, 0-267: **212** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -131,6 +134,34 @@ worth reading before you believe any older note.
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
+
+## The matching build
+
+The question that decides whether a decompilation can ever be byte-exact is *what produced these bytes*. It is now
+answered, and answered by measurement rather than by reading:
+
+- **Compiler:** gcc **2.8.1** for `mips-elf`, at `-O2 -G 0 -mips2` — four of four probe functions byte-identical,
+  including a linked probe that gcc 2.7.2 cannot reproduce.
+- **Assembler:** binutils **2.7**, which expands `move` to `addu` natively — the cartridge's own idiom, where
+  modern gas picks `or`.
+- **The cpu flag matters:** `-mcpu=r4300` on **both** the compiler and the assembler. On the compiler it selects
+  the load's `READY-DELAY` (2 instead of 3) and therefore the instruction order; on the assembler it stops a hazard
+  `nop` being inserted after every `mtc1`.
+- **Two patched compiler behaviours**, both forced by evidence about the image rather than convenience: its constant
+  pool holds the real IEEE bits, and its `.rodata` is `[jump table][constant pool]` with every float constant
+  loaded from memory — a scan of the whole image finds no `li.s` expansion anywhere.
+
+With that profile, three functions have been reconstructed from the disassembly and recompiled:
+
+| function | size | result |
+|---|---|---|
+| `0x8004fd1c` | 98 words | **byte-exact** (only alignment padding past the image's extent) |
+| `0x80057e1c` | 84 words | **byte-exact, zero differences** |
+| `0x80024558` | 139 words | 136 of 139 — three words, each explained: one register allocation tie-break, one duplicated pool entry the original compiler emits and ours does not, and one padding word |
+
+The residues are reported, not rounded off, and three of the findings that got here were corrections of the project's
+own earlier claims. `tools/compile_probe.py --check` runs the whole thing; `docs/TOOLCHAIN.md` carries the build
+recipes and the obstacles found by running them.
 
 ## What is decoded
 
@@ -170,7 +201,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       97 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    191 notes, one per milestone that has one
+docs/log/    192 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

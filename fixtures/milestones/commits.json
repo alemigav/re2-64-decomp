@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "aec2fd8",
+   "subject": "M266: -msplit-addresses is refuted, and case 3/4 is an unsigned conversion",
+   "milestones": [
+    266
+   ]
+  },
+  {
    "sha": "bdc3773",
    "subject": "M265: both patches together -- the pool lands where the image's does",
    "milestones": [
