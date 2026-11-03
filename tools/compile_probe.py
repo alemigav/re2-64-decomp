@@ -721,6 +721,105 @@ def fp_pool_check():
     return out
 
 
+
+# p9 as a whole function: bound **7**, index a **command byte after `andi 0xff`**, table `0x800b96a8`, 46 words.
+# It is the smallest recovery and the first that is a *predicate dispatcher* rather than a state machine: the seven
+# arms are `==`, `>`, `>=`, `<`, `<=`, `!=` and `(a & b) != 0` on a callee's return value, and the arms fall into a
+# shared epilogue. Two shape facts were measured, not guessed: the field loaded with `lhu` must be held in a **32-bit**
+# local (a `u16` local re-extends it in every arm and scores 9 of 46), and the source has **no `default:` and no
+# trailing `return`** -- the out-of-range path lands on the epilogue with `v0` still 0 from the `sltiu`, and adding
+# either costs 16 words.
+P9_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef short s16;
+
+struct Ctx {
+    u8 pad0[0x1c];
+    u8 *ptr;
+    u8 pad20[0x134];
+    u8 *f154;
+};
+
+extern int FUN_800701d8(u8 *p, int a1);
+
+int FUN_80070120(struct Ctx *s)
+{
+    u8 *p;
+    unsigned int w;
+    int v;
+    int x;
+
+    p = s->ptr;
+    w = *(u16 *)(p + 2);
+    v = *(s16 *)(p + 4);
+    s->ptr = p + 6;
+    x = FUN_800701d8(s->f154, w >> 8);
+
+    switch (w & 0xff) {
+    case 0: return x == v;
+    case 1: return x > v;
+    case 2: return x >= v;
+    case 3: return x < v;
+    case 4: return x <= v;
+    case 5: return x != v;
+    case 6: return (x & v) != 0;
+    }
+}"""
+P9_TABLE = 0x800B96A8
+P9_SYMS = [("FUN_800701d8", 0x800701D8)]
+
+
+def p9_function():
+    """Compile the recovered p9 and compare its 46 words plus the 8-word jump table.
+
+    The table here is 8 words for 7 cases: the eighth entry is zero and is never read -- the bound check sends the
+    out-of-range index to the epilogue instead.
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p9full.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P9_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in P9_SYMS)
+    ld.write_text("ENTRY(f_probe)\nSECTIONS {\n  . = 0x80070120;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B96A8;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo = 0x80070120
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(46)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    tw = [image[P9_TABLE - BASE + 4 * i:P9_TABLE - BASE + 4 * i + 4] for i in range(8)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(8)]
+    return {"image_instrs": len(want), "got_instrs": len(got), "same_offset": off, "same": same,
+            "hunks": hunks, "extra": len(got) - len(want),
+            "table_same": sum(1 for a, b in zip(tw, gw) if a == b),
+            "first": ("0x%08x" % (lo + 4 * [o for o in sm.get_opcodes() if o[0] != "equal"][0][1]))
+                     if any(o[0] != "equal" for o in sm.get_opcodes()) else None}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -825,6 +924,7 @@ def check():
     p6f = p6_function()
     p7f = p7_function()
     p8f = p8_function()
+    p9f = p9_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -882,6 +982,17 @@ def check():
                   if fpf else "fp pool: not run",
                   bool(fpf) and fpf["small"] == "0x40800000" and fpf["big"] == "0x7f61b1e6"
                   and not fpf["small_inline"] and not fpf["big_inline"] and fpf["image_li_s"] == 0))
+
+    cases.append((f"p9 is BYTE-EXACT over the image's {p9f['image_instrs']} words ({p9f['same_offset']} "
+                  f"identical by offset, {p9f['same']} by content, first difference at {p9f['first']}) -- a "
+                  f"predicate dispatcher, and the third whole function reproduced from reconstructed C"
+                  if p9f else "p9 whole function: not run",
+                  bool(p9f) and p9f["same_offset"] == p9f["image_instrs"]))
+
+    cases.append((f"p9's jump table matches {p9f['table_same']} of 8 words at the image's own 0x800b96a8 -- the "
+                  f"eighth entry is zero and never read, because the bound check sends the out-of-range index to "
+                  f"the epilogue" if p9f else "p9 table: not run",
+                  bool(p9f) and p9f["table_same"] == 8))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

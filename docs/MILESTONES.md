@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-271 milestones are indexed. 193 of them have a note; the rest are rows in the log that cite
+272 milestones are indexed. 194 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -288,6 +288,7 @@ at the foot of this file.
 | 268 | **M268** — the mixed-constant test: duplication is uniform, and "the image dedups floats" was wrong | `docs/log/M268-the-mixed-constant-test-and-two-withdrawals.md` |
 | 269 | **M269** — the hoist and the no-dedup, tried together, and the docs brought up to date | `docs/log/M269-the-hoist-and-the-no-dedup-and-docs-brought-up-to-date.md` |
 | 270 | **M270** — case 3/4 in the image's statement order: measured, and the current expression is the best of the family | `docs/log/M270-case34-statement-order-measured-and-refuted.md` |
+| 271 | **M271** — p9 recovered byte-exact on the second attempt, and the shape facts that made it so | `docs/log/M271-p9-byte-exact-predicate-dispatcher.md` |
 
 ## The gaps, and why they are empty
 

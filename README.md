@@ -1,7 +1,7 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **988-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **990-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build** — of the whole cartridge. But that sentence is no longer the only thing the
@@ -80,7 +80,7 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 30 suites / 277 of 988 cases run; the other 41 suites SKIP
+python3 tools/acceptance.py      # 30 suites / 277 of 990 cases run; the other 41 suites SKIP
 python3 tools/audit_gates.py     # 146/146 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 22/22 — every doc anchor, heading and note pointer holds
@@ -92,7 +92,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **711 of 988 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **713 of 990 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -112,7 +112,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**271** numbers, 0-270: **215** with a row, and **56** named gaps. The full index — every number, its title,
+**272** numbers, 0-271: **216** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -135,7 +135,7 @@ worth reading before you believe any older note.
 | P13 | M211–M222 | the script VM's opcode registry, a call graph whose edges carry evidence, verification split into tiers, `TYRANT` named as a codename, and the three work packages that closed the sound family |
 | P14 | M223–M230 | the RSP microcode decoded and deliberately not named; the interface read as a frame loop; the vector unit named 252 of 254; the dispatch-head queue resolved |
 | P15 | M231–M250 | **the toolchain identified**: the sound backlog closed, a verification prototype (warm quarter-second), splat's rehearsal on the boot image, binutils 2.7 and IDO built natively, IDO refuted by a move census, gcc 2.7.2 then **gcc 2.8.1** reproducing every probe |
-| P16 | **M251–M268** | **whole functions reproduced from the image**: the compile-probe corpus, three functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`), **two byte-exact**, and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
+| P16 | **M251–M271** | **whole functions reproduced from the image**: the compile-probe corpus, four functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`), **three byte-exact**, and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -156,13 +156,14 @@ answered, and answered by measurement rather than by reading:
   pool holds the real IEEE bits, and its `.rodata` is `[jump table][constant pool]` with every float constant
   loaded from memory — a scan of the whole image finds no `li.s` expansion anywhere.
 
-With that profile, three functions have been reconstructed from the disassembly and recompiled:
+With that profile, four functions have been reconstructed from the disassembly and recompiled:
 
 | function | size | result |
 |---|---|---|
 | `0x8004fd1c` | 98 words | **byte-exact** (only alignment padding past the image's extent) |
 | `0x80057e1c` | 84 words | **byte-exact, zero differences** |
 | `0x80024558` | 139 words | 136 of 139 — three words, each explained: the pool address in `$at` rather than a gcc register (an allocation tie-break), a pool entry the original keeps per **use** where ours deduplicates, and one padding word |
+| `0x80070120` | 46 words | **byte-exact**, jump table included — a predicate dispatcher over `==`, `>`, `>=`, `<`, `<=`, `!=` and `&` |
 
 The residues are reported, not rounded off, and three of the findings that got here were corrections of the project's
 own earlier claims. `tools/compile_probe.py --check` runs the whole thing; `docs/TOOLCHAIN.md` carries the build
@@ -206,7 +207,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       97 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 638 decompiled functions across 36 images, one .c per function, provenance in each header
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    195 notes, one per milestone that has one
+docs/log/    196 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
