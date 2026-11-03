@@ -93,6 +93,9 @@ SUITES = [
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
     ("byte map (repository)", [sys.executable, "tools/classify_image.py", "--check"], 6, False),
     ("hook certificate (repository)", [sys.executable, "tools/hook_cert.py", "--self-test"], 9, False),
+    # M241: the generated Script-VM header must be exactly what the registry derives. It is the file a
+    # matching reconstruction includes, so drift in it is drift in every future function signature.
+    ("tyrant header (repository)", [sys.executable, "tools/tyrant_header.py", "--check"], 1, False),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     ("analysis status (repository)", [sys.executable, "tools/analysis_status.py", "--check"], 7, False),
     ("missed-function census (cartridge)", [sys.executable, "tools/find_missed_functions.py", "--check"], 2, True),
