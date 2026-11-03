@@ -324,7 +324,7 @@ def head_probe(spec):
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx)], capture_output=True)
     ld = c.with_suffix(".ld")
@@ -417,7 +417,7 @@ def p6_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx)], capture_output=True)
     ld = c.with_suffix(".ld")
@@ -545,7 +545,7 @@ def p7_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
@@ -653,7 +653,7 @@ def p8_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
@@ -787,7 +787,7 @@ def p9_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
@@ -970,7 +970,7 @@ def p59868_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
@@ -1166,7 +1166,7 @@ def p59530_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
@@ -1439,6 +1439,126 @@ P7E590_SYMS = [("D_800C76B0", 0x800C76B0), ("D_8010BA78", 0x8010BA78),
                ("FUN_80089d54", 0x80089D54), ("FUN_80032b5c", 0x80032B5C),
                ("FUN_80077f30", 0x80077F30)]
 
+P701D8_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
+
+struct T {
+    u16  f0;
+    u16  f2;
+    u8   f4;
+    u8   f5;
+    u8   f6;
+    u8   f7;
+    u8   f8;
+    u8 pad9[1];
+    u8   f10;
+    u8   f11;
+    u8 pad12[4];
+    u32  f16;
+    u8 pad20[20];
+    u32  f40;
+    u32  f44;
+    u32  f48;
+    u8 pad52[48];
+    s16  f100;
+    s16  f102;
+    s16  f104;
+    u8 pad106[198];
+    s16  f304;
+    s16  f306;
+    s16  f308;
+    u16  f310;
+    u16  f312;
+    u16  f314;
+    u8 pad316[102];
+    u8   f418;
+    u8 pad419[7];
+    u16  f426;
+    u8 pad428[8];
+    s16  f436;
+    s16  f438;
+    u8 pad440[40];
+    union { u8 b; s16 h; } f480;
+    s16  f482;
+    s16  f484;
+    u8 pad486[4];
+    u8   f490;
+    u8 pad491[5];
+    u16  f496;
+    u8 pad498[108];
+    s16  f606;
+    s16  f608;
+    s16  f610;
+    u8 pad612[4];
+    u16  f616;
+    u8 pad618[5];
+    u8   f623;
+    s16  f624;
+    s16  f626;
+    s16  f628;
+    s16  f630;
+    u8 pad632[2];
+    s16  f634;
+    u8 pad636[56];
+    u16  f692;
+    u16  f694;
+};
+
+u32 FUN_800701d8(struct T *p, u32 idx)
+{
+    switch (idx) {
+    case 1: return p->f0;
+    case 0: return p->f2;
+    case 2: return p->f4;
+    case 3: return p->f5;
+    case 4: return p->f6;
+    case 5: return p->f7;
+    case 6: return p->f8;
+    case 7: return p->f426;
+    case 8: return p->f10;
+    case 9: return p->f11;
+    case 10: return p->f16;
+    case 11: return p->f40;
+    case 12: return p->f44;
+    case 13: return p->f48;
+    case 14: return p->f100;
+    case 15: return p->f102;
+    case 16: return p->f104;
+    case 17: return p->f418;
+    case 18: return p->f496;
+    case 19: return p->f606;
+    case 20: return p->f608;
+    case 21: return p->f610;
+    case 22: return p->f616;
+    case 23: return p->f624;
+    case 24: return p->f626;
+    case 25: return p->f628;
+    case 26: return p->f630;
+    case 27: return p->f480.b;
+    case 28: return p->f480.h;
+    case 29: return p->f482;
+    case 30: return p->f484;
+    case 31: return p->f490;
+    case 32: return p->f304;
+    case 33: return p->f308;
+    case 34: return p->f306;
+    case 35: return p->f310;
+    case 36: return p->f314;
+    case 37: return p->f312;
+    case 38: return p->f634;
+    case 39: return p->f436;
+    case 40: return p->f438;
+    case 41: return p->f692;
+    case 42: return p->f694;
+    case 43: return p->f623;
+    }
+}"""
+P701D8_TABLE = 0x800B96C8
+P701D8_WORDS = 141
+P701D8_TABLE_WORDS = 44
+
 
 def pacae4_function():
     """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
@@ -1454,7 +1574,7 @@ def pacae4_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
@@ -1503,7 +1623,7 @@ def p7e590_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                    capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
@@ -1533,6 +1653,58 @@ def p7e590_function():
     gw = [ro[4 * i:4 * i + 4] for i in range(6)]
     return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
             "extra": len(got) - n, "case3": case3,
+            "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
+
+
+def p701d8_function():
+    """Compile the 44-arm accessor dispatcher and compare its 141 words plus the 44-word jump table.
+
+    The arms are the discriminator this function exists to pin: the image has `load; jr ra; nop` per arm (3 words,
+    44 x 3 + a 9-word head = 141), which only appears when the assembler is told `-g`. With the default
+    `mips_optimize` of 2, gas swaps the branch with the preceding load (its "fill the branch delay slot" rule in
+    tc-mips.c), the arms become 2 words and the object is 100 words. `-g` sets `mips_optimize = 0`, and across the
+    whole 1.9 MB image not one of the 2 237 `jr ra` instructions has a load in its delay slot (M281).
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p701d8.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P701D8_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    ld.write_text("ENTRY(FUN_800701d8)\nSECTIONS {\n  . = 0x800701d8;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B96C8;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n")
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo, n = 0x800701D8, P701D8_WORDS
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    tw = [image[P701D8_TABLE - BASE + 4 * i:P701D8_TABLE - BASE + 4 * i + 4]
+          for i in range(P701D8_TABLE_WORDS)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(P701D8_TABLE_WORDS)]
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
+            "extra": len(got) - n,
             "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
 
 
@@ -1645,6 +1817,7 @@ def check():
     p59530f = p59530_function()
     pacae4f = pacae4_function()
     p7e590f = p7e590_function()
+    p701d8f = p701d8_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -1759,6 +1932,17 @@ def check():
                   f"the sixth zero because the bound is 5 and the out-of-range arm is the code after the "
                   f"switch" if p7e590f else "0x8007e590 table: not run",
                   bool(p7e590f) and p7e590f["table_same"] == 6))
+
+    cases.append((f"the {p701d8f['image_instrs']}-word 44-arm accessor dispatcher at 0x800701d8 is BYTE-EXACT: "
+                  f"{p701d8f['same_offset']} identical by offset and {p701d8f['same']} by content -- one load and "
+                  f"a `jr ra` per arm, and its arms are the reason the assembler needs `-g`"
+                  if p701d8f else "0x800701d8: not run",
+                  bool(p701d8f) and p701d8f["same_offset"] == p701d8f["image_instrs"]))
+
+    cases.append((f"its jump table matches {p701d8f['table_same']} of 44 words at the image's own 0x800b96c8, "
+                  f"every arm 3 words because gas's delay-slot swap is off under `-g`"
+                  if p701d8f else "0x800701d8 table: not run",
+                  bool(p701d8f) and p701d8f["table_same"] == 44))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

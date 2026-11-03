@@ -135,7 +135,12 @@ probed with weakened C, which is the honest outcome when the cartridge has no ch
 - **IDO is refuted**, and not by preference: for `int f(int a){return a;}` it emits `or v0,a0,zero`, while the
   cartridge contains `addu rd,rs,zero` 8 501 times and `or rd,rs,zero` zero times.
 - **gcc 2.8.1 for `mips-elf` at `-O2 -G 0 -mips2 -mcpu=r4300`** reproduces every probe, and **binutils 2.7** is the
-  assembler that expands `move` to `addu`. `-mcpu=r4300` is not optional on either: on the compiler it selects the
+  assembler that expands `move` to `addu` — invoked as `-EB -mips2 -mcpu=r4300 -g -G 0`. **The `-g` is required and it
+  is not about debug info**: gas's `mips_optimize` defaults to 2, and at that level `tc-mips.c` fills a branch's delay
+  slot by *swapping the branch with the preceding instruction* unless a label, a `nop` or `.set noreorder` blocks it;
+  `-g` sets `mips_optimize = 0` and stops it. The image shows the swap never happened — **none of its 2 237 `jr ra`
+  instructions has a load in the delay slot** — and the first function that could tell was `0x800701d8`, whose 44 arms
+  are `load; jr ra; nop` (3 words) against our 2, a 41-word difference that vanishes under `-g` (M281). `-mcpu=r4300` is not optional on either: on the compiler it selects the
   load's `READY-DELAY` and therefore the instruction order, on the assembler it stops hazard `nop`s after `mtc1`.
 - **Two places where the image contradicts what the disc's makefile implies.** The kit's makefile says `CC = gcc`
   with `CFLAGS = -c -O -G 0`, but `-O2` is what reproduces the image (`-O` misses by 10 words on the two
