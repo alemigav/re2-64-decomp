@@ -21,6 +21,13 @@ addresses, so any probe that touches a global or a call differs from the image b
 demonstrates that (`lui t6,0x0` against the image's `lui v0,0x8013`) and is reported as `relocated`, not as a
 mismatch. The corpus therefore earns its keep on self-contained code, and the census carries the argument.
 
+Two defects in *this* toolchain build are known and are not the C's fault, so they are named here rather
+than debugged again every time a probe looks wrong: (a) **`as` must be given `-mcpu=r4300`** -- without it
+binutils 2.7 does not set `cop_interlocks` and inserts a hazard `nop` after every `mtc1`, which costs one
+recovered function 71 words; (b) **`cc1` writes every constant-pool FP literal as 0** (a 16-byte-union
+`bcopy` of `CONST_DOUBLE_LOW` on a 64-bit host), so a float in `.rodata` cannot be compared at all -- only
+the `.text` that loads it. Both are recorded in M260.
+
 Usage:
   ./compile_probe.py --check     # run the corpus and the census
   ./compile_probe.py --list      # the probes and what class each one covers
@@ -317,7 +324,8 @@ def head_probe(spec):
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(o), str(s)], capture_output=True)
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx)], capture_output=True)
     ld = c.with_suffix(".ld")
     ld.write_text("SECTIONS {\n  . = 0x%08X;\n  .text : { *(.text) }\n  . = 0x%08X;\n"
@@ -409,7 +417,8 @@ def p6_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(o), str(s)], capture_output=True)
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx)], capture_output=True)
     ld = c.with_suffix(".ld")
     ld.write_text("SECTIONS {\n  . = 0x8004FD1C;\n  .text : { *(.text) }\n  . = 0x800B8BD0;\n"
@@ -535,7 +544,8 @@ def p7_function():
     if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
                       capture_output=True).returncode:
         return None
-    subprocess.run([str(gas), "-EB", "-mips2", "-G", "0", "-o", str(o), str(s)], capture_output=True)
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
     ld = c.with_suffix(".ld")
@@ -565,6 +575,116 @@ def p7_function():
             "extra": len(got) - len(want), "table_same": sum(1 for a, b in zip(tw, gw) if a == b),
             "arm0": sum(1 for i in range(14) if want[14 + i] == got[14 + i]),
             "first": "0x%08x" % (lo + 4 * hunks[0][1]) if hunks else None}
+
+
+
+# p8 as a whole function: bound **6**, index a **global byte**, table `0x800b69b0`. It is the first probe whose arms
+# are *Gfx command packets* (`w0`/`w1` word pairs written through a block-scoped temp pointer), so it exercises the
+# `move/addiu/sw/sw` idiom rather than a state machine. Two layout facts make it unlike p6/p7, and both are
+# reported instead of smoothed: our `.rodata` holds the constant pool **before** the jump table (the image has
+# [table][pool]), so the table lands 16 bytes late; and `cc1` in this build writes every FP pool literal as **0**
+# (a host-portability defect -- see the module docstring), so the pool's one float cannot be compared at all.
+P8_SOURCE = """typedef unsigned char u8;
+typedef unsigned int u32;
+typedef int s32;
+
+typedef struct {
+    u32 w0;
+    u32 w1;
+} Gfx;
+
+extern u8 DAT_800e923c;
+extern u32 DAT_801137d8;
+extern u32 DAT_801137dc;
+extern u32 DAT_8010b6fc;
+extern u32 DAT_800c4f08[];
+
+Gfx *FUN_80024558(Gfx *p)
+{
+    switch (DAT_800e923c) {
+    case 0:
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xE3001001; _g->w1 = 0; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xE200001C; _g->w1 = 0; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xE3000A01; _g->w1 = 0x00200000; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0x0A000000; _g->w1 = (u32)DAT_800c4f08; }
+        break;
+    case 1:
+    case 2:
+    case 5:
+        break;
+    case 3:
+    case 4:
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xE7000000; _g->w1 = 0; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xFF100000 | ((DAT_801137d8 - 1) & 0xFFF); _g->w1 = DAT_8010b6fc; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xED000000; _g->w1 = (((s32)((float)DAT_801137d8 * 4.0f)) & 0xFFF) << 12
+                            | (((s32)((float)DAT_801137dc * 4.0f)) & 0xFFF); }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xE3000A01; _g->w1 = 0x00300000; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xFCFFFFFF; _g->w1 = 0xFFFE793C; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xE200001C; _g->w1 = 0x0F0A4000; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xF7000000; _g->w1 = 0xFFFCFFFC; }
+        { Gfx *_g = p; p = p + 1; _g->w0 = 0xF6000000 | (((DAT_801137d8 - 1) & 0x3FF) << 14) | (((DAT_801137dc - 1) & 0x3FF) << 2); _g->w1 = 0; }
+        break;
+    }
+    return p;
+}"""
+P8_TABLE = 0x800B69B0
+P8_ARMS = [0x80024594, 0x80024770, 0x80024770, 0x80024600, 0x80024600, 0x80024770]
+P8_SYMS = [("DAT_800e923c", 0x800E923C), ("DAT_801137d8", 0x801137D8), ("DAT_801137dc", 0x801137DC),
+           ("DAT_8010b6fc", 0x8010B6FC), ("DAT_800c4f08", 0x800C4F08)]
+
+
+def p8_function():
+    """Compile the recovered p8 and compare 139 words of text, its 27-word first arm, and the jump table.
+
+    `as` must be told `-mcpu=r4300`: without it the assembler does not set `cop_interlocks` and inserts a hazard
+    `nop` after every `mtc1`, which costs this function **71 words** (45 of 139 against 116 of 139). That is a
+    property of the *assembler the SDK used*, not of the C, so the whole pipeline passes it now.
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p8full.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P8_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in P8_SYMS)
+    ld.write_text("ENTRY(f_probe)\nSECTIONS {\n  . = 0x80024558;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B69B0;\n  .rodata : { *(.rodata) *(.rodata.*) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo = 0x80024558
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(139)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    c0 = (0x80024594 - lo) // 4
+    arm0 = sum(1 for i in range(27) if want[c0 + i] == got[c0 + i])
+    ro = [text_of(elf, ".rodata")[4 * i:4 * i + 4].hex() for i in range(len(text_of(elf, ".rodata")) // 4)]
+    run = ["%08x" % w for w in P8_ARMS]
+    table_at = None
+    for i in range(len(ro) - 5):
+        if ro[i:i + 6] == run:
+            table_at = i
+    return {"image_instrs": len(want), "got_instrs": len(got), "same_offset": off, "same": same,
+            "hunks": hunks, "arm0": arm0, "table_at": table_at, "table_words": 6 if table_at is not None else 0}
 
 
 def check():
@@ -670,6 +790,7 @@ def check():
 
     p6f = p6_function()
     p7f = p7_function()
+    p8f = p8_function()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
                   f"first at {p6f['first']}" if p6f else "p6 whole function: not run",
@@ -699,6 +820,16 @@ def check():
     cases.append((f"p7's jump table lands on the image's own 0x800b8f78 and matches {p7f['table_same']} of 8 words "
                   f"only because the linker places it, not the source" if p7f else "p7 table: not run",
                   bool(p7f) and p7f["table_same"] == 8))
+
+    cases.append((f"p8's whole function, recovered: {p8f['same_offset']} of {p8f['image_instrs']} words identical "
+                  f"by offset and {p8f['same']} aligned by content ({p8f['hunks']} hunk(s)); its 27-word first arm "
+                  f"is {p8f['arm0']} of 27 -- byte-exact" if p8f else "p8 whole function: not run",
+                  bool(p8f) and p8f["same_offset"] >= 116 and p8f["arm0"] == 27))
+
+    cases.append((f"p8's jump table matches all 6 arm addresses by content, found {p8f['table_at']} words into "
+                  f".rodata because the constant pool is emitted before it -- the image has [table][pool]"
+                  if p8f else "p8 table: not run",
+                  bool(p8f) and p8f["table_words"] == 6))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
