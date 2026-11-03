@@ -96,6 +96,9 @@ SUITES = [
     # M241: the generated Script-VM header must be exactly what the registry derives. It is the file a
     # matching reconstruction includes, so drift in it is drift in every future function signature.
     ("tyrant header (repository)", [sys.executable, "tools/tyrant_header.py", "--check"], 1, False),
+    # M242: the matching comparator, proved on the real bytes -- an ELF against the member it was built
+    # from, and a one-word perturbation located and attributed. Needs build/elfs and the assets.
+    ("match diff (cartridge)", [sys.executable, "tools/match_diff.py", "--self-test"], 4, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     ("analysis status (repository)", [sys.executable, "tools/analysis_status.py", "--check"], 7, False),
     ("missed-function census (cartridge)", [sys.executable, "tools/find_missed_functions.py", "--check"], 2, True),

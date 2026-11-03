@@ -30,6 +30,7 @@
   "byte map (repository)": 6,
   "hook certificate (repository)": 9,
   "tyrant header (repository)": 1,
+  "match diff (cartridge)": 4,
   "image inventory (cartridge)": 1,
   "analysis status (repository)": 7,
   "missed-function census (cartridge)": 2,
