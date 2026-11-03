@@ -369,15 +369,15 @@ void f(S *s, short *p, int idx) {
   switch (idx) {
   case 0: *p = s->b3 << 4; break;
   case 1: *p = (s->b1 / s->b2) << 4;
-          if (s->b1 == s->b2 * s->b3 - 1) break;
+          if (s->b1 == s->b3 * s->b2 - 1) break;
           s->b1 = s->b1 + 1; break;
   case 2: *p = (s->b1 / s->b2) << 4;
           s->b1 = s->b1 + 1;
-          if ((unsigned char)s->b1 != s->b2 * s->b3) break;
+          if ((unsigned char)s->b1 != s->b3 * s->b2) break;
           s->b1 = 0; break;
   case 3: *p = (s->b1 / s->b2) << 4;
           s->b1 = s->b1 + 1;
-          if ((unsigned char)s->b1 != s->b2 * s->b3) break;
+          if ((unsigned char)s->b1 != s->b3 * s->b2) break;
           s->b1 = s->b1 - s->b2; s->b0 = 132; break;
   case 4: s->b1 = s->b1 - 1;
           *p = (s->b1 / s->b2) << 4;
@@ -537,7 +537,7 @@ def check():
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
                   f"first at {p6f['first']}" if p6f else "p6 whole function: not run",
-                  bool(p6f) and p6f["same"] >= 80 and p6f["extra"] <= 8))
+                  bool(p6f) and p6f["same"] >= 82 and p6f["extra"] <= 6))
 
     cases.append((f"the divide-then-increment order the arms need is what gcc emits: {p6f['divu']} `divu` sites "
                   f"in the compiled body, and each is followed by a reload"

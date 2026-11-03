@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-256 milestones are indexed. 177 of them have a note; the rest are rows in the log that cite
+257 milestones are indexed. 179 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -262,6 +262,7 @@ at the foot of this file.
 | 242 | **M242** — *(no row, no note)* | commit only: `95fe500` “M242: match_diff.py -- name the first differing instruction, proved both ways” |
 | 243 | **M243** — *(no row, no note)* | commit only: `8323b0e` “M243: the splat dress rehearsal on the boot image -- map verified, assembler absent” |
 | 244 | **M244** — *(no row, no note)* | no evidence in the tree |
+| 245 | **M245** — both toolchains run: IDO 5.3 and 7.1 native, GNU as/ld for mips | `docs/log/M245-both-toolchains-run.md` |
 | 246 | **M246** — the compile-probe corpus: IDO is refuted, and 5.3 and 7.1 are the same compiler | `docs/log/M246-the-compile-probe-corpus.md` |
 | 247 | **M247** — gcc 2.7.2 matches: three of four probes byte-for-byte, against IDO's one | `docs/log/M247-gcc-272-matches.md` |
 | 248 | **M248** — the linked comparison: p3 resolves and the residue is two words, in the assembler | `docs/log/M248-the-linked-comparison.md` |
@@ -272,6 +273,7 @@ at the foot of this file.
 | 253 | **M253** — three more dispatch heads: bounds 5/6/7/7, four index sources, and two layout facts | `docs/log/M253-three-more-dispatch-heads.md` |
 | 254 | **M254** — p6's arms recovered: the delay slot matched, and the rest is a reconstruction in progress | `docs/log/M254-recovering-p6s-arms.md` |
 | 255 | **M255** — arms 2–4: the order was already right, and the region comparison was not | `docs/log/M255-p6-arms-the-order-was-already-right.md` |
+| 256 | **M256** — the permuter plateaued at 1 900; the fix it could not find was one operand order | `docs/log/M256-the-permuter-plateau-and-the-operand-that-moved.md` |
 
 ## The gaps, and why they are empty
 
