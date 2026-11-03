@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "cbf435f",
+   "subject": "M277: 0x8007e590 second pass -- every region the right size, default arm exact at 176/229",
+   "milestones": [
+    277
+   ]
+  },
+  {
    "sha": "cfedd5e",
    "subject": "M276: 0x800acae4 byte-exact -- the streak held at 53 words",
    "milestones": [
