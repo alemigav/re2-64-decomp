@@ -820,6 +820,188 @@ def p9_function():
                      if any(o[0] != "equal" for o in sm.get_opcodes()) else None}
 
 
+
+# The largest whole function recovered so far: 167 words, bound **7**, index `lbu 6(ctx)` -- the same index source
+# p7 uses -- and 7 contiguous arms whose sizes are wildly uneven (41 words against 6). It is a game-state machine
+# that touches the same device window as p7. Three shape levers were required and each is a *measured* discriminator:
+# a word field and the bytes inside it must be **one union member** (sibling `u8` fields let gcc prove the byte reads
+# disjoint from the word store and re-schedule the whole body: 136 of 167), the fields written with `lhu`/`sh` must be
+# **`u16` with an explicit `(s16)` cast** only in the predicates (declaring them `s16` costs 7 words), and a compound
+# test must be **nested `if`s** rather than `&&` because the pointer assignment between them is what stops the symbol
+# address from being kept live across the branch (a flat chain costs 10 words in that arm). There is no pool literal
+# in it at all -- every constant is `lui`/`ori` or an immediate -- so the pool pathologies of p6/p8 cannot arise here.
+P59868_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
+
+struct Dev {
+    u8  pad[0x1c6a];
+    u8  f1c6a;
+};
+
+struct Ctx {
+    u32 f0;
+    u16 f4;
+    u8  mode;
+    u8  f7;
+    u8  pad8[0x28 - 0x8];
+    u8  f28[0x1a4 - 0x28];
+    u32 f1a4;
+    u8  pad1a8[0x1e0 - 0x1a8];
+    u16 f1e0;
+    s16 f1e2;
+    s16 f1e4;
+    u8  pad1e6[2];
+    union {
+        u32 w;
+        u8  b[4];
+    } f1e8;
+    u8  pad1ec[0x1f2 - 0x1ec];
+    s16 f1f2;
+    u16 f1f4;
+    u8  pad1f6[0x218 - 0x1f6];
+    u32 f218;
+    u8  pad21c[0x224 - 0x21c];
+    u32 f224;
+    u32 f228;
+    u8  pad22c[0x25c - 0x22c];
+    u8  f25c;
+    u8  pad25d[0x26f - 0x25d];
+    u8  f26f;
+};
+
+extern u8 D_800C76B0[];
+
+extern void FUN_80077adc(u32 a0, void *a1);
+extern void FUN_80032b5c(void *a0, u32 a1);
+extern int  FUN_80089d54(struct Ctx *a0, u32 a1, u32 a2, u32 a3);
+extern int  FUN_800331b8(void);
+extern void FUN_800551e0(void);
+
+void FUN_80059868(struct Ctx *s)
+{
+    switch (s->mode) {
+    case 0:
+        s->f1e8.w = 0x05000300;
+        s->mode = 1;
+        s->f1e0 = 400;
+        s->f1e2 = 0;
+        s->f1e4 = 0;
+        s->f26f |= 0x80;
+        s->f25c |= 0x12;
+        FUN_80077adc(0x04020001, s->f28);
+        s->f0 &= ~4;
+
+    case 1: {
+        u8 *dev;
+        if (s->f1e8.b[1] == 5) {
+            dev = D_800C76B0;
+            if (((struct Dev *)(dev + 0x18000))->f1c6a == 3)
+                FUN_80077adc(0x04020001, s->f28);
+        }
+        FUN_80032b5c(s, 0);
+        s->mode += FUN_80089d54(s, s->f224, s->f228, 0x400);
+        if (s->f1e8.b[2])
+            s->f1e0 -= 20;
+        else
+            s->f1e0 -= 50;
+        if ((s16)s->f1e0 < 0)
+            s->f1e0 = 0;
+        break;
+    }
+    case 2:
+        s->f1e8.w = 0x04000300;
+        s->mode = 3;
+        s->f1f4 = 30;
+        if (s->f1f2 < 150)
+            s->f1f4 = 60;
+        if (s->f1f2 < 70)
+            s->f1f4 += 50;
+        if (s->f1f2 < 30)
+            s->f1f4 += 50;
+        if (s->f1f2 == 0)
+            s->f1f4 += 100;
+
+    case 3:
+        FUN_80089d54(s, s->f224, s->f228, 0x10400);
+        s->f1f4 -= FUN_800331b8() * 3 + 1;
+        if ((s16)s->f1f4 < 0)
+            s->mode = 4;
+        break;
+    case 4:
+        s->f1e8.w = 0x01000300;
+        s->mode = 5;
+        s->f26f = 0;
+
+    case 5:
+        if (FUN_80089d54(s, s->f224, s->f228, 0x400) != 0) {
+            s->mode = 6;
+            s->f1e8.w = 0x06000300;
+        }
+        break;
+    case 6:
+        if (FUN_80089d54(s, s->f1a4, s->f218, 0x10400) != 0) {
+            FUN_800551e0();
+            *(u32 *)&s->f4 = 0x01000000;
+            s->f26f = 0;
+            s->f25c &= 0xed;
+        }
+        break;
+    }
+}"""
+P59868_TABLE = 0x800B9040
+P59868_SYMS = [("D_800C76B0", 0x800C76B0), ("FUN_80077adc", 0x80077ADC), ("FUN_80032b5c", 0x80032B5C),
+               ("FUN_80089d54", 0x80089D54), ("FUN_800331b8", 0x800331B8), ("FUN_800551e0", 0x800551E0)]
+P59868_ARMS = [0x800598A0, 0x800598FC, 0x800599A0, 0x80059A20, 0x80059A6C, 0x80059A84, 0x80059AB4]
+
+
+def p59868_function():
+    """Compile the 167-word state machine and compare every word plus its 8-word jump table."""
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p59868.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P59868_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in P59868_SYMS)
+    ld.write_text("ENTRY(f_probe)\nSECTIONS {\n  . = 0x80059868;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B9040;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo, n = 0x80059868, 167
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    tw = [image[P59868_TABLE - BASE + 4 * i:P59868_TABLE - BASE + 4 * i + 4] for i in range(8)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(8)]
+    arms_exact = sum(1 for a in P59868_ARMS if want[(a - lo) // 4] == got[(a - lo) // 4])
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
+            "extra": len(got) - n, "table_same": sum(1 for a, b in zip(tw, gw) if a == b),
+            "arms_exact": arms_exact}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -925,6 +1107,7 @@ def check():
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
+    p167f = p59868_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -993,6 +1176,19 @@ def check():
                   f"eighth entry is zero and never read, because the bound check sends the out-of-range index to "
                   f"the epilogue" if p9f else "p9 table: not run",
                   bool(p9f) and p9f["table_same"] == 8))
+
+    cases.append((f"the {p167f['image_instrs']}-word state machine at 0x80059868 is BYTE-EXACT: "
+                  f"{p167f['same_offset']} identical by offset and {p167f['same']} by content, all "
+                  f"{p167f['arms_exact']} arm entries identical, the only difference being "
+                  f"{p167f['extra']} word of trailing .text padding -- and it needs union members, a "
+                  f"u16 field with an (s16) cast in the predicates, and nested ifs rather than &&"
+                  if p167f else "0x80059868: not run",
+                  bool(p167f) and p167f["same_offset"] == p167f["image_instrs"]))
+
+    cases.append((f"its jump table matches {p167f['table_same']} of 8 words at the image's own "
+                  f"0x800b9040, and .rodata holds nothing else -- the function has no pool literal at all"
+                  if p167f else "0x80059868 table: not run",
+                  bool(p167f) and p167f["table_same"] == 8))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
