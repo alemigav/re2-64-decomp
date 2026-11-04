@@ -2366,8 +2366,9 @@ def check():
 
     cases.append((f"p8's whole function, recovered: {p8f['same_offset']} of {p8f['image_instrs']} words identical "
                   f"by offset and {p8f['same']} aligned by content ({p8f['hunks']} hunk(s)); its 27-word first arm "
-                  f"is {p8f['arm0']} of 27 -- byte-exact" if p8f else "p8 whole function: not run",
-                  bool(p8f) and p8f["same_offset"] >= 136 and p8f["arm0"] == 27))
+                  f"is {p8f['arm0']} of 27 -- byte-exact, and the pool's per-use double is reproduced (M291)"
+                  if p8f else "p8 whole function: not run",
+                  bool(p8f) and p8f["same_offset"] >= 137 and p8f["arm0"] == 27))
 
     cases.append((f"p8's jump table matches all 6 arm addresses by content, {p8f['table_at']} words into "
                   f".rodata" if p8f else "p8 table: not run",

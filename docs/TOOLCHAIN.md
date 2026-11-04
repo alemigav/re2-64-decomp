@@ -142,6 +142,13 @@ probed with weakened C, which is the honest outcome when the cartridge has no ch
   instructions has a load in the delay slot** — and the first function that could tell was `0x800701d8`, whose 44 arms
   are `load; jr ra; nop` (3 words) against our 2, a 41-word difference that vanishes under `-g` (M281). `-mcpu=r4300` is not optional on either: on the compiler it selects the
   load's `READY-DELAY` and therefore the instruction order, on the assembler it stops hazard `nop`s after `mtc1`.
+- **One more patched behaviour, and it is about the pool's *sharing* rule (M291).** The image gives every **DFmode**
+  constant its own pool slot — the double 2^32 appears seven times inside `FUN_800a3094`, at
+  `0x800ba630..0x800ba660` — and shares its **SFmode** ones (both `4.0f` reads in `FUN_80024558` hit one slot).
+  M267 removed deduplication for every mode and lost 46 words because the float side then flooded the pool;
+  excluding only `DFmode` from `immed_double_const`'s chain search and from `force_const_mem`'s pool hash is the
+  asymmetry the image shows, and it moves `0x80024558` from 136 to **137 of 139** words with no change to any other
+  recovered function. `patch_gcc281_fp.py` carries it as edits 6 and 7.
 - **Two places where the image contradicts what the disc's makefile implies.** The kit's makefile says `CC = gcc`
   with `CFLAGS = -c -O -G 0`, but `-O2` is what reproduces the image (`-O` misses by 10 words on the two
   byte-exact functions), so either that makefile is the libraries' contract rather than the game's, or the game

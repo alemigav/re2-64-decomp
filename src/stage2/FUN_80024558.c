@@ -2,7 +2,7 @@
  * image   stage2 (stage2), base 0x80018a80
  * address 0x80024558  body 0x80024558..0x80024783  size 556 B
  * body sha256 6ad71aaba8cd81874dab482f0f69a9197f528ac11c58c6710d66f2765dc6b44f
- * recovered partial: 136 of 139, three words of allocation (p8: 136 of 139)
+ * recovered partial: 137 of 139, one register ("$at" against "$v0" for the pool address) (p8: 137 of 139)
  * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as P8_SOURCE
  * extents and pins: fixtures/decomp/recovered.json
  */
