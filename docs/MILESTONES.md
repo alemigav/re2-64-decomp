@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-328 milestones are indexed. 250 of them have a note; the rest are rows in the log that cite
+329 milestones are indexed. 251 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -345,6 +345,7 @@ at the foot of this file.
 | 325 | **M325** — `vector_installer` started: structure, a first draft at 18 of 132, and three shape findings | `docs/log/M325-vector-installer-started.md` |
 | 326 | **M326** — `vector_installer`: `$s0` solved, `0x2000` not, and the wall it names | `docs/log/M326-vector-installer-the-s0-and-the-idiom-wall.md` |
 | 327 | **M327** — `vector_installer`: `$at` is the assembler, and the draft had the two address forms inverted | `docs/log/M327-vector-installer-at-vs-register.md` |
+| 328 | **M328** — `vector_installer`: the store sinks, and the price is one hoisted word | `docs/log/M328-vector-installer-the-delay-slot-and-its-price.md` |
 
 ## The gaps, and why they are empty
 
