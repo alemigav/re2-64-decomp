@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "bccaef5",
+   "subject": "M325: vector_installer started \u2014 structure + a first draft measured at 18/132, with three shape findings (frame, one zeroed local, or-vs-ori)",
+   "milestones": [
+    325
+   ]
+  },
+  {
    "sha": "a3b3241",
    "subject": "M324: boot extent corrected to the load extent 0x13420 \u2014 it ends exactly at __bss_start from main's recovered C; coverage 62.2 -> 61.9 %",
    "milestones": [
