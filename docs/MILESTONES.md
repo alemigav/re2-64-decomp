@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-311 milestones are indexed. 233 of them have a note; the rest are rows in the log that cite
+312 milestones are indexed. 234 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -328,6 +328,7 @@ at the foot of this file.
 | 308 | **M308** — the small tail of the duplicate census: 11 more functions, and the 25-word group stuck at 22/25 | `docs/log/M308-the-small-tail-of-the-duplicate-census.md` |
 | 309 | **M309** — instrumenting `reorg.c`: the scheduler was not the culprit, and the trace says so | `docs/log/M309-instrumenting-reorg.md` |
 | 310 | **M310** — the copy that forces the annul: `u16` truncation, proven by removing it | `docs/log/M310-the-truncation-copy.md` |
+| 311 | **M311** — REG_TRACE: it is a tie-break, so the duplicates are next — and a defect in M309's patch | `docs/log/M311-regtrace-it-is-a-tie-break.md` |
 
 ## The gaps, and why they are empty
 

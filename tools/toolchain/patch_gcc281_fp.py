@@ -110,7 +110,7 @@ EDITS += [
      '      INSN_ANNULLED_BRANCH_P (insn) = 1;\n    }',
      '      INSN_ANNULLED_BRANCH_P (insn) = 1;\n'
      '      if (getenv ("DBR_TRACE"))\n'
-     '\\tfprintf (stderr, "DBR ANNUL branch=%d stolen_trial=%d\\\\n", INSN_UID (insn), INSN_UID (trial));\\n    }'),
+     '\tfprintf (stderr, "DBR ANNUL branch=%d stolen_trial=%d\\n", INSN_UID (insn), INSN_UID (trial));\n    }'),
 ]
 
 def main(argv):

@@ -180,7 +180,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**311** numbers, 0-310: **255** with a row, and **56** named gaps. The full index — every number, its title,
+**312** numbers, 0-311: **256** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -365,7 +365,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       100 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 416 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    235 notes, one per milestone that has one
+docs/log/    236 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
