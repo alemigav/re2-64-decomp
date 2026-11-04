@@ -869,6 +869,109 @@ void FUN_x(u32 a)
 }
 """
 
+# M317: the 4-word batch
+S_80025B0C_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+extern u32 D_800C7640;
+u32 FUN_x(void)
+{
+    return D_800C7640;
+}
+"""
+S_8002FCC0_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+u32 FUN_x(u8 *p, u32 b, u32 c, u32 d)
+{
+    return *(u32 *)(*(u32 *)(p + 4) + 44) - d;
+}
+"""
+S_800341DC_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+u32 FUN_x(u8 *p, u32 b)
+{
+    u32 v = (p[27] | b);
+
+    *(u32 *)(p + 24) = v;
+    return v;
+}
+"""
+S_800434B8_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+extern s16 D_80139A78;
+s16 FUN_x(void)
+{
+    return D_80139A78;
+}
+"""
+S_8004789C_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p, u8 a, u8 b, u8 c)
+{
+    p[4] = a;
+    p[5] = b;
+    p[6] = c;
+}
+"""
+S_800A5CFC_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+extern u8 D_80143F08;
+void FUN_x(void)
+{
+    D_80143F08 = 1;
+}
+"""
+S_800A860C_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+extern u8 D_80136311;
+void FUN_x(void)
+{
+    D_80136311 = 42;
+}
+"""
+S_800AB504_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+u32 FUN_x(u32 *p)
+{
+    u32 v = *p << 8;
+
+    *p = v;
+    return v;
+}
+"""
+S_80165C58_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+void FUN_x(u8 *p, u8 a, u8 b)
+{
+    p[4] = a;
+    p[5] = b;
+    *(u16 *)(p + 6) = 0;
+}
+"""
+
 SINGLES = [
     ("S_80165C68_SOURCE", "ovl_0087352", 0x80165c68, 3, ()),
     ("S_800478AC_SOURCE", "stage2", 0x800478ac, 3, ()),
@@ -886,6 +989,15 @@ SINGLES = [
     ("S_800B480C_SOURCE", "stage2", 0x800b480c, 3, (('D_80143FD4', 0x80143fd4),)),
     ("S_800B4DAC_SOURCE", "stage2", 0x800b4dac, 3, ()),
     ("S_80026910_SOURCE", "stage2", 0x80026910, 3, (('D_800E9108', 0x800E9108),)),
+    ("S_80025B0C_SOURCE", "stage2", 0x80025b0c, 4, (('D_800C7640', 0x800C7640),)),
+    ("S_8002FCC0_SOURCE", "stage2", 0x8002fcc0, 4, ()),
+    ("S_800341DC_SOURCE", "stage2", 0x800341dc, 4, ()),
+    ("S_800434B8_SOURCE", "stage2", 0x800434b8, 4, (('D_80139A78', 0x80139A78),)),
+    ("S_8004789C_SOURCE", "stage2", 0x8004789c, 4, ()),
+    ("S_800A5CFC_SOURCE", "stage2", 0x800a5cfc, 4, (('D_80143F08', 0x80143F08),)),
+    ("S_800A860C_SOURCE", "stage2", 0x800a860c, 4, (('D_80136311', 0x80136311),)),
+    ("S_800AB504_SOURCE", "stage2", 0x800ab504, 4, ()),
+    ("S_80165C58_SOURCE", "ovl_0087352", 0x80165c58, 4, ()),
 ]
 
 

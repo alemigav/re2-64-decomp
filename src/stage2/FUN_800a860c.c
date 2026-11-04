@@ -1,14 +1,18 @@
 /* FUN_800a860c
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800a860c  body 0x800a860c..0x800a861b  size 16 B
- * body sha256 e05d8c071d6b730d512338c3f8cf7774b033a4d6c26f82bd2baa00a83887311e
- * provider record sha256 5df4449ebef20c5a3938fa0bd9cb728325ff98b4d9cd7bbbc26f30f31b5d6c16
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 6bf64a20d431dfb1577ee473b399dce6d9ca7fa1dadd1bb1be99d16fda8481ca
+ * recovered byte-exact (single: 4 of 4, one draft)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_800A860C_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_800a860c(void)
-
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+extern u8 D_80136311;
+void FUN_x(void)
 {
-  DAT_80136311 = 0x2a;
-  return;
+    D_80136311 = 42;
 }

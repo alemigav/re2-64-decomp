@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-317 milestones are indexed. 239 of them have a note; the rest are rows in the log that cite
+318 milestones are indexed. 240 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -334,6 +334,7 @@ at the foot of this file.
 | 314 | **M314** — the 3 x 32 group: two drafts, 29/32, stopped at the cap | `docs/log/M314-the-3x32-group-two-drafts.md` |
 | 315 | **M315** — the first singles batch: three of ten, one draft each | `docs/log/M315-the-first-singles-batch.md` |
 | 316 | **M316** — the leaf screen: 16 of 16, and a reusable selector | `docs/log/M316-the-leaf-screen.md` |
+| 317 | **M317** — the 4-word set: 9 of 17, and four of the misses were one known residue | `docs/log/M317-the-four-word-set.md` |
 
 ## The gaps, and why they are empty
 
