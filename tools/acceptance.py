@@ -56,7 +56,7 @@ SUITES = [
     ("pad_layout self-test", [sys.executable, "tools/pad_layout.py", "--self-test"], 8, False),
     ("patch_text self-test", [sys.executable, "tools/patch_text.py", "--self-test"], 8, False),
     ("doc markers (synthetic)", [sys.executable, "tools/check_markers.py", "--self-test"], 15, False),
-    ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 22, False),
+    ("doc markers (repository)", [sys.executable, "tools/check_markers.py"], 25, False),
     ("walk_stream length map", [sys.executable, "tools/walk_stream.py", "--self-test"], 23, False),
     # `rdram_fixture.py` builds its bytes synthetically but walks them with `walk_stream.py`, which loads
     # the stage-2 image from `assets/unpacked/` — an unpacked cartridge member. Green locally, red on any

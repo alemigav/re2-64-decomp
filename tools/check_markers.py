@@ -57,6 +57,14 @@ MARKERS = [
     (LOG, "| retracted | by | what changed |", "the retraction table header, which must survive edits"),
     (LOG, "## The errors worth remembering", "the error list; retractions are recorded in place"),
     (LOG, "## Working method that produced the answer", "how the work is done, not just what was found"),
+    # M332: the front page was split into a short README and a dense companion. The split is itself a claim — that
+    # the short page points at the long one — so it gets markers like any other structure worth not losing.
+    ("docs/README-extended.md", "# The technical companion",
+     "the dense half of the front page, and what it is for"),
+    ("docs/README-extended.md", "## 1. What the numbers mean, and which ones to trust",
+     "the qualifier any '130 recovered' headline has to carry"),
+    ("README.md", "docs/README-extended.md",
+     "the front page must keep pointing at the dense version"),
 ]
 
 NOTE_REF = re.compile(r"`(docs/log/[A-Za-z0-9._/-]+\.md)`")
@@ -179,14 +187,26 @@ def self_test():
         return d
 
     NOTE = "# M1 — a note\n\ntext\n"
+
+    def bodies():
+        """Every file the marker list names, carrying exactly its required anchors.
+
+        M333: the bed used to hard-code the handover and the log, so adding a marker for a third document made
+        four self-test cases fail for a reason that had nothing to do with what they test. The bed is derived
+        from MARKERS now: a new marked file arrives complete, and each case perturbs only what it is about.
+        """
+        out = {}
+        for path, marker, _why in MARKERS:
+            out.setdefault(path, []).append(marker)
+        return {path: "\n".join(marks) + "\n" for path, marks in out.items()}
     handover = "\n".join(m for _f, m, _w in MARKERS if _f == HANDOVER) + "\n"
     log_ok = "\n".join(m for _f, m, _w in MARKERS if _f == LOG) + "\n| M1 | x | `docs/log/M1-a.md` |\n"
     cases = []
 
-    d = bed({HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": NOTE})
+    d = bed({**bodies(), HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": NOTE})
     cases.append(("a complete document set passes", check(d) == []))
 
-    d = bed({HANDOVER: handover.replace("## Immediate next step\n", ""), LOG: log_ok,
+    d = bed({**bodies(), HANDOVER: handover.replace("## Immediate next step\n", ""), LOG: log_ok,
              "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a missing handover section is named",
@@ -197,40 +217,40 @@ def self_test():
     cases.append(("a missing file is reported, once per required file",
                   any(msg == "file is missing" for _p, msg in f) and len([1 for p, _ in f if p == HANDOVER]) == 1))
 
-    d = bed({HANDOVER: handover, LOG: log_ok})
+    d = bed({**bodies(), HANDOVER: handover, LOG: log_ok})
     f = check(d)
     cases.append(("a dangling note reference is caught",
                   any("dangling note reference: docs/log/M1-a.md" in msg for _p, msg in f)))
 
-    d = bed({HANDOVER: handover, LOG: log_ok.replace("| retracted | by | what changed |\n", ""),
+    d = bed({**bodies(), HANDOVER: handover, LOG: log_ok.replace("| retracted | by | what changed |\n", ""),
              "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a drifted table header in the log is caught",
                   any(p == LOG and "retracted" in msg for p, msg in f)))
 
-    d = bed({HANDOVER: handover + "## An unregistered new section\n", LOG: log_ok,
+    d = bed({**bodies(), HANDOVER: handover + "## An unregistered new section\n", LOG: log_ok,
              "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a heading absent from the marker list is caught",
                   any("unregistered heading" in msg and "unregistered new section" in msg
                       for _p, msg in f)))
 
-    d = bed({HANDOVER: "```\n## not a heading, inside a fence\n```\n" + handover, LOG: log_ok,
+    d = bed({**bodies(), HANDOVER: "```\n## not a heading, inside a fence\n```\n" + handover, LOG: log_ok,
              "docs/log/M1-a.md": NOTE})
     cases.append(("a ## line inside a fenced block is not treated as a heading", check(d) == []))
 
-    d = bed({HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": NOTE,
+    d = bed({**bodies(), HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": NOTE,
              "docs/log/M2-orphan.md": "# M2 — never indexed\n"})
     f = check(d)
     cases.append(("a note that the milestone table never mentions is caught",
                   any("docs/log/M2-orphan.md" == p and "not registered" in msg for p, msg in f)))
 
-    d = bed({HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": "no title here\n"})
+    d = bed({**bodies(), HANDOVER: handover, LOG: log_ok, "docs/log/M1-a.md": "no title here\n"})
     f = check(d)
     cases.append(("a note without an '# M<n>' title is caught",
                   any("does not begin with" in msg for _p, msg in f)))
 
-    d = bed({HANDOVER: handover,
+    d = bed({**bodies(), HANDOVER: handover,
              LOG: log_ok.replace("| M1 | x |", "| M2 | x |"),
              "docs/log/M1-a.md": NOTE})
     f = check(d)
@@ -239,32 +259,32 @@ def self_test():
 
     # M226: a row inserted through a prefix anchor split its neighbour in half, and every other gate read the
     # result as "M225 has no detail". The shape is what notices.
-    d = bed({HANDOVER: handover,
+    d = bed({**bodies(), HANDOVER: handover,
              LOG: log_ok + "| M2 | **a title** | a detail | `docs/log/M2-b.md` |\n", "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a row of the newer four-cell shape passes", not [m for _p, m in f if "cell" in m]))
 
-    d = bed({HANDOVER: handover,
+    d = bed({**bodies(), HANDOVER: handover,
              LOG: log_ok + "| M2 | **a title** |\n| M3 | a detail | `docs/log/M2-b.md` |\n",
              "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("a row split in half by an insert is caught by its cell count",
                   any("has 2 cell(s)" in msg for _p, msg in f)))
 
-    d = bed({HANDOVER: handover,
+    d = bed({**bodies(), HANDOVER: handover,
              LOG: log_ok + "| M2 | **a title** | a detail | with a stray | pipe | `docs/log/M2-b.md` |\n",
              "docs/log/M1-a.md": NOTE})
     f = check(d)
     cases.append(("an unescaped pipe inside a cell is caught",
                   any("has 6 cell(s)" in msg for _p, msg in f)))
 
-    d = bed({HANDOVER: handover, LOG: log_ok,
+    d = bed({**bodies(), HANDOVER: handover, LOG: log_ok,
              "docs/log/M1-a.md": NOTE.replace("# M1", "# M7")})
     f = check(d)
     cases.append(("a title that disagrees with its file name is caught",
                   any("title says M7" in msg for _p, msg in f)))
 
-    d = bed({HANDOVER: handover, LOG: log_ok + "\nSee `docs/log/M1-a.md` for detail.\n",
+    d = bed({**bodies(), HANDOVER: handover, LOG: log_ok + "\nSee `docs/log/M1-a.md` for detail.\n",
              "docs/log/M1-a.md": NOTE})
     cases.append(("a cross-reference in prose is not treated as an index entry", check(d) == []))
 
