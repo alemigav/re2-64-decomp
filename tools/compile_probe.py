@@ -449,6 +449,81 @@ def p6_function():
             "first": "0x%08x" % (0x8004FD1C + 4 * hunks[0][1]) if hunks else None}
 
 
+def p7e590_residue():
+    """Characterise the last three words of `0x8007e590` exactly, and test whether shape can move them.
+
+    M289-M295 converged on "case 4's select register is a `global_alloc` conflict" without decoding the three
+    words. This does the decode: same opcodes, same immediates, same base register — **only the destination
+    register differs** (`$2` in the image, `$4` here). It then compiles three alternative spellings of the same
+    select and checks that they produce byte-identical `.text`, which is what makes the tie-break's
+    unreachability a measurement rather than an opinion (M304).
+    """
+    import json
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    image = IMAGE.read_bytes()
+    lo, n, table = 0x8007E590, 229, 0x800B9C78
+    syms = "".join("%s = 0x%X;\n" % (k, v) for k, v in P7E590_SYMS)
+
+    def build(src, tag):
+        d = WORK / "p7res"
+        d.mkdir(parents=True, exist_ok=True)
+        c, s, o, fx, elf = d / ("%s.c" % tag), d / ("%s.s" % tag), d / ("%s.o" % tag), d / ("%s.f.o" % tag), d / ("%s.elf" % tag)
+        c.write_text(src)
+        if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                          capture_output=True).returncode:
+            return None
+        if subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                          capture_output=True).returncode:
+            return None
+        subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                        "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+        (d / "l.ld").write_text("ENTRY(FUN_8007e590)\nSECTIONS {\n  . = 0x8007E590;\n  .text : { *(.text) }\n"
+                                "  . = 0x800B9C78;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { "
+                                "*(.reginfo) *(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) "
+                                "*(.mdebug*) *(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+        if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(d / "l.ld"), "-o", str(elf), str(fx)],
+                          capture_output=True).returncode:
+            return None
+        return text_of(elf)
+
+    blob = build(P7E590_SOURCE, "base")
+    if blob is None:
+        return None
+    got = [blob[4 * i:4 * i + 4] for i in range(len(blob) // 4)]
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    diffs = [i for i in range(n) if want[i] != got[i]]
+
+    def decode(w):
+        v = int.from_bytes(w, "big")
+        return {"op": v >> 26, "rs": (v >> 21) & 31, "rt": (v >> 16) & 31, "imm": v & 0xFFFF}
+
+    pairs = [(decode(want[i]), decode(got[i])) for i in diffs]
+    shape_only = (len(diffs) == 3 and all(a["op"] == b["op"] and a["imm"] == b["imm"]
+                                         and a["rt"] != b["rt"] for a, b in pairs)
+                  and [b["op"] for _a, b in pairs] == [9, 9, 0x28])
+    # three ways of writing the same select must be byte-identical: the allocator ignores the spelling
+    variants = {
+        "tmp": P7E590_SOURCE.replace("s->f5 = (s->f5 == 22) ? 4 : 5;",
+                                     "{ u8 v = (s->f5 == 22) ? 4 : 5; s->f5 = v; }", 1),
+        "pre5": P7E590_SOURCE.replace("s->f5 = (s->f5 == 22) ? 4 : 5;",
+                                      "{ u32 v = 5; if (s->f5 == 22) v = 4; s->f5 = v; }", 1),
+        "cast": P7E590_SOURCE.replace("s->f5 = (s->f5 == 22) ? 4 : 5;",
+                                      "s->f5 = (u8)((s->f5 == 22) ? 4 : 5);", 1),
+    }
+    same = 0
+    for tag, src in variants.items():
+        b = build(src, tag)
+        if b is not None and b == blob:
+            same += 1
+    return {"image_instrs": n, "same_offset": off, "diffs": diffs, "residue_regs":
+            [(a["rt"], b["rt"]) for a, b in pairs], "shape_only": shape_only,
+            "spellings_tested": len(variants), "spellings_identical": same}
+
+
 def permuter_rescore():
     """Score the committed permuter harness (`fixtures/permuter/p6/`) with the word metric.
 
@@ -2587,6 +2662,7 @@ def check():
     p6f = p6_function()
     permf = permuter_rescore()
     permb = permuter_rescore_boot()
+    p7res = p7e590_residue()
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
@@ -2705,6 +2781,19 @@ def check():
     cases.append((f"its jump table matches {pacae4f['table_same']} of 7 words at the image's own "
                   f"0x800ba890" if pacae4f else "0x800acae4 table: not run",
                   bool(pacae4f) and pacae4f["table_same"] == 7))
+
+    cases.append((f"`0x8007e590`'s last three words are decoded, not described: {p7res['same_offset']} of "
+                  f"{p7res['image_instrs']} match and the differing words {p7res['diffs']} are `li`,`li`,`sb` "
+                  f"with the same immediates and base register, differing ONLY in the destination "
+                  f"({p7res['residue_regs']} = image $2 against ours $4) -- a pure allocator tie-break (M304)"
+                  if p7res else "0x8007e590 residue: not run",
+                  bool(p7res) and p7res["same_offset"] == 226 and p7res["shape_only"]))
+
+    cases.append((f"and the tie-break is not shape-reachable: {p7res['spellings_identical']} of "
+                  f"{p7res['spellings_tested']} alternative spellings of the same select compile to "
+                  f"byte-identical `.text`, so no rewording of the statement moves the register (M304)"
+                  if p7res else "0x8007e590 spellings: not run",
+                  bool(p7res) and p7res["spellings_identical"] == p7res["spellings_tested"] == 3))
 
     cases.append((f"the {p7e590f['image_instrs']}-word seven-arm switch at 0x8007e590 is recovered to "
                   f"{p7e590f['same_offset']} words identical by offset and {p7e590f['same']} by content "
