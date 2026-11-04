@@ -1,17 +1,17 @@
 /* FUN_80166960
  * image   ovl_009dd02 (ovl), base 0x80161cf0
  * address 0x80166960  body 0x80166960..0x80166977  size 24 B
- * body sha256 0337807eba5720bf9fb1ae131e1c7825294d29a1c330e48d8c3326ffbe4be940
- * provider record sha256 40007dc90bdcdbc7ef83fbfdceba6513189f52f3fce0a11bf8b3c08d9469b748
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 9b254050b2db23d8228019a438ea75c10d0087d8bf9a4b9e2e28525de1d54dbf
+ * recovered byte-exact (SET4_SOURCE: 6 of 6, all 2 copies of the identical body)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as SET4_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80166960(int param_1)
+typedef unsigned char u8;
 
+void FUN_set4(u8 *p)
 {
-  *(undefined1 *)(param_1 + 4) = 3;
-  *(undefined1 *)(param_1 + 5) = 0;
-  *(undefined1 *)(param_1 + 6) = 0;
-  *(undefined1 *)(param_1 + 7) = 0;
-  return;
+    p[4] = 3;
+    p[5] = 0;
+    p[6] = 0;
+    p[7] = 0;
 }

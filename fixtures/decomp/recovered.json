@@ -513,6 +513,94 @@
    "verdict": "byte-exact",
    "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
    "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b598",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "ZERO_SOURCE: 2 of 2, all 2 copies of the identical body",
+   "source": "ZERO_SOURCE"
+  },
+  {
+   "image": "ovl_0078c0e",
+   "address": "0x8017f3b4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "ZERO_SOURCE: 2 of 2, all 2 copies of the identical body",
+   "source": "ZERO_SOURCE"
+  },
+  {
+   "image": "ovl_008bef8",
+   "address": "0x80164624",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
+   "source": "CLEAR622_SOURCE"
+  },
+  {
+   "image": "ovl_0098ee0",
+   "address": "0x80165ca8",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
+   "source": "CLEAR622_SOURCE"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166960",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "SET4_SOURCE: 6 of 6, all 2 copies of the identical body",
+   "source": "SET4_SOURCE"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163b0c",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "SET4_SOURCE: 6 of 6, all 2 copies of the identical body",
+   "source": "SET4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fc78",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPFWD_SOURCE: 7 of 7, all 2 copies of the identical body",
+   "source": "WRAPFWD_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fc9c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPFWD_SOURCE: 7 of 7, all 2 copies of the identical body",
+   "source": "WRAPFWD_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x801634ec",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
+   "source": "WRAPVOID_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80163b44",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
+   "source": "WRAPVOID_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80164038",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
+   "source": "WRAPVOID_SOURCE"
   }
  ]
 }

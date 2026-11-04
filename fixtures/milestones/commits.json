@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "40b3a93",
+   "subject": "M307: duplicate-body cohorts \u2014 48 functions byte-exact from three reconstructions (34 empty, 11 masked call, 3 store setter); recovered 16 -> 64",
+   "milestones": [
+    307
+   ]
+  },
+  {
    "sha": "7a52db4",
    "subject": "M306: the fill cannot precede global_alloc (reg_renumber) \u2014 two cc1 variants measured, cross-jumping off gives 44/229, the const-hoist gate changes nothing; toolchain restored and verified 55/55",
    "milestones": [

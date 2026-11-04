@@ -729,6 +729,56 @@ void FUN_call9(u8 *p)
 
 CALL9_SYMS = [("FUN_8008cea0", 0x8008CEA0)]
 
+ZERO_SOURCE = """typedef int s32;
+
+s32 FUN_zero(void)
+{
+    return 0;
+}
+"""
+
+CLEAR622_SOURCE = """typedef unsigned char u8;
+
+void FUN_clear622(u8 *p)
+{
+    p[622] = 0;
+}
+"""
+
+SET4_SOURCE = """typedef unsigned char u8;
+
+void FUN_set4(u8 *p)
+{
+    p[4] = 3;
+    p[5] = 0;
+    p[6] = 0;
+    p[7] = 0;
+}
+"""
+
+# two forwarders that differ only in which argument they pass and whether the callee returns anything
+WRAPFWD_SOURCE = """typedef unsigned int u32;
+
+extern void FUN_callee(u32 a);
+
+void FUN_wrapfwd(u32 a0, u32 a1)
+{
+    FUN_callee(a1);
+}
+"""
+
+WRAPFWD_SYMS = [("FUN_callee", 0x8002FC24)]
+
+WRAPVOID_SOURCE = """extern void FUN_callee(void);
+
+void FUN_wrapvoid(void)
+{
+    FUN_callee();
+}
+"""
+
+WRAPVOID_SYMS = [("FUN_callee", 0x80165F80)]
+
 
 def image_inventory():
     """name -> {source, base, size} for the 36 images, or None when the corpus has not been built."""
@@ -2967,13 +3017,12 @@ def check():
                   if selc else "select census (stores): not run",
                   bool(selc) and selc["stored"] == 39 and selc["v0_stored"] == 35))
 
-    for src_name, label in (("STUB_SOURCE", "the empty function"), ("SET3_SOURCE", "the sequential store setter"),
-                            ("CALL9_SOURCE", "the masked call")):
-        fam = (fams or {}).get(src_name)
-        cases.append((f"{label}, {fam['words']} words: all {fam['members']} copies of the identical body are "
-                      f"BYTE-EXACT from one reconstruction ({fam['matched']} of {fam['members']}) -- the corpus "
-                      f"has 148 functions in 48 duplicate-body groups, so one proven shape registers every copy "
-                      f"(M307)" if fam else f"{label}: not run",
+    # one case per multi-member family, generated from the fixture so a new cohort needs no code here
+    for src_name, fam in sorted((fams or {}).items()):
+        cases.append((f"{src_name}, {fam['words']} words: all {fam['members']} copies of the identical body are "
+                      f"BYTE-EXACT from one reconstruction ({fam['matched']} of {fam['members']}) -- one proven "
+                      f"shape registers every copy (M307/M308)"
+                      if fam else f"{src_name}: not run",
                       bool(fam) and fam["matched"] == fam["members"] and fam["members"] > 1))
 
     cases.append((f"`0x8007e590`'s last three words are decoded, not described: {p7res['same_offset']} of "

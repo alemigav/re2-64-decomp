@@ -1,14 +1,14 @@
 /* FUN_80163b44
  * image   ovl_0087352 (ovl), base 0x80161cf0
  * address 0x80163b44  body 0x80163b44..0x80163b5f  size 28 B
- * body sha256 a598be25a2de7c4e076f5e9efed245fd6d4c2af9141660c29c2371117f7a69b1
- * provider record sha256 4e38679b5a3b39ec008ede4b793a2f920d530b165aebeaa19bd0c6c4ebf5b1ee
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 75e0f97e57da496c409d7e15c7c26508ce048b562a441bf3964ed6e263e47be9
+ * recovered byte-exact (WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as WRAPVOID_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80163b44(void)
+extern void FUN_callee(void);
 
+void FUN_wrapvoid(void)
 {
-  FUN_80165f80();
-  return;
+    FUN_callee();
 }
