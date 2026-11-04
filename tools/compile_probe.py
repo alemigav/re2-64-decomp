@@ -1742,6 +1742,163 @@ P6E574_TABLE = 0x800B9540
 P6E574_WORDS = 23
 P6E574_SYMS = [("D_80115090", 0x80115090)]
 
+P704E0_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef unsigned int   u32;
+
+extern u16 D_80115120;
+
+u8 *FUN_800704e0(u8 *p, u32 idx)
+{
+    switch (idx) {
+    case 1:
+        return p;
+        break;
+    case 0:
+        return p + 2;
+        break;
+    case 2:
+        D_80115120++;
+        return p + 4;
+        break;
+    case 3:
+        D_80115120++;
+        return p + 5;
+        break;
+    case 4:
+        D_80115120++;
+        return p + 6;
+        break;
+    case 5:
+        D_80115120++;
+        return p + 7;
+        break;
+    case 6:
+        D_80115120++;
+        return p + 8;
+        break;
+    case 7:
+        return p + 426;
+        break;
+    case 8:
+        D_80115120++;
+        return p + 10;
+        break;
+    case 9:
+        D_80115120++;
+        return p + 11;
+        break;
+    case 10:
+        return p + 16;
+        break;
+    case 11:
+        return p + 40;
+        break;
+    case 12:
+        return p + 44;
+        break;
+    case 13:
+        return p + 48;
+        break;
+    case 14:
+        return p + 100;
+        break;
+    case 15:
+        return p + 102;
+        break;
+    case 16:
+        return p + 104;
+        break;
+    case 17:
+        return p + 418;
+        break;
+    case 18:
+        return p + 496;
+        break;
+    case 19:
+        return p + 606;
+        break;
+    case 20:
+        return p + 608;
+        break;
+    case 21:
+        return p + 610;
+        break;
+    case 22:
+        return p + 616;
+        break;
+    case 23:
+        return p + 624;
+        break;
+    case 24:
+        return p + 626;
+        break;
+    case 25:
+        return p + 628;
+        break;
+    case 26:
+        return p + 630;
+        break;
+    case 27:
+        D_80115120++;
+        return p + 480;
+        break;
+    case 28:
+        return p + 480;
+        break;
+    case 29:
+        return p + 482;
+        break;
+    case 30:
+        return p + 484;
+        break;
+    case 31:
+        D_80115120++;
+        return p + 490;
+        break;
+    case 32:
+        return p + 304;
+        break;
+    case 33:
+        return p + 308;
+        break;
+    case 34:
+        return p + 306;
+        break;
+    case 35:
+        return p + 310;
+        break;
+    case 36:
+        return p + 314;
+        break;
+    case 37:
+        return p + 312;
+        break;
+    case 38:
+        return p + 634;
+        break;
+    case 39:
+        return p + 436;
+        break;
+    case 40:
+        return p + 438;
+        break;
+    case 41:
+        return p + 692;
+        break;
+    case 42:
+        return p + 694;
+        break;
+    case 43:
+        D_80115120++;
+        return p + 623;
+        break;
+    }
+}"""
+P704E0_TABLE = 0x800B9778
+P704E0_WORDS = 123
+P704E0_SYMS = [("D_80115120", 0x80115120)]
+
 
 def pacae4_function():
     """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
@@ -2047,6 +2204,11 @@ def p6e574_function():
     return _arm_probe(P6E574_SOURCE, 0x8006E574, P6E574_WORDS, P6E574_TABLE, 7, P6E574_SYMS, "p6e574")
 
 
+def p704e0_function():
+    """The 123-word 44-arm *address-of* dispatcher: each arm returns `p + offset`, ten also bump a u16 counter."""
+    return _arm_probe(P704E0_SOURCE, 0x800704E0, P704E0_WORDS, P704E0_TABLE, 44, P704E0_SYMS, "p704e0")
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -2161,6 +2323,7 @@ def check():
     p6ff48f = p6ff48_function()
     p6e68cf = p6e68c_function()
     p6e574f = p6e574_function()
+    p704e0f = p704e0_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -2326,6 +2489,17 @@ def check():
                   f"entry into the freed argument register a0, ours into v1) and the scheduler's placement of the "
                   f"`c == 0` test" if p6e574f else "0x8006e574: not run",
                   bool(p6e574f) and p6e574f["same_offset"] >= 17))
+
+    cases.append((f"the {p704e0f['image_instrs']}-word 44-arm address-of dispatcher at 0x800704e0 is BYTE-EXACT: "
+                  f"{p704e0f['same_offset']} identical by offset and {p704e0f['same']} by content -- the third member "
+                  f"of the accessor family, returning `p + offset` and bumping a u16 counter in ten of its arms"
+                  if p704e0f else "0x800704e0: not run",
+                  bool(p704e0f) and p704e0f["same_offset"] == p704e0f["image_instrs"]))
+
+    cases.append((f"its jump table matches {p704e0f['table_same']} of 44 words at the image's own 0x800b9778, with the "
+                  f"counter arms sharing one increment tail through a `j`"
+                  if p704e0f else "0x800704e0 table: not run",
+                  bool(p704e0f) and p704e0f["table_same"] == 44))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

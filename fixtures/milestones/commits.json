@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "8f21442",
+   "subject": "M286: 0x8006e68c byte-exact at 41, 0x8006e574 at 17/23 -- and the index defect behind both",
+   "milestones": [
+    286
+   ]
+  },
+  {
    "sha": "6c4f7e9",
    "subject": "M285: 0x8006e6b8's enclosing function found (FUN_8006e68c, 41 words) and 0x8006ff48 byte-exact at 98",
    "milestones": [

@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-287 milestones are indexed. 209 of them have a note; the rest are rows in the log that cite
+288 milestones are indexed. 210 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -304,6 +304,7 @@ at the foot of this file.
 | 284 | **M284** — the arm-shaped family opens with `0x8006fc5c`: 53 of 53, on the second measurement | `docs/log/M284-the-arm-shaped-family-opens-with-0x8006fc5c.md` |
 | 285 | **M285** — `0x8006e6b8`'s enclosing function found, and `0x8006ff48` byte-exact at 98 of 98 | `docs/log/M285-0x8006e68c-identified-and-0x8006ff48-byte-exact.md` |
 | 286 | **M286** — both leaves inside the gap: `0x8006e68c` byte-exact at 41, `0x8006e574` at 17 of 23 | `docs/log/M286-both-leaves-inside-the-gap.md` |
+| 287 | **M287** — `0x800704e0` byte-exact at 123: the accessor family is now three of three | `docs/log/M287-0x800704e0-the-accessor-trio-complete.md` |
 
 ## The gaps, and why they are empty
 
