@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-314 milestones are indexed. 236 of them have a note; the rest are rows in the log that cite
+315 milestones are indexed. 237 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -331,6 +331,7 @@ at the foot of this file.
 | 311 | **M311** — REG_TRACE: it is a tie-break, so the duplicates are next — and a defect in M309's patch | `docs/log/M311-regtrace-it-is-a-tie-break.md` |
 | 312 | **M312** — the duplicate census, vetted: 85 candidates, and two things I had wrong | `docs/log/M312-the-duplicate-census-vetted.md` |
 | 313 | **M313** — the 4 x 53 group: decoded, drafted, and stopped at 33/53 by the same wall | `docs/log/M313-the-4x53-group.md` |
+| 314 | **M314** — the 3 x 32 group: two drafts, 29/32, stopped at the cap | `docs/log/M314-the-3x32-group-two-drafts.md` |
 
 ## The gaps, and why they are empty
 
