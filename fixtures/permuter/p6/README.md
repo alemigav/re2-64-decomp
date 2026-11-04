@@ -14,8 +14,11 @@ and the scoring reads the image at run time.
 | `base.c` | our own draft of the function — the starting point the permuter randomises. At M299 it is **one statement transposition** away from the byte-exact source, and that transposition is worth 12 of 98 words |
 | `compile.sh` | the build hook the permuter shells out to: `cc1 -O2 -G 0 -mips2 -mcpu=r4300`, then the binutils-2.7 `as` |
 | `f.toml` | `compiler_type = "gcc"` — M256 had this set to `"ido"`, which selects IDO's randomisation weights for a compiler that is not IDO |
-| `target.o` | **a compiled draft, not the image** — see the caveat below |
-| `candidate-1780-1.c`, `candidate-1980-26.c` | two of the 16 candidates that reach **94/98**, the plateau |
+| `target.o` | **generated** by `make_target.py` from the image's own 98 words (not committed — it is cartridge code) |
+| `target-draft.o` | the old **proxy** objective: 116 instructions compiled from an earlier draft, kept for provenance |
+| `candidate-image-310-1.c` | the **byte-exact** candidate the image-objective run found — a different shape from the hand reconstruction |
+| `make_target.py` | builds and verifies the image objective |
+| `candidate-1780-1.c`, `candidate-1980-26.c` | two of the 16 candidates that reach **94/98** — the proxy-objective ceiling |
 | `scores.json` | every number below, with the run's provenance |
 
 ## The measurement
@@ -30,28 +33,43 @@ Scored with the word metric — compile the candidate, link `.text` at `0x8004fd
 | best candidate, 16 of them | **94** | 94 | 4 |
 | the other 133 | 86 … 94 | | |
 
-Two runs, same result:
+Three runs, and the objective is what separated them:
 
-- **M259's pool** (82 candidates, `compiler_type = "ido"`): 19 beat the base, best 94.
-- **this re-run** (144 310 further iterations, `compiler_type = "gcc"`, 8 threads, 34 better-score events):
-  67 more candidates, **none above 94**. 78 % of iterations fail to compile (`113 224 / 144 310`) — the
-  randomiser keeps producing C this cc1 rejects.
+| run | objective | iterations | best by the word metric |
+|---|---|---|---|
+| M259's pool (82 candidates) | the draft proxy | — | 94 / 98 |
+| M300 re-run (`gcc` weights) | the draft proxy | 144 310 | **94 / 98** (16 candidates, none at 98) |
+| **M302 run** | **the image's own 98 words** | 83 834 | **98 / 98 — byte-exact** |
 
-So the permuter's ceiling on this function is 94/98, and it is stable across both weightings and 226 000
-iterations. The four missing words were closed by `tools/shape_solver.py`, which searched statement order —
-a move the permuter's randomiser reached only by accident, and never in 144 310 tries.
+So **the plateau was the objective, not the tool.** Against a proxy compiled from an earlier draft the permuter
+circles 94/98 forever; against the cartridge it closed the function — and by a *different* route than the hand
+reconstruction: `candidate-image-310-1.c` keeps a `new_var` temporary in case 4 where the hand solution
+transposed two statements. Both compile to the same 98 words. **M300's conclusion — "the permuter cannot reach
+this shape by randomisation" — is retracted here**; what it could not reach was a *stale* target.
 
-## The caveat: `target.o` is a proxy, not the function
+The 78 % compile-error rate is unchanged and is a property of the randomiser on struct-heavy source, not of the
+objective.
 
-`target.o` is **116 instructions**, and the function in the image is **98**. Its head matches the image for
-two words (`sltiu v0,a2,5`; then the first branch offset differs, `1040005e` in the image against `10400070`
-here), and it carries unresolved relocations (`lui v0,0x0` pending `R_MIPS_HI16`). It is therefore the output
-of compiling an *earlier draft*, kept because a relocatable object compares like with like against a
-relocatable candidate.
+## The two objectives, and why the second one is the point
 
-That is why the scoring here is not the permuter's own score but the word metric against the image: the
-permuter is a **candidate generator** whose objective is a proxy, and the image is the judge. Whether a
-target built from the image's own bytes moves the 94/98 plateau is an open question, not an answered one.
+`make_target.py` builds the objective **from the image itself**: it reads the function's 98 words, assembles them,
+and verifies the object's `.text` is byte-identical (392 B) before writing it. That object is deliberately not
+committed — it is cartridge code — so run the script once with your dump present:
+
+```sh
+python3 fixtures/permuter/p6/make_target.py          # -> fixtures/permuter/p6/target.o
+python3 fixtures/permuter/p6/make_target.py --check  # verify the one you have
+```
+
+`target-draft.o` is the **old** objective, kept for provenance: 116 instructions compiled from an earlier draft,
+with unresolved relocations, against a 98-instruction function. Every verdict phrased in the permuter's score
+against *it* (M259's "10 % gain, zero words") describes the proxy, not the cartridge. That is why the word metric
+— which links both sides and compares bytes — stays the verdict.
+
+One asymmetry survives and is stated rather than hidden: the image's pool reference is *resolved*
+(`lui v0,0x800c` / `addiu v0,-29744` = the switch table), while a candidate carries `R_MIPS_HI16`/`R_MIPS_LO16`
+against its own local table label. The permuter normalises those to symbol names, so a few lines differ on every
+candidate; the ranking is unaffected and the byte metric does not care.
 
 ## Re-running it
 

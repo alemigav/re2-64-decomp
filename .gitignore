@@ -13,6 +13,12 @@ bin/
 *.ld
 .venv/
 
+# The permuter objective is normally build output. The exception is `target-draft.o`: it is OUR object, compiled
+# from an earlier draft, and it is the evidence that the tool's objective was a proxy (M300/M302). The object
+# built from the image's own words is cartridge code and stays ignored — `make_target.py` regenerates it.
+!fixtures/permuter/p6/target-draft.o
+fixtures/permuter/p6/target.o
+
 # The synthetic corpus fixture is NOT cartridge data: 8 KiB of generated words, committed on purpose so the
 # corpus pipeline can run without the real ROM (M129). The rules above keep actual cartridge images out; this
 # one exception is size-checked by tools/ci.sh.

@@ -499,11 +499,25 @@ def permuter_rescore():
     scores = {}
     for f, tag in [(fx / "base.c", "base")] + [(p, p.stem) for p in sorted(fx.glob("candidate-*.c"))]:
         scores[tag] = score(f.read_text())
-    tgt = WORK / "perm" / "target.bin"
-    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "-O", "binary", "--only-section=.text",
-                    str(fx / "target.o"), str(tgt)], capture_output=True)
+    def target_words(name):
+        """Word count of a committed/generated objective object, or 0 when it has not been built."""
+        obj = fx / name
+        if not obj.exists():
+            return 0, b""
+        blob = WORK / "perm" / ("%s.bin" % obj.stem)
+        blob.parent.mkdir(parents=True, exist_ok=True)
+        subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "-O", "binary", "--only-section=.text",
+                        str(obj), str(blob)], capture_output=True)
+        raw = blob.read_bytes() if blob.exists() else b""
+        blob.unlink(missing_ok=True)
+        return len(raw) // 4, raw
+
+    draft_words, _draft_raw = target_words("target-draft.o")
+    image_tgt_words, image_tgt_raw = target_words("target.o")
     return {"image_words": n, "table": table, "scores": scores, "recorded": rec.get("candidates", {}),
-            "target_words": tgt.stat().st_size // 4 if tgt.exists() else 0}
+            "target_words": draft_words, "draft_words": draft_words,
+            "image_target_words": image_tgt_words,
+            "image_target_exact": image_tgt_raw == b"".join(want) if image_tgt_raw else False}
 
 
 # p7 as a whole function: the recovery done for p6, on the head whose bound is **7** and whose index is the byte at
@@ -2732,20 +2746,34 @@ def check():
                   len(CLASSES_WITHOUT_A_PROBE) == 3
                   and all(len(v) > 40 for v in CLASSES_WITHOUT_A_PROBE.values())))
 
+    s = permf["scores"] if permf else {}
     cases.append((f"the committed permuter harness (`fixtures/permuter/p6/`) re-scores to its recorded verdict: "
-                  f"base {permf['scores'].get('base')} of {permf['image_words']}, best candidate "
-                  f"{max([v for k, v in permf['scores'].items() if k.startswith('candidate-')] or [0])} -- "
-                  f"and no candidate reaches the control's {permf['image_words']}, which is why the plateau is "
-                  f"real and the shape solver, not the permuter, closed the last four words (M300)"
+                  f"base {s.get('base')} of {permf['image_words'] if permf else 98}, the two candidates from the "
+                  f"proxy-objective run at {s.get('candidate-1780-1')} and {s.get('candidate-1980-26')}"
                   if permf else "permuter fixtures: not run",
-                  bool(permf) and permf["scores"].get("base") == 86
-                  and max([v for k, v in permf["scores"].items() if k.startswith("candidate-")] or [0]) == 94))
+                  bool(permf) and s.get("base") == 86
+                  and s.get("candidate-1780-1") == 94 and s.get("candidate-1980-26") == 94))
 
-    cases.append((f"the permuter's own objective is a proxy, not the function: `target.o` holds "
-                  f"{permf['target_words']} instructions against the image's {permf['image_words']} and carries "
+    cases.append((f"the permuter's own search, pointed at the image rather than the proxy, reaches BYTE-EXACTNESS: "
+                  f"`candidate-image-310-1.c` scores {s.get('candidate-image-310-1')} of "
+                  f"{permf['image_words'] if permf else 98} -- and it is a DIFFERENT shape from the hand "
+                  f"reconstruction (a `new_var` temporary in case 4 instead of two transposed statements), so the "
+                  f"94/98 plateau was the objective, not the tool (M302)"
+                  if permf else "permuter image run: not run",
+                  bool(permf) and s.get("candidate-image-310-1") == permf["image_words"]))
+
+    cases.append((f"the permuter's *draft* objective is a proxy, not the function: `target-draft.o` holds "
+                  f"{permf['draft_words']} instructions against the image's {permf['image_words']} and carries "
                   f"unresolved relocations -- which is why the word metric, not the permuter's score, is the "
-                  f"verdict (M300)" if permf else "permuter target: not run",
-                  bool(permf) and permf["target_words"] == 116 and permf["image_words"] == 98))
+                  f"verdict (M300)" if permf else "permuter draft target: not run",
+                  bool(permf) and permf["draft_words"] == 116 and permf["image_words"] == 98))
+
+    cases.append((f"`make_target.py` builds the permuter's objective from the image itself: `target.o` is "
+                  f"{permf['image_target_words']} words and byte-identical to 0x8004fd1c, with no relocations "
+                  f"-- so the objective is the cartridge, and its one asymmetry (a resolved pool reference "
+                  f"against a candidate's `R_MIPS_HI16`) is stated rather than hidden (M302)"
+                  if permf and permf["image_target_words"] else "image target: not built (run make_target.py)",
+                  bool(permf) and permf["image_target_words"] == 98 and permf["image_target_exact"]))
 
     bad = sum(1 for _l, ok in cases if not ok)
     print("%-4s %-13s %-10s %s" % ("prb", "profile", "verdict", "detail"))

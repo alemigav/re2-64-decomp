@@ -116,5 +116,49 @@
     "hunks": 4
    }
   ]
- }
+ },
+ "run_image_objective": {
+  "date": "2026-11-04",
+  "iterations": 103401,
+  "compile_errors": 83206,
+  "better_score_events": 17,
+  "permuter_score_base": 435,
+  "permuter_best_score": 320,
+  "new_candidate_dirs": 25,
+  "objective": "target.o built by make_target.py from the image's own 98 words (392 B, byte-identical, no relocs)",
+  "byte_metric": {
+   "scored": 25,
+   "perfect_98": 1,
+   "at_97": 1,
+   "at_95": 2,
+   "at_94": 4,
+   "best": [
+    {
+     "dir": "output-310-1",
+     "off": 98,
+     "same": 98,
+     "hunks": 1
+    },
+    {
+     "dir": "output-320-1",
+     "off": 97,
+     "same": 97,
+     "hunks": 2
+    },
+    {
+     "dir": "output-325-1",
+     "off": 95,
+     "same": 95,
+     "hunks": 3
+    },
+    {
+     "dir": "output-330-1",
+     "off": 95,
+     "same": 95,
+     "hunks": 3
+    }
+   ]
+  }
+ },
+ "verdict": "With the PROXY objective the permuter never passes 94/98 in 226 000 iterations; with the IMAGE objective it reaches 98/98 (byte-exact) in 83 834. The plateau was the objective, not the tool. M300's 'cannot reach this shape by randomisation' is retracted -- and the winner is a DIFFERENT shape from the hand reconstruction: it keeps a `new_var` temporary in case 4 instead of transposing two statements."
 }
