@@ -76,6 +76,42 @@ EDITS += [
      '    if (compare_constant_rtx (mode, x, desc) && mode != DFmode)   /* M291, see above */'),
 ]
 
+# M309: instrument `reorg.c`'s delay-slot fill so the scheduler's *decisions* can be observed. Off unless
+# DBR_TRACE is set in the environment, so the shipped compiler's output is unchanged -- the probe passing 63/63
+# with this patch applied is the proof. It exists because three separate residues (0x8007e590, osCreateThread,
+# the 25-word group) all die in scheduling/allocation decisions that no C shape reaches, and until now the only
+# evidence was the `.dbr` dump: the *outcome*, never which pass asked and what it was told.
+_TRACE_WRAPPER = (
+    '/* M309: trace the fill. `eligible_for_delay` is generated from the machine description, so it cannot be\n'
+    '   patched directly; wrapping it here catches every eligibility question reorg asks.  */\n'
+    'static int dbr_trace_eligible PROTO((rtx, int, rtx, int));\n'
+    'static int\n'
+    'dbr_trace_eligible (insn, slot, trial, flags)\n'
+    '     rtx insn;\n'
+    '     int slot;\n'
+    '     rtx trial;\n'
+    '     int flags;\n'
+    '{\n'
+    '  int r = eligible_for_delay (insn, slot, trial, flags);\n'
+    '  if (getenv ("DBR_TRACE"))\n'
+    '    fprintf (stderr, "DBR eligible branch=%d trial=%d slot=%d flags=%d -> %s\\n",\n'
+    '             INSN_UID (insn), INSN_UID (trial), slot, flags, r ? "yes" : "no");\n'
+    '  return r;\n'
+    '}\n'
+    '#define eligible_for_delay(I, S, T, F) dbr_trace_eligible (I, S, T, F)\n'
+)
+
+EDITS += [
+    ('reorg.c',
+     '#include "insn-attr.h"\n\n/* Import list of registers used as spill regs from reload.  */',
+     '#include "insn-attr.h"\n#include <stdlib.h>\n\n' + _TRACE_WRAPPER
+     + '\n/* Import list of registers used as spill regs from reload.  */'),
+    ('reorg.c',
+     '      INSN_ANNULLED_BRANCH_P (insn) = 1;\n    }',
+     '      INSN_ANNULLED_BRANCH_P (insn) = 1;\n'
+     '      if (getenv ("DBR_TRACE"))\n'
+     '\\tfprintf (stderr, "DBR ANNUL branch=%d stolen_trial=%d\\\\n", INSN_UID (insn), INSN_UID (trial));\\n    }'),
+]
 
 def main(argv):
     if len(argv) != 2:
