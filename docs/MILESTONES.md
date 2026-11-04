@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-338 milestones are indexed. 260 of them have a note; the rest are rows in the log that cite
+339 milestones are indexed. 261 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -355,6 +355,7 @@ at the foot of this file.
 | 335 | **M335** — the duplicate cohorts: 17 functions from one shape, and the headline number finally gated | `docs/log/M335-the-duplicate-cohorts-17-from-one-shape.md` |
 | 336 | **M336** — the eleven-word loop: the register was a consequence of the statement order | `docs/log/M336-the-eleven-word-loop-and-the-statement-order-lever.md` |
 | 337 | **M337** — the 13-word call-and-add pair, and the glide that says there is nothing left to glide on | `docs/log/M337-the-13-word-pair-and-the-glide.md` |
+| 338 | **M338** — the 330 KB `unclassified` bucket, measured: 8.7 % of it is code, 70 % still has no name | `docs/log/M338-the-unclassified-bucket-measured.md` |
 
 ## The gaps, and why they are empty
 

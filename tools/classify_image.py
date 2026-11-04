@@ -27,6 +27,7 @@ Usage:
 import argparse
 import json
 import re
+import struct
 import zlib
 from pathlib import Path
 
@@ -205,13 +206,102 @@ def cartridge_check(root: Path = ROOT):
             (f"every padding range is a single value, 0x00 or 0xFF ({len(bad)} violate: {bad[:3]})", ok_pad)]
 
 
+def unclassified_report(root: Path = ROOT):
+    """What the `unclassified` bucket actually contains, measured rather than renamed (M338).
+
+    The class rule keeps a word out of `unclassified` only when an artifact names it, so the bucket is the
+    project's honest residue -- 330 176 B, 16.9 % of the image bytes. This decomposes it by **evidence about the
+    bytes**, with a fixed and conservative precedence:
+
+        code           contains `jr ra`, and every `j`/`jal` target lands inside the same image
+        float_table    >= 8 words, >= 95 % IEEE-sane, and >= 90 % ascending -- a table, not noise
+        pointer_table  >= 8 words, >= 80 % of them addresses inside the same image
+        short_fill     under the padding law's 16-byte floor and a single repeated 0x00/0xFF
+        small_residue  < 64 B and none of the above: inter-function slack
+        structured     >= 64 B and none of the above: the part that genuinely has no name yet
+
+    Nothing here renames a class. Naming one of these in `byte_map.json` needs a rule the classifier can
+    enforce and a gate that can fail -- a milestone of its own; this is the measurement that would authorise
+    it, published so the next session starts from numbers instead of from "data, padding or unknown".
+    """
+    images = json.loads((root / "fixtures/decomp/images.json").read_text())
+    bmap = json.loads((root / MAP).read_text())
+    out = {}
+    runs = 0
+    for img in images["images"]:
+        name, base, size = img["name"], img["base"], img["size"]
+        blob = image_bytes(img, root)
+        if blob is None:
+            continue
+        for lo, hi, cls, _why in bmap["images"].get(name, []):
+            if cls != "unclassified":
+                continue
+            n = hi - lo + 1
+            b = blob[lo - base:hi - base + 1]
+            words = [int.from_bytes(b[k:k + 4], "big") for k in range(0, len(b) - 3, 4)]
+            if not words:
+                continue
+            runs += 1
+            jr = any(w == 0x03E00008 for w in words)
+            br = [w for w in words if (w >> 26) in (2, 3, 4, 5, 6, 7, 1)]
+            # A `j`/`jal` target must land in the cartridge's own address window, not in this image: stage2
+            # calls boot code (`jal 0x8000xxxx`) legitimately, so a per-image test rejected real code.
+            jumps = [((w & 0x03FFFFFF) << 2) | (base & 0xF0000000) for w in br if (w >> 26) in (2, 3)]
+            in_image = all(0x80000000 <= tgt < 0x80800000 for tgt in jumps)
+            sane = [f for f in (struct.unpack(">f", b[k:k + 4])[0] for k in range(0, len(b) - 3, 4))
+                    if f == f and abs(f) < 1e6]
+            asc = sum(1 for x, y in zip(sane, sane[1:]) if y >= x)
+            mono = asc / (len(sane) - 1) if len(sane) > 1 else 0.0
+            ptrs = sum(1 for w in words if base <= w < base + size)
+            # A `jr ra` word is 0x03E00008, which data can hold by chance -- 408 runs do, against 37 that
+            # look like code. So "code" needs a return, in-window jump targets, **>= 8 distinct opcodes**
+            # and **no single opcode over 40 % of the words**. A float table is all `lui`-shaped and fails
+            # both density tests; the dense stage2 regions pass them with 22-26 distinct opcodes.
+            ops = [w >> 26 for w in words]
+            distinct = len(set(ops))
+            dominant = max(ops.count(o) for o in set(ops)) / len(ops)
+            if n < MIN_PAD and (b.count(0x00) == n or b.count(0xFF) == n):
+                kind = "short_fill"
+            elif jr and in_image and distinct >= 8 and dominant <= 0.40:
+                kind = "code"
+            elif len(sane) >= 8 and len(sane) / max(len(words), 1) >= 0.95 and mono >= 0.90:
+                kind = "float_table"
+            elif len(words) >= 8 and ptrs >= 0.80 * len(words):
+                kind = "pointer_table"
+            elif n >= 64:
+                kind = "structured"
+            else:
+                kind = "small_residue"
+            slot = out.setdefault(kind, {"bytes": 0, "runs": 0})
+            slot["bytes"] += n
+            slot["runs"] += 1
+    out["_total"] = {"bytes": sum(v["bytes"] for k, v in out.items() if not k.startswith("_")),
+                     "runs": runs}
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--check-cartridge", action="store_true")
+    ap.add_argument("--unclassified", action="store_true",
+                    help="decompose the unclassified bucket by evidence about the bytes (needs the cartridge)")
     a = ap.parse_args()
+    if a.unclassified:
+        if not all(image_bytes(i) for i in load()[0]["images"]):
+            print("SKIP (needs the unpacked images)")
+            return 0
+        rep = unclassified_report()
+        total = rep.pop("_total")
+        for kind in sorted(rep, key=lambda k: -rep[k]["bytes"]):
+            print("  %-14s %7d B %5d runs  (%4.1f %%)"
+                  % (kind, rep[kind]["bytes"], rep[kind]["runs"],
+                     100.0 * rep[kind]["bytes"] / total["bytes"]))
+        print("  %-14s %7d B %5d runs" % ("TOTAL", total["bytes"], total["runs"]))
+        return 0
+
     if a.write:
         rep = build()
         if any(not image_bytes(i) for i in load()[0]["images"]):

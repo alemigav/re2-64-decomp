@@ -3958,6 +3958,30 @@ def check():
                   if selc else "select census (stores): not run",
                   bool(selc) and selc["stored"] == 39 and selc["v0_stored"] == 35))
 
+    # M338: the byte map's `unclassified` bucket, decomposed by evidence about the bytes rather than
+    # renamed. The classes here are *measurements on the cartridge*, not new entries in `byte_map.json`:
+    # naming one of them in the map needs a rule the classifier can enforce and a gate that can fail.
+    try:
+        import classify_image as _ci
+        ucr = _ci.unclassified_report()
+    except Exception:
+        ucr = None
+    uc_total = (ucr or {}).get("_total", {})
+    cases.append((f"the {uc_total.get('bytes', 0):,} B `unclassified` bucket is measured, not renamed: "
+                  f"code {(ucr or {}).get('code', {}).get('bytes', 0):,} B in "
+                  f"{(ucr or {}).get('code', {}).get('runs', 0)} runs (8 distinct opcodes, in-window jump "
+                  f"targets, 1+ `jr ra`), float tables "
+                  f"{(ucr or {}).get('float_table', {}).get('bytes', 0):,} B in "
+                  f"{(ucr or {}).get('float_table', {}).get('runs', 0)} runs (monotone IEEE), pointer tables "
+                  f"{(ucr or {}).get('pointer_table', {}).get('bytes', 0):,} B, and "
+                  f"{(ucr or {}).get('structured', {}).get('bytes', 0):,} B still unnamed -- which is the "
+                  f"honest core of it (M338)"
+                  if ucr else "unclassified decomposition: not run",
+                  bool(ucr) and uc_total.get("bytes") == 330176
+                  and ucr["code"]["bytes"] == 28764 and ucr["float_table"]["bytes"] == 41000
+                  and ucr["pointer_table"]["bytes"] == 11572
+                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 330176))
+
     cases.append((f"the duplicate census is vetted before it is drafted: {dupc['total']} unmatched functions "
                   f"in {dupc['groups']} repeated bodies, of which {dupc['complete']} in "
                   f"{dupc['complete_groups']} contain a return and {dupc['fragments']} in "
