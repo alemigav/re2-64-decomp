@@ -1,14 +1,17 @@
 /* framebuffer_set
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8008af6c  body 0x8008af6c..0x8008af7f  size 20 B
- * body sha256 bc43f76767ff41174d24814e461e4a3a844a14065a67a242d4e2941e1147f54c
- * provider record sha256 39648148f9d3ac9c95957e5b4a8a7ef730c4ebf06fd65d6fbef419f6a8e97fa8
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 99834b4ec0c3a02fad9b4060ba7c0b42f7ca58b4d2fa31690cb90786384888af
+ * recovered byte-exact (single: 5 of 5, one draft)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_8008AF6C_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void framebuffer_set(void)
-
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_8010B6F0;
+extern u32 D_8012BD84;
+void FUN_x(void)
 {
-  DAT_8012bd84 = DAT_8010b6f0;
-  return;
+    D_8012BD84 = D_8010B6F0;
 }

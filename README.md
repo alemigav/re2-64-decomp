@@ -2,14 +2,14 @@
 
 **What it is:** a black-box study of *Resident Evil 2* on the Nintendo 64 (`NREE` rev 1 USA), reverse-engineered
 from the cartridge up — 3 416 functions catalogued, the file formats decoded, the script virtual machine and three
-audio codecs worked out from the bytes, and **103 functions reconstructed in C and recompiled — 102 of them matching
-the game's own machine code byte for byte**. It ships a **1064-case verification suite**, and every claim here is
+audio codecs worked out from the bytes, and **109 functions reconstructed in C and recompiled — 108 of them matching
+the game's own machine code byte for byte**. It ships a **1070-case verification suite**, and every claim here is
 either measured by one of those cases or explicitly labelled a reading of the code.
 
 | | |
 |---|---|
-| **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **102 functions now match the cartridge exactly**, down to the last byte — from Nintendo's own libultra runtime down to single-instruction accessors, including **59 that come from eight shared bodies**, so one proven shape registers every copy |
-| **The unusual part** | **286 checks run with no ROM, no assets and no emulator** — the other 778 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses to report `PASS` unless it has first proved each gate *can* fail |
+| **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **108 functions now match the cartridge exactly**, down to the last byte — from Nintendo's own libultra runtime down to single-instruction accessors, including **59 that come from eight shared bodies**, so one proven shape registers every copy |
+| **The unusual part** | **286 checks run with no ROM, no assets and no emulator** — the other 784 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses to report `PASS` unless it has first proved each gate *can* fail |
 | **The scale of what is left** | 62.2 % of the image bytes sit inside a known function body and the other 37.8 % is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
 
 [![ci](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml/badge.svg)](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml)
@@ -35,7 +35,7 @@ is actually put together — the deep technical detail is in [docs/](docs/handov
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp
 cd re2-64-decomp
-python3 tools/verify.py          # -> PASS-FAST: 286 cases run, 778 SKIP (they need your dump, never PASS)
+python3 tools/verify.py          # -> PASS-FAST: 286 cases run, 784 SKIP (they need your dump, never PASS)
 ```
 
 That is the whole setup: Python 3, no dependencies, no cartridge. To go deeper without the ROM, run
@@ -45,7 +45,7 @@ That is the whole setup: Python 3, no dependencies, no cartridge. To go deeper w
 
 ## Project highlights
 
-- **The compiler, pinned** — gcc 2.8.1 + binutils 2.7 reproduce this game's code, and **102 functions now match
+- **The compiler, pinned** — gcc 2.8.1 + binutils 2.7 reproduce this game's code, and **108 functions now match
   byte for byte**, 59 of them from eight duplicate-body cohorts ([The matching build](#the-matching-build))
 - **Formats decoded** — the script VM (141 handlers, 18 instruction lengths), the T64 texture container, three
   audio codecs including one reimplemented to **sample-for-sample** parity ([What is decoded](#what-is-decoded))
@@ -148,7 +148,7 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 32 suites / 286 of 1064 cases run; the other 41 suites SKIP
+python3 tools/acceptance.py      # 32 suites / 286 of 1070 cases run; the other 41 suites SKIP
 python3 tools/audit_gates.py     # 146/146 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 22/22 — every doc anchor, heading and note pointer holds
@@ -160,7 +160,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **778 of 1064 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **784 of 1070 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -180,7 +180,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**318** numbers, 0-317: **262** with a row, and **56** named gaps. The full index — every number, its title,
+**319** numbers, 0-318: **263** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -365,7 +365,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       100 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 416 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    242 notes, one per milestone that has one
+docs/log/    243 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

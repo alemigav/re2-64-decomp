@@ -869,6 +869,74 @@ void FUN_x(u32 a)
 }
 """
 
+# M318: the 5-word batch
+S_800274E4_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u8 D_800E9174[];
+void FUN_x(u8 a, u16 b)
+{
+    u8 *p = D_800E9174;
+
+    *(u16 *)(p + 214) = b;
+    *(u8 *)(p + 200) = a;
+}
+"""
+S_8002FCD8_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_800EA270;
+u32 FUN_x(void)
+{
+    D_800EA270 = 0;
+    return 1000000;
+}
+"""
+S_80052BBC_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u8 D_800E9174[];
+void FUN_x(u32 a, u16 b)
+{
+    u8 *p = D_800E9174;
+
+    *(u32 *)(p + 8) = a;
+    *(u16 *)(p + 12) = b;
+}
+"""
+S_8008AF6C_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_8010B6F0;
+extern u32 D_8012BD84;
+void FUN_x(void)
+{
+    D_8012BD84 = D_8010B6F0;
+}
+"""
+S_800AAF70_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_80148BD4;
+extern u32 D_80148BD8;
+void FUN_x(void)
+{
+    D_80148BD4 = 0;
+    D_80148BD8 = 0;
+}
+"""
+S_80166294_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+void FUN_x(u16 *p, u16 v)
+{
+    p[155] = v;
+    p[156] = v;
+    p[150] = v;
+    p[151] = v;
+}
+"""
+
 # M317: the 4-word batch
 S_80025B0C_SOURCE = """typedef unsigned char u8;
 typedef unsigned short u16;
@@ -998,6 +1066,12 @@ SINGLES = [
     ("S_800A860C_SOURCE", "stage2", 0x800a860c, 4, (('D_80136311', 0x80136311),)),
     ("S_800AB504_SOURCE", "stage2", 0x800ab504, 4, ()),
     ("S_80165C58_SOURCE", "ovl_0087352", 0x80165c58, 4, ()),
+    ("S_800274E4_SOURCE", "stage2", 0x800274e4, 5, (('D_800E9174', 0x800E9174),)),
+    ("S_8002FCD8_SOURCE", "stage2", 0x8002fcd8, 5, (('D_800EA270', 0x800EA270),)),
+    ("S_80052BBC_SOURCE", "stage2", 0x80052bbc, 5, (('D_800E9174', 0x800E9174),)),
+    ("S_8008AF6C_SOURCE", "stage2", 0x8008af6c, 5, (('D_8010B6F0', 0x8010B6F0), ('D_8012BD84', 0x8012BD84))),
+    ("S_800AAF70_SOURCE", "stage2", 0x800aaf70, 5, (('D_80148BD4', 0x80148BD4), ('D_80148BD8', 0x80148BD8))),
+    ("S_80166294_SOURCE", "ovl_0087352", 0x80166294, 5, ()),
 ]
 
 

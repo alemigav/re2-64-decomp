@@ -825,6 +825,54 @@
    "verdict": "byte-exact",
    "probe": "single: 4 of 4, one draft",
    "source": "S_80165C58_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800274e4",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_800274E4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fcd8",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_8002FCD8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80052bbc",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_80052BBC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008af6c",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_8008AF6C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800aaf70",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_800AAF70_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80166294",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_80166294_SOURCE"
   }
  ]
 }
