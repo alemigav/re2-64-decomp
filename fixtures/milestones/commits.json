@@ -2,6 +2,20 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "88121a0",
+   "subject": "M305 follow-up: commit the reseeded commit fixture the M305 staging missed",
+   "milestones": [
+    305
+   ]
+  },
+  {
+   "sha": "a4a5275",
+   "subject": "M305: select-shape census (123 occurrences, 90% use $2) \u2014 and the correction that the case-4 residue is a conflict, not a tie-break, so a preference patch cannot move it",
+   "milestones": [
+    305
+   ]
+  },
+  {
    "sha": "55296b0",
    "subject": "M303 follow-up: commit the p6 fixture's f.toml -> settings.toml rename that the M303 staging missed",
    "milestones": [

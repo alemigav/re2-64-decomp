@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-306 milestones are indexed. 228 of them have a note; the rest are rows in the log that cite
+307 milestones are indexed. 229 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -323,6 +323,7 @@ at the foot of this file.
 | 303 | **M303** — `osCreateThread` under the permuter: a negative result, the shape/allocation boundary, and an inert setting | `docs/log/M303-oscreatethread-under-the-permuter.md` |
 | 304 | **M304** — the case-4 select register, decoded: 32 spellings that change nothing | `docs/log/M304-the-case-4-select-register-decoded.md` |
 | 305 | **M305** — the select-shape census: the preference is systematic, but the obstacle is a conflict, so the patch is a different one | `docs/log/M305-the-select-shape-census.md` |
+| 306 | **M306** — the second `cc1`: the fill cannot move ahead of `global_alloc`, and two variants that do not move the register | `docs/log/M306-the-second-cc1-experiments.md` |
 
 ## The gaps, and why they are empty
 
