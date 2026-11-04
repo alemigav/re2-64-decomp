@@ -4300,16 +4300,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80035e34": {
-   "name": "FUN_80035e34",
-   "image": "stage2",
-   "address": "0x80035e34",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80035e3c": {
    "name": "FUN_80035e3c",
    "image": "stage2",
@@ -6804,16 +6794,6 @@
    "name": "FUN_8004d178",
    "image": "stage2",
    "address": "0x8004d178",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8004d184": {
-   "name": "FUN_8004d184",
-   "image": "stage2",
-   "address": "0x8004d184",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -17160,16 +17140,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800ab574": {
-   "name": "FUN_800ab574",
-   "image": "stage2",
-   "address": "0x800ab574",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800ab580": {
    "name": "FUN_800ab580",
    "image": "stage2",
@@ -18560,6 +18530,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x80035e34": {
+   "name": "FUN_80035e34",
+   "image": "stage2",
+   "address": "0x80035e34",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x80039ba0": {
    "name": "FUN_80039ba0",
    "image": "stage2",
@@ -18614,6 +18594,16 @@
    "name": "FUN_8004a5b4",
    "image": "stage2",
    "address": "0x8004a5b4",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8004d184": {
+   "name": "FUN_8004d184",
+   "image": "stage2",
+   "address": "0x8004d184",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -19034,6 +19024,16 @@
    "name": "FUN_800aaf84",
    "image": "stage2",
    "address": "0x800aaf84",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x800ab574": {
+   "name": "FUN_800ab574",
+   "image": "stage2",
+   "address": "0x800ab574",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,

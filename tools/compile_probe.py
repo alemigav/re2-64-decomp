@@ -729,6 +729,33 @@ void FUN_call9(u8 *p)
 
 CALL9_SYMS = [("FUN_8008cea0", 0x8008CEA0)]
 
+# --- singles (M315): one draft each, no duplicate to multiply them ---------------------------------------
+# Three leaves that came out of the first singles batch. Each is a whole function of two words, so the draft is
+# the function: no field map, no arms, nothing to search.
+RET2_SOURCE = """typedef unsigned int u32;
+
+u32 FUN_ret2(u32 a, u32 b)
+{
+    return b;
+}
+"""
+
+CLEARU16_SOURCE = """typedef unsigned short u16;
+
+void FUN_clearu16(u16 *p)
+{
+    *p = 0;
+}
+"""
+
+SHIFT8_SOURCE = """typedef unsigned int u32;
+
+u32 FUN_shift8(u32 a)
+{
+    return a >> 8;
+}
+"""
+
 ZERO_SOURCE = """typedef int s32;
 
 s32 FUN_zero(void)
@@ -823,6 +850,41 @@ def duplicate_census():
     return {"total": complete + fragments, "groups": groups_complete + groups_fragment,
             "complete": complete, "complete_groups": groups_complete,
             "fragments": fragments, "fragment_groups": groups_fragment}
+
+
+def single_probe(src_name, image, addr, words, syms=()):
+    """(matched, compiled) words for one single-function reconstruction at one address."""
+    inv = image_inventory()
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    text = globals().get(src_name)
+    win = image_window(image, inv)
+    if text is None or win is None or not cc1.exists() or not gas.exists():
+        return None
+    blob, base = win
+    d = WORK / ("single_%s" % src_name)
+    d.mkdir(parents=True, exist_ok=True)
+    c, s, o, fx, elf = d / "f.c", d / "f.s", d / "f.o", d / "f.fix.o", d / "f.elf"
+    c.write_text(text)
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    if subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    (d / "l.ld").write_text("SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  /DISCARD/ : { *(.reginfo) "
+                            "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                            "*(.rodata) *(.gnu.attributes) }\n}\n" % addr
+                            + "".join("%s = 0x%X;\n" % (k, v) for k, v in syms))
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(d / "l.ld"), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    got = text_of(elf)
+    g = [got[4 * i:4 * i + 4] for i in range(len(got) // 4)]
+    want = [blob[addr - base + 4 * i:addr - base + 4 * i + 4] for i in range(words)]
+    return (sum(1 for a, b in zip(want, g) if a == b), len(g))
 
 
 def image_inventory():
@@ -3069,6 +3131,15 @@ def check():
                   f"fragments that cannot be reconstructed (M312)" if dupc else "duplicate census: not run",
                   bool(dupc) and dupc["total"] == 89 and dupc["complete"] == 85 and dupc["fragments"] == 4))
 
+    for src_name, img, addr, words, label in (
+            ("RET2_SOURCE", "stage2", 0x80035E34, 2, "a function that returns its second argument"),
+            ("CLEARU16_SOURCE", "stage2", 0x8004D184, 2, "a u16 cleared through a pointer"),
+            ("SHIFT8_SOURCE", "stage2", 0x800AB574, 2, "a >> 8 and nothing else")):
+        got = single_probe(src_name, img, addr, words)
+        cases.append((f"{label} ({words} words at 0x{addr:08x}) is BYTE-EXACT: {got[0]} of {words} words "
+                      f"matched ({got[1]} compiled, the rest `as` padding) -- one draft, no search "
+                      f"(M315)" if got is not None else f"{label}: not run",
+                      bool(got) and got[0] == words))
     # one case per multi-member family, generated from the fixture so a new cohort needs no code here
     for src_name, fam in sorted((fams or {}).items()):
         cases.append((f"{src_name}, {fam['words']} words: all {fam['members']} copies of the identical body are "

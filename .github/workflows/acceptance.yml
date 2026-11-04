@@ -4,9 +4,9 @@
 # everything derived from it (`assets/`, `build/`) — so `tools/acceptance.py` reports:
 #
 #   32 suites / 286 cases  PASS
-#   41 suites / 753 cases  SKIP (needs the cartridge)
+#   41 suites / 756 cases  SKIP (needs the cartridge)
 #
-# Locally, with the ROM present, the same command runs all 73 suites / 1039 cases. Those numbers are asserted
+# Locally, with the ROM present, the same command runs all 73 suites / 1042 cases. Those numbers are asserted
 # by `tools/acceptance.py`'s own expected counts, so this comment goes stale loudly rather than quietly.
 #
 # **The 109 skipped cases are the ones that assert facts about RE2 itself** — the corpus checks
@@ -76,7 +76,7 @@ jobs:
             printf 'for the 109 skipped cases. With the ROM present, run the `full` job above.\n'
           } >> "$GITHUB_STEP_SUMMARY"
 
-  # The other tier: the same `ci.sh` where the cartridge exists, so all 73 suites / 1039 cases run. This job
+  # The other tier: the same `ci.sh` where the cartridge exists, so all 73 suites / 1042 cases run. This job
   # needs a machine that holds the ROM — nothing is uploaded, and no secret is involved. (`full-url` below
   # reaches the same coverage on a hosted runner by fetching the cartridge instead.)
   #
@@ -121,7 +121,7 @@ jobs:
             printf '```\n'
             grep -E '^(all |cartridge|ci:)|PASS|FAIL|SKIP' ci_full.log | tail -40 || true
             printf '```\n\n'
-            printf 'This tier holds the cartridge, so all 73 suites / 1039 cases run. Nothing was uploaded:\n'
+            printf 'This tier holds the cartridge, so all 73 suites / 1042 cases run. Nothing was uploaded:\n'
             printf 'the ROM lives on the runner, not in a secret.\n'
           } >> "$GITHUB_STEP_SUMMARY"
 

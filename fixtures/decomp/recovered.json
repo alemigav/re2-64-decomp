@@ -601,6 +601,30 @@
    "verdict": "byte-exact",
    "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
    "source": "WRAPVOID_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80035e34",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "ret2: 2 of 2",
+   "source": "RET2_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004d184",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "clearu16: 2 of 2",
+   "source": "CLEARU16_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab574",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "shift8: 2 of 2",
+   "source": "SHIFT8_SOURCE"
   }
  ]
 }

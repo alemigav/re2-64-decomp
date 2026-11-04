@@ -2,6 +2,14 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "4d9ef99",
+   "subject": "M314: the 3x32 group to 29/32 in two drafts \u2014 one register left, stopped at the cap (the M311 wall again)",
+   "milestones": [
+    311,
+    314
+   ]
+  },
+  {
    "sha": "a6f65b9",
    "subject": "M313 follow-up: escape the pipes in the M313 row (they split the table) and align the note title with its row",
    "milestones": [
