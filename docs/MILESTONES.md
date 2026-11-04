@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-334 milestones are indexed. 256 of them have a note; the rest are rows in the log that cite
+335 milestones are indexed. 257 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -351,6 +351,7 @@ at the foot of this file.
 | 331 | **M331** — `vector_installer`: the PRId dispatch is a chain over two *flag* values (+6 → 0) | `docs/log/M331-vector-installer-the-prid-dispatch-is-a-chain.md` |
 | 332 | **M332** — the front page split in two, and the eight stale numbers it had been carrying | `docs/log/M332-the-front-page-split-in-two.md` |
 | 333 | **M333** — `vector_installer`: the 64-bit shift block, measured to the instruction, and the mask word capped | `docs/log/M333-vector-installer-the-64-bit-block-measured-to-the-instruction.md` |
+| 334 | **M334** — can the allocation gap be influenced? Twenty-five flag variants, one corpus control | `docs/log/M334-can-the-allocation-gap-be-influenced.md` |
 
 ## The gaps, and why they are empty
 

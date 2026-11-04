@@ -215,7 +215,7 @@ def screen(lo: int, hi: int, include_rejected: bool = False) -> list[dict]:
     return out
 
 
-def try_draft(cp, draft: Path, image: str, addr: int, words: int, syms) -> int:
+def try_draft(cp, draft: Path, image: str, addr: int, words: int, syms, cc1_extra=()) -> int:
     inv = cp.image_inventory()
     win = cp.image_window(image, inv)
     if win is None:
@@ -230,7 +230,11 @@ def try_draft(cp, draft: Path, image: str, addr: int, words: int, syms) -> int:
     c = d / "f.c"
     c.write_text(draft.read_text())
     s, o, fx, elf = d / "f.s", d / "f.o", d / "f.fix.o", d / "f.elf"
-    for cmd in ([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+    # M334: `--cc1-arg` exists because "is this allocation a wall?" is a question about *flags*, and the only
+    # honest way to ask it is to compile the same draft again with one flag moved. The assembler and linker
+    # pipeline is unchanged, so a difference in the words is a difference the compiler made.
+    for cmd in ([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300"]
+                + list(cc1_extra) + [str(c), "-o", str(s)],
                 [str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)]):
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode:
@@ -311,6 +315,8 @@ def main(argv):
     ap.add_argument("--addr")
     ap.add_argument("--count", type=int, help="expected word count, for --try")
     ap.add_argument("--sym", action="append", default=[])
+    ap.add_argument("--cc1-arg", action="append", default=[],
+                    help="extra cc1 argument for --try (repeatable); the assembler and linker are unchanged")
     a = ap.parse_args(argv)
 
     if a.self_test:
@@ -324,7 +330,7 @@ def main(argv):
         for s in a.sym:
             k, v = s.split("=")
             syms.append((k, int(v, 16)))
-        return try_draft(load_probe(), Path(a.draft), a.image, int(a.addr, 16), a.count, syms)
+        return try_draft(load_probe(), Path(a.draft), a.image, int(a.addr, 16), a.count, syms, a.cc1_arg)
 
     lo, _, hi = a.words.partition(":")
     if a.called:
