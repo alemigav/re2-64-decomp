@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "0b1db9d",
+   "subject": "M297: libultra bracketed to the pre-PRENMI era, and osSetEventMesg byte-exact at 24 words",
+   "milestones": [
+    297
+   ]
+  },
+  {
    "sha": "bed1a52",
    "subject": "M296: libultra reference experiment -- osCreateMesgQueue byte-exact, OoT is a later revision",
    "milestones": [
