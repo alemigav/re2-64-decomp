@@ -3977,10 +3977,10 @@ def check():
                   f"{(ucr or {}).get('structured', {}).get('bytes', 0):,} B still unnamed -- which is the "
                   f"honest core of it (M338)"
                   if ucr else "unclassified decomposition: not run",
-                  bool(ucr) and uc_total.get("bytes") == 330176
-                  and ucr["code"]["bytes"] == 28764 and ucr["float_table"]["bytes"] == 41000
+                  bool(ucr) and uc_total.get("bytes") == 329364
+                  and ucr["code"]["bytes"] == 28608 and ucr["float_table"]["bytes"] == 41000
                   and ucr["pointer_table"]["bytes"] == 11572
-                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 330176))
+                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 329364))
 
     # M339: the extents measured inside those code-like regions, and whether they are genuinely new ground.
     try:
@@ -4000,6 +4000,29 @@ def check():
     except Exception:
         _me = _sum = None
         _clash = -1
+    # M340: the measured-extent rung — five functions whose census body was a truncated stub now carry the
+    # extent the bytes give, with no reconstruction, and the ladder must not credit them as written.
+    try:
+        import json as _j
+        _ci = _j.loads((ROOT / "manifests" / "code_index.json").read_text())
+        _st = _j.loads((ROOT / "manifests" / "analysis_status.json").read_text())["totals"]
+        _me = _j.loads((ROOT / "fixtures" / "decomp" / "measured_extents.json").read_text())["corrections"]
+        _got = {(i["name"], f["address"]): (f.get("status"), f.get("size")) for i in _ci["images"]
+                for f in i["functions_list"]}
+        _wrong = [(c["image"], c["address"]) for c in _me
+                  if _got.get((c["image"], c["address"])) != ("extent-measured", c["words"] * 4)]
+    except Exception:
+        _me = _got = _wrong = None
+        _st = {}
+    cases.append((f"the measured-extent rung carries {len(_me or [])} function(s) that no reconstruction can: "
+                  f"the census calls `0x8004276c` a 3-word stub while the bytes give 46 and it has 96 callers, and "
+                  f"the ladder puts them at F0 only -- F1 {_st.get('F1', 0)} (not {_st.get('F1', 0) + len(_me or [])}), "
+                  f"F2 {_st.get('F2', 0)}, extent_measured {_st.get('extent_measured', 0)}; "
+                  f"{len(_wrong or [])} of them disagree with the fixture (M340)"
+                  if _me else "measured-extent rung: not run",
+                  bool(_me) and not _wrong and _st.get("extent_measured") == len(_me) == 5
+                  and _st.get("F1") == 3411 and _st.get("F2") == 3324))
+
     cases.append((f"the extents inside those code regions are measured, and they are new ground: "
                   f"{(_sum or {}).get('functions', 0)} function(s), {(_sum or {}).get('bytes', 0):,} B across "
                   f"{(_sum or {}).get('regions', 0)} region(s), {(_sum or {}).get('rejected', 0)} candidate(s) "
@@ -4013,11 +4036,12 @@ def check():
                   f"in {dupc['groups']} repeated bodies, of which {dupc['complete']} in "
                   f"{dupc['complete_groups']} contain a return and {dupc['fragments']} in "
                   f"{dupc['fragment_groups']} are mid-function fragments that cannot be reconstructed "
-                  f"(M312; the totals move as functions are recovered, the 4 fragments do not)"
+                  f"(M312; the totals move as functions are recovered -- and as extents are corrected, which "
+                  f"took the fragment count from 4 to 2 in M340)"
                   if dupc else "duplicate census: not run",
                   bool(dupc) and dupc["total"] == dupc["complete"] + dupc["fragments"]
                   and dupc["groups"] == dupc["complete_groups"] + dupc["fragment_groups"]
-                  and dupc["fragments"] == 4))
+                  and dupc["fragments"] == 2))
 
     for src_name, img, addr, words, syms in SINGLES:
         got = single_probe(src_name, img, addr, words, syms)
@@ -4026,15 +4050,15 @@ def check():
                       if got is not None else f"0x{addr:08x}: not run",
                       bool(got) and got[0] == words))
 
-    cases.append((f"the 2-3 word tail is mostly a CENSUS DEFECT, not a set of stubs: "
-                  f"{len(trunc)} entries the screen rejects as \"no jr ra\" are referenced by the call graph and "
-                  f"run far past their census extent -- "
-                  + ", ".join("%s:%s %dw->%dw (%d callers)" % (r["image"], r["address"], r["census_words"],
-                                                               r["true_words"], r["callers"])
-                              for r in trunc[:4]) + " (M320)"
-                  if trunc else "truncated extents: not run",
-                  bool(trunc) and sorted(r["true_words"] for r in trunc) == [5, 46, 46, 46, 95]
-                  and max(r["callers"] for r in trunc) == 96))
+    # M340: this detector used to fire — five call-referenced entries ran far past their census extent (46, 46, 46,
+    # 95 and 5 words, the first with 96 `jal` sites). They are on the measured-extent rung now, so the detector must
+    # find NOTHING: a measurement that authorises must also veto, and a gate that keeps finding its old defect is a
+    # gate that was never satisfied by the fix.
+    cases.append((f"no call-referenced entry runs past its census extent any more: {len(trunc or [])} left "
+                  f"(the five that did -- 46/46/46/95/5 words, the largest with 96 `jal` sites -- are on the "
+                  f"measured-extent rung since M340, so this detector must be silent)"
+                  if trunc is not None else "truncated extents: not run",
+                  trunc == []))
 
     cases.append((f"the boot segment's edge is a SEGMENT boundary, not a truncation: the word at 0x800115c0 is "
                   f"ROM 0x{edge['edge_rom']:x}, exactly where the CODE extent ({edge['code_extent']} B) stops, and it is a "

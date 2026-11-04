@@ -66,8 +66,8 @@
    [
     2147487208,
     2147487495,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147487496,
@@ -1271,6 +1271,12 @@
    ],
    [
     2147554748,
+    2147554755,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147554756,
     2147554903,
     "unclassified",
     "no artifact names it"
@@ -2552,8 +2558,8 @@
    [
     2147754432,
     2147754603,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147754604,
@@ -2588,8 +2594,8 @@
    [
     2147755896,
     2147756067,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147756068,
@@ -2599,6 +2605,12 @@
    ],
    [
     2147756080,
+    2147756251,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147756252,
     2147756255,
     "unclassified",
     "no artifact names it"
@@ -23941,15 +23953,15 @@
  },
  "totals": {
   "boot": {
-   "function_body": 57636,
-   "unclassified": 20520,
+   "function_body": 57932,
+   "unclassified": 20224,
    "padding": 664,
    "data_named": 44,
    "jump_table": 16
   },
   "stage2": {
-   "function_body": 560792,
-   "unclassified": 258448,
+   "function_body": 561308,
+   "unclassified": 257932,
    "padding": 348348,
    "data_named": 4312,
    "jump_table": 340

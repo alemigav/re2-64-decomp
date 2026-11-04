@@ -2,18 +2,20 @@
  "tool": "analysis_status.py",
  "rules": {
   "F0": "in manifests/code_index.json",
-  "F1": "src file exists, provider status written",
+  "F1": "src file exists, provider status written (or recovered = our own reconstruction)",
+  "extent_measured": "the extent is measured and the body is NOT reconstructed -- F0 only, never F1",
   "F2": "every call target resolves in corpus",
   "named": "name from config/symbols.tsv (an axis, not a rung)",
   "validated": "pinned by a gate or an executed experiment (curated, evidence per entry)"
  },
  "totals": {
   "F0": 3416,
-  "F1": 3416,
-  "F2": 3329,
+  "F1": 3411,
+  "F2": 3324,
   "named": 33,
   "validated": 12,
-  "validated_unnamed": 12
+  "validated_unnamed": 12,
+  "extent_measured": 5
  },
  "f4_evidence": {
   "stage2:0x800b53f4": "M199 \u2014 the voice synthesis, bit-exact against the cartridge",
@@ -94,9 +96,9 @@
    "name": "FUN_80000dd4",
    "image": "boot",
    "address": "0x80000dd4",
-   "callees": 0,
+   "callees": 1,
    "callees_unknown": 0,
-   "level": 2,
+   "level": 0,
    "named": false,
    "validated": false
   },
@@ -2076,7 +2078,7 @@
    "address": "0x800115b0",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 2,
+   "level": 0,
    "named": false,
    "validated": false
   },
@@ -5546,7 +5548,7 @@
    "address": "0x800421b4",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 2,
+   "level": 0,
    "named": false,
    "validated": false
   },
@@ -5596,7 +5598,7 @@
    "address": "0x8004276c",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 2,
+   "level": 0,
    "named": false,
    "validated": false
   },
@@ -5606,7 +5608,7 @@
    "address": "0x80042824",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 2,
+   "level": 0,
    "named": false,
    "validated": false
   },

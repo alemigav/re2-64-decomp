@@ -41,6 +41,32 @@ def load(fixture: Path = FIXTURE) -> dict:
     return out
 
 
+MEASURED = Path("fixtures/decomp/measured_extents.json")
+
+
+def load_measured(fixture: Path = MEASURED) -> dict:
+    """image -> address -> {start, end, words, evidence} for extents measured from the bytes (M340).
+
+    The third input to the projections, after the provider's ranges and the recovered reconstructions. It exists
+    because a function can have a *measured extent* and no reconstruction at all: the 46-word DSP family is
+    hand-written assembly, so there is no C to pin, but the provider's range stops at the head because the body
+    has no `jr ra` where it expected one -- the census was calling a 96-caller function a three-word stub.
+
+    Adopted by `export_src.py` (status `extent-measured`, extent in the header), by `counts._corpus()` (coverage
+    union) and by `classify_image.py` (function_body). One reader, three projections -- M289's rule.
+    """
+    if not fixture.exists():
+        return {}
+    out = {}
+    for c in json.loads(fixture.read_text()).get("corrections", []):
+        start = int(c["address"], 16)
+        out.setdefault(c["image"], {})[start] = {
+            "start": start, "end": start + int(c["words"]) * 4 - 1,
+            "census_words": int(c["census_words"]), "words": int(c["words"]),
+            "evidence": c.get("evidence", "")}
+    return out
+
+
 def source(entry: dict) -> str:
     """The reconstruction text for one entry, from the compile-probe corpus (its single source of truth)."""
     path = Path("tools/compile_probe.py")

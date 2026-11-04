@@ -76,8 +76,15 @@ def derive(root: Path = ROOT):
     totals["named"] = sum(1 for r in rows.values() if r["named"])
     totals["validated"] = sum(1 for r in rows.values() if r["validated"])
     totals["validated_unnamed"] = sum(1 for r in rows.values() if r["validated"] and not r["named"])
+    # M340: `extent-measured` is a rung of its own -- the bytes give the body's length, and nothing gives its C.
+    # It is deliberately NOT credited F1: F1 means "a body exists that could be read", and this one is the
+    # provider's truncated head. Counting it as written would be the M296 error in the other direction.
+    totals["extent_measured"] = sum(1 for f in ci["images"] for x in f["functions_list"]
+                                    if x.get("status") == "extent-measured")
     return {"tool": "analysis_status.py", "rules": {
-        "F0": "in manifests/code_index.json", "F1": "src file exists, provider status written",
+        "F0": "in manifests/code_index.json",
+        "F1": "src file exists, provider status written (or recovered = our own reconstruction)",
+        "extent_measured": "the extent is measured and the body is NOT reconstructed -- F0 only, never F1",
         "F2": "every call target resolves in corpus",
         "named": "name from config/symbols.tsv (an axis, not a rung)",
         "validated": "pinned by a gate or an executed experiment (curated, evidence per entry)"},

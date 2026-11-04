@@ -148,6 +148,8 @@ def main() -> None:
         for stale in list(outdir.glob("*.c")) + list(fragdir.glob("*.c")):
             stale.unlink()
         written = 0
+        # M340: the measured-extent rung, keyed by start address, from the fixture `recovered.load_measured()` reads.
+        measured = recovered.load_measured().get(img["name"], {})
 
         covered, functions, fragments = set(), [], []
         for e in entries:
@@ -160,26 +162,50 @@ def main() -> None:
                 # naming it as one would violate the rule that a name needs evidence.
                 name = f"func_{addr:08x}"
             ranges = e["body"]["ranges"] if e["body"]["available"] else []
-            for r in ranges:
-                s, t = int(r["start"], 16), int(r["end"], 16)
-                covered.update(range(s, t + 1, 4))
+            meas = measured.get(addr)
+            if meas:
+                # The provider's body stops at the head because it has no `jr ra` where one was expected; the
+                # bytes say how long the function really is. The body below stays the provider's (there is no
+                # reconstruction -- this family is hand-written assembly), so the *extent* is what changed.
+                covered.update(range(meas["start"], meas["end"] + 1, 4))
+                lo, hi = meas["start"], meas["end"]
+            else:
+                for r in ranges:
+                    s, t = int(r["start"], 16), int(r["end"], 16)
+                    covered.update(range(s, t + 1, 4))
+                lo = int(ranges[0]["start"], 16) if ranges else addr
+                hi = int(ranges[-1]["end"], 16) if ranges else addr
             body = rename_references(
                 strip_provider_preamble(
                     (Path(a.decomp) / img["name"] / e["relative_path"]).read_text()), gnames)
-            callees = sorted({t for s, ts in calls.items()
-                              for t in ts if ranges and
-                              any(int(r["start"], 16) <= s <= int(r["end"], 16) for r in ranges)})
+            # A corrected body's calls are counted over the *measured* extent (the truncated stub had none, which
+            # is how it stayed unexamined); an uncorrected one keeps the original per-range predicate, because its
+            # ranges may be disjoint and a lo..hi span would count calls that fall in the gaps (M340 regression:
+            # it demoted three F2 functions before it was caught).
+            if meas:
+                in_body = lambda site: lo <= site <= hi
+            else:
+                in_body = lambda site: bool(ranges) and any(
+                    int(r["start"], 16) <= site <= int(r["end"], 16) for r in ranges)
+            callees = sorted({t for s, ts in calls.items() for t in ts if in_body(s)})
             fname = SAFE.sub("_", name) + ".c"
             # Hash the pseudocode we actually write. The provider's record hash covers its own
             # `// limitations:` preamble, which names the seed file and its entry counts, so it
             # changes whenever seeds change even when not one line of pseudocode moved.
             body_sha = hashlib.sha256(body.encode()).hexdigest()
-            span = (f"{ranges[0]['start']}..{ranges[-1]['end']}" if ranges else "no body")
+            span = ("0x%08x..0x%08x" % (lo, hi)) if (ranges or meas) else "no body"
+            # The published size is the body's *bytes*: the measured extent when there is one, and otherwise the
+            # sum of the provider's ranges -- NOT `hi - lo + 1`, which for a multi-range function counts the gaps
+            # between its ranges (M340 regression: it inflated the header sum by 30 528 B before it was caught).
+            size_bytes = (hi - lo + 1) if meas else sum(
+                int(r["end"], 16) - int(r["start"], 16) + 1 for r in ranges)
             header = (f"/* {name}\n"
                       f" * image   {img['name']} ({img['role']}), base {img['base']:#010x}\n"
-                      f" * address {e['address']}  body {span}  size "
-                      f"{sum(int(r['end'], 16) - int(r['start'], 16) + 1 for r in ranges)} B\n"
-                      f" * body sha256 {body_sha}\n"
+                      f" * address {e['address']}  body {span}  size {size_bytes} B\n"
+                      + (f" * EXTENT MEASURED {meas['census_words']} -> {meas['words']} words: {meas['evidence']}\n"
+                         f" *   the body below is still the provider's truncated head -- this rung is the extent, "
+                         f"not a reconstruction (fixtures/decomp/measured_extents.json)\n" if meas else "")
+                      + f" * body sha256 {body_sha}\n"
                       f" * provider record sha256 {e.get('sha256', '-')}\n"
                       f" * callees {len(callees)} direct "
                       f"({sum(1 for c in callees if c in corpus)} in corpus)\n"
@@ -188,12 +214,16 @@ def main() -> None:
             target = (fragdir if frag else outdir) / fname
             target.write_text(header + body)
             record = dict(address=e["address"], name=name, file=str(target),
-                          size=sum(int(r["end"], 16) - int(r["start"], 16) + 1
-                                   for r in ranges),
+                          size=size_bytes,
                           sha256=body_sha, provider_sha256=e.get("sha256", ""),
-                          status=e["status"],
+                          status="extent-measured" if meas else e["status"],
                           callees=[hex(c) for c in callees if c in corpus],
                           callees_unknown=len([c for c in callees if c not in corpus]))
+            if meas:
+                # The provider analysed the head only, so its call record for this body is incomplete by
+                # construction. Mark the record: the call graph scans the *bytes* over the corrected extent and
+                # is authoritative there, and `call_graph.py --check` exempts marked nodes explicitly (M340).
+                record["extent_measured"] = True
             if frag:
                 # the provider says this body is a case of the switch at frag.group(1); it is published
                 # with its pseudocode intact but not counted, not listed and not named as a function

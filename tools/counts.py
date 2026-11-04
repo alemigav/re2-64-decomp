@@ -186,12 +186,18 @@ def _corpus(root: Path) -> dict:
     # analysis that classifies bytes. Fourteen functions have been reconstructed and pinned, and the provider's
     # body for them covers only the dispatch head -- so coverage is the union of its ranges with the measured
     # extents in `fixtures/decomp/recovered.json`, which is stated rather than folded into the range fixture.
+    # M340: and with the *measured* extents (`fixtures/decomp/measured_extents.json`) -- functions whose body
+    # length the bytes give but whose C does not exist, so `recovered.json` cannot carry them. Three
+    # projections read this fixture (here, `export_src.py` and `classify_image.py`) through one reader.
     rec = recovered.load()
+    meas = recovered.load_measured()
     for name, pairs in ranges.items():
         words = set()
         for s, e in pairs:
             words.update(range(int(s), int(e) + 1))
         for e in rec.get(name, []):
+            words.update(range(e["start"], e["end"] + 1))
+        for e in meas.get(name, {}).values():
             words.update(range(e["start"], e["end"] + 1))
         covered += len(words)
     image_bytes = sum(i["size"] for i in images)
@@ -209,6 +215,30 @@ def _corpus(root: Path) -> dict:
         "coverage_whole": tenths // 10,
         "coverage_dec": tenths % 10,
     }
+
+
+def _overlap(root: Path) -> int:
+    """Bytes a measured extent shares with another published body (M340).
+
+    `0x80000dd4`'s 95-word body contains the separately published `0x80000f08`, whose three direct `jal` callers
+    make it a real function reached through the shared tail. The two extents therefore overlap, and the header
+    sum counts the shared words twice -- so the invariant is "headers == union + overlap", stated with its
+    number instead of quietly equal. Absorbing the inner function is not an option: it is called directly.
+    """
+    ranges = json.loads((root / "fixtures" / "decomp" / "ranges.json").read_text())["images"]
+    meas = recovered.load_measured(root / "fixtures" / "decomp" / "measured_extents.json")
+    total = 0
+    for name, corr in meas.items():
+        spans = [(int(a, 16) if isinstance(a, str) else a, int(b, 16) if isinstance(b, str) else b)
+                 for a, b in ranges.get(name, [])]
+        for m in corr.values():
+            for a, b in spans:
+                if a == m["start"]:
+                    continue                      # the entry being corrected is not an overlap
+                lo, hi = max(a, m["start"]), min(b, m["end"])
+                if lo <= hi:
+                    total += hi - lo + 1
+    return total
 
 
 def check(root: Path, quiet: bool = False):
@@ -275,11 +305,13 @@ def check(root: Path, quiet: bool = False):
                       f"covered + unclaimed tiles all {len(imgs)} images", ok,
                       "ok" if ok else f"covered {cov} vs {vals['covered_bytes']}; untiled {tile[:3]}"))
 
-    ok = len(sizes) == vals["functions"] + vals["fragments"] and total == vals["covered_bytes"]
+    ovl = _overlap(root)
+    ok = (len(sizes) == vals["functions"] + vals["fragments"]
+          and total == vals["covered_bytes"] + ovl)
     cases.append((f"the {len(sizes)} body headers ({vals['functions']} functions + {vals['fragments']} switch "
-                  f"case bodies) sum to the covered bytes — {total:,} B, "
+                  f"case bodies) sum to the covered bytes plus the {ovl} B two extents share — {total:,} B, "
                   f"which is the union and not {total + 2384:,}", ok,
-                  "ok" if ok else f"{len(sizes)} headers, {total} B vs {vals['covered_bytes']} B"))
+                  "ok" if ok else f"{len(sizes)} headers, {total} B vs {vals['covered_bytes']} + {ovl} B"))
     if not quiet:
         passed = 0
         for label, ok, detail in cases:
@@ -313,7 +345,7 @@ def self_test() -> int:
         # says 147. The rule is mechanical: **every input `derive()` reads belongs in this tuple.**
         for rel in ("fixtures/milestones/gaps.json", "fixtures/sound/codec.json",
                     "fixtures/decomp/images.json", "fixtures/decomp/ranges.json",
-                    "fixtures/decomp/recovered.json",
+                    "fixtures/decomp/recovered.json", "fixtures/decomp/measured_extents.json",
                     "fixtures/scd/profile.json", "manifests/code_index.json",
                     "manifests/analysis_status.json"):
             (tmp / rel).parent.mkdir(parents=True, exist_ok=True)

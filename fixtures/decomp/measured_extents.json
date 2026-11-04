@@ -1,6 +1,6 @@
 {
  "tool": "extent_scan.py",
- "note": "Function extents measured from the bytes in byte-map regions that no artifact names. A return is `jr ra` plus its delay slot; a start is the region start or the word after a return. These are NOT reconstructions and are not in the census: adopting them needs a projection change (M339).",
+ "note": "Function extents measured from the bytes. `corrections` are adopted: they replace a census entry's truncated body with the extent the bytes have, and are merged by every projection that computes coverage (`counts._corpus`, `classify_image`, `export_src`). `regions` are measured but NOT adopted: they are new functions inside byte-map regions no artifact names, and adopting them needs a src-less census class.",
  "summary": {
   "regions": 75,
   "functions": 189,
@@ -2100,6 +2100,48 @@
    ],
    "rejected": [],
    "tail_jumps": []
+  }
+ ],
+ "corrections": [
+  {
+   "image": "stage2",
+   "address": "0x8004276c",
+   "census_words": 3,
+   "words": 46,
+   "callers": 96,
+   "evidence": "no trailing `jr ra` and 96 callers: a truncated extent, not a stub (M320; leaf_screen.py --called, compile_probe.truncated_extents). Hand-written 64-bit DSP assembly, so there is no C to reconstruct"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80042824",
+   "census_words": 3,
+   "words": 46,
+   "callers": 20,
+   "evidence": "no trailing `jr ra` and 20 callers; the `sw` member of the same 46-word DSP family (M320)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800421b4",
+   "census_words": 3,
+   "words": 46,
+   "callers": 3,
+   "evidence": "no trailing `jr ra` and 3 callers; the third 46-word member of the DSP family (M320)"
+  },
+  {
+   "image": "boot",
+   "address": "0x80000dd4",
+   "census_words": 5,
+   "words": 95,
+   "callers": 7,
+   "evidence": "no trailing `jr ra` and 7 callers: 95 words, the largest truncated body in the corpus (M320) -- and its 95-word body CONTAINS the separately published function at 0x80000f08 (18 words, three direct `jal` callers): the last 18 words are a shared tail reachable from both entry points, so the two extents overlap and are reported rather than absorbed. Absorbing would delete a function that is called directly"
+  },
+  {
+   "image": "boot",
+   "address": "0x800115b0",
+   "census_words": 3,
+   "words": 5,
+   "callers": 1,
+   "evidence": "no trailing `jr ra`; 5 words, measurable only after the boot extent was corrected to 0x13420 (M324). It reads AI_STATUS and returns its sign bit, and its one-word residue is a `slti`/`srl` idiom"
   }
  ]
 }

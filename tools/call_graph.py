@@ -569,10 +569,13 @@ def check(rep, committed: str):
                   not bad_conf and not overclaimed))
 
     starts = {int(n["addr"], 16) for n in nodes}
-    callees = {}
+    callees, measured = {}, set()
     for img in json.loads((ROOT / CODE_INDEX).read_text())["images"]:
         for f in img["functions_list"]:
-            callees[f"{img['name']}:{f['address']}"] = {int(x, 16) for x in f["callees"]}
+            nid = f"{img['name']}:{f['address']}"
+            callees[nid] = {int(x, 16) for x in f["callees"]}
+            if f.get("extent_measured"):
+                measured.add(nid)
     reached = {}
     for e in edges:
         if e["kind"] != "jal" or e["src"] is None:
@@ -584,9 +587,15 @@ def check(rep, committed: str):
             addr = int(d.split(":", 1)[1] if ":" in d else d, 16)
             if addr in starts:
                 bucket.add(addr)
-    disagree = sorted(nid for nid, want in callees.items() if reached.get(nid, set()) != want)
+    # M340: a node whose extent is *measured* (not reconstructed, not provider-analysed over its whole body) has a
+    # callee list the provider could not have produced -- it stopped at the head. Those nodes are exempt from the
+    # comparison, and the exemption is counted and named rather than silent: the byte scan above IS their record.
+    exempt = measured & set(callees)
+    disagree = sorted(nid for nid, want in callees.items()
+                      if nid not in exempt and reached.get(nid, set()) != want)
     cases.append((f"for every node the addresses its `jal` edges reach equal its code_index callees "
-                  f"— {len(callees)} nodes compared, {len(disagree)} disagree"
+                  f"— {len(callees) - len(exempt)} nodes compared, {len(disagree)} disagree; "
+                  f"{len(exempt)} exempt because their extent is measured and the provider saw only the head"
                   + (f": {', '.join(disagree[:4])}" if disagree else ""), not disagree))
 
     routine, declared = routine_bounds(), jump_table_bounds()

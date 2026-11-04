@@ -29,6 +29,8 @@ import json
 import re
 import struct
 import zlib
+
+import recovered
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -119,6 +121,11 @@ def build(root: Path = ROOT):
         name, base, size = img["name"], img["base"], img["size"]
         blob = image_bytes(img, root)
         claimed = {}
+        # M340: the measured extents are bodies too. Without this the byte map and the coverage union would
+        # disagree by exactly the corrected bytes -- the drift M205/M210 kept catching between projections.
+        for m in recovered.load_measured().get(name, {}).values():
+            for w in range(m["start"], m["end"] + 1, 4):
+                claimed[w] = ("function_body", "fixtures/decomp/measured_extents.json")
         for s, e in ranges["images"].get(name, []):
             for w in range(int(s), int(e) + 1, 4):
                 claimed[w] = ("function_body", "fixtures/decomp/ranges.json")
@@ -166,8 +173,12 @@ def check(rep):
     cases.append((f"the {len(images)} per-image maps are sorted, disjoint and cover each image exactly "
                   f"({bad_order} misordered, {bad_cover} miscovered)", bad_order == 0 and bad_cover == 0))
     tot = {c: sum(t.get(c, 0) for t in rep["totals"].values()) for c in CLASSES}
-    cases.append((f"the body class totals {tot['function_body']:,} B — the figure the corpus publishes",
-                  tot["function_body"] == 1210600))
+    # M340: the corrected bodies (812 B) moved from `unclassified` into this class. The class total sits 656 B
+    # below the coverage union `counts.py` computes, and always has: the union counts every byte of every range,
+    # the map counts the whole words it can classify. Both moved by 812 B together, which is the property that
+    # matters -- the two projections agree on the *change* even where their absolutes differ.
+    cases.append((f"the body class totals {tot['function_body']:,} B, 812 B of it corrected extents",
+                  tot["function_body"] == 1211412))
     srcs = [r[3] for rs in rep["images"].values() for r in rs]
     cases.append((f"every word is in one of the {len(CLASSES)} declared classes and every range names its "
                   f"source ({sum(1 for s in srcs if not s)} unnamed)", all(srcs)))

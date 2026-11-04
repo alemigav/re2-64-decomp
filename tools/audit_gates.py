@@ -722,8 +722,8 @@ AUDITS = [
          old='    return any(start <= handler < end for start, end in bodies)', new='    return True'),
     dict(name="call_graph: the callees reconciliation reads no callees",
          tool="call_graph.py", args=["--check"], file="tools/call_graph.py",
-         old='            callees[f"{img[\'name\']}:{f[\'address\']}"] = {int(x, 16) for x in f["callees"]}',
-         new='            callees[f"{img[\'name\']}:{f[\'address\']}"] = set()'),
+         old='            callees[nid] = {int(x, 16) for x in f["callees"]}',
+         new='            callees[nid] = set()'),
     dict(name="call_graph: node identity drops the image qualifier",
          tool="call_graph.py", args=["--check"], file="tools/call_graph.py",
          old='node = dict(id=f"{img[\'name\']}:{f[\'address\']}"',
@@ -762,7 +762,7 @@ AUDITS = [
     # word count, which the tiling case catches because covered + unclaimed then falls short of the image.
     dict(name="counts: code_index's covered_bytes is a word count again",
          tool="counts.py", args=["--check"], file="manifests/code_index.json",
-         old='"covered_bytes": 57640', new='"covered_bytes": 14410'),
+         old='"covered_bytes": 57936', new='"covered_bytes": 14484'),
     # --- the M205 coverage arithmetic. The published figure was one 4-byte word per function body too
     # high; these four mutations are the ways to reintroduce it or to undermine the derivation that now
     # catches it: an exclusive end one word too far, a union taken across images instead of within one
@@ -782,8 +782,8 @@ AUDITS = [
          new='        "functions": len(list((root / "src").glob("*.c"))),'),
     dict(name="counts: the header sum is allowed one word per range too high",
          tool="counts.py", args=["--check"], file="tools/counts.py",
-         old='    ok = len(sizes) == vals["functions"] + vals["fragments"] and total == vals["covered_bytes"]',
-         new='    ok = len(sizes) == vals["functions"] + vals["fragments"] and total == vals["covered_bytes"] + 3 * vals["ranges"]'),
+         old='    ok = (len(sizes) == vals["functions"] + vals["fragments"]\n          and total == vals["covered_bytes"] + ovl)',
+         new='    ok = (len(sizes) == vals["functions"] + vals["fragments"]\n          and total == vals["covered_bytes"] + 3 * vals["ranges"])'),
     dict(name="counts: the generated index headline is no longer parsed",
          tool="counts.py", args=["--check"], file="tools/counts.py",
          old='(\\d+) images, (\\d[\\d,]*) of',

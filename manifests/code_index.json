@@ -26,11 +26,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 14410,
-   "covered_bytes": 57640,
-   "coverage": 0.7307,
-   "unclaimed_runs": 102,
-   "unclaimed_bytes": 21240,
+   "covered_words": 14484,
+   "covered_bytes": 57936,
+   "coverage": 0.7345,
+   "unclaimed_runs": 101,
+   "unclaimed_bytes": 20944,
    "functions_list": [
     {
      "address": "0x80000480",
@@ -114,12 +114,15 @@
      "address": "0x80000dd4",
      "name": "FUN_80000dd4",
      "file": "src/boot/FUN_80000dd4.c",
-     "size": 20,
+     "size": 380,
      "sha256": "8c62e6d827e597bfa7fa68519f9f4a486b3708ecd422c84365244ee8c52d525a",
      "provider_sha256": "202999f89f2f166073123e3198a7f099ea76273b74f6be310913ed8ca5da3066",
-     "status": "written",
-     "callees": [],
-     "callees_unknown": 0
+     "status": "extent-measured",
+     "callees": [
+      "0x80000f08"
+     ],
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x80000f08",
@@ -2796,12 +2799,13 @@
      "address": "0x800115b0",
      "name": "FUN_800115b0",
      "file": "src/boot/FUN_800115b0.c",
-     "size": 12,
+     "size": 20,
      "sha256": "11b52ed8375ab330c46960b9d8651740c8927e96cb31508eb4340be70bdc7db6",
      "provider_sha256": "35a5b7963f3754bb7c1c79ed35f38024cd2b3d15a93f1af2e70ab023a3008d5c",
-     "status": "written",
+     "status": "extent-measured",
      "callees": [],
-     "callees_unknown": 0
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x80000520",
@@ -2931,11 +2935,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 140361,
-   "covered_bytes": 561444,
-   "coverage": 0.4789,
-   "unclaimed_runs": 249,
-   "unclaimed_bytes": 610796,
+   "covered_words": 140490,
+   "covered_bytes": 561960,
+   "coverage": 0.4794,
+   "unclaimed_runs": 247,
+   "unclaimed_bytes": 610280,
    "functions_list": [
     {
      "address": "0x80018a80",
@@ -7451,12 +7455,13 @@
      "address": "0x800421b4",
      "name": "FUN_800421b4",
      "file": "src/stage2/FUN_800421b4.c",
-     "size": 12,
+     "size": 184,
      "sha256": "cc065b94488e7ffcf532faef498af5976ee133ea8431445022e756e2a937b01d",
      "provider_sha256": "64f2160afaeb830b959b26d2806e88a9e86552f1de02623e74630e0dfb9a718a",
-     "status": "written",
+     "status": "extent-measured",
      "callees": [],
-     "callees_unknown": 0
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x8004226c",
@@ -7506,23 +7511,25 @@
      "address": "0x8004276c",
      "name": "FUN_8004276c",
      "file": "src/stage2/FUN_8004276c.c",
-     "size": 12,
+     "size": 184,
      "sha256": "314075ef19b0ac1061cf773a92879f5fb7a82627bc6c8b26469524e686234985",
      "provider_sha256": "2f4387f7fad4577beddda0c883502df1d74e6bb5e2177c43c4bcfd2db0966656",
-     "status": "written",
+     "status": "extent-measured",
      "callees": [],
-     "callees_unknown": 0
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x80042824",
      "name": "FUN_80042824",
      "file": "src/stage2/FUN_80042824.c",
-     "size": 12,
+     "size": 184,
      "sha256": "477c67a9a1b09914d436f8186412c5106794f22cac04535a15868db2f22e8436",
      "provider_sha256": "dfea4d88ed6105b2659f02e0c39a11c25a7d68931dc14acd76e5376c5f1146d7",
-     "status": "written",
+     "status": "extent-measured",
      "callees": [],
-     "callees_unknown": 0
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x800428e0",
