@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "354e5c4",
+   "subject": "M309: instrument reorg.c (DBR_TRACE) \u2014 the annulment is forced by an upstream register-allocation choice, so reorg is cleared",
+   "milestones": [
+    309
+   ]
+  },
+  {
    "sha": "cb52009",
    "subject": "M308: five more duplicate cohorts (11 functions byte-exact, recovered 64 -> 75); the 25-word x4 group measured to 22/25 with a reorg annulment residue",
    "milestones": [
