@@ -126,6 +126,9 @@ def build(root: Path = ROOT):
         for m in recovered.load_measured().get(name, {}).values():
             for w in range(m["start"], m["end"] + 1, 4):
                 claimed[w] = ("function_body", "fixtures/decomp/measured_extents.json")
+        for a in recovered.load_additions().get(name, []):
+            for w in range(a["start"], a["end"] + 1, 4):
+                claimed[w] = ("function_body", "fixtures/decomp/measured_extents.json")
         for s, e in ranges["images"].get(name, []):
             for w in range(int(s), int(e) + 1, 4):
                 claimed[w] = ("function_body", "fixtures/decomp/ranges.json")
@@ -177,8 +180,9 @@ def check(rep):
     # below the coverage union `counts.py` computes, and always has: the union counts every byte of every range,
     # the map counts the whole words it can classify. Both moved by 812 B together, which is the property that
     # matters -- the two projections agree on the *change* even where their absolutes differ.
-    cases.append((f"the body class totals {tot['function_body']:,} B, 812 B of it corrected extents",
-                  tot["function_body"] == 1211412))
+    cases.append((f"the body class totals {tot['function_body']:,} B, 24 680 B of it measured extents "
+                  f"(812 B corrected + 23 868 B adopted)",
+                  tot["function_body"] == 1235280))
     srcs = [r[3] for rs in rep["images"].values() for r in rs]
     cases.append((f"every word is in one of the {len(CLASSES)} declared classes and every range names its "
                   f"source ({sum(1 for s in srcs if not s)} unnamed)", all(srcs)))

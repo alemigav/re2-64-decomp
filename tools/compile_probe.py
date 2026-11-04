@@ -3968,19 +3968,19 @@ def check():
         ucr = None
     uc_total = (ucr or {}).get("_total", {})
     cases.append((f"the {uc_total.get('bytes', 0):,} B `unclassified` bucket is measured, not renamed: "
-                  f"code {(ucr or {}).get('code', {}).get('bytes', 0):,} B in "
-                  f"{(ucr or {}).get('code', {}).get('runs', 0)} runs (8 distinct opcodes, in-window jump "
-                  f"targets, 1+ `jr ra`), float tables "
+                  f"**code {(ucr or {}).get('code', {}).get('bytes', 0):,} B** left in it, because the 74 "
+                  f"code-like runs are now census functions (M341); float tables "
                   f"{(ucr or {}).get('float_table', {}).get('bytes', 0):,} B in "
                   f"{(ucr or {}).get('float_table', {}).get('runs', 0)} runs (monotone IEEE), pointer tables "
                   f"{(ucr or {}).get('pointer_table', {}).get('bytes', 0):,} B, and "
                   f"{(ucr or {}).get('structured', {}).get('bytes', 0):,} B still unnamed -- which is the "
                   f"honest core of it (M338)"
                   if ucr else "unclassified decomposition: not run",
-                  bool(ucr) and uc_total.get("bytes") == 329364
-                  and ucr["code"]["bytes"] == 28608 and ucr["float_table"]["bytes"] == 41000
+                  bool(ucr) and uc_total.get("bytes") == 305496
+                  and ucr.get("code", {}).get("bytes", 0) == 0
+                  and ucr["float_table"]["bytes"] == 41000
                   and ucr["pointer_table"]["bytes"] == 11572
-                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 329364))
+                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 305496))
 
     # M339: the extents measured inside those code-like regions, and whether they are genuinely new ground.
     try:
@@ -4014,23 +4014,24 @@ def check():
     except Exception:
         _me = _got = _wrong = None
         _st = {}
-    cases.append((f"the measured-extent rung carries {len(_me or [])} function(s) that no reconstruction can: "
+    cases.append((f"the measured-extent rung carries {_st.get('extent_measured', 0)} function(s) that no reconstruction can: "
+                  f"{len(_me or [])} extent corrections plus 187 measured extents published as listings; "
                   f"the census calls `0x8004276c` a 3-word stub while the bytes give 46 and it has 96 callers, and "
                   f"the ladder puts them at F0 only -- F1 {_st.get('F1', 0)} (not {_st.get('F1', 0) + len(_me or [])}), "
                   f"F2 {_st.get('F2', 0)}, extent_measured {_st.get('extent_measured', 0)}; "
                   f"{len(_wrong or [])} of them disagree with the fixture (M340)"
                   if _me else "measured-extent rung: not run",
-                  bool(_me) and not _wrong and _st.get("extent_measured") == len(_me) == 5
-                  and _st.get("F1") == 3411 and _st.get("F2") == 3324))
+                  bool(_me) and not _wrong and _st.get("extent_measured") == 192
+                  and _st.get("F0") == 3603 and _st.get("F1") == 3411 and _st.get("F2") == 3343))
 
-    cases.append((f"the extents inside those code regions are measured, and they are new ground: "
+    cases.append((f"the extents inside those code regions are measured and ADOPTED as census functions: "
                   f"{(_sum or {}).get('functions', 0)} function(s), {(_sum or {}).get('bytes', 0):,} B across "
                   f"{(_sum or {}).get('regions', 0)} region(s), {(_sum or {}).get('rejected', 0)} candidate(s) "
                   f"rejected for want of a return and {(_sum or {}).get('tail_jumps', 0)} `jr` tail jump(s) "
                   f"reported separately -- and **{_clash}** of them overlap a census function (M339)"
                   if _me else "measured extents: not run",
-                  bool(_me) and _sum["functions"] == 189 and _sum["bytes"] == 23876
-                  and _sum["regions"] == 75 and _clash == 0))
+                  bool(_me) and _sum["functions"] == 188 and _sum["bytes"] == 23868
+                  and _sum["regions"] == 74 and _clash == 0))
 
     cases.append((f"the duplicate census is vetted before it is drafted: {dupc['total']} unmatched functions "
                   f"in {dupc['groups']} repeated bodies, of which {dupc['complete']} in "

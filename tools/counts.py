@@ -191,6 +191,7 @@ def _corpus(root: Path) -> dict:
     # projections read this fixture (here, `export_src.py` and `classify_image.py`) through one reader.
     rec = recovered.load()
     meas = recovered.load_measured()
+    add = recovered.load_additions()
     for name, pairs in ranges.items():
         words = set()
         for s, e in pairs:
@@ -198,6 +199,8 @@ def _corpus(root: Path) -> dict:
         for e in rec.get(name, []):
             words.update(range(e["start"], e["end"] + 1))
         for e in meas.get(name, {}).values():
+            words.update(range(e["start"], e["end"] + 1))
+        for e in add.get(name, []):
             words.update(range(e["start"], e["end"] + 1))
         covered += len(words)
     image_bytes = sum(i["size"] for i in images)

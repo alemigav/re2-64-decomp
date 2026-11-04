@@ -52,14 +52,14 @@ suites are named and timed in `acceptance.HEAVY_SUITES` rather than quietly move
 ## 2. The corpus, and the geometry it came from
 
 - **36 images** — `boot`, `stage2`, and 34 overlays — censused from the cartridge's own load table: **1 956 560 B**,
-  **3 416 functions** over **3 678 ranges**, **1 212 068 B (61.9 %)** inside a known body.
+  **3 603 functions** over **3 678 ranges**, **1 235 844 B (63.2 %)** inside a known body.
 - **The other 38.1 % is classified, never shrugged at:** 408 124 B padding, 6 680 B data the decompiler names,
-  980 B of jump tables, and **330 176 B (16.9 %) unclassified** — a bucket that is published and is never renamed
+  980 B of jump tables, and **305 496 B (15.6 %) unclassified** — a bucket that is published and is never renamed
   `data` on a hunch.
 - **174 switch case bodies** are code and are counted in the ranges and the byte total, but the provider itself labels
   them `switchD_::caseD_`, so they live under `src/<image>/switch/` instead of being published as functions.
-- **The analysis ladder** (`tools/analysis_status.py`): F0 3 416 / F1 3 411 / F2 3 324 — of **3 416 functions**,
-  **3 324** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
+- **The analysis ladder** (`tools/analysis_status.py`): F0 3 603 / F1 3 411 / F2 3 343 — of **3 603 functions**,
+  **3 343** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
   a gate or an executed experiment. All 12 are still called `FUN_…`: a name needs evidence of its own.
 - **The boot image has two extents, and the difference is what the loader loads.** Code is `0x11140`
   (`0x80000480..0x800115C0`); the **load** extent is `0x13420`, and it ends exactly at `__bss_start` (`0x800138A0`) —

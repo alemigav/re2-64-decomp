@@ -67,6 +67,26 @@ def load_measured(fixture: Path = MEASURED) -> dict:
     return out
 
 
+def load_additions(fixture: Path = MEASURED) -> dict:
+    """image -> [entry] for measured functions that no census entry and no reconstruction covers (M341).
+
+    These are the extents `tools/extent_scan.py` measured inside byte-map regions that no artifact names. They have
+    no C and no provider record, so they are published as a **disassembly listing** with status `extent-measured`:
+    the census gains the function, the byte map gains the bytes, and nothing claims the body is understood.
+    """
+    if not fixture.exists():
+        return {}
+    out = {}
+    for e in json.loads(fixture.read_text()).get("functions", []):
+        start = int(e["address"], 16)
+        out.setdefault(e["image"], []).append(
+            {"start": start, "end": start + int(e["words"]) * 4 - 1, "words": int(e["words"]),
+             "evidence": e.get("evidence", "")})
+    for v in out.values():
+        v.sort(key=lambda x: x["start"])
+    return out
+
+
 def source(entry: dict) -> str:
     """The reconstruction text for one entry, from the compile-probe corpus (its single source of truth)."""
     path = Path("tools/compile_probe.py")

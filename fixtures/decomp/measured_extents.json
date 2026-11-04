@@ -1,13 +1,1143 @@
 {
  "tool": "extent_scan.py",
- "note": "Function extents measured from the bytes. `corrections` are adopted: they replace a census entry's truncated body with the extent the bytes have, and are merged by every projection that computes coverage (`counts._corpus`, `classify_image`, `export_src`). `regions` are measured but NOT adopted: they are new functions inside byte-map regions no artifact names, and adopting them needs a src-less census class.",
+ "note": "Function extents measured from the bytes. `corrections` (M340) replace a census entry's truncated body with the extent the bytes have. `functions` (M341) are extents inside byte-map regions that no artifact names: new census entries with no C and no provider record, published as a disassembly listing rather than pseudocode. `regions` is the raw scan evidence behind both.",
  "summary": {
-  "regions": 75,
-  "functions": 189,
-  "bytes": 23876,
-  "rejected": 13,
+  "regions": 74,
+  "functions": 188,
+  "bytes": 23868,
+  "rejected": 12,
   "tail_jumps": 9
  },
+ "functions": [
+  {
+   "image": "boot",
+   "address": "0x8000d3cc",
+   "words": 23,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "boot",
+   "address": "0x800113d8",
+   "words": 76,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001b744",
+   "words": 97,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f35c",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f38c",
+   "words": 7,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f3a8",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f3b0",
+   "words": 98,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800206ec",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002071c",
+   "words": 7,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80020738",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80020740",
+   "words": 98,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002187c",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800218ac",
+   "words": 7,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800218c8",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800218d0",
+   "words": 102,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80021b98",
+   "words": 56,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80021c78",
+   "words": 291,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002de0c",
+   "words": 66,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80031454",
+   "words": 357,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800319e8",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80031adc",
+   "words": 39,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800341ec",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800341f4",
+   "words": 35,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036ea0",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036eb4",
+   "words": 7,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036ed0",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036ed8",
+   "words": 35,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80038f7c",
+   "words": 29,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800390b8",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800390e0",
+   "words": 23,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003913c",
+   "words": 18,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80039184",
+   "words": 23,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800391e0",
+   "words": 18,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80039f08",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80039f28",
+   "words": 3,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003c114",
+   "words": 23,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003c170",
+   "words": 6,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003c3c0",
+   "words": 22,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003ecb8",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047fe4",
+   "words": 31,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049dd0",
+   "words": 111,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049f8c",
+   "words": 3,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049f98",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049fa0",
+   "words": 22,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80050f38",
+   "words": 28,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80050fa8",
+   "words": 71,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800510c4",
+   "words": 3,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006b28c",
+   "words": 37,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dbf4",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dc34",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dc74",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dcac",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dce0",
+   "words": 18,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dd28",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dd7c",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dda4",
+   "words": 11,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006ddd0",
+   "words": 18,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006de18",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006de20",
+   "words": 39,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006debc",
+   "words": 47,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006df78",
+   "words": 27,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e270",
+   "words": 50,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e338",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e34c",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e360",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e388",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e3d4",
+   "words": 26,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e43c",
+   "words": 20,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e48c",
+   "words": 18,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e4d4",
+   "words": 24,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e574",
+   "words": 23,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e5d0",
+   "words": 35,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e65c",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e670",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e684",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e730",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e760",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006ec58",
+   "words": 26,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006edb0",
+   "words": 29,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006ee90",
+   "words": 25,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006eef4",
+   "words": 29,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006ef68",
+   "words": 25,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006efcc",
+   "words": 29,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006f32c",
+   "words": 34,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006f740",
+   "words": 92,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006faf4",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006fd30",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006fd58",
+   "words": 30,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006fdd0",
+   "words": 29,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006fe44",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006fe74",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800712e8",
+   "words": 22,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071950",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007199c",
+   "words": 90,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071b04",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071b94",
+   "words": 67,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071ca0",
+   "words": 18,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071ce8",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071d28",
+   "words": 29,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071d9c",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071df0",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800722cc",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007230c",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072314",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072354",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800725ac",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072c3c",
+   "words": 50,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072ddc",
+   "words": 48,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072e9c",
+   "words": 22,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072ef4",
+   "words": 28,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072f64",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072f94",
+   "words": 33,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073058",
+   "words": 42,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073170",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800731bc",
+   "words": 26,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073224",
+   "words": 45,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800732d8",
+   "words": 41,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007337c",
+   "words": 37,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073410",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073448",
+   "words": 26,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073e38",
+   "words": 49,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073efc",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073f20",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073fb4",
+   "words": 28,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80074024",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007404c",
+   "words": 26,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800740b4",
+   "words": 23,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80079e9c",
+   "words": 30,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a360",
+   "words": 30,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a3d8",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007c3e0",
+   "words": 50,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007c5b4",
+   "words": 88,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007c714",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007c71c",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007cb74",
+   "words": 25,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007cbd8",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007cc24",
+   "words": 48,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007cce4",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007dc7c",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007dcc8",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007dcd8",
+   "words": 26,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80088498",
+   "words": 36,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80088528",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80088724",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008bb10",
+   "words": 164,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8009b1bc",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8009b1f4",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2070",
+   "words": 33,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a20f4",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2108",
+   "words": 35,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2194",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a228c",
+   "words": 31,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2308",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2490",
+   "words": 32,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2510",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b1bec",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b1c40",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b21f0",
+   "words": 42,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184058",
+   "words": 245,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8018442c",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184468",
+   "words": 208,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801847a8",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801847d8",
+   "words": 87,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184934",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184970",
+   "words": 67,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184a7c",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_007e132",
+   "address": "0x8017d968",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x8016581c",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0097e42",
+   "address": "0x80163760",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x8016371c",
+   "words": 35,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801665b8",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801665c0",
+   "words": 17,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166604",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x80164e50",
+   "words": 17,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801664f0",
+   "words": 24,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016abe8",
+   "words": 74,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016b214",
+   "words": 101,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016b53c",
+   "words": 67,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80165e18",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80165e38",
+   "words": 41,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80166e98",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80166ecc",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80166f18",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164bbc",
+   "words": 11,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164be8",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164bf8",
+   "words": 51,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164cc4",
+   "words": 47,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x80162ee4",
+   "words": 20,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  }
+ ],
  "regions": [
   {
    "image": "boot",
@@ -46,30 +1176,6 @@
      "end": 2147554572,
      "words": 2,
      "why": "no trailing `jr ra`: 2 word(s) after the last return"
-    }
-   ],
-   "tail_jumps": []
-  },
-  {
-   "image": "boot",
-   "region": [
-    2147554748,
-    2147554903
-   ],
-   "functions": [
-    {
-     "start": 2147554748,
-     "end": 2147554752,
-     "words": 2,
-     "returns": 1
-    }
-   ],
-   "rejected": [
-    {
-     "start": 2147554756,
-     "end": 2147554900,
-     "words": 37,
-     "why": "no trailing `jr ra`: 37 word(s) after the last return"
     }
    ],
    "tail_jumps": []

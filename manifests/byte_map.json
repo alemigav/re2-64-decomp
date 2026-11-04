@@ -822,8 +822,8 @@
    [
     2147537868,
     2147537959,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147537960,
@@ -1247,6 +1247,12 @@
    ],
    [
     2147554264,
+    2147554567,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147554568,
     2147554575,
     "unclassified",
     "no artifact names it"
@@ -1723,6 +1729,12 @@
    ],
    [
     2147596100,
+    2147596487,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147596488,
     2147598743,
     "unclassified",
     "no artifact names it"
@@ -1783,6 +1795,12 @@
    ],
    [
     2147611484,
+    2147611959,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147611960,
     2147612607,
     "unclassified",
     "no artifact names it"
@@ -1819,6 +1837,12 @@
    ],
    [
     2147616492,
+    2147616967,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147616968,
     2147617195,
     "unclassified",
     "no artifact names it"
@@ -1843,6 +1867,12 @@
    ],
    [
     2147620988,
+    2147621479,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147621480,
     2147621719,
     "unclassified",
     "no artifact names it"
@@ -1855,6 +1885,12 @@
    ],
    [
     2147621784,
+    2147623171,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147623172,
     2147624223,
     "unclassified",
     "no artifact names it"
@@ -2096,8 +2132,8 @@
    [
     2147671564,
     2147671827,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147671828,
@@ -2227,6 +2263,12 @@
    ],
    [
     2147685460,
+    2147686935,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147686936,
     2147686943,
     "unclassified",
     "no artifact names it"
@@ -2240,8 +2282,8 @@
    [
     2147687132,
     2147687287,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147687288,
@@ -2276,8 +2318,8 @@
    [
     2147697132,
     2147697279,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147697280,
@@ -2324,8 +2366,8 @@
    [
     2147708576,
     2147708771,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147708772,
@@ -2354,8 +2396,8 @@
    [
     2147716988,
     2147717103,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147717104,
@@ -2366,8 +2408,8 @@
    [
     2147717304,
     2147717671,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147717672,
@@ -2390,8 +2432,8 @@
    [
     2147720968,
     2147721011,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147721012,
@@ -2450,8 +2492,8 @@
    [
     2147729684,
     2147729799,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147729800,
@@ -2462,8 +2504,8 @@
    [
     2147730368,
     2147730455,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147730456,
@@ -2510,8 +2552,8 @@
    [
     2147740856,
     2147740939,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147740940,
@@ -2696,8 +2738,8 @@
    [
     2147778532,
     2147778655,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147778656,
@@ -2768,8 +2810,8 @@
    [
     2147786192,
     2147786743,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147786744,
@@ -2864,8 +2906,8 @@
    [
     2147815224,
     2147815631,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147815632,
@@ -3176,8 +3218,8 @@
    [
     2147922572,
     2147922719,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147922720,
@@ -3284,8 +3326,8 @@
    [
     2147933172,
     2147934179,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147934180,
@@ -3308,8 +3350,8 @@
    [
     2147934832,
     2147935539,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147935540,
@@ -3319,6 +3361,12 @@
    ],
    [
     2147935604,
+    2147935883,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147935884,
     2147935967,
     "unclassified",
     "no artifact names it"
@@ -3332,8 +3380,8 @@
    [
     2147936048,
     2147936155,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147936156,
@@ -3344,8 +3392,8 @@
    [
     2147937368,
     2147937471,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147937472,
@@ -3356,8 +3404,8 @@
    [
     2147937712,
     2147937827,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147937828,
@@ -3368,8 +3416,8 @@
    [
     2147937936,
     2147938367,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147938368,
@@ -3380,8 +3428,8 @@
    [
     2147939116,
     2147939251,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147939252,
@@ -3392,8 +3440,8 @@
    [
     2147940160,
     2147940527,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147940528,
@@ -3403,6 +3451,12 @@
    ],
    [
     2147941108,
+    2147941191,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147941192,
     2147941283,
     "unclassified",
     "no artifact names it"
@@ -3416,8 +3470,8 @@
    [
     2147941680,
     2147942051,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147942052,
@@ -3440,8 +3494,8 @@
    [
     2147947240,
     2147947327,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147947328,
@@ -3452,8 +3506,8 @@
    [
     2147948880,
     2147949371,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147949372,
@@ -3464,8 +3518,8 @@
    [
     2147949460,
     2147950099,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147950100,
@@ -3476,8 +3530,8 @@
    [
     2147951308,
     2147951451,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147951452,
@@ -3488,8 +3542,8 @@
    [
     2147952044,
     2147952091,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147952092,
@@ -3536,8 +3590,8 @@
    [
     2147953724,
     2147953923,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147953924,
@@ -3548,8 +3602,8 @@
    [
     2147954140,
     2147954711,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147954712,
@@ -3560,8 +3614,8 @@
    [
     2147954776,
     2147954943,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147954944,
@@ -3572,8 +3626,8 @@
    [
     2147955056,
     2147955887,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147955888,
@@ -3620,8 +3674,8 @@
    [
     2147958328,
     2147958567,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147958568,
@@ -3632,8 +3686,8 @@
    [
     2147958708,
     2147959055,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147959056,
@@ -3776,8 +3830,8 @@
    [
     2147983004,
     2147983123,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147983124,
@@ -3788,8 +3842,8 @@
    [
     2147984224,
     2147984351,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147984352,
@@ -3872,8 +3926,8 @@
    [
     2147992544,
     2147992743,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147992744,
@@ -3884,8 +3938,8 @@
    [
     2147993012,
     2147993379,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147993380,
@@ -3896,8 +3950,8 @@
    [
     2147994484,
     2147994859,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147994860,
@@ -3920,8 +3974,8 @@
    [
     2147998844,
     2147999039,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147999040,
@@ -4232,8 +4286,8 @@
    [
     2148041880,
     2148042055,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148042056,
@@ -4244,8 +4298,8 @@
    [
     2148042532,
     2148042595,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148042596,
@@ -4328,8 +4382,8 @@
    [
     2148055824,
     2148056479,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148056480,
@@ -4424,8 +4478,8 @@
    [
     2148118972,
     2148119067,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148119068,
@@ -4520,8 +4574,8 @@
    [
     2148147312,
     2148147623,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148147624,
@@ -4532,8 +4586,8 @@
    [
     2148147852,
     2148147995,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148147996,
@@ -4556,8 +4610,8 @@
    [
     2148148368,
     2148148559,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148148560,
@@ -4766,8 +4820,8 @@
    [
     2148211692,
     2148211823,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148211824,
@@ -4778,8 +4832,8 @@
    [
     2148213232,
     2148213399,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148213400,
@@ -14859,6 +14913,12 @@
    ],
    [
     2149072984,
+    2149075639,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2149075640,
     2149075735,
     "unclassified",
     "no artifact names it"
@@ -16946,8 +17006,8 @@
    [
     2149046632,
     2149046687,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2149046688,
@@ -17780,8 +17840,8 @@
    [
     2148947996,
     2148948047,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148948048,
@@ -19619,6 +19679,12 @@
    ],
    [
     2148939616,
+    2148939699,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148939700,
     2148939719,
     "unclassified",
     "no artifact names it"
@@ -20764,8 +20830,8 @@
    [
     2148939548,
     2148939687,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148939688,
@@ -20788,8 +20854,8 @@
    [
     2148951480,
     2148951619,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148951620,
@@ -21544,8 +21610,8 @@
    [
     2148945488,
     2148945555,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148945556,
@@ -21774,8 +21840,8 @@
    [
     2148951280,
     2148951375,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148951376,
@@ -22112,8 +22178,8 @@
    [
     2148969448,
     2148969743,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148969744,
@@ -22124,8 +22190,8 @@
    [
     2148971028,
     2148971431,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148971432,
@@ -22136,8 +22202,8 @@
    [
     2148971836,
     2148972103,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148972104,
@@ -22570,8 +22636,8 @@
    [
     2148949528,
     2148949723,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148949724,
@@ -23021,6 +23087,12 @@
    ],
    [
     2148953752,
+    2148953911,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148953912,
     2148953919,
     "unclassified",
     "no artifact names it"
@@ -23458,8 +23530,8 @@
    [
     2148944828,
     2148945279,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148945280,
@@ -23664,8 +23736,8 @@
    [
     2148937444,
     2148937523,
-    "unclassified",
-    "no artifact names it"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148937524,
@@ -23953,22 +24025,22 @@
  },
  "totals": {
   "boot": {
-   "function_body": 57932,
-   "unclassified": 20224,
+   "function_body": 58328,
+   "unclassified": 19828,
    "padding": 664,
    "data_named": 44,
    "jump_table": 16
   },
   "stage2": {
-   "function_body": 561308,
-   "unclassified": 257932,
+   "function_body": 579632,
+   "unclassified": 239608,
    "padding": 348348,
    "data_named": 4312,
    "jump_table": 340
   },
   "ovl_0072610": {
-   "function_body": 35816,
-   "unclassified": 5416,
+   "function_body": 38472,
+   "unclassified": 2760,
    "padding": 7652,
    "data_named": 428
   },
@@ -24001,8 +24073,8 @@
    "data_named": 172
   },
   "ovl_007e132": {
-   "function_body": 12008,
-   "unclassified": 1396,
+   "function_body": 12064,
+   "unclassified": 1340,
    "jump_table": 4,
    "data_named": 100,
    "padding": 60
@@ -24020,8 +24092,8 @@
    "data_named": 56
   },
   "ovl_0087352": {
-   "function_body": 18060,
-   "unclassified": 836,
+   "function_body": 18112,
+   "unclassified": 784,
    "jump_table": 44,
    "padding": 20
   },
@@ -24072,8 +24144,8 @@
    "jump_table": 20
   },
   "ovl_0097e42": {
-   "function_body": 6712,
-   "unclassified": 948,
+   "function_body": 6796,
+   "unclassified": 864,
    "jump_table": 8,
    "data_named": 44,
    "padding": 16
@@ -24103,8 +24175,8 @@
    "padding": 12
   },
   "ovl_009dd02": {
-   "function_body": 21244,
-   "unclassified": 992,
+   "function_body": 21524,
+   "unclassified": 712,
    "data_named": 52
   },
   "ovl_00a0344": {
@@ -24121,34 +24193,34 @@
    "data_named": 44
   },
   "ovl_00a43b6": {
-   "function_body": 29292,
-   "unclassified": 2396,
+   "function_body": 29360,
+   "unclassified": 2328,
    "jump_table": 20,
    "data_named": 20
   },
   "ovl_00a733e": {
-   "function_body": 24348,
-   "unclassified": 1000,
+   "function_body": 24444,
+   "unclassified": 904,
    "jump_table": 12,
    "data_named": 48
   },
   "ovl_00a9d94": {
-   "function_body": 40972,
-   "unclassified": 2296,
+   "function_body": 41940,
+   "unclassified": 1328,
    "jump_table": 40,
    "data_named": 108,
    "padding": 72
   },
   "ovl_00ae24a": {
-   "function_body": 20444,
-   "unclassified": 1912,
+   "function_body": 20640,
+   "unclassified": 1716,
    "jump_table": 20,
    "data_named": 60,
    "padding": 124
   },
   "ovl_00b08a2": {
-   "function_body": 20736,
-   "unclassified": 1456,
+   "function_body": 20896,
+   "unclassified": 1296,
    "jump_table": 52,
    "data_named": 60,
    "padding": 112
@@ -24160,14 +24232,14 @@
    "data_named": 4
   },
   "ovl_00b321e": {
-   "function_body": 18216,
-   "unclassified": 1268,
+   "function_body": 18668,
+   "unclassified": 816,
    "jump_table": 8,
    "data_named": 44
   },
   "ovl_00b5346": {
-   "function_body": 4696,
-   "unclassified": 372,
+   "function_body": 4776,
+   "unclassified": 292,
    "data_named": 20
   },
   "ovl_00b5e64": {

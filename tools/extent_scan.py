@@ -180,21 +180,34 @@ def main(argv=None):
                     "rejected": rejected, "tail_jumps": tails})
 
     if a.write:
+        # merge, never clobber: the fixture also carries `corrections` (adopted extents, M340) and its note. An
+        # earlier version rewrote the whole file and silently dropped five corrections -- caught immediately
+        # because a follow-up read raised KeyError, and fixed by merging instead of overwriting.
+        dest = Path(a.write)
+        prev = json.loads(dest.read_text()) if dest.exists() else {}
         doc = {"tool": "extent_scan.py",
-               "note": "Function extents measured from the bytes in byte-map regions that no artifact names. "
-                       "A return is `jr ra` plus its delay slot; a start is the region start or the word after "
-                       "a return. These are NOT reconstructions and are not in the census: adopting them needs "
-                       "a projection change (M339).",
+               "note": "Function extents measured from the bytes. `corrections` (M340) replace a census entry's "
+                       "truncated body with the extent the bytes have. `functions` (M341) are extents inside "
+                       "byte-map regions that no artifact names: new census entries with no C and no provider "
+                       "record, published as a disassembly listing rather than pseudocode. `regions` is the raw "
+                       "scan evidence behind both.",
                "summary": {"regions": len(out),
                            "functions": sum(len(r["functions"]) for r in out),
                            "bytes": sum(f["words"] * 4 for r in out for f in r["functions"]),
                            "rejected": sum(len(r["rejected"]) for r in out),
                            "tail_jumps": sum(len(r["tail_jumps"]) for r in out)},
+               "functions": [{"image": r["image"], "address": "0x%08x" % f["start"], "words": f["words"],
+                              "evidence": "extent measured by walking to the first `jr ra` inside a byte-map "
+                                          "region no artifact names (M339); no C and no provider record exists"}
+                             for r in out for f in r["functions"]],
                "regions": out}
-        Path(a.write).write_text(json.dumps(doc, indent=1) + "\n")
-        print("wrote %s — %(regions)d region(s), %(functions)d function(s), %(bytes)d B" % a.write
-              if False else "wrote %s — %d region(s), %d function(s), %d B"
-              % (a.write, doc["summary"]["regions"], doc["summary"]["functions"], doc["summary"]["bytes"]))
+        for keep in ("corrections",):
+            if keep in prev:
+                doc[keep] = prev[keep]
+        dest.write_text(json.dumps(doc, indent=1) + "\n")
+        print("wrote %s — %d region(s), %d function(s), %d B (corrections kept: %d)"
+              % (a.write, doc["summary"]["regions"], doc["summary"]["functions"], doc["summary"]["bytes"],
+                 len(doc.get("corrections", []))))
     if a.json:
         print(json.dumps(out, indent=1))
         return 0

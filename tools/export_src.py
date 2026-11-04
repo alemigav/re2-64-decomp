@@ -134,6 +134,10 @@ def main() -> None:
         doc = json.loads(index.read_text())
         per_image.append((img, doc["functions"], doc["provider"]))
         corpus.update(int(e["address"], 16) for e in doc["functions"])
+    # M341: the functions *we* found are corpus too. Without this a call into a measured function came out as
+    # `callees_unknown` on the caller and as a reached target in the call graph, so 22 nodes disagreed with a
+    # byte scan that was right.
+    corpus.update(m["start"] for adds in recovered.load_additions().values() for m in adds)
 
     merged, rows = {"tool": "export_src.py", "images": []}, []
     for img, entries, provider in per_image:
@@ -231,6 +235,56 @@ def main() -> None:
                 fragments.append(record)
             else:
                 functions.append(record)
+
+        # M341: measured extents inside byte-map regions that no artifact names. These have no C and no provider
+        # record at all, so what gets published is the **disassembly listing** -- the extent is the finding, and the
+        # listing is the only true statement about the body. Status `extent-measured` keeps them off the ladder's F1
+        # (`analysis_status.py`), and the record carries `extent_measured` so `call_graph.py --check` exempts them
+        # from a callee comparison the provider could never have supplied.
+        import leaf_screen as _ls
+        import classify_image as _ci
+        for m in recovered.load_additions().get(img["name"], []):
+            if any(int(f["address"], 16) == m["start"] for f in functions + fragments):
+                continue
+            covered.update(range(m["start"], m["end"] + 1, 4))
+            name = seeds.get(m["start"]) or ("FUN_%08x" % m["start"])
+            lines = ["/*", " * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.",
+                     " *", " * These are the bytes of a function the provider never claimed, decoded word by word.",
+                     " * This file is a listing: not ours, not C, and no claim that the body is understood. It",
+                     " * exists so the census, the byte map and the coverage union can all name these bytes",
+                     " * (fixtures/decomp/measured_extents.json, M341)."]
+            blob = _ci.image_bytes(img)
+            if blob:
+                for addr_w in range(m["start"], m["end"] + 1, 4):
+                    # NB: not `a` -- that is the argparse namespace in this scope, and leaking it here made the
+                    # second image fail with "'int' object has no attribute 'seeds'" (M341).
+                    off = addr_w - img["base"]
+                    w = int.from_bytes(blob[off:off + 4], "big")
+                    lines.append(" * 0x%08x  %08x  %s" % (addr_w, w, _ls.gloss(w, addr_w)))
+            else:
+                lines.append(" * (the image bytes are not present, so the listing could not be rendered)")
+            lines.append(" */")
+            body = "\n".join(lines) + "\n"
+            fname = SAFE.sub("_", name) + ".c"
+            target = outdir / fname
+            body_sha = hashlib.sha256(body.encode()).hexdigest()
+            header = (f"/* {name}\n"
+                      f" * image   {img['name']} ({img['role']}), base {img['base']:#010x}\n"
+                      f" * address 0x{m['start']:08x}  body 0x{m['start']:08x}..0x{m['end']:08x}  "
+                      f"size {m['words'] * 4} B\n"
+                      f" * body sha256 {body_sha}\n"
+                      f" * EXTENT MEASURED, NOT RECONSTRUCTED: {m['words']} words, found by the extent scan inside "
+                      f"a byte-map region no artifact names ({m['evidence']})\n"
+                      f" * provider none: this address is not in the decompile index, so there is no pseudocode "
+                      f"and no provider hash\n"
+                      f" * extents: fixtures/decomp/measured_extents.json\n"
+                      f" */\n")
+            target.write_text(header + body)
+            functions.append(dict(address="0x%08x" % m["start"], name=name, file=str(target),
+                                  size=m["words"] * 4, sha256=body_sha, provider_sha256="",
+                                  status="extent-measured", callees=[], callees_unknown=0,
+                                  extent_measured=True))
+            written += 1
 
         # M289: apply the recovered-function fixture. For every function we have reconstructed and pinned with a
         # compile-probe case, the provider's body is replaced by the measured extent, the entries that start inside

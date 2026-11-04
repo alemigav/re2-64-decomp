@@ -3,7 +3,7 @@
  * address 0x80167688  body 0x80167688..0x8016782f  size 424 B
  * body sha256 f54c49eeb30cec972570b2768ac8312466fc52410e0ac54952f23204e892f590
  * provider record sha256 87dd9bb5611e3a5c0a5ba3ac63210508ec42f6f1405aa05da76c4227805a345e
- * callees 3 direct (2 in corpus)
+ * callees 3 direct (3 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_80167688(int param_1,ushort param_2,uint param_3)
