@@ -60,16 +60,6 @@
    "named": true,
    "validated": false
   },
-  "boot:0x80000520": {
-   "name": "main",
-   "image": "boot",
-   "address": "0x80000520",
-   "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": true,
-   "validated": false
-  },
   "boot:0x80000598": {
    "name": "boot_loader",
    "image": "boot",
@@ -2098,6 +2088,16 @@
    "callees_unknown": 0,
    "level": 2,
    "named": false,
+   "validated": false
+  },
+  "boot:0x80000520": {
+   "name": "main",
+   "image": "boot",
+   "address": "0x80000520",
+   "callees": 3,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": true,
    "validated": false
   },
   "boot:0x80001180": {

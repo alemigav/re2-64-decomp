@@ -170,13 +170,21 @@ def called_report(lo: int, hi: int) -> list[dict]:
             continue
         a = int(r["address"], 16)
         words = body_of(cp, inv, r["image"], a, 96) or []
-        true = None
+        true, spins = None, False
         for i, w in enumerate(words):
+            # A self-branch never returns, so the walk must stop there: `boot:0x80000518` is a two-word
+            # `idle_spin`, and walking past it once reported `main`'s 30 words as its extent (M322).
+            if op(w) == 4 and rs(w) == 0 and rt(w) == 0 and simm(w) == -1:
+                spins = True
+                break
+            if op(w) == 2 and (((w & 0x3FFFFFF) << 2) | (a & 0xF0000000)) == a:
+                spins = True
+                break
             if w == JR_RA:
                 true = i + 2
                 break
         out.append({"image": r["image"], "address": r["address"], "census_words": r["words"],
-                    "true_words": true, "callers": refs[key], "why": r["why"]})
+                    "true_words": true, "spins": spins, "callers": refs[key], "why": r["why"]})
     out.sort(key=lambda r: -r["callers"])
     return out
 
@@ -326,8 +334,9 @@ def main(argv):
         else:
             print("%-13s %-11s %-6s %-5s %s" % ("image", "address", "census", "true", "callers"))
             for r in rows:
-                print("%-13s %s %5sw %4sw %6d" % (r["image"], r["address"], r["census_words"],
-                                                  r["true_words"], r["callers"]))
+                print("%-13s %s %5sw %4s %6d%s" % (r["image"], r["address"], r["census_words"],
+                                                   r["true_words"], r["callers"],
+                                                   "  (never returns: self-branch)" if r["spins"] else ""))
             print("%d truncated extent(s) at %s words" % (len(rows), a.words))
         return 0
     rows = screen(int(lo), int(hi or lo))

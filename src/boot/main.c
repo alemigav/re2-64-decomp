@@ -1,32 +1,29 @@
 /* main
  * image   boot (boot), base 0x80000480
  * address 0x80000520  body 0x80000520..0x80000597  size 120 B
- * body sha256 f693c9e99c2a546784f8198b2b82948f3e3de3ee31aac2ee44a0e2c3c7bcc8bb
- * provider record sha256 5a1dcb62ae9cb0c68c6a960b6f43db113c8347bd00b5c59ba3f9494fa1d6b8c1
- * callees 3 direct (3 in corpus)
- * provider Ghidra 12.2
+ * body sha256 27ba28eb391fcfa8318e0226becf075e1e9a67bfc00653eb471e0d5ba0574e62
+ * recovered byte-exact (single: 30 of 30, one draft (the boot initialiser, `main`))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_80000520_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+typedef unsigned int u32;
 
-void main(void)
+extern u32 __bss_start[];
+extern u32 __bss_end[];
+extern void FUN_800004f0(u32 a0);
+extern void FUN_800070c0(void);
+extern void FUN_80000598(void);
 
+void FUN_x(void)
 {
-  int iVar1;
-  undefined4 *puVar2;
-  
-  puVar2 = (undefined4 *)&DAT_800138a0;
-  iVar1 = 0x1477;
-  do {
-    *puVar2 = 0;
-    iVar1 = iVar1 + -1;
-    puVar2 = puVar2 + 1;
-  } while (iVar1 != -1);
-  FUN_800004f0(0);
-  vector_installer();
-  if (_DAT_80000300 != 0) {
-    boot_loader();
-    return;
-  }
-  do {
-  } while( true );
+    u32 *p = __bss_start;
+    u32 n = __bss_end - __bss_start;
+
+    while (n--)
+        *p++ = 0;
+    FUN_800004f0(0);
+    FUN_800070c0();
+    while (*(u32 *)0x80000300u == 0)
+        ;
+    FUN_80000598();
 }

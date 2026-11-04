@@ -1033,6 +1033,14 @@
    "verdict": "byte-exact",
    "probe": "single: 8 of 8, one draft",
    "source": "S_801675EC_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x80000520",
+   "words": 30,
+   "verdict": "byte-exact",
+   "probe": "single: 30 of 30, one draft (the boot initialiser, `main`)",
+   "source": "S_80000520_SOURCE"
   }
  ]
 }

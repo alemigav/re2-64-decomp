@@ -68,21 +68,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80000520",
-     "name": "main",
-     "file": "src/boot/main.c",
-     "size": 120,
-     "sha256": "f693c9e99c2a546784f8198b2b82948f3e3de3ee31aac2ee44a0e2c3c7bcc8bb",
-     "provider_sha256": "5a1dcb62ae9cb0c68c6a960b6f43db113c8347bd00b5c59ba3f9494fa1d6b8c1",
-     "status": "written",
-     "callees": [
-      "0x800004f0",
-      "0x80000598",
-      "0x800070c0"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80000598",
      "name": "boot_loader",
      "file": "src/boot/boot_loader.c",
@@ -2829,6 +2814,21 @@
      "provider_sha256": "35a5b7963f3754bb7c1c79ed35f38024cd2b3d15a93f1af2e70ab023a3008d5c",
      "status": "written",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80000520",
+     "name": "main",
+     "file": "src/boot/main.c",
+     "size": 120,
+     "sha256": "27ba28eb391fcfa8318e0226becf075e1e9a67bfc00653eb471e0d5ba0574e62",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800004f0",
+      "0x80000598",
+      "0x800070c0"
+     ],
      "callees_unknown": 0
     },
     {

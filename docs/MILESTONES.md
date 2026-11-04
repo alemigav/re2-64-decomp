@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-322 milestones are indexed. 244 of them have a note; the rest are rows in the log that cite
+323 milestones are indexed. 245 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -339,6 +339,7 @@ at the foot of this file.
 | 319 | **M319** — the leaf screen, a toolchain defect it exposed, and 20 functions from the 6-8 word pool | `docs/log/M319-the-leaf-screen-and-the-6-8-word-pool.md` |
 | 320 | **M320** — the 4-word misses and the tail: five truncated extents, no new functions | `docs/log/M320-the-4-word-misses-and-the-tail.md` |
 | 321 | **M321** — `0x8004276c` cannot be written in C, and the test that proves it | `docs/log/M321-the-46-word-transform-is-not-c.md` |
+| 322 | **M322** — `main` at 0x80000520: 30 of 30, and a retraction the root view earned | `docs/log/M322-main-at-0x80000520.md` |
 
 ## The gaps, and why they are empty
 

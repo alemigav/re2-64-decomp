@@ -6,7 +6,7 @@
   {"id":"boot:0x80000480","image":"boot","addr":"0x80000480","name":"entrypoint","file":"src/boot/entrypoint.c","size":112,"status":"written"},
   {"id":"boot:0x800004f0","image":"boot","addr":"0x800004f0","name":"FUN_800004f0","file":"src/boot/FUN_800004f0.c","size":16,"status":"written"},
   {"id":"boot:0x80000518","image":"boot","addr":"0x80000518","name":"idle_spin","file":"src/boot/idle_spin.c","size":8,"status":"written"},
-  {"id":"boot:0x80000520","image":"boot","addr":"0x80000520","name":"main","file":"src/boot/main.c","size":120,"status":"written"},
+  {"id":"boot:0x80000520","image":"boot","addr":"0x80000520","name":"main","file":"src/boot/main.c","size":120,"status":"recovered"},
   {"id":"boot:0x80000598","image":"boot","addr":"0x80000598","name":"boot_loader","file":"src/boot/boot_loader.c","size":288,"status":"written"},
   {"id":"boot:0x800006d0","image":"boot","addr":"0x800006d0","name":"exception_handler","file":"src/boot/exception_handler.c","size":8,"status":"written"},
   {"id":"boot:0x80000c68","image":"boot","addr":"0x80000c68","name":"thread_dispatcher","file":"src/boot/thread_dispatcher.c","size":76,"status":"written"},

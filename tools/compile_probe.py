@@ -871,6 +871,33 @@ void FUN_x(u32 a)
 
 # M320: the 2-3 word tail's one real candidate (5 words by its true extent, and a caller confirms it)
 
+# M322: the boot initialiser, `main` at 0x80000520. It is the one function in this arc that is BOTH named in
+# `config/symbols.tsv` and now byte-exact, and its two addresses are linker symbols: `__bss_end` resolves to
+# 0x80018A80 -- the stage-2 load address, i.e. the end of the boot image -- which is what makes the clear region
+# 0x800138A0..0x80018A80 exactly the boot's tail.
+S_80000520_SOURCE = """typedef unsigned int u32;
+
+extern u32 __bss_start[];
+extern u32 __bss_end[];
+extern void FUN_800004f0(u32 a0);
+extern void FUN_800070c0(void);
+extern void FUN_80000598(void);
+
+void FUN_x(void)
+{
+    u32 *p = __bss_start;
+    u32 n = __bss_end - __bss_start;
+
+    while (n--)
+        *p++ = 0;
+    FUN_800004f0(0);
+    FUN_800070c0();
+    while (*(u32 *)0x80000300u == 0)
+        ;
+    FUN_80000598();
+}
+"""
+
 # M319: the record-array retry and the 6-8 word sweep
 S_80001180_SOURCE = """typedef unsigned int u32;
 
@@ -1349,6 +1376,7 @@ SINGLES = [
     ("S_800B4D90_SOURCE", "stage2", 0x800b4d90, 7, ()),
     ("S_80163020_SOURCE", "ovl_0097e42", 0x80163020, 8, ()),
     ("S_801675EC_SOURCE", "ovl_00a733e", 0x801675ec, 8, (('D_800E1130', 0x800E1130),)),
+    ("S_80000520_SOURCE", "boot", 0x80000520, 30, (('__bss_start', 0x800138A0), ('__bss_end', 0x80018A80), ('FUN_800004f0', 0x800004F0), ('FUN_800070c0', 0x800070C0), ('FUN_80000598', 0x80000598))),
 ]
 
 
@@ -3822,7 +3850,7 @@ def check():
                                                                r["true_words"], r["callers"])
                               for r in trunc[:4]) + " (M320)"
                   if trunc else "truncated extents: not run",
-                  bool(trunc) and sorted(r["true_words"] for r in trunc) == [5, 32, 46, 46, 46, 95]
+                  bool(trunc) and sorted(r["true_words"] for r in trunc) == [5, 46, 46, 46, 95]
                   and max(r["callers"] for r in trunc) == 96))
 
     # one case per multi-member family, generated from the fixture so a new cohort needs no code here
