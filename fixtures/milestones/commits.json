@@ -2,6 +2,57 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "55296b0",
+   "subject": "M303 follow-up: commit the p6 fixture's f.toml -> settings.toml rename that the M303 staging missed",
+   "milestones": [
+    303
+   ]
+  },
+  {
+   "sha": "d0ceea8",
+   "subject": "M304: 0x8007e590's last three words decoded \u2014 a dead-store allocator tie-break, unreachable from source shape (32 spellings, 30 922 permuter iterations)",
+   "milestones": [
+    304
+   ]
+  },
+  {
+   "sha": "6554c7b",
+   "subject": "M303: osCreateThread under the permuter \u2014 a negative result, the shape/allocation boundary, and an inert settings file retraction",
+   "milestones": [
+    303
+   ]
+  },
+  {
+   "sha": "cf3e2f1",
+   "subject": "M302: the permuter pointed at the image closes p6 byte-exact \u2014 the 94/98 plateau was the objective, and M300's conclusion is retracted",
+   "milestones": [
+    300,
+    302
+   ]
+  },
+  {
+   "sha": "438f2f1",
+   "subject": "M301: the front door \u2014 hero, audience, 60-second quickstart, and a byte-for-byte proof block (two false claims corrected)",
+   "milestones": [
+    301
+   ]
+  },
+  {
+   "sha": "215d609",
+   "subject": "M300: permuter re-run (ceiling still 94/98), its objective is a compiled proxy, and the harness is committed",
+   "milestones": [
+    300
+   ]
+  },
+  {
+   "sha": "5b0bf24",
+   "subject": "M299: re-scored the permuter pool (86/98 -> 94/98), M259 unreproducible, and the shape solver closes p6 on its first run",
+   "milestones": [
+    259,
+    299
+   ]
+  },
+  {
    "sha": "f1da210",
    "subject": "M298: osCreateThread's OSThread layout derived (23/52), and the CI queue diagnosed",
    "milestones": [
