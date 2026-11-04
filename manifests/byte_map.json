@@ -12,6 +12,7 @@
   "gap",
   "slack",
   "u16_table",
+  "referenced_data",
   "dense_data",
   "unclassified"
  ],
@@ -1400,8 +1401,8 @@
    [
     2147556592,
     2147556663,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "3 site(s) materialise its address; displacements [32, 40, 64]"
    ],
    [
     2147556664,
@@ -1684,8 +1685,8 @@
    [
     2147584648,
     2147585191,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "5 site(s) materialise its address; displacements [200]"
    ],
    [
     2147585192,
@@ -2248,8 +2249,8 @@
    [
     2147679164,
     2147679231,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [0]"
    ],
    [
     2147679232,
@@ -4852,8 +4853,8 @@
    [
     2148196676,
     2148196767,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "4 site(s) materialise its address; displacements [0, 32, 48]"
    ],
    [
     2148196768,
@@ -5140,8 +5141,8 @@
    [
     2148232516,
     2148232831,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [60]"
    ],
    [
     2148232832,
@@ -8842,8 +8843,8 @@
    [
     2148446868,
     2148447251,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [76]"
    ],
    [
     2148447252,
@@ -9286,8 +9287,8 @@
    [
     2148466596,
     2148466755,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "309 site(s) materialise its address; displacements base only"
    ],
    [
     2148466756,
@@ -9862,8 +9863,8 @@
    [
     2148587904,
     2148588051,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "3 site(s) materialise its address; displacements [128]"
    ],
    [
     2148588052,
@@ -10366,8 +10367,8 @@
    [
     2148598476,
     2148598663,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "8 site(s) materialise its address; displacements [164]"
    ],
    [
     2148598664,
@@ -10426,8 +10427,8 @@
    [
     2148601464,
     2148601603,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [4]"
    ],
    [
     2148601604,
@@ -10648,8 +10649,8 @@
    [
     2148603484,
     2148604599,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [12]"
    ],
    [
     2148604600,
@@ -11854,8 +11855,8 @@
    [
     2148640544,
     2148640907,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [336]"
    ],
    [
     2148640908,
@@ -11866,8 +11867,8 @@
    [
     2148641164,
     2148641507,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [340]"
    ],
    [
     2148641508,
@@ -11902,8 +11903,8 @@
    [
     2148642272,
     2148642631,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [336]"
    ],
    [
     2148642632,
@@ -12424,8 +12425,8 @@
    [
     2148691072,
     2148693439,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [0]"
    ],
    [
     2148693440,
@@ -13282,8 +13283,8 @@
    [
     2148727156,
     2148727303,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "3 site(s) materialise its address; displacements [20, 44]"
    ],
    [
     2148727304,
@@ -13372,8 +13373,8 @@
    [
     2148727440,
     2148727555,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [0, 16]"
    ],
    [
     2148727556,
@@ -13510,8 +13511,8 @@
    [
     2148728748,
     2148729551,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "403 site(s) materialise its address; displacements [85]"
    ],
    [
     2148729552,
@@ -13582,8 +13583,8 @@
    [
     2148733060,
     2148733191,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "4 site(s) materialise its address; displacements [48, 120]"
    ],
    [
     2148733192,
@@ -13618,8 +13619,8 @@
    [
     2148733288,
     2148733415,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "3 site(s) materialise its address; displacements [40, 80]"
    ],
    [
     2148733416,
@@ -13642,8 +13643,8 @@
    [
     2148733460,
     2148733795,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "9 site(s) materialise its address; displacements [0, 68, 136, 204]"
    ],
    [
     2148733796,
@@ -13666,8 +13667,8 @@
    [
     2148733812,
     2148733919,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "6 site(s) materialise its address; displacements [20, 56, 84]"
    ],
    [
     2148733920,
@@ -13702,8 +13703,8 @@
    [
     2148733988,
     2148734067,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "3 site(s) materialise its address; displacements [24, 44, 52]"
    ],
    [
     2148734068,
@@ -13738,8 +13739,8 @@
    [
     2148734120,
     2148734287,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [20]"
    ],
    [
     2148734288,
@@ -14020,8 +14021,8 @@
    [
     2148738368,
     2148738599,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [212]"
    ],
    [
     2148738600,
@@ -15870,8 +15871,8 @@
    [
     2149075972,
     2149076035,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [24, 48]"
    ],
    [
     2149076036,
@@ -15918,8 +15919,8 @@
    [
     2149076120,
     2149076203,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [20]"
    ],
    [
     2149076204,
@@ -15930,8 +15931,8 @@
    [
     2149076208,
     2149076379,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [124, 140]"
    ],
    [
     2149076380,
@@ -16128,8 +16129,8 @@
    [
     2149078372,
     2149078539,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [156]"
    ],
    [
     2149078540,
@@ -17086,8 +17087,8 @@
    [
     2149058384,
     2149058943,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [36]"
    ],
    [
     2149058944,
@@ -17098,8 +17099,8 @@
    [
     2149058948,
     2149059131,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "3 site(s) materialise its address; displacements [4, 64, 124]"
    ],
    [
     2149059132,
@@ -17490,8 +17491,8 @@
    [
     2149048852,
     2149049647,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [236]"
    ],
    [
     2149049648,
@@ -17576,8 +17577,8 @@
    [
     2148997068,
     2148997199,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [124]"
    ],
    [
     2148997200,
@@ -17708,8 +17709,8 @@
    [
     2148998180,
     2148998359,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [164]"
    ],
    [
     2148998360,
@@ -17938,8 +17939,8 @@
    [
     2149049272,
     2149049647,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [344]"
    ],
    [
     2149049648,
@@ -18474,8 +18475,8 @@
    [
     2148982708,
     2148983147,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [412]"
    ],
    [
     2148983148,
@@ -18492,8 +18493,8 @@
    [
     2148983368,
     2148983567,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [60]"
    ],
    [
     2148983568,
@@ -18540,8 +18541,8 @@
    [
     2148984148,
     2148984455,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [0, 20]"
    ],
    [
     2148984456,
@@ -18662,8 +18663,8 @@
    [
     2148953276,
     2148953383,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [76]"
    ],
    [
     2148953384,
@@ -19036,8 +19037,8 @@
    [
     2148951352,
     2148951435,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [56]"
    ],
    [
     2148951436,
@@ -19386,8 +19387,8 @@
    [
     2148961264,
     2148961455,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "14 site(s) materialise its address; displacements [4, 164]"
    ],
    [
     2148961456,
@@ -19622,8 +19623,8 @@
    [
     2148950132,
     2148950219,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [60]"
    ],
    [
     2148950220,
@@ -19966,8 +19967,8 @@
    [
     2148955096,
     2148955379,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "14 site(s) materialise its address; displacements [16, 176, 192]"
    ],
    [
     2148955380,
@@ -20572,8 +20573,8 @@
    [
     2148947052,
     2148947131,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [52]"
    ],
    [
     2148947132,
@@ -20778,8 +20779,8 @@
    [
     2148957956,
     2148958079,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [92]"
    ],
    [
     2148958080,
@@ -22120,8 +22121,8 @@
    [
     2148937952,
     2148938031,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "4 site(s) materialise its address; displacements [28, 64]"
    ],
    [
     2148938032,
@@ -22792,8 +22793,8 @@
    [
     2148961900,
     2148962031,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [100]"
    ],
    [
     2148962032,
@@ -22906,8 +22907,8 @@
    [
     2148962360,
     2148962431,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "5 site(s) materialise its address; displacements [8, 40, 48, 52]"
    ]
   ],
   "ovl_00a43b6": [
@@ -23160,8 +23161,8 @@
    [
     2148964132,
     2148964255,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [92]"
    ],
    [
     2148964256,
@@ -23208,8 +23209,8 @@
    [
     2148964504,
     2148964575,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "5 site(s) materialise its address; displacements [28, 48, 56, 60]"
    ]
   ],
   "ovl_00a733e": [
@@ -23842,8 +23843,8 @@
    [
     2148975392,
     2148975531,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [48]"
    ],
    [
     2148975532,
@@ -24192,8 +24193,8 @@
    [
     2148953816,
     2148953939,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [56]"
    ],
    [
     2148953940,
@@ -24234,8 +24235,8 @@
    [
     2148954044,
     2148954123,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [60]"
    ],
    [
     2148954124,
@@ -24770,8 +24771,8 @@
    [
     2148954276,
     2148954351,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [52]"
    ],
    [
     2148954352,
@@ -25036,8 +25037,8 @@
    [
     2148935076,
     2148935179,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [76]"
    ],
    [
     2148935180,
@@ -25048,8 +25049,8 @@
    [
     2148935216,
     2148936475,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "3 site(s) materialise its address; displacements [640, 1252]"
    ],
    [
     2148936476,
@@ -25116,8 +25117,8 @@
    [
     2148951564,
     2148951659,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [68]"
    ],
    [
     2148951660,
@@ -25316,8 +25317,8 @@
    [
     2148937712,
     2148937791,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [48]"
    ],
    [
     2148937792,
@@ -25378,8 +25379,8 @@
    [
     2148933436,
     2148933519,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [68]"
    ]
   ],
   "ovl_00b6040": [
@@ -25404,8 +25405,8 @@
    [
     2148933660,
     2148933727,
-    "unclassified",
-    "no artifact names it"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [52]"
    ]
   ]
  },
@@ -25596,7 +25597,7 @@
    "function_body": 58328,
    "gap": 396,
    "dense_data": 7756,
-   "unclassified": 5440,
+   "unclassified": 5368,
    "padding": 632,
    "slack": 136,
    "data_named": 44,
@@ -25604,15 +25605,17 @@
    "string_table": 852,
    "jump_table": 16,
    "pointer_table": 600,
+   "referenced_data": 72,
    "u16_table": 4104
   },
   "stage2": {
    "function_body": 579632,
-   "unclassified": 46564,
+   "referenced_data": 8844,
    "padding": 345552,
    "dense_data": 114660,
    "slack": 6376,
    "data_named": 4312,
+   "unclassified": 37720,
    "fill": 660,
    "gap": 2116,
    "string_table": 12080,
@@ -25630,7 +25633,8 @@
    "pointer_table": 40,
    "data_named": 428,
    "slack": 664,
-   "unclassified": 784,
+   "referenced_data": 488,
+   "unclassified": 296,
    "u16_table": 1132
   },
   "ovl_007688e": {
@@ -25652,8 +25656,9 @@
    "data_named": 296,
    "slack": 456,
    "fill": 8,
-   "unclassified": 1360,
+   "unclassified": 616,
    "u16_table": 108,
+   "referenced_data": 744,
    "padding": 36444
   },
   "ovl_007af7a": {
@@ -25664,7 +25669,8 @@
    "jump_table": 4,
    "slack": 132,
    "data_named": 100,
-   "unclassified": 1692,
+   "unclassified": 896,
+   "referenced_data": 796,
    "pointer_table": 44,
    "padding": 8316
   },
@@ -25674,10 +25680,11 @@
    "gap": 16,
    "jump_table": 4,
    "pointer_table": 72,
-   "unclassified": 1096,
+   "referenced_data": 312,
    "padding": 1464,
    "slack": 84,
    "data_named": 172,
+   "unclassified": 784,
    "u16_table": 180
   },
   "ovl_007e132": {
@@ -25685,8 +25692,9 @@
    "gap": 72,
    "jump_table": 4,
    "pointer_table": 60,
-   "unclassified": 1132,
+   "referenced_data": 376,
    "data_named": 100,
+   "unclassified": 756,
    "slack": 76,
    "padding": 60
   },
@@ -25698,8 +25706,9 @@
    "slack": 416,
    "fill": 8,
    "data_named": 20,
-   "unclassified": 1432,
-   "padding": 136
+   "referenced_data": 948,
+   "padding": 136,
+   "unclassified": 484
   },
   "ovl_008505e": {
    "function_body": 20348,
@@ -25707,8 +25716,9 @@
    "fill": 12,
    "data_named": 56,
    "slack": 128,
-   "unclassified": 184,
-   "pointer_table": 480
+   "referenced_data": 108,
+   "pointer_table": 480,
+   "unclassified": 76
   },
   "ovl_0087352": {
    "function_body": 18112,
@@ -25717,7 +25727,7 @@
    "pointer_table": 568,
    "fill": 12,
    "slack": 40,
-   "unclassified": 84,
+   "referenced_data": 84,
    "padding": 20
   },
   "ovl_008900e": {
@@ -25729,19 +25739,21 @@
    "fill": 12,
    "data_named": 56,
    "u16_table": 76,
-   "unclassified": 708,
+   "unclassified": 516,
+   "referenced_data": 192,
    "padding": 16
   },
   "ovl_008bef8": {
    "function_body": 16684,
    "gap": 72,
-   "unclassified": 616,
+   "unclassified": 528,
    "fill": 12,
    "jump_table": 28,
    "pointer_table": 260,
    "slack": 172,
    "data_named": 52,
    "u16_table": 104,
+   "referenced_data": 88,
    "padding": 48
   },
   "ovl_008e046": {
@@ -25753,7 +25765,8 @@
    "fill": 8,
    "data_named": 48,
    "u16_table": 72,
-   "unclassified": 800,
+   "unclassified": 516,
+   "referenced_data": 284,
    "padding": 16
   },
   "ovl_0090698": {
@@ -25784,7 +25797,7 @@
    "pointer_table": 304,
    "slack": 28,
    "fill": 4,
-   "unclassified": 80,
+   "referenced_data": 80,
    "data_named": 4
   },
   "ovl_0095446": {
@@ -25795,8 +25808,9 @@
    "slack": 140,
    "jump_table": 20,
    "pointer_table": 208,
-   "unclassified": 764,
-   "string_table": 36
+   "referenced_data": 124,
+   "string_table": 36,
+   "unclassified": 640
   },
   "ovl_0097e42": {
    "function_body": 6796,
@@ -25841,10 +25855,11 @@
    "gap": 72,
    "fill": 12,
    "jump_table": 4,
-   "unclassified": 156,
+   "unclassified": 76,
    "data_named": 8,
    "slack": 40,
    "pointer_table": 148,
+   "referenced_data": 80,
    "padding": 12
   },
   "ovl_009dd02": {
@@ -25872,7 +25887,7 @@
    "jump_table": 32,
    "pointer_table": 324,
    "fill": 8,
-   "unclassified": 204,
+   "referenced_data": 204,
    "data_named": 44,
    "slack": 112,
    "string_table": 36
@@ -25885,7 +25900,7 @@
    "slack": 132,
    "pointer_table": 180,
    "fill": 8,
-   "unclassified": 196,
+   "referenced_data": 196,
    "data_named": 20,
    "string_table": 36
   },
@@ -25908,16 +25923,18 @@
    "slack": 456,
    "data_named": 108,
    "padding": 72,
-   "unclassified": 396,
-   "string_table": 36
+   "referenced_data": 140,
+   "string_table": 36,
+   "unclassified": 256
   },
   "ovl_00ae24a": {
    "function_body": 20640,
    "gap": 80,
-   "unclassified": 284,
+   "unclassified": 80,
    "jump_table": 20,
    "pointer_table": 184,
    "fill": 8,
+   "referenced_data": 204,
    "data_named": 60,
    "slack": 152,
    "u16_table": 972,
@@ -25931,17 +25948,19 @@
    "jump_table": 52,
    "slack": 220,
    "pointer_table": 392,
-   "unclassified": 216,
+   "referenced_data": 76,
    "data_named": 60,
+   "unclassified": 140,
    "u16_table": 284,
    "padding": 112
   },
   "ovl_00b2d7a": {
    "function_body": 2036,
    "gap": 48,
-   "unclassified": 1500,
+   "unclassified": 136,
    "fill": 4,
    "jump_table": 4,
+   "referenced_data": 1364,
    "pointer_table": 36,
    "data_named": 4
   },
@@ -25951,26 +25970,28 @@
    "fill": 12,
    "jump_table": 8,
    "slack": 176,
-   "unclassified": 312,
+   "referenced_data": 96,
    "pointer_table": 308,
-   "data_named": 44
+   "data_named": 44,
+   "unclassified": 216
   },
   "ovl_00b5346": {
    "function_body": 4776,
    "gap": 16,
-   "unclassified": 176,
+   "unclassified": 96,
+   "referenced_data": 80,
    "data_named": 20,
    "slack": 64,
    "pointer_table": 36
   },
   "ovl_00b5e64": {
    "function_body": 588,
-   "unclassified": 84
+   "referenced_data": 84
   },
   "ovl_00b6040": {
    "function_body": 804,
    "gap": 8,
-   "unclassified": 68
+   "referenced_data": 68
   }
  }
 }

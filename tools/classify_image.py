@@ -39,7 +39,8 @@ ROM = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 MAP = "manifests/byte_map.json"
 
 CLASSES = ["function_body", "jump_table", "data_named", "float_table", "pointer_table", "string_table",
-           "padding", "fill", "gap", "slack", "u16_table", "dense_data", "unclassified"]
+           "padding", "fill", "gap", "slack", "u16_table", "referenced_data", "dense_data",
+           "unclassified"]
 DAT = re.compile(r"\bDAT_([0-9a-fA-F]{8})\b")
 MIN_PAD = 16
 
@@ -351,6 +352,20 @@ def build(root: Path = ROOT):
             else:
                 out.append([w, w + 3, cls, src])
         relabel_residue(out, blob, base)
+        # M348: what the *code* points at. A run whose address is materialised by an instruction is data the game
+        # uses, and its displacement set is the first hint of a record layout.
+        resid = [(r[0], r[1]) for r in out if r[2] == "unclassified" and (r[1] - r[0] + 1) >= 64]
+        if resid:
+            hit = referenced_runs(blob, base, ranges["images"].get(name, []), resid)
+            for k, sites in hit.items():
+                lo, hi = resid[k]
+                for r in out:
+                    if r[0] == lo and r[2] == "unclassified":
+                        r[2] = "referenced_data"
+                        disps = sorted({d for _s, d in sites if d >= 0})[:4]
+                        r[3] = ("%d site(s) materialise its address; displacements %s"
+                                % (len(sites), disps if disps else "base only"))
+                        break
         report["images"][name] = out
         report["overlaps"][name] = overlap
         totals = {}
@@ -413,6 +428,15 @@ def check(rep):
                   and _slack("padding", "unclassified") == "unclassified"))
     cases.append(("a 28-byte run between two bodies is `gap`, not `slack` (the order is the rule)",
                   _slack("function_body", "function_body") == "gap"))
+
+    # M348: `referenced_data` -- the code materialises the run's address, or it does not. The synthetic body below is
+    # `lui $v0,0x8010 ; addiu $v0,$v0,0x100`, which names the run at 0x80100100 and nothing else.
+    code = b"".join(int(v).to_bytes(4, "big") for v in (0x3C028010, 0x24420100, 0x03E00008, 0x00000000))
+    both = code + b"\xAA" * 64
+    hit = referenced_runs(both, 0x80100000, [(0x80100000, 0x8010000F)],
+                          [(0x80100100, 0x8010013F), (0x80100200, 0x8010023F)])
+    cases.append(("a run the code materialises an address into is `referenced_data`; the next run over is not",
+                  0 in hit and 1 not in hit and hit[0][0][1] == 0))
 
     # M344b: the residue's two classes, on the same synthetic run bed. `u16_table` is a *positive* property and goes
     # first; `dense_data` is a density measurement, so its case has to show a low-entropy run staying unclassified.
@@ -580,6 +604,54 @@ def residue_hypotheses(root: Path = ROOT, min_bytes: int = 64):
 
 def _frac(vals, pred):
     return sum(1 for v in vals if pred(v)) / max(len(vals), 1)
+
+
+def referenced_runs(blob, base, bodies, runs):
+    """Which unclassified runs have their address *materialised by code*: `lui rt,hi` then `addiu/ori rt,rt,lo`,
+    or `lui rt,hi` then a load/store off `rt` (M348).
+
+    This is a different kind of evidence from every rule before it: the earlier classes describe the bytes, this one
+    says **the game points here**. A displacement set is also the first hint of a record layout -- a run with 400 sites
+    at displacements 84 and 85 is an array indexed at +84/+85.
+
+    Conservative by construction: it finds only *absolute* materialisations, so data reached through a computed base
+    register (or through another data structure) is missed, never invented.
+    """
+    def run_of(addr):
+        for k, (lo, hi) in enumerate(runs):
+            if lo <= addr <= hi:
+                return k
+        return None
+
+    hits = {}
+    for s, e in bodies:
+        ws = [int.from_bytes(blob[s - base + 4 * i:s - base + 4 * i + 4], "big")
+              for i in range(0, (e - s) // 4 + 1)]
+        for i, w in enumerate(ws):
+            if (w >> 26) != 0x0F:
+                continue
+            rt = (w >> 16) & 31
+            hi = (w & 0xFFFF) << 16
+            for j in (1, 2, 3):
+                if i + j >= len(ws):
+                    break
+                n = ws[i + j]
+                op = n >> 26
+                if op in (0x09, 0x0D) and ((n >> 16) & 31) == rt and ((n >> 21) & 31) == rt:
+                    lo = n & 0xFFFF
+                    addr = (hi + (lo - 0x10000 if lo & 0x8000 else lo)) & 0xFFFFFFFF
+                    k = run_of(addr)
+                    if k is not None:
+                        hits.setdefault(k, []).append((s + 4 * (i + j), addr - runs[k][0]))
+                    break
+                if op in (0x20, 0x21, 0x23, 0x24, 0x25, 0x28, 0x29, 0x2B) and ((n >> 21) & 31) == rt:
+                    k = run_of(hi)
+                    if k is not None:
+                        hits.setdefault(k, []).append((s + 4 * i, -1))
+                    break
+                if op == 0x0F:
+                    break
+    return hits
 
 
 def residue_profile(root: Path = ROOT, min_bytes: int = 64):
