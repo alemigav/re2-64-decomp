@@ -87,7 +87,7 @@
     "field": "buffer allocation bytes",
     "from": "trace:+0x1214 pcm_capacity_alloc",
     "value": 8648,
-    "via": "arith: (src + 4) * 2 @ src/stage2/FUN_800a9420.c:12: return (param_1 + 4) * 2;"
+    "via": "arith: (src + 4) * 2 @ src/stage2/FUN_800a9420.c:14:     return (a + 4) << 1;"
    },
    {
     "field": "+0x11d8 units_written (whole clip)",
@@ -945,7 +945,7 @@
      "src/stage2/FUN_800b4a04.c:102: *(undefined1 *)(param_1 + 0x11dd) = 2;",
      "src/stage2/FUN_800b4d90.c:13: *(undefined1 *)(param_1 + 0x11dd) = 3;",
      "src/stage2/FUN_800b4d30.c:19: *(undefined1 *)(param_1 + 0x11dd) = 4;",
-     "src/stage2/FUN_800b4dac.c:12: *(undefined1 *)(param_1 + 0x11dd) = 4;"
+     "src/stage2/FUN_800b4dac.c:14:     p[4573] = 4;"
     ]
    },
    {
@@ -1223,7 +1223,7 @@
    },
    {
     "path": "src/stage2/FUN_800a9420.c",
-    "sha256": "41bd6b90ba00ba4f900db064aae82ff0c6a9b2b6b5d8ef061324b99e405a9b63"
+    "sha256": "2cbba4a94c9e9880b0c26731dc9431eae960874b6e15c25d8aba8055aeb863b1"
    },
    {
     "path": "src/stage2/FUN_800a942c.c",
@@ -1267,7 +1267,7 @@
    },
    {
     "path": "src/stage2/FUN_800b4dac.c",
-    "sha256": "0baae808daf44f3ffa0034cb56a27c105e6cd33a96aae2c8086ec032e5a5a4c4"
+    "sha256": "9c63eea09b6ec4f9445f6f2295a6e2e1a8df93dc028ba0ef1e3ca73503ad8f14"
    },
    {
     "path": "src/stage2/FUN_800b4dc0.c",

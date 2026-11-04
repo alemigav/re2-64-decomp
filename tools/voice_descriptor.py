@@ -393,7 +393,9 @@ def descriptor_fields():
                        B + "FUN_800b4a04.c:102: *(undefined1 *)(param_1 + 0x11dd) = 2;",
                        B + "FUN_800b4d90.c:13: *(undefined1 *)(param_1 + 0x11dd) = 3;",
                        B + "FUN_800b4d30.c:19: *(undefined1 *)(param_1 + 0x11dd) = 4;",
-                       B + "FUN_800b4dac.c:12: *(undefined1 *)(param_1 + 0x11dd) = 4;"],
+                       # M316: 0x800b4dac is now a byte-exact reconstruction rather than a provider body, so the
+                       # evidence is our own line -- `p[4573]` is `+0x11dd` and the stored value is the same 4
+                       B + "FUN_800b4dac.c:14:     p[4573] = 4;"],
               readers=[B + "FUN_800b4a04.c:41: if (((*(byte *)(param_1 + 0x11dd) - 1 < 2) || "
                           "(*(byte *)(param_1 + 0x11dd) == 3)) &&"],
               insn=0x800B49B0),
@@ -943,7 +945,7 @@ def clip_trace(index=0):
             v("+0x19c pcm_units", capacity, "trace:+0x1214 pcm_capacity_alloc",
               "arith: src @ " + B + "FUN_800b4930.c:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"),
             v("buffer allocation bytes", (capacity + 4) * 2, "trace:+0x1214 pcm_capacity_alloc",
-              "arith: (src + 4) * 2 @ " + B + "FUN_800a9420.c:12: return (param_1 + 4) * 2;"),
+              "arith: (src + 4) * 2 @ " + B + "FUN_800a9420.c:14:     return (a + 4) << 1;"),
             v("+0x11d8 units_written (whole clip)", samples, "trace:+0x11a0 blocks_remaining",
               "arith: src * 160 @ " + B + "FUN_800b4a04.c:75: *(int *)(param_1 + 0x11d8) = "
                                          "*(int *)(param_1 + 0x11d8) + 0xa0;"),

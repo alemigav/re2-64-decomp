@@ -1,16 +1,16 @@
 /* FUN_800b480c
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800b480c  body 0x800b480c..0x800b4817  size 12 B
- * body sha256 4d27e74a263afa39f4f6e0c4ab6f06a419426a65ded812f6ea67cfca7c69c13d
- * provider record sha256 e46ff805d515c81984b1c949e62ab56150c4e13644e8255311c02d4743cfc291
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 fab251d76b8724ebb9a69f68f1b41d742d0a849dc62b8f3db00074ddbcc7e46d
+ * recovered byte-exact (single: 3 of 3, one draft)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_800B480C_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void FUN_800b480c(void)
-
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_80143FD4;
+void FUN_x(void)
 {
-  _DAT_80143fd4 = 0;
-  return;
+    D_80143FD4 = 0;
 }

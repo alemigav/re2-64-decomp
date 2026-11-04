@@ -1,14 +1,15 @@
 /* FUN_800b4dac
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800b4dac  body 0x800b4dac..0x800b4db7  size 12 B
- * body sha256 54fb28d3e6110a99b1f7bfe788eacfbb50a9c54f73fe00bd34fd56a450eb25a3
- * provider record sha256 31d7faf38fdb4e3fd29d5e8b6b651ddfe47cfb6290b8825f5b160a0e742cd76c
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 aad7b6258296fc6d34d7ebbcd980944b247d792024568c25cfaaaf6b36add498
+ * recovered byte-exact (single: 3 of 3, one draft)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_800B4DAC_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_800b4dac(int param_1)
-
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+void FUN_x(u8 *p)
 {
-  *(undefined1 *)(param_1 + 0x11dd) = 4;
-  return;
+    p[4573] = 4;
 }

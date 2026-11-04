@@ -727,6 +727,168 @@ void FUN_call9(u8 *p)
 }
 """
 
+# --- singles: one draft each (M315 first batch, M316 screen sweep) ---------------------------------------
+S_80165C68_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+void FUN_x(u8 *p, u8 a)
+{
+    p[5] = a;
+    *(u16 *)(p + 6) = 0;
+}
+"""
+S_800478AC_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+void FUN_x(u8 *p, u8 a, u8 b)
+{
+    p[8] = a;
+    p[9] = b;
+}
+"""
+S_800478B8_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+void FUN_x(u16 *p, u16 a, u16 b)
+{
+    p[2] = a;
+    p[3] = b;
+}
+"""
+S_800479BC_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+void FUN_x(u16 *p, u16 a, u16 b)
+{
+    p[8] = a;
+    p[9] = b;
+}
+"""
+S_8004D178_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+void FUN_x(u32 *p)
+{
+    p[2] = 0;
+    p[3] = 0;
+}
+"""
+S_80053994_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+u32 FUN_x(u32 a)
+{
+    return (a & 0xff) + 63;
+}
+"""
+S_8006B374_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_801137D0;
+void FUN_x(u32 a)
+{
+    D_801137D0 = a;
+}
+"""
+S_8006BA18_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_801127B8;
+void FUN_x(u32 a)
+{
+    D_801127B8 = a;
+}
+"""
+S_8008AF50_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_8012BD80;
+void FUN_x(u32 a)
+{
+    D_8012BD80 = a;
+}
+"""
+S_8008C408_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+u32 FUN_x(u32 a)
+{
+    return (u32)(a - 14) < 6;
+}
+"""
+S_800A8CE8_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u16 D_80147FD0;
+void FUN_x(void)
+{
+    D_80147FD0 = 0;
+}
+"""
+S_800A9420_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+u32 FUN_x(u32 a)
+{
+    return (a + 4) << 1;
+}
+"""
+S_800B2138_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u8 D_80147FA9;
+void FUN_x(u8 a)
+{
+    D_80147FA9 = a;
+}
+"""
+S_800B480C_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_80143FD4;
+void FUN_x(void)
+{
+    D_80143FD4 = 0;
+}
+"""
+S_800B4DAC_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+void FUN_x(u8 *p)
+{
+    p[4573] = 4;
+}
+"""
+S_80026910_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+extern u32 D_800E9108;
+void FUN_x(u32 a)
+{
+    D_800E9108 = a;
+}
+"""
+
+SINGLES = [
+    ("S_80165C68_SOURCE", "ovl_0087352", 0x80165c68, 3, ()),
+    ("S_800478AC_SOURCE", "stage2", 0x800478ac, 3, ()),
+    ("S_800478B8_SOURCE", "stage2", 0x800478b8, 3, ()),
+    ("S_800479BC_SOURCE", "stage2", 0x800479bc, 3, ()),
+    ("S_8004D178_SOURCE", "stage2", 0x8004d178, 3, ()),
+    ("S_80053994_SOURCE", "stage2", 0x80053994, 3, ()),
+    ("S_8006B374_SOURCE", "stage2", 0x8006b374, 3, (('D_801137D0', 0x801137d0),)),
+    ("S_8006BA18_SOURCE", "stage2", 0x8006ba18, 3, (('D_801127B8', 0x801127b8),)),
+    ("S_8008AF50_SOURCE", "stage2", 0x8008af50, 3, (('D_8012BD80', 0x8012bd80),)),
+    ("S_8008C408_SOURCE", "stage2", 0x8008c408, 3, ()),
+    ("S_800A8CE8_SOURCE", "stage2", 0x800a8ce8, 3, (('D_80147FD0', 0x80147fd0),)),
+    ("S_800A9420_SOURCE", "stage2", 0x800a9420, 3, ()),
+    ("S_800B2138_SOURCE", "stage2", 0x800b2138, 3, (('D_80147FA9', 0x80147fa9),)),
+    ("S_800B480C_SOURCE", "stage2", 0x800b480c, 3, (('D_80143FD4', 0x80143fd4),)),
+    ("S_800B4DAC_SOURCE", "stage2", 0x800b4dac, 3, ()),
+    ("S_80026910_SOURCE", "stage2", 0x80026910, 3, (('D_800E9108', 0x800E9108),)),
+]
+
+
 CALL9_SYMS = [("FUN_8008cea0", 0x8008CEA0)]
 
 # --- singles (M315): one draft each, no duplicate to multiply them ---------------------------------------
@@ -3131,15 +3293,13 @@ def check():
                   f"fragments that cannot be reconstructed (M312)" if dupc else "duplicate census: not run",
                   bool(dupc) and dupc["total"] == 89 and dupc["complete"] == 85 and dupc["fragments"] == 4))
 
-    for src_name, img, addr, words, label in (
-            ("RET2_SOURCE", "stage2", 0x80035E34, 2, "a function that returns its second argument"),
-            ("CLEARU16_SOURCE", "stage2", 0x8004D184, 2, "a u16 cleared through a pointer"),
-            ("SHIFT8_SOURCE", "stage2", 0x800AB574, 2, "a >> 8 and nothing else")):
-        got = single_probe(src_name, img, addr, words)
-        cases.append((f"{label} ({words} words at 0x{addr:08x}) is BYTE-EXACT: {got[0]} of {words} words "
-                      f"matched ({got[1]} compiled, the rest `as` padding) -- one draft, no search "
-                      f"(M315)" if got is not None else f"{label}: not run",
+    for src_name, img, addr, words, syms in SINGLES:
+        got = single_probe(src_name, img, addr, words, syms)
+        cases.append((f"`{img}:0x{addr:08x}` ({words} words) is BYTE-EXACT: {got[0]} of {words} matched "
+                      f"({got[1]} compiled, the rest `as` padding) -- one draft, no search (M315/M316)"
+                      if got is not None else f"0x{addr:08x}: not run",
                       bool(got) and got[0] == words))
+
     # one case per multi-member family, generated from the fixture so a new cohort needs no code here
     for src_name, fam in sorted((fams or {}).items()):
         cases.append((f"{src_name}, {fam['words']} words: all {fam['members']} copies of the identical body are "
