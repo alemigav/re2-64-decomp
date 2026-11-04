@@ -529,6 +529,59 @@ def code_run_evidence(blob, base, size):
             "is_code": bool(jr and frac >= 0.90 and distinct >= 8 and dominant <= 0.40)}
 
 
+def residue_hypotheses(root: Path = ROOT, min_bytes: int = 64):
+    """Every *candidate rule* the residue was tested against, and how much of it each would claim (M347).
+
+    A rule that renames bytes must assert something about what the bytes *are*, and be enforceable and mutable. Ten
+    candidates were measured here -- offsets rather than addresses, byte width rather than word width, ordering,
+    alignment, bit shape. **None is registered, and the numbers are why**: the leader (`>= 90 % of words even`) reaches
+    27.7 %, and it asserts a *shape*, not a data type -- which is `dense_data`'s job and already labelled as density.
+    Refutations with numbers are the deliverable; a class named after a bit pattern would be a hunch in a lab coat.
+    """
+    images = json.loads((root / "fixtures/decomp/images.json").read_text())
+    bmap = json.loads((root / MAP).read_text())
+    probes = [
+        ("offset (< image size)", lambda ws, bs, size: _frac(ws, lambda w: w < size) >= 0.90),
+        ("word < 2^24 (24-bit values)", lambda ws, bs, size: _frac(ws, lambda w: w < 0x01000000) >= 0.90),
+        ("word < 2^16 for half the words", lambda ws, bs, size: _frac(ws, lambda w: w < 0x00010000) >= 0.50),
+        ("byte < 0x40", lambda ws, bs, size: _frac(bs, lambda c: c < 0x40) >= 0.90),
+        ("byte < 0x80 (7-bit data)", lambda ws, bs, size: _frac(bs, lambda c: c < 0x80) >= 0.90),
+        ("word even", lambda ws, bs, size: _frac(ws, lambda w: w % 2 == 0) >= 0.90),
+        ("word divisible by 4", lambda ws, bs, size: _frac(ws, lambda w: w % 4 == 0) >= 0.90),
+        ("words ascending", lambda ws, bs, size: _frac(list(zip(ws, ws[1:])), lambda p: p[1] >= p[0]) >= 0.90),
+        ("high half == low half", lambda ws, bs, size: _frac(ws, lambda w: (w >> 16) == (w & 0xFFFF)) >= 0.50),
+        ("low half zero", lambda ws, bs, size: _frac(ws, lambda w: (w & 0xFFFF) == 0) >= 0.90),
+    ]
+    covered = {name: 0 for name, _f in probes}
+    total = 0
+    for img in images["images"]:
+        name, base, size = img["name"], img["base"], img["size"]
+        blob = image_bytes(img, root)
+        if blob is None:
+            continue
+        for lo, hi, cls, _why in bmap["images"].get(name, []):
+            if cls != "unclassified":
+                continue
+            if (hi - lo + 1) < min_bytes:
+                continue
+            b = blob[lo - base:hi - base + 1]
+            ws = [int.from_bytes(b[i:i + 4], "big") for i in range(0, len(b) - 3, 4)]
+            if not ws:
+                continue
+            total += len(b)
+            for nm, rule in probes:
+                if rule(ws, list(b), size):
+                    covered[nm] += len(b)
+    ranked = sorted(covered.items(), key=lambda kv: -kv[1])
+    return {"bytes": total, "hypotheses": ranked,
+            "leader": ranked[0][0], "leader_bytes": ranked[0][1],
+            "max_share": round(ranked[0][1] / max(total, 1), 3), "registered": []}
+
+
+def _frac(vals, pred):
+    return sum(1 for v in vals if pred(v)) / max(len(vals), 1)
+
+
 def residue_profile(root: Path = ROOT, min_bytes: int = 64):
     """The unclassified runs that no rule claims, described so they can be *read* rather than guessed (M345).
 
@@ -656,6 +709,11 @@ def main() -> int:
                   % (r["image"], r["address"], r["bytes"], r["words"], r["top_word"],
                      100 * r["top_share"], 100 * r["u16"], 100 * r["s16"], 100 * r["s20"],
                      r["alphabet"], r["entropy"]))
+        hyp = residue_hypotheses()
+        print("\ncandidate rules tested against those bytes -- none registered, leader reaches %.0f %%:"
+              % (100 * hyp["max_share"]))
+        for name, byts in hyp["hypotheses"]:
+            print("   %-32s %7d B  (%4.1f %%)" % (name, byts, 100.0 * byts / max(hyp["bytes"], 1)))
         return 0
 
     if a.unclassified:

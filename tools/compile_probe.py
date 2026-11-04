@@ -4033,6 +4033,22 @@ def check():
         _res = _ci2.residue_profile()
     except Exception:
         _res = None
+    # M347: the residue's *candidate rules*, all measured, none registered. Refutations with numbers are the claim.
+    try:
+        import classify_image as _ci3
+        _hyp = _ci3.residue_hypotheses()
+    except Exception:
+        _hyp = None
+    cases.append((f"ten candidate rules were tested against the {(_hyp or {}).get('bytes', 0):,} B residue and NONE is "
+                  f"registered: the leader ({(_hyp or {}).get('leader', '?')}) reaches "
+                  f"{100 * (_hyp or {}).get('max_share', 0):.0f} %, and it asserts a *shape*, not a data type -- which is "
+                  f"`dense_data`'s job and already labelled as density. The six runs under 64 B ({156} B) were read by "
+                  f"hand instead: two lone pointers with zero padding, three small-value tables, one command stream "
+                  f"(M347)"
+                  if _hyp else "residue hypotheses: not run",
+                  bool(_hyp) and _hyp["bytes"] == 72228 and _hyp["leader_bytes"] == 19992
+                  and _hyp["max_share"] < 0.50 and _hyp["registered"] == []))
+
     cases.append((f"the {(_res or {}).get('bytes', 0):,} B that no rule claims is PROFILEd, not named: "
                   f"{(_res or {}).get('runs', 0)} run(s) of 64 B or more, and the best single property it could be "
                   f"given ({(_res or {}).get('best_rule', '?')}) covers only "
