@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-294 milestones are indexed. 216 of them have a note; the rest are rows in the log that cite
+295 milestones are indexed. 217 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -311,6 +311,7 @@ at the foot of this file.
 | 291 | **M291** — the pool's sharing rule: the double is per use, the float is per value — and a reproducibility bug the patch had | `docs/log/M291-the-pools-sharing-rule-and-a-patch-bug.md` |
 | 292 | **M292** — the `$at`/`$v0` partial closes: the image splits no float address, and `0x80024558` is 139 of 139 | `docs/log/M292-the-float-address-split-and-0x80024558.md` |
 | 293 | **M293** — `0x8007e590` at 226 of 229: the toolchain is ruled out, and the last register is local | `docs/log/M293-0x8007e590-the-last-register-is-local.md` |
+| 294 | **M294** — the delay-slot scan: 718 sites, and it does **not** justify a `local_alloc` change | `docs/log/M294-the-delay-slot-scan-and-why-it-does-not-justify-a-patch.md` |
 
 ## The gaps, and why they are empty
 
