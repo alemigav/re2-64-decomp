@@ -129,6 +129,390 @@
    "verdict": "byte-exact",
    "probe": "osev: 24 of 24",
    "source": "OSEV_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000c620",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017dd70",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_0078c0e",
+   "address": "0x8017f844",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_0078c0e",
+   "address": "0x8017ff80",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x8016205c",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80029390",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e808",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fc94",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fcb8",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fcd0",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fcec",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80031b78",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80039ba0",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004a0a0",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004a5b4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004fc34",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004fc3c",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004fea4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006d100",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006d7a4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80076044",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007659c",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800824b0",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80083748",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80083ac4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008b040",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008c054",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80098f08",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8009b21c",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5cdc",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5ce4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5cec",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5cf4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800aaf84",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004786c",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "SET3_SOURCE: 4 of 4, all 3 copies of the identical body",
+   "source": "SET3_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004787c",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "SET3_SOURCE: 4 of 4, all 3 copies of the identical body",
+   "source": "SET3_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004788c",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "SET3_SOURCE: 4 of 4, all 3 copies of the identical body",
+   "source": "SET3_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d87c",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d8a0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d8cc",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d8f0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d914",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d938",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d95c",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d980",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005d9a4",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005da58",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005da94",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
+   "source": "CALL9_SOURCE"
   }
  ]
 }

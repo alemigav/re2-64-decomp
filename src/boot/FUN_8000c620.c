@@ -1,13 +1,11 @@
 /* FUN_8000c620
  * image   boot (boot), base 0x80000480
  * address 0x8000c620  body 0x8000c620..0x8000c627  size 8 B
- * body sha256 8f9dcf5f4a0092777438d0456dac4fd4dfa219edcfa5d1c04eec9c86179c04bc
- * provider record sha256 b789676bf75d94155a126a6a26d13aae232f3e774ad9c165a995bd347906666a
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 feb63175a0d2a8a1f925c9bad60acd21f7042b0350175b4ecc80ff51f36a81c9
+ * recovered byte-exact (STUB_SOURCE: 2 of 2, all 34 copies of the identical body)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as STUB_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_8000c620(void)
-
+void FUN_empty(void)
 {
-  return;
 }

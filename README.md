@@ -2,14 +2,14 @@
 
 **What it is:** a black-box study of *Resident Evil 2* on the Nintendo 64 (`NREE` rev 1 USA), reverse-engineered
 from the cartridge up — 3 416 functions catalogued, the file formats decoded, the script virtual machine and three
-audio codecs worked out from the bytes, and **16 functions reconstructed in C and recompiled — 15 of them matching
-the game's own machine code byte for byte**. It ships a **1030-case verification suite**, and every claim here is
+audio codecs worked out from the bytes, and **64 functions reconstructed in C and recompiled — 63 of them matching
+the game's own machine code byte for byte**. It ships a **1033-case verification suite**, and every claim here is
 either measured by one of those cases or explicitly labelled a reading of the code.
 
 | | |
 |---|---|
-| **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **15 functions now match the cartridge exactly**, down to the last byte, including two from Nintendo's own libultra runtime |
-| **The unusual part** | **286 checks run with no ROM, no assets and no emulator** — the other 744 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses to report `PASS` unless it has first proved each gate *can* fail |
+| **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **63 functions now match the cartridge exactly**, down to the last byte — from Nintendo's own libultra runtime down to single-instruction accessors, including **48 that come from three shared bodies**, so one proven shape registers every copy |
+| **The unusual part** | **286 checks run with no ROM, no assets and no emulator** — the other 747 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses to report `PASS` unless it has first proved each gate *can* fail |
 | **The scale of what is left** | 62.2 % of the image bytes sit inside a known function body and the other 37.8 % is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
 
 [![ci](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml/badge.svg)](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml)
@@ -35,7 +35,7 @@ is actually put together — the deep technical detail is in [docs/](docs/handov
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp
 cd re2-64-decomp
-python3 tools/verify.py          # -> PASS-FAST: 286 cases run, 744 SKIP (they need your dump, never PASS)
+python3 tools/verify.py          # -> PASS-FAST: 286 cases run, 747 SKIP (they need your dump, never PASS)
 ```
 
 That is the whole setup: Python 3, no dependencies, no cartridge. To go deeper without the ROM, run
@@ -45,8 +45,8 @@ That is the whole setup: Python 3, no dependencies, no cartridge. To go deeper w
 
 ## Project highlights
 
-- **The compiler, pinned** — gcc 2.8.1 + binutils 2.7 reproduce this game's code, and **15 functions now match
-  byte for byte** ([The matching build](#the-matching-build))
+- **The compiler, pinned** — gcc 2.8.1 + binutils 2.7 reproduce this game's code, and **63 functions now match
+  byte for byte**, 48 of them from three duplicate-body cohorts ([The matching build](#the-matching-build))
 - **Formats decoded** — the script VM (141 handlers, 18 instruction lengths), the T64 texture container, three
   audio codecs including one reimplemented to **sample-for-sample** parity ([What is decoded](#what-is-decoded))
 - **286 of 1 022 verification cases need no ROM** — the rest SKIP without a dump — and 146 *mutation* audits prove
@@ -148,7 +148,7 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 32 suites / 286 of 1030 cases run; the other 41 suites SKIP
+python3 tools/acceptance.py      # 32 suites / 286 of 1033 cases run; the other 41 suites SKIP
 python3 tools/audit_gates.py     # 146/146 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 22/22 — every doc anchor, heading and note pointer holds
@@ -160,7 +160,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **744 of 1030 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **747 of 1033 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -180,7 +180,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**307** numbers, 0-306: **251** with a row, and **56** named gaps. The full index — every number, its title,
+**308** numbers, 0-307: **252** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -204,6 +204,7 @@ worth reading before you believe any older note.
 | P14 | M223–M230 | the RSP microcode decoded and deliberately not named; the interface read as a frame loop; the vector unit named 252 of 254; the dispatch-head queue resolved |
 | P15 | M231–M250 | **the toolchain identified**: the sound backlog closed, a verification prototype (warm quarter-second), splat's rehearsal on the boot image, binutils 2.7 and IDO built natively, IDO refuted by a move census, gcc 2.7.2 then **gcc 2.8.1** reproducing every probe |
 | P16 | **M251–M300** | **whole functions reproduced from the image**: the compile-probe corpus, sixteen functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`, `0x800701d8`, `0x8006fc5c`, `0x8006ff48`, `0x8006e68c`, `0x8006e574`, `0x800704e0`, `0x80006d30`, `0x8000cc90`), **fifteen byte-exact** — all fifteen are in the map, because the recovered-function fixture put their measured extents into the index (M289) — and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, `-g` on the assembler so it stops swapping branches with the preceding instruction, the FP constant pool's values and placement, the aliasing rule that decides instruction order, and — from **M300** — the permuter harness in `fixtures/permuter/p6/`, whose own objective turned out to be a compiled proxy rather than the image |
+| P17 | **M301–M307** | **the duplicate-body cohorts**: 148 of the 3 400 unmatched functions have a body that is byte-identical to another's, in 48 groups — so **one proven reconstruction registers every copy**. Three cohorts banked: **34** copies of the empty function (`jr ra; nop`), **11** of a nine-word masked call, **3** of a four-word sequential store setter whose last store fills the `jr` delay slot — all **48 byte-exact**, taking the total to **64 recovered / 63 exact** (M307). Earlier in the arc: the README's front door and a byte-for-byte proof block (M301), the permuter re-pointed at the image instead of a compiled proxy, which closed a function M255–M257 spent three milestones on and **retracted M300's conclusion** (M302), the shape-vs-allocation boundary measured on `osCreateThread` (M303), and the case-4 select register decoded as a real live-range conflict that no source shape and no `cc1` variant tried can move (M304–M306) |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -303,17 +304,17 @@ ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 3416 functions across 36 images · █ 15 reproduced byte-for-byte (0.44%) · ▓ 1 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M300)
+the record — one bar per phase, from the phase table's own ranges (M0–M307)
 
 P0   M0  │██│ 10
 P1   M10 │███│ 21
-P2   M31 │████████│ 48
+P2   M31 │███████│ 48
 P3   M79 │█│ 2
 P4   M81 │█████│ 30
 P5   M111│██│ 15
 P6   M126│██│ 10
 P7   M136│███│ 21
-P8   M157│███│ 16
+P8   M157│██│ 16
 P9   M173│█│ 5
 P10  M178│██│ 14
 P11  M192│█│ 8
@@ -322,6 +323,7 @@ P13  M211│██│ 12
 P14  M223│█│ 8
 P15  M231│███│ 20
 P16  M251│████████│ 50
+P17  M301│█│ 7
 ```
 <!-- progress-map:end -->
 
@@ -363,7 +365,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       100 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 416 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    231 notes, one per milestone that has one
+docs/log/    232 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

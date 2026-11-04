@@ -695,6 +695,125 @@ def permuter_rescore_boot():
     return {"image_words": n, "base": base, "candidate": best, "recorded": rec.get("byte_metric", {})}
 
 
+# --- family sources (M307): one reconstruction, many functions -------------------------------------------
+# 148 of the 3 400 unmatched functions have a body that is byte-identical to another's, so one proven
+# reconstruction registers every copy. These three are the cheapest families: an empty function, a
+# three-store setter whose last store fills the `jr` delay slot, and a masked call.
+STUB_SOURCE = """void FUN_empty(void)
+{
+}
+"""
+
+SET3_SOURCE = """typedef unsigned char u8;
+
+void FUN_store3(u8 *p, u8 a, u8 b, u8 c)
+{
+    p[0] = a;
+    p[1] = b;
+    p[2] = c;
+}
+"""
+
+CALL9_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+
+extern void FUN_8008cea0(unsigned int a0, unsigned int a1);
+
+void FUN_call9(u8 *p)
+{
+    u16 v = *(u16 *)(p + 0x1aa);
+
+    FUN_8008cea0(v & 0xfff, 0);
+}
+"""
+
+CALL9_SYMS = [("FUN_8008cea0", 0x8008CEA0)]
+
+
+def image_inventory():
+    """name -> {source, base, size} for the 36 images, or None when the corpus has not been built."""
+    import json as _json
+    path = ROOT / "build" / "elfs" / "images.json"
+    if not path.exists():
+        return None
+    return {i["name"]: i for i in _json.loads(path.read_text())["images"]}
+
+
+def image_window(name, inv=None):
+    """(bytes, base) for any image: `boot` from the cartridge, everything else from assets/unpacked."""
+    inv = inv or image_inventory()
+    if inv is None or name not in inv:
+        return None
+    img, src = inv[name], str(inv[name]["source"])
+    if src.startswith("ROM "):
+        off = int(src.split()[1], 16)
+        return ROM.read_bytes()[off:off + img["size"]], img["base"]
+    path = ROOT / src
+    if not path.exists():
+        return None
+    return path.read_bytes()[:img["size"]], img["base"]
+
+
+def family_probe():
+    """Measure every multi-member source group in `fixtures/decomp/recovered.json` against its members.
+
+    One compilation, N comparisons: the point of the duplicate cohorts is that the same reconstruction is the
+    right answer for every copy, so the measurement has to hold for all of them at once (M307).
+    """
+    import json as _json
+    fix = ROOT / "fixtures" / "decomp" / "recovered.json"
+    inv = image_inventory()
+    if not fix.exists() or inv is None:
+        return None
+    groups = {}
+    for e in _json.loads(fix.read_text())["functions"]:
+        groups.setdefault(e["source"], []).append(e)
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    out = {}
+    for src_name, entries in groups.items():
+        if len(entries) < 2:
+            continue
+        text = globals().get(src_name)
+        if text is None:
+            out[src_name] = {"members": len(entries), "matched": 0, "words": 0, "why": "no such source"}
+            continue
+        syms = globals().get(src_name.replace("_SOURCE", "_SYMS"), [])
+        words = int(entries[0]["words"])
+        d = WORK / ("fam_%s" % src_name)
+        d.mkdir(parents=True, exist_ok=True)
+        c, s, o, fx, elf = d / "f.c", d / "f.s", d / "f.o", d / "f.fix.o", d / "f.elf"
+        c.write_text(text)
+        ok = not subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c),
+                                 "-o", str(s)], capture_output=True).returncode
+        ok = ok and not subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o",
+                                        str(o), str(s)], capture_output=True).returncode
+        subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                        "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+        matched = 0
+        for e in entries:
+            win = image_window(e["image"], inv)
+            if win is None:
+                continue
+            blob, base = win
+            lo = int(e["address"], 16)
+            (d / "l.ld").write_text("SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  /DISCARD/ : { "
+                                    "*(.reginfo) *(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) "
+                                    "*(.sbss) *(.mdebug*) *(.rodata) *(.gnu.attributes) }\n}\n" % lo
+                                    + "".join("%s = 0x%X;\n" % (k, v) for k, v in syms))
+            if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(d / "l.ld"), "-o", str(elf),
+                               str(fx)], capture_output=True).returncode:
+                continue
+            got = text_of(elf)
+            want = blob[lo - base:lo - base + 4 * words]
+            if got[:4 * words] == want:
+                matched += 1
+        out[src_name] = {"members": len(entries), "matched": matched, "words": words}
+    return out
+
+
 # p7 as a whole function: the recovery done for p6, on the head whose bound is **7** and whose index is the byte at
 # `ctx+6`. Two things make it a different question from p6: its seven arms live inside ONE contiguous 336-byte
 # range rather than in six separate corpus functions, and two of them fall through (`0` into `1`, `4` into `5`),
@@ -2714,6 +2833,7 @@ def check():
     permb = permuter_rescore_boot()
     p7res = p7e590_residue()
     selc = select_shape_census()
+    fams = family_probe()
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
@@ -2846,6 +2966,15 @@ def check():
                   f"and it is what our build cannot satisfy while `$2` still holds the compare constant (M305)"
                   if selc else "select census (stores): not run",
                   bool(selc) and selc["stored"] == 39 and selc["v0_stored"] == 35))
+
+    for src_name, label in (("STUB_SOURCE", "the empty function"), ("SET3_SOURCE", "the sequential store setter"),
+                            ("CALL9_SOURCE", "the masked call")):
+        fam = (fams or {}).get(src_name)
+        cases.append((f"{label}, {fam['words']} words: all {fam['members']} copies of the identical body are "
+                      f"BYTE-EXACT from one reconstruction ({fam['matched']} of {fam['members']}) -- the corpus "
+                      f"has 148 functions in 48 duplicate-body groups, so one proven shape registers every copy "
+                      f"(M307)" if fam else f"{label}: not run",
+                      bool(fam) and fam["matched"] == fam["members"] and fam["members"] > 1))
 
     cases.append((f"`0x8007e590`'s last three words are decoded, not described: {p7res['same_offset']} of "
                   f"{p7res['image_instrs']} match and the differing words {p7res['diffs']} are `li`,`li`,`sb` "

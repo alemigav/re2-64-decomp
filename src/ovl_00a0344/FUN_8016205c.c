@@ -1,13 +1,11 @@
 /* FUN_8016205c
  * image   ovl_00a0344 (ovl), base 0x80161cf0
  * address 0x8016205c  body 0x8016205c..0x80162063  size 8 B
- * body sha256 68c3b2907b5b0d16af91116cb10567b9a13fbf372c7ad9b65b422d9d1fd61333
- * provider record sha256 1d0b9a1c27f6d865506300c9942daed4449439e94426a13becbdc2508b4a9d5d
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 feb63175a0d2a8a1f925c9bad60acd21f7042b0350175b4ecc80ff51f36a81c9
+ * recovered byte-exact (STUB_SOURCE: 2 of 2, all 34 copies of the identical body)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as STUB_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_8016205c(void)
-
+void FUN_empty(void)
 {
-  return;
 }

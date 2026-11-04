@@ -1,13 +1,11 @@
 /* FUN_8004fea4
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8004fea4  body 0x8004fea4..0x8004feab  size 8 B
- * body sha256 8e99e90fa444c0b4b55bca62ba136ab6e97a69d4598b379b62ca02fcb53d3952
- * provider record sha256 90844d74f1ddc786e8909b148775d1031d8aa889688f5093cdf47aa433654b2a
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 feb63175a0d2a8a1f925c9bad60acd21f7042b0350175b4ecc80ff51f36a81c9
+ * recovered byte-exact (STUB_SOURCE: 2 of 2, all 34 copies of the identical body)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as STUB_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_8004fea4(void)
-
+void FUN_empty(void)
 {
-  return;
 }

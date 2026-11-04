@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "7a52db4",
+   "subject": "M306: the fill cannot precede global_alloc (reg_renumber) \u2014 two cc1 variants measured, cross-jumping off gives 44/229, the const-hoist gate changes nothing; toolchain restored and verified 55/55",
+   "milestones": [
+    306
+   ]
+  },
+  {
    "sha": "88121a0",
    "subject": "M305 follow-up: commit the reseeded commit fixture the M305 staging missed",
    "milestones": [
