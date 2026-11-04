@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-299 milestones are indexed. 221 of them have a note; the rest are rows in the log that cite
+300 milestones are indexed. 222 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -316,6 +316,7 @@ at the foot of this file.
 | 296 | **M296** — the reference-decompilation experiment: `osCreateMesgQueue` byte-exact, and OoT is a *later* libultra | `docs/log/M296-the-reference-decompilation-experiment.md` |
 | 297 | **M297** — bracketing the libultra revision, and the second runtime function | `docs/log/M297-bracketing-the-libultra-revision.md` |
 | 298 | **M298** — `osCreateThread`: the `OSThread` layout for this revision, 23 of 52, and why CI was queued | `docs/log/M298-oscreatethread-layout-and-why-ci-waited.md` |
+| 299 | **M299** — the re-score: M259's verdict was measured against a base that no longer exists, and the solver that follows | `docs/log/M299-the-re-score-and-the-shape-solver.md` |
 
 ## The gaps, and why they are empty
 

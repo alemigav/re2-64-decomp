@@ -115,6 +115,9 @@ SUITES = [
     ("call graph (cartridge)", [sys.executable, "tools/call_graph.py", "--check"], 8, True),
     ("opcode registry (cartridge)", [sys.executable, "tools/opcode_registry.py", "--check"], 17, True),
     ("mutation anchors (repository)", [sys.executable, "tools/audit_gates.py", "--lint-self-test"], 4, False),
+    # M299: the shape solver's pure half -- what it enumerates. Its scoring half needs the cartridge, so the
+    # cases here are the enumeration only and the tool is otherwise exercised through the probe suites.
+    ("shape solver (repository)", [sys.executable, "tools/shape_solver.py", "--self-test"], 6, False),
     ("preflight (repository)", [sys.executable, "tools/preflight.py", "--self-test"], 6, False),
     ("handler region (cartridge)", [sys.executable, "tools/handler_region.py", "--check"], 13, True),
     ("script vm decoder (cartridge)", [sys.executable, "tools/scd_vm.py", "--check"], 34, True),

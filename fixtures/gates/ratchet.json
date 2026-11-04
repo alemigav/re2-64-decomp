@@ -41,6 +41,7 @@
   "call graph (cartridge)": 8,
   "opcode registry (cartridge)": 17,
   "mutation anchors (repository)": 4,
+  "shape solver (repository)": 6,
   "preflight (repository)": 6,
   "handler region (cartridge)": 13,
   "script vm decoder (cartridge)": 34,
