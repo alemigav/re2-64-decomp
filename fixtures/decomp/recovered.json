@@ -873,6 +873,166 @@
    "verdict": "byte-exact",
    "probe": "single: 5 of 5, one draft",
    "source": "S_80166294_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x80001180",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_80001180_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000d2b0",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8000D2B0_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000d9c0",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8000D9C0_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80030fa4",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "single: 8 of 8, one draft",
+   "source": "S_80030FA4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80033144",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80033144_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047854",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_80047854_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800478c4",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_800478C4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047b04",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80047B04_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047b20",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80047B20_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047b3c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80047B3C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047b58",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80047B58_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005aaf8",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8005AAF8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005c264",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8005C264_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a8e8",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_8007A8E8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80082498",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_80082498_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800844cc",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_800844CC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008b028",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8008B028_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b4d90",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_800B4D90_SOURCE"
+  },
+  {
+   "image": "ovl_0097e42",
+   "address": "0x80163020",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "single: 8 of 8, one draft",
+   "source": "S_80163020_SOURCE"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801675ec",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "single: 8 of 8, one draft",
+   "source": "S_801675EC_SOURCE"
   }
  ]
 }

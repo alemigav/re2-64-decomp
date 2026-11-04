@@ -943,7 +943,7 @@
     "writer": [
      "src/stage2/FUN_800b4930.c:24: *(undefined1 *)(param_1 + 0x11dd) = 1;",
      "src/stage2/FUN_800b4a04.c:102: *(undefined1 *)(param_1 + 0x11dd) = 2;",
-     "src/stage2/FUN_800b4d90.c:13: *(undefined1 *)(param_1 + 0x11dd) = 3;",
+     "src/stage2/FUN_800b4d90.c:17:         p[4573] = 3;",
      "src/stage2/FUN_800b4d30.c:19: *(undefined1 *)(param_1 + 0x11dd) = 4;",
      "src/stage2/FUN_800b4dac.c:14:     p[4573] = 4;"
     ]
@@ -1263,7 +1263,7 @@
    },
    {
     "path": "src/stage2/FUN_800b4d90.c",
-    "sha256": "5c50d2da0d659a1e5e805aaccb4a0353563d6e5244c53649094dc7bc54f380d0"
+    "sha256": "ff616d4edd81788a3de7b0a9265adfa9a317514da5226d1ed3e3e760afb36f2c"
    },
    {
     "path": "src/stage2/FUN_800b4dac.c",

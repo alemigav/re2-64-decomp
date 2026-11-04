@@ -104,7 +104,7 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 95, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 115, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     # M273: the README's progress map is generated from the fixtures, so it cannot drift from them, and every
     # function it claims as recovered must exist in the corpus. Repository-only: no cartridge needed.
@@ -118,6 +118,10 @@ SUITES = [
     # M299: the shape solver's pure half -- what it enumerates. Its scoring half needs the cartridge, so the
     # cases here are the enumeration only and the tool is otherwise exercised through the probe suites.
     ("shape solver (repository)", [sys.executable, "tools/shape_solver.py", "--self-test"], 6, False),
+    # M319: the leaf screen's pure half -- the five rules that separate compiled code from hand-written
+    # assembly (no `jr ra`, CP0, branch-to-self, writes $at/$k0, jumps through them). Listing needs the
+    # cartridge; the rules do not.
+    ("leaf screen (repository)", [sys.executable, "tools/leaf_screen.py", "--self-test"], 11, False),
     ("preflight (repository)", [sys.executable, "tools/preflight.py", "--self-test"], 6, False),
     ("handler region (cartridge)", [sys.executable, "tools/handler_region.py", "--check"], 13, True),
     ("script vm decoder (cartridge)", [sys.executable, "tools/scd_vm.py", "--check"], 34, True),

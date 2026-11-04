@@ -391,7 +391,9 @@ def descriptor_fields():
               "PCM exists",
               writers=[B + "FUN_800b4930.c:24: *(undefined1 *)(param_1 + 0x11dd) = 1;",
                        B + "FUN_800b4a04.c:102: *(undefined1 *)(param_1 + 0x11dd) = 2;",
-                       B + "FUN_800b4d90.c:13: *(undefined1 *)(param_1 + 0x11dd) = 3;",
+                       # M319: 0x800b4d90 is now a byte-exact reconstruction, so the evidence is our own line.
+                       # `p[4573]` is `+0x11dd` and the stored value is the same 3 (phase 3).
+                       B + "FUN_800b4d90.c:17:         p[4573] = 3;",
                        B + "FUN_800b4d30.c:19: *(undefined1 *)(param_1 + 0x11dd) = 4;",
                        # M316: 0x800b4dac is now a byte-exact reconstruction rather than a provider body, so the
                        # evidence is our own line -- `p[4573]` is `+0x11dd` and the stored value is the same 4

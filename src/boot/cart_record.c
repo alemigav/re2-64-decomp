@@ -1,13 +1,18 @@
 /* cart_record
  * image   boot (boot), base 0x80000480
  * address 0x80001180  body 0x80001180..0x80001193  size 20 B
- * body sha256 882aa031f250c37f6afd89861ccdc66fe37dfff6a317d6720d783d8ffb1ca1b3
- * provider record sha256 7ef73d14db6160567b9fccbf4549153f4ca0105fa696f5478d08a2eadca35c53
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 a5783e85e964f8c5c74e647ae12eddb352a017f5ee5b1f97af5d706c14ab94b7
+ * recovered byte-exact (single: 5 of 5, one draft)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_80001180_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-int cart_record(int param_1)
+typedef unsigned int u32;
 
+struct rec { u32 w[4]; };
+
+extern struct rec D_80012150[];
+
+u32 FUN_x(u32 i)
 {
-  return param_1 * 0x10 + -0x7ffedeb0;
+    return (u32)&D_80012150[i];
 }

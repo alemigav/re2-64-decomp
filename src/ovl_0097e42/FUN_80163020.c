@@ -1,18 +1,20 @@
 /* FUN_80163020
  * image   ovl_0097e42 (ovl), base 0x80161cf0
  * address 0x80163020  body 0x80163020..0x8016303f  size 32 B
- * body sha256 101be4e18ecfbb653d349d5b77c8748ba317315118140960002b4208f5e73055
- * provider record sha256 85fa9e10db3aa06c0797369d484f31c461dea218ba7beb6517e277257059a417
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 b06ed1508b2384e717ac41add90e0d88deddc97070a6c48da16dd798b8d65ccc
+ * recovered byte-exact (single: 8 of 8, one draft)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_80163020_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80163020(int param_1)
-
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p)
 {
-  if ((*(ushort *)(param_1 + 0x2ba) & 4) == 0) {
-    *(undefined1 *)(param_1 + 0x26e) = 0;
-    return;
-  }
-  *(undefined1 *)(param_1 + 0x26e) = 1;
-  return;
+    if (*(u16 *)(p + 698) & 4)
+        p[622] = 1;
+    else
+        p[622] = 0;
 }

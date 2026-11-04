@@ -869,6 +869,261 @@ void FUN_x(u32 a)
 }
 """
 
+# M319: the record-array retry and the 6-8 word sweep
+S_80001180_SOURCE = """typedef unsigned int u32;
+
+struct rec { u32 w[4]; };
+
+extern struct rec D_80012150[];
+
+u32 FUN_x(u32 i)
+{
+    return (u32)&D_80012150[i];
+}
+"""
+S_8000D2B0_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+u32 FUN_x(void)
+{
+    return (*(volatile u32 *)0xA4800018u & 3u) != 0;
+}
+"""
+S_8000D9C0_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+u32 FUN_x(void)
+{
+    return (*(volatile u32 *)0xA4040010u & 0x1cu) != 0;
+}
+"""
+S_80030FA4_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p, u32 n)
+{
+    while (n)
+    {
+        *p++ = 0;
+        n--;
+    }
+}
+"""
+S_80033144_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+u32 FUN_x(u8 *a, u8 *b)
+{
+    s32 d = *(s16 *)(b + 102) - *(s16 *)(a + 102);
+
+    d = (d + 0x400) & 0xfff;
+    return d < 0x800;
+}
+"""
+S_80047854_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p, u8 a, u8 b, u16 c, u16 d)
+{
+    p[8] = a;
+    p[9] = b;
+    *(u16 *)(p + 16) = c;
+    *(u16 *)(p + 18) = d;
+}
+"""
+S_800478C4_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u16 *p, u16 a, u16 b, u16 c, u16 d)
+{
+    p[2] = a;
+    p[3] = b;
+    p[4] = c;
+    p[5] = d;
+}
+"""
+S_80047B04_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p, u32 v)
+{
+    if ((u16)v)
+        p[3] = 2;
+    else
+        p[3] = 0;
+}
+"""
+S_80047B20_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p, u32 v)
+{
+    if ((u16)v)
+        p[7] = 2;
+    else
+        p[7] = 0;
+}
+"""
+S_80047B3C_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p, u32 v)
+{
+    if ((u16)v)
+        p[3] = 2;
+    else
+        p[3] = 0;
+}
+"""
+S_80047B58_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p, u32 v)
+{
+    if ((u16)v)
+        p[3] = 2;
+    else
+        p[3] = 0;
+}
+"""
+S_8005AAF8_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+extern u8 D_80111163;
+u32 FUN_x(u8 *p)
+{
+    u32 v = p[419] - D_80111163;
+
+    p[419] = v;
+    return v;
+}
+"""
+S_8005C264_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p)
+{
+    u8 *b = *(u8 **)(p + 0x234);
+
+    b += 0x1d60;
+    *(u16 *)(b + 284) = 0;
+    *(u8 *)(b + 274) = 0;
+    *(u16 *)(b + 286) = 0;
+}
+"""
+S_8007A8E8_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p)
+{
+    u16 v = *(u16 *)(p + 426);
+
+    if (v & 0x100)
+        *(u16 *)(p + 426) = v & ~0x100;
+}
+"""
+S_80082498_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u32 *p, u32 n)
+{
+    do
+    {
+        *p++ = 0;
+    } while (--n);
+}
+"""
+S_800844CC_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+u32 FUN_x(u32 a)
+{
+    return ((a & 0xff) << 8) | ((a << 16) >> 24);
+}
+"""
+S_8008B028_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+extern u32 D_8012BD84;
+extern u32 D_8010B6F4;
+u32 FUN_x(void)
+{
+    return D_8012BD84 - D_8010B6F4;
+}
+"""
+S_800B4D90_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p)
+{
+    if (p[4573] == 2)
+        p[4573] = 3;
+}
+"""
+S_80163020_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+void FUN_x(u8 *p)
+{
+    if (*(u16 *)(p + 698) & 4)
+        p[622] = 1;
+    else
+        p[622] = 0;
+}
+"""
+S_801675EC_SOURCE = """typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+extern u8 D_800E1130[];
+void FUN_x(void)
+{
+    u8 *p = D_800E1130;
+
+    p[4] = 3;
+    p[5] = 0;
+    p[6] = 0;
+    p[7] = 0;
+}
+"""
+
 # M318: the 5-word batch
 S_800274E4_SOURCE = """typedef unsigned char u8;
 typedef unsigned short u16;
@@ -1072,6 +1327,26 @@ SINGLES = [
     ("S_8008AF6C_SOURCE", "stage2", 0x8008af6c, 5, (('D_8010B6F0', 0x8010B6F0), ('D_8012BD84', 0x8012BD84))),
     ("S_800AAF70_SOURCE", "stage2", 0x800aaf70, 5, (('D_80148BD4', 0x80148BD4), ('D_80148BD8', 0x80148BD8))),
     ("S_80166294_SOURCE", "ovl_0087352", 0x80166294, 5, ()),
+    ("S_80001180_SOURCE", "boot", 0x80001180, 5, (('D_80012150', 0x80012150),)),
+    ("S_8000D2B0_SOURCE", "boot", 0x8000d2b0, 6, ()),
+    ("S_8000D9C0_SOURCE", "boot", 0x8000d9c0, 6, ()),
+    ("S_80030FA4_SOURCE", "stage2", 0x80030fa4, 8, ()),
+    ("S_80033144_SOURCE", "stage2", 0x80033144, 7, ()),
+    ("S_80047854_SOURCE", "stage2", 0x80047854, 6, ()),
+    ("S_800478C4_SOURCE", "stage2", 0x800478c4, 6, ()),
+    ("S_80047B04_SOURCE", "stage2", 0x80047b04, 7, ()),
+    ("S_80047B20_SOURCE", "stage2", 0x80047b20, 7, ()),
+    ("S_80047B3C_SOURCE", "stage2", 0x80047b3c, 7, ()),
+    ("S_80047B58_SOURCE", "stage2", 0x80047b58, 7, ()),
+    ("S_8005AAF8_SOURCE", "stage2", 0x8005aaf8, 6, (('D_80111163', 0x80111163),)),
+    ("S_8005C264_SOURCE", "stage2", 0x8005c264, 6, ()),
+    ("S_8007A8E8_SOURCE", "stage2", 0x8007a8e8, 7, ()),
+    ("S_80082498_SOURCE", "stage2", 0x80082498, 6, ()),
+    ("S_800844CC_SOURCE", "stage2", 0x800844cc, 6, ()),
+    ("S_8008B028_SOURCE", "stage2", 0x8008b028, 6, (('D_8012BD84', 0x8012BD84), ('D_8010B6F4', 0x8010B6F4))),
+    ("S_800B4D90_SOURCE", "stage2", 0x800b4d90, 7, ()),
+    ("S_80163020_SOURCE", "ovl_0097e42", 0x80163020, 8, ()),
+    ("S_801675EC_SOURCE", "ovl_00a733e", 0x801675ec, 8, (('D_800E1130', 0x800E1130),)),
 ]
 
 
@@ -1220,6 +1495,7 @@ def single_probe(src_name, image, addr, words, syms=()):
     if subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
                       capture_output=True).returncode:
         return None
+    normalise_object(o)
     subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                     "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
     (d / "l.ld").write_text("SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  /DISCARD/ : { *(.reginfo) "
@@ -1233,6 +1509,37 @@ def single_probe(src_name, image, addr, words, syms=()):
     g = [got[4 * i:4 * i + 4] for i in range(len(got) // 4)]
     want = [blob[addr - base + 4 * i:addr - base + 4 * i + 4] for i in range(words)]
     return (sum(1 for a, b in zip(want, g) if a == b), len(g))
+
+
+def normalise_object(path):
+    """Clamp a zero-sized section's `sh_offset` to the file size before letting objcopy touch the object.
+
+    A binutils-2.7 `as` object can carry a zero-sized section — typically `.rel.text` when the function has
+    no relocations — whose `sh_offset` sits one byte **past EOF**. BFD 2.42 refuses such an object outright
+    (*"a section extending past end of file"*), and since it also refuses to `objcopy` it, the usual
+    normalisation (M300) cannot run. Nothing reads the offset of a zero-sized section, so clamping the field
+    is safe and makes the object readable: verified on `stage2:0x80047b04`, whose `.rel.text` was
+    `off=0x4e8 size=0` in a 0x4e7-byte file (M319).
+    """
+    import struct
+    data = bytearray(path.read_bytes())
+    if len(data) < 0x34 or data[:4] != b"\x7fELF":
+        return False
+    shoff, = struct.unpack(">I", data[0x20:0x24])
+    entsize, shnum, _ = struct.unpack(">HHH", data[0x2E:0x34])
+    fixed = False
+    for i in range(shnum):
+        o = shoff + i * entsize
+        if o + 40 > len(data):
+            break
+        off, = struct.unpack(">I", data[o + 16:o + 20])
+        size, = struct.unpack(">I", data[o + 20:o + 24])
+        if size == 0 and off > len(data):
+            data[o + 16:o + 20] = struct.pack(">I", len(data))
+            fixed = True
+    if fixed:
+        path.write_bytes(bytes(data))
+    return fixed
 
 
 def image_inventory():
@@ -3473,16 +3780,20 @@ def check():
                   if selc else "select census (stores): not run",
                   bool(selc) and selc["stored"] == 39 and selc["v0_stored"] == 35))
 
-    cases.append((f"the duplicate census is vetted before it is drafted: {dupc['total']} unmatched functions in "
-                  f"{dupc['groups']} repeated bodies, of which {dupc['complete']} in {dupc['complete_groups']} "
-                  f"contain a return and {dupc['fragments']} in {dupc['fragment_groups']} are mid-function "
-                  f"fragments that cannot be reconstructed (M312)" if dupc else "duplicate census: not run",
-                  bool(dupc) and dupc["total"] == 89 and dupc["complete"] == 85 and dupc["fragments"] == 4))
+    cases.append((f"the duplicate census is vetted before it is drafted: {dupc['total']} unmatched functions "
+                  f"in {dupc['groups']} repeated bodies, of which {dupc['complete']} in "
+                  f"{dupc['complete_groups']} contain a return and {dupc['fragments']} in "
+                  f"{dupc['fragment_groups']} are mid-function fragments that cannot be reconstructed "
+                  f"(M312; the totals move as functions are recovered, the 4 fragments do not)"
+                  if dupc else "duplicate census: not run",
+                  bool(dupc) and dupc["total"] == dupc["complete"] + dupc["fragments"]
+                  and dupc["groups"] == dupc["complete_groups"] + dupc["fragment_groups"]
+                  and dupc["fragments"] == 4))
 
     for src_name, img, addr, words, syms in SINGLES:
         got = single_probe(src_name, img, addr, words, syms)
         cases.append((f"`{img}:0x{addr:08x}` ({words} words) is BYTE-EXACT: {got[0]} of {words} matched "
-                      f"({got[1]} compiled, the rest `as` padding) -- one draft, no search (M315/M316)"
+                      f"({got[1]} compiled, the rest `as` padding) -- one draft, no search (M315/M316/M319)"
                       if got is not None else f"0x{addr:08x}: not run",
                       bool(got) and got[0] == words))
 

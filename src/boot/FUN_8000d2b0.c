@@ -1,15 +1,17 @@
 /* FUN_8000d2b0
  * image   boot (boot), base 0x80000480
  * address 0x8000d2b0  body 0x8000d2b0..0x8000d2c7  size 24 B
- * body sha256 e1699d5c6f9f672b8c7b56fc3eca92758f4be3aa38f413c2a4e0221f1be93736
- * provider record sha256 2449c922be4d8259bbcd0957920a4b5315b24e0b879a261d6eb7d133e9df37f1
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 ed1d403f7e06c6e01f103ee6948eeebace2e56e4584cbde9e7011bf0503005cf
+ * recovered byte-exact (single: 6 of 6, one draft)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_8000D2B0_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-bool FUN_8000d2b0(void)
-
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef int s32;
+typedef short s16;
+u32 FUN_x(void)
 {
-  return (_DAT_a4800018 & 3) != 0;
+    return (*(volatile u32 *)0xA4800018u & 3u) != 0;
 }
