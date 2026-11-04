@@ -3976,13 +3976,13 @@ def check():
                   f"{(ucr or {}).get('structured', {}).get('bytes', 0):,} B still unnamed -- which is the "
                   f"honest core of it (M338)"
                   if ucr else "unclassified decomposition: not run",
-                  bool(ucr) and uc_total.get("bytes") == 250764
+                  bool(ucr) and uc_total.get("bytes") == 244548
                   and ucr.get("code", {}).get("bytes", 0) == 0
                   and ucr.get("float_table", {}).get("bytes", 0) == 0
                   and ucr.get("pointer_table", {}).get("bytes", 0) == 0
                   and ucr.get("string_table", {}).get("bytes", 0) == 0
                   and ucr["structured"]["bytes"] == 232276
-                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 250764))
+                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 244548))
 
     # M339: the extents measured inside those code-like regions, and whether they are genuinely new ground.
     try:

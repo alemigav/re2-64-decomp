@@ -39,7 +39,7 @@ ROM = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 MAP = "manifests/byte_map.json"
 
 CLASSES = ["function_body", "jump_table", "data_named", "float_table", "pointer_table", "string_table",
-           "padding", "unclassified"]
+           "padding", "fill", "gap", "unclassified"]
 DAT = re.compile(r"\bDAT_([0-9a-fA-F]{8})\b")
 MIN_PAD = 16
 
@@ -229,6 +229,36 @@ def table_runs(blob, base, window=None):
     return out
 
 
+MIN_PAD_FLOOR = 4
+GAP_MAX = 64
+
+
+def relabel_residue(runs, blob, base):
+    """Name what survives every other rule, on the run list those rules produced (M344).
+
+      fill  a run of ONE repeated 0x00/0xFF shorter than the padding law's 16-byte floor. The law's floor stays put
+            -- it exists so a lone 0x00 word is not called padding -- so this names the 4..15-byte case instead of
+            bending that contract.
+      gap   a run under 64 B with a function body on at least one side: inter-function slack. Adjacency is the
+            evidence, not the size alone; M338 measured 543 runs sitting directly between two bodies.
+
+    Whatever is left is >= 64 B (or under 64 B and not adjacent to a body) of bytes that are not code, not text, not
+    a table and not fill. That is what `unclassified` means from here on, stated rather than implied.
+    """
+    for k, r in enumerate(runs):
+        if r[2] != "unclassified":
+            continue
+        b = blob[r[0] - base:r[1] - base + 1]
+        if (MIN_PAD_FLOOR <= len(b) < MIN_PAD and (b.count(0x00) == len(b) or b.count(0xFF) == len(b))):
+            r[2] = "fill"
+            r[3] = f"run of 0x{b[0]:02x}, shorter than the padding law's 16-byte floor"
+        elif len(b) < GAP_MAX and ((k and runs[k - 1][2] == "function_body")
+                                   or (k + 1 < len(runs) and runs[k + 1][2] == "function_body")):
+            r[2] = "gap"
+            r[3] = "under 64 B, between function bodies"
+    return runs
+
+
 def build(root: Path = ROOT):
     images, ranges, jumps = load(root)
     dat = named_data(root)
@@ -281,6 +311,7 @@ def build(root: Path = ROOT):
                 out[-1][1] = w + 3
             else:
                 out.append([w, w + 3, cls, src])
+        relabel_residue(out, blob, base)
         report["images"][name] = out
         report["overlaps"][name] = overlap
         totals = {}
@@ -312,6 +343,24 @@ def check(rep):
     def _blob_bytes(vals):
         return bytes(vals)
     win = (0x80100000, 0x80200000)
+    # M344: the two residue classes, pinned on synthetic run lists -- the same function `build()` calls.
+    def _runs(cls, n):
+        """A run list of three runs: [body][the run under test][body], so adjacency can be tested both ways."""
+        return [[0x80100000, 0x8010000F, "function_body", "x"],
+                [0x80100010, 0x80100010 + n - 1, cls, "y"],
+                [0x80100010 + n, 0x80100010 + n + 15, "function_body", "x"]]
+    def _relabelled(payload, n, cls="unclassified"):
+        # the run starts at offset 16, so the synthetic blob must cover it: 16 filler bytes, then the payload
+        return relabel_residue(_runs(cls, n), b"\xAA" * 16 + payload, 0x80100000)[1][2]
+    # The second half must be >= GAP_MAX, or it is legitimately a `gap`: a 12-byte constant run is fill, a 200-byte
+    # constant run is not (the padding law owns the >= 16-byte case and this class must not reach into it).
+    cases.append(("a 12-byte run of one value is `fill`, and a 200-byte one is not",
+                  _relabelled(bytes(12), 12) == "fill" and _relabelled(bytes(200), 200) == "unclassified"))
+    cases.append(("a short run between two bodies is `gap`, and the same run elsewhere stays unclassified",
+                  _relabelled(bytes(range(48)), 48) == "gap"
+                  and relabel_residue([[0x80100000, 0x8010002F, "unclassified", "y"]], bytes(range(48)),
+                                      0x80100000)[0][2] == "unclassified"))
+
     # M343: the string-table rule, pinned on synthetic bytes -- text is claimed, a table of small byte codes is
     # not, and neither is a run of one repeated text-safe byte. These are the cases the audit mutates.
     txt = list(b"first string entry\x00\x00second entry here\x00\x00third")

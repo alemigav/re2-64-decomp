@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-344 milestones are indexed. 266 of them have a note; the rest are rows in the log that cite
+345 milestones are indexed. 267 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -361,6 +361,7 @@ at the foot of this file.
 | 341 | **M341** — the rung's second customer: 187 functions the census never had, and the bucket's code goes to zero | `docs/log/M341-the-rung-adopts-the-measured-functions.md` |
 | 342 | **M342** — `float_table` and `pointer_table` become real classes, with mutations that prove the rules can fail | `docs/log/M342-float-and-pointer-tables-become-classes.md` |
 | 343 | **M343** — `string_table` becomes a class, and the rule needs words, not just printable bytes | `docs/log/M343-string-table-becomes-a-class.md` |
+| 344 | **M344** — `fill` and `gap`: the unclassified bucket is now exactly one thing | `docs/log/M344-fill-and-gap-the-bucket-becomes-one-thing.md` |
 
 ## The gaps, and why they are empty
 
