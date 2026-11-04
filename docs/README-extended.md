@@ -316,6 +316,7 @@ What is left, in the order it is worth doing:
 - **[zeldaret/oot](https://github.com/zeldaret/oot)** (MIT) — the reference for **stock libultra**: its
   `src/libultra/os/` is Nintendo's own C, and it is where `osCreateMesgQueue` came from. Its revision is *later* than
   RE2's — see `osSetEventMesg`, which there carries an `OS_EVENT_PRENMI` branch this image does not have.
+- **[Console Protocols: N64 Assembly](https://sites.google.com/site/consoleprotocols/home/homebrew/n64-assembly-home)** — a beginner's `bass`-assembler tutorial, cited for **two semantics only**: conditional branches execute their delay slot *only if taken* (the `beql`/`bnel` nullification this project's drafts rely on), and there are **no immediate compare instructions**, which is why a branch against a constant needs the constant seeded into a register first. It is a tutorial, not a measurement: nothing here is evidence about this cartridge.
 - **[n64decomp/banjo-kazooie](https://github.com/n64decomp/banjo-kazooie)**,
   **[n64decomp/sm64](https://github.com/n64decomp/sm64)** — the decomps whose frontpage conventions this one follows,
   and whose CC0 choice it shares.

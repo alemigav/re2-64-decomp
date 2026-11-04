@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "0971a87",
+   "subject": "M332: the front page split in two, and the eight stale numbers it had been carrying",
+   "milestones": [
+    332
+   ]
+  },
+  {
    "sha": "7c232df",
    "subject": "M331: vector_installer \u2014 the PRId dispatch is a chain over two flag values (+6 -> 0)",
    "milestones": [
