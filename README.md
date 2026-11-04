@@ -116,7 +116,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**295** numbers, 0-294: **239** with a row, and **56** named gaps. The full index — every number, its title,
+**296** numbers, 0-295: **240** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -139,7 +139,7 @@ worth reading before you believe any older note.
 | P13 | M211–M222 | the script VM's opcode registry, a call graph whose edges carry evidence, verification split into tiers, `TYRANT` named as a codename, and the three work packages that closed the sound family |
 | P14 | M223–M230 | the RSP microcode decoded and deliberately not named; the interface read as a frame loop; the vector unit named 252 of 254; the dispatch-head queue resolved |
 | P15 | M231–M250 | **the toolchain identified**: the sound backlog closed, a verification prototype (warm quarter-second), splat's rehearsal on the boot image, binutils 2.7 and IDO built natively, IDO refuted by a move census, gcc 2.7.2 then **gcc 2.8.1** reproducing every probe |
-| P16 | **M251–M294** | **whole functions reproduced from the image**: the compile-probe corpus, fourteen functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`, `0x800701d8`, `0x8006fc5c`, `0x8006ff48`, `0x8006e68c`, `0x8006e574`, `0x800704e0`), **thirteen byte-exact** — the map below shows eleven of the thirteen, because `manifests/code_index.json` does not contain `0x8006e68c` or `0x8006e574`: it lists the seven dispatch arms of the first as if they were the functions and never names the leaf that encloses them (M286), and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, `-g` on the assembler so it stops swapping branches with the preceding instruction, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
+| P16 | **M251–M295** | **whole functions reproduced from the image**: the compile-probe corpus, fourteen functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`, `0x800701d8`, `0x8006fc5c`, `0x8006ff48`, `0x8006e68c`, `0x8006e574`, `0x800704e0`), **thirteen byte-exact** — the map below shows eleven of the thirteen, because `manifests/code_index.json` does not contain `0x8006e68c` or `0x8006e574`: it lists the seven dispatch arms of the first as if they were the functions and never names the leaf that encloses them (M286), and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, `-g` on the assembler so it stops swapping branches with the preceding instruction, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -237,7 +237,7 @@ ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 3416 functions across 36 images · █ 13 reproduced byte-for-byte (0.38%) · ▓ 1 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M294)
+the record — one bar per phase, from the phase table's own ranges (M0–M295)
 
 P0   M0  │██│ 10
 P1   M10 │███│ 21
@@ -255,7 +255,7 @@ P12  M200│██│ 11
 P13  M211│██│ 12
 P14  M223│█│ 8
 P15  M231│███│ 20
-P16  M251│███████│ 44
+P16  M251│███████│ 45
 ```
 <!-- progress-map:end -->
 
@@ -297,7 +297,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       99 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 416 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    219 notes, one per milestone that has one
+docs/log/    220 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
