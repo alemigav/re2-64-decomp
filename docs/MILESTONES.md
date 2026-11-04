@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-305 milestones are indexed. 227 of them have a note; the rest are rows in the log that cite
+306 milestones are indexed. 228 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -321,7 +321,8 @@ at the foot of this file.
 | 301 | **M301** — the front door: a hero, an audience line, a 60-second quickstart, and proof in bytes | `docs/log/M301-the-front-door.md` |
 | 302 | **M302** — the permuter, pointed at the image, closes the function: 94/98 was the objective, not the tool | `docs/log/M302-the-permuter-pointed-at-the-image.md` |
 | 303 | **M303** — `osCreateThread` under the permuter: a negative result, the shape/allocation boundary, and an inert setting | `docs/log/M303-oscreatethread-under-the-permuter.md` |
-| 304 | **M304** — the case-4 select register, decoded: a dead store, a `global_alloc` tie-break, and 32 spellings that change nothing | `docs/log/M304-the-case-4-select-register-decoded.md` |
+| 304 | **M304** — the case-4 select register, decoded: 32 spellings that change nothing | `docs/log/M304-the-case-4-select-register-decoded.md` |
+| 305 | **M305** — the select-shape census: the preference is systematic, but the obstacle is a conflict, so the patch is a different one | `docs/log/M305-the-select-shape-census.md` |
 
 ## The gaps, and why they are empty
 

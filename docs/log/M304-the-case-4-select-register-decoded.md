@@ -1,4 +1,9 @@
-# M304 — the case-4 select register, decoded: a dead store, a `global_alloc` tie-break, and 32 spellings that change nothing
+# M304 — the case-4 select register, decoded: 32 spellings that change nothing
+
+> **Corrected by M305.** This note called the delayed `li` a *dead store* and the choice a *tie-break*. Both are
+> wrong: the branch's immediate is `2`, so it targets the `sb` at `0x8007e8b4` and the `li` is the **taken path's
+> value** — a genuine branch-over select — and the two ranges genuinely overlap, so it is a **conflict**, not a
+> tie-break. The decode of the three words, the `-da` evidence and the 32-spelling negative all stand.
 
 The ask was to go back to `0x8007e590`'s last three words — M293–M295 converged on "case 4's select register is a
 `global_alloc` conflict" without ever decoding the three words. Decoding them turned the description into a
@@ -18,10 +23,10 @@ Same opcodes, same immediates, same base register — **only the destination reg
 `$4` = `a0`), and it differs consistently across all three. Not a scheduling difference, not an omitted
 instruction: one allocator choice.
 
-**And the first of the three is dead.** It sits in the branch delay slot of `bne v1,v0,+34`, whose target is
-`0x8007e914` — the epilogue (`lw ra,20(sp); lw s0,16(sp); jr ra; addiu sp,sp,24`). So on the taken path the `li 5`
-loads a register nothing reads, and on the fall-through path the very next instruction overwrites it with 4. The
-real build kept a dead store; so does ours.
+**The first of the three is the taken path's value, not dead code** *(corrected in M305: the branch's immediate is
+`2`, so it targets the `sb` at `0x8007e8b4`; the earlier reading of `34` as the offset was objdump's displayed
+target, not the immediate)*. The sequence is a branch-over select: `li R,5` in the delay slot, `bne` → the `sb`
+when the test fails, `li R,4` and the same `sb` when it passes.
 
 ## 2. Why it is a *global* choice
 
@@ -51,8 +56,7 @@ Three independent attacks, all measured:
 | **pseudo numbering** | drop the `dev` local, hoist a `w` temporary, declare `dev` at function scope | 226 (no change), 226, or **178** — removing the local makes gcc recompute the condition's pointer twice, which costs 48 words |
 | **the permuter, image objective** | 30 922 iterations, 8 threads, 22 353 compile errors | **zero better-score events, zero candidate directories** — randomisation never found anything the scorer preferred |
 
-So the residue is not a wording problem and not a randomisation problem. **It is a tie-break inside
-`global_alloc`'s allocno ordering**, which the C source cannot address: the ordering is fixed by pseudo numbers,
+So the residue is not a wording problem and not a randomisation problem. **It is a conflict inside `global_alloc`** *(not a tie-break — corrected in M305)*, which the C source cannot address: the ordering is fixed by pseudo numbers,
 and every perturbation that changes pseudo numbering enough to matter also changes the emitted code.
 
 ## 4. What *would* move it (stated as open, with the tests)

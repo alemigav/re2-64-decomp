@@ -524,6 +524,56 @@ def p7e590_residue():
             "spellings_tested": len(variants), "spellings_identical": same}
 
 
+def select_shape_census():
+    """How the real build fills a delay slot with a select's false value, across all 36 images.
+
+    The shape (M305): `li R,A` then `li R,B` to the **same** register, then a use of R — the `-O2` lowering of
+    `x = cond ? A : B` on a machine with no conditional move, where one of the two loads ends up in the delay
+    slot of the compare. It is the shape of `0x8007e590`'s last three words, so its census answers whether the
+    register `$2` there is this build's preference or that function's accident.
+    """
+    import json as _json
+    inv_path = ROOT / "build" / "elfs" / "images.json"
+    if not inv_path.exists():
+        return None
+    inv = _json.loads(inv_path.read_text())["images"]
+
+    def op(w): return (w >> 26) & 63
+    def rt(w): return (w >> 16) & 31
+    def rs(w): return (w >> 21) & 31
+    def is_li(w): return op(w) in (9, 0xD) and rs(w) == 0
+    BRANCH = {4, 5, 6, 7, 1, 2, 3, 0x14, 0x15, 0x16, 0x17}
+    STORE = {0x28, 0x29, 0x2B}
+    total = in_slot = stored = 0
+    reg = {}
+    reg_store = {}
+    for img in inv:
+        elf = ROOT / "build" / "elfs" / ("%s.elf" % img["name"])
+        if not elf.exists():
+            return None
+        blob = elf.read_bytes()[0x100:0x100 + img["size"]]
+        ws = [int.from_bytes(blob[4 * i:4 * i + 4], "big") for i in range(len(blob) // 4)]
+        for i in range(1, len(ws) - 3):
+            if not is_li(ws[i]):
+                continue
+            r = rt(ws[i])
+            if not is_li(ws[i + 1]) or rt(ws[i + 1]) != r:
+                continue
+            if ws[i + 2] == 0 and ws[i + 3] == 0:
+                continue
+            if not ((rt(ws[i + 2]) == r or rs(ws[i + 2]) == r) or (rt(ws[i + 3]) == r or rs(ws[i + 3]) == r)):
+                continue
+            total += 1
+            reg[r] = reg.get(r, 0) + 1
+            if op(ws[i - 1]) in BRANCH:
+                in_slot += 1
+            if op(ws[i + 2]) in STORE and rt(ws[i + 2]) == r:
+                stored += 1
+                reg_store[r] = reg_store.get(r, 0) + 1
+    return {"images": len(inv), "total": total, "in_delay_slot": in_slot, "stored": stored,
+            "reg": reg, "reg_store": reg_store, "v0": reg.get(2, 0), "v0_stored": reg_store.get(2, 0)}
+
+
 def permuter_rescore():
     """Score the committed permuter harness (`fixtures/permuter/p6/`) with the word metric.
 
@@ -2663,6 +2713,7 @@ def check():
     permf = permuter_rescore()
     permb = permuter_rescore_boot()
     p7res = p7e590_residue()
+    selc = select_shape_census()
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
@@ -2781,6 +2832,20 @@ def check():
     cases.append((f"its jump table matches {pacae4f['table_same']} of 7 words at the image's own "
                   f"0x800ba890" if pacae4f else "0x800acae4 table: not run",
                   bool(pacae4f) and pacae4f["table_same"] == 7))
+
+    cases.append((f"the select shape `0x8007e590` ends with is not that function's accident: across "
+                  f"{selc['images']} images it occurs {selc['total']} times, {selc['in_delay_slot']} of them "
+                  f"with the first load in the branch's delay slot, and the register is `$2` in "
+                  f"{selc['v0']} of them (M305)" if selc else "select census: not run",
+                  bool(selc) and selc["total"] == 123 and selc["in_delay_slot"] == 122
+                  and selc["v0"] == 70))
+
+    cases.append((f"and where the pair ends in a store of that register -- the exact form of the residue -- the "
+                  f"build uses `$2` in {selc['v0_stored']} of {selc['stored']} "
+                  f"({round(100 * selc['v0_stored'] / max(selc['stored'], 1))} %), so the preference is real "
+                  f"and it is what our build cannot satisfy while `$2` still holds the compare constant (M305)"
+                  if selc else "select census (stores): not run",
+                  bool(selc) and selc["stored"] == 39 and selc["v0_stored"] == 35))
 
     cases.append((f"`0x8007e590`'s last three words are decoded, not described: {p7res['same_offset']} of "
                   f"{p7res['image_instrs']} match and the differing words {p7res['diffs']} are `li`,`li`,`sb` "
