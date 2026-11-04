@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-301 milestones are indexed. 223 of them have a note; the rest are rows in the log that cite
+302 milestones are indexed. 224 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -318,6 +318,7 @@ at the foot of this file.
 | 298 | **M298** — `osCreateThread`: the `OSThread` layout for this revision, 23 of 52, and why CI was queued | `docs/log/M298-oscreatethread-layout-and-why-ci-waited.md` |
 | 299 | **M299** — the re-score: M259's verdict was measured against a base that no longer exists, and the solver that follows | `docs/log/M299-the-re-score-and-the-shape-solver.md` |
 | 300 | **M300** — the permuter re-run: its ceiling is 94/98 under both weightings, and its objective was never the ROM | `docs/log/M300-the-permuter-rerun-and-its-proxy-objective.md` |
+| 301 | **M301** — the front door: a hero, an audience line, a 60-second quickstart, and proof in bytes | `docs/log/M301-the-front-door.md` |
 
 ## The gaps, and why they are empty
 

@@ -1,8 +1,20 @@
 # Resident Evil 2 (N64) — decompilation research
 
-Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **1022-case verification suite** that anyone can run. Every claim in the docs is either
-measured by one of those cases or explicitly labelled a reading of the code.
+**What it is:** a black-box study of *Resident Evil 2* on the Nintendo 64 (`NREE` rev 1 USA), reverse-engineered
+from the cartridge up — 3 416 functions catalogued, the file formats decoded, the script virtual machine and three
+audio codecs worked out from the bytes, and **16 functions reconstructed in C and recompiled — 15 of them matching
+the game's own machine code byte for byte**. It ships a **1022-case verification suite**, and every claim here is
+either measured by one of those cases or explicitly labelled a reading of the code.
+
+| | |
+|---|---|
+| **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **15 functions now match the cartridge exactly**, down to the last byte, including two from Nintendo's own libultra runtime |
+| **The unusual part** | **286 checks run with no ROM, no assets and no emulator** — the other 736 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses to report `PASS` unless it has first proved each gate *can* fail |
+| **The scale of what is left** | 62.2 % of the image bytes sit inside a known function body and the other 37.8 % is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
+
+[![ci](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml/badge.svg)](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml)
+[![release](https://img.shields.io/badge/release-v1.1-lightgrey)](https://github.com/alemigav/re2-64-decomp/releases)
+[![licence: CC0-1.0](https://img.shields.io/badge/licence:CC0--1.0-lightgrey)](LICENSE)
 
 **This is not a matching build** — of the whole cartridge. But that sentence is no longer the only thing the
 project can say about the matching question: the compiler that produced this game has been **identified and
@@ -12,9 +24,61 @@ stays staged to be useful at every step: formats decoded, a full pseudocode corp
 container, the audio filesystem, and a gate that refuses to let a number rot — plus a verifier that will not
 report `PASS` unless the gates themselves have been shown to fail.
 
-[![ci](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml/badge.svg)](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml)
-[![release](https://img.shields.io/badge/release-v1.1-lightgrey)](https://github.com/alemigav/re2-64-decomp/releases)
-[![licence: CC0-1.0](https://img.shields.io/badge/licence-CC0--1.0-lightgrey)](LICENSE)
+## Who this is for
+
+Reverse-engineering researchers, decompilation enthusiasts, and anyone who wants to see how a 1999 N64 cartridge
+is actually put together — the deep technical detail is in [docs/](docs/handover.md) and
+[the milestone log](docs/MILESTONES.md), and none of it is required to run the checks.
+
+## Quick start — 60 seconds, no cartridge
+
+```sh
+git clone https://github.com/alemigav/re2-64-decomp
+cd re2-64-decomp
+python3 tools/verify.py          # -> PASS-FAST: 286 cases run, 736 SKIP (they need your dump, never PASS)
+```
+
+That is the whole setup: Python 3, no dependencies, no cartridge. To go deeper without the ROM, run
+`python3 tools/acceptance.py` for the suite by name, or `python3 tools/verify.py --full` to add the mutation audit
+(every gate is re-run with its mechanism disabled and must fail). With a dump of your own, see
+[Rebuild with your own dump](#rebuild-with-your-own-dump).
+
+## Project highlights
+
+- **The compiler, pinned** — gcc 2.8.1 + binutils 2.7 reproduce this game's code, and **15 functions now match
+  byte for byte** ([The matching build](#the-matching-build))
+- **Formats decoded** — the script VM (141 handlers, 18 instruction lengths), the T64 texture container, three
+  audio codecs including one reimplemented to **sample-for-sample** parity ([What is decoded](#what-is-decoded))
+- **286 of 1 022 verification cases need no ROM** — the rest SKIP without a dump — and 146 *mutation* audits prove
+  each gate can fail
+- **A generated progress map** — coverage per image, re-derived and gated on every run, never hand-drawn
+- **Every number has a measurement** — the docs are asserted against the registry by `tools/counts.py`, and a
+  claim without a case is labelled a reading
+
+## Proof, in bytes
+
+One of the 15: `osCreateMesgQueue`, nine instructions of Nintendo's runtime, at `0x80006d30`. Here is what the
+cartridge holds and what this repository's C compiles to — same nine words, 36 of 36 bytes:
+
+```
+cartridge   3c028001 24422940 ac820000 ac820004 ac800008 ac80000c ac860010 03e00008 ac850014
+this repo   3c028001 24422940 ac820000 ac820004 ac800008 ac80000c ac860010 03e00008 ac850014
+            ^ lui v0,0x8001 / addiu v0,v0,0x2940 (&__osThreadTail) ... jr ra / sw a1,0x14(a0) in the delay slot
+```
+
+A case in the suite compiles that C and asserts the 36 bytes; the other fourteen have the same shape, and the
+one that does not yet match is published as **226 of 229 words** rather than rounded up
+([the map](#progress-map) shows which).
+
+## The jargon, in one line each
+
+| term | meaning here |
+|---|---|
+| **image** | one loadable block of the cartridge — `boot`, `stage2`, or one of 34 overlays; 36 in total |
+| **byte-exact** | our C compiles to the *same bytes* as the game's own object code, not merely equivalent behaviour |
+| **splat** | a splitter that proposes code/data boundaries; here it proposes and the census disposes (M2, M207) |
+| **Ghidra** | the decompiler that produces the starting pseudocode; every `FUN_…` body in `src/` comes from it |
+| **REA** | the local tooling that drives Ghidra/rizin over these images and captures the results reproducibly |
 
 ## No ROM, no assets, no affiliation
 
@@ -116,7 +180,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**301** numbers, 0-300: **245** with a row, and **56** named gaps. The full index — every number, its title,
+**302** numbers, 0-301: **246** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -299,7 +363,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       100 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 416 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    225 notes, one per milestone that has one
+docs/log/    226 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
