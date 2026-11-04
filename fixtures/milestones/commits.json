@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "e6612fb",
+   "subject": "M345: the last 84.5 KB resists a rule, so it gets a profile instead of a name",
+   "milestones": [
+    345
+   ]
+  },
+  {
    "sha": "10e4702",
    "subject": "M344: fill and gap \u2014 the unclassified bucket now means exactly one thing",
    "milestones": [

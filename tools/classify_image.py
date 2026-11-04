@@ -39,7 +39,7 @@ ROM = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 MAP = "manifests/byte_map.json"
 
 CLASSES = ["function_body", "jump_table", "data_named", "float_table", "pointer_table", "string_table",
-           "padding", "fill", "gap", "u16_table", "dense_data", "unclassified"]
+           "padding", "fill", "gap", "slack", "u16_table", "dense_data", "unclassified"]
 DAT = re.compile(r"\bDAT_([0-9a-fA-F]{8})\b")
 MIN_PAD = 16
 
@@ -272,6 +272,13 @@ def relabel_residue(runs, blob, base):
                                    or (k + 1 < len(runs) and runs[k + 1][2] == "function_body")):
             r[2] = "gap"
             r[3] = "under 64 B, between function bodies"
+        elif len(b) < GAP_MAX and k and k + 1 < len(runs) \
+                and runs[k - 1][2] != "unclassified" and runs[k + 1][2] != "unclassified":
+            # slack: under 64 B and *between two things the map already names* -- alignment or record padding that
+            # sits inside known data rather than beside a function. Measured in M346: 12 116 B of the 12 272 B left
+            # had a claimed neighbour on both sides, and 0 B had none.
+            r[2] = "slack"
+            r[3] = "under 64 B, between two claimed runs"
         elif len(b) >= 64:
             words = [int.from_bytes(b[i:i + 4], "big") for i in range(0, len(b) - 3, 4)]
             halves = [h for w in words for h in (w >> 16, w & 0xFFFF)]
@@ -392,6 +399,20 @@ def check(rep):
                   _relabelled(bytes(range(48)), 48) == "gap"
                   and relabel_residue([[0x80100000, 0x8010002F, "unclassified", "y"]], bytes(range(48)),
                                       0x80100000)[0][2] == "unclassified"))
+
+    # M346: `slack` -- the both-sides sibling of `gap`. A run between two *named* things is alignment or record
+    # padding inside known data; a run with one unnamed neighbour is not, and a run beside a body is `gap` already.
+    def _between(prev_cls, next_cls, n):
+        return [[0x80100000, 0x80100000 + n - 1, prev_cls, "p"],
+                [0x80100000 + n, 0x80100000 + 2 * n - 1, "unclassified", "u"],
+                [0x80100000 + 2 * n, 0x80100000 + 3 * n - 1, next_cls, "q"]]
+    def _slack(prev_cls, next_cls, n=28):
+        return relabel_residue(_between(prev_cls, next_cls, n), b"\xAA" * (3 * n), 0x80100000)[1][2]
+    cases.append(("a 28-byte run between two `padding` runs is `slack`, and one with an unnamed neighbour is not",
+                  _slack("padding", "padding") == "slack"
+                  and _slack("padding", "unclassified") == "unclassified"))
+    cases.append(("a 28-byte run between two bodies is `gap`, not `slack` (the order is the rule)",
+                  _slack("function_body", "function_body") == "gap"))
 
     # M344b: the residue's two classes, on the same synthetic run bed. `u16_table` is a *positive* property and goes
     # first; `dense_data` is a density measurement, so its case has to show a low-entropy run staying unclassified.
