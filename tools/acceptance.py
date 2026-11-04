@@ -91,7 +91,7 @@ SUITES = [
     # The file table is the cartridge's whole file system, and it is mostly *not* zlib (M178). One
     # suite because the finding is one object: the census, the two files the 17.6 MB turned out to be,
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
-    ("byte map (repository)", [sys.executable, "tools/classify_image.py", "--check"], 6, False),
+    ("byte map (repository)", [sys.executable, "tools/classify_image.py", "--check"], 9, False),
     ("hook certificate (repository)", [sys.executable, "tools/hook_cert.py", "--self-test"], 9, False),
     # M241: the generated Script-VM header must be exactly what the registry derives. It is the file a
     # matching reconstruction includes, so drift in it is drift in every future function signature.

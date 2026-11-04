@@ -38,7 +38,7 @@ ROOT = HERE.parent
 ROM = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 MAP = "manifests/byte_map.json"
 
-CLASSES = ["function_body", "jump_table", "data_named", "padding", "unclassified"]
+CLASSES = ["function_body", "jump_table", "data_named", "float_table", "pointer_table", "padding", "unclassified"]
 DAT = re.compile(r"\bDAT_([0-9a-fA-F]{8})\b")
 MIN_PAD = 16
 
@@ -110,6 +110,78 @@ def pad_words(blob, base):
     return out
 
 
+MIN_TABLE_WORDS = 8
+
+
+# A word is *float-shaped* when its exponent sits in the band computed tables actually use: 0x78..0x87 is roughly
+# 0.0078 to 256. This is what keeps small integers out -- 0x00000001 and 0x00010000 are IEEE denormals near zero,
+# so an `abs(f) < 1e6` test passes them and a run of integer data then reads as a float table (it claimed 390 KB
+# on the first attempt, most of stage2's data and every zero run inside it).
+FLOAT_EXP_LO, FLOAT_EXP_HI = 0x78, 0x87
+
+
+def _float_sane(w):
+    """Float-*shaped*: an exponent in the computed-table band and a real magnitude. Says nothing about being a table."""
+    e = (w >> 23) & 0xFF
+    if not (FLOAT_EXP_LO <= e <= FLOAT_EXP_HI):
+        return False
+    f = struct.unpack(">f", w.to_bytes(4, "big"))[0]
+    return f == f and abs(f) < 1e6
+
+
+def _addr_in(w, lo, hi):
+    """The pointer-table membership test, alone so the rule has one place to be wrong (and one to mutate)."""
+    return lo <= w < hi
+
+
+def table_runs(blob, base, window=None):
+    """Maximal runs that qualify as a **float table** or a **pointer table** -- one implementation (M342).
+
+    Both rules were measurements in `unclassified_report()` before they were classes, and the lesson of M339 is that
+    a rule living in two places drifts. So this function is the rule, and both the map (`build`) and the report call
+    it.
+
+      float_table    >= 8 consecutive IEEE-sane words, >= 90 % of the steps ascending, >= 4 distinct words.
+                     The distinctness test is what stops a run of one repeated value -- which is `padding`, not a
+                     table -- from qualifying, and the monotonicity test is what stops noise.
+      pointer_table  >= 8 consecutive words that are all addresses inside *this* image.
+
+    Deliberately conservative in one direction only: a table embedded in a longer run of sane-but-unordered floats is
+    **missed**, never invented. A rule that renames bytes has to be able to fail, so it is mutated twice in the gate
+    audit (see `audit_gates.py`) and three synthetic cases in `check()` pin its edges.
+    """
+    lo_w, hi_w = window if window else (base, base + len(blob))
+    ws = [int.from_bytes(blob[i:i + 4], "big") for i in range(0, len(blob) - 3, 4)]
+    out = []
+    i, n = 0, len(ws)
+    while i < n:
+        if not _float_sane(ws[i]):
+            i += 1
+            continue
+        j = i
+        while j + 1 < n and _float_sane(ws[j + 1]):
+            j += 1
+        if j - i + 1 >= MIN_TABLE_WORDS:
+            grp = ws[i:j + 1]
+            fs = [struct.unpack(">f", w.to_bytes(4, "big"))[0] for w in grp]
+            asc = sum(1 for x, y in zip(fs, fs[1:]) if y >= x) / (len(fs) - 1)
+            if asc >= 0.90 and len(set(grp)) >= 4:
+                out.append((base + 4 * i, base + 4 * j, "float_table"))
+        i = j + 1
+    i = 0
+    while i < n:
+        if not _addr_in(ws[i], lo_w, hi_w):
+            i += 1
+            continue
+        j = i
+        while j + 1 < n and _addr_in(ws[j + 1], lo_w, hi_w):
+            j += 1
+        if j - i + 1 >= MIN_TABLE_WORDS:
+            out.append((base + 4 * i, base + 4 * j, "pointer_table"))
+        i = j + 1
+    return out
+
+
 def build(root: Path = ROOT):
     images, ranges, jumps = load(root)
     dat = named_data(root)
@@ -140,6 +212,14 @@ def build(root: Path = ROOT):
             if base <= a < base + size:
                 overlap["data_in_body"] += a in claimed
                 claimed[a] = ("data_named", "src/<image>/*.c DAT_")
+        # M342: two measured classes, claimed from the rule above. They sit after bodies, jump tables and named
+        # data (a table inside a function is the function) and before padding (a run of one value is fill, and the
+        # rule's distinctness test would refuse it anyway -- belt and braces, both stated).
+        for lo2, hi2, cls2 in table_runs(blob, base, (base, base + size)):
+            why2 = ("monotone IEEE run, rule in table_runs()" if cls2 == "float_table"
+                    else "every word an in-image address, rule in table_runs()")
+            for w in range(lo2, hi2 + 1, 4):
+                claimed.setdefault(w, (cls2, why2))
         for w, value in pad_words(blob, base).items():
             overlap["padding_in_body"] += w in claimed
             claimed.setdefault(w, ("padding", f"run of 0x{value:02x} in the unpacked image"))
@@ -176,6 +256,22 @@ def check(rep):
     cases.append((f"the {len(images)} per-image maps are sorted, disjoint and cover each image exactly "
                   f"({bad_order} misordered, {bad_cover} miscovered)", bad_order == 0 and bad_cover == 0))
     tot = {c: sum(t.get(c, 0) for t in rep["totals"].values()) for c in CLASSES}
+    # M342: the two table rules, pinned on synthetic bytes. No cartridge, and these are the cases the gate audit
+    # mutates -- a class that renames bytes has to be able to fail, and the failure has to be this specific.
+    def _blob(vals):
+        return b"".join(int(v).to_bytes(4, "big") for v in vals)
+    asc = [0x3C000000 + i * 0x00010000 for i in range(10)]
+    ptrs_o = [0x80100000 + 4 * i for i in range(10)]
+    out_o = [0x00100000 + 4 * i for i in range(10)]
+    win = (0x80100000, 0x80200000)
+    kinds = lambda vals: {c for _a, _b, c in table_runs(_blob(vals), 0x80100000, win)}
+    cases.append(("a monotone run of ten floats is a float table, and the same run reversed is not",
+                  "float_table" in kinds(asc) and "float_table" not in kinds(list(reversed(asc)))))
+    cases.append(("a run of one repeated float value is fill, not a table (the distinctness test)",
+                  "float_table" not in kinds([0x3F800000] * 10)))
+    cases.append(("a run of ten in-image addresses is a pointer table, and ten out-of-image words are not",
+                  "pointer_table" in kinds(ptrs_o) and "pointer_table" not in kinds(out_o)))
+
     # M340: the corrected bodies (812 B) moved from `unclassified` into this class. The class total sits 656 B
     # below the coverage union `counts.py` computes, and always has: the union counts every byte of every range,
     # the map counts the whole words it can classify. Both moved by 812 B together, which is the property that
@@ -289,18 +385,17 @@ def unclassified_report(root: Path = ROOT):
                 continue
             runs += 1
             ev = code_run_evidence(b, base, size)
-            sane = [f for f in (struct.unpack(">f", b[k:k + 4])[0] for k in range(0, len(b) - 3, 4))
-                    if f == f and abs(f) < 1e6]
-            asc = sum(1 for x, y in zip(sane, sane[1:]) if y >= x)
-            mono = asc / (len(sane) - 1) if len(sane) > 1 else 0.0
-            ptrs = sum(1 for w in words if base <= w < base + size)
+            # ONE implementation: the same `table_runs()` the map claims with. A copy of these two rules inside
+            # this function is what M339 found drifting, and it drifted again here -- the report was still
+            # reporting tables the map had already claimed (M342).
+            kinds = {c for _lo, _hi, c in table_runs(b, lo, (base, base + size))}
             if n < MIN_PAD and (b.count(0x00) == n or b.count(0xFF) == n):
                 kind = "short_fill"
             elif ev["is_code"]:
                 kind = "code"
-            elif len(sane) >= 8 and len(sane) / max(len(words), 1) >= 0.95 and mono >= 0.90:
+            elif "float_table" in kinds:
                 kind = "float_table"
-            elif len(words) >= 8 and ptrs >= 0.80 * len(words):
+            elif "pointer_table" in kinds:
                 kind = "pointer_table"
             elif n >= 64:
                 kind = "structured"

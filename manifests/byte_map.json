@@ -4,6 +4,8 @@
   "function_body",
   "jump_table",
   "data_named",
+  "float_table",
+  "pointer_table",
   "padding",
   "unclassified"
  ],
@@ -1295,6 +1297,12 @@
    ],
    [
     2147554908,
+    2147554943,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2147554944,
     2147554999,
     "unclassified",
     "no artifact names it"
@@ -1307,6 +1315,12 @@
    ],
    [
     2147555004,
+    2147555039,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2147555040,
     2147555215,
     "unclassified",
     "no artifact names it"
@@ -1319,6 +1333,12 @@
    ],
    [
     2147555220,
+    2147555271,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2147555272,
     2147555599,
     "unclassified",
     "no artifact names it"
@@ -1331,6 +1351,24 @@
    ],
    [
     2147555604,
+    2147555663,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2147555664,
+    2147555695,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147555696,
+    2147555731,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2147555732,
     2147556255,
     "unclassified",
     "no artifact names it"
@@ -1355,6 +1393,18 @@
    ],
    [
     2147556576,
+    2147556663,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147556664,
+    2147556999,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2147557000,
     2147557007,
     "unclassified",
     "no artifact names it"
@@ -1446,8 +1496,8 @@
    [
     2147559472,
     2147559515,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2147559516,
@@ -5077,9 +5127,15 @@
    ],
    [
     2148232900,
-    2148237327,
+    2148236887,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148236888,
+    2148237327,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148237328,
@@ -5125,6 +5181,12 @@
    ],
    [
     2148238764,
+    2148238931,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148238932,
     2148238971,
     "unclassified",
     "no artifact names it"
@@ -5162,8 +5224,8 @@
    [
     2148239052,
     2148239071,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148239072,
@@ -5173,6 +5235,12 @@
    ],
    [
     2148239076,
+    2148239095,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148239096,
     2148239103,
     "unclassified",
     "no artifact names it"
@@ -5197,6 +5265,12 @@
    ],
    [
     2148239132,
+    2148239159,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148239160,
     2148239199,
     "unclassified",
     "no artifact names it"
@@ -5299,6 +5373,24 @@
    ],
    [
     2148239980,
+    2148240043,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148240044,
+    2148240047,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148240048,
+    2148240115,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148240116,
     2148240335,
     "unclassified",
     "no artifact names it"
@@ -5347,6 +5439,12 @@
    ],
    [
     2148240396,
+    2148240423,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148240424,
     2148240603,
     "unclassified",
     "no artifact names it"
@@ -5371,6 +5469,12 @@
    ],
    [
     2148240708,
+    2148240751,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148240752,
     2148241143,
     "unclassified",
     "no artifact names it"
@@ -5383,6 +5487,12 @@
    ],
    [
     2148241148,
+    2148241195,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148241196,
     2148241247,
     "unclassified",
     "no artifact names it"
@@ -5420,8 +5530,8 @@
    [
     2148241308,
     2148241335,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148241336,
@@ -5431,6 +5541,12 @@
    ],
    [
     2148241340,
+    2148241355,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148241356,
     2148241359,
     "unclassified",
     "no artifact names it"
@@ -5456,8 +5572,8 @@
    [
     2148241396,
     2148241423,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148241424,
@@ -5468,8 +5584,8 @@
    [
     2148241428,
     2148241471,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148241472,
@@ -5479,6 +5595,12 @@
    ],
    [
     2148241476,
+    2148241499,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148241500,
     2148241551,
     "unclassified",
     "no artifact names it"
@@ -5575,6 +5697,12 @@
    ],
    [
     2148242084,
+    2148242131,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148242132,
     2148242135,
     "unclassified",
     "no artifact names it"
@@ -5588,8 +5716,8 @@
    [
     2148242140,
     2148242191,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148242192,
@@ -5599,6 +5727,12 @@
    ],
    [
     2148242196,
+    2148242215,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148242216,
     2148242631,
     "unclassified",
     "no artifact names it"
@@ -5612,8 +5746,8 @@
    [
     2148242636,
     2148242695,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148242696,
@@ -5623,6 +5757,12 @@
    ],
    [
     2148242700,
+    2148242743,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148242744,
     2148242751,
     "unclassified",
     "no artifact names it"
@@ -5648,8 +5788,8 @@
    [
     2148242788,
     2148242831,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148242832,
@@ -5660,8 +5800,8 @@
    [
     2148242836,
     2148242879,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148242880,
@@ -5671,6 +5811,12 @@
    ],
    [
     2148242884,
+    2148242899,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148242900,
     2148242903,
     "unclassified",
     "no artifact names it"
@@ -5696,8 +5842,8 @@
    [
     2148242940,
     2148243111,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148243112,
@@ -5707,6 +5853,12 @@
    ],
    [
     2148243116,
+    2148243139,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148243140,
     2148243143,
     "unclassified",
     "no artifact names it"
@@ -5720,8 +5872,8 @@
    [
     2148243148,
     2148243319,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148243320,
@@ -5731,6 +5883,12 @@
    ],
    [
     2148243324,
+    2148243495,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148243496,
     2148243519,
     "unclassified",
     "no artifact names it"
@@ -5743,6 +5901,12 @@
    ],
    [
     2148243524,
+    2148243603,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148243604,
     2148243679,
     "unclassified",
     "no artifact names it"
@@ -5779,6 +5943,12 @@
    ],
    [
     2148243732,
+    2148243787,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148243788,
     2148243791,
     "unclassified",
     "no artifact names it"
@@ -5791,6 +5961,12 @@
    ],
    [
     2148243796,
+    2148243851,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148243852,
     2148243855,
     "unclassified",
     "no artifact names it"
@@ -5954,8 +6130,8 @@
    [
     2148244580,
     2148244599,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148244600,
@@ -5965,6 +6141,12 @@
    ],
    [
     2148244604,
+    2148244619,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148244620,
     2148244623,
     "unclassified",
     "no artifact names it"
@@ -5990,8 +6172,8 @@
    [
     2148244660,
     2148244687,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148244688,
@@ -6001,6 +6183,12 @@
    ],
    [
     2148244692,
+    2148244715,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148244716,
     2148244939,
     "unclassified",
     "no artifact names it"
@@ -6013,6 +6201,12 @@
    ],
    [
     2148244944,
+    2148244975,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148244976,
     2148245167,
     "unclassified",
     "no artifact names it"
@@ -6079,6 +6273,12 @@
    ],
    [
     2148245300,
+    2148245343,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148245344,
     2148245351,
     "unclassified",
     "no artifact names it"
@@ -6092,8 +6292,8 @@
    [
     2148245356,
     2148245399,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148245400,
@@ -6103,6 +6303,12 @@
    ],
    [
     2148245404,
+    2148245455,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148245456,
     2148245463,
     "unclassified",
     "no artifact names it"
@@ -6127,6 +6333,12 @@
    ],
    [
     2148245476,
+    2148245547,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148245548,
     2148245551,
     "unclassified",
     "no artifact names it"
@@ -6164,8 +6376,8 @@
    [
     2148245612,
     2148245687,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148245688,
@@ -6175,6 +6387,12 @@
    ],
    [
     2148245692,
+    2148245707,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148245708,
     2148245711,
     "unclassified",
     "no artifact names it"
@@ -6205,6 +6423,12 @@
    ],
    [
     2148245764,
+    2148245843,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148245844,
     2148245847,
     "unclassified",
     "no artifact names it"
@@ -6265,6 +6489,12 @@
    ],
    [
     2148246620,
+    2148246659,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148246660,
     2148246663,
     "unclassified",
     "no artifact names it"
@@ -6278,8 +6508,8 @@
    [
     2148246668,
     2148246711,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148246712,
@@ -6289,6 +6519,12 @@
    ],
    [
     2148246716,
+    2148246771,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148246772,
     2148246911,
     "unclassified",
     "no artifact names it"
@@ -6314,8 +6550,8 @@
    [
     2148247428,
     2148247447,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148247448,
@@ -6325,6 +6561,24 @@
    ],
    [
     2148247452,
+    2148247471,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148247472,
+    2148247583,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148247584,
+    2148247619,
+    "float_table",
+    "monotone IEEE run, rule in table_runs()"
+   ],
+   [
+    2148247620,
     2148247647,
     "unclassified",
     "no artifact names it"
@@ -6338,8 +6592,8 @@
    [
     2148247652,
     2148247671,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148247672,
@@ -6350,8 +6604,8 @@
    [
     2148247676,
     2148247695,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148247696,
@@ -6361,6 +6615,12 @@
    ],
    [
     2148247700,
+    2148247719,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148247720,
     2148247727,
     "unclassified",
     "no artifact names it"
@@ -6385,6 +6645,12 @@
    ],
    [
     2148247756,
+    2148248207,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148248208,
     2148248243,
     "unclassified",
     "no artifact names it"
@@ -8677,9 +8943,15 @@
    ],
    [
     2148448640,
-    2148449071,
+    2148448687,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148448688,
+    2148449071,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148449072,
@@ -8953,6 +9225,30 @@
    ],
    [
     2148467204,
+    2148467455,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148467456,
+    2148467863,
+    "float_table",
+    "monotone IEEE run, rule in table_runs()"
+   ],
+   [
+    2148467864,
+    2148467871,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148467872,
+    2148471843,
+    "float_table",
+    "monotone IEEE run, rule in table_runs()"
+   ],
+   [
+    2148471844,
     2148471995,
     "unclassified",
     "no artifact names it"
@@ -8965,9 +9261,15 @@
    ],
    [
     2148472000,
-    2148489195,
+    2148472123,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148472124,
+    2148489195,
+    "float_table",
+    "monotone IEEE run, rule in table_runs()"
    ],
    [
     2148489196,
@@ -8977,6 +9279,12 @@
    ],
    [
     2148489200,
+    2148490799,
+    "float_table",
+    "monotone IEEE run, rule in table_runs()"
+   ],
+   [
+    2148490800,
     2148507183,
     "unclassified",
     "no artifact names it"
@@ -9553,9 +9861,21 @@
    ],
    [
     2148588560,
-    2148588695,
+    2148588595,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148588596,
+    2148588599,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148588600,
+    2148588695,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148588696,
@@ -9955,9 +10275,15 @@
    ],
    [
     2148598476,
-    2148599287,
+    2148598663,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148598664,
+    2148599287,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148599288,
@@ -9967,9 +10293,15 @@
    ],
    [
     2148599292,
-    2148601375,
+    2148601039,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148601040,
+    2148601375,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148601376,
@@ -10051,9 +10383,15 @@
    ],
    [
     2148601716,
-    2148601891,
+    2148601815,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148601816,
+    2148601891,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148601892,
@@ -10063,9 +10401,15 @@
    ],
    [
     2148601896,
-    2148602103,
+    2148601899,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148601900,
+    2148602103,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148602104,
@@ -10075,9 +10419,15 @@
    ],
    [
     2148602108,
-    2148602207,
+    2148602111,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148602112,
+    2148602207,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148602208,
@@ -10135,6 +10485,42 @@
    ],
    [
     2148602324,
+    2148602943,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148602944,
+    2148602991,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148602992,
+    2148603003,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148603004,
+    2148603059,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148603060,
+    2148603079,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148603080,
+    2148603143,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148603144,
     2148603223,
     "unclassified",
     "no artifact names it"
@@ -10159,6 +10545,18 @@
    ],
    [
     2148603372,
+    2148603403,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148603404,
+    2148603483,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148603484,
     2148604599,
     "unclassified",
     "no artifact names it"
@@ -10195,9 +10593,75 @@
    ],
    [
     2148605920,
-    2148607015,
+    2148606139,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148606140,
+    2148606351,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148606352,
+    2148606359,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148606360,
+    2148606427,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148606428,
+    2148606463,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148606464,
+    2148606503,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148606504,
+    2148606515,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148606516,
+    2148606555,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148606556,
+    2148606563,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148606564,
+    2148606679,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148606680,
+    2148606983,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148606984,
+    2148607015,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148607016,
@@ -10285,9 +10749,15 @@
    ],
    [
     2148607344,
-    2148607735,
+    2148607679,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148607680,
+    2148607735,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148607736,
@@ -10315,6 +10785,12 @@
    ],
    [
     2148607776,
+    2148607859,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148607860,
     2148607863,
     "unclassified",
     "no artifact names it"
@@ -10628,8 +11104,8 @@
    [
     2148612248,
     2148612811,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148612812,
@@ -10693,9 +11169,15 @@
    ],
    [
     2148618048,
-    2148618527,
+    2148618383,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148618384,
+    2148618527,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148618528,
@@ -10724,8 +11206,8 @@
    [
     2148618896,
     2148618955,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148618956,
@@ -10789,9 +11271,15 @@
    ],
    [
     2148621812,
-    2148621923,
+    2148621847,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148621848,
+    2148621923,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148621924,
@@ -10813,9 +11301,15 @@
    ],
    [
     2148622180,
-    2148622295,
+    2148622215,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148622216,
+    2148622295,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148622296,
@@ -10873,9 +11367,15 @@
    ],
    [
     2148626284,
-    2148626711,
+    2148626423,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148626424,
+    2148626711,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148626712,
@@ -10897,9 +11397,15 @@
    ],
    [
     2148635648,
-    2148636563,
+    2148635983,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148635984,
+    2148636563,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148636564,
@@ -10982,8 +11488,8 @@
    [
     2148638176,
     2148638247,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148638248,
@@ -11221,6 +11727,18 @@
    ],
    [
     2148640544,
+    2148640907,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148640908,
+    2148641163,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148641164,
     2148641507,
     "unclassified",
     "no artifact names it"
@@ -11257,9 +11775,15 @@
    ],
    [
     2148642272,
-    2148642675,
+    2148642631,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148642632,
+    2148642675,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148642676,
@@ -11269,9 +11793,15 @@
    ],
    [
     2148642680,
-    2148643359,
+    2148642687,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148642688,
+    2148643359,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148643360,
@@ -11294,8 +11824,8 @@
    [
     2148643408,
     2148643543,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148643544,
@@ -11305,9 +11835,15 @@
    ],
    [
     2148643548,
-    2148644171,
+    2148643555,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148643556,
+    2148644171,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148644172,
@@ -11365,9 +11901,15 @@
    ],
    [
     2148644468,
-    2148644651,
+    2148644543,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148644544,
+    2148644651,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148644652,
@@ -11377,6 +11919,66 @@
    ],
    [
     2148644672,
+    2148647303,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148647304,
+    2148647515,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148647516,
+    2148647523,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148647524,
+    2148647591,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148647592,
+    2148647627,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148647628,
+    2148647667,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148647668,
+    2148647679,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148647680,
+    2148647719,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148647720,
+    2148647727,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148647728,
+    2148647843,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148647844,
     2148647915,
     "unclassified",
     "no artifact names it"
@@ -11923,6 +12525,18 @@
    ],
    [
     2148700224,
+    2148702787,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148702788,
+    2148702823,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148702824,
     2148703195,
     "unclassified",
     "no artifact names it"
@@ -11947,6 +12561,18 @@
    ],
    [
     2148703500,
+    2148703659,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148703660,
+    2148703695,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148703696,
     2148703823,
     "unclassified",
     "no artifact names it"
@@ -12073,9 +12699,75 @@
    ],
    [
     2148709936,
-    2148711135,
+    2148709963,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148709964,
+    2148710175,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148710176,
+    2148710183,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148710184,
+    2148710275,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148710276,
+    2148710279,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148710280,
+    2148710687,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148710688,
+    2148710695,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148710696,
+    2148710787,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148710788,
+    2148710791,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148710792,
+    2148711051,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148711052,
+    2148711103,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148711104,
+    2148711135,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148711136,
@@ -12235,9 +12927,15 @@
    ],
    [
     2148711952,
-    2148712015,
+    2148711955,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148711956,
+    2148712015,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148712016,
@@ -12589,9 +13287,27 @@
    ],
    [
     2148727680,
-    2148728323,
+    2148727999,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148728000,
+    2148728099,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148728100,
+    2148728259,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148728260,
+    2148728323,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148728324,
@@ -13130,8 +13846,8 @@
    [
     2148737488,
     2148737523,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148737524,
@@ -14677,6 +15393,12 @@
    ],
    [
     2148752644,
+    2148753071,
+    "float_table",
+    "monotone IEEE run, rule in table_runs()"
+   ],
+   [
+    2148753072,
     2148753151,
     "unclassified",
     "no artifact names it"
@@ -14689,9 +15411,15 @@
    ],
    [
     2148753156,
-    2148754179,
+    2148753715,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148753716,
+    2148754179,
+    "float_table",
+    "monotone IEEE run, rule in table_runs()"
    ],
    [
     2148754180,
@@ -14919,9 +15647,15 @@
    ],
    [
     2149075640,
-    2149075735,
+    2149075695,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2149075696,
+    2149075735,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2149075736,
@@ -15503,6 +16237,12 @@
    ],
    [
     2148926500,
+    2148926527,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148926528,
     2148926575,
     "unclassified",
     "no artifact names it"
@@ -15587,9 +16327,15 @@
    ],
    [
     2148927692,
-    2148928355,
+    2148928311,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148928312,
+    2148928355,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148928356,
@@ -15998,8 +16744,8 @@
    [
     2149057036,
     2149057115,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2149057116,
@@ -16016,8 +16762,8 @@
    [
     2149057124,
     2149057203,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2149057204,
@@ -16111,6 +16857,12 @@
    ],
    [
     2149057468,
+    2149057511,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2149057512,
     2149057519,
     "unclassified",
     "no artifact names it"
@@ -16599,9 +17351,15 @@
    ],
    [
     2149048852,
-    2149049691,
+    2149049647,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2149049648,
+    2149049691,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2149049692,
@@ -16673,6 +17431,12 @@
    ],
    [
     2148996996,
+    2148997067,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148997068,
     2148997199,
     "unclassified",
     "no artifact names it"
@@ -17029,6 +17793,12 @@
    ],
    [
     2149049212,
+    2149049271,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2149049272,
     2149049647,
     "unclassified",
     "no artifact names it"
@@ -17325,6 +18095,12 @@
    ],
    [
     2148982044,
+    2148982079,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148982080,
     2148982119,
     "unclassified",
     "no artifact names it"
@@ -17337,6 +18113,12 @@
    ],
    [
     2148982124,
+    2148982155,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148982156,
     2148982159,
     "unclassified",
     "no artifact names it"
@@ -17361,6 +18143,12 @@
    ],
    [
     2148982196,
+    2148982227,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148982228,
     2148982239,
     "unclassified",
     "no artifact names it"
@@ -17445,6 +18233,12 @@
    ],
    [
     2148982428,
+    2148982471,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148982472,
     2148982487,
     "unclassified",
     "no artifact names it"
@@ -17469,6 +18263,12 @@
    ],
    [
     2148982532,
+    2148982563,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148982564,
     2148982567,
     "unclassified",
     "no artifact names it"
@@ -17493,6 +18293,12 @@
    ],
    [
     2148982604,
+    2148982635,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148982636,
     2148982647,
     "unclassified",
     "no artifact names it"
@@ -17529,9 +18335,15 @@
    ],
    [
     2148982708,
-    2148983363,
+    2148983147,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148983148,
+    2148983363,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148983364,
@@ -17553,6 +18365,18 @@
    ],
    [
     2148983644,
+    2148983715,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148983716,
+    2148983831,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148983832,
     2148983999,
     "unclassified",
     "no artifact names it"
@@ -17565,9 +18389,39 @@
    ],
    [
     2148984040,
-    2148984931,
+    2148984075,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148984076,
+    2148984147,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148984148,
+    2148984455,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148984456,
+    2148984571,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148984572,
+    2148984815,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148984816,
+    2148984931,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148984932,
@@ -17681,6 +18535,18 @@
    ],
    [
     2148953388,
+    2148953395,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148953396,
+    2148953463,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148953464,
     2148953511,
     "unclassified",
     "no artifact names it"
@@ -17693,9 +18559,15 @@
    ],
    [
     2148953516,
-    2148953559,
+    2148953527,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148953528,
+    2148953559,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148953560,
@@ -17705,9 +18577,15 @@
    ],
    [
     2148953568,
-    2148953707,
+    2148953571,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148953572,
+    2148953707,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148953708,
@@ -17717,9 +18595,15 @@
    ],
    [
     2148953712,
-    2148953935,
+    2148953723,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148953724,
+    2148953935,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148953936,
@@ -17729,9 +18613,15 @@
    ],
    [
     2148953940,
-    2148953975,
+    2148953943,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148953944,
+    2148953975,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148953976,
@@ -17863,6 +18753,12 @@
    ],
    [
     2148951044,
+    2148951099,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148951100,
     2148951103,
     "unclassified",
     "no artifact names it"
@@ -17876,8 +18772,8 @@
    [
     2148951108,
     2148951127,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148951128,
@@ -17887,6 +18783,12 @@
    ],
    [
     2148951132,
+    2148951155,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148951156,
     2148951159,
     "unclassified",
     "no artifact names it"
@@ -17924,8 +18826,8 @@
    [
     2148951212,
     2148951231,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148951232,
@@ -17936,8 +18838,8 @@
    [
     2148951236,
     2148951255,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148951256,
@@ -17948,8 +18850,8 @@
    [
     2148951260,
     2148951279,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148951280,
@@ -17959,6 +18861,12 @@
    ],
    [
     2148951284,
+    2148951299,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148951300,
     2148951303,
     "unclassified",
     "no artifact names it"
@@ -17972,8 +18880,8 @@
    [
     2148951308,
     2148951327,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148951328,
@@ -17983,9 +18891,21 @@
    ],
    [
     2148951332,
-    2148951787,
+    2148951351,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148951352,
+    2148951435,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148951436,
+    2148951787,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148951788,
@@ -18051,6 +18971,12 @@
    ],
    [
     2148959988,
+    2148960059,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148960060,
     2148960063,
     "unclassified",
     "no artifact names it"
@@ -18088,8 +19014,8 @@
    [
     2148960140,
     2148960159,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148960160,
@@ -18100,8 +19026,8 @@
    [
     2148960164,
     2148960183,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148960184,
@@ -18111,6 +19037,12 @@
    ],
    [
     2148960188,
+    2148960211,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148960212,
     2148960215,
     "unclassified",
     "no artifact names it"
@@ -18135,6 +19067,12 @@
    ],
    [
     2148960260,
+    2148960287,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148960288,
     2148960319,
     "unclassified",
     "no artifact names it"
@@ -18160,8 +19098,8 @@
    [
     2148960356,
     2148960375,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148960376,
@@ -18171,6 +19109,12 @@
    ],
    [
     2148960380,
+    2148960451,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148960452,
     2148960455,
     "unclassified",
     "no artifact names it"
@@ -18184,8 +19128,8 @@
    [
     2148960460,
     2148960487,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148960488,
@@ -18196,8 +19140,8 @@
    [
     2148960492,
     2148960519,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148960520,
@@ -18208,8 +19152,8 @@
    [
     2148960524,
     2148960543,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148960544,
@@ -18220,8 +19164,8 @@
    [
     2148960548,
     2148960567,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148960568,
@@ -18232,8 +19176,8 @@
    [
     2148960572,
     2148960591,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148960592,
@@ -18303,9 +19247,15 @@
    ],
    [
     2148961264,
-    2148961611,
+    2148961455,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148961456,
+    2148961611,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148961612,
@@ -18426,8 +19376,8 @@
    [
     2148949748,
     2148949767,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148949768,
@@ -18438,8 +19388,8 @@
    [
     2148949772,
     2148949799,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148949800,
@@ -18450,8 +19400,8 @@
    [
     2148949804,
     2148949823,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148949824,
@@ -18461,6 +19411,12 @@
    ],
    [
     2148949828,
+    2148949843,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148949844,
     2148949847,
     "unclassified",
     "no artifact names it"
@@ -18521,9 +19477,21 @@
    ],
    [
     2148950060,
-    2148950323,
+    2148950131,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148950132,
+    2148950219,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148950220,
+    2148950323,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148950324,
@@ -18649,6 +19617,12 @@
    ],
    [
     2148953988,
+    2148954059,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148954060,
     2148954063,
     "unclassified",
     "no artifact names it"
@@ -18686,8 +19660,8 @@
    [
     2148954140,
     2148954159,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954160,
@@ -18697,6 +19671,12 @@
    ],
    [
     2148954164,
+    2148954183,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148954184,
     2148954191,
     "unclassified",
     "no artifact names it"
@@ -18709,6 +19689,12 @@
    ],
    [
     2148954196,
+    2148954223,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148954224,
     2148954255,
     "unclassified",
     "no artifact names it"
@@ -18722,8 +19708,8 @@
    [
     2148954260,
     2148954279,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954280,
@@ -18733,6 +19719,12 @@
    ],
    [
     2148954284,
+    2148954355,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148954356,
     2148954359,
     "unclassified",
     "no artifact names it"
@@ -18746,8 +19738,8 @@
    [
     2148954364,
     2148954391,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954392,
@@ -18758,8 +19750,8 @@
    [
     2148954396,
     2148954415,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954416,
@@ -18769,6 +19761,12 @@
    ],
    [
     2148954420,
+    2148954439,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148954440,
     2148954451,
     "unclassified",
     "no artifact names it"
@@ -18829,6 +19827,18 @@
    ],
    [
     2148955096,
+    2148955379,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148955380,
+    2148955419,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148955420,
     2148955435,
     "unclassified",
     "no artifact names it"
@@ -18885,6 +19895,12 @@
    ],
    [
     2148957140,
+    2148957183,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148957184,
     2148957199,
     "unclassified",
     "no artifact names it"
@@ -18897,6 +19913,12 @@
    ],
    [
     2148957204,
+    2148957235,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148957236,
     2148957239,
     "unclassified",
     "no artifact names it"
@@ -18909,6 +19931,12 @@
    ],
    [
     2148957244,
+    2148957275,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148957276,
     2148957279,
     "unclassified",
     "no artifact names it"
@@ -18993,9 +20021,15 @@
    ],
    [
     2148957564,
-    2148957671,
+    2148957611,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148957612,
+    2148957671,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957672,
@@ -19005,9 +20039,15 @@
    ],
    [
     2148957676,
-    2148957787,
+    2148957707,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148957708,
+    2148957787,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957788,
@@ -19017,9 +20057,15 @@
    ],
    [
     2148957792,
-    2148957927,
+    2148957803,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148957804,
+    2148957927,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957928,
@@ -19029,9 +20075,15 @@
    ],
    [
     2148957932,
-    2148957975,
+    2148957935,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148957936,
+    2148957975,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957976,
@@ -19042,8 +20094,8 @@
    [
     2148957980,
     2148958083,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148958084,
@@ -19053,9 +20105,15 @@
    ],
    [
     2148958088,
-    2148958187,
+    2148958147,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148958148,
+    2148958187,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148958188,
@@ -19309,6 +20367,12 @@
    ],
    [
     2148946844,
+    2148946887,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148946888,
     2148946895,
     "unclassified",
     "no artifact names it"
@@ -19321,6 +20385,12 @@
    ],
    [
     2148946900,
+    2148946955,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148946956,
     2148946959,
     "unclassified",
     "no artifact names it"
@@ -19346,8 +20416,8 @@
    [
     2148946988,
     2148947007,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148947008,
@@ -19357,9 +20427,21 @@
    ],
    [
     2148947012,
-    2148947275,
+    2148947051,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148947052,
+    2148947131,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148947132,
+    2148947275,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148947276,
@@ -19498,8 +20580,8 @@
    [
     2148957812,
     2148957831,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957832,
@@ -19510,8 +20592,8 @@
    [
     2148957836,
     2148957855,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957856,
@@ -19521,6 +20603,12 @@
    ],
    [
     2148957860,
+    2148957895,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148957896,
     2148957911,
     "unclassified",
     "no artifact names it"
@@ -19534,8 +20622,8 @@
    [
     2148957916,
     2148957935,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957936,
@@ -19545,6 +20633,12 @@
    ],
    [
     2148957940,
+    2148957955,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148957956,
     2148958079,
     "unclassified",
     "no artifact names it"
@@ -19569,6 +20663,12 @@
    ],
    [
     2148958156,
+    2148958251,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148958252,
     2148958891,
     "unclassified",
     "no artifact names it"
@@ -19709,6 +20809,12 @@
    ],
    [
     2148939748,
+    2148939819,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148939820,
     2148939871,
     "unclassified",
     "no artifact names it"
@@ -19733,9 +20839,15 @@
    ],
    [
     2148940004,
-    2148940091,
+    2148940039,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148940040,
+    2148940091,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148940092,
@@ -19993,6 +21105,12 @@
    ],
    [
     2148950132,
+    2148950203,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148950204,
     2148950207,
     "unclassified",
     "no artifact names it"
@@ -20030,8 +21148,8 @@
    [
     2148950260,
     2148950279,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148950280,
@@ -20042,8 +21160,8 @@
    [
     2148950284,
     2148950351,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148950352,
@@ -20054,8 +21172,8 @@
    [
     2148950356,
     2148950399,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148950400,
@@ -20065,6 +21183,12 @@
    ],
    [
     2148950404,
+    2148950427,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148950428,
     2148950431,
     "unclassified",
     "no artifact names it"
@@ -20078,8 +21202,8 @@
    [
     2148950436,
     2148950455,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148950456,
@@ -20089,6 +21213,12 @@
    ],
    [
     2148950460,
+    2148950475,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148950476,
     2148950479,
     "unclassified",
     "no artifact names it"
@@ -20311,6 +21441,18 @@
    ],
    [
     2148952104,
+    2148952135,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148952136,
+    2148952291,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148952292,
     2148952315,
     "unclassified",
     "no artifact names it"
@@ -20512,8 +21654,8 @@
    [
     2148950052,
     2148950071,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148950072,
@@ -20523,6 +21665,12 @@
    ],
    [
     2148950076,
+    2148950147,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148950148,
     2148950151,
     "unclassified",
     "no artifact names it"
@@ -20536,8 +21684,8 @@
    [
     2148950156,
     2148950191,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148950192,
@@ -20548,8 +21696,8 @@
    [
     2148950196,
     2148950239,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148950240,
@@ -20559,6 +21707,12 @@
    ],
    [
     2148950244,
+    2148950259,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148950260,
     2148950327,
     "unclassified",
     "no artifact names it"
@@ -20619,9 +21773,15 @@
    ],
    [
     2148951344,
-    2148951623,
+    2148951507,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148951508,
+    2148951623,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148951624,
@@ -20803,6 +21963,18 @@
    ],
    [
     2148937764,
+    2148937803,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148937804,
+    2148937951,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148937952,
     2148938031,
     "unclassified",
     "no artifact names it"
@@ -20961,9 +22133,15 @@
    ],
    [
     2148954724,
-    2148954775,
+    2148954727,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148954728,
+    2148954775,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954776,
@@ -20985,9 +22163,15 @@
    ],
    [
     2148954816,
-    2148954939,
+    2148954819,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148954820,
+    2148954939,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954940,
@@ -20997,9 +22181,15 @@
    ],
    [
     2148954944,
-    2148955059,
+    2148954947,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148954948,
+    2148955059,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148955060,
@@ -21077,9 +22267,27 @@
    ],
    [
     2148941140,
-    2148941339,
+    2148941167,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148941168,
+    2148941223,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148941224,
+    2148941231,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148941232,
+    2148941339,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148941340,
@@ -21344,8 +22552,8 @@
    [
     2148961676,
     2148961719,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148961720,
@@ -21356,8 +22564,8 @@
    [
     2148961724,
     2148961743,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148961744,
@@ -21368,8 +22576,8 @@
    [
     2148961748,
     2148961775,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148961776,
@@ -21380,8 +22588,8 @@
    [
     2148961780,
     2148961815,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148961816,
@@ -21391,6 +22599,12 @@
    ],
    [
     2148961820,
+    2148961835,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148961836,
     2148961839,
     "unclassified",
     "no artifact names it"
@@ -21404,8 +22618,8 @@
    [
     2148961844,
     2148961863,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148961864,
@@ -21415,6 +22629,12 @@
    ],
    [
     2148961868,
+    2148961891,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148961892,
     2148961895,
     "unclassified",
     "no artifact names it"
@@ -21488,8 +22708,8 @@
    [
     2148962128,
     2148962263,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148962264,
@@ -21741,6 +22961,12 @@
    ],
    [
     2148964020,
+    2148964051,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148964052,
     2148964055,
     "unclassified",
     "no artifact names it"
@@ -21753,6 +22979,12 @@
    ],
    [
     2148964060,
+    2148964099,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148964100,
     2148964103,
     "unclassified",
     "no artifact names it"
@@ -21801,6 +23033,12 @@
    ],
    [
     2148964332,
+    2148964439,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148964440,
     2148964499,
     "unclassified",
     "no artifact names it"
@@ -21875,6 +23113,12 @@
    ],
    [
     2148957332,
+    2148957379,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148957380,
     2148957383,
     "unclassified",
     "no artifact names it"
@@ -21888,8 +23132,8 @@
    [
     2148957388,
     2148957407,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957408,
@@ -21899,6 +23143,12 @@
    ],
    [
     2148957412,
+    2148957455,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148957456,
     2148957535,
     "unclassified",
     "no artifact names it"
@@ -21947,9 +23197,15 @@
    ],
    [
     2148957632,
-    2148957771,
+    2148957663,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148957664,
+    2148957771,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148957772,
@@ -21959,6 +23215,30 @@
    ],
    [
     2148957776,
+    2148958027,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148958028,
+    2148958103,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148958104,
+    2148958143,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148958144,
+    2148958179,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148958180,
     2148958195,
     "unclassified",
     "no artifact names it"
@@ -22226,8 +23506,8 @@
    [
     2148974932,
     2148974967,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148974968,
@@ -22237,6 +23517,12 @@
    ],
    [
     2148974972,
+    2148974987,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148974988,
     2148974999,
     "unclassified",
     "no artifact names it"
@@ -22274,8 +23560,8 @@
    [
     2148975052,
     2148975071,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148975072,
@@ -22285,6 +23571,12 @@
    ],
    [
     2148975076,
+    2148975099,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148975100,
     2148975103,
     "unclassified",
     "no artifact names it"
@@ -22429,9 +23721,15 @@
    ],
    [
     2148975600,
-    2148975767,
+    2148975615,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148975616,
+    2148975767,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148975768,
@@ -22465,6 +23763,12 @@
    ],
    [
     2148975876,
+    2148975923,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148975924,
     2148975931,
     "unclassified",
     "no artifact names it"
@@ -22659,6 +23963,12 @@
    ],
    [
     2148953652,
+    2148953707,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148953708,
     2148953711,
     "unclassified",
     "no artifact names it"
@@ -22672,8 +23982,8 @@
    [
     2148953716,
     2148953735,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148953736,
@@ -22683,6 +23993,12 @@
    ],
    [
     2148953740,
+    2148953755,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148953756,
     2148953759,
     "unclassified",
     "no artifact names it"
@@ -22696,8 +24012,8 @@
    [
     2148953764,
     2148953791,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148953792,
@@ -22707,6 +24023,12 @@
    ],
    [
     2148953796,
+    2148953815,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148953816,
     2148953939,
     "unclassified",
     "no artifact names it"
@@ -22731,9 +24053,15 @@
    ],
    [
     2148953980,
-    2148954039,
+    2148953995,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148953996,
+    2148954039,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954040,
@@ -23118,8 +24446,8 @@
    [
     2148953948,
     2148953967,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148953968,
@@ -23129,6 +24457,12 @@
    ],
    [
     2148953972,
+    2148953987,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148953988,
     2148953991,
     "unclassified",
     "no artifact names it"
@@ -23142,8 +24476,8 @@
    [
     2148953996,
     2148954031,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954032,
@@ -23154,8 +24488,8 @@
    [
     2148954036,
     2148954071,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954072,
@@ -23166,8 +24500,8 @@
    [
     2148954076,
     2148954095,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954096,
@@ -23177,6 +24511,12 @@
    ],
    [
     2148954100,
+    2148954139,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148954140,
     2148954143,
     "unclassified",
     "no artifact names it"
@@ -23202,8 +24542,8 @@
    [
     2148954172,
     2148954191,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954192,
@@ -23214,8 +24554,8 @@
    [
     2148954196,
     2148954223,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954224,
@@ -23226,8 +24566,8 @@
    [
     2148954228,
     2148954247,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954248,
@@ -23237,6 +24577,12 @@
    ],
    [
     2148954252,
+    2148954267,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148954268,
     2148954271,
     "unclassified",
     "no artifact names it"
@@ -23261,9 +24607,15 @@
    ],
    [
     2148954360,
-    2148954551,
+    2148954411,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148954412,
+    2148954551,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148954552,
@@ -23509,6 +24861,18 @@
    ],
    [
     2148935076,
+    2148935179,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148935180,
+    2148935215,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148935216,
     2148936475,
     "unclassified",
     "no artifact names it"
@@ -23577,9 +24941,15 @@
    ],
    [
     2148951564,
-    2148951715,
+    2148951659,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148951660,
+    2148951715,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148951716,
@@ -23637,9 +25007,27 @@
    ],
    [
     2148951828,
-    2148952007,
+    2148951831,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148951832,
+    2148951935,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
+   ],
+   [
+    2148951936,
+    2148951975,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148951976,
+    2148952007,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148952008,
@@ -23649,9 +25037,15 @@
    ],
    [
     2148952012,
-    2148952135,
+    2148952019,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148952020,
+    2148952135,
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148952136,
@@ -23772,8 +25166,8 @@
    [
     2148937808,
     2148937843,
-    "unclassified",
-    "no artifact names it"
+    "pointer_table",
+    "every word an in-image address, rule in table_runs()"
    ],
    [
     2148937844,
@@ -24026,102 +25420,118 @@
  "totals": {
   "boot": {
    "function_body": 58328,
-   "unclassified": 19828,
+   "unclassified": 19228,
    "padding": 664,
    "data_named": 44,
-   "jump_table": 16
+   "jump_table": 16,
+   "pointer_table": 600
   },
   "stage2": {
    "function_body": 579632,
-   "unclassified": 239608,
+   "unclassified": 203956,
    "padding": 348348,
    "data_named": 4312,
-   "jump_table": 340
+   "jump_table": 340,
+   "pointer_table": 11672,
+   "float_table": 23980
   },
   "ovl_0072610": {
    "function_body": 38472,
-   "unclassified": 2760,
+   "unclassified": 2720,
    "padding": 7652,
+   "pointer_table": 40,
    "data_named": 428
   },
   "ovl_007688e": {
    "function_body": 20372,
-   "unclassified": 3012,
+   "unclassified": 2940,
    "jump_table": 12,
+   "pointer_table": 72,
    "data_named": 232,
    "padding": 4212
   },
   "ovl_0078c0e": {
    "function_body": 19888,
-   "unclassified": 2208,
+   "unclassified": 2004,
    "jump_table": 12,
+   "pointer_table": 204,
    "data_named": 296,
    "padding": 36444
   },
   "ovl_007af7a": {
    "function_body": 10468,
-   "unclassified": 2104,
+   "unclassified": 2060,
    "jump_table": 4,
    "data_named": 100,
+   "pointer_table": 44,
    "padding": 8316
   },
   "ovl_007c552": {
    "function_body": 8656,
-   "unclassified": 4808,
+   "unclassified": 4736,
    "jump_table": 4,
+   "pointer_table": 72,
    "padding": 1464,
    "data_named": 172
   },
   "ovl_007e132": {
    "function_body": 12064,
-   "unclassified": 1340,
+   "unclassified": 1280,
    "jump_table": 4,
+   "pointer_table": 60,
    "data_named": 100,
    "padding": 60
   },
   "ovl_007fc12": {
    "function_body": 48992,
-   "unclassified": 2900,
+   "unclassified": 2056,
    "jump_table": 64,
+   "pointer_table": 844,
    "data_named": 20,
    "padding": 136
   },
   "ovl_008505e": {
    "function_body": 20348,
-   "unclassified": 812,
-   "data_named": 56
+   "unclassified": 332,
+   "data_named": 56,
+   "pointer_table": 480
   },
   "ovl_0087352": {
    "function_body": 18112,
-   "unclassified": 784,
+   "unclassified": 216,
    "jump_table": 44,
+   "pointer_table": 568,
    "padding": 20
   },
   "ovl_008900e": {
    "function_body": 27056,
-   "unclassified": 1604,
+   "unclassified": 1076,
    "jump_table": 68,
+   "pointer_table": 528,
    "data_named": 56,
    "padding": 16
   },
   "ovl_008bef8": {
    "function_body": 16684,
-   "unclassified": 1236,
+   "unclassified": 976,
    "jump_table": 28,
+   "pointer_table": 260,
    "data_named": 52,
    "padding": 48
   },
   "ovl_008e046": {
    "function_body": 21068,
-   "unclassified": 1444,
+   "unclassified": 1104,
    "jump_table": 48,
+   "pointer_table": 340,
    "data_named": 48,
    "padding": 16
   },
   "ovl_0090698": {
    "function_body": 24280,
-   "unclassified": 1044,
+   "unclassified": 488,
    "jump_table": 20,
+   "pointer_table": 556,
    "data_named": 48,
    "padding": 48
   },
@@ -24133,34 +25543,39 @@
   },
   "ovl_0093aba": {
    "function_body": 13904,
-   "unclassified": 504,
+   "unclassified": 200,
    "jump_table": 20,
+   "pointer_table": 304,
    "data_named": 4
   },
   "ovl_0095446": {
    "function_body": 24820,
-   "unclassified": 1228,
+   "unclassified": 1020,
    "data_named": 28,
-   "jump_table": 20
+   "jump_table": 20,
+   "pointer_table": 208
   },
   "ovl_0097e42": {
    "function_body": 6796,
-   "unclassified": 864,
+   "unclassified": 740,
    "jump_table": 8,
+   "pointer_table": 124,
    "data_named": 44,
    "padding": 16
   },
   "ovl_0098ee0": {
    "function_body": 17104,
-   "unclassified": 2088,
+   "unclassified": 1668,
    "jump_table": 40,
+   "pointer_table": 420,
    "data_named": 56,
    "padding": 216
   },
   "ovl_009aed0": {
    "function_body": 16548,
-   "unclassified": 2176,
+   "unclassified": 1872,
    "jump_table": 24,
+   "pointer_table": 304,
    "data_named": 80,
    "padding": 52
   },
@@ -24169,78 +25584,90 @@
   },
   "ovl_009d3ba": {
    "function_body": 4748,
-   "unclassified": 428,
+   "unclassified": 280,
    "jump_table": 4,
    "data_named": 8,
+   "pointer_table": 148,
    "padding": 12
   },
   "ovl_009dd02": {
    "function_body": 21524,
-   "unclassified": 712,
-   "data_named": 52
+   "unclassified": 432,
+   "data_named": 52,
+   "pointer_table": 280
   },
   "ovl_00a0344": {
    "function_body": 8160,
-   "unclassified": 472,
+   "unclassified": 308,
    "jump_table": 8,
    "data_named": 20,
+   "pointer_table": 164,
    "padding": 76
   },
   "ovl_00a1414": {
    "function_body": 28636,
-   "unclassified": 872,
+   "unclassified": 548,
    "jump_table": 32,
+   "pointer_table": 324,
    "data_named": 44
   },
   "ovl_00a43b6": {
    "function_body": 29360,
-   "unclassified": 2328,
+   "unclassified": 2148,
    "jump_table": 20,
+   "pointer_table": 180,
    "data_named": 20
   },
   "ovl_00a733e": {
    "function_body": 24444,
-   "unclassified": 904,
+   "unclassified": 572,
    "jump_table": 12,
+   "pointer_table": 332,
    "data_named": 48
   },
   "ovl_00a9d94": {
    "function_body": 41940,
-   "unclassified": 1328,
+   "unclassified": 1032,
    "jump_table": 40,
+   "pointer_table": 296,
    "data_named": 108,
    "padding": 72
   },
   "ovl_00ae24a": {
    "function_body": 20640,
-   "unclassified": 1716,
+   "unclassified": 1532,
    "jump_table": 20,
+   "pointer_table": 184,
    "data_named": 60,
    "padding": 124
   },
   "ovl_00b08a2": {
    "function_body": 20896,
-   "unclassified": 1296,
+   "unclassified": 904,
    "jump_table": 52,
+   "pointer_table": 392,
    "data_named": 60,
    "padding": 112
   },
   "ovl_00b2d7a": {
    "function_body": 2036,
-   "unclassified": 1588,
+   "unclassified": 1552,
    "jump_table": 4,
+   "pointer_table": 36,
    "data_named": 4
   },
   "ovl_00b321e": {
    "function_body": 18668,
-   "unclassified": 816,
+   "unclassified": 508,
    "jump_table": 8,
+   "pointer_table": 308,
    "data_named": 44
   },
   "ovl_00b5346": {
    "function_body": 4776,
-   "unclassified": 292,
-   "data_named": 20
+   "unclassified": 256,
+   "data_named": 20,
+   "pointer_table": 36
   },
   "ovl_00b5e64": {
    "function_body": 588,

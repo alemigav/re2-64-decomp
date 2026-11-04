@@ -758,6 +758,17 @@ AUDITS = [
          tool="classify_image.py", args=["--check-cartridge"], file="tools/classify_image.py",
          old='            start = i + (-i % 4)',
          new='            start = i'),
+    # --- M342: the two table classes. Each rule was a *measurement* before it was a class, and a class that renames
+    # bytes has to be able to fail: these two mutations loosen one half of one rule each, and the synthetic cases in
+    # `check()` are what catch them. `--check` (repository mode) runs those cases, so no cartridge is needed.
+    dict(name="byte_map: the float-table rule accepts a descending run",
+         tool="classify_image.py", args=["--check"], file="tools/classify_image.py",
+         old='            if asc >= 0.90 and len(set(grp)) >= 4:',
+         new='            if asc >= 0.0 and len(set(grp)) >= 4:'),
+    dict(name="byte_map: the pointer-table rule stops checking the address window",
+         tool="classify_image.py", args=["--check"], file="tools/classify_image.py",
+         old='    return lo <= w < hi',
+         new='    return True'),
     # --- M206: the manifest that published a word count as `covered_bytes`. The mutation restores the
     # word count, which the tiling case catches because covered + unclaimed then falls short of the image.
     dict(name="counts: code_index's covered_bytes is a word count again",
@@ -864,7 +875,12 @@ COPY = ["tools", "fixtures", "docs/log", ".github", "manifests"]
 # missing, and the failure it produced was a FileNotFoundError inside a *different* tool's self-test, which
 # the audit then recorded as a detection (M180). A missing input and a caught mutation look identical from
 # an exit code — which is the whole reason the positive control exists.
-COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md", "docs/MILESTONES.md", "README.md"]
+COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md", "docs/MILESTONES.md",
+              "docs/README-extended.md", "README.md"]
+# M340/M341: these read `fixtures/decomp/measured_extents.json`. Missing it made 38 audits report BROKEN (the
+# unmutated tool failed in the sandbox), which is the seventh environment gap in this arc and the same lesson as
+# README.md above: an input a tool reads belongs here, not in that tool's task list.
+COPY_FIXTURES = ["fixtures/decomp/measured_extents.json"]
 # `build/elfs` holds the built images and `src/` the decompiled corpus; both are read-only for every
 # audit, and a copy is 18 MB per audit for nothing. Not linking them was invisible until an image-
 # dependent tool was audited: the mutated copy failed on a missing `images.json`, not on its mutation.
@@ -880,7 +896,7 @@ def build_env(dst: Path) -> None:
         src = ROOT / item
         if src.is_dir():
             shutil.copytree(src, dst / item)
-    for item in COPY_FILES:
+    for item in COPY_FILES + COPY_FIXTURES:
         src = ROOT / item
         if src.exists():
             (dst / item).parent.mkdir(parents=True, exist_ok=True)
