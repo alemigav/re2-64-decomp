@@ -28,6 +28,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+import recovered
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
@@ -160,10 +162,17 @@ def _corpus(root: Path) -> dict:
     # A single global set would collapse them and report 732 468 B -- 37.6 % -- which is the arithmetic
     # M205 caught in its own first draft.
     covered = 0
+    # M289: `fixtures/decomp/ranges.json` is the *provider's* boundaries and stays authoritative for every
+    # analysis that classifies bytes. Fourteen functions have been reconstructed and pinned, and the provider's
+    # body for them covers only the dispatch head -- so coverage is the union of its ranges with the measured
+    # extents in `fixtures/decomp/recovered.json`, which is stated rather than folded into the range fixture.
+    rec = recovered.load()
     for name, pairs in ranges.items():
         words = set()
         for s, e in pairs:
             words.update(range(int(s), int(e) + 1))
+        for e in rec.get(name, []):
+            words.update(range(e["start"], e["end"] + 1))
         covered += len(words)
     image_bytes = sum(i["size"] for i in images)
     tenths = (1000 * covered + image_bytes // 2) // image_bytes if image_bytes else 0

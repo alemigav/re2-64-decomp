@@ -1,97 +1,128 @@
 /* FUN_80059868
  * image   stage2 (stage2), base 0x80018a80
- * address 0x80059868  body 0x80059868..0x8005989f  size 56 B
- * body sha256 8a9d87353ccf391438a984113be6680af71e5f1622baa332834046736e987719
- * provider record sha256 280a4f27aff55bfcaaaffdd88629286737d57b57c549909da9ea5738ee6d4ef4
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * address 0x80059868  body 0x80059868..0x80059b03  size 668 B
+ * body sha256 983ca717fc028bb1cbc72254f490145aea5e3e4d5274c5440784382dd0e8b288
+ * recovered byte-exact (p59868: 167 of 167)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as P59868_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Removing unreachable block (ram,0x80059930) */
+typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
 
-void FUN_80059868(uint *param_1)
+struct Dev {
+    u8  pad[0x1c6a];
+    u8  f1c6a;
+};
 
+struct Ctx {
+    u32 f0;
+    u16 f4;
+    u8  mode;
+    u8  f7;
+    u8  pad8[0x28 - 0x8];
+    u8  f28[0x1a4 - 0x28];
+    u32 f1a4;
+    u8  pad1a8[0x1e0 - 0x1a8];
+    u16 f1e0;
+    s16 f1e2;
+    s16 f1e4;
+    u8  pad1e6[2];
+    union {
+        u32 w;
+        u8  b[4];
+    } f1e8;
+    u8  pad1ec[0x1f2 - 0x1ec];
+    s16 f1f2;
+    u16 f1f4;
+    u8  pad1f6[0x218 - 0x1f6];
+    u32 f218;
+    u8  pad21c[0x224 - 0x21c];
+    u32 f224;
+    u32 f228;
+    u8  pad22c[0x25c - 0x22c];
+    u8  f25c;
+    u8  pad25d[0x26f - 0x25d];
+    u8  f26f;
+};
+
+extern u8 D_800C76B0[];
+
+extern void FUN_80077adc(u32 a0, void *a1);
+extern void FUN_80032b5c(void *a0, u32 a1);
+extern int  FUN_80089d54(struct Ctx *a0, u32 a1, u32 a2, u32 a3);
+extern int  FUN_800331b8(void);
+extern void FUN_800551e0(void);
+
+void FUN_80059868(struct Ctx *s)
 {
-  char cVar3;
-  short sVar2;
-  int iVar1;
-  
-  switch(*(undefined1 *)((int)param_1 + 6)) {
-  case 0:
-    param_1[0x7a] = 0x5000300;
-    *(undefined1 *)((int)param_1 + 6) = 1;
-    *(undefined2 *)(param_1 + 0x78) = 400;
-    *(undefined2 *)((int)param_1 + 0x1e2) = 0;
-    *(undefined2 *)(param_1 + 0x79) = 0;
-    *(byte *)((int)param_1 + 0x26f) = *(byte *)((int)param_1 + 0x26f) | 0x80;
-    *(byte *)(param_1 + 0x97) = *(byte *)(param_1 + 0x97) | 0x12;
-    FUN_80077adc(0x4020001,param_1 + 10);
-    *param_1 = *param_1 & 0xfffffffb;
-  case 1:
-    FUN_80032b5c(param_1,0);
-    cVar3 = FUN_80089d54(param_1,param_1[0x89],param_1[0x8a],0x400);
-    *(char *)((int)param_1 + 6) = *(char *)((int)param_1 + 6) + cVar3;
-    if (*(char *)((int)param_1 + 0x1ea) == '\0') {
-      sVar2 = *(short *)(param_1 + 0x78) + -0x32;
+    switch (s->mode) {
+    case 0:
+        s->f1e8.w = 0x05000300;
+        s->mode = 1;
+        s->f1e0 = 400;
+        s->f1e2 = 0;
+        s->f1e4 = 0;
+        s->f26f |= 0x80;
+        s->f25c |= 0x12;
+        FUN_80077adc(0x04020001, s->f28);
+        s->f0 &= ~4;
+
+    case 1: {
+        u8 *dev;
+        if (s->f1e8.b[1] == 5) {
+            dev = D_800C76B0;
+            if (((struct Dev *)(dev + 0x18000))->f1c6a == 3)
+                FUN_80077adc(0x04020001, s->f28);
+        }
+        FUN_80032b5c(s, 0);
+        s->mode += FUN_80089d54(s, s->f224, s->f228, 0x400);
+        if (s->f1e8.b[2])
+            s->f1e0 -= 20;
+        else
+            s->f1e0 -= 50;
+        if ((s16)s->f1e0 < 0)
+            s->f1e0 = 0;
+        break;
     }
-    else {
-      sVar2 = *(short *)(param_1 + 0x78) + -0x14;
+    case 2:
+        s->f1e8.w = 0x04000300;
+        s->mode = 3;
+        s->f1f4 = 30;
+        if (s->f1f2 < 150)
+            s->f1f4 = 60;
+        if (s->f1f2 < 70)
+            s->f1f4 += 50;
+        if (s->f1f2 < 30)
+            s->f1f4 += 50;
+        if (s->f1f2 == 0)
+            s->f1f4 += 100;
+
+    case 3:
+        FUN_80089d54(s, s->f224, s->f228, 0x10400);
+        s->f1f4 -= FUN_800331b8() * 3 + 1;
+        if ((s16)s->f1f4 < 0)
+            s->mode = 4;
+        break;
+    case 4:
+        s->f1e8.w = 0x01000300;
+        s->mode = 5;
+        s->f26f = 0;
+
+    case 5:
+        if (FUN_80089d54(s, s->f224, s->f228, 0x400) != 0) {
+            s->mode = 6;
+            s->f1e8.w = 0x06000300;
+        }
+        break;
+    case 6:
+        if (FUN_80089d54(s, s->f1a4, s->f218, 0x10400) != 0) {
+            FUN_800551e0();
+            *(u32 *)&s->f4 = 0x01000000;
+            s->f26f = 0;
+            s->f25c &= 0xed;
+        }
+        break;
     }
-    *(short *)(param_1 + 0x78) = sVar2;
-    if (*(short *)(param_1 + 0x78) < 0) {
-      *(undefined2 *)(param_1 + 0x78) = 0;
-    }
-    break;
-  case 2:
-    param_1[0x7a] = 0x4000300;
-    *(undefined1 *)((int)param_1 + 6) = 3;
-    *(undefined2 *)(param_1 + 0x7d) = 0x1e;
-    if (*(short *)((int)param_1 + 0x1f2) < 0x96) {
-      *(undefined2 *)(param_1 + 0x7d) = 0x3c;
-    }
-    if (*(short *)((int)param_1 + 0x1f2) < 0x46) {
-      *(short *)(param_1 + 0x7d) = *(short *)(param_1 + 0x7d) + 0x32;
-    }
-    if (*(short *)((int)param_1 + 0x1f2) < 0x1e) {
-      *(short *)(param_1 + 0x7d) = *(short *)(param_1 + 0x7d) + 0x32;
-    }
-    if (*(short *)((int)param_1 + 0x1f2) == 0) {
-      *(short *)(param_1 + 0x7d) = *(short *)(param_1 + 0x7d) + 100;
-      goto switchD_80059898_caseD_3;
-    }
-    goto LAB_80059a24;
-  case 3:
-switchD_80059898_caseD_3:
-LAB_80059a24:
-    FUN_80089d54(param_1,param_1[0x89],param_1[0x8a],0x10400);
-    iVar1 = FUN_800331b8();
-    iVar1 = (uint)*(ushort *)(param_1 + 0x7d) - (iVar1 * 3 + 1);
-    *(short *)(param_1 + 0x7d) = (short)iVar1;
-    if (iVar1 * 0x10000 < 0) {
-      *(undefined1 *)((int)param_1 + 6) = 4;
-    }
-    break;
-  case 4:
-    param_1[0x7a] = 0x1000300;
-    *(undefined1 *)((int)param_1 + 6) = 5;
-    *(undefined1 *)((int)param_1 + 0x26f) = 0;
-  case 5:
-    iVar1 = FUN_80089d54(param_1,param_1[0x89],param_1[0x8a],0x400);
-    if (iVar1 == 0) {
-      return;
-    }
-    *(undefined1 *)((int)param_1 + 6) = 6;
-    param_1[0x7a] = 0x6000300;
-    return;
-  case 6:
-    iVar1 = FUN_80089d54(param_1,param_1[0x69],param_1[0x86],0x10400);
-    if (iVar1 != 0) {
-      FUN_800551e0();
-      param_1[1] = 0x1000000;
-      *(undefined1 *)((int)param_1 + 0x26f) = 0;
-      *(byte *)(param_1 + 0x97) = *(byte *)(param_1 + 0x97) & 0xed;
-    }
-  default:
-    break;
-  }
-  return;
 }

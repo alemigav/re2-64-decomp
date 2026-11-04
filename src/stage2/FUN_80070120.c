@@ -1,47 +1,44 @@
 /* FUN_80070120
  * image   stage2 (stage2), base 0x80018a80
- * address 0x80070120  body 0x80070120..0x8007017b  size 92 B
- * body sha256 0d4eca09ee5f625adb6fa704c284eb9410c051f2cd253424c627ba860fcb8730
- * provider record sha256 c08bea9615bbbaacb3b74d642c0f62ed28b7042c9d0ab586756c5a6111c303f0
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * address 0x80070120  body 0x80070120..0x800701d7  size 184 B
+ * body sha256 059124164ee5297675a97c8d51432a62982b9636fbb050abccfbc4444e6fdbde
+ * recovered byte-exact (p9: 46 of 46)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as P9_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-bool FUN_80070120(int param_1)
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef short s16;
 
+struct Ctx {
+    u8 pad0[0x1c];
+    u8 *ptr;
+    u8 pad20[0x134];
+    u8 *f154;
+};
+
+extern int FUN_800701d8(u8 *p, int a1);
+
+int FUN_80070120(struct Ctx *s)
 {
-  ushort uVar1;
-  int iVar2;
-  uint uVar3;
-  bool bVar4;
-  uint uVar5;
-  
-  iVar2 = *(int *)(param_1 + 0x1c);
-  uVar1 = *(ushort *)(iVar2 + 2);
-  uVar5 = (uint)*(short *)(iVar2 + 4);
-  *(int *)(param_1 + 0x1c) = iVar2 + 6;
-  uVar3 = FUN_800701d8(*(undefined4 *)(param_1 + 0x154),uVar1 >> 8);
-  bVar4 = false;
-  switch(uVar1 & 0xff) {
-  case 0:
-    bVar4 = uVar3 == uVar5;
-    break;
-  case 1:
-    bVar4 = (int)uVar5 < (int)uVar3;
-    break;
-  case 2:
-    bVar4 = (int)uVar5 <= (int)uVar3;
-    break;
-  case 3:
-    bVar4 = (int)uVar3 < (int)uVar5;
-    break;
-  case 4:
-    bVar4 = (int)uVar3 <= (int)uVar5;
-    break;
-  case 5:
-    bVar4 = uVar3 != uVar5;
-    break;
-  case 6:
-    bVar4 = (uVar3 & uVar5) != 0;
-  }
-  return bVar4;
+    u8 *p;
+    unsigned int w;
+    int v;
+    int x;
+
+    p = s->ptr;
+    w = *(u16 *)(p + 2);
+    v = *(s16 *)(p + 4);
+    s->ptr = p + 6;
+    x = FUN_800701d8(s->f154, w >> 8);
+
+    switch (w & 0xff) {
+    case 0: return x == v;
+    case 1: return x > v;
+    case 2: return x >= v;
+    case 3: return x < v;
+    case 4: return x <= v;
+    case 5: return x != v;
+    case 6: return (x & v) != 0;
+    }
 }

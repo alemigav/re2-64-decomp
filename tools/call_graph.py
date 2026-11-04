@@ -66,6 +66,8 @@ import struct
 import sys
 from pathlib import Path
 
+import recovered
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
@@ -216,13 +218,23 @@ def jump_table_bounds() -> dict:
 
 
 def body_ranges(name: str) -> list:
-    """[(lo, hi, function_address)] — the instructions the provider actually claims."""
+    """[(lo, hi, function_address)] — the instructions the provider claims, plus the recovered extents.
+
+    M289: a recovered function's provider body covers only its dispatch head, so without the fixture's measured
+    extent every `jal` inside its arms would be attributed to no owner and the edge would lose its source. The
+    fixture is the same one the two exporters read, so the call graph cannot disagree with the code index about
+    where a function ends.
+    """
     index = json.loads((ROOT / DECOMP / name / "decompile-index.json").read_text())
     out = []
     for f in index["functions"]:
         if f["body"]["available"]:
             for r in f["body"]["ranges"]:
                 out.append((int(r["start"], 16), int(r["end"], 16), f["address"]))
+    rec = recovered.load().get(name, [])
+    if rec:
+        out = [r for r in out if not any(e["start"] <= r[0] <= e["end"] for e in rec)]
+        out.extend((e["start"], e["end"], "0x%08x" % e["start"]) for e in rec)
     out.sort()
     return out
 

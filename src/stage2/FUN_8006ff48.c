@@ -1,151 +1,61 @@
 /* FUN_8006ff48
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8006ff48  body 0x8006ff48..0x800700cf  size 392 B
- * body sha256 966eddf67e398fe7a091a2a9d0452adc107f6cfd4902455d4b2f122b572a0fd1
- * provider record sha256 cd23de0e2e377cc3d089c99a78338b1f46daece866ab2405bb94c2fefa90659e
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 71d297cf11b762a287e72163e484cdeff5af5b2b4dc171f842a04aab5f7de3dc
+ * recovered byte-exact (p6ff48: 98 of 98)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as P6FF48_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_8006ff48(undefined2 *param_1,undefined4 param_2,undefined4 param_3)
+typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef unsigned int   u32;
 
+void FUN_8006ff48(u8 *p, u32 idx, u32 v)
 {
-  undefined1 uVar2;
-  undefined2 uVar1;
-  
-  uVar2 = (undefined1)param_3;
-  uVar1 = (undefined2)param_3;
-  switch(param_2) {
-  case 0:
-    param_1[1] = uVar1;
-    return;
-  case 1:
-    *param_1 = uVar1;
-    return;
-  case 2:
-    *(undefined1 *)(param_1 + 2) = uVar2;
-    return;
-  case 3:
-    *(undefined1 *)((int)param_1 + 5) = uVar2;
-    return;
-  case 4:
-    *(undefined1 *)(param_1 + 3) = uVar2;
-    return;
-  case 5:
-    *(undefined1 *)((int)param_1 + 7) = uVar2;
-    return;
-  case 6:
-    *(undefined1 *)(param_1 + 4) = uVar2;
-    return;
-  case 7:
-    param_1[0xd5] = uVar1;
-    return;
-  case 8:
-    *(undefined1 *)(param_1 + 5) = uVar2;
-    return;
-  case 9:
-    *(undefined1 *)((int)param_1 + 0xb) = uVar2;
-    return;
-  case 10:
-    *(undefined4 *)(param_1 + 8) = param_3;
-    return;
-  case 0xb:
-    *(undefined4 *)(param_1 + 0x14) = param_3;
-    return;
-  case 0xc:
-    *(undefined4 *)(param_1 + 0x16) = param_3;
-    return;
-  case 0xd:
-    *(undefined4 *)(param_1 + 0x18) = param_3;
-    return;
-  case 0xe:
-    param_1[0x32] = uVar1;
-    return;
-  case 0xf:
-    param_1[0x33] = uVar1;
-    return;
-  case 0x10:
-    param_1[0x34] = uVar1;
-    return;
-  case 0x11:
-    *(undefined1 *)(param_1 + 0xd1) = uVar2;
-    return;
-  case 0x12:
-    param_1[0xf8] = uVar1;
-    return;
-  case 0x13:
-    param_1[0x12f] = uVar1;
-    return;
-  case 0x14:
-    param_1[0x130] = uVar1;
-    return;
-  case 0x15:
-    param_1[0x131] = uVar1;
-    return;
-  case 0x16:
-    param_1[0x134] = uVar1;
-    return;
-  case 0x17:
-    param_1[0x138] = uVar1;
-    return;
-  case 0x18:
-    param_1[0x139] = uVar1;
-    return;
-  case 0x19:
-    param_1[0x13a] = uVar1;
-    return;
-  case 0x1a:
-    param_1[0x13b] = uVar1;
-    return;
-  case 0x1b:
-    *(undefined1 *)(param_1 + 0xf0) = uVar2;
-    return;
-  case 0x1c:
-    param_1[0xf0] = uVar1;
-    return;
-  case 0x1d:
-    param_1[0xf1] = uVar1;
-    return;
-  case 0x1e:
-    param_1[0xf2] = uVar1;
-    return;
-  case 0x1f:
-    *(undefined1 *)(param_1 + 0xf5) = uVar2;
-    return;
-  case 0x20:
-    param_1[0x98] = uVar1;
-    return;
-  case 0x21:
-    param_1[0x9a] = uVar1;
-    return;
-  case 0x22:
-    param_1[0x99] = uVar1;
-    return;
-  case 0x23:
-    param_1[0x9b] = uVar1;
-    return;
-  case 0x24:
-    param_1[0x9d] = uVar1;
-    return;
-  case 0x25:
-    param_1[0x9c] = uVar1;
-    return;
-  case 0x26:
-    param_1[0x13d] = uVar1;
-    return;
-  case 0x27:
-    param_1[0xda] = uVar1;
-    return;
-  case 0x28:
-    param_1[0xdb] = uVar1;
-    return;
-  case 0x29:
-    param_1[0x15a] = uVar1;
-    return;
-  case 0x2a:
-    param_1[0x15b] = uVar1;
-    return;
-  case 0x2b:
-    *(undefined1 *)((int)param_1 + 0x26f) = uVar2;
-  }
-  return;
+    switch (idx) {
+    case 1: *(u16 *)(p + 0) = v; break;
+    case 0: *(u16 *)(p + 2) = v; break;
+    case 2: *(u8 *)(p + 4) = v; break;
+    case 3: *(u8 *)(p + 5) = v; break;
+    case 4: *(u8 *)(p + 6) = v; break;
+    case 5: *(u8 *)(p + 7) = v; break;
+    case 6: *(u8 *)(p + 8) = v; break;
+    case 7: *(u16 *)(p + 426) = v; break;
+    case 8: *(u8 *)(p + 10) = v; break;
+    case 9: *(u8 *)(p + 11) = v; break;
+    case 10: *(u32 *)(p + 16) = v; break;
+    case 11: *(u32 *)(p + 40) = v; break;
+    case 12: *(u32 *)(p + 44) = v; break;
+    case 13: *(u32 *)(p + 48) = v; break;
+    case 14: *(u16 *)(p + 100) = v; break;
+    case 15: *(u16 *)(p + 102) = v; break;
+    case 16: *(u16 *)(p + 104) = v; break;
+    case 17: *(u8 *)(p + 418) = v; break;
+    case 18: *(u16 *)(p + 496) = v; break;
+    case 19: *(u16 *)(p + 606) = v; break;
+    case 20: *(u16 *)(p + 608) = v; break;
+    case 21: *(u16 *)(p + 610) = v; break;
+    case 22: *(u16 *)(p + 616) = v; break;
+    case 23: *(u16 *)(p + 624) = v; break;
+    case 24: *(u16 *)(p + 626) = v; break;
+    case 25: *(u16 *)(p + 628) = v; break;
+    case 26: *(u16 *)(p + 630) = v; break;
+    case 27: *(u8 *)(p + 480) = v; break;
+    case 28: *(u16 *)(p + 480) = v; break;
+    case 29: *(u16 *)(p + 482) = v; break;
+    case 30: *(u16 *)(p + 484) = v; break;
+    case 31: *(u8 *)(p + 490) = v; break;
+    case 32: *(u16 *)(p + 304) = v; break;
+    case 33: *(u16 *)(p + 308) = v; break;
+    case 34: *(u16 *)(p + 306) = v; break;
+    case 35: *(u16 *)(p + 310) = v; break;
+    case 36: *(u16 *)(p + 314) = v; break;
+    case 37: *(u16 *)(p + 312) = v; break;
+    case 38: *(u16 *)(p + 634) = v; break;
+    case 39: *(u16 *)(p + 436) = v; break;
+    case 40: *(u16 *)(p + 438) = v; break;
+    case 41: *(u16 *)(p + 692) = v; break;
+    case 42: *(u16 *)(p + 694) = v; break;
+    case 43: *(u8 *)(p + 623) = v; break;
+    }
 }

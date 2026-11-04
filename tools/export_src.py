@@ -28,6 +28,8 @@ import struct
 import sys
 from pathlib import Path
 
+import recovered
+
 SAFE = re.compile(r"[^A-Za-z0-9_.]")
 # M288: the provider labels a jump-table's case bodies `switchD_<dispatch>::caseD_<n>`. They are **not
 # functions** -- they are reachable only through the table that the enclosing function owner dispatches on --
@@ -199,6 +201,42 @@ def main() -> None:
                 fragments.append(record)
             else:
                 functions.append(record)
+
+        # M289: apply the recovered-function fixture. For every function we have reconstructed and pinned with a
+        # compile-probe case, the provider's body is replaced by the measured extent, the entries that start inside
+        # it are absorbed (they are its dispatch arms), and `src/<image>/<name>.c` publishes *our* reconstruction
+        # instead of the provider's head-only pseudocode. Functions the provider never claimed are added.
+        for e in recovered.load().get(img["name"], []):
+            absorbed = [f for f in functions + fragments
+                        if e["start"] <= int(f["address"], 16) <= e["end"]]
+            functions = [f for f in functions if f not in absorbed]
+            fragments = [f for f in fragments if f not in absorbed]
+            for gone in absorbed:                 # a case body absorbed into its owner keeps no file of its own
+                Path(gone["file"]).unlink(missing_ok=True)
+            for w_ in range(e["start"], e["end"] + 1, 4):
+                covered.add(w_)
+            addr_s = "0x%08x" % e["start"]
+            name = seeds.get(e["start"]) or ("FUN_%08x" % e["start"])
+            body = recovered.source(e)
+            recovered_calls = {t for s, ts in calls.items()
+                               for t in ts if e["start"] <= s <= e["end"]}
+            fname = SAFE.sub("_", name) + ".c"
+            body_sha = hashlib.sha256(body.encode()).hexdigest()
+            header = (f"/* {name}\n"
+                      f" * image   {img['name']} ({img['role']}), base {img['base']:#010x}\n"
+                      f" * address {addr_s}  body 0x{e['start']:08x}..0x{e['end']:08x}  size {e['words'] * 4} B\n"
+                      f" * body sha256 {body_sha}\n"
+                      f" * recovered {e['verdict']} ({e['probe']})\n"
+                      f" * provider {provider['name']} {provider['version']}: body was the head only; this file is "
+                      f"the reconstruction, kept in tools/compile_probe.py as {e['source']}\n"
+                      f" * extents and pins: fixtures/decomp/recovered.json\n"
+                      f" */\n")
+            (outdir / fname).write_text(header + body)
+            record = dict(address=addr_s, name=name, file=str(outdir / fname), size=e["words"] * 4,
+                          sha256=body_sha, provider_sha256="", status="recovered",
+                          callees=[hex(c) for c in sorted(recovered_calls) if c in corpus],
+                          callees_unknown=len([c for c in recovered_calls if c not in corpus]))
+            functions.append(record)
 
         gaps = sorted(set(range(img["base"], img["base"] + img["size"], 4)) - covered)
         runs = []

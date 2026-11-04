@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-289 milestones are indexed. 211 of them have a note; the rest are rows in the log that cite
+290 milestones are indexed. 212 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -306,6 +306,7 @@ at the foot of this file.
 | 286 | **M286** — both leaves inside the gap: `0x8006e68c` byte-exact at 41, `0x8006e574` at 17 of 23 | `docs/log/M286-both-leaves-inside-the-gap.md` |
 | 287 | **M287** — `0x800704e0` byte-exact at 123: the accessor family is now three of three | `docs/log/M287-0x800704e0-the-accessor-trio-complete.md` |
 | 288 | **M288** — the index regenerated: 224 "functions" were the provider's own switch cases | `docs/log/M288-the-index-regenerated-224-switch-cases.md` |
+| 289 | **M289** — the recovered functions are in the index: 14 pinned, the map shows all of them | `docs/log/M289-recovered-functions-in-the-index.md` |
 
 ## The gaps, and why they are empty
 

@@ -1,107 +1,124 @@
 /* FUN_800701d8
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800701d8  body 0x800701d8..0x8007040b  size 564 B
- * body sha256 3c908af227ed747bc59b607cf195ee0a39f7023edf8777923e22c5d9e9967a91
- * provider record sha256 1239194528acd430df045f778af275ba932ad39a360d989002a31d19a967a497
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 7f6278acad1c1191c81cebcc85f65cd18922b2b248009d1bc3748c9e858d4b4c
+ * recovered byte-exact (p701d8: 141 of 141)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as P701D8_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-uint FUN_800701d8(ushort *param_1,undefined4 param_2)
+typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
 
+struct T {
+    u16  f0;
+    u16  f2;
+    u8   f4;
+    u8   f5;
+    u8   f6;
+    u8   f7;
+    u8   f8;
+    u8 pad9[1];
+    u8   f10;
+    u8   f11;
+    u8 pad12[4];
+    u32  f16;
+    u8 pad20[20];
+    u32  f40;
+    u32  f44;
+    u32  f48;
+    u8 pad52[48];
+    s16  f100;
+    s16  f102;
+    s16  f104;
+    u8 pad106[198];
+    s16  f304;
+    s16  f306;
+    s16  f308;
+    u16  f310;
+    u16  f312;
+    u16  f314;
+    u8 pad316[102];
+    u8   f418;
+    u8 pad419[7];
+    u16  f426;
+    u8 pad428[8];
+    s16  f436;
+    s16  f438;
+    u8 pad440[40];
+    union { u8 b; s16 h; } f480;
+    s16  f482;
+    s16  f484;
+    u8 pad486[4];
+    u8   f490;
+    u8 pad491[5];
+    u16  f496;
+    u8 pad498[108];
+    s16  f606;
+    s16  f608;
+    s16  f610;
+    u8 pad612[4];
+    u16  f616;
+    u8 pad618[5];
+    u8   f623;
+    s16  f624;
+    s16  f626;
+    s16  f628;
+    s16  f630;
+    u8 pad632[2];
+    s16  f634;
+    u8 pad636[56];
+    u16  f692;
+    u16  f694;
+};
+
+u32 FUN_800701d8(struct T *p, u32 idx)
 {
-  uint uVar1;
-  
-  uVar1 = 0;
-  switch(param_2) {
-  case 0:
-    return (uint)param_1[1];
-  case 1:
-    uVar1 = (uint)*param_1;
-    break;
-  case 2:
-    return (uint)*(byte *)(param_1 + 2);
-  case 3:
-    return (uint)*(byte *)((int)param_1 + 5);
-  case 4:
-    return (uint)*(byte *)(param_1 + 3);
-  case 5:
-    return (uint)*(byte *)((int)param_1 + 7);
-  case 6:
-    return (uint)*(byte *)(param_1 + 4);
-  case 7:
-    return (uint)param_1[0xd5];
-  case 8:
-    return (uint)*(byte *)(param_1 + 5);
-  case 9:
-    return (uint)*(byte *)((int)param_1 + 0xb);
-  case 10:
-    return *(uint *)(param_1 + 8);
-  case 0xb:
-    return *(uint *)(param_1 + 0x14);
-  case 0xc:
-    return *(uint *)(param_1 + 0x16);
-  case 0xd:
-    return *(uint *)(param_1 + 0x18);
-  case 0xe:
-    return (int)(short)param_1[0x32];
-  case 0xf:
-    return (int)(short)param_1[0x33];
-  case 0x10:
-    return (int)(short)param_1[0x34];
-  case 0x11:
-    return (uint)*(byte *)(param_1 + 0xd1);
-  case 0x12:
-    return (uint)param_1[0xf8];
-  case 0x13:
-    return (int)(short)param_1[0x12f];
-  case 0x14:
-    return (int)(short)param_1[0x130];
-  case 0x15:
-    return (int)(short)param_1[0x131];
-  case 0x16:
-    return (uint)param_1[0x134];
-  case 0x17:
-    return (int)(short)param_1[0x138];
-  case 0x18:
-    return (int)(short)param_1[0x139];
-  case 0x19:
-    return (int)(short)param_1[0x13a];
-  case 0x1a:
-    return (int)(short)param_1[0x13b];
-  case 0x1b:
-    return (uint)*(byte *)(param_1 + 0xf0);
-  case 0x1c:
-    return (int)(short)param_1[0xf0];
-  case 0x1d:
-    return (int)(short)param_1[0xf1];
-  case 0x1e:
-    return (int)(short)param_1[0xf2];
-  case 0x1f:
-    return (uint)*(byte *)(param_1 + 0xf5);
-  case 0x20:
-    return (int)(short)param_1[0x98];
-  case 0x21:
-    return (int)(short)param_1[0x9a];
-  case 0x22:
-    return (int)(short)param_1[0x99];
-  case 0x23:
-    return (uint)param_1[0x9b];
-  case 0x24:
-    return (uint)param_1[0x9d];
-  case 0x25:
-    return (uint)param_1[0x9c];
-  case 0x26:
-    return (int)(short)param_1[0x13d];
-  case 0x27:
-    return (int)(short)param_1[0xda];
-  case 0x28:
-    return (int)(short)param_1[0xdb];
-  case 0x29:
-    return (uint)param_1[0x15a];
-  case 0x2a:
-    return (uint)param_1[0x15b];
-  case 0x2b:
-    return (uint)*(byte *)((int)param_1 + 0x26f);
-  }
-  return uVar1;
+    switch (idx) {
+    case 1: return p->f0;
+    case 0: return p->f2;
+    case 2: return p->f4;
+    case 3: return p->f5;
+    case 4: return p->f6;
+    case 5: return p->f7;
+    case 6: return p->f8;
+    case 7: return p->f426;
+    case 8: return p->f10;
+    case 9: return p->f11;
+    case 10: return p->f16;
+    case 11: return p->f40;
+    case 12: return p->f44;
+    case 13: return p->f48;
+    case 14: return p->f100;
+    case 15: return p->f102;
+    case 16: return p->f104;
+    case 17: return p->f418;
+    case 18: return p->f496;
+    case 19: return p->f606;
+    case 20: return p->f608;
+    case 21: return p->f610;
+    case 22: return p->f616;
+    case 23: return p->f624;
+    case 24: return p->f626;
+    case 25: return p->f628;
+    case 26: return p->f630;
+    case 27: return p->f480.b;
+    case 28: return p->f480.h;
+    case 29: return p->f482;
+    case 30: return p->f484;
+    case 31: return p->f490;
+    case 32: return p->f304;
+    case 33: return p->f308;
+    case 34: return p->f306;
+    case 35: return p->f310;
+    case 36: return p->f314;
+    case 37: return p->f312;
+    case 38: return p->f634;
+    case 39: return p->f436;
+    case 40: return p->f438;
+    case 41: return p->f692;
+    case 42: return p->f694;
+    case 43: return p->f623;
+    }
 }

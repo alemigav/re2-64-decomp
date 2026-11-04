@@ -35,16 +35,16 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
 * **The container**: 4 761 zlib members, 8 748 242 → 18 550 424 B, plus 1 227 MJPEG frames and 271 MPEG-1
   blocks, all verified byte-for-byte (M9/M10).
 * **The code corpus**: **36 images** (boot + stage-2 + 34 overlays, 1 947 632 B) censused from the cart's own
-  load table, **3 414 functions** over **3 678** ranges, **62.2 %** of the **1 947 632** image bytes inside
-  a known body (**1 210 600 B**) — `src/`, `src/INDEX.md`. The other 37.8 % is classified, not shrugged at
+  load table, **3 416 functions** over **3 678** ranges, **62.2 %** of the **1 947 632** image bytes inside
+  a known body (**1 211 252 B**) — `src/`, `src/INDEX.md`. The other 37.8 % is classified, not shrugged at
   (M207): **407 608 B padding**, **6 640 B** data the decompiler names, **964 B** of jump tables, and
   **321 820 B (16.5 %) unclassified** — a bucket that is published and never renamed `data` on a hunch.
-  The function count excludes the **224 switch case bodies** the provider itself labels `switchD_::caseD_`:
+  The function count excludes the **174 switch case bodies** the provider itself labels `switchD_::caseD_`:
   they are code, they are counted in the 3 678 ranges and in the byte total, but they are reachable only
   through the table their owner dispatches on, so they are kept under `src/<image>/switch/` instead of being
   published as functions (M288).
-* **What is actually understood** (M209, derived by `tools/analysis_status.py`): of **3 414 functions**,
-  **3 327** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour
+* **What is actually understood** (M209, derived by `tools/analysis_status.py`): of **3 416 functions**,
+  **3 315** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour
   pinned by a gate or an executed experiment — and all **12** of those are still called `FUN_…`, because a
   name needs evidence of its own.
 * **The script VM**: a 141-entry handler table, **18 distinct instruction lengths** from 1 to 40 bytes
@@ -116,7 +116,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**289** numbers, 0-288: **233** with a row, and **56** named gaps. The full index — every number, its title,
+**290** numbers, 0-289: **234** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -127,7 +127,7 @@ worth reading before you believe any older note.
 | P1 | M10–M30 | media container recovered, five stride hypotheses killed, load path, first CPU/CP0/FPU model |
 | P2 | **M31–M78** | **the unsaved middle** — no notes survive; only M48, M51 and M78 as commit subjects |
 | P3 | M79–M80 | interrupts work end to end; the boundary is *work*, not signalling |
-| P4 | M81–M110 | code corpus (3 414 functions plus 224 switch case bodies), bank-C loader chain, scripted emulator control, scene-slot path closed as by design |
+| P4 | M81–M110 | code corpus (3 416 functions plus 174 switch case bodies), bank-C loader chain, scripted emulator control, scene-slot path closed as by design |
 | P5 | M111–M125 | pointer provenance, and two external references assessed |
 | P6 | M126–M135 | the gate itself: fixtures, hook, CI, synthetic corpus, marker checks |
 | P7 | M136–M156 | the script VM decoded — lengths, licensed names, jump family, room population |
@@ -139,7 +139,7 @@ worth reading before you believe any older note.
 | P13 | M211–M222 | the script VM's opcode registry, a call graph whose edges carry evidence, verification split into tiers, `TYRANT` named as a codename, and the three work packages that closed the sound family |
 | P14 | M223–M230 | the RSP microcode decoded and deliberately not named; the interface read as a frame loop; the vector unit named 252 of 254; the dispatch-head queue resolved |
 | P15 | M231–M250 | **the toolchain identified**: the sound backlog closed, a verification prototype (warm quarter-second), splat's rehearsal on the boot image, binutils 2.7 and IDO built natively, IDO refuted by a move census, gcc 2.7.2 then **gcc 2.8.1** reproducing every probe |
-| P16 | **M251–M288** | **whole functions reproduced from the image**: the compile-probe corpus, fourteen functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`, `0x800701d8`, `0x8006fc5c`, `0x8006ff48`, `0x8006e68c`, `0x8006e574`, `0x800704e0`), **eleven byte-exact** — the map below shows eleven of the thirteen, because `manifests/code_index.json` does not contain `0x8006e68c` or `0x8006e574`: it lists the seven dispatch arms of the first as if they were the functions and never names the leaf that encloses them (M286), and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, `-g` on the assembler so it stops swapping branches with the preceding instruction, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
+| P16 | **M251–M289** | **whole functions reproduced from the image**: the compile-probe corpus, fourteen functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`, `0x800701d8`, `0x8006fc5c`, `0x8006ff48`, `0x8006e68c`, `0x8006e574`, `0x800704e0`), **eleven byte-exact** — the map below shows eleven of the thirteen, because `manifests/code_index.json` does not contain `0x8006e68c` or `0x8006e574`: it lists the seven dispatch arms of the first as if they were the functions and never names the leaf that encloses them (M286), and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, `-g` on the assembler so it stops swapping branches with the preceding instruction, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -198,7 +198,7 @@ question, one cell per group of functions; the bottom panel is the record, one b
 the cartridge — one cell per group of functions, shaded by how far each is *matched*
 
 boot         213│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
-stage2       1687│▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒█▒▒▒▒▒▒▒█▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒│
+stage2       1689│▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒█▒▒▒▒▒▒██▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒│
 ovl_0072610  105│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_007688e  42│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_0078c0e  27│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
@@ -234,10 +234,10 @@ ovl_00b5346  19│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 ovl_00b5e64   3│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 
-3414 functions across 36 images · █ 10 reproduced byte-for-byte (0.29%) · ▓ 2 recovered, residue itemised
+3416 functions across 36 images · █ 11 reproduced byte-for-byte (0.32%) · ▓ 3 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M288)
+the record — one bar per phase, from the phase table's own ranges (M0–M289)
 
 P0   M0  │██│ 10
 P1   M10 │███│ 21
@@ -255,7 +255,7 @@ P12  M200│██│ 11
 P13  M211│██│ 12
 P14  M223│█│ 8
 P15  M231│███│ 20
-P16  M251│██████│ 38
+P16  M251│██████│ 39
 ```
 <!-- progress-map:end -->
 
@@ -294,10 +294,10 @@ samples, and 187 of the 1 192 records name one.
 ## Layout
 
 ```
-tools/       98 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
-src/         3 414 decompiled functions across 36 images, one .c per function, provenance in each header, with the 224 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
+tools/       99 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+src/         3 416 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    213 notes, one per milestone that has one
+docs/log/    214 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

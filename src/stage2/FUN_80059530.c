@@ -1,124 +1,142 @@
 /* FUN_80059530
  * image   stage2 (stage2), base 0x80018a80
- * address 0x80059530  body 0x80059530..0x8005956b  size 60 B
- * body sha256 71664f9b63dc13b97984fcf8e6921eda37e6f5527562b54f3d64d40acf790956
- * provider record sha256 e1325246c27805ced9283eca4456a7e29731b10b8b464ef47072a5cd83cbff1f
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * address 0x80059530  body 0x80059530..0x80059867  size 824 B
+ * body sha256 4e9130daac83a293ebfb9c3b51dafd722fbed4ab4a82b71a1a33cae2667792bf
+ * recovered byte-exact (p59530: 206 of 206)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as P59530_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80059530(uint *param_1)
+typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
 
+struct Ctx {
+    u32 f0;
+    u16 f4;
+    u8  mode;
+    u8  f7;
+    u8  pad8[0x28 - 0x8];
+    u8  f28[0x1a4 - 0x28];
+    u32 f1a4;
+    u8  pad1a8[4];
+    u32 f1ac;
+    u8  pad1b0[0x1e0 - 0x1b0];
+    u16 f1e0;
+    s16 f1e2;
+    s16 f1e4;
+    u8  pad1e6[2];
+    union {
+        u32 w;
+        u8  b[4];
+    } f1e8;
+    u8  pad1ec[0x1f2 - 0x1ec];
+    s16 f1f2;
+    u16 f1f4;
+    u8  pad1f6[0x218 - 0x1f6];
+    u32 f218;
+    u8  pad21c[0x224 - 0x21c];
+    u32 f224;
+    u32 f228;
+    u8  pad22c[0x25c - 0x22c];
+    u8  f25c;
+    u8  pad25d[0x26f - 0x25d];
+    u8  f26f;
+};
+
+extern void FUN_80077adc(u32 a0, void *a1);
+extern void FUN_80032b5c(void *a0, u32 a1);
+extern int  FUN_80089d54(struct Ctx *a0, u32 a1, u32 a2, u32 a3);
+extern int  FUN_800331b8(void);
+extern void FUN_800551e0(void);
+extern void FUN_80052bd0(u32 a0, u32 a1);
+extern void FUN_80052c6c(u32 a0, u32 a1, u32 a2);
+
+void FUN_80059530(struct Ctx *s)
 {
-  short sVar1;
-  char cVar3;
-  int iVar2;
-  undefined1 uVar4;
-  
-  switch(*(undefined1 *)((int)param_1 + 6)) {
-  case 0:
-    param_1[0x7a] = 0x2000300;
-    *(undefined1 *)((int)param_1 + 6) = 1;
-    *(undefined2 *)(param_1 + 0x78) = 0xfce0;
-    *(undefined2 *)((int)param_1 + 0x1e2) = 0;
-    *(undefined2 *)(param_1 + 0x79) = 0;
-    *(byte *)((int)param_1 + 0x26f) = *(byte *)((int)param_1 + 0x26f) | 0x80;
-    *(byte *)(param_1 + 0x97) = *(byte *)(param_1 + 0x97) | 0x12;
-    FUN_80077adc(0x4010001,param_1 + 10);
-    *param_1 = *param_1 & 0xfffffffb;
-  case 1:
-    if (*(char *)((int)param_1 + 0x1ea) == '\0') {
-      *(undefined1 *)((int)param_1 + 6) = 2;
+    switch (s->mode) {
+    case 0:
+        s->f1e8.w = 0x02000300;
+        s->mode = 1;
+        *(s16 *)&s->f1e0 = -800;
+        s->f1e2 = 0;
+        s->f1e4 = 0;
+        s->f26f |= 0x80;
+        s->f25c |= 0x12;
+        FUN_80077adc(0x04010001, s->f28);
+        s->f0 &= ~4;
+
+    case 1:
+        if (!s->f1e8.b[2])
+            s->mode = 2;
+        FUN_80032b5c(s, 0);
+        FUN_80089d54(s, s->f224, s->f228, 0x400);
+        s->f1e0 += 150;
+        if (s->f1ac & 1)
+            s->mode = 5;
+        break;
+    case 2:
+        s->f1e8.w = 0x03000300;
+        s->mode = 3;
+        FUN_80077adc(0x022a0001, s->f28);
+
+    case 3:
+        FUN_80032b5c(s, 0);
+        s->mode += FUN_80089d54(s, s->f224, s->f228, 0x400);
+        s->f1e0 += 15;
+        if ((s16)s->f1e0 > 0)
+            s->f1e0 = 0;
+        break;
+    case 4:
+        FUN_800551e0();
+        *(u32 *)&s->f4 = 0x01000000;
+        s->f26f = 0;
+        s->f25c &= 0xed;
+        break;
+    case 5:
+        s->f1e8.w = 0x00000300;
+        s->mode = 6;
+        FUN_80077adc(0x02290001, s->f28);
+        FUN_80077adc(0x04020001, s->f28);
+        FUN_80052bd0(1, 0);
+        FUN_80052c6c(5, 250, 0);
+
+    case 6:
+        s->mode += FUN_80089d54(s, s->f224, s->f228, 0x400);
+        break;
+    case 7:
+        s->f1e8.w = 0x04000300;
+        s->mode = 8;
+        s->f1f4 = 30;
+        if (s->f1f2 < 150)
+            s->f1f4 = 60;
+        if (s->f1f2 < 70)
+            s->f1f4 += 50;
+        if (s->f1f2 < 30)
+            s->f1f4 += 50;
+        if (s->f1f2 == 0)
+            s->f1f4 += 100;
+
+    case 8:
+        FUN_80089d54(s, s->f224, s->f228, 0x10400);
+        s->f1f4 -= FUN_800331b8() * 5 + 1;
+        if ((s16)s->f1f4 < 0)
+            s->mode = 9;
+        break;
+    case 9:
+        s->f1e8.w = 0x01000300;
+        s->mode = 10;
+        s->f26f = 0;
+
+    case 10:
+        if (FUN_80089d54(s, s->f224, s->f228, 0x400) != 0) {
+            s->mode = 11;
+            s->f1e8.w = 0x06000300;
+        }
+        break;
+    case 11:
+        if (FUN_80089d54(s, s->f1a4, s->f218, 0x10400) != 0)
+            s->mode = 4;
+        break;
     }
-    FUN_80032b5c(param_1,0);
-    FUN_80089d54(param_1,param_1[0x89],param_1[0x8a],0x400);
-    *(short *)(param_1 + 0x78) = *(short *)(param_1 + 0x78) + 0x96;
-    if ((param_1[0x6b] & 1) != 0) {
-      uVar4 = 5;
-LAB_80059850:
-      *(undefined1 *)((int)param_1 + 6) = uVar4;
-    }
-    break;
-  case 2:
-    param_1[0x7a] = 0x3000300;
-    *(undefined1 *)((int)param_1 + 6) = 3;
-    FUN_80077adc(0x22a0001,param_1 + 10);
-  case 3:
-    FUN_80032b5c(param_1,0);
-    cVar3 = FUN_80089d54(param_1,param_1[0x89],param_1[0x8a],0x400);
-    sVar1 = *(short *)(param_1 + 0x78);
-    *(ushort *)(param_1 + 0x78) = sVar1 + 0xfU;
-    *(char *)((int)param_1 + 6) = *(char *)((int)param_1 + 6) + cVar3;
-    if (0 < (int)((uint)(ushort)(sVar1 + 0xfU) << 0x10)) {
-      *(undefined2 *)(param_1 + 0x78) = 0;
-    }
-    break;
-  case 4:
-    FUN_800551e0();
-    param_1[1] = 0x1000000;
-    *(undefined1 *)((int)param_1 + 0x26f) = 0;
-    *(byte *)(param_1 + 0x97) = *(byte *)(param_1 + 0x97) & 0xed;
-    return;
-  case 5:
-    param_1[0x7a] = 0x300;
-    *(undefined1 *)((int)param_1 + 6) = 6;
-    FUN_80077adc(0x2290001,param_1 + 10);
-    FUN_80077adc(0x4020001,param_1 + 10);
-    FUN_80052bd0(1,0);
-    FUN_80052c6c(5,0xfa,0);
-  case 6:
-    cVar3 = FUN_80089d54(param_1,param_1[0x89],param_1[0x8a],0x400);
-    *(char *)((int)param_1 + 6) = *(char *)((int)param_1 + 6) + cVar3;
-    break;
-  case 7:
-    param_1[0x7a] = 0x4000300;
-    *(undefined1 *)((int)param_1 + 6) = 8;
-    *(undefined2 *)(param_1 + 0x7d) = 0x1e;
-    if (*(short *)((int)param_1 + 0x1f2) < 0x96) {
-      *(undefined2 *)(param_1 + 0x7d) = 0x3c;
-    }
-    if (*(short *)((int)param_1 + 0x1f2) < 0x46) {
-      *(short *)(param_1 + 0x7d) = *(short *)(param_1 + 0x7d) + 0x32;
-    }
-    if (*(short *)((int)param_1 + 0x1f2) < 0x1e) {
-      *(short *)(param_1 + 0x7d) = *(short *)(param_1 + 0x7d) + 0x32;
-    }
-    if (*(short *)((int)param_1 + 0x1f2) == 0) {
-      *(short *)(param_1 + 0x7d) = *(short *)(param_1 + 0x7d) + 100;
-      goto switchD_80059564_caseD_8;
-    }
-    goto LAB_800597a0;
-  case 8:
-switchD_80059564_caseD_8:
-LAB_800597a0:
-    FUN_80089d54(param_1,param_1[0x89],param_1[0x8a],0x10400);
-    iVar2 = FUN_800331b8();
-    iVar2 = (uint)*(ushort *)(param_1 + 0x7d) - (iVar2 * 5 + 1);
-    *(short *)(param_1 + 0x7d) = (short)iVar2;
-    if (iVar2 * 0x10000 < 0) {
-      *(undefined1 *)((int)param_1 + 6) = 9;
-    }
-    break;
-  case 9:
-    param_1[0x7a] = 0x1000300;
-    *(undefined1 *)((int)param_1 + 6) = 10;
-    *(undefined1 *)((int)param_1 + 0x26f) = 0;
-  case 10:
-    iVar2 = FUN_80089d54(param_1,param_1[0x89],param_1[0x8a],0x400);
-    if (iVar2 == 0) {
-      return;
-    }
-    *(undefined1 *)((int)param_1 + 6) = 0xb;
-    param_1[0x7a] = 0x6000300;
-    return;
-  case 0xb:
-    iVar2 = FUN_80089d54(param_1,param_1[0x69],param_1[0x86],0x10400);
-    uVar4 = 4;
-    if (iVar2 == 0) {
-      return;
-    }
-    goto LAB_80059850;
-  default:
-    break;
-  }
-  return;
 }

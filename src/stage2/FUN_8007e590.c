@@ -1,139 +1,180 @@
 /* FUN_8007e590
  * image   stage2 (stage2), base 0x80018a80
- * address 0x8007e590  body 0x8007e590..0x8007e5c7  size 56 B
- * body sha256 442982f9c33937774d379a1155babdc15c813ae3a13609fc862fb0be063b4336
- * provider record sha256 302f044d2616b4c81ab5e32b4f7786ce3f5a7fc62e500eed11e7f4d0dca114fa
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * address 0x8007e590  body 0x8007e590..0x8007e923  size 916 B
+ * body sha256 fe21c08aaf6088f878899b23bdee806226d220d20c65e14e83ab8d45deea160b
+ * recovered partial: 226 of 229, three words of allocation (p7e590: 226 of 229)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as P7E590_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_8007e590(uint *param_1)
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
 
+struct Ctx {
+    u32 f0;
+    u8 pad4;
+    u8 f5;
+    u8 f6;
+    u8 f7;
+    u8 f8;
+    u8 pad9[0x2a - 0x9];
+    u16 f2a;
+    u32 f2c;
+    u8 pad30[0x32 - 0x30];
+    u16 f32;
+    u16 f34;
+    u16 f36;
+    u16 f38;
+    u8 pad3a[0x66 - 0x3a];
+    u16 f66;
+    u8 pad68[0x1a2 - 0x68];
+    u8 f1a2;
+    u8 pad1a3[0x1b4 - 0x1a3];
+    u16 f1b4;
+    u16 f1b6;
+    u8 pad1b8[0x1e0 - 0x1b8];
+    u16 f1e0;
+    u8 pad1e2[0x1e8 - 0x1e2];
+    union {
+        u32 w;
+        u8 b[4];
+    } f1e8;
+    u8 pad1ec[0x214 - 0x1ec];
+    u32 f214;
+    u8 pad218[0x21c - 0x218];
+    u32 f21c;
+    u32 f220;
+    u8 pad224[0x22c - 0x224];
+    u32 f22c;
+    u32 f230;
+    u8 pad234[0x25e - 0x234];
+    u16 f25e;
+    u8 pad260[0x26f - 0x260];
+    u8 f26f;
+    u8 pad270[0x2b0 - 0x270];
+    u16 f2b0;
+};
+
+extern u8 D_800C76B0[];
+extern u16 D_8010BA78[];
+extern int FUN_80089d54(struct Ctx *s, u32 a1, u32 a2, u32 a3);
+extern void FUN_80032b5c(struct Ctx *s, u32 a1);
+extern int FUN_800331b8(void);
+extern void FUN_800551e0(void);
+extern void FUN_80077f30(u32 a0, u32 a1, struct Ctx *s);
+
+void FUN_8007e590(struct Ctx *s)
 {
-  byte bVar1;
-  ushort uVar2;
-  ushort uVar3;
-  char cVar4;
-  char cVar5;
-  undefined1 uVar6;
-  int iVar7;
-  
-  switch(*(undefined1 *)((int)param_1 + 7)) {
-  case 0:
-    *(undefined1 *)((int)param_1 + 7) = 1;
-    *(undefined1 *)(param_1 + 0x7a) = 6;
-    if ((*(byte *)((int)param_1 + 6) & 2) != 0) {
-      *(undefined1 *)(param_1 + 0x7a) = 7;
-    }
-    *(undefined1 *)((int)param_1 + 0x1ea) = 7;
-    *(undefined1 *)((int)param_1 + 0x1e9) = 0;
-    param_1[0x7a] = 0x700;
-    *(undefined2 *)(param_1 + 0x78) = 0x32;
-    *(undefined2 *)((int)param_1 + 0x66) = *(undefined2 *)(param_1 + 0xac);
-    *param_1 = *param_1 | 4;
-  case 1:
-    FUN_80089d54(param_1,param_1[0x87],param_1[0x88],0x200);
-    uVar2 = *(ushort *)((int)param_1 + 0x66);
-    if ((uVar2 & 0x200) == 0) {
-      uVar3 = -(uVar2 >> 2 & 0xff);
-    }
-    else {
-      uVar3 = uVar2 >> 2 & 0xff;
-    }
-    *(ushort *)((int)param_1 + 0x66) = uVar2 + uVar3;
-    if ((*(ushort *)((int)param_1 + 0x66) & 0x3e0) == 0) {
-      *(ushort *)((int)param_1 + 0x66) = *(ushort *)((int)param_1 + 0x66) & 0xff00;
-      *(undefined1 *)((int)param_1 + 7) = 2;
-      if ((*(byte *)((int)param_1 + 6) & 2) != 0) {
-        *(undefined1 *)((int)param_1 + 7) = 0;
-        *(char *)((int)param_1 + 5) = *(char *)((int)param_1 + 5) + '\x01';
-      }
-    }
-    break;
-  case 2:
-    *(undefined1 *)((int)param_1 + 7) = 3;
-    *(undefined1 *)(param_1 + 0x7a) = 6;
-    *(undefined1 *)((int)param_1 + 0x1ea) = 3;
-  case 3:
-    if (*(char *)((int)param_1 + 0x1e9) == '\x11') {
-      *(byte *)((int)param_1 + 0x26f) = *(byte *)((int)param_1 + 0x26f) | 0x80;
-    }
-    bVar1 = *(byte *)(param_1 + 2);
-    if ((bVar1 == 0x45) || (bVar1 == 0x4f)) {
-      cVar5 = *(char *)((int)param_1 + 0x1e9);
-      cVar4 = 'w';
-      if (cVar5 == 'c') {
-        *(undefined1 *)((int)param_1 + 0x1ea) = 0;
-        if (*(byte *)(param_1 + 2) < 0x10) {
-          iVar7 = *(byte *)(param_1 + 2) + 0x10;
+    switch (s->f7) {
+    case 0: {
+        u16 t;
+        u32 g;
+
+        s->f7 = 1;
+        s->f1e8.b[0] = 6;
+        if (s->f6 & 2)
+            s->f1e8.b[0] = 7;
+        t = s->f2b0;
+        g = s->f0;
+        s->f1e8.b[2] = 7;
+        s->f1e8.b[1] = 0;
+        s->f1e8.w = 0x700;
+        s->f1e0 = 50;
+        *(u16 *)((u8 *)s + 0x66) = t;
+        s->f0 = g | 4;
         }
-        else {
-          iVar7 = *(byte *)(param_1 + 2) - 0x40;
+
+    case 1:
+        FUN_80089d54(s, s->f21c, s->f220, 0x200);
+        if (*(u16 *)((u8 *)s + 0x66) & 0x200)
+            *(u16 *)((u8 *)s + 0x66) += (*(u16 *)((u8 *)s + 0x66) >> 2) & 0xff;
+        else
+            *(u16 *)((u8 *)s + 0x66) -= (*(u16 *)((u8 *)s + 0x66) >> 2) & 0xff;
+        if (*(u16 *)((u8 *)s + 0x66) & 0x3e0)
+            return;
+        *(u16 *)((u8 *)s + 0x66) &= 0xff00;
+        s->f7 = 2;
+        if (!(s->f6 & 2))
+            return;
+        s->f7 = 0;
+        s->f5 = s->f5 + 1;
+        return;
+    case 2:
+        s->f7 = 3;
+        s->f1e8.b[0] = 6;
+        s->f1e8.b[2] = 3;
+
+    case 3: {
+        u8 c;
+
+        if (s->f1e8.b[1] == 17) {
+            s->f26f = s->f26f | 0x80;
         }
-        *(undefined2 *)(param_1 + 0x78) = *(undefined2 *)(&DAT_8010ba78 + iVar7 * 2);
-        FUN_80032b5c(param_1,0);
-        param_1[0xb] = param_1[0xb] - 0x708;
-        *(short *)((int)param_1 + 0x25e) = *(short *)((int)param_1 + 0x25e) + -0x708;
-        *(undefined2 *)((int)param_1 + 0x1b6) = *(undefined2 *)((int)param_1 + 0x32);
-        *(undefined2 *)(param_1 + 0xe) = *(undefined2 *)((int)param_1 + 0x32);
-        *(char *)((int)param_1 + 0x1a2) = *(char *)((int)param_1 + 0x1a2) + '\x01';
-        *(undefined2 *)(param_1 + 0x6d) = *(undefined2 *)((int)param_1 + 0x2a);
-        *(undefined2 *)(param_1 + 0xd) = *(undefined2 *)((int)param_1 + 0x2a);
-        *(undefined2 *)((int)param_1 + 0x36) = *(undefined2 *)((int)param_1 + 0x2e);
-        cVar5 = *(char *)((int)param_1 + 0x1e9);
-        cVar4 = 'w';
-      }
-    }
-    else {
-      cVar5 = *(char *)((int)param_1 + 0x1e9);
-      cVar4 = '1';
-      if (cVar5 == '\x1d') {
-        if (bVar1 < 0x10) {
-          iVar7 = *(byte *)(param_1 + 2) + 0x10;
+        c = s->f8;
+        if (c == 69 || c == 79) {
+            if (s->f1e8.b[1] == 99) {
+                s->f1e8.b[2] = 0;
+                if (s->f8 < 16)
+                    s->f1e0 = D_8010BA78[s->f8 + 16];
+                else
+                    s->f1e0 = D_8010BA78[s->f8 - 64];
+                FUN_80032b5c(s, 0);
+                s->f2c -= 1800;
+                s->f25e -= 1800;
+                s->f1a2 = s->f1a2 + 1;
+                s->f34 = s->f1b4 = s->f2a;
+                s->f38 = s->f1b6 = s->f32;
+                s->f36 = *(u16 *)((u8 *)s + 0x2e);
+            }
+            if (s->f1e8.b[1] == 119) {
+                s->f26f = s->f26f & 0x7f;
+                s->f0 = s->f0 & ~4;
+            }
+        } else {
+            if (s->f1e8.b[1] == 29) {
+                if (c < 16)
+                    s->f1e0 = D_8010BA78[s->f8 + 16];
+                else
+                    s->f1e0 = D_8010BA78[s->f8 - 64];
+                FUN_80032b5c(s, 0);
+                s->f2c -= 1800;
+                s->f25e -= 1800;
+                s->f1a2 = s->f1a2 + 1;
+                s->f34 = s->f1b4 = s->f2a;
+                s->f38 = s->f1b6 = s->f32;
+                s->f36 = *(u16 *)((u8 *)s + 0x2e);
+            }
+            if (s->f1e8.b[1] == 49) {
+                s->f26f = s->f26f & 0x7f;
+                s->f0 = s->f0 & ~4;
+            }
         }
-        else {
-          iVar7 = *(byte *)(param_1 + 2) - 0x40;
+        s->f7 = s->f7 + FUN_80089d54(s, s->f22c, s->f230, 0x400);
+        break;
+    }
+    case 4: {
+        u8 *dev = D_800C76B0;
+
+        if (!((*(u32 *)(dev + 0x18000 + 0x1a5c) & 0x10000000)
+              && s == (struct Ctx *)*(u32 *)(dev + 0x18000 + 0x1d3c)))
+            s->f5 = (s->f5 == 22) ? 4 : 5;
+        else
+            s->f5 = 0;
+        s->f6 = 0;
+        s->f7 = 0;
+        return;
+    }
+    }
+    {
+        u32 v = *(u32 *)s->f214;
+
+        if (v & 0x4000) {
+            u32 b = (v & 0x2000) >> 13;
+            u8 *dev;
+
+            FUN_80077f30(1, b * 3 + 4, s);
+            dev = D_800C76B0;
+            *(u16 *)(dev + 0x18000 + 0x1a7a) |= 4;
         }
-        *(undefined2 *)(param_1 + 0x78) = *(undefined2 *)(&DAT_8010ba78 + iVar7 * 2);
-        FUN_80032b5c(param_1,0);
-        param_1[0xb] = param_1[0xb] - 0x708;
-        *(short *)((int)param_1 + 0x25e) = *(short *)((int)param_1 + 0x25e) + -0x708;
-        *(undefined2 *)((int)param_1 + 0x1b6) = *(undefined2 *)((int)param_1 + 0x32);
-        *(undefined2 *)(param_1 + 0xe) = *(undefined2 *)((int)param_1 + 0x32);
-        *(char *)((int)param_1 + 0x1a2) = *(char *)((int)param_1 + 0x1a2) + '\x01';
-        *(undefined2 *)(param_1 + 0x6d) = *(undefined2 *)((int)param_1 + 0x2a);
-        *(undefined2 *)(param_1 + 0xd) = *(undefined2 *)((int)param_1 + 0x2a);
-        *(undefined2 *)((int)param_1 + 0x36) = *(undefined2 *)((int)param_1 + 0x2e);
-        cVar5 = *(char *)((int)param_1 + 0x1e9);
-        cVar4 = '1';
-      }
     }
-    if (cVar5 == cVar4) {
-      *(byte *)((int)param_1 + 0x26f) = *(byte *)((int)param_1 + 0x26f) & 0x7f;
-      *param_1 = *param_1 & 0xfffffffb;
-    }
-    cVar5 = FUN_80089d54(param_1,param_1[0x8b],param_1[0x8c],0x400);
-    *(char *)((int)param_1 + 7) = *(char *)((int)param_1 + 7) + cVar5;
-    switchD_8007e5c0::default();
-    return;
-  case 4:
-    if (((DAT_800e110c & 0x10000000) == 0) || (param_1 != DAT_800e13ec)) {
-      uVar6 = 5;
-      if (*(char *)((int)param_1 + 5) == '\x16') {
-        uVar6 = 4;
-      }
-      *(undefined1 *)((int)param_1 + 5) = uVar6;
-    }
-    else {
-      *(undefined1 *)((int)param_1 + 5) = 0;
-    }
-    *(undefined1 *)((int)param_1 + 6) = 0;
-    *(undefined1 *)((int)param_1 + 7) = 0;
-    break;
-  default:
-    if ((*(uint *)param_1[0x85] & 0x4000) != 0) {
-      FUN_80077f30(1,((*(uint *)param_1[0x85] & 0x2000) >> 0xd) * 3 + 4,param_1);
-      DAT_800e112a = DAT_800e112a | 4;
-    }
-  }
-  return;
 }

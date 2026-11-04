@@ -1,119 +1,161 @@
 /* FUN_800704e0
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800704e0  body 0x800704e0..0x800706cb  size 492 B
- * body sha256 1b9cf90aed8d06fcb8536edb5ca27780d4835010586eae56a7510a5b34a10fc7
- * provider record sha256 286a6e067709061b73ee8f3425ec9b917731d15d6ef64864ad478e45ff7d7377
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 7415b4cb88158b39d1dff9ca4bfcf9b6545fdbbf4da22086e80f02afd773b433
+ * recovered byte-exact (p704e0: 123 of 123)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as P704E0_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-int FUN_800704e0(int param_1,undefined4 param_2)
+typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef unsigned int   u32;
 
+extern u16 D_80115120;
+
+u8 *FUN_800704e0(u8 *p, u32 idx)
 {
-  int iVar1;
-  
-  iVar1 = 0;
-  switch(param_2) {
-  case 0:
-    return param_1 + 2;
-  case 1:
-    return param_1;
-  case 2:
-    param_1 = param_1 + 4;
-    break;
-  case 3:
-    param_1 = param_1 + 5;
-    break;
-  case 4:
-    param_1 = param_1 + 6;
-    break;
-  case 5:
-    param_1 = param_1 + 7;
-    break;
-  case 6:
-    param_1 = param_1 + 8;
-    break;
-  case 7:
-    return param_1 + 0x1aa;
-  case 8:
-    param_1 = param_1 + 10;
-    break;
-  case 9:
-    param_1 = param_1 + 0xb;
-    break;
-  case 10:
-    return param_1 + 0x10;
-  case 0xb:
-    return param_1 + 0x28;
-  case 0xc:
-    return param_1 + 0x2c;
-  case 0xd:
-    return param_1 + 0x30;
-  case 0xe:
-    return param_1 + 100;
-  case 0xf:
-    return param_1 + 0x66;
-  case 0x10:
-    return param_1 + 0x68;
-  case 0x11:
-    return param_1 + 0x1a2;
-  case 0x12:
-    return param_1 + 0x1f0;
-  case 0x13:
-    return param_1 + 0x25e;
-  case 0x14:
-    return param_1 + 0x260;
-  case 0x15:
-    return param_1 + 0x262;
-  case 0x16:
-    return param_1 + 0x268;
-  case 0x17:
-    return param_1 + 0x270;
-  case 0x18:
-    return param_1 + 0x272;
-  case 0x19:
-    return param_1 + 0x274;
-  case 0x1a:
-    return param_1 + 0x276;
-  case 0x1b:
-    param_1 = param_1 + 0x1e0;
-    break;
-  case 0x1c:
-    return param_1 + 0x1e0;
-  case 0x1d:
-    return param_1 + 0x1e2;
-  case 0x1e:
-    return param_1 + 0x1e4;
-  case 0x1f:
-    param_1 = param_1 + 0x1ea;
-    break;
-  case 0x20:
-    return param_1 + 0x130;
-  case 0x21:
-    return param_1 + 0x134;
-  case 0x22:
-    return param_1 + 0x132;
-  case 0x23:
-    return param_1 + 0x136;
-  case 0x24:
-    return param_1 + 0x13a;
-  case 0x25:
-    return param_1 + 0x138;
-  case 0x26:
-    return param_1 + 0x27a;
-  case 0x27:
-    return param_1 + 0x1b4;
-  case 0x28:
-    return param_1 + 0x1b6;
-  case 0x29:
-    return param_1 + 0x2b4;
-  case 0x2a:
-    return param_1 + 0x2b6;
-  case 0x2b:
-    iVar1 = param_1 + 0x26f;
-    DAT_80115120 = DAT_80115120 + 1;
-  default:
-    return iVar1;
-  }
-  DAT_80115120 = DAT_80115120 + 1;
-  return param_1;
+    switch (idx) {
+    case 1:
+        return p;
+        break;
+    case 0:
+        return p + 2;
+        break;
+    case 2:
+        D_80115120++;
+        return p + 4;
+        break;
+    case 3:
+        D_80115120++;
+        return p + 5;
+        break;
+    case 4:
+        D_80115120++;
+        return p + 6;
+        break;
+    case 5:
+        D_80115120++;
+        return p + 7;
+        break;
+    case 6:
+        D_80115120++;
+        return p + 8;
+        break;
+    case 7:
+        return p + 426;
+        break;
+    case 8:
+        D_80115120++;
+        return p + 10;
+        break;
+    case 9:
+        D_80115120++;
+        return p + 11;
+        break;
+    case 10:
+        return p + 16;
+        break;
+    case 11:
+        return p + 40;
+        break;
+    case 12:
+        return p + 44;
+        break;
+    case 13:
+        return p + 48;
+        break;
+    case 14:
+        return p + 100;
+        break;
+    case 15:
+        return p + 102;
+        break;
+    case 16:
+        return p + 104;
+        break;
+    case 17:
+        return p + 418;
+        break;
+    case 18:
+        return p + 496;
+        break;
+    case 19:
+        return p + 606;
+        break;
+    case 20:
+        return p + 608;
+        break;
+    case 21:
+        return p + 610;
+        break;
+    case 22:
+        return p + 616;
+        break;
+    case 23:
+        return p + 624;
+        break;
+    case 24:
+        return p + 626;
+        break;
+    case 25:
+        return p + 628;
+        break;
+    case 26:
+        return p + 630;
+        break;
+    case 27:
+        D_80115120++;
+        return p + 480;
+        break;
+    case 28:
+        return p + 480;
+        break;
+    case 29:
+        return p + 482;
+        break;
+    case 30:
+        return p + 484;
+        break;
+    case 31:
+        D_80115120++;
+        return p + 490;
+        break;
+    case 32:
+        return p + 304;
+        break;
+    case 33:
+        return p + 308;
+        break;
+    case 34:
+        return p + 306;
+        break;
+    case 35:
+        return p + 310;
+        break;
+    case 36:
+        return p + 314;
+        break;
+    case 37:
+        return p + 312;
+        break;
+    case 38:
+        return p + 634;
+        break;
+    case 39:
+        return p + 436;
+        break;
+    case 40:
+        return p + 438;
+        break;
+    case 41:
+        return p + 692;
+        break;
+    case 42:
+        return p + 694;
+        break;
+    case 43:
+        D_80115120++;
+        return p + 623;
+        break;
+    }
 }

@@ -1,44 +1,59 @@
 /* FUN_800acae4
  * image   stage2 (stage2), base 0x80018a80
- * address 0x800acae4  body 0x800acae4..0x800acb47  size 100 B
- * body sha256 92acfb0064e393d641abe9589bc858dc7ac3b94567b40d7880225a707cfe1f7e
- * provider record sha256 a88897d4e128e38afc20e802f827dc56c399d3bb9058c4c142ed49445bf7adfe
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * address 0x800acae4  body 0x800acae4..0x800acbb7  size 212 B
+ * body sha256 da07c38baa55ef26e87c25bba601763393d776e85bee218f731aa0f493587f70
+ * recovered byte-exact (pacae4: 53 of 53)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as PACAE4_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_800acae4(int param_1,byte param_2,short param_3)
+typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
 
+struct Snd {
+    u8 pad0[0x4a];
+    u8 f4a;
+    u8 f4b;
+};
+
+extern void FUN_800ab7e0(u32 a0, u32 a1, u32 a2, u16 a3);
+
+void FUN_800acae4(struct Snd *s, u32 cmd, s16 v)
 {
-  byte bVar1;
-  
-  if (param_3 < 0) {
-    param_3 = 0;
-  }
-  else if (0x3fff < param_3) {
-    param_3 = 0x3fff;
-  }
-  bVar1 = param_2;
-  switch(param_2) {
-  case 0x80:
-    bVar1 = 0x80;
-    break;
-  case 0x81:
-    bVar1 = 0x82;
-    break;
-  case 0x82:
-    bVar1 = 0xa0;
-    break;
-  case 0x83:
-    bVar1 = 0xa1;
-    break;
-  case 0x84:
-    bVar1 = 0x83;
-    break;
-  case 0x85:
-    bVar1 = 0x84;
-  }
-  if (((0xa1 < bVar1) || (bVar1 < 0xa0)) && (*(char *)(param_1 + 0x4a) != -1)) {
-    FUN_800ab7e0(param_2,*(char *)(param_1 + 0x4a),*(undefined1 *)(param_1 + 0x4b),param_3);
-  }
-  return;
+    int c;
+    u32 id;
+
+    id = (u32)s;
+    v = v < 0 ? 0 : (v >= 0x4000 ? 0x3fff : v);
+    c = cmd;
+    switch (cmd & 0xff) {
+    case 0x80:
+        c = 0x80;
+        break;
+    case 0x81:
+        c = 0x82;
+        break;
+    case 0x82:
+        c = 0xa0;
+        break;
+    case 0x83:
+        c = 0xa1;
+        break;
+    case 0x84:
+        c = 0x83;
+        break;
+    case 0x85:
+        c = 0x84;
+        break;
+    }
+    if ((c & 0xff) < 0xa2) {
+        if ((c & 0xff) >= 0xa0)
+            return;
+    }
+    if (s->f4a == 0xff)
+        return;
+    id = (u8)cmd;
+    cmd = s->f4a;
+    FUN_800ab7e0(id, cmd, s->f4b, v);
 }
