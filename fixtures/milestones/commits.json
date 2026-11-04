@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "646b2f9",
+   "subject": "M292: the image splits no float address -- 0x80024558 byte-exact at 139",
+   "milestones": [
+    292
+   ]
+  },
+  {
    "sha": "687f437",
    "subject": "M291: the pool's sharing rule is a mode test -- 0x80024558 at 137/139, and a patch-script reproducibility fix",
    "milestones": [
