@@ -1619,6 +1619,63 @@ P6FC5C_TABLE = 0x800B95D8
 P6FC5C_WORDS = 53
 P6FC5C_SYMS = [("FUN_800844cc", 0x800844CC)]
 
+P6FF48_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef unsigned int   u32;
+
+void FUN_8006ff48(u8 *p, u32 idx, u32 v)
+{
+    switch (idx) {
+    case 1: *(u16 *)(p + 0) = v; break;
+    case 0: *(u16 *)(p + 2) = v; break;
+    case 2: *(u8 *)(p + 4) = v; break;
+    case 3: *(u8 *)(p + 5) = v; break;
+    case 4: *(u8 *)(p + 6) = v; break;
+    case 5: *(u8 *)(p + 7) = v; break;
+    case 6: *(u8 *)(p + 8) = v; break;
+    case 7: *(u16 *)(p + 426) = v; break;
+    case 8: *(u8 *)(p + 10) = v; break;
+    case 9: *(u8 *)(p + 11) = v; break;
+    case 10: *(u32 *)(p + 16) = v; break;
+    case 11: *(u32 *)(p + 40) = v; break;
+    case 12: *(u32 *)(p + 44) = v; break;
+    case 13: *(u32 *)(p + 48) = v; break;
+    case 14: *(u16 *)(p + 100) = v; break;
+    case 15: *(u16 *)(p + 102) = v; break;
+    case 16: *(u16 *)(p + 104) = v; break;
+    case 17: *(u8 *)(p + 418) = v; break;
+    case 18: *(u16 *)(p + 496) = v; break;
+    case 19: *(u16 *)(p + 606) = v; break;
+    case 20: *(u16 *)(p + 608) = v; break;
+    case 21: *(u16 *)(p + 610) = v; break;
+    case 22: *(u16 *)(p + 616) = v; break;
+    case 23: *(u16 *)(p + 624) = v; break;
+    case 24: *(u16 *)(p + 626) = v; break;
+    case 25: *(u16 *)(p + 628) = v; break;
+    case 26: *(u16 *)(p + 630) = v; break;
+    case 27: *(u8 *)(p + 480) = v; break;
+    case 28: *(u16 *)(p + 480) = v; break;
+    case 29: *(u16 *)(p + 482) = v; break;
+    case 30: *(u16 *)(p + 484) = v; break;
+    case 31: *(u8 *)(p + 490) = v; break;
+    case 32: *(u16 *)(p + 304) = v; break;
+    case 33: *(u16 *)(p + 308) = v; break;
+    case 34: *(u16 *)(p + 306) = v; break;
+    case 35: *(u16 *)(p + 310) = v; break;
+    case 36: *(u16 *)(p + 314) = v; break;
+    case 37: *(u16 *)(p + 312) = v; break;
+    case 38: *(u16 *)(p + 634) = v; break;
+    case 39: *(u16 *)(p + 436) = v; break;
+    case 40: *(u16 *)(p + 438) = v; break;
+    case 41: *(u16 *)(p + 692) = v; break;
+    case 42: *(u16 *)(p + 694) = v; break;
+    case 43: *(u8 *)(p + 623) = v; break;
+    }
+}"""
+P6FF48_TABLE = 0x800B95F8
+P6FF48_WORDS = 98
+P6FF48_TABLE_WORDS = 44
+
 
 def pacae4_function():
     """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
@@ -1818,6 +1875,56 @@ def p6fc5c_function():
             "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
 
 
+def p6ff48_function():
+    """Compile the 98-word 44-arm accessor *setter* and compare its words plus the 44-word jump table.
+
+    The write half of the pair whose read half is `0x800701d8`: same offsets, same 44 indices, but each arm is a single
+    store and is only 2 words -- `jr ra` with the store in its delay slot -- so the extent is 98 rather than 141. The
+    arms are in the image's order 1, 0, 2, 3, ... (ascending scores 96 of 98), the same transposition the getter needs.
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p6ff48.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P6FF48_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    ld.write_text("ENTRY(FUN_8006ff48)\nSECTIONS {\n  . = 0x8006ff48;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B95F8;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n")
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo, n = 0x8006FF48, P6FF48_WORDS
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    tw = [image[P6FF48_TABLE - BASE + 4 * i:P6FF48_TABLE - BASE + 4 * i + 4]
+          for i in range(P6FF48_TABLE_WORDS)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(P6FF48_TABLE_WORDS)]
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
+            "extra": len(got) - n,
+            "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -1929,6 +2036,7 @@ def check():
     p7e590f = p7e590_function()
     p701d8f = p701d8_function()
     p6fc5cf = p6fc5c_function()
+    p6ff48f = p6ff48_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -2065,6 +2173,17 @@ def check():
                   f"case bodies come out in the image's order 2, 3, 0, 1, 4, 5, 6 rather than ascending"
                   if p6fc5cf else "0x8006fc5c table: not run",
                   bool(p6fc5cf) and p6fc5cf["table_same"] == 7))
+
+    cases.append((f"the {p6ff48f['image_instrs']}-word 44-arm accessor setter at 0x8006ff48 is BYTE-EXACT: "
+                  f"{p6ff48f['same_offset']} identical by offset and {p6ff48f['same']} by content -- the write half "
+                  f"of the pair whose read half is 0x800701d8, same offsets, one store per arm"
+                  if p6ff48f else "0x8006ff48: not run",
+                  bool(p6ff48f) and p6ff48f["same_offset"] == p6ff48f["image_instrs"]))
+
+    cases.append((f"its jump table matches {p6ff48f['table_same']} of 44 words at the image's own 0x800b95f8, with "
+                  f"the arms 2 words each because the store rides in the `jr ra` slot"
+                  if p6ff48f else "0x8006ff48 table: not run",
+                  bool(p6ff48f) and p6ff48f["table_same"] == 44))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

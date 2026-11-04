@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-285 milestones are indexed. 207 of them have a note; the rest are rows in the log that cite
+286 milestones are indexed. 208 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -302,6 +302,7 @@ at the foot of this file.
 | 282 | **M282** — the gas flag ladder, and a correction to M281: `-O0` cannot work, `-O10` can | `docs/log/M282-the-gas-flag-ladder-and-a-correction.md` |
 | 283 | **M283** — re-measured under `-g`: both partials are untouched, and case 4 is still one register | `docs/log/M283-re-measured-under-g-both-partials-untouched.md` |
 | 284 | **M284** — the arm-shaped family opens with `0x8006fc5c`: 53 of 53, on the second measurement | `docs/log/M284-the-arm-shaped-family-opens-with-0x8006fc5c.md` |
+| 285 | **M285** — `0x8006e6b8`'s enclosing function found, and `0x8006ff48` byte-exact at 98 of 98 | `docs/log/M285-0x8006e68c-identified-and-0x8006ff48-byte-exact.md` |
 
 ## The gaps, and why they are empty
 
