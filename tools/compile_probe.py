@@ -1559,6 +1559,66 @@ P701D8_TABLE = 0x800B96C8
 P701D8_WORDS = 141
 P701D8_TABLE_WORDS = 44
 
+P6FC5C_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef signed char    s8;
+typedef short          s16;
+typedef unsigned int   u32;
+
+struct Ctx {
+    u8  pad0[0x1c];
+    u8 *f1c;
+    u8  pad20[0x154 - 0x20];
+    u8 *f154;
+};
+
+extern int FUN_800844cc(s16 v);
+
+int FUN_8006fc5c(struct Ctx *ctx)
+{
+    u8 *p;
+    u8 *rec;
+    s8 a;
+    s8 idx;
+    u16 v;
+
+    p = ctx->f1c;
+    a = *(s8 *)(p + 2);
+    idx = *(s8 *)(p + 3);
+    v = *(u16 *)(p + 4);
+    rec = (u8 *)(*(u32 *)(ctx->f154 + 0x234) + a * 376);
+    switch (idx) {
+    case 2:
+        *(u16 *)(rec + 2) = v;
+        break;
+    case 3:
+        *(u16 *)(rec + 0) = v;
+        break;
+    case 0:
+        *(u16 *)(rec + 0x60) = v;
+        *(u16 *)(rec + 0xcc) = FUN_800844cc((s16)v);
+        break;
+    case 1:
+        *(u8 *)(rec + 0x62) = v;
+        *(u8 *)(rec + 0xce) = v;
+        break;
+    case 4:
+        *(u16 *)(rec + 0x58) = v;
+        break;
+    case 5:
+        *(u16 *)(rec + 0x5a) = v;
+        break;
+    case 6:
+        *(u16 *)(rec + 0x5c) = v;
+        break;
+    }
+    ctx->f1c += 6;
+    return 1;
+}"""
+P6FC5C_TABLE = 0x800B95D8
+P6FC5C_WORDS = 53
+P6FC5C_SYMS = [("FUN_800844cc", 0x800844CC)]
+
 
 def pacae4_function():
     """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
@@ -1708,6 +1768,56 @@ def p701d8_function():
             "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
 
 
+def p6fc5c_function():
+    """Compile the 53-word seven-arm record writer and compare its words plus the 7-word jump table.
+
+    Smallest member of the arm-shaped family the `-g` fix unlocked, and the first one whose arms are **stores**: the
+    dispatch writes a halfword into `base + a * 376` at one of seven offsets, and the case bodies are emitted in the
+    order the image shows (2, 3, 0, 1, 4, 5, 6), which is the source order -- the ascending source scores 41 of 53.
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / "p6fc5c.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(P6FC5C_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in P6FC5C_SYMS)
+    ld.write_text("ENTRY(FUN_8006fc5c)\nSECTIONS {\n  . = 0x8006fc5c;\n  .text : { *(.text) }\n"
+                  "  . = 0x800B95D8;\n  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    lo, n = 0x8006FC5C, P6FC5C_WORDS
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    tw = [image[P6FC5C_TABLE - BASE + 4 * i:P6FC5C_TABLE - BASE + 4 * i + 4] for i in range(7)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(7)]
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
+            "extra": len(got) - n,
+            "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -1818,6 +1928,7 @@ def check():
     pacae4f = pacae4_function()
     p7e590f = p7e590_function()
     p701d8f = p701d8_function()
+    p6fc5cf = p6fc5c_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -1943,6 +2054,17 @@ def check():
                   f"every arm 3 words because gas's delay-slot swap is off under `-g`"
                   if p701d8f else "0x800701d8 table: not run",
                   bool(p701d8f) and p701d8f["table_same"] == 44))
+
+    cases.append((f"the {p6fc5cf['image_instrs']}-word seven-arm record writer at 0x8006fc5c is BYTE-EXACT: "
+                  f"{p6fc5cf['same_offset']} identical by offset and {p6fc5cf['same']} by content -- smallest member "
+                  f"of the arm-shaped family, a store into `base + a * 376` at one of seven offsets"
+                  if p6fc5cf else "0x8006fc5c: not run",
+                  bool(p6fc5cf) and p6fc5cf["same_offset"] == p6fc5cf["image_instrs"]))
+
+    cases.append((f"its jump table matches {p6fc5cf['table_same']} of 7 words at the image's own 0x800b95d8, and the "
+                  f"case bodies come out in the image's order 2, 3, 0, 1, 4, 5, 6 rather than ascending"
+                  if p6fc5cf else "0x8006fc5c table: not run",
+                  bool(p6fc5cf) and p6fc5cf["table_same"] == 7))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

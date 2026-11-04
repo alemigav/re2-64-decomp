@@ -44,6 +44,7 @@ MATCHED = {
     0x80024558: ("recovered", "139 words, 136 exact: three words, all allocation"),
     0x8007E590: ("recovered", "229 words, 226 exact: three words, one register in case 4's select"),
     0x800701D8: ("exact", "141 words: a 44-arm accessor dispatcher"),
+    0x8006FC5C: ("exact", "53 words: a seven-arm record writer"),
 }
 
 

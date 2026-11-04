@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "5840c84",
+   "subject": "M283: re-measured under -g -- both partials untouched, case 4 unparked and still one register",
+   "milestones": [
+    283
+   ]
+  },
+  {
    "sha": "1b32d7d",
    "subject": "M282: the gas flag ladder -- -O0 is inert (arg[1] bug), -g is the pin",
    "milestones": [
