@@ -1676,6 +1676,72 @@ P6FF48_TABLE = 0x800B95F8
 P6FF48_WORDS = 98
 P6FF48_TABLE_WORDS = 44
 
+P6E68C_SOURCE = """typedef unsigned char  u8;
+typedef unsigned short u16;
+typedef short          s16;
+typedef unsigned int   u32;
+
+struct Ctx {
+    u8  pad0[0x1c];
+    u8 *f1c;
+};
+
+extern s16 D_800E8C78[];
+
+int FUN_8006e68c(struct Ctx *ctx)
+{
+    u8 *p;
+    u32 w;
+    int v;
+    int u;
+
+    p = ctx->f1c;
+    w = *(u16 *)(p + 2);
+    v = *(s16 *)(p + 4);
+    ctx->f1c += 6;
+    u = *(s16 *)&D_800E8C78[w >> 8];
+    switch (w & 0xff) {
+    case 0: return u == v;
+    case 1: return u > v;
+    case 2: return u >= v;
+    case 3: return u < v;
+    case 4: return u <= v;
+    case 5: return u != v;
+    case 6: return (u & v) != 0;
+    }
+}"""
+P6E68C_TABLE = 0x800B9540
+P6E68C_WORDS = 41
+P6E68C_SYMS = [("D_800E8C78", 0x800E8C78)]
+
+P6E574_SOURCE = """typedef unsigned char  u8;
+typedef unsigned int   u32;
+
+struct Ctx {
+    u8  pad0[0x1c];
+    u8 *f1c;
+};
+
+extern u32 D_80115090[];
+
+int FUN_8006e574(struct Ctx *ctx)
+{
+    u8 *p;
+    int a;
+    int b;
+    int c;
+
+    p = ctx->f1c;
+    a = *(u8 *)(p + 1);
+    b = *(u8 *)(p + 2);
+    c = *(u8 *)(p + 3);
+    ctx->f1c += 4;
+    return ((*(u32 *)(D_80115090[a] + (b >> 5) * 4) & (0x80000000u >> (b & 31))) != 0) ^ (c == 0);
+}"""
+P6E574_TABLE = 0x800B9540
+P6E574_WORDS = 23
+P6E574_SYMS = [("D_80115090", 0x80115090)]
+
 
 def pacae4_function():
     """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
@@ -1925,6 +1991,62 @@ def p6ff48_function():
             "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
 
 
+def _arm_probe(source, lo, n, table, table_words, syms, tag):
+    """Compile one arm-shaped function and compare its words plus its jump table.
+
+    Shared by the two leaves found inside `0x8006e6b8`'s index gap (M285/M286); the corpus's other builders predate
+    having two probes of the same shape to add at once.
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    c = WORK / ("%s.c" % tag)
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(source)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    symtxt = "".join("%s = 0x%X;\n" % (k, v) for k, v in syms)
+    ld.write_text("SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  . = %#x;\n  .rodata : ALIGN(8) "
+                  "{ *(.rodata) }\n  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) "
+                  "*(.bss) *(.sbss) *(.mdebug*) *(.gnu.attributes) *(.note.GNU-stack) }\n}\n" % (lo, table)
+                  + symtxt)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    image = IMAGE.read_bytes()
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    same = sum(i2 - i1 for tag_, i1, i2, _j1, _j2 in sm.get_opcodes() if tag_ == "equal")
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    tw = [image[table - BASE + 4 * i:table - BASE + 4 * i + 4] for i in range(table_words)]
+    ro = text_of(elf, ".rodata")
+    gw = [ro[4 * i:4 * i + 4] for i in range(table_words)]
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "same": same, "hunks": hunks,
+            "extra": len(got) - n,
+            "table_same": sum(1 for a, b in zip(tw, gw) if a == b)}
+
+
+def p6e68c_function():
+    return _arm_probe(P6E68C_SOURCE, 0x8006E68C, P6E68C_WORDS, P6E68C_TABLE, 7, P6E68C_SYMS, "p6e68c")
+
+
+def p6e574_function():
+    return _arm_probe(P6E574_SOURCE, 0x8006E574, P6E574_WORDS, P6E574_TABLE, 7, P6E574_SYMS, "p6e574")
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -2037,6 +2159,8 @@ def check():
     p701d8f = p701d8_function()
     p6fc5cf = p6fc5c_function()
     p6ff48f = p6ff48_function()
+    p6e68cf = p6e68c_function()
+    p6e574f = p6e574_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -2184,6 +2308,24 @@ def check():
                   f"the arms 2 words each because the store rides in the `jr ra` slot"
                   if p6ff48f else "0x8006ff48 table: not run",
                   bool(p6ff48f) and p6ff48f["table_same"] == 44))
+
+    cases.append((f"the {p6e68cf['image_instrs']}-word seven-operator predicate dispatcher at 0x8006e68c is "
+                  f"BYTE-EXACT: {p6e68cf['same_offset']} identical by offset and {p6e68cf['same']} by content -- the "
+                  f"leaf that 0x8006e6b8's dispatch actually belongs to, same operator set as 0x80070120"
+                  if p6e68cf else "0x8006e68c: not run",
+                  bool(p6e68cf) and p6e68cf["same_offset"] == p6e68cf["image_instrs"]))
+
+    cases.append((f"its jump table matches {p6e68cf['table_same']} of 7 words at 0x800b9540, and the table it reads "
+                  f"from is the external 0x800e8c78 indexed by `w >> 8`"
+                  if p6e68cf else "0x8006e68c table: not run",
+                  bool(p6e68cf) and p6e68cf["table_same"] == 7))
+
+    cases.append((f"the {p6e574f['image_instrs']}-word bit-test leaf at 0x8006e574 is recovered to "
+                  f"{p6e574f['same_offset']} words identical by offset and {p6e574f['same']} by content "
+                  f"({p6e574f['hunks']} hunk(s)): the six words left are one register (the image loads the table "
+                  f"entry into the freed argument register a0, ours into v1) and the scheduler's placement of the "
+                  f"`c == 0` test" if p6e574f else "0x8006e574: not run",
+                  bool(p6e574f) and p6e574f["same_offset"] >= 17))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
