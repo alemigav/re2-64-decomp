@@ -2171,19 +2171,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8000d428",
-     "name": "FUN_8000d428",
-     "file": "src/boot/FUN_8000d428.c",
-     "size": 52,
-     "sha256": "81d7f04d54675688054b5d8b0c0587edf949f9bc8daec1546581fdcb26cdb8c2",
-     "provider_sha256": "d8159a8523a3a53d04ca7afbe9733ea5920a141527a830feafd11ff6e95ebc35",
-     "status": "written",
-     "callees": [
-      "0x8000de9c"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x8000d460",
      "name": "FUN_8000d460",
      "file": "src/boot/FUN_8000d460.c",
@@ -2887,6 +2874,19 @@
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8000d428",
+     "name": "FUN_8000d428",
+     "file": "src/boot/FUN_8000d428.c",
+     "size": 52,
+     "sha256": "78a518e10d3ed24f0242ec6825c6d6d8f895a3b33f42b47746a90ec8231d07be",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000de9c"
+     ],
      "callees_unknown": 0
     },
     {
@@ -16321,19 +16321,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8008225c",
-     "name": "FUN_8008225c",
-     "file": "src/stage2/FUN_8008225c.c",
-     "size": 52,
-     "sha256": "3cf599b1123f94774e1d07a690a671d44b36061f3b11b6383485920a02d2e1aa",
-     "provider_sha256": "3b8e6186890dbe1ae4c1ef80980dc5627301a513405b6f35aeacb5f9a2a53de0",
-     "status": "written",
-     "callees": [
-      "0x8000de9c"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80082290",
      "name": "FUN_80082290",
      "file": "src/stage2/FUN_80082290.c",
@@ -25694,6 +25681,19 @@
       "0x80032b5c",
       "0x80077f30",
       "0x80089d54"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8008225c",
+     "name": "FUN_8008225c",
+     "file": "src/stage2/FUN_8008225c.c",
+     "size": 52,
+     "sha256": "78a518e10d3ed24f0242ec6825c6d6d8f895a3b33f42b47746a90ec8231d07be",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000de9c"
      ],
      "callees_unknown": 0
     },

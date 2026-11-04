@@ -52,6 +52,14 @@
   },
   {
    "image": "boot",
+   "address": "0x8000d428",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "call13 family: 13 of 13 words -- a call through the unchanged arguments, returning a0 + a2",
+   "source": "CALL13_SOURCE"
+  },
+  {
+   "image": "boot",
    "address": "0x8000d9c0",
    "words": 6,
    "verdict": "byte-exact",
@@ -985,6 +993,14 @@
    "verdict": "partial: 226 of 229, three words of allocation",
    "probe": "p7e590: 226 of 229",
    "source": "P7E590_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008225c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "call13 family: 13 of 13 words -- a call through the unchanged arguments, returning a0 + a2",
+   "source": "CALL13_SOURCE"
   },
   {
    "image": "stage2",

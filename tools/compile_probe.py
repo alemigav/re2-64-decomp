@@ -814,6 +814,23 @@ void FUN_bit18(u32 a0)
 BIT18_SYMS = [("FUN_80077adc", 0x80077ADC)]
 
 
+# A call then `a0 + a2` — the pair M335 left shape-not-matched. It is not a dispatcher at all: the callee
+# takes the incoming arguments unchanged and the return value adds two of them, which is why the arguments are
+# saved in `$s1`/`$s0` *before* the call (a2 lands in `$s0` from the `jal`'s delay slot) and reloaded after it.
+CALL13_SOURCE = """typedef unsigned int u32;
+
+extern void FUN_8000de9c(u32 a0, u32 a1, u32 a2);
+
+u32 FUN_call13(u32 a0, u32 a1, u32 a2)
+{
+    FUN_8000de9c(a0, a1, a2);
+
+    return a0 + a2;
+}
+"""
+CALL13_SYMS = [("FUN_8000de9c", 0x8000DE9C)]
+
+
 # --- singles: one draft each (M315 first batch, M316 screen sweep) ---------------------------------------
 S_80165C68_SOURCE = """typedef unsigned char u8;
 typedef unsigned short u16;

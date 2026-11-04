@@ -1,14 +1,18 @@
 /* FUN_8000d428
  * image   boot (boot), base 0x80000480
  * address 0x8000d428  body 0x8000d428..0x8000d45b  size 52 B
- * body sha256 81d7f04d54675688054b5d8b0c0587edf949f9bc8daec1546581fdcb26cdb8c2
- * provider record sha256 d8159a8523a3a53d04ca7afbe9733ea5920a141527a830feafd11ff6e95ebc35
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 78a518e10d3ed24f0242ec6825c6d6d8f895a3b33f42b47746a90ec8231d07be
+ * recovered byte-exact (call13 family: 13 of 13 words -- a call through the unchanged arguments, returning a0 + a2)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as CALL13_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-int FUN_8000d428(int param_1,undefined4 param_2,int param_3)
+typedef unsigned int u32;
 
+extern void FUN_8000de9c(u32 a0, u32 a1, u32 a2);
+
+u32 FUN_call13(u32 a0, u32 a1, u32 a2)
 {
-  FUN_8000de9c();
-  return param_1 + param_3;
+    FUN_8000de9c(a0, a1, a2);
+
+    return a0 + a2;
 }
