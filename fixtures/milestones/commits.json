@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "bca6fb2",
+   "subject": "M326: vector_installer \u2014 $s0 traced to CSE across a call and cleared; 0x2000 is an or/ori idiom, not a shape; the wall is a dozen idiom choices",
+   "milestones": [
+    326
+   ]
+  },
+  {
    "sha": "bccaef5",
    "subject": "M325: vector_installer started \u2014 structure + a first draft measured at 18/132, with three shape findings (frame, one zeroed local, or-vs-ori)",
    "milestones": [
