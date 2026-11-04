@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "a3b3241",
+   "subject": "M324: boot extent corrected to the load extent 0x13420 \u2014 it ends exactly at __bss_start from main's recovered C; coverage 62.2 -> 61.9 %",
+   "milestones": [
+    324
+   ]
+  },
+  {
    "sha": "24288de",
    "subject": "M323: both boot roots are dead ends (CP0 / 132 words not guessed); the BOOT_SIZE edge is settled as a segment boundary \u2014 code extent 0x11140, load extent 0x13420, overlay table at 0x80012150",
    "milestones": [
