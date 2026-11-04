@@ -1,21 +1,18 @@
 /* FUN_80162114
  * image   ovl_0098ee0 (ovl), base 0x80161cf0
  * address 0x80162114  body 0x80162114..0x80162143  size 48 B
- * body sha256 17babe1e28940cc8531d5a96186fb8b45a0500a395ba4e2bebea06d4b0796d91
- * provider record sha256 eaab08e1d6cfe06bff495910cbe6a5e591d027127e13a8fd0d49555547a337ff
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 3260e41d399d16040c27dbd4c5a4f0573d10974f0fd450cd30d2bf40d13e164b
+ * recovered byte-exact (set12 family: 12 of 12 words; the store's value is 0x03000000 (`lui`), not 0x0300)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as SET12_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+typedef unsigned int u32;
 
-void FUN_80162114(undefined4 param_1)
+extern u32 FUN_80059e00(u32 a0, u32 a1);
+extern u32 D_800e1134;
 
+void FUN_set12(u32 a0)
 {
-  uint uVar1;
-  
-  uVar1 = func_0x80059e00(param_1,0);
-  if ((uVar1 & 2) != 0) {
-    _DAT_800e1134 = 0x3000000;
-  }
-  return;
+    if (FUN_80059e00(a0, 0) & 2)
+        D_800e1134 = 0x03000000;
 }

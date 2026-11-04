@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-336 milestones are indexed. 258 of them have a note; the rest are rows in the log that cite
+337 milestones are indexed. 259 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -353,6 +353,7 @@ at the foot of this file.
 | 333 | **M333** — `vector_installer`: the 64-bit shift block, measured to the instruction, and the mask word capped | `docs/log/M333-vector-installer-the-64-bit-block-measured-to-the-instruction.md` |
 | 334 | **M334** — can the allocation gap be influenced? Twenty-five flag variants, one corpus control | `docs/log/M334-can-the-allocation-gap-be-influenced.md` |
 | 335 | **M335** — the duplicate cohorts: 17 functions from one shape, and the headline number finally gated | `docs/log/M335-the-duplicate-cohorts-17-from-one-shape.md` |
+| 336 | **M336** — the eleven-word loop: the register was a consequence of the statement order | `docs/log/M336-the-eleven-word-loop-and-the-statement-order-lever.md` |
 
 ## The gaps, and why they are empty
 

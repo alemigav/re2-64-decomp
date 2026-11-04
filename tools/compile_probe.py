@@ -761,6 +761,59 @@ for _table in DISPATCH_TABLES:
     globals()["DISPATCH%X_SYMS" % _table] = [(_sym, _table)]
 
 
+# --- the loop family (M336): the counter is a consequence of the statement order ------------------------
+# `for (i = 0; ...)` written *after* the pointer read puts `i` in `$a0` — the argument register, dead by then
+# — and orders the two statements the other way round: 7 of 11. Initialising the counter **first** keeps `$a0`
+# live when the zero is materialised, so the counter lands in `$a1`, which is the image's allocation, and the
+# whole eleven-word body follows: 11 of 11.
+LOOP11_SOURCE = """typedef unsigned int u32;
+
+void FUN_loop11(u32 a0)
+{
+    u32 i = 0;
+    u32 *v = *(u32 **)(a0 + 564);
+
+    while (i < 22)
+    {
+        *v = *v | 0x8000u;
+        v = (u32 *)((u32)v + 0x178);
+        i++;
+    }
+}
+"""
+
+
+SET12_SOURCE = """typedef unsigned int u32;
+
+extern u32 FUN_80059e00(u32 a0, u32 a1);
+extern u32 D_800e1134;
+
+void FUN_set12(u32 a0)
+{
+    if (FUN_80059e00(a0, 0) & 2)
+        D_800e1134 = 0x03000000;
+}
+"""
+SET12_SYMS = [("FUN_80059e00", 0x80059E00), ("D_800e1134", 0x800E1134)]
+
+# The mask here is `0x000f0000`, not `0x000fffff`: read from the words (`lui a0,0x000f` + `and a0,v1,a0`), the
+# first draft's wider mask was 7 of 18 and this one is 18 of 18. The bit tested and the field kept are two
+# different masks in the same instruction group, which is exactly the trap a rendered listing hides.
+BIT18_SOURCE = """typedef unsigned int u32;
+
+extern void FUN_80077adc(u32 a0, u32 a1);
+
+void FUN_bit18(u32 a0)
+{
+    u32 v = *(u32 *)(*(u32 *)(a0 + 532));
+
+    if (v & 0x00100000u)
+        FUN_80077adc((v & 0x000f0000u) | 0x01000001u, a0 + 40);
+}
+"""
+BIT18_SYMS = [("FUN_80077adc", 0x80077ADC)]
+
+
 # --- singles: one draft each (M315 first batch, M316 screen sweep) ---------------------------------------
 S_80165C68_SOURCE = """typedef unsigned char u8;
 typedef unsigned short u16;

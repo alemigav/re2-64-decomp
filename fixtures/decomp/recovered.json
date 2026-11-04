@@ -147,12 +147,28 @@
    "source": "S_80166294_SOURCE"
   },
   {
+   "image": "ovl_008900e",
+   "address": "0x801630bc",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "loop family: 11 of 11 words, one shape for both copies (counter initialised before the pointer read)",
+   "source": "LOOP11_SOURCE"
+  },
+  {
    "image": "ovl_008bef8",
    "address": "0x80164624",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
    "source": "CLEAR622_SOURCE"
+  },
+  {
+   "image": "ovl_008e046",
+   "address": "0x801630bc",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "loop family: 11 of 11 words, one shape for both copies (counter initialised before the pointer read)",
+   "source": "LOOP11_SOURCE"
   },
   {
    "image": "ovl_0095446",
@@ -180,11 +196,27 @@
   },
   {
    "image": "ovl_0098ee0",
+   "address": "0x80162114",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "set12 family: 12 of 12 words; the store's value is 0x03000000 (`lui`), not 0x0300",
+   "source": "SET12_SOURCE"
+  },
+  {
+   "image": "ovl_0098ee0",
    "address": "0x80165ca8",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
    "source": "CLEAR622_SOURCE"
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x80162694",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "set12 family: 12 of 12 words; the store's value is 0x03000000 (`lui`), not 0x0300",
+   "source": "SET12_SOURCE"
   },
   {
    "image": "ovl_009d3ba",
@@ -817,6 +849,22 @@
    "verdict": "byte-exact",
    "probe": "CALL9_SOURCE: 9 of 9, all 11 copies of the identical body",
    "source": "CALL9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005dac0",
+   "words": 18,
+   "verdict": "byte-exact",
+   "probe": "bit18 family: 18 of 18 words; the field mask is 0x000f0000 while the bit tested is 0x00100000",
+   "source": "BIT18_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005eb50",
+   "words": 18,
+   "verdict": "byte-exact",
+   "probe": "bit18 family: 18 of 18 words; the field mask is 0x000f0000 while the bit tested is 0x00100000",
+   "source": "BIT18_SOURCE"
   },
   {
    "image": "stage2",

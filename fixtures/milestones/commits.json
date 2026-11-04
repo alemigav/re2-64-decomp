@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "3aa26e0",
+   "subject": "M335: the duplicate cohorts \u2014 17 functions from one shape, and the headline number finally gated",
+   "milestones": [
+    335
+   ]
+  },
+  {
    "sha": "865fa94",
    "subject": "M334: can the allocation gap be influenced? Twenty-five flag variants, one corpus control",
    "milestones": [

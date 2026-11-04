@@ -1,16 +1,19 @@
 /* FUN_8005dac0
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8005dac0  body 0x8005dac0..0x8005db07  size 72 B
- * body sha256 af3b6eb9215781e5b2fb7782944f17c105850b35fab8efd2a8bd1b45f5b94800
- * provider record sha256 4a9f4d399c3f4d43a06054e452d22207d56129ec8b4eeae55e27eb2f16cf75ed
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 1eb2ccee526f9dadbf2c7bc9dbfe57fac77f0ddb48d4e227870f32a1148f83d6
+ * recovered byte-exact (bit18 family: 18 of 18 words; the field mask is 0x000f0000 while the bit tested is 0x00100000)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as BIT18_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_8005dac0(int param_1)
+typedef unsigned int u32;
 
+extern void FUN_80077adc(u32 a0, u32 a1);
+
+void FUN_bit18(u32 a0)
 {
-  if ((**(uint **)(param_1 + 0x214) & 0x100000) != 0) {
-    FUN_80077adc(**(uint **)(param_1 + 0x214) & 0xf0000 | 0x1000001,param_1 + 0x28);
-  }
-  return;
+    u32 v = *(u32 *)(*(u32 *)(a0 + 532));
+
+    if (v & 0x00100000u)
+        FUN_80077adc((v & 0x000f0000u) | 0x01000001u, a0 + 40);
 }
