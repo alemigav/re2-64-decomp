@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "b69524c",
+   "subject": "M329: vector_installer \u2014 word 20 is not dead (loop 2 targets the word after it); the section ledger localises the +8",
+   "milestones": [
+    329
+   ]
+  },
+  {
    "sha": "108f87c",
    "subject": "M328: vector_installer \u2014 the store sinks into the jal's delay slot, and the price is one hoisted word",
    "milestones": [
