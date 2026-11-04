@@ -54,7 +54,8 @@ suites are named and timed in `acceptance.HEAVY_SUITES` rather than quietly move
 - **36 images** — `boot`, `stage2`, and 34 overlays — censused from the cartridge's own load table: **1 956 560 B**,
   **3 603 functions** over **3 678 ranges**, **1 235 844 B (63.2 %)** inside a known body.
 - **The other 38.1 % is classified, never shrugged at:** 408 124 B padding, 6 680 B data the decompiler names,
-  980 B of jump tables, and **305 496 B (15.6 %) unclassified** — a bucket that is published and is never renamed
+  980 B of jump tables, **23 980 B** of float tables, **20 380 B** of pointer tables, **13 200 B** of string
+  tables, and **250 764 B (12.8 %) unclassified** — a bucket that is published and is never renamed
   `data` on a hunch.
 - **174 switch case bodies** are code and are counted in the ranges and the byte total, but the provider itself labels
   them `switchD_::caseD_`, so they live under `src/<image>/switch/` instead of being published as functions.
@@ -306,7 +307,8 @@ What is left, in the order it is worth doing:
    register allocation.
 4. **The five published allocation residues**, each one register in one arm: `0x8007e590` (226/229), `osCreateThread`
    (23/52), 4×25 (22/25), 4×53 (33/53), 3×32 (29/32). Each is worth one *mechanism*, not one more guess.
-5. **The remaining 38.1 % of the image**, of which 330 176 B is honestly unclassified.
+5. **The remaining 36.8 % of the image**, of which 250 764 B is honestly unclassified — the float, pointer and
+   string tables in it are now classes, and its code was adopted in M341.
 
 ## 10. References
 

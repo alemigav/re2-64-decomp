@@ -6,6 +6,7 @@
   "data_named",
   "float_table",
   "pointer_table",
+  "string_table",
   "padding",
   "unclassified"
  ],
@@ -1286,8 +1287,8 @@
    [
     2147554756,
     2147554903,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2147554904,
@@ -1304,8 +1305,8 @@
    [
     2147554944,
     2147554999,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2147555000,
@@ -1322,8 +1323,8 @@
    [
     2147555040,
     2147555215,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2147555216,
@@ -1340,8 +1341,8 @@
    [
     2147555272,
     2147555599,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2147555600,
@@ -1369,30 +1370,30 @@
    ],
    [
     2147555732,
-    2147556255,
+    2147556235,
     "unclassified",
     "no artifact names it"
    ],
    [
-    2147556256,
-    2147556271,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2147556236,
+    2147556287,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2147556272,
-    2147556559,
+    2147556288,
+    2147556499,
     "unclassified",
     "no artifact names it"
    ],
    [
-    2147556560,
-    2147556575,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2147556500,
+    2147556591,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2147556576,
+    2147556592,
     2147556663,
     "unclassified",
     "no artifact names it"
@@ -5019,6 +5020,18 @@
    ],
    [
     2148231212,
+    2148231359,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148231360,
+    2148231551,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148231552,
     2148231599,
     "unclassified",
     "no artifact names it"
@@ -5043,6 +5056,18 @@
    ],
    [
     2148231652,
+    2148231795,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148231796,
+    2148231867,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148231868,
     2148231971,
     "unclassified",
     "no artifact names it"
@@ -5127,9 +5152,15 @@
    ],
    [
     2148232900,
-    2148236887,
+    2148232915,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148232916,
+    2148236887,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148236888,
@@ -5169,9 +5200,15 @@
    ],
    [
     2148237388,
-    2148238759,
+    2148237391,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148237392,
+    2148238759,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148238760,
@@ -5188,8 +5225,8 @@
    [
     2148238932,
     2148238971,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148238972,
@@ -5200,8 +5237,8 @@
    [
     2148238976,
     2148239019,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148239020,
@@ -5391,6 +5428,12 @@
    ],
    [
     2148240116,
+    2148240287,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148240288,
     2148240335,
     "unclassified",
     "no artifact names it"
@@ -5446,8 +5489,8 @@
    [
     2148240424,
     2148240603,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148240604,
@@ -5458,8 +5501,8 @@
    [
     2148240608,
     2148240703,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148240704,
@@ -5476,8 +5519,8 @@
    [
     2148240752,
     2148241143,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148241144,
@@ -5602,8 +5645,8 @@
    [
     2148241500,
     2148241551,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148241552,
@@ -5649,9 +5692,27 @@
    ],
    [
     2148241732,
-    2148242011,
+    2148241751,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148241752,
+    2148241919,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148241920,
+    2148241971,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148241972,
+    2148242011,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148242012,
@@ -5662,8 +5723,8 @@
    [
     2148242016,
     2148242019,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148242020,
@@ -5674,8 +5735,8 @@
    [
     2148242040,
     2148242047,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148242048,
@@ -5686,8 +5747,8 @@
    [
     2148242076,
     2148242079,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148242080,
@@ -5733,9 +5794,15 @@
    ],
    [
     2148242216,
-    2148242631,
+    2148242235,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148242236,
+    2148242631,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148242632,
@@ -6021,9 +6088,27 @@
    ],
    [
     2148243956,
-    2148244047,
+    2148243963,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148243964,
+    2148244003,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148244004,
+    2148244011,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148244012,
+    2148244047,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148244048,
@@ -6033,21 +6118,15 @@
    ],
    [
     2148244052,
-    2148244079,
+    2148244071,
     "unclassified",
     "no artifact names it"
    ],
    [
-    2148244080,
-    2148244095,
-    "padding",
-    "run of 0x00 in the unpacked image"
-   ],
-   [
-    2148244096,
+    2148244072,
     2148244123,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148244124,
@@ -6208,8 +6287,8 @@
    [
     2148244976,
     2148245167,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148245168,
@@ -6231,15 +6310,9 @@
    ],
    [
     2148245200,
-    2148245215,
-    "padding",
-    "run of 0x00 in the unpacked image"
-   ],
-   [
-    2148245216,
     2148245247,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148245248,
@@ -6441,9 +6514,27 @@
    ],
    [
     2148245852,
-    2148246447,
+    2148245875,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2148245876,
+    2148246079,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148246080,
+    2148246091,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148246092,
+    2148246447,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148246448,
@@ -6459,15 +6550,9 @@
    ],
    [
     2148246516,
-    2148246539,
-    "padding",
-    "run of 0x00 in the unpacked image"
-   ],
-   [
-    2148246540,
     2148246563,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148246564,
@@ -6477,6 +6562,12 @@
    ],
    [
     2148246568,
+    2148246591,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148246592,
     2148246615,
     "unclassified",
     "no artifact names it"
@@ -6717,12 +6808,12 @@
    ],
    [
     2148248792,
-    2148248879,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2148249007,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2148248880,
+    2148249008,
     2148249055,
     "unclassified",
     "no artifact names it"
@@ -6753,12 +6844,12 @@
    ],
    [
     2148250516,
-    2148250615,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2148250671,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2148250616,
+    2148250672,
     2148250735,
     "unclassified",
     "no artifact names it"
@@ -6831,12 +6922,12 @@
    ],
    [
     2148251488,
-    2148251575,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2148251647,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2148251576,
+    2148251648,
     2148251711,
     "unclassified",
     "no artifact names it"
@@ -6915,12 +7006,12 @@
    ],
    [
     2148252712,
-    2148252863,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2148252927,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2148252864,
+    2148252928,
     2148253067,
     "unclassified",
     "no artifact names it"
@@ -6963,12 +7054,12 @@
    ],
    [
     2148254448,
-    2148254535,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2148254607,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2148254536,
+    2148254608,
     2148254719,
     "unclassified",
     "no artifact names it"
@@ -7029,12 +7120,12 @@
    ],
    [
     2148255504,
-    2148255591,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2148255663,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2148255592,
+    2148255664,
     2148255775,
     "unclassified",
     "no artifact names it"
@@ -7077,12 +7168,12 @@
    ],
    [
     2148256544,
-    2148256631,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2148256703,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2148256632,
+    2148256704,
     2148256815,
     "unclassified",
     "no artifact names it"
@@ -7125,12 +7216,12 @@
    ],
    [
     2148257584,
-    2148257671,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    2148257743,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
-    2148257672,
+    2148257744,
     2148257807,
     "unclassified",
     "no artifact names it"
@@ -8620,8 +8711,8 @@
    [
     2148442756,
     2148442767,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148442768,
@@ -8631,33 +8722,9 @@
    ],
    [
     2148442772,
-    2148444671,
-    "padding",
-    "run of 0x00 in the unpacked image"
-   ],
-   [
-    2148444672,
-    2148444699,
-    "unclassified",
-    "no artifact names it"
-   ],
-   [
-    2148444700,
-    2148444723,
-    "padding",
-    "run of 0x00 in the unpacked image"
-   ],
-   [
-    2148444724,
-    2148444751,
-    "unclassified",
-    "no artifact names it"
-   ],
-   [
-    2148444752,
     2148444775,
-    "padding",
-    "run of 0x00 in the unpacked image"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2148444776,
@@ -9213,6 +9280,18 @@
    ],
    [
     2148466596,
+    2148466755,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148466756,
+    2148466971,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148466972,
     2148467199,
     "unclassified",
     "no artifact names it"
@@ -9225,6 +9304,12 @@
    ],
    [
     2148467204,
+    2148467271,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148467272,
     2148467455,
     "unclassified",
     "no artifact names it"
@@ -11223,6 +11308,30 @@
    ],
    [
     2148618976,
+    2148618987,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148618988,
+    2148619031,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148619032,
+    2148619047,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148619048,
+    2148619091,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148619092,
     2148619231,
     "unclassified",
     "no artifact names it"
@@ -11259,6 +11368,18 @@
    ],
    [
     2148619328,
+    2148620703,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148620704,
+    2148620807,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148620808,
     2148621807,
     "unclassified",
     "no artifact names it"
@@ -15648,8 +15769,8 @@
    [
     2149075640,
     2149075695,
-    "unclassified",
-    "no artifact names it"
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
    ],
    [
     2149075696,
@@ -16267,6 +16388,18 @@
    ],
    [
     2148926628,
+    2148926719,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148926720,
+    2148926751,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148926752,
     2148927599,
     "unclassified",
     "no artifact names it"
@@ -20651,6 +20784,12 @@
    ],
    [
     2148958084,
+    2148958119,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148958120,
     2148958143,
     "unclassified",
     "no artifact names it"
@@ -22731,6 +22870,12 @@
    ],
    [
     2148962284,
+    2148962319,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148962320,
     2148962343,
     "unclassified",
     "no artifact names it"
@@ -23021,6 +23166,12 @@
    ],
    [
     2148964260,
+    2148964295,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148964296,
     2148964319,
     "unclassified",
     "no artifact names it"
@@ -23739,6 +23890,12 @@
    ],
    [
     2148975772,
+    2148975807,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148975808,
     2148975831,
     "unclassified",
     "no artifact names it"
@@ -24143,6 +24300,18 @@
    ],
    [
     2148955060,
+    2148955075,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2148955076,
+    2148955111,
+    "string_table",
+    "text run: text-safe bytes with >= 16 letters, rule in table_runs()"
+   ],
+   [
+    2148955112,
     2148955159,
     "unclassified",
     "no artifact names it"
@@ -25239,12 +25408,12 @@
   "boot": {
    "table_in_body": 0,
    "data_in_body": 0,
-   "padding_in_body": 13
+   "padding_in_body": 21
   },
   "stage2": {
    "table_in_body": 0,
    "data_in_body": 0,
-   "padding_in_body": 793
+   "padding_in_body": 1492
   },
   "ovl_0072610": {
    "table_in_body": 0,
@@ -25420,33 +25589,37 @@
  "totals": {
   "boot": {
    "function_body": 58328,
-   "unclassified": 19228,
-   "padding": 664,
+   "unclassified": 18408,
+   "padding": 632,
    "data_named": 44,
+   "string_table": 852,
    "jump_table": 16,
    "pointer_table": 600
   },
   "stage2": {
    "function_body": 579632,
-   "unclassified": 203956,
-   "padding": 348348,
+   "unclassified": 194672,
+   "padding": 345552,
    "data_named": 4312,
+   "string_table": 12080,
    "jump_table": 340,
    "pointer_table": 11672,
    "float_table": 23980
   },
   "ovl_0072610": {
    "function_body": 38472,
-   "unclassified": 2720,
+   "unclassified": 2664,
    "padding": 7652,
+   "string_table": 56,
    "pointer_table": 40,
    "data_named": 428
   },
   "ovl_007688e": {
    "function_body": 20372,
-   "unclassified": 2940,
+   "unclassified": 2908,
    "jump_table": 12,
    "pointer_table": 72,
+   "string_table": 32,
    "data_named": 232,
    "padding": 4212
   },
@@ -25550,10 +25723,11 @@
   },
   "ovl_0095446": {
    "function_body": 24820,
-   "unclassified": 1020,
+   "unclassified": 984,
    "data_named": 28,
    "jump_table": 20,
-   "pointer_table": 208
+   "pointer_table": 208,
+   "string_table": 36
   },
   "ovl_0097e42": {
    "function_body": 6796,
@@ -25606,17 +25780,19 @@
   },
   "ovl_00a1414": {
    "function_body": 28636,
-   "unclassified": 548,
+   "unclassified": 512,
    "jump_table": 32,
    "pointer_table": 324,
-   "data_named": 44
+   "data_named": 44,
+   "string_table": 36
   },
   "ovl_00a43b6": {
    "function_body": 29360,
-   "unclassified": 2148,
+   "unclassified": 2112,
    "jump_table": 20,
    "pointer_table": 180,
-   "data_named": 20
+   "data_named": 20,
+   "string_table": 36
   },
   "ovl_00a733e": {
    "function_body": 24444,
@@ -25627,19 +25803,21 @@
   },
   "ovl_00a9d94": {
    "function_body": 41940,
-   "unclassified": 1032,
+   "unclassified": 996,
    "jump_table": 40,
    "pointer_table": 296,
    "data_named": 108,
-   "padding": 72
+   "padding": 72,
+   "string_table": 36
   },
   "ovl_00ae24a": {
    "function_body": 20640,
-   "unclassified": 1532,
+   "unclassified": 1496,
    "jump_table": 20,
    "pointer_table": 184,
    "data_named": 60,
-   "padding": 124
+   "padding": 124,
+   "string_table": 36
   },
   "ovl_00b08a2": {
    "function_body": 20896,

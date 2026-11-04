@@ -38,7 +38,8 @@ ROOT = HERE.parent
 ROM = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 MAP = "manifests/byte_map.json"
 
-CLASSES = ["function_body", "jump_table", "data_named", "float_table", "pointer_table", "padding", "unclassified"]
+CLASSES = ["function_body", "jump_table", "data_named", "float_table", "pointer_table", "string_table",
+           "padding", "unclassified"]
 DAT = re.compile(r"\bDAT_([0-9a-fA-F]{8})\b")
 MIN_PAD = 16
 
@@ -110,6 +111,38 @@ def pad_words(blob, base):
     return out
 
 
+# What counts as text (M343). Printable ASCII plus the separators a string *table* uses between entries -- NUL,
+# tab, newline, carriage return. The two thresholds in the rule below are what separate a table of strings from
+# the two things that look like one: a run of digits or dashes (no letters) and a run of one repeated character
+# (no variety).
+TEXT_OK = frozenset(range(0x20, 0x7F)) | {0x00, 0x09, 0x0A, 0x0D}
+LETTERS = frozenset(range(0x41, 0x5B)) | frozenset(range(0x61, 0x7B))
+MIN_TEXT_LETTERS = 16
+MIN_TEXT_DISTINCT = 8
+
+
+def _text_word_ok(w):
+    """A word whose four bytes are all text-safe. Says nothing about the run being a *table* of strings."""
+    return all(b in TEXT_OK for b in w.to_bytes(4, "big"))
+
+
+def _text_runs(grp, minlen=4):
+    """How many maximal runs of >= `minlen` letters the run holds -- the test that separates text from codes.
+
+    A table of small byte codes is text-safe (0x20..0x7E) and can hold more than sixteen letters while containing
+    no *word*: `\x00 \x00\x00\x00!\x00\x00\x00"` is a table of numbers, not a string table. Real text has words,
+    so the rule asks for at least two letter-runs of four, which no such table has.
+    """
+    runs = n = 0
+    for c in grp:
+        if c in LETTERS:
+            n += 1
+        else:
+            runs += n >= minlen
+            n = 0
+    return runs + (n >= minlen)
+
+
 MIN_TABLE_WORDS = 8
 
 
@@ -170,6 +203,20 @@ def table_runs(blob, base, window=None):
         i = j + 1
     i = 0
     while i < n:
+        if not _text_word_ok(ws[i]):
+            i += 1
+            continue
+        j = i
+        while j + 1 < n and _text_word_ok(ws[j + 1]):
+            j += 1
+        if j - i + 1 >= MIN_TABLE_WORDS:
+            grp = b"".join(w.to_bytes(4, "big") for w in ws[i:j + 1])
+            letters = sum(1 for c in grp if c in LETTERS)
+            if letters >= MIN_TEXT_LETTERS and len(set(grp)) >= MIN_TEXT_DISTINCT and _text_runs(grp) >= 2:
+                out.append((base + 4 * i, base + 4 * j, "string_table"))
+        i = j + 1
+    i = 0
+    while i < n:
         if not _addr_in(ws[i], lo_w, hi_w):
             i += 1
             continue
@@ -216,8 +263,9 @@ def build(root: Path = ROOT):
         # data (a table inside a function is the function) and before padding (a run of one value is fill, and the
         # rule's distinctness test would refuse it anyway -- belt and braces, both stated).
         for lo2, hi2, cls2 in table_runs(blob, base, (base, base + size)):
-            why2 = ("monotone IEEE run, rule in table_runs()" if cls2 == "float_table"
-                    else "every word an in-image address, rule in table_runs()")
+            why2 = {"float_table": "monotone IEEE run, rule in table_runs()",
+                    "pointer_table": "every word an in-image address, rule in table_runs()",
+                    "string_table": "text run: text-safe bytes with >= 16 letters, rule in table_runs()"}[cls2]
             for w in range(lo2, hi2 + 1, 4):
                 claimed.setdefault(w, (cls2, why2))
         for w, value in pad_words(blob, base).items():
@@ -260,10 +308,28 @@ def check(rep):
     # mutates -- a class that renames bytes has to be able to fail, and the failure has to be this specific.
     def _blob(vals):
         return b"".join(int(v).to_bytes(4, "big") for v in vals)
+
+    def _blob_bytes(vals):
+        return bytes(vals)
+    win = (0x80100000, 0x80200000)
+    # M343: the string-table rule, pinned on synthetic bytes -- text is claimed, a table of small byte codes is
+    # not, and neither is a run of one repeated text-safe byte. These are the cases the audit mutates.
+    txt = list(b"first string entry\x00\x00second entry here\x00\x00third")
+    txt += [0] * (-len(txt) % 4)
+    codes = list(b"\x00 \x00\x00\x00!\x00\x00\x00" * 8)          # a table of numbers: text-safe, no words
+    spaces = list(b" " * 40)                                          # one repeated byte: fill, not text
+    _pad = lambda v: v + [0] * (-len(v) % 4)
+    kind_of = lambda vals: {c for _a, _b, c in
+                            table_runs(_blob_bytes(_pad(vals)), 0x80100000, win)}
+    cases.append(("a run of three real strings is a string table, and a table of small byte codes is not",
+                  "string_table" in kind_of(txt) and "string_table" not in kind_of(codes)))
+    cases.append(("a run of one repeated text-safe byte is fill, not a string table",
+                  "string_table" not in kind_of(spaces)))
+
+
     asc = [0x3C000000 + i * 0x00010000 for i in range(10)]
     ptrs_o = [0x80100000 + 4 * i for i in range(10)]
     out_o = [0x00100000 + 4 * i for i in range(10)]
-    win = (0x80100000, 0x80200000)
     kinds = lambda vals: {c for _a, _b, c in table_runs(_blob(vals), 0x80100000, win)}
     cases.append(("a monotone run of ten floats is a float table, and the same run reversed is not",
                   "float_table" in kinds(asc) and "float_table" not in kinds(list(reversed(asc)))))

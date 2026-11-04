@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "de009fe",
+   "subject": "M342: float_table and pointer_table become real classes, with mutations that prove the rules can fail",
+   "milestones": [
+    342
+   ]
+  },
+  {
    "sha": "43efe35",
    "subject": "M341: the rung's second customer \u2014 187 functions the census never had",
    "milestones": [
