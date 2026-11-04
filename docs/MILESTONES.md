@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-331 milestones are indexed. 253 of them have a note; the rest are rows in the log that cite
+332 milestones are indexed. 254 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -348,6 +348,7 @@ at the foot of this file.
 | 328 | **M328** — `vector_installer`: the store sinks, and the price is one hoisted word | `docs/log/M328-vector-installer-the-delay-slot-and-its-price.md` |
 | 329 | **M329** — `vector_installer`: word 20 is not dead; the loop's delay slot is — and a section ledger | `docs/log/M329-vector-installer-the-loop-delay-slot-and-a-section-ledger.md` |
 | 330 | **M330** — `vector_installer`: the 64-bit ×3 is pair arithmetic (+7 → −2), and a polarity bug falls out | `docs/log/M330-vector-installer-the-64-bit-multiply-is-pair-arithmetic.md` |
+| 331 | **M331** — `vector_installer`: the PRId dispatch is a chain over two *flag* values (+6 → 0) | `docs/log/M331-vector-installer-the-prid-dispatch-is-a-chain.md` |
 
 ## The gaps, and why they are empty
 
