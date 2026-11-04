@@ -3982,6 +3982,33 @@ def check():
                   and ucr["pointer_table"]["bytes"] == 11572
                   and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 330176))
 
+    # M339: the extents measured inside those code-like regions, and whether they are genuinely new ground.
+    try:
+        import extent_scan as _es
+        import json as _json
+        _me = _json.loads((ROOT / "fixtures" / "decomp" / "measured_extents.json").read_text())
+        _ranges = _json.loads((ROOT / "fixtures" / "decomp" / "ranges.json").read_text())
+        _census = {img: [(int(a), int(b)) for a, b in v] for img, v in _ranges["images"].items()}
+        _clash = 0
+        for _reg in _me["regions"]:
+            for _f in _reg["functions"]:
+                for _a, _b in _census.get(_reg["image"], ()):
+                    if _f["start"] <= _b and _a <= _f["end"]:
+                        _clash += 1
+                        break
+        _sum = _me["summary"]
+    except Exception:
+        _me = _sum = None
+        _clash = -1
+    cases.append((f"the extents inside those code regions are measured, and they are new ground: "
+                  f"{(_sum or {}).get('functions', 0)} function(s), {(_sum or {}).get('bytes', 0):,} B across "
+                  f"{(_sum or {}).get('regions', 0)} region(s), {(_sum or {}).get('rejected', 0)} candidate(s) "
+                  f"rejected for want of a return and {(_sum or {}).get('tail_jumps', 0)} `jr` tail jump(s) "
+                  f"reported separately -- and **{_clash}** of them overlap a census function (M339)"
+                  if _me else "measured extents: not run",
+                  bool(_me) and _sum["functions"] == 189 and _sum["bytes"] == 23876
+                  and _sum["regions"] == 75 and _clash == 0))
+
     cases.append((f"the duplicate census is vetted before it is drafted: {dupc['total']} unmatched functions "
                   f"in {dupc['groups']} repeated bodies, of which {dupc['complete']} in "
                   f"{dupc['complete_groups']} contain a return and {dupc['fragments']} in "

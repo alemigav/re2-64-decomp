@@ -104,7 +104,7 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 131, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 132, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     # M273: the README's progress map is generated from the fixtures, so it cannot drift from them, and every
     # function it claims as recovered must exist in the corpus. Repository-only: no cartridge needed.
@@ -179,6 +179,9 @@ SUITES = [
     ("ratchet (repository)", [sys.executable, "tools/ratchet.py", "--check"], 4, False),
     # The counts are derived from this very list, so registering a suite changes them — and this suite
     # is the one that notices the docs no longer agree. It caught its own registration (M180).
+    # M339: measuring function extents inside byte-map regions no artifact names. The self-test covers the
+    # split rule (a return is `jr ra` + its delay slot; a lone `jr ra` and a tail with no return are rejected).
+    ("extent scan (repository)", [sys.executable, "tools/extent_scan.py", "--self-test"], 5, False),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
     ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 26, False),
     # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain

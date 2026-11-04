@@ -1,0 +1,2105 @@
+{
+ "tool": "extent_scan.py",
+ "note": "Function extents measured from the bytes in byte-map regions that no artifact names. A return is `jr ra` plus its delay slot; a start is the region start or the word after a return. These are NOT reconstructions and are not in the census: adopting them needs a projection change (M339).",
+ "summary": {
+  "regions": 75,
+  "functions": 189,
+  "bytes": 23876,
+  "rejected": 13,
+  "tail_jumps": 9
+ },
+ "regions": [
+  {
+   "image": "boot",
+   "region": [
+    2147537868,
+    2147537959
+   ],
+   "functions": [
+    {
+     "start": 2147537868,
+     "end": 2147537956,
+     "words": 23,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "boot",
+   "region": [
+    2147554264,
+    2147554575
+   ],
+   "functions": [
+    {
+     "start": 2147554264,
+     "end": 2147554564,
+     "words": 76,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147554568,
+     "end": 2147554572,
+     "words": 2,
+     "why": "no trailing `jr ra`: 2 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "boot",
+   "region": [
+    2147554748,
+    2147554903
+   ],
+   "functions": [
+    {
+     "start": 2147554748,
+     "end": 2147554752,
+     "words": 2,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147554756,
+     "end": 2147554900,
+     "words": 37,
+     "why": "no trailing `jr ra`: 37 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147596100,
+    2147598743
+   ],
+   "functions": [
+    {
+     "start": 2147596100,
+     "end": 2147596484,
+     "words": 97,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147596488,
+     "end": 2147598740,
+     "words": 564,
+     "why": "no trailing `jr ra`: 564 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": [
+    {
+     "at": 2147596424,
+     "word": "0x01600008"
+    },
+    {
+     "at": 2147597560,
+     "word": "0x03200008"
+    }
+   ]
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147611484,
+    2147612607
+   ],
+   "functions": [
+    {
+     "start": 2147611484,
+     "end": 2147611528,
+     "words": 12,
+     "returns": 1
+    },
+    {
+     "start": 2147611532,
+     "end": 2147611556,
+     "words": 7,
+     "returns": 1
+    },
+    {
+     "start": 2147611560,
+     "end": 2147611564,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147611568,
+     "end": 2147611956,
+     "words": 98,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147611960,
+     "end": 2147612604,
+     "words": 162,
+     "why": "no trailing `jr ra`: 162 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147616492,
+    2147617195
+   ],
+   "functions": [
+    {
+     "start": 2147616492,
+     "end": 2147616536,
+     "words": 12,
+     "returns": 1
+    },
+    {
+     "start": 2147616540,
+     "end": 2147616564,
+     "words": 7,
+     "returns": 1
+    },
+    {
+     "start": 2147616568,
+     "end": 2147616572,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147616576,
+     "end": 2147616964,
+     "words": 98,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147616968,
+     "end": 2147617192,
+     "words": 57,
+     "why": "no trailing `jr ra`: 57 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147620988,
+    2147621719
+   ],
+   "functions": [
+    {
+     "start": 2147620988,
+     "end": 2147621032,
+     "words": 12,
+     "returns": 1
+    },
+    {
+     "start": 2147621036,
+     "end": 2147621060,
+     "words": 7,
+     "returns": 1
+    },
+    {
+     "start": 2147621064,
+     "end": 2147621068,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147621072,
+     "end": 2147621476,
+     "words": 102,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147621480,
+     "end": 2147621716,
+     "words": 60,
+     "why": "no trailing `jr ra`: 60 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147621784,
+    2147624223
+   ],
+   "functions": [
+    {
+     "start": 2147621784,
+     "end": 2147622004,
+     "words": 56,
+     "returns": 1
+    },
+    {
+     "start": 2147622008,
+     "end": 2147623168,
+     "words": 291,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147623172,
+     "end": 2147624220,
+     "words": 263,
+     "why": "no trailing `jr ra`: 263 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": [
+    {
+     "at": 2147621944,
+     "word": "0x01600008"
+    },
+    {
+     "at": 2147623080,
+     "word": "0x03200008"
+    }
+   ]
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147671564,
+    2147671827
+   ],
+   "functions": [
+    {
+     "start": 2147671564,
+     "end": 2147671824,
+     "words": 66,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147685460,
+    2147686943
+   ],
+   "functions": [
+    {
+     "start": 2147685460,
+     "end": 2147686884,
+     "words": 357,
+     "returns": 1
+    },
+    {
+     "start": 2147686888,
+     "end": 2147686932,
+     "words": 12,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147686936,
+     "end": 2147686940,
+     "words": 2,
+     "why": "no trailing `jr ra`: 2 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147687132,
+    2147687287
+   ],
+   "functions": [
+    {
+     "start": 2147687132,
+     "end": 2147687284,
+     "words": 39,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147697132,
+    2147697279
+   ],
+   "functions": [
+    {
+     "start": 2147697132,
+     "end": 2147697136,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147697140,
+     "end": 2147697276,
+     "words": 35,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147708576,
+    2147708771
+   ],
+   "functions": [
+    {
+     "start": 2147708576,
+     "end": 2147708592,
+     "words": 5,
+     "returns": 1
+    },
+    {
+     "start": 2147708596,
+     "end": 2147708620,
+     "words": 7,
+     "returns": 1
+    },
+    {
+     "start": 2147708624,
+     "end": 2147708628,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147708632,
+     "end": 2147708768,
+     "words": 35,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147716988,
+    2147717103
+   ],
+   "functions": [
+    {
+     "start": 2147716988,
+     "end": 2147717100,
+     "words": 29,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147717304,
+    2147717671
+   ],
+   "functions": [
+    {
+     "start": 2147717304,
+     "end": 2147717340,
+     "words": 10,
+     "returns": 1
+    },
+    {
+     "start": 2147717344,
+     "end": 2147717432,
+     "words": 23,
+     "returns": 1
+    },
+    {
+     "start": 2147717436,
+     "end": 2147717504,
+     "words": 18,
+     "returns": 1
+    },
+    {
+     "start": 2147717508,
+     "end": 2147717596,
+     "words": 23,
+     "returns": 1
+    },
+    {
+     "start": 2147717600,
+     "end": 2147717668,
+     "words": 18,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147720968,
+    2147721011
+   ],
+   "functions": [
+    {
+     "start": 2147720968,
+     "end": 2147720996,
+     "words": 8,
+     "returns": 1
+    },
+    {
+     "start": 2147721000,
+     "end": 2147721008,
+     "words": 3,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147729684,
+    2147729799
+   ],
+   "functions": [
+    {
+     "start": 2147729684,
+     "end": 2147729772,
+     "words": 23,
+     "returns": 1
+    },
+    {
+     "start": 2147729776,
+     "end": 2147729796,
+     "words": 6,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147730368,
+    2147730455
+   ],
+   "functions": [
+    {
+     "start": 2147730368,
+     "end": 2147730452,
+     "words": 22,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147740856,
+    2147740939
+   ],
+   "functions": [
+    {
+     "start": 2147740856,
+     "end": 2147740936,
+     "words": 21,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147778532,
+    2147778655
+   ],
+   "functions": [
+    {
+     "start": 2147778532,
+     "end": 2147778652,
+     "words": 31,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147786192,
+    2147786743
+   ],
+   "functions": [
+    {
+     "start": 2147786192,
+     "end": 2147786632,
+     "words": 111,
+     "returns": 1
+    },
+    {
+     "start": 2147786636,
+     "end": 2147786644,
+     "words": 3,
+     "returns": 1
+    },
+    {
+     "start": 2147786648,
+     "end": 2147786652,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147786656,
+     "end": 2147786740,
+     "words": 22,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147815224,
+    2147815631
+   ],
+   "functions": [
+    {
+     "start": 2147815224,
+     "end": 2147815332,
+     "words": 28,
+     "returns": 1
+    },
+    {
+     "start": 2147815336,
+     "end": 2147815616,
+     "words": 71,
+     "returns": 1
+    },
+    {
+     "start": 2147815620,
+     "end": 2147815628,
+     "words": 3,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147922572,
+    2147922719
+   ],
+   "functions": [
+    {
+     "start": 2147922572,
+     "end": 2147922716,
+     "words": 37,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147933172,
+    2147934179
+   ],
+   "functions": [
+    {
+     "start": 2147933172,
+     "end": 2147933232,
+     "words": 16,
+     "returns": 1
+    },
+    {
+     "start": 2147933236,
+     "end": 2147933296,
+     "words": 16,
+     "returns": 1
+    },
+    {
+     "start": 2147933300,
+     "end": 2147933352,
+     "words": 14,
+     "returns": 1
+    },
+    {
+     "start": 2147933356,
+     "end": 2147933404,
+     "words": 13,
+     "returns": 1
+    },
+    {
+     "start": 2147933408,
+     "end": 2147933476,
+     "words": 18,
+     "returns": 1
+    },
+    {
+     "start": 2147933480,
+     "end": 2147933560,
+     "words": 21,
+     "returns": 1
+    },
+    {
+     "start": 2147933564,
+     "end": 2147933600,
+     "words": 10,
+     "returns": 1
+    },
+    {
+     "start": 2147933604,
+     "end": 2147933644,
+     "words": 11,
+     "returns": 1
+    },
+    {
+     "start": 2147933648,
+     "end": 2147933716,
+     "words": 18,
+     "returns": 1
+    },
+    {
+     "start": 2147933720,
+     "end": 2147933724,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147933728,
+     "end": 2147933880,
+     "words": 39,
+     "returns": 1
+    },
+    {
+     "start": 2147933884,
+     "end": 2147934068,
+     "words": 47,
+     "returns": 1
+    },
+    {
+     "start": 2147934072,
+     "end": 2147934176,
+     "words": 27,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147934832,
+    2147935539
+   ],
+   "functions": [
+    {
+     "start": 2147934832,
+     "end": 2147935028,
+     "words": 50,
+     "returns": 1
+    },
+    {
+     "start": 2147935032,
+     "end": 2147935048,
+     "words": 5,
+     "returns": 1
+    },
+    {
+     "start": 2147935052,
+     "end": 2147935068,
+     "words": 5,
+     "returns": 1
+    },
+    {
+     "start": 2147935072,
+     "end": 2147935108,
+     "words": 10,
+     "returns": 1
+    },
+    {
+     "start": 2147935112,
+     "end": 2147935184,
+     "words": 19,
+     "returns": 1
+    },
+    {
+     "start": 2147935188,
+     "end": 2147935288,
+     "words": 26,
+     "returns": 1
+    },
+    {
+     "start": 2147935292,
+     "end": 2147935368,
+     "words": 20,
+     "returns": 1
+    },
+    {
+     "start": 2147935372,
+     "end": 2147935440,
+     "words": 18,
+     "returns": 1
+    },
+    {
+     "start": 2147935444,
+     "end": 2147935536,
+     "words": 24,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147935604,
+    2147935967
+   ],
+   "functions": [
+    {
+     "start": 2147935604,
+     "end": 2147935692,
+     "words": 23,
+     "returns": 1
+    },
+    {
+     "start": 2147935696,
+     "end": 2147935832,
+     "words": 35,
+     "returns": 1
+    },
+    {
+     "start": 2147935836,
+     "end": 2147935852,
+     "words": 5,
+     "returns": 1
+    },
+    {
+     "start": 2147935856,
+     "end": 2147935872,
+     "words": 5,
+     "returns": 1
+    },
+    {
+     "start": 2147935876,
+     "end": 2147935880,
+     "words": 2,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147935884,
+     "end": 2147935964,
+     "words": 21,
+     "why": "no trailing `jr ra`: 21 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": [
+    {
+     "at": 2147935960,
+     "word": "0x00400008"
+    }
+   ]
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147936048,
+    2147936155
+   ],
+   "functions": [
+    {
+     "start": 2147936048,
+     "end": 2147936092,
+     "words": 12,
+     "returns": 1
+    },
+    {
+     "start": 2147936096,
+     "end": 2147936152,
+     "words": 15,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147937368,
+    2147937471
+   ],
+   "functions": [
+    {
+     "start": 2147937368,
+     "end": 2147937468,
+     "words": 26,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147937712,
+    2147937827
+   ],
+   "functions": [
+    {
+     "start": 2147937712,
+     "end": 2147937824,
+     "words": 29,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147937936,
+    2147938367
+   ],
+   "functions": [
+    {
+     "start": 2147937936,
+     "end": 2147938032,
+     "words": 25,
+     "returns": 1
+    },
+    {
+     "start": 2147938036,
+     "end": 2147938148,
+     "words": 29,
+     "returns": 1
+    },
+    {
+     "start": 2147938152,
+     "end": 2147938248,
+     "words": 25,
+     "returns": 1
+    },
+    {
+     "start": 2147938252,
+     "end": 2147938364,
+     "words": 29,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147939116,
+    2147939251
+   ],
+   "functions": [
+    {
+     "start": 2147939116,
+     "end": 2147939248,
+     "words": 34,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147940160,
+    2147940527
+   ],
+   "functions": [
+    {
+     "start": 2147940160,
+     "end": 2147940524,
+     "words": 92,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147941108,
+    2147941283
+   ],
+   "functions": [
+    {
+     "start": 2147941108,
+     "end": 2147941188,
+     "words": 21,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2147941192,
+     "end": 2147941280,
+     "words": 23,
+     "why": "no trailing `jr ra`: 23 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": [
+    {
+     "at": 2147941276,
+     "word": "0x00400008"
+    }
+   ]
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147941680,
+    2147942051
+   ],
+   "functions": [
+    {
+     "start": 2147941680,
+     "end": 2147941716,
+     "words": 10,
+     "returns": 1
+    },
+    {
+     "start": 2147941720,
+     "end": 2147941836,
+     "words": 30,
+     "returns": 1
+    },
+    {
+     "start": 2147941840,
+     "end": 2147941952,
+     "words": 29,
+     "returns": 1
+    },
+    {
+     "start": 2147941956,
+     "end": 2147942000,
+     "words": 12,
+     "returns": 1
+    },
+    {
+     "start": 2147942004,
+     "end": 2147942048,
+     "words": 12,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147947240,
+    2147947327
+   ],
+   "functions": [
+    {
+     "start": 2147947240,
+     "end": 2147947324,
+     "words": 22,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147948880,
+    2147949371
+   ],
+   "functions": [
+    {
+     "start": 2147948880,
+     "end": 2147948952,
+     "words": 19,
+     "returns": 1
+    },
+    {
+     "start": 2147948956,
+     "end": 2147949312,
+     "words": 90,
+     "returns": 1
+    },
+    {
+     "start": 2147949316,
+     "end": 2147949368,
+     "words": 14,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": [
+    {
+     "at": 2147949052,
+     "word": "0x00400008"
+    },
+    {
+     "at": 2147949168,
+     "word": "0x00400008"
+    }
+   ]
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147949460,
+    2147950099
+   ],
+   "functions": [
+    {
+     "start": 2147949460,
+     "end": 2147949724,
+     "words": 67,
+     "returns": 1
+    },
+    {
+     "start": 2147949728,
+     "end": 2147949796,
+     "words": 18,
+     "returns": 1
+    },
+    {
+     "start": 2147949800,
+     "end": 2147949860,
+     "words": 16,
+     "returns": 1
+    },
+    {
+     "start": 2147949864,
+     "end": 2147949976,
+     "words": 29,
+     "returns": 1
+    },
+    {
+     "start": 2147949980,
+     "end": 2147950060,
+     "words": 21,
+     "returns": 1
+    },
+    {
+     "start": 2147950064,
+     "end": 2147950096,
+     "words": 9,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": [
+    {
+     "at": 2147949536,
+     "word": "0x00400008"
+    }
+   ]
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147951308,
+    2147951451
+   ],
+   "functions": [
+    {
+     "start": 2147951308,
+     "end": 2147951368,
+     "words": 16,
+     "returns": 1
+    },
+    {
+     "start": 2147951372,
+     "end": 2147951376,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147951380,
+     "end": 2147951440,
+     "words": 16,
+     "returns": 1
+    },
+    {
+     "start": 2147951444,
+     "end": 2147951448,
+     "words": 2,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147952044,
+    2147952091
+   ],
+   "functions": [
+    {
+     "start": 2147952044,
+     "end": 2147952088,
+     "words": 12,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147953724,
+    2147953923
+   ],
+   "functions": [
+    {
+     "start": 2147953724,
+     "end": 2147953920,
+     "words": 50,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147954140,
+    2147954711
+   ],
+   "functions": [
+    {
+     "start": 2147954140,
+     "end": 2147954328,
+     "words": 48,
+     "returns": 1
+    },
+    {
+     "start": 2147954332,
+     "end": 2147954416,
+     "words": 22,
+     "returns": 1
+    },
+    {
+     "start": 2147954420,
+     "end": 2147954528,
+     "words": 28,
+     "returns": 1
+    },
+    {
+     "start": 2147954532,
+     "end": 2147954576,
+     "words": 12,
+     "returns": 1
+    },
+    {
+     "start": 2147954580,
+     "end": 2147954708,
+     "words": 33,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147954776,
+    2147954943
+   ],
+   "functions": [
+    {
+     "start": 2147954776,
+     "end": 2147954940,
+     "words": 42,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147955056,
+    2147955887
+   ],
+   "functions": [
+    {
+     "start": 2147955056,
+     "end": 2147955128,
+     "words": 19,
+     "returns": 1
+    },
+    {
+     "start": 2147955132,
+     "end": 2147955232,
+     "words": 26,
+     "returns": 1
+    },
+    {
+     "start": 2147955236,
+     "end": 2147955412,
+     "words": 45,
+     "returns": 1
+    },
+    {
+     "start": 2147955416,
+     "end": 2147955576,
+     "words": 41,
+     "returns": 1
+    },
+    {
+     "start": 2147955580,
+     "end": 2147955724,
+     "words": 37,
+     "returns": 1
+    },
+    {
+     "start": 2147955728,
+     "end": 2147955780,
+     "words": 14,
+     "returns": 1
+    },
+    {
+     "start": 2147955784,
+     "end": 2147955884,
+     "words": 26,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147958328,
+    2147958567
+   ],
+   "functions": [
+    {
+     "start": 2147958328,
+     "end": 2147958520,
+     "words": 49,
+     "returns": 1
+    },
+    {
+     "start": 2147958524,
+     "end": 2147958556,
+     "words": 9,
+     "returns": 1
+    },
+    {
+     "start": 2147958560,
+     "end": 2147958564,
+     "words": 2,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147958708,
+    2147959055
+   ],
+   "functions": [
+    {
+     "start": 2147958708,
+     "end": 2147958816,
+     "words": 28,
+     "returns": 1
+    },
+    {
+     "start": 2147958820,
+     "end": 2147958856,
+     "words": 10,
+     "returns": 1
+    },
+    {
+     "start": 2147958860,
+     "end": 2147958960,
+     "words": 26,
+     "returns": 1
+    },
+    {
+     "start": 2147958964,
+     "end": 2147959052,
+     "words": 23,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147983004,
+    2147983123
+   ],
+   "functions": [
+    {
+     "start": 2147983004,
+     "end": 2147983120,
+     "words": 30,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147984224,
+    2147984351
+   ],
+   "functions": [
+    {
+     "start": 2147984224,
+     "end": 2147984340,
+     "words": 30,
+     "returns": 1
+    },
+    {
+     "start": 2147984344,
+     "end": 2147984348,
+     "words": 2,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147992544,
+    2147992743
+   ],
+   "functions": [
+    {
+     "start": 2147992544,
+     "end": 2147992740,
+     "words": 50,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147993012,
+    2147993379
+   ],
+   "functions": [
+    {
+     "start": 2147993012,
+     "end": 2147993360,
+     "words": 88,
+     "returns": 1
+    },
+    {
+     "start": 2147993364,
+     "end": 2147993368,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2147993372,
+     "end": 2147993376,
+     "words": 2,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147994484,
+    2147994859
+   ],
+   "functions": [
+    {
+     "start": 2147994484,
+     "end": 2147994580,
+     "words": 25,
+     "returns": 1
+    },
+    {
+     "start": 2147994584,
+     "end": 2147994656,
+     "words": 19,
+     "returns": 1
+    },
+    {
+     "start": 2147994660,
+     "end": 2147994848,
+     "words": 48,
+     "returns": 1
+    },
+    {
+     "start": 2147994852,
+     "end": 2147994856,
+     "words": 2,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2147998844,
+    2147999039
+   ],
+   "functions": [
+    {
+     "start": 2147998844,
+     "end": 2147998916,
+     "words": 19,
+     "returns": 1
+    },
+    {
+     "start": 2147998920,
+     "end": 2147998932,
+     "words": 4,
+     "returns": 1
+    },
+    {
+     "start": 2147998936,
+     "end": 2147999036,
+     "words": 26,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148041880,
+    2148042055
+   ],
+   "functions": [
+    {
+     "start": 2148041880,
+     "end": 2148042020,
+     "words": 36,
+     "returns": 1
+    },
+    {
+     "start": 2148042024,
+     "end": 2148042052,
+     "words": 8,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148042532,
+    2148042595
+   ],
+   "functions": [
+    {
+     "start": 2148042532,
+     "end": 2148042592,
+     "words": 16,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148055824,
+    2148056479
+   ],
+   "functions": [
+    {
+     "start": 2148055824,
+     "end": 2148056476,
+     "words": 164,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148118972,
+    2148119067
+   ],
+   "functions": [
+    {
+     "start": 2148118972,
+     "end": 2148119024,
+     "words": 14,
+     "returns": 1
+    },
+    {
+     "start": 2148119028,
+     "end": 2148119064,
+     "words": 10,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148147312,
+    2148147623
+   ],
+   "functions": [
+    {
+     "start": 2148147312,
+     "end": 2148147440,
+     "words": 33,
+     "returns": 1
+    },
+    {
+     "start": 2148147444,
+     "end": 2148147460,
+     "words": 5,
+     "returns": 1
+    },
+    {
+     "start": 2148147464,
+     "end": 2148147600,
+     "words": 35,
+     "returns": 1
+    },
+    {
+     "start": 2148147604,
+     "end": 2148147620,
+     "words": 5,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148147852,
+    2148147995
+   ],
+   "functions": [
+    {
+     "start": 2148147852,
+     "end": 2148147972,
+     "words": 31,
+     "returns": 1
+    },
+    {
+     "start": 2148147976,
+     "end": 2148147992,
+     "words": 5,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148148368,
+    2148148559
+   ],
+   "functions": [
+    {
+     "start": 2148148368,
+     "end": 2148148492,
+     "words": 32,
+     "returns": 1
+    },
+    {
+     "start": 2148148496,
+     "end": 2148148556,
+     "words": 16,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148211692,
+    2148211823
+   ],
+   "functions": [
+    {
+     "start": 2148211692,
+     "end": 2148211772,
+     "words": 21,
+     "returns": 1
+    },
+    {
+     "start": 2148211776,
+     "end": 2148211820,
+     "words": 12,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "stage2",
+   "region": [
+    2148213232,
+    2148213399
+   ],
+   "functions": [
+    {
+     "start": 2148213232,
+     "end": 2148213396,
+     "words": 42,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_0072610",
+   "region": [
+    2149072984,
+    2149075735
+   ],
+   "functions": [
+    {
+     "start": 2149072984,
+     "end": 2149073960,
+     "words": 245,
+     "returns": 1
+    },
+    {
+     "start": 2149073964,
+     "end": 2149074020,
+     "words": 15,
+     "returns": 1
+    },
+    {
+     "start": 2149074024,
+     "end": 2149074852,
+     "words": 208,
+     "returns": 1
+    },
+    {
+     "start": 2149074856,
+     "end": 2149074900,
+     "words": 12,
+     "returns": 1
+    },
+    {
+     "start": 2149074904,
+     "end": 2149075248,
+     "words": 87,
+     "returns": 1
+    },
+    {
+     "start": 2149075252,
+     "end": 2149075308,
+     "words": 15,
+     "returns": 1
+    },
+    {
+     "start": 2149075312,
+     "end": 2149075576,
+     "words": 67,
+     "returns": 1
+    },
+    {
+     "start": 2149075580,
+     "end": 2149075636,
+     "words": 15,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2149075640,
+     "end": 2149075732,
+     "words": 24,
+     "why": "no trailing `jr ra`: 24 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_007e132",
+   "region": [
+    2149046632,
+    2149046687
+   ],
+   "functions": [
+    {
+     "start": 2149046632,
+     "end": 2149046684,
+     "words": 14,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_0087352",
+   "region": [
+    2148947996,
+    2148948047
+   ],
+   "functions": [
+    {
+     "start": 2148947996,
+     "end": 2148948044,
+     "words": 13,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_0097e42",
+   "region": [
+    2148939616,
+    2148939719
+   ],
+   "functions": [
+    {
+     "start": 2148939616,
+     "end": 2148939696,
+     "words": 21,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2148939700,
+     "end": 2148939716,
+     "words": 5,
+     "why": "no trailing `jr ra`: 5 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_009dd02",
+   "region": [
+    2148939548,
+    2148939687
+   ],
+   "functions": [
+    {
+     "start": 2148939548,
+     "end": 2148939684,
+     "words": 35,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_009dd02",
+   "region": [
+    2148951480,
+    2148951619
+   ],
+   "functions": [
+    {
+     "start": 2148951480,
+     "end": 2148951484,
+     "words": 2,
+     "returns": 1
+    },
+    {
+     "start": 2148951488,
+     "end": 2148951552,
+     "words": 17,
+     "returns": 1
+    },
+    {
+     "start": 2148951556,
+     "end": 2148951616,
+     "words": 16,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00a43b6",
+   "region": [
+    2148945488,
+    2148945555
+   ],
+   "functions": [
+    {
+     "start": 2148945488,
+     "end": 2148945552,
+     "words": 17,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00a733e",
+   "region": [
+    2148951280,
+    2148951375
+   ],
+   "functions": [
+    {
+     "start": 2148951280,
+     "end": 2148951372,
+     "words": 24,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00a9d94",
+   "region": [
+    2148969448,
+    2148969743
+   ],
+   "functions": [
+    {
+     "start": 2148969448,
+     "end": 2148969740,
+     "words": 74,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00a9d94",
+   "region": [
+    2148971028,
+    2148971431
+   ],
+   "functions": [
+    {
+     "start": 2148971028,
+     "end": 2148971428,
+     "words": 101,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00a9d94",
+   "region": [
+    2148971836,
+    2148972103
+   ],
+   "functions": [
+    {
+     "start": 2148971836,
+     "end": 2148972100,
+     "words": 67,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00ae24a",
+   "region": [
+    2148949528,
+    2148949723
+   ],
+   "functions": [
+    {
+     "start": 2148949528,
+     "end": 2148949556,
+     "words": 8,
+     "returns": 1
+    },
+    {
+     "start": 2148949560,
+     "end": 2148949720,
+     "words": 41,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00b08a2",
+   "region": [
+    2148953752,
+    2148953919
+   ],
+   "functions": [
+    {
+     "start": 2148953752,
+     "end": 2148953800,
+     "words": 13,
+     "returns": 1
+    },
+    {
+     "start": 2148953804,
+     "end": 2148953876,
+     "words": 19,
+     "returns": 1
+    },
+    {
+     "start": 2148953880,
+     "end": 2148953908,
+     "words": 8,
+     "returns": 1
+    }
+   ],
+   "rejected": [
+    {
+     "start": 2148953912,
+     "end": 2148953916,
+     "words": 2,
+     "why": "no trailing `jr ra`: 2 word(s) after the last return"
+    }
+   ],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00b321e",
+   "region": [
+    2148944828,
+    2148945279
+   ],
+   "functions": [
+    {
+     "start": 2148944828,
+     "end": 2148944868,
+     "words": 11,
+     "returns": 1
+    },
+    {
+     "start": 2148944872,
+     "end": 2148944884,
+     "words": 4,
+     "returns": 1
+    },
+    {
+     "start": 2148944888,
+     "end": 2148945088,
+     "words": 51,
+     "returns": 1
+    },
+    {
+     "start": 2148945092,
+     "end": 2148945276,
+     "words": 47,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  },
+  {
+   "image": "ovl_00b5346",
+   "region": [
+    2148937444,
+    2148937523
+   ],
+   "functions": [
+    {
+     "start": 2148937444,
+     "end": 2148937520,
+     "words": 20,
+     "returns": 1
+    }
+   ],
+   "rejected": [],
+   "tail_jumps": []
+  }
+ ]
+}

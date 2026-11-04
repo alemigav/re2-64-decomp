@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "89a741d",
+   "subject": "M338: the unclassified bucket measured \u2014 8.7% of it is code, 70% still has no name",
+   "milestones": [
+    338
+   ]
+  },
+  {
    "sha": "7d33821",
    "subject": "M337: the 13-word call-and-add pair, and the glide that says there is nothing left to glide on",
    "milestones": [

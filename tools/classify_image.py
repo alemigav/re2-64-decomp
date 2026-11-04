@@ -206,6 +206,37 @@ def cartridge_check(root: Path = ROOT):
             (f"every padding range is a single value, 0x00 or 0xFF ({len(bad)} violate: {bad[:3]})", ok_pad)]
 
 
+def code_run_evidence(blob, base, size):
+    """Does this byte range decode as CODE? Returns the evidence, so a caller can report or gate it (M338/M339).
+
+    Four tests, and each earns its place:
+
+      * a `jr ra` is present -- necessary and, on its own, worthless: 408 of the 1 574 bucket runs hold the word
+        `0x03E00008` by chance;
+      * **>= 90 %** of `j`/`jal` targets land in the cartridge window `0x80000000..0x80800000`. NOT "all": a real
+        code region carries embedded data (a switch table sits inside `0x80022a1c`), and three of the nine dense
+        regions were rejected by an all-targets rule before this was measured (M339);
+      * **>= 8 distinct opcodes**, and
+      * **no opcode over 40 %** of the words -- a float table is thousands of `lui`-shaped words and fails both.
+
+    A per-image target test is wrong here: stage2 calls boot code legitimately, which rejected 24 KB of real code
+    in the first draft of M338.
+    """
+    ws = [int.from_bytes(blob[i:i + 4], "big") for i in range(0, len(blob) - 3, 4)]
+    if not ws:
+        return None
+    ops = [w >> 26 for w in ws]
+    jr = any(w == 0x03E00008 for w in ws)
+    br = [w for w in ws if (w >> 26) in (2, 3)]
+    jumps = [((w & 0x03FFFFFF) << 2) | (base & 0xF0000000) for w in br]
+    in_window = ([t for t in jumps if 0x80000000 <= t < 0x80800000] if jumps else [])
+    frac = (len(in_window) / len(jumps)) if jumps else 1.0
+    distinct = len(set(ops))
+    dominant = max(ops.count(o) for o in set(ops)) / len(ops)
+    return {"jr": jr, "jump_fraction": frac, "distinct": distinct, "dominant": dominant,
+            "is_code": bool(jr and frac >= 0.90 and distinct >= 8 and dominant <= 0.40)}
+
+
 def unclassified_report(root: Path = ROOT):
     """What the `unclassified` bucket actually contains, measured rather than renamed (M338).
 
@@ -242,27 +273,15 @@ def unclassified_report(root: Path = ROOT):
             if not words:
                 continue
             runs += 1
-            jr = any(w == 0x03E00008 for w in words)
-            br = [w for w in words if (w >> 26) in (2, 3, 4, 5, 6, 7, 1)]
-            # A `j`/`jal` target must land in the cartridge's own address window, not in this image: stage2
-            # calls boot code (`jal 0x8000xxxx`) legitimately, so a per-image test rejected real code.
-            jumps = [((w & 0x03FFFFFF) << 2) | (base & 0xF0000000) for w in br if (w >> 26) in (2, 3)]
-            in_image = all(0x80000000 <= tgt < 0x80800000 for tgt in jumps)
+            ev = code_run_evidence(b, base, size)
             sane = [f for f in (struct.unpack(">f", b[k:k + 4])[0] for k in range(0, len(b) - 3, 4))
                     if f == f and abs(f) < 1e6]
             asc = sum(1 for x, y in zip(sane, sane[1:]) if y >= x)
             mono = asc / (len(sane) - 1) if len(sane) > 1 else 0.0
             ptrs = sum(1 for w in words if base <= w < base + size)
-            # A `jr ra` word is 0x03E00008, which data can hold by chance -- 408 runs do, against 37 that
-            # look like code. So "code" needs a return, in-window jump targets, **>= 8 distinct opcodes**
-            # and **no single opcode over 40 % of the words**. A float table is all `lui`-shaped and fails
-            # both density tests; the dense stage2 regions pass them with 22-26 distinct opcodes.
-            ops = [w >> 26 for w in words]
-            distinct = len(set(ops))
-            dominant = max(ops.count(o) for o in set(ops)) / len(ops)
             if n < MIN_PAD and (b.count(0x00) == n or b.count(0xFF) == n):
                 kind = "short_fill"
-            elif jr and in_image and distinct >= 8 and dominant <= 0.40:
+            elif ev["is_code"]:
                 kind = "code"
             elif len(sane) >= 8 and len(sane) / max(len(words), 1) >= 0.95 and mono >= 0.90:
                 kind = "float_table"
