@@ -1,4 +1,4 @@
-# M313 — the 4 × 53 group: decoded, drafted, and stopped at 33/53 by the same wall
+# M313 — the 4 x 53 group: decoded, drafted, and stopped at 33/53 by the same wall
 
 The largest remaining duplicate group, taken as M312 planned. It is a **real function** — and it is blocked by
 allocation, not by anything in the C.

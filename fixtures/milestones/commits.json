@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "8e2244b",
+   "subject": "M313: the 4x53 group decoded and drafted to 33/53 \u2014 the callee-saved set is the allocator again, so it stays unregistered",
+   "milestones": [
+    313
+   ]
+  },
+  {
    "sha": "4cff9c5",
    "subject": "M312: the duplicate census vetted (85 reconstructible in 38 groups, 4 fragments) \u2014 next target the 4x53 group",
    "milestones": [

@@ -330,7 +330,7 @@ at the foot of this file.
 | 310 | **M310** — the copy that forces the annul: `u16` truncation, proven by removing it | `docs/log/M310-the-truncation-copy.md` |
 | 311 | **M311** — REG_TRACE: it is a tie-break, so the duplicates are next — and a defect in M309's patch | `docs/log/M311-regtrace-it-is-a-tie-break.md` |
 | 312 | **M312** — the duplicate census, vetted: 85 candidates, and two things I had wrong | `docs/log/M312-the-duplicate-census-vetted.md` |
-| 313 | **M313** — the 4 × 53 group: decoded, drafted, and stopped at 33/53 by the same wall | `docs/log/M313-the-4x53-group.md` |
+| 313 | **M313** — the 4 x 53 group: decoded, drafted, and stopped at 33/53 by the same wall | `docs/log/M313-the-4x53-group.md` |
 
 ## The gaps, and why they are empty
 
