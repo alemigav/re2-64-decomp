@@ -39,7 +39,7 @@ ROM = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 MAP = "manifests/byte_map.json"
 
 CLASSES = ["function_body", "jump_table", "data_named", "float_table", "pointer_table", "string_table",
-           "padding", "fill", "gap", "unclassified"]
+           "padding", "fill", "gap", "u16_table", "dense_data", "unclassified"]
 DAT = re.compile(r"\bDAT_([0-9a-fA-F]{8})\b")
 MIN_PAD = 16
 
@@ -231,6 +231,22 @@ def table_runs(blob, base, window=None):
 
 MIN_PAD_FLOOR = 4
 GAP_MAX = 64
+U16_MAX = 0x1000          # a packed coordinate/value: both halves of the word under 4096
+U16_FRACTION = 0.90
+U16_DISTINCT = 16
+DENSE_ENTROPY = 5.0       # bits per byte
+
+
+def entropy(b):
+    """Shannon entropy of the bytes, in bits per byte. A measurement of density, never of *content*."""
+    from math import log2
+    if not b:
+        return 0.0
+    counts = {}
+    for byte in b:
+        counts[byte] = counts.get(byte, 0) + 1
+    n = len(b)
+    return -sum((c / n) * log2(c / n) for c in counts.values())
 
 
 def relabel_residue(runs, blob, base):
@@ -256,6 +272,22 @@ def relabel_residue(runs, blob, base):
                                    or (k + 1 < len(runs) and runs[k + 1][2] == "function_body")):
             r[2] = "gap"
             r[3] = "under 64 B, between function bodies"
+        elif len(b) >= 64:
+            words = [int.from_bytes(b[i:i + 4], "big") for i in range(0, len(b) - 3, 4)]
+            halves = [h for w in words for h in (w >> 16, w & 0xFFFF)]
+            # u16_table: packed small values -- a positive property, so it goes first. ≥ 90 % of the halves under
+            # 4096 and ≥ 16 distinct of them: coordinate/packed tables. M344's measurement found 34 728 B of this.
+            if halves and sum(1 for h in halves if h < U16_MAX) >= U16_FRACTION * len(halves) \
+                    and len(set(halves)) >= U16_DISTINCT:
+                r[2] = "u16_table"
+                r[3] = "packed values: 90 %+ of the u16 halves under 4096"
+            else:
+                # dense_data: NOT an identification. It is the residue measured by density -- bytes no rule can
+                # classify, five or more bits of entropy each. Stated as such so nobody reads it as understood.
+                h = entropy(b)
+                if h >= DENSE_ENTROPY:
+                    r[2] = "dense_data"
+                    r[3] = "no rule fires; %.1f bits/byte of entropy -- measured density, not identified content" % h
     return runs
 
 
@@ -360,6 +392,19 @@ def check(rep):
                   _relabelled(bytes(range(48)), 48) == "gap"
                   and relabel_residue([[0x80100000, 0x8010002F, "unclassified", "y"]], bytes(range(48)),
                                       0x80100000)[0][2] == "unclassified"))
+
+    # M344b: the residue's two classes, on the same synthetic run bed. `u16_table` is a *positive* property and goes
+    # first; `dense_data` is a density measurement, so its case has to show a low-entropy run staying unclassified.
+    packed = b"".join((0x0100 + i).to_bytes(4, "big") for i in range(32))     # halves 0x0100+i, all under 4096
+    big = b"".join((0x80008000).to_bytes(4, "big") for i in range(32))        # halves at 0x8000: not packed
+    dense = bytes(0xA0 + (i % 40) for i in range(200))                        # ~5.3 bits/byte, halves >= 0x1000
+    flat = bytes([0x80]) * 200                                               # one value: no density, no structure
+    cases.append(("a run of 32 packed small u16 values is `u16_table`, and the same run at 0x8000 is not",
+                  _relabelled(packed, len(packed)) == "u16_table"
+                  and _relabelled(big, len(big)) == "unclassified"))
+    cases.append(("a high-entropy run is `dense_data`, and a flat run with no structure stays unclassified",
+                  _relabelled(dense, len(dense)) == "dense_data"
+                  and _relabelled(flat, len(flat)) == "unclassified"))
 
     # M343: the string-table rule, pinned on synthetic bytes -- text is claimed, a table of small byte codes is
     # not, and neither is a run of one repeated text-safe byte. These are the cases the audit mutates.

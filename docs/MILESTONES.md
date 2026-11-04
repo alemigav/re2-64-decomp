@@ -361,7 +361,8 @@ at the foot of this file.
 | 341 | **M341** — the rung's second customer: 187 functions the census never had, and the bucket's code goes to zero | `docs/log/M341-the-rung-adopts-the-measured-functions.md` |
 | 342 | **M342** — `float_table` and `pointer_table` become real classes, with mutations that prove the rules can fail | `docs/log/M342-float-and-pointer-tables-become-classes.md` |
 | 343 | **M343** — `string_table` becomes a class, and the rule needs words, not just printable bytes | `docs/log/M343-string-table-becomes-a-class.md` |
-| 344 | **M344** — `fill` and `gap`: the unclassified bucket is now exactly one thing | `docs/log/M344-fill-and-gap-the-bucket-becomes-one-thing.md` |
+| 344 | **M344** (i) — `fill` and `gap`: the unclassified bucket is now exactly one thing | `docs/log/M344-fill-and-gap-the-bucket-becomes-one-thing.md` |
+| 344 | **M344** (ii) — `fill` and `gap`: the unclassified bucket is now exactly one thing | `docs/log/M344-fill-and-gap-the-bucket-becomes-one-thing.md` |
 
 ## The gaps, and why they are empty
 

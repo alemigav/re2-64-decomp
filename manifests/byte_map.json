@@ -10,6 +10,8 @@
   "padding",
   "fill",
   "gap",
+  "u16_table",
+  "dense_data",
   "unclassified"
  ],
  "images": {
@@ -47,8 +49,8 @@
    [
     2147485400,
     2147486823,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.3 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147486824,
@@ -83,8 +85,8 @@
    [
     2147487828,
     2147488087,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147488088,
@@ -155,8 +157,8 @@
    [
     2147489580,
     2147492431,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147492432,
@@ -167,8 +169,8 @@
    [
     2147492980,
     2147494691,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147494692,
@@ -1385,8 +1387,8 @@
    [
     2147556288,
     2147556499,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147556500,
@@ -1463,8 +1465,8 @@
    [
     2147557704,
     2147558999,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147559000,
@@ -1475,8 +1477,8 @@
    [
     2147559040,
     2147559251,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2147559252,
@@ -1487,8 +1489,8 @@
    [
     2147559268,
     2147559443,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2147559444,
@@ -1649,8 +1651,8 @@
    [
     2147559936,
     2147563651,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2147563652,
@@ -1693,8 +1695,8 @@
    [
     2147585224,
     2147586839,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147586840,
@@ -1705,8 +1707,8 @@
    [
     2147587160,
     2147591455,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.8 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147591456,
@@ -1717,8 +1719,8 @@
    [
     2147591608,
     2147593547,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147593548,
@@ -1729,8 +1731,8 @@
    [
     2147593788,
     2147594227,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.6 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147594228,
@@ -1753,8 +1755,8 @@
    [
     2147594280,
     2147595471,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.6 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147595472,
@@ -1765,8 +1767,8 @@
    [
     2147595492,
     2147596071,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147596072,
@@ -1789,8 +1791,8 @@
    [
     2147596488,
     2147598743,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.7 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147598744,
@@ -1801,8 +1803,8 @@
    [
     2147598900,
     2147599531,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147599532,
@@ -1813,8 +1815,8 @@
    [
     2147599980,
     2147604415,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.6 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147604416,
@@ -1825,8 +1827,8 @@
    [
     2147604664,
     2147606167,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.7 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147606168,
@@ -1837,8 +1839,8 @@
    [
     2147606284,
     2147610671,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.8 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147610672,
@@ -1855,8 +1857,8 @@
    [
     2147611960,
     2147612607,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147612608,
@@ -1867,8 +1869,8 @@
    [
     2147612612,
     2147612763,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.0 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147612764,
@@ -1879,8 +1881,8 @@
    [
     2147612788,
     2147615663,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.9 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147615664,
@@ -1897,8 +1899,8 @@
    [
     2147616968,
     2147617195,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147617196,
@@ -1909,8 +1911,8 @@
    [
     2147617284,
     2147620119,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.9 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147620120,
@@ -1927,8 +1929,8 @@
    [
     2147621480,
     2147621719,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.6 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147621720,
@@ -1945,8 +1947,8 @@
    [
     2147623172,
     2147624223,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.6 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147624224,
@@ -1957,8 +1959,8 @@
    [
     2147624380,
     2147625011,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147625012,
@@ -1969,8 +1971,8 @@
    [
     2147625500,
     2147631583,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147631584,
@@ -1981,8 +1983,8 @@
    [
     2147632532,
     2147633007,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.3 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147633008,
@@ -1993,8 +1995,8 @@
    [
     2147633180,
     2147634479,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147634480,
@@ -2569,8 +2571,8 @@
    [
     2147734668,
     2147734879,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.0 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147734880,
@@ -2947,8 +2949,8 @@
    [
     2147809484,
     2147809723,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147809724,
@@ -3115,8 +3117,8 @@
    [
     2147854184,
     2147855095,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147855096,
@@ -3331,8 +3333,8 @@
    [
     2147927364,
     2147927551,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147927552,
@@ -3775,8 +3777,8 @@
    [
     2147961028,
     2147961723,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2147961724,
@@ -4459,8 +4461,8 @@
    [
     2148070592,
     2148074743,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148074744,
@@ -4495,8 +4497,8 @@
    [
     2148093436,
     2148094571,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148094572,
@@ -4507,8 +4509,8 @@
    [
     2148095608,
     2148096887,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148096888,
@@ -4921,8 +4923,8 @@
    [
     2148214532,
     2148218431,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.3 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148218432,
@@ -5101,8 +5103,8 @@
    [
     2148232004,
     2148232127,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148232128,
@@ -5125,8 +5127,8 @@
    [
     2148232196,
     2148232511,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148232512,
@@ -7015,8 +7017,8 @@
    [
     2148252928,
     2148253067,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148253068,
@@ -7075,8 +7077,8 @@
    [
     2148254960,
     2148255199,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148255200,
@@ -7141,8 +7143,8 @@
    [
     2148256016,
     2148256311,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148256312,
@@ -7189,8 +7191,8 @@
    [
     2148257056,
     2148257351,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148257352,
@@ -7249,8 +7251,8 @@
    [
     2148258064,
     2148258975,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148258976,
@@ -7519,8 +7521,8 @@
    [
     2148290472,
     2148291287,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148291288,
@@ -8857,8 +8859,8 @@
    [
     2148447304,
     2148447399,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148447400,
@@ -8875,8 +8877,8 @@
    [
     2148447444,
     2148447547,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148447548,
@@ -8917,8 +8919,8 @@
    [
     2148447664,
     2148447747,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148447748,
@@ -8935,8 +8937,8 @@
    [
     2148447792,
     2148447875,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148447876,
@@ -8953,8 +8955,8 @@
    [
     2148447920,
     2148448139,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148448140,
@@ -9139,8 +9141,8 @@
    [
     2148461620,
     2148465711,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148465712,
@@ -9295,8 +9297,8 @@
    [
     2148466972,
     2148467199,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 7.0 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148467200,
@@ -9313,8 +9315,8 @@
    [
     2148467272,
     2148467455,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 7.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148467456,
@@ -9337,8 +9339,8 @@
    [
     2148471844,
     2148471995,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.0 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148471996,
@@ -9373,8 +9375,8 @@
    [
     2148490800,
     2148507183,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 7.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148507184,
@@ -9397,8 +9399,8 @@
    [
     2148507204,
     2148507327,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148507328,
@@ -9409,8 +9411,8 @@
    [
     2148507332,
     2148508515,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148508516,
@@ -9421,8 +9423,8 @@
    [
     2148508520,
     2148509291,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148509292,
@@ -9433,8 +9435,8 @@
    [
     2148509296,
     2148510615,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.0 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148510616,
@@ -9445,8 +9447,8 @@
    [
     2148510620,
     2148512759,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148512760,
@@ -9457,8 +9459,8 @@
    [
     2148512764,
     2148517911,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148517912,
@@ -9469,8 +9471,8 @@
    [
     2148517916,
     2148523935,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.0 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148523936,
@@ -9481,8 +9483,8 @@
    [
     2148523940,
     2148524543,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148524544,
@@ -10063,8 +10065,8 @@
    [
     2148588928,
     2148597203,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148597204,
@@ -10741,8 +10743,8 @@
    [
     2148606680,
     2148606983,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148606984,
@@ -10927,8 +10929,8 @@
    [
     2148608000,
     2148608063,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148608064,
@@ -11335,8 +11337,8 @@
    [
     2148619092,
     2148619231,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.0 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148619232,
@@ -11371,8 +11373,8 @@
    [
     2148619328,
     2148620703,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148620704,
@@ -11413,8 +11415,8 @@
    [
     2148621928,
     2148622175,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148622176,
@@ -11455,8 +11457,8 @@
    [
     2148622340,
     2148622667,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148622668,
@@ -11467,8 +11469,8 @@
    [
     2148622672,
     2148626135,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148626136,
@@ -11479,8 +11481,8 @@
    [
     2148626140,
     2148626279,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148626280,
@@ -11491,8 +11493,8 @@
    [
     2148626284,
     2148626423,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148626424,
@@ -11509,8 +11511,8 @@
    [
     2148626716,
     2148635643,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148635644,
@@ -11521,8 +11523,8 @@
    [
     2148635648,
     2148635983,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148635984,
@@ -12043,8 +12045,8 @@
    [
     2148644672,
     2148647303,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148647304,
@@ -12433,8 +12435,8 @@
    [
     2148693448,
     2148698103,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148698104,
@@ -12649,8 +12651,8 @@
    [
     2148700224,
     2148702787,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148702788,
@@ -12763,8 +12765,8 @@
    [
     2148704504,
     2148705507,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148705508,
@@ -12775,8 +12777,8 @@
    [
     2148705524,
     2148708559,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.4 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148708560,
@@ -12787,8 +12789,8 @@
    [
     2148708576,
     2148709743,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.2 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148709744,
@@ -13411,8 +13413,8 @@
    [
     2148727680,
     2148727999,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148728000,
@@ -13423,8 +13425,8 @@
    [
     2148728100,
     2148728259,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148728260,
@@ -13555,8 +13557,8 @@
    [
     2148730840,
     2148732087,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148732088,
@@ -13879,8 +13881,8 @@
    [
     2148736940,
     2148737047,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148737048,
@@ -13891,8 +13893,8 @@
    [
     2148737052,
     2148737159,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148737160,
@@ -13903,8 +13905,8 @@
    [
     2148737164,
     2148737271,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148737272,
@@ -14707,8 +14709,8 @@
    [
     2148748156,
     2148748239,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148748240,
@@ -14887,8 +14889,8 @@
    [
     2148749220,
     2148749343,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148749344,
@@ -14941,8 +14943,8 @@
    [
     2148749492,
     2148749587,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148749588,
@@ -15535,8 +15537,8 @@
    [
     2148753156,
     2148753715,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148753716,
@@ -15577,8 +15579,8 @@
    [
     2148754216,
     2148756303,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148756304,
@@ -15589,8 +15591,8 @@
    [
     2148756308,
     2148756855,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 6.7 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148756856,
@@ -16023,8 +16025,8 @@
    [
     2149076876,
     2149077051,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2149077052,
@@ -16035,8 +16037,8 @@
    [
     2149077056,
     2149078011,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2149078012,
@@ -17071,8 +17073,8 @@
    [
     2149058272,
     2149058379,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2149058380,
@@ -17331,8 +17333,8 @@
    [
     2149039432,
     2149039631,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.1 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2149039632,
@@ -17543,8 +17545,8 @@
    [
     2148986376,
     2148989735,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.6 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148989736,
@@ -17609,8 +17611,8 @@
    [
     2148997808,
     2148997911,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148997912,
@@ -17657,8 +17659,8 @@
    [
     2148997952,
     2148998027,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148998028,
@@ -19335,8 +19337,8 @@
    [
     2148960628,
     2148960703,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148960704,
@@ -19601,8 +19603,8 @@
    [
     2148949952,
     2148950055,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148950056,
@@ -19927,8 +19929,8 @@
    [
     2148954488,
     2148954559,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148954560,
@@ -20121,8 +20123,8 @@
    [
     2148957384,
     2148957483,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148957484,
@@ -20999,8 +21001,8 @@
    [
     2148940108,
     2148940539,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.5 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148940540,
@@ -21571,8 +21573,8 @@
    [
     2148951880,
     2148952099,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148952100,
@@ -21903,8 +21905,8 @@
    [
     2148951060,
     2148951339,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148951340,
@@ -22457,8 +22459,8 @@
    [
     2148941460,
     2148941523,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148941524,
@@ -23001,8 +23003,8 @@
    [
     2148946028,
     2148947675,
-    "unclassified",
-    "no artifact names it"
+    "dense_data",
+    "no rule fires; 5.6 bits/byte of entropy -- measured density, not identified content"
    ],
    [
     2148947676,
@@ -24243,8 +24245,8 @@
    [
     2148954132,
     2148954907,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148954908,
@@ -24327,8 +24329,8 @@
    [
     2148955164,
     2148955359,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148955360,
@@ -24869,8 +24871,8 @@
    [
     2148954828,
     2148954943,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148954944,
@@ -24887,8 +24889,8 @@
    [
     2148954988,
     2148955079,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148955080,
@@ -24917,8 +24919,8 @@
    [
     2148955124,
     2148955199,
-    "unclassified",
-    "no artifact names it"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148955200,
@@ -25592,23 +25594,27 @@
   "boot": {
    "function_body": 58328,
    "gap": 396,
-   "unclassified": 17436,
+   "dense_data": 7756,
+   "unclassified": 5576,
    "padding": 632,
    "data_named": 44,
    "fill": 576,
    "string_table": 852,
    "jump_table": 16,
-   "pointer_table": 600
+   "pointer_table": 600,
+   "u16_table": 4104
   },
   "stage2": {
    "function_body": 579632,
-   "unclassified": 191896,
+   "unclassified": 52940,
    "padding": 345552,
+   "dense_data": 114660,
    "data_named": 4312,
    "fill": 660,
    "gap": 2116,
    "string_table": 12080,
    "jump_table": 340,
+   "u16_table": 24296,
    "pointer_table": 11672,
    "float_table": 23980
   },
@@ -25620,7 +25626,8 @@
    "string_table": 56,
    "pointer_table": 40,
    "data_named": 428,
-   "unclassified": 2580
+   "unclassified": 1448,
+   "u16_table": 1132
   },
   "ovl_007688e": {
    "function_body": 20372,
@@ -25638,28 +25645,32 @@
    "jump_table": 12,
    "pointer_table": 204,
    "data_named": 296,
-   "unclassified": 1924,
+   "unclassified": 1816,
    "fill": 8,
+   "u16_table": 108,
    "padding": 36444
   },
   "ovl_007af7a": {
    "function_body": 10468,
    "gap": 28,
-   "unclassified": 2024,
+   "dense_data": 200,
    "fill": 8,
    "jump_table": 4,
+   "unclassified": 1824,
    "data_named": 100,
    "pointer_table": 44,
    "padding": 8316
   },
   "ovl_007c552": {
    "function_body": 8656,
-   "unclassified": 4720,
+   "dense_data": 3360,
    "gap": 16,
    "jump_table": 4,
    "pointer_table": 72,
+   "unclassified": 1180,
    "padding": 1464,
-   "data_named": 172
+   "data_named": 172,
+   "u16_table": 180
   },
   "ovl_007e132": {
    "function_body": 12064,
@@ -25701,30 +25712,33 @@
    "function_body": 27056,
    "gap": 48,
    "jump_table": 68,
-   "unclassified": 1016,
+   "unclassified": 940,
    "pointer_table": 528,
    "fill": 12,
    "data_named": 56,
+   "u16_table": 76,
    "padding": 16
   },
   "ovl_008bef8": {
    "function_body": 16684,
    "gap": 72,
-   "unclassified": 892,
+   "unclassified": 788,
    "fill": 12,
    "jump_table": 28,
    "pointer_table": 260,
    "data_named": 52,
+   "u16_table": 104,
    "padding": 48
   },
   "ovl_008e046": {
    "function_body": 21068,
    "gap": 36,
    "jump_table": 48,
-   "unclassified": 1060,
+   "unclassified": 988,
    "pointer_table": 340,
    "fill": 8,
    "data_named": 48,
+   "u16_table": 72,
    "padding": 16
   },
   "ovl_0090698": {
@@ -25732,9 +25746,10 @@
    "gap": 8,
    "jump_table": 20,
    "pointer_table": 556,
-   "unclassified": 472,
+   "unclassified": 372,
    "fill": 8,
    "data_named": 48,
+   "u16_table": 100,
    "padding": 48
   },
   "ovl_0093192": {
@@ -25768,9 +25783,10 @@
    "function_body": 6796,
    "gap": 76,
    "jump_table": 8,
-   "unclassified": 664,
+   "unclassified": 232,
    "pointer_table": 124,
    "data_named": 44,
+   "dense_data": 432,
    "padding": 16
   },
   "ovl_0098ee0": {
@@ -25779,19 +25795,21 @@
    "jump_table": 40,
    "pointer_table": 420,
    "fill": 12,
-   "unclassified": 1480,
+   "unclassified": 1260,
    "data_named": 56,
-   "padding": 216
+   "padding": 216,
+   "u16_table": 220
   },
   "ovl_009aed0": {
    "function_body": 16548,
    "gap": 96,
-   "unclassified": 1772,
+   "unclassified": 1492,
    "jump_table": 24,
    "pointer_table": 304,
    "fill": 4,
    "data_named": 80,
-   "padding": 52
+   "padding": 52,
+   "u16_table": 280
   },
   "ovl_009d282": {
    "function_body": 464
@@ -25817,10 +25835,11 @@
    "function_body": 8160,
    "gap": 32,
    "jump_table": 8,
-   "unclassified": 276,
+   "unclassified": 212,
    "data_named": 20,
    "pointer_table": 164,
-   "padding": 76
+   "padding": 76,
+   "u16_table": 64
   },
   "ovl_00a1414": {
    "function_body": 28636,
@@ -25835,8 +25854,9 @@
   "ovl_00a43b6": {
    "function_body": 29360,
    "gap": 128,
-   "unclassified": 1976,
+   "dense_data": 1648,
    "jump_table": 20,
+   "unclassified": 328,
    "pointer_table": 180,
    "fill": 8,
    "data_named": 20,
@@ -25865,11 +25885,12 @@
   "ovl_00ae24a": {
    "function_body": 20640,
    "gap": 80,
-   "unclassified": 1408,
+   "unclassified": 436,
    "jump_table": 20,
    "pointer_table": 184,
    "fill": 8,
    "data_named": 60,
+   "u16_table": 972,
    "padding": 124,
    "string_table": 36
   },
@@ -25878,9 +25899,10 @@
    "gap": 168,
    "fill": 16,
    "jump_table": 52,
-   "unclassified": 720,
+   "unclassified": 436,
    "pointer_table": 392,
    "data_named": 60,
+   "u16_table": 284,
    "padding": 112
   },
   "ovl_00b2d7a": {
