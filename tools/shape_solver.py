@@ -109,7 +109,20 @@ def build_variants(text, rules, permute):
     return list(seen.items())
 
 
-def score(cp, src, addr, words, table, syms, asflags):
+def image_window(cp, name):
+    """(bytes, base) for an image name -- stage2 by default, any of the 36 through build/elfs."""
+    import json
+    inv = json.loads((ROOT / "build" / "elfs" / "images.json").read_text())["images"]
+    hit = [i for i in inv if i["name"] == name]
+    if not hit:
+        raise SystemExit("no image named %r" % name)
+    img = hit[0]
+    elf = ROOT / "build" / "elfs" / ("%s.elf" % img["name"])
+    base = img["base"] if isinstance(img["base"], int) else int(img["base"], 16)
+    return elf.read_bytes()[0x100:0x100 + img["size"]], base
+
+
+def score(cp, src, addr, words, table, syms, asflags, window=None):
     d = Path(tempfile.mkdtemp(prefix="ss_"))
     try:
         c = d / "f.c"
@@ -130,10 +143,10 @@ def score(cp, src, addr, words, table, syms, asflags):
         if subprocess.run([str(cp.GAS / "mips-linux-gnu-ld"), "-T", str(d / "l.ld"), "-o", str(elf),
                            str(fx)], capture_output=True).returncode:
             return None
-        image = cp.IMAGE.read_bytes()
+        image, base = window if window else (cp.IMAGE.read_bytes(), cp.BASE)
         got_txt = cp.text_of(elf)
         got = [got_txt[4 * i:4 * i + 4] for i in range(len(got_txt) // 4)]
-        want = [image[addr - cp.BASE + 4 * i:addr - cp.BASE + 4 * i + 4] for i in range(words)]
+        want = [image[addr - base + 4 * i:addr - base + 4 * i + 4] for i in range(words)]
         off = sum(1 for a, b in zip(want, got) if a == b)
         sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
         same = sum(i2 - i1 for t, i1, i2, _, _ in sm.get_opcodes() if t == "equal")
@@ -176,6 +189,7 @@ def main(argv):
     ap.add_argument("--addr")
     ap.add_argument("--words", type=int)
     ap.add_argument("--table", default="0x800B8BD0")
+    ap.add_argument("--image", default="stage2", help="which of the 36 images the target lives in")
     ap.add_argument("--sym", action="append", default=[])
     ap.add_argument("--rules")
     ap.add_argument("--permute-stmts", action="store_true")
@@ -198,10 +212,11 @@ def main(argv):
     variants = build_variants(text, rules, a.permute_stmts)[:a.max_variants]
     flags = tuple(a.asflags.split()) if a.asflags else ()
     addr, words, table = int(a.addr, 16), a.words, int(a.table, 16)
+    window = image_window(cp, a.image)
 
     def work(item):
         tag, src = item
-        return tag, src, score(cp, src, addr, words, table, syms, flags)
+        return tag, src, score(cp, src, addr, words, table, syms, flags, window)
 
     with ThreadPoolExecutor(max_workers=a.workers) as ex:
         results = list(ex.map(work, variants))

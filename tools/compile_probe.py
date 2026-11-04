@@ -449,6 +449,62 @@ def p6_function():
             "first": "0x%08x" % (0x8004FD1C + 4 * hunks[0][1]) if hunks else None}
 
 
+def permuter_rescore():
+    """Score the committed permuter harness (`fixtures/permuter/p6/`) with the word metric.
+
+    decomp-permuter steers toward `target.o`, which is a *proxy*: 116 instructions compiled from an earlier
+    draft, against a 98-instruction function in the image, with unresolved relocations. That is fine for a
+    candidate generator and useless as a verdict, which is why the pool is scored here instead -- same
+    pipeline, same link addresses, words compared against the image (M299, M300).
+
+    The point of the fixture is reproducibility: `build/` is gitignored, so the inputs to M256/M259 were
+    gone by the time the verdict was questioned. Only our own artifacts are committed.
+    """
+    import json
+    fx = ROOT / "fixtures" / "permuter" / "p6"
+    rec = json.loads((fx / "scores.json").read_text())
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists():
+        return None
+    image = IMAGE.read_bytes()
+    lo, n, table = 0x8004FD1C, 98, 0x800B8BD0
+    want = [image[lo - BASE + 4 * i:lo - BASE + 4 * i + 4] for i in range(n)]
+
+    def score(src):
+        d = WORK / "perm"
+        d.mkdir(parents=True, exist_ok=True)
+        c = d / "c.c"
+        c.write_text(src)
+        s, o, fx, elf = d / "c.s", d / "c.o", d / "c.fix.o", d / "c.elf"
+        if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                          capture_output=True).returncode:
+            return None
+        if subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                          capture_output=True).returncode:
+            return None
+        # binutils 2.42's `ld` rejects a 2.7 `as` object's symtab, so it goes through objcopy first -- the
+        # same normalisation every other probe in this file does.
+        subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx)], capture_output=True)
+        (d / "c.ld").write_text("SECTIONS {\n  . = 0x8004FD1C;\n  .text : { *(.text) }\n  . = 0x800B8BD0;\n"
+                                "  .rodata : ALIGN(8) { *(.rodata) }\n  /DISCARD/ : { *(.reginfo) "
+                                "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.mdebug) }\n}\n")
+        if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(d / "c.ld"), "-o", str(elf), str(fx)],
+                          capture_output=True).returncode:
+            return None
+        blob = text_of(elf)
+        got = [blob[4 * i:4 * i + 4] for i in range(len(blob) // 4)]
+        return sum(1 for a, b in zip(want, got) if a == b)
+
+    scores = {}
+    for f, tag in [(fx / "base.c", "base")] + [(p, p.stem) for p in sorted(fx.glob("candidate-*.c"))]:
+        scores[tag] = score(f.read_text())
+    tgt = WORK / "perm" / "target.bin"
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "-O", "binary", "--only-section=.text",
+                    str(fx / "target.o"), str(tgt)], capture_output=True)
+    return {"image_words": n, "table": table, "scores": scores, "recorded": rec.get("candidates", {}),
+            "target_words": tgt.stat().st_size // 4 if tgt.exists() else 0}
+
 
 # p7 as a whole function: the recovery done for p6, on the head whose bound is **7** and whose index is the byte at
 # `ctx+6`. Two things make it a different question from p6: its seven arms live inside ONE contiguous 336-byte
@@ -2465,6 +2521,7 @@ def check():
         cases.append((row, pr["match"]))
 
     p6f = p6_function()
+    permf = permuter_rescore()
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
@@ -2674,6 +2731,21 @@ def check():
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",
                   len(CLASSES_WITHOUT_A_PROBE) == 3
                   and all(len(v) > 40 for v in CLASSES_WITHOUT_A_PROBE.values())))
+
+    cases.append((f"the committed permuter harness (`fixtures/permuter/p6/`) re-scores to its recorded verdict: "
+                  f"base {permf['scores'].get('base')} of {permf['image_words']}, best candidate "
+                  f"{max([v for k, v in permf['scores'].items() if k.startswith('candidate-')] or [0])} -- "
+                  f"and no candidate reaches the control's {permf['image_words']}, which is why the plateau is "
+                  f"real and the shape solver, not the permuter, closed the last four words (M300)"
+                  if permf else "permuter fixtures: not run",
+                  bool(permf) and permf["scores"].get("base") == 86
+                  and max([v for k, v in permf["scores"].items() if k.startswith("candidate-")] or [0]) == 94))
+
+    cases.append((f"the permuter's own objective is a proxy, not the function: `target.o` holds "
+                  f"{permf['target_words']} instructions against the image's {permf['image_words']} and carries "
+                  f"unresolved relocations -- which is why the word metric, not the permuter's score, is the "
+                  f"verdict (M300)" if permf else "permuter target: not run",
+                  bool(permf) and permf["target_words"] == 116 and permf["image_words"] == 98))
 
     bad = sum(1 for _l, ok in cases if not ok)
     print("%-4s %-13s %-10s %s" % ("prb", "profile", "verdict", "detail"))
