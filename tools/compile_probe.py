@@ -1736,7 +1736,7 @@ int FUN_8006e574(struct Ctx *ctx)
     b = *(u8 *)(p + 2);
     c = *(u8 *)(p + 3);
     ctx->f1c += 4;
-    return ((*(u32 *)(D_80115090[a] + (b >> 5) * 4) & (0x80000000u >> (b & 31))) != 0) ^ (c == 0);
+    return ((*(u32 *)(D_80115090[a] + ((b >> 5) << 2)) & (0x80000000u >> (b & 31))) != 0) ^ (c == 0);
 }"""
 P6E574_TABLE = 0x800B9540
 P6E574_WORDS = 23
@@ -2201,7 +2201,7 @@ def p6e68c_function():
 
 
 def p6e574_function():
-    return _arm_probe(P6E574_SOURCE, 0x8006E574, P6E574_WORDS, P6E574_TABLE, 7, P6E574_SYMS, "p6e574")
+    return _arm_probe(P6E574_SOURCE, 0x8006E574, P6E574_WORDS, P6E574_TABLE, 0, P6E574_SYMS, "p6e574")
 
 
 def p704e0_function():
@@ -2483,12 +2483,11 @@ def check():
                   if p6e68cf else "0x8006e68c table: not run",
                   bool(p6e68cf) and p6e68cf["table_same"] == 7))
 
-    cases.append((f"the {p6e574f['image_instrs']}-word bit-test leaf at 0x8006e574 is recovered to "
-                  f"{p6e574f['same_offset']} words identical by offset and {p6e574f['same']} by content "
-                  f"({p6e574f['hunks']} hunk(s)): the six words left are one register (the image loads the table "
-                  f"entry into the freed argument register a0, ours into v1) and the scheduler's placement of the "
-                  f"`c == 0` test" if p6e574f else "0x8006e574: not run",
-                  bool(p6e574f) and p6e574f["same_offset"] >= 17))
+    cases.append((f"the {p6e574f['image_instrs']}-word bit-test leaf at 0x8006e574 is BYTE-EXACT: "
+                  f"{p6e574f['same_offset']} identical by offset and {p6e574f['same']} by content -- it needed the "
+                  f"table pointer as the first addend and the offset written as a shift, not a multiply"
+                  if p6e574f else "0x8006e574: not run",
+                  bool(p6e574f) and p6e574f["same_offset"] == p6e574f["image_instrs"]))
 
     cases.append((f"the {p704e0f['image_instrs']}-word 44-arm address-of dispatcher at 0x800704e0 is BYTE-EXACT: "
                   f"{p704e0f['same_offset']} identical by offset and {p704e0f['same']} by content -- the third member "

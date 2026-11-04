@@ -30,8 +30,8 @@
    "image": "stage2",
    "address": "0x8006e574",
    "words": 23,
-   "verdict": "partial: 17 of 23, one register and one schedule slot",
-   "probe": "p6e574: 17 of 23",
+   "verdict": "byte-exact",
+   "probe": "p6e574: 23 of 23",
    "source": "P6E574_SOURCE"
   },
   {

@@ -46,7 +46,7 @@ MATCHED = {
     0x800701D8: ("exact", "141 words: a 44-arm accessor dispatcher"),
     0x8006FC5C: ("exact", "53 words: a seven-arm record writer"),
     0x8006E68C: ("exact", "41 words: a seven-operator predicate dispatcher"),
-    0x8006E574: ("recovered", "23 words, 17 exact: one register and one schedule slot"),
+    0x8006E574: ("exact", "23 words: a bit-test leaf"),
     0x800704E0: ("exact", "123 words: a 44-arm address-of dispatcher"),
     0x8006FF48: ("exact", "98 words: a 44-arm accessor setter"),
 }
