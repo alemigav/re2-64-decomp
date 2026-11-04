@@ -26,11 +26,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 14409,
-   "covered_bytes": 57636,
-   "coverage": 0.8239,
-   "unclaimed_runs": 103,
-   "unclaimed_bytes": 12316,
+   "covered_words": 14410,
+   "covered_bytes": 57640,
+   "coverage": 0.824,
+   "unclaimed_runs": 102,
+   "unclaimed_bytes": 12312,
    "functions_list": [
     {
      "address": "0x80000480",
@@ -2043,20 +2043,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8000cc90",
-     "name": "osSetEventMesg",
-     "file": "src/boot/osSetEventMesg.c",
-     "size": 92,
-     "sha256": "614a293c2a4b67002a636e958a1b69bfd935279063334e58c588bbffb690381d",
-     "provider_sha256": "1755f11a0be304e93f8b7db05aa471f2a68440527f521c989960a5a41c8d5f86",
-     "status": "written",
-     "callees": [
-      "0x800072e0",
-      "0x80007300"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x8000ccf0",
      "name": "FUN_8000ccf0",
      "file": "src/boot/FUN_8000ccf0.c",
@@ -2898,6 +2884,20 @@
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8000cc90",
+     "name": "osSetEventMesg",
+     "file": "src/boot/osSetEventMesg.c",
+     "size": 96,
+     "sha256": "bbc3e9c8f6358666e9cd19364afdde613bddbec38354f32f596d3e2f9164028d",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800072e0",
+      "0x80007300"
+     ],
      "callees_unknown": 0
     }
    ],

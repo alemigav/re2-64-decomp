@@ -49,6 +49,7 @@ MATCHED = {
     0x8006E574: ("exact", "23 words: a bit-test leaf"),
     0x800704E0: ("exact", "123 words: a 44-arm address-of dispatcher"),
     0x80006D30: ("exact", "9 words: osCreateMesgQueue, from libultra"),
+    0x8000CC90: ("exact", "24 words: osSetEventMesg, pre-PRENMI libultra"),
     0x8006FF48: ("exact", "98 words: a 44-arm accessor setter"),
 }
 

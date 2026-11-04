@@ -153,7 +153,7 @@
   {"id":"boot:0x8000c9e0","image":"boot","addr":"0x8000c9e0","name":"osRecvMesg","file":"src/boot/osRecvMesg.c","size":292,"status":"written"},
   {"id":"boot:0x8000cb10","image":"boot","addr":"0x8000cb10","name":"FUN_8000cb10","file":"src/boot/FUN_8000cb10.c","size":72,"status":"written"},
   {"id":"boot:0x8000cb60","image":"boot","addr":"0x8000cb60","name":"osSendMesg","file":"src/boot/osSendMesg.c","size":304,"status":"written"},
-  {"id":"boot:0x8000cc90","image":"boot","addr":"0x8000cc90","name":"osSetEventMesg","file":"src/boot/osSetEventMesg.c","size":92,"status":"written"},
+  {"id":"boot:0x8000cc90","image":"boot","addr":"0x8000cc90","name":"osSetEventMesg","file":"src/boot/osSetEventMesg.c","size":96,"status":"recovered"},
   {"id":"boot:0x8000ccf0","image":"boot","addr":"0x8000ccf0","name":"FUN_8000ccf0","file":"src/boot/FUN_8000ccf0.c","size":16,"status":"written"},
   {"id":"boot:0x8000cd00","image":"boot","addr":"0x8000cd00","name":"FUN_8000cd00","file":"src/boot/FUN_8000cd00.c","size":64,"status":"written"},
   {"id":"boot:0x8000cde0","image":"boot","addr":"0x8000cde0","name":"FUN_8000cde0","file":"src/boot/FUN_8000cde0.c","size":16,"status":"written"},

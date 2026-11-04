@@ -762,7 +762,7 @@ AUDITS = [
     # word count, which the tiling case catches because covered + unclaimed then falls short of the image.
     dict(name="counts: code_index's covered_bytes is a word count again",
          tool="counts.py", args=["--check"], file="manifests/code_index.json",
-         old='"covered_bytes": 57636', new='"covered_bytes": 14409'),
+         old='"covered_bytes": 57640', new='"covered_bytes": 14410'),
     # --- the M205 coverage arithmetic. The published figure was one 4-byte word per function body too
     # high; these four mutations are the ways to reintroduce it or to undermine the derivation that now
     # catches it: an exclusive end one word too far, a union taken across images instead of within one

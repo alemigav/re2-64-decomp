@@ -1,19 +1,28 @@
 /* osSetEventMesg
  * image   boot (boot), base 0x80000480
- * address 0x8000cc90  body 0x8000cc90..0x8000cceb  size 92 B
- * body sha256 614a293c2a4b67002a636e958a1b69bfd935279063334e58c588bbffb690381d
- * provider record sha256 1755f11a0be304e93f8b7db05aa471f2a68440527f521c989960a5a41c8d5f86
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * address 0x8000cc90  body 0x8000cc90..0x8000ccef  size 96 B
+ * body sha256 bbc3e9c8f6358666e9cd19364afdde613bddbec38354f32f596d3e2f9164028d
+ * recovered byte-exact (osev: 24 of 24)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as OSEV_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void osSetEventMesg(int param_1,undefined4 param_2,undefined4 param_3)
+typedef int s32;
+typedef unsigned int u32;
+typedef void *OSMesg;
+typedef struct { void *mtqueue; void *fullqueue; s32 validCount; s32 first; s32 msgCount; OSMesg *msg; } OSMesgQueue;
+typedef struct { OSMesgQueue *queue; OSMesg msg; } __OSEventState;
 
+extern __OSEventState __osEventStateTab[];
+extern u32 __osDisableInt(void);
+extern void __osRestoreInt(u32 mask);
+
+void osSetEventMesg(u32 e, OSMesgQueue *mq, OSMesg msg)
 {
-  undefined4 uVar1;
-  
-  uVar1 = FUN_800072e0();
-  *(undefined4 *)(param_1 * 8 + -0x7ffe88d0) = param_2;
-  *(undefined4 *)(param_1 * 8 + -0x7ffe88cc) = param_3;
-  FUN_80007300(uVar1);
-  return;
+    u32 prevInt = __osDisableInt();
+    __OSEventState *msgs = &__osEventStateTab[e];
+
+    msgs->queue = mq;
+    msgs->msg = msg;
+
+    __osRestoreInt(prevInt);
 }

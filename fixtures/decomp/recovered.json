@@ -121,6 +121,14 @@
    "verdict": "byte-exact",
    "probe": "osmq: 9 of 9",
    "source": "OSMQ_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000cc90",
+   "words": 24,
+   "verdict": "byte-exact",
+   "probe": "osev: 24 of 24",
+   "source": "OSEV_SOURCE"
   }
  ]
 }

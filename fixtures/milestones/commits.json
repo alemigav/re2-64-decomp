@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "bed1a52",
+   "subject": "M296: libultra reference experiment -- osCreateMesgQueue byte-exact, OoT is a later revision",
+   "milestones": [
+    296
+   ]
+  },
+  {
    "sha": "f6d5cf2",
    "subject": "M295: the register is lost to a conflict in global_alloc, not a local_alloc tie-break",
    "milestones": [

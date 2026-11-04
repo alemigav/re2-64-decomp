@@ -1935,6 +1935,35 @@ OSMQ_ADDR = 0x80006D30
 OSMQ_WORDS = 9
 OSMQ_SYMS = [("__osThreadTail", 0x80012940)]
 
+# M297: the same function from a *later* libultra carries an `if (e == OS_EVENT_PRENMI)` block with `__osShutdown`,
+# `__osPreNMI` and an `osSendMesg` call. This image has no such branch -- 24 words of disable-int / two stores /
+# restore-int -- which is the operational form of the revision bracket: Nintendo's source minus that one block
+# reproduces the image exactly.
+OSEV_SOURCE = """typedef int s32;
+typedef unsigned int u32;
+typedef void *OSMesg;
+typedef struct { void *mtqueue; void *fullqueue; s32 validCount; s32 first; s32 msgCount; OSMesg *msg; } OSMesgQueue;
+typedef struct { OSMesgQueue *queue; OSMesg msg; } __OSEventState;
+
+extern __OSEventState __osEventStateTab[];
+extern u32 __osDisableInt(void);
+extern void __osRestoreInt(u32 mask);
+
+void osSetEventMesg(u32 e, OSMesgQueue *mq, OSMesg msg)
+{
+    u32 prevInt = __osDisableInt();
+    __OSEventState *msgs = &__osEventStateTab[e];
+
+    msgs->queue = mq;
+    msgs->msg = msg;
+
+    __osRestoreInt(prevInt);
+}"""
+OSEV_ADDR = 0x8000CC90
+OSEV_WORDS = 24
+OSEV_SYMS = [("__osEventStateTab", 0x80017730), ("__osDisableInt", 0x800072E0),
+             ("__osRestoreInt", 0x80007300)]
+
 
 def pacae4_function():
     """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
@@ -2293,6 +2322,47 @@ def osmq_function():
             "extra": len(got) - n}
 
 
+def osev_function():
+    """`osSetEventMesg` from the *boot* image -- the pre-PRENMI revision (M297)."""
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists() or not ROM.exists():
+        return None
+    image = ROM.read_bytes()[BOOT_ROM_OFF:BOOT_ROM_OFF + BOOT_SIZE]
+    if len(image) != BOOT_SIZE:
+        return None
+    c = WORK / "osev.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(OSEV_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in OSEV_SYMS)
+    ld.write_text("SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" % OSEV_ADDR + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    lo, n = OSEV_ADDR, OSEV_WORDS
+    want = [image[lo - BOOT_BASE + 4 * i:lo - BOOT_BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "hunks": hunks,
+            "extra": len(got) - n}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -2409,6 +2479,7 @@ def check():
     p6e574f = p6e574_function()
     p704e0f = p704e0_function()
     osmqf = osmq_function()
+    osev_f = osev_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -2592,6 +2663,12 @@ def check():
                   f"was rebuilt from libultra source with this compiler (M296)"
                   if osmqf else "osCreateMesgQueue: not run",
                   bool(osmqf) and osmqf["same_offset"] == osmqf["image_instrs"]))
+
+    cases.append((f"`osSetEventMesg` at 0x8000cc90 is BYTE-EXACT: {osev_f['same_offset']} of "
+                  f"{osev_f['image_instrs']} words -- and it is the revision marker: Nintendo's later source has an "
+                  f"`OS_EVENT_PRENMI` block this image does not, and removing exactly that block reproduces it (M297)"
+                  if osev_f else "osSetEventMesg: not run",
+                  bool(osev_f) and osev_f["same_offset"] == osev_f["image_instrs"]))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

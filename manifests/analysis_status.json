@@ -1520,16 +1520,6 @@
    "named": true,
    "validated": false
   },
-  "boot:0x8000cc90": {
-   "name": "osSetEventMesg",
-   "image": "boot",
-   "address": "0x8000cc90",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": true,
-   "validated": false
-  },
   "boot:0x8000ccf0": {
    "name": "FUN_8000ccf0",
    "image": "boot",
@@ -2155,6 +2145,16 @@
    "image": "boot",
    "address": "0x80006d30",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": true,
+   "validated": false
+  },
+  "boot:0x8000cc90": {
+   "name": "osSetEventMesg",
+   "image": "boot",
+   "address": "0x8000cc90",
+   "callees": 2,
    "callees_unknown": 0,
    "level": 2,
    "named": true,
