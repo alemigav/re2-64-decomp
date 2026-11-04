@@ -780,6 +780,51 @@ void FUN_wrapvoid(void)
 WRAPVOID_SYMS = [("FUN_callee", 0x80165F80)]
 
 
+def duplicate_census():
+    """How much of the unmatched corpus is a repeated body -- and how much of *that* is a whole function.
+
+    One reconstruction registers every copy of a body, which is the cheapest recovery in the corpus (M307/M308
+    banked 59 functions this way). But a group is only a *function* if its extent actually contains a return:
+    some census entries are mid-function fragments, and drafting one is wasted work (M312). Splitting the two
+    before drafting is the difference between 89 candidates and 85.
+    """
+    import json as _json
+    import hashlib
+    idx_path = ROOT / "manifests" / "code_index.json"
+    inv = image_inventory()
+    if not idx_path.exists() or inv is None:
+        return None
+    groups = {}
+    for img in _json.loads(idx_path.read_text())["images"]:
+        elf = ROOT / "build" / "elfs" / ("%s.elf" % img["name"])
+        if not elf.exists():
+            return None
+        blob = elf.read_bytes()[0x100:0x100 + img["size"]]
+        base = img["base"] if isinstance(img["base"], int) else int(img["base"], 16)
+        for f in img.get("functions_list", []):
+            if f.get("status") == "recovered":
+                continue
+            lo, n = int(f["address"], 16), f.get("size", 0)
+            body = blob[lo - base:lo - base + n]
+            groups.setdefault(hashlib.sha256(body).hexdigest(), []).append((img["name"], lo, n, body))
+    complete = fragments = 0
+    groups_complete = groups_fragment = 0
+    for members in groups.values():
+        if len(members) < 2:
+            continue
+        body = members[0][3]
+        returns = any(body[i:i + 4] == b"\x03\xe0\x00\x08" for i in range(0, len(body), 4))
+        if returns:
+            complete += len(members)
+            groups_complete += 1
+        else:
+            fragments += len(members)
+            groups_fragment += 1
+    return {"total": complete + fragments, "groups": groups_complete + groups_fragment,
+            "complete": complete, "complete_groups": groups_complete,
+            "fragments": fragments, "fragment_groups": groups_fragment}
+
+
 def image_inventory():
     """name -> {source, base, size} for the 36 images, or None when the corpus has not been built."""
     import json as _json
@@ -2884,6 +2929,7 @@ def check():
     p7res = p7e590_residue()
     selc = select_shape_census()
     fams = family_probe()
+    dupc = duplicate_census()
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
@@ -3016,6 +3062,12 @@ def check():
                   f"and it is what our build cannot satisfy while `$2` still holds the compare constant (M305)"
                   if selc else "select census (stores): not run",
                   bool(selc) and selc["stored"] == 39 and selc["v0_stored"] == 35))
+
+    cases.append((f"the duplicate census is vetted before it is drafted: {dupc['total']} unmatched functions in "
+                  f"{dupc['groups']} repeated bodies, of which {dupc['complete']} in {dupc['complete_groups']} "
+                  f"contain a return and {dupc['fragments']} in {dupc['fragment_groups']} are mid-function "
+                  f"fragments that cannot be reconstructed (M312)" if dupc else "duplicate census: not run",
+                  bool(dupc) and dupc["total"] == 89 and dupc["complete"] == 85 and dupc["fragments"] == 4))
 
     # one case per multi-member family, generated from the fixture so a new cohort needs no code here
     for src_name, fam in sorted((fams or {}).items()):

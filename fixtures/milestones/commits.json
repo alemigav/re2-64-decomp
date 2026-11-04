@@ -2,6 +2,14 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "b57fbf7",
+   "subject": "M311: REG_TRACE says it is a reference-count tie-break in global_alloc, so the compiler work stops; also fixes M309's patch, which never compiled",
+   "milestones": [
+    309,
+    311
+   ]
+  },
+  {
    "sha": "1a2377c",
    "subject": "M310: the annul is forced by a u16 truncation copy, proven by removing it (s32 moves the compare back onto a0) \u2014 register tie-break remains the wall",
    "milestones": [
