@@ -3,116 +3,20 @@
  "tool": "manual recovery; verified by compile_probe.py",
  "functions": [
   {
-   "image": "stage2",
-   "address": "0x8004fd1c",
-   "words": 98,
+   "image": "boot",
+   "address": "0x80000520",
+   "words": 30,
    "verdict": "byte-exact",
-   "probe": "p6: 98 of 98 by offset and content",
-   "source": "P6_SOURCE"
+   "probe": "single: 30 of 30, one draft (the boot initialiser, `main`)",
+   "source": "S_80000520_SOURCE"
   },
   {
-   "image": "stage2",
-   "address": "0x80057e1c",
-   "words": 84,
+   "image": "boot",
+   "address": "0x80001180",
+   "words": 5,
    "verdict": "byte-exact",
-   "probe": "p7: 84 of 84",
-   "source": "P7_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80024558",
-   "words": 139,
-   "verdict": "byte-exact",
-   "probe": "p8: 139 of 139",
-   "source": "P8_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006e574",
-   "words": 23,
-   "verdict": "byte-exact",
-   "probe": "p6e574: 23 of 23",
-   "source": "P6E574_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006e68c",
-   "words": 41,
-   "verdict": "byte-exact",
-   "probe": "p6e68c: 41 of 41",
-   "source": "P6E68C_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006fc5c",
-   "words": 53,
-   "verdict": "byte-exact",
-   "probe": "p6fc5c: 53 of 53",
-   "source": "P6FC5C_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006ff48",
-   "words": 98,
-   "verdict": "byte-exact",
-   "probe": "p6ff48: 98 of 98",
-   "source": "P6FF48_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80070120",
-   "words": 46,
-   "verdict": "byte-exact",
-   "probe": "p9: 46 of 46",
-   "source": "P9_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800701d8",
-   "words": 141,
-   "verdict": "byte-exact",
-   "probe": "p701d8: 141 of 141",
-   "source": "P701D8_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800704e0",
-   "words": 123,
-   "verdict": "byte-exact",
-   "probe": "p704e0: 123 of 123",
-   "source": "P704E0_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8007e590",
-   "words": 229,
-   "verdict": "partial: 226 of 229, three words of allocation",
-   "probe": "p7e590: 226 of 229",
-   "source": "P7E590_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80059868",
-   "words": 167,
-   "verdict": "byte-exact",
-   "probe": "p59868: 167 of 167",
-   "source": "P59868_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80059530",
-   "words": 206,
-   "verdict": "byte-exact",
-   "probe": "p59530: 206 of 206",
-   "source": "P59530_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800acae4",
-   "words": 53,
-   "verdict": "byte-exact",
-   "probe": "pacae4: 53 of 53",
-   "source": "PACAE4_SOURCE"
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_80001180_SOURCE"
   },
   {
    "image": "boot",
@@ -124,6 +28,14 @@
   },
   {
    "image": "boot",
+   "address": "0x8000c620",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "boot",
    "address": "0x8000cc90",
    "words": 24,
    "verdict": "byte-exact",
@@ -132,11 +44,27 @@
   },
   {
    "image": "boot",
-   "address": "0x8000c620",
+   "address": "0x8000d2b0",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8000D2B0_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000d9c0",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8000D9C0_SOURCE"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b598",
    "words": 2,
    "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
+   "probe": "ZERO_SOURCE: 2 of 2, all 2 copies of the identical body",
+   "source": "ZERO_SOURCE"
   },
   {
    "image": "ovl_0072610",
@@ -145,6 +73,14 @@
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_0078c0e",
+   "address": "0x8017f3b4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "ZERO_SOURCE: 2 of 2, all 2 copies of the identical body",
+   "source": "ZERO_SOURCE"
   },
   {
    "image": "ovl_0078c0e",
@@ -163,12 +99,276 @@
    "source": "STUB_SOURCE"
   },
   {
+   "image": "ovl_0087352",
+   "address": "0x801634ec",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
+   "source": "WRAPVOID_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80163b44",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
+   "source": "WRAPVOID_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80164038",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
+   "source": "WRAPVOID_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80165c58",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "single: 4 of 4, one draft",
+   "source": "S_80165C58_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80165c68",
+   "words": 3,
+   "verdict": "byte-exact",
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_80165C68_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80166294",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_80166294_SOURCE"
+  },
+  {
+   "image": "ovl_008bef8",
+   "address": "0x80164624",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
+   "source": "CLEAR622_SOURCE"
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x801677c8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x801682d0): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH801682D0_SOURCE"
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x8016780c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x801682d0): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH801682D0_SOURCE"
+  },
+  {
+   "image": "ovl_0097e42",
+   "address": "0x80163020",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "single: 8 of 8, one draft",
+   "source": "S_80163020_SOURCE"
+  },
+  {
+   "image": "ovl_0098ee0",
+   "address": "0x80165ca8",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
+   "source": "CLEAR622_SOURCE"
+  },
+  {
+   "image": "ovl_009d3ba",
+   "address": "0x80162d14",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x80163120): 13 of 13 words, one shape for all 3 copies",
+   "source": "DISPATCH80163120_SOURCE"
+  },
+  {
+   "image": "ovl_009d3ba",
+   "address": "0x80162d58",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x80163120): 13 of 13 words, one shape for all 3 copies",
+   "source": "DISPATCH80163120_SOURCE"
+  },
+  {
+   "image": "ovl_009d3ba",
+   "address": "0x80162e38",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x80163120): 13 of 13 words, one shape for all 3 copies",
+   "source": "DISPATCH80163120_SOURCE"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166960",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "SET4_SOURCE: 6 of 6, all 2 copies of the identical body",
+   "source": "SET4_SOURCE"
+  },
+  {
    "image": "ovl_00a0344",
    "address": "0x8016205c",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163b0c",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "SET4_SOURCE: 6 of 6, all 2 copies of the identical body",
+   "source": "SET4_SOURCE"
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80167e24",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x80169060): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH80169060_SOURCE"
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80167e68",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x80169060): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH80169060_SOURCE"
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x8016895c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x801698c8): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH801698C8_SOURCE"
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x801689a0",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x801698c8): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH801698C8_SOURCE"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801675ec",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "single: 8 of 8, one draft",
+   "source": "S_801675EC_SOURCE"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80169b88",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x8016c504): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH8016C504_SOURCE"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80169bcc",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x8016c504): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH8016C504_SOURCE"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80165308",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x8016702c): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH8016702C_SOURCE"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x8016534c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x8016702c): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH8016702C_SOURCE"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80165b80",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x801672b4): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH801672B4_SOURCE"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80165bc4",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x801672b4): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH801672B4_SOURCE"
+  },
+  {
+   "image": "ovl_00b2d7a",
+   "address": "0x8016224c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x80162b14): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH80162B14_SOURCE"
+  },
+  {
+   "image": "ovl_00b2d7a",
+   "address": "0x80162290",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "dispatch family (table 0x80162b14): 13 of 13 words, one shape for all 2 copies",
+   "source": "DISPATCH80162B14_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80024558",
+   "words": 139,
+   "verdict": "byte-exact",
+   "probe": "p8: 139 of 139",
+   "source": "P8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80025b0c",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "single: 4 of 4, one draft",
+   "source": "S_80025B0C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80026910",
+   "words": 3,
+   "verdict": "byte-exact",
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_80026910_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800274e4",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_800274E4_SOURCE"
   },
   {
    "image": "stage2",
@@ -188,11 +388,27 @@
   },
   {
    "image": "stage2",
+   "address": "0x8002fc78",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPFWD_SOURCE: 7 of 7, all 2 copies of the identical body",
+   "source": "WRAPFWD_SOURCE"
+  },
+  {
+   "image": "stage2",
    "address": "0x8002fc94",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fc9c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "WRAPFWD_SOURCE: 7 of 7, all 2 copies of the identical body",
+   "source": "WRAPFWD_SOURCE"
   },
   {
    "image": "stage2",
@@ -204,11 +420,27 @@
   },
   {
    "image": "stage2",
+   "address": "0x8002fcc0",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "single: 4 of 4, one draft",
+   "source": "S_8002FCC0_SOURCE"
+  },
+  {
+   "image": "stage2",
    "address": "0x8002fcd0",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fcd8",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_8002FCD8_SOURCE"
   },
   {
    "image": "stage2",
@@ -220,11 +452,43 @@
   },
   {
    "image": "stage2",
+   "address": "0x80030fa4",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "single: 8 of 8, one draft",
+   "source": "S_80030FA4_SOURCE"
+  },
+  {
+   "image": "stage2",
    "address": "0x80031b78",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80033144",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80033144_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800341dc",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "single: 4 of 4, one draft",
+   "source": "S_800341DC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80035e34",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "ret2: 2 of 2",
+   "source": "RET2_SOURCE"
   },
   {
    "image": "stage2",
@@ -236,171 +500,19 @@
   },
   {
    "image": "stage2",
-   "address": "0x8004a0a0",
-   "words": 2,
+   "address": "0x800434b8",
+   "words": 4,
    "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
+   "probe": "single: 4 of 4, one draft",
+   "source": "S_800434B8_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x8004a5b4",
-   "words": 2,
+   "address": "0x80047854",
+   "words": 6,
    "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004fc34",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004fc3c",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004fea4",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006d100",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006d7a4",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80076044",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8007659c",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800824b0",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80083748",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80083ac4",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8008b040",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8008c054",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80098f08",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8009b21c",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800a5cdc",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800a5ce4",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800a5cec",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800a5cf4",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800aaf84",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
-   "source": "STUB_SOURCE"
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_80047854_SOURCE"
   },
   {
    "image": "stage2",
@@ -425,6 +537,198 @@
    "verdict": "byte-exact",
    "probe": "SET3_SOURCE: 4 of 4, all 3 copies of the identical body",
    "source": "SET3_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004789c",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "single: 4 of 4, one draft",
+   "source": "S_8004789C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800478ac",
+   "words": 3,
+   "verdict": "byte-exact",
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_800478AC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800478b8",
+   "words": 3,
+   "verdict": "byte-exact",
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_800478B8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800478c4",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_800478C4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800479bc",
+   "words": 3,
+   "verdict": "byte-exact",
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_800479BC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047b04",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80047B04_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047b20",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80047B20_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047b3c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80047B3C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047b58",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_80047B58_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004a0a0",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004a5b4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004d178",
+   "words": 3,
+   "verdict": "byte-exact",
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_8004D178_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004d184",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "clearu16: 2 of 2",
+   "source": "CLEARU16_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004fc34",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004fc3c",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004fd1c",
+   "words": 98,
+   "verdict": "byte-exact",
+   "probe": "p6: 98 of 98 by offset and content",
+   "source": "P6_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004fea4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80052bbc",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_80052BBC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80053994",
+   "words": 3,
+   "verdict": "byte-exact",
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_80053994_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80057e1c",
+   "words": 84,
+   "verdict": "byte-exact",
+   "probe": "p7: 84 of 84",
+   "source": "P7_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80059530",
+   "words": 206,
+   "verdict": "byte-exact",
+   "probe": "p59530: 206 of 206",
+   "source": "P59530_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80059868",
+   "words": 167,
+   "verdict": "byte-exact",
+   "probe": "p59868: 167 of 167",
+   "source": "P59868_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005aaf8",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8005AAF8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005c264",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8005C264_SOURCE"
   },
   {
    "image": "stage2",
@@ -515,166 +819,6 @@
    "source": "CALL9_SOURCE"
   },
   {
-   "image": "ovl_0072610",
-   "address": "0x8017b598",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "ZERO_SOURCE: 2 of 2, all 2 copies of the identical body",
-   "source": "ZERO_SOURCE"
-  },
-  {
-   "image": "ovl_0078c0e",
-   "address": "0x8017f3b4",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "ZERO_SOURCE: 2 of 2, all 2 copies of the identical body",
-   "source": "ZERO_SOURCE"
-  },
-  {
-   "image": "ovl_008bef8",
-   "address": "0x80164624",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
-   "source": "CLEAR622_SOURCE"
-  },
-  {
-   "image": "ovl_0098ee0",
-   "address": "0x80165ca8",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
-   "source": "CLEAR622_SOURCE"
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x80166960",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "SET4_SOURCE: 6 of 6, all 2 copies of the identical body",
-   "source": "SET4_SOURCE"
-  },
-  {
-   "image": "ovl_00a0344",
-   "address": "0x80163b0c",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "SET4_SOURCE: 6 of 6, all 2 copies of the identical body",
-   "source": "SET4_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002fc78",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "WRAPFWD_SOURCE: 7 of 7, all 2 copies of the identical body",
-   "source": "WRAPFWD_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002fc9c",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "WRAPFWD_SOURCE: 7 of 7, all 2 copies of the identical body",
-   "source": "WRAPFWD_SOURCE"
-  },
-  {
-   "image": "ovl_0087352",
-   "address": "0x801634ec",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
-   "source": "WRAPVOID_SOURCE"
-  },
-  {
-   "image": "ovl_0087352",
-   "address": "0x80163b44",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
-   "source": "WRAPVOID_SOURCE"
-  },
-  {
-   "image": "ovl_0087352",
-   "address": "0x80164038",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
-   "source": "WRAPVOID_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80035e34",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "ret2: 2 of 2",
-   "source": "RET2_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004d184",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "clearu16: 2 of 2",
-   "source": "CLEARU16_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800ab574",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "shift8: 2 of 2",
-   "source": "SHIFT8_SOURCE"
-  },
-  {
-   "image": "ovl_0087352",
-   "address": "0x80165c68",
-   "words": 3,
-   "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_80165C68_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800478ac",
-   "words": 3,
-   "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_800478AC_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800478b8",
-   "words": 3,
-   "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_800478B8_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800479bc",
-   "words": 3,
-   "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_800479BC_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004d178",
-   "words": 3,
-   "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_8004D178_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80053994",
-   "words": 3,
-   "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_80053994_SOURCE"
-  },
-  {
    "image": "stage2",
    "address": "0x8006b374",
    "words": 3,
@@ -692,11 +836,187 @@
   },
   {
    "image": "stage2",
+   "address": "0x8006d100",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006d7a4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e574",
+   "words": 23,
+   "verdict": "byte-exact",
+   "probe": "p6e574: 23 of 23",
+   "source": "P6E574_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e68c",
+   "words": 41,
+   "verdict": "byte-exact",
+   "probe": "p6e68c: 41 of 41",
+   "source": "P6E68C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006fc5c",
+   "words": 53,
+   "verdict": "byte-exact",
+   "probe": "p6fc5c: 53 of 53",
+   "source": "P6FC5C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006ff48",
+   "words": 98,
+   "verdict": "byte-exact",
+   "probe": "p6ff48: 98 of 98",
+   "source": "P6FF48_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80070120",
+   "words": 46,
+   "verdict": "byte-exact",
+   "probe": "p9: 46 of 46",
+   "source": "P9_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800701d8",
+   "words": 141,
+   "verdict": "byte-exact",
+   "probe": "p701d8: 141 of 141",
+   "source": "P701D8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800704e0",
+   "words": 123,
+   "verdict": "byte-exact",
+   "probe": "p704e0: 123 of 123",
+   "source": "P704E0_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80076044",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007659c",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a8e8",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "single: 7 of 7, one draft",
+   "source": "S_8007A8E8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007e590",
+   "words": 229,
+   "verdict": "partial: 226 of 229, three words of allocation",
+   "probe": "p7e590: 226 of 229",
+   "source": "P7E590_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80082498",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_80082498_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800824b0",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80083748",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80083ac4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800844cc",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_800844CC_SOURCE"
+  },
+  {
+   "image": "stage2",
    "address": "0x8008af50",
    "words": 3,
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_8008AF50_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008af6c",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "single: 5 of 5, one draft",
+   "source": "S_8008AF6C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008b028",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "single: 6 of 6, one draft",
+   "source": "S_8008B028_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008b040",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008c054",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
@@ -708,91 +1028,51 @@
   },
   {
    "image": "stage2",
-   "address": "0x800a8ce8",
-   "words": 3,
+   "address": "0x80098f08",
+   "words": 2,
    "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_800A8CE8_SOURCE"
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x800a9420",
-   "words": 3,
+   "address": "0x8009b21c",
+   "words": 2,
    "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_800A9420_SOURCE"
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x800b2138",
-   "words": 3,
+   "address": "0x800a5cdc",
+   "words": 2,
    "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_800B2138_SOURCE"
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x800b480c",
-   "words": 3,
+   "address": "0x800a5ce4",
+   "words": 2,
    "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_800B480C_SOURCE"
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x800b4dac",
-   "words": 3,
+   "address": "0x800a5cec",
+   "words": 2,
    "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_800B4DAC_SOURCE"
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x80026910",
-   "words": 3,
+   "address": "0x800a5cf4",
+   "words": 2,
    "verdict": "byte-exact",
-   "probe": "single: 3 of 3, one draft",
-   "source": "S_80026910_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80025b0c",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "single: 4 of 4, one draft",
-   "source": "S_80025B0C_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002fcc0",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "single: 4 of 4, one draft",
-   "source": "S_8002FCC0_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800341dc",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "single: 4 of 4, one draft",
-   "source": "S_800341DC_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800434b8",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "single: 4 of 4, one draft",
-   "source": "S_800434B8_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004789c",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "single: 4 of 4, one draft",
-   "source": "S_8004789C_SOURCE"
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
@@ -812,51 +1092,19 @@
   },
   {
    "image": "stage2",
-   "address": "0x800ab504",
-   "words": 4,
+   "address": "0x800a8ce8",
+   "words": 3,
    "verdict": "byte-exact",
-   "probe": "single: 4 of 4, one draft",
-   "source": "S_800AB504_SOURCE"
-  },
-  {
-   "image": "ovl_0087352",
-   "address": "0x80165c58",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "single: 4 of 4, one draft",
-   "source": "S_80165C58_SOURCE"
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_800A8CE8_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x800274e4",
-   "words": 5,
+   "address": "0x800a9420",
+   "words": 3,
    "verdict": "byte-exact",
-   "probe": "single: 5 of 5, one draft",
-   "source": "S_800274E4_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002fcd8",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "single: 5 of 5, one draft",
-   "source": "S_8002FCD8_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80052bbc",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "single: 5 of 5, one draft",
-   "source": "S_80052BBC_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8008af6c",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "single: 5 of 5, one draft",
-   "source": "S_8008AF6C_SOURCE"
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_800A9420_SOURCE"
   },
   {
    "image": "stage2",
@@ -867,148 +1115,52 @@
    "source": "S_800AAF70_SOURCE"
   },
   {
-   "image": "ovl_0087352",
-   "address": "0x80166294",
-   "words": 5,
+   "image": "stage2",
+   "address": "0x800aaf84",
+   "words": 2,
    "verdict": "byte-exact",
-   "probe": "single: 5 of 5, one draft",
-   "source": "S_80166294_SOURCE"
-  },
-  {
-   "image": "boot",
-   "address": "0x80001180",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "single: 5 of 5, one draft",
-   "source": "S_80001180_SOURCE"
-  },
-  {
-   "image": "boot",
-   "address": "0x8000d2b0",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_8000D2B0_SOURCE"
-  },
-  {
-   "image": "boot",
-   "address": "0x8000d9c0",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_8000D9C0_SOURCE"
+   "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x80030fa4",
-   "words": 8,
+   "address": "0x800ab504",
+   "words": 4,
    "verdict": "byte-exact",
-   "probe": "single: 8 of 8, one draft",
-   "source": "S_80030FA4_SOURCE"
+   "probe": "single: 4 of 4, one draft",
+   "source": "S_800AB504_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x80033144",
-   "words": 7,
+   "address": "0x800ab574",
+   "words": 2,
    "verdict": "byte-exact",
-   "probe": "single: 7 of 7, one draft",
-   "source": "S_80033144_SOURCE"
+   "probe": "shift8: 2 of 2",
+   "source": "SHIFT8_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x80047854",
-   "words": 6,
+   "address": "0x800acae4",
+   "words": 53,
    "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_80047854_SOURCE"
+   "probe": "pacae4: 53 of 53",
+   "source": "PACAE4_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x800478c4",
-   "words": 6,
+   "address": "0x800b2138",
+   "words": 3,
    "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_800478C4_SOURCE"
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_800B2138_SOURCE"
   },
   {
    "image": "stage2",
-   "address": "0x80047b04",
-   "words": 7,
+   "address": "0x800b480c",
+   "words": 3,
    "verdict": "byte-exact",
-   "probe": "single: 7 of 7, one draft",
-   "source": "S_80047B04_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80047b20",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "single: 7 of 7, one draft",
-   "source": "S_80047B20_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80047b3c",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "single: 7 of 7, one draft",
-   "source": "S_80047B3C_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80047b58",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "single: 7 of 7, one draft",
-   "source": "S_80047B58_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8005aaf8",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_8005AAF8_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8005c264",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_8005C264_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8007a8e8",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "single: 7 of 7, one draft",
-   "source": "S_8007A8E8_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80082498",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_80082498_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800844cc",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_800844CC_SOURCE"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8008b028",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "single: 6 of 6, one draft",
-   "source": "S_8008B028_SOURCE"
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_800B480C_SOURCE"
   },
   {
    "image": "stage2",
@@ -1019,28 +1171,12 @@
    "source": "S_800B4D90_SOURCE"
   },
   {
-   "image": "ovl_0097e42",
-   "address": "0x80163020",
-   "words": 8,
+   "image": "stage2",
+   "address": "0x800b4dac",
+   "words": 3,
    "verdict": "byte-exact",
-   "probe": "single: 8 of 8, one draft",
-   "source": "S_80163020_SOURCE"
-  },
-  {
-   "image": "ovl_00a733e",
-   "address": "0x801675ec",
-   "words": 8,
-   "verdict": "byte-exact",
-   "probe": "single: 8 of 8, one draft",
-   "source": "S_801675EC_SOURCE"
-  },
-  {
-   "image": "boot",
-   "address": "0x80000520",
-   "words": 30,
-   "verdict": "byte-exact",
-   "probe": "single: 30 of 30, one draft (the boot initialiser, `main`)",
-   "source": "S_80000520_SOURCE"
+   "probe": "single: 3 of 3, one draft",
+   "source": "S_800B4DAC_SOURCE"
   }
  ]
 }

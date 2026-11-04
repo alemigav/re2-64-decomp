@@ -24,17 +24,19 @@ Every figure on the front page is **derived from the fixtures and asserted by `t
 including in this file's shorter sibling. A phrase that *disappears* counts as a failure, so a stale line cannot be
 fixed by deleting it. Where a number is a *reading* rather than a measurement, the text says so.
 
-**The corpus of recovered functions is 130 entries, 129 of them byte-exact.** The composition matters more than the
+**The corpus of recovered functions is 147 entries, 146 of them byte-exact.** The composition matters more than the
 total, and any headline quoting it must carry this line:
 
 | | count | what it is |
 | --- | --- | --- |
 | reconstructed by hand from the disassembly | **16** | the information-bearing core — the table in §3 |
 | singles landed from one shape each | **55** | one draft per body, measured against `leaf_screen.py` |
-| copies of eight proven body shapes | **59** | one proven reconstruction registers every copy: 34 empty functions, 11 nine-word masked calls, and six smaller shapes |
+| copies of nine proven body shapes | **76** | one proven reconstruction registers every copy: 34 empty functions, 11 nine-word masked calls, six smaller shapes, and **17 of the dispatch family** across eight table addresses (M335) |
 
-So "130" is a **corpus** number, not 130 independent reconstructions. The remaining published residue is one function
-at **226 of 229 words**; everything else in the corpus is byte-exact.
+So "147" is a **corpus** number, not 147 independent reconstructions. The remaining published residue is one function
+at **226 of 229 words**; everything else is byte-exact. And the cohort gain is no longer free: the eight dispatch
+groups were reachable, but the four bodies drafted alongside them (11, 12 and 18 words) land at 7 of 11, 9 of 12 and
+7 of 18 — the remaining cohorts start at eleven words and meet the allocation wall.
 
 The progress map on the front page draws only the **16** hand-recovered functions, one cell per group of functions. The
 113 singles and copies are in the fixtures and in the counts above, not in the picture — the map's job is to show where
@@ -253,7 +255,7 @@ stale block, or a function claimed as recovered that is not in the corpus. Two p
 - **the record**, one bar per phase, parsed from the front page's own phase table, so the picture cannot drift from the
   table beside it.
 
-It draws the **16** hand-recovered functions. The 59 cohort copies and 55 singles are counted in `fixtures/decomp/` and
+It draws the **16** hand-recovered functions. The 76 cohort copies and 55 singles are counted in `fixtures/decomp/` and
 in §1, not in the picture, and the legend on the front page says so. Regenerating it is `python3 tools/progress_map.py
 --write` after any change to the recovered corpus **or to the phase table**.
 

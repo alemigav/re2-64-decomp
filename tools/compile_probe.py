@@ -727,6 +727,40 @@ void FUN_call9(u8 *p)
 }
 """
 
+# --- the dispatch family (M335): one shape, eight table addresses --------------------------------------
+# Eight of the 37 remaining complete duplicate groups are the *same thirteen-word body* and differ only in
+# the address of the handler table they index -- 17 functions from one reconstruction, eight times over.
+# The C shape matters to the word: taking the **address of the table slot** (`&TABLE[i]`) and then calling
+# through that pointer keeps the table base live across the load, which is what puts it in `$v0` with the
+# index in `$v1`. `TABLE[i](a0)` directly coalesces the index into the load's destination and is 7 of 13.
+# The addresses are the ones `lui` + `addiu` actually compute: an `addiu` immediate is **sign-extended**
+# (M322), so `lui 0x8017` + `addiu 0x82d0` is 0x8016_82d0, not 0x8017_82d0. Four of the eight depend on it.
+DISPATCH_TABLES = (0x80163120, 0x801682d0, 0x80169060, 0x801698c8,
+                   0x8016c504, 0x8016702c, 0x801672b4, 0x80162b14)
+
+
+def _dispatch_source(sym):
+    return """typedef unsigned char u8;
+typedef unsigned int u32;
+typedef void (*fn)(u32);
+
+extern fn %s[];
+
+void FUN_dispatch(u32 a0)
+{
+    fn *t = &%s[*(u8 *)(a0 + 5)];
+
+    (*t)(a0);
+}
+""" % (sym, sym)
+
+
+for _table in DISPATCH_TABLES:
+    _sym = "D_%08X" % _table
+    globals()["DISPATCH%X_SOURCE" % _table] = _dispatch_source(_sym)
+    globals()["DISPATCH%X_SYMS" % _table] = [(_sym, _table)]
+
+
 # --- singles: one draft each (M315 first batch, M316 screen sweep) ---------------------------------------
 S_80165C68_SOURCE = """typedef unsigned char u8;
 typedef unsigned short u16;

@@ -1,14 +1,20 @@
 /* FUN_80162d14
  * image   ovl_009d3ba (ovl), base 0x80161cf0
  * address 0x80162d14  body 0x80162d14..0x80162d47  size 52 B
- * body sha256 92b5ff32c02cd3c34b3fb95bf34032273440412ab7cf5b99e4e5484afe2fd7e3
- * provider record sha256 49fc01fd56e96162c5842d5deea8679cf2e41b6ccd6b0ad4f493877541f6a24e
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 167a08950930b521a6641923dcd2a43a9581ec975b9a6dcb8750228fc7156be2
+ * recovered byte-exact (dispatch family (table 0x80163120): 13 of 13 words, one shape for all 3 copies)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as DISPATCH80163120_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80162d14(int param_1)
+typedef unsigned char u8;
+typedef unsigned int u32;
+typedef void (*fn)(u32);
 
+extern fn D_80163120[];
+
+void FUN_dispatch(u32 a0)
 {
-  (*(code *)(&PTR_FUN_80163120)[*(byte *)(param_1 + 5)])();
-  return;
+    fn *t = &D_80163120[*(u8 *)(a0 + 5)];
+
+    (*t)(a0);
 }

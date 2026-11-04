@@ -62,6 +62,11 @@ CHECKS = [
     ("README.md", r"tools/check_markers\.py\s+# (\d+)/(\d+)", ("marker_cases",) * 2, 1),
     ("README.md", r"\*\*(\d+)\*\* numbers, 0-(\d+): \*\*(\d+)\*\* with a row, and \*\*(\d+)\*\* "
                   r"named gaps", ("milestone_total", "milestone_top", "milestone_rows", "gap_count"), 1),
+    # M335: the project's headline pair. It was quoted twice and asserted nowhere, so it could sit a
+    # milestone behind the corpus (130/129 against 147/146) and no gate noticed. A number that is the point of
+    # the repository gets a case.
+    ("README.md", r"\*\*(\d+) functions reconstructed in C and recompiled \u2014 (\d+) of them matching",
+     ("recovered", "recovered_exact"), 1),
     ("README.md", r"tools/\s+(\d+) analysis and gate scripts", ("tool_count",), 1),
     ("README.md", r"docs/log/\s+(\d+) notes", ("note_count",), 1),
     # the codec claim on the front page, tied to the committed fixture rather than to prose
@@ -130,10 +135,25 @@ def derive(root: Path) -> dict:
                                  json.loads((root / "fixtures" / "scd" / "profile.json").read_text())["opcodes"].values()
                                  if v.get("length")}),
         **_status(root),
+        **_recovered(root),
         "tool_count": len([p for p in (root / "tools").iterdir()
                            if p.suffix in (".py", ".sh", ".c", ".swift")]),
         **_corpus(root),
     }
+
+
+def _recovered(root: Path) -> dict:
+    """How many functions are reconstructed, and how many of them are byte-exact (M335).
+
+    The headline of the whole project -- "N reconstructed, M matching" -- was quoted in prose and asserted
+    **nowhere** until M335, which is how it could sit at 130/129 while the corpus moved to 147/146. It is
+    derived from the same fixture `export_src.py` and `export_ranges.py` read, so the two exporters and the
+    front page cannot disagree about it.
+    """
+    per_image = recovered.load(root / "fixtures" / "decomp" / "recovered.json")
+    entries = [e for group in per_image.values() for e in group]
+    return {"recovered": len(entries),
+            "recovered_exact": sum(1 for e in entries if e["verdict"] == "byte-exact")}
 
 
 def _status(root: Path) -> dict:
@@ -288,8 +308,12 @@ def self_test() -> int:
         # The tree is a symlink: this self-test only reads it, and copying 3 638 files to read one
         # header line each would cost more than the check it protects. (A *mutation* must never
         # target a symlinked path -- see the guard in audit_gates.build_env.)
+        # M335: the third time this list has been short — `_recovered()` reads `fixtures/decomp/
+        # recovered.json`, so an untouched copy of the real files reported 0 recovered against a README that
+        # says 147. The rule is mechanical: **every input `derive()` reads belongs in this tuple.**
         for rel in ("fixtures/milestones/gaps.json", "fixtures/sound/codec.json",
                     "fixtures/decomp/images.json", "fixtures/decomp/ranges.json",
+                    "fixtures/decomp/recovered.json",
                     "fixtures/scd/profile.json", "manifests/code_index.json",
                     "manifests/analysis_status.json"):
             (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
