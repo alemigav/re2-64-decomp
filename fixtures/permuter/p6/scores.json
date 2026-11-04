@@ -11,7 +11,8 @@
   "settings": {
    "compiler_type": "gcc",
    "threads": 8,
-   "objective": "target.o (a compiled draft, see README)"
+   "objective": "target.o (a compiled draft, see README)",
+   "file": "f.toml (NOT READ -- get_settings() opens settings.toml only; [base] weights applied)"
   }
  },
  "metric": {
@@ -160,5 +161,6 @@
    ]
   }
  },
- "verdict": "With the PROXY objective the permuter never passes 94/98 in 226 000 iterations; with the IMAGE objective it reaches 98/98 (byte-exact) in 83 834. The plateau was the objective, not the tool. M300's 'cannot reach this shape by randomisation' is retracted -- and the winner is a DIFFERENT shape from the hand reconstruction: it keeps a `new_var` temporary in case 4 instead of transposing two statements."
+ "verdict": "With the PROXY objective the permuter never passes 94/98 in 226 000 iterations; with the IMAGE objective it reaches 98/98 (byte-exact) in 83 834. The plateau was the objective, not the tool. M300's 'cannot reach this shape by randomisation' is retracted -- and the winner is a DIFFERENT shape from the hand reconstruction: it keeps a `new_var` temporary in case 4 instead of transposing two statements.",
+ "correction": "M303: every run recorded here used the default `[base]` weights, not `gcc` -- the settings file was named `f.toml` and `get_settings()` reads `settings.toml`. The proxy-vs-image comparison is unaffected; the 'under both weightings' phrasing in M300 is withdrawn."
 }

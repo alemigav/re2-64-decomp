@@ -13,7 +13,7 @@ and the scoring reads the image at run time.
 |---|---|
 | `base.c` | our own draft of the function — the starting point the permuter randomises. At M299 it is **one statement transposition** away from the byte-exact source, and that transposition is worth 12 of 98 words |
 | `compile.sh` | the build hook the permuter shells out to: `cc1 -O2 -G 0 -mips2 -mcpu=r4300`, then the binutils-2.7 `as` |
-| `f.toml` | `compiler_type = "gcc"` — M256 had this set to `"ido"`, which selects IDO's randomisation weights for a compiler that is not IDO |
+| `settings.toml` | `compiler_type = "gcc"`. **The file must be called `settings.toml`**: `get_settings()` opens that name only, so M256–M302 ran with this file called `f.toml` and never read it — every run before M303 used the default `[base]` weights (see M303) |
 | `target.o` | **generated** by `make_target.py` from the image's own 98 words (not committed — it is cartridge code) |
 | `target-draft.o` | the old **proxy** objective: 116 instructions compiled from an earlier draft, kept for provenance |
 | `candidate-image-310-1.c` | the **byte-exact** candidate the image-objective run found — a different shape from the hand reconstruction |
@@ -38,7 +38,7 @@ Three runs, and the objective is what separated them:
 | run | objective | iterations | best by the word metric |
 |---|---|---|---|
 | M259's pool (82 candidates) | the draft proxy | — | 94 / 98 |
-| M300 re-run (`gcc` weights) | the draft proxy | 144 310 | **94 / 98** (16 candidates, none at 98) |
+| M300 re-run | the draft proxy | 144 310 | **94 / 98** (16 candidates, none at 98) |
 | **M302 run** | **the image's own 98 words** | 83 834 | **98 / 98 — byte-exact** |
 
 So **the plateau was the objective, not the tool.** Against a proxy compiled from an earlier draft the permuter
@@ -49,6 +49,10 @@ this shape by randomisation" — is retracted here**; what it could not reach wa
 
 The 78 % compile-error rate is unchanged and is a property of the randomiser on struct-heavy source, not of the
 objective.
+
+A correction that belongs here rather than in a footnote: **all three runs used the default `[base]` weights**, not
+`gcc`. The settings file was called `f.toml` until M303 and `get_settings()` opens `settings.toml` only, so
+`compiler_type` never applied. What moved the result was the **objective** — proxy versus image — and nothing else.
 
 ## The two objectives, and why the second one is the point
 

@@ -520,6 +520,56 @@ def permuter_rescore():
             "image_target_exact": image_tgt_raw == b"".join(want) if image_tgt_raw else False}
 
 
+def permuter_rescore_boot():
+    """Score the `osCreateThread` permuter fixture (`fixtures/permuter/d60/`) against the boot image.
+
+    Companion to `permuter_rescore()`, and the negative half of the same experiment (M303): the permuter closed
+    p6's *shape* residue and moves nothing on this **allocation** residue, which is the split the corpus keeps
+    re-learning -- size is not what makes a function hard, allocation is.
+    """
+    import json
+    fx = ROOT / "fixtures" / "permuter" / "d60"
+    rec = json.loads((fx / "scores.json").read_text())
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists() or not ROM.exists():
+        return None
+    image = ROM.read_bytes()[BOOT_ROM_OFF:BOOT_ROM_OFF + BOOT_SIZE]
+    lo, n = 0x80006D60, 52
+    syms = [("__osActiveQueue", 0x8001294C), ("__osDisableInt", 0x800072E0),
+            ("__osRestoreInt", 0x80007300), ("__osCleanupThread", 0x8000116C)]
+    want = [image[lo - BOOT_BASE + 4 * i:lo - BOOT_BASE + 4 * i + 4] for i in range(n)]
+
+    def score(src):
+        d = WORK / "permb"
+        d.mkdir(parents=True, exist_ok=True)
+        c = d / "c.c"
+        c.write_text(src)
+        s, o, fx_o, elf = d / "c.s", d / "c.o", d / "c.fix.o", d / "c.elf"
+        if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                          capture_output=True).returncode:
+            return None
+        if subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                          capture_output=True).returncode:
+            return None
+        subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), str(o), str(fx_o)], capture_output=True)
+        (d / "c.ld").write_text("SECTIONS {\n  . = 0x80006D60;\n  .text : { *(.text) }\n  /DISCARD/ : { *(.reginfo) "
+                                "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.mdebug) *(.rodata) "
+                                "*(.gnu.attributes) }\n}\n"
+                                + "".join("%s = 0x%X;\n" % (k, v) for k, v in syms))
+        if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(d / "c.ld"), "-o", str(elf), str(fx_o)],
+                          capture_output=True).returncode:
+            return None
+        blob = text_of(elf)
+        got = [blob[4 * i:4 * i + 4] for i in range(len(blob) // 4)]
+        return {"off": sum(1 for a, b in zip(want, got) if a == b), "got": len(got)}
+
+    base = score((fx / "base.c").read_text())
+    cands = {p.name: score(p.read_text()) for p in sorted(fx.glob("candidate-*.c"))}
+    best = cands.get("candidate-765-1.c")
+    return {"image_words": n, "base": base, "candidate": best, "recorded": rec.get("byte_metric", {})}
+
+
 # p7 as a whole function: the recovery done for p6, on the head whose bound is **7** and whose index is the byte at
 # `ctx+6`. Two things make it a different question from p6: its seven arms live inside ONE contiguous 336-byte
 # range rather than in six separate corpus functions, and two of them fall through (`0` into `1`, `4` into `5`),
@@ -2536,6 +2586,7 @@ def check():
 
     p6f = p6_function()
     permf = permuter_rescore()
+    permb = permuter_rescore_boot()
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
@@ -2767,6 +2818,21 @@ def check():
                   f"unresolved relocations -- which is why the word metric, not the permuter's score, is the "
                   f"verdict (M300)" if permf else "permuter draft target: not run",
                   bool(permf) and permf["draft_words"] == 116 and permf["image_words"] == 98))
+
+    cases.append((f"the permuter's `osCreateThread` residue reproduces: the M298 draft scores "
+                  f"{permb['base']['off']} of {permb['image_words']} words and compiles to "
+                  f"{permb['base']['got']} instructions -- the boot-image objective is buildable too "
+                  f"(`make_target.py --image-offset 0x1000`) (M303)"
+                  if permb else "osCreateThread permuter fixture: not run",
+                  bool(permb) and permb["base"]["off"] == 23 and permb["base"]["got"] == 52))
+
+    cases.append((f"and nothing in its 52-candidate pool improves it: the best is {permb['candidate']['off']} of "
+                  f"{permb['image_words']} but emits {permb['candidate']['got']} instructions against the image's "
+                  f"{permb['image_words']}, so it overshoots the function -- a SHAPE search does not move an "
+                  f"ALLOCATION residue, which is the boundary this experiment establishes (M303)"
+                  if permb else "osCreateThread pool: not run",
+                  bool(permb) and permb["candidate"]["off"] == 26
+                  and permb["candidate"]["got"] > permb["image_words"]))
 
     cases.append((f"`make_target.py` builds the permuter's objective from the image itself: `target.o` is "
                   f"{permf['image_target_words']} words and byte-identical to 0x8004fd1c, with no relocations "

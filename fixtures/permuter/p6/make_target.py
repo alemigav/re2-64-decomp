@@ -53,15 +53,19 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--words", type=int, default=WORDS)
     ap.add_argument("--base", default=hex(BASE))
     ap.add_argument("--image", default=str(IMAGE))
+    ap.add_argument("--image-offset", default="0",
+                    help="byte offset of the image inside --image; boot needs 0x1000 (rom at 0x1000)")
     ap.add_argument("--out", default=str(HERE / "target.o"))
+    ap.add_argument("--symbol", default="f", help="name to give the function in the object")
     ap.add_argument("--check", action="store_true", help="verify the existing target.o, write nothing")
     a = ap.parse_args(argv)
 
     image, addr, base = Path(a.image), int(a.addr, 16), int(a.base, 16)
+    ioff = int(a.image_offset, 16)
     if not image.exists():
         print("no image at %s — this needs your own dump (see README)" % image, file=sys.stderr)
         return 2
-    want = image.read_bytes()[addr - base:addr - base + 4 * a.words]
+    want = image.read_bytes()[ioff + addr - base:ioff + addr - base + 4 * a.words]
     if len(want) != 4 * a.words:
         print("address 0x%x is outside the image" % addr, file=sys.stderr)
         return 2
@@ -78,10 +82,11 @@ def main(argv: list[str]) -> int:
         return 0 if ok else 1
 
     s = out.with_suffix(".s")
-    s.write_text(".text\n\t.globl\tf\n\t.ent\tf\nf:\n"
+    sym = a.symbol
+    s.write_text(".text\n\t.globl\t%s\n\t.ent\t%s\n%s:\n" % (sym, sym, sym)
                  + "".join("\t.word\t0x%08x\n" % int.from_bytes(want[4 * i:4 * i + 4], "big")
                            for i in range(a.words))
-                 + "\t.end\tf\n")
+                 + "\t.end\t%s\n" % sym)
     as27 = TC / "src" / "bu27-build" / "gas" / "as.new"
     gas = as27 if as27.exists() else TC / "binutils" / "bin" / "mips-linux-gnu-as"
     raw = out.with_suffix(".raw.o")
