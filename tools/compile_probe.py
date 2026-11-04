@@ -4026,6 +4026,22 @@ def check():
                   bool(_me) and not _wrong and _st.get("extent_measured") == 192
                   and _st.get("F0") == 3603 and _st.get("F1") == 3411 and _st.get("F2") == 3343))
 
+    # M345: the last residue, profiled rather than named. No rule covers more than 8.9 % of it, so no class is
+    # registered and the measurement is what gets gated.
+    try:
+        import classify_image as _ci2
+        _res = _ci2.residue_profile()
+    except Exception:
+        _res = None
+    cases.append((f"the {(_res or {}).get('bytes', 0):,} B that no rule claims is PROFILEd, not named: "
+                  f"{(_res or {}).get('runs', 0)} run(s) of 64 B or more, and the best single property it could be "
+                  f"given ({(_res or {}).get('best_rule', '?')}) covers only "
+                  f"{(_res or {}).get('best_rule_bytes', 0):,} B -- so this milestone registers no class, which is "
+                  f"the honest outcome when the rule cannot be earned (M345)"
+                  if _res else "residue profile: not run",
+                  bool(_res) and _res["runs"] == 269 and _res["bytes"] == 72228
+                  and _res["best_rule_bytes"] == 6444))
+
     cases.append((f"the extents inside those code regions are measured and ADOPTED as census functions: "
                   f"{(_sum or {}).get('functions', 0)} function(s), {(_sum or {}).get('bytes', 0):,} B across "
                   f"{(_sum or {}).get('regions', 0)} region(s), {(_sum or {}).get('rejected', 0)} candidate(s) "

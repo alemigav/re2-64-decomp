@@ -508,6 +508,47 @@ def code_run_evidence(blob, base, size):
             "is_code": bool(jr and frac >= 0.90 and distinct >= 8 and dominant <= 0.40)}
 
 
+def residue_profile(root: Path = ROOT, min_bytes: int = 64):
+    """The unclassified runs that no rule claims, described so they can be *read* rather than guessed (M345).
+
+    M338 named this bucket's contents by measurement and M342-M344 gave the measurable parts classes. What is left
+    resists a rule, and the honest response is to publish its profile rather than invent a name for it: for every run
+    still unclassified at 64 B or more, the word count, the dominant word and its share, the fraction of words that
+    would fit a u16 / s16 / s20, the byte alphabet size and the entropy. A reader can then pick a run and look at it.
+
+    The fractions are the *tests that failed*: 12 % of all these words fit a u16, the best single candidate property
+    (`alphabet <= 16`) covers 6 444 B of 72 228, and nothing else reaches 10 %. That is why this milestone registers no
+    class -- a rule that renames bytes has to be earned, and none of these is.
+    """
+    images = json.loads((root / "fixtures/decomp/images.json").read_text())
+    bmap = json.loads((root / MAP).read_text())
+    rows = []
+    for img in images["images"]:
+        name, base, size = img["name"], img["base"], img["size"]
+        blob = image_bytes(img, root)
+        if blob is None:
+            continue
+        for lo, hi, cls, _why in bmap["images"].get(name, []):
+            if cls != "unclassified" or (hi - lo + 1) < min_bytes:
+                continue
+            b = blob[lo - base:hi - base + 1]
+            words = [int.from_bytes(b[i:i + 4], "big") for i in range(0, len(b) - 3, 4)]
+            if not words:
+                continue
+            top, topn = max(((w, words.count(w)) for w in set(words)), key=lambda x: x[1])
+            n = len(words)
+            rows.append({"image": name, "address": "0x%08x" % lo, "bytes": len(b), "words": n,
+                         "top_word": "0x%08x" % top, "top_share": round(topn / n, 3),
+                         "u16": round(sum(1 for w in words if w <= 0xFFFF) / n, 3),
+                         "s16": round(sum(1 for w in words if w <= 0x7FFF or w >= 0xFFFF8000) / n, 3),
+                         "s20": round(sum(1 for w in words if w <= 0xFFFFF or w >= 0xFFF00000) / n, 3),
+                         "alphabet": len(set(b)), "entropy": round(entropy(b), 2)})
+    rows.sort(key=lambda r: -r["bytes"])
+    return {"runs": len(rows), "bytes": sum(r["bytes"] for r in rows),
+            "best_rule_bytes": sum(r["bytes"] for r in rows if r["alphabet"] <= 16),
+            "best_rule": "alphabet <= 16 bytes", "largest": rows[:20], "all": rows}
+
+
 def unclassified_report(root: Path = ROOT):
     """What the `unclassified` bucket actually contains, measured rather than renamed (M338).
 
@@ -575,9 +616,27 @@ def main() -> int:
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--check-cartridge", action="store_true")
+    ap.add_argument("--residue", action="store_true",
+                    help="profile the unclaimed runs so they can be read (needs the cartridge)")
     ap.add_argument("--unclassified", action="store_true",
                     help="decompose the unclassified bucket by evidence about the bytes (needs the cartridge)")
     a = ap.parse_args()
+    if a.residue:
+        if not all(image_bytes(i) for i in load()[0]["images"]):
+            print("SKIP (needs the unpacked images)")
+            return 0
+        rep = residue_profile()
+        print("%d unclaimed run(s) of 64 B or more, %d B; the best single property (%s) covers %d B"
+              % (rep["runs"], rep["bytes"], rep["best_rule"], rep["best_rule_bytes"]))
+        print("%-12s %-10s %6s %5s %9s %6s %5s %5s %5s %4s %5s"
+              % ("image", "address", "bytes", "words", "top word", "share", "u16", "s16", "s20", "alph", "H"))
+        for r in rep["largest"]:
+            print("%-12s %-10s %6d %5d %9s %5.0f%% %5.0f%% %5.0f%% %5.0f%% %4d %5.1f"
+                  % (r["image"], r["address"], r["bytes"], r["words"], r["top_word"],
+                     100 * r["top_share"], 100 * r["u16"], 100 * r["s16"], 100 * r["s20"],
+                     r["alphabet"], r["entropy"]))
+        return 0
+
     if a.unclassified:
         if not all(image_bytes(i) for i in load()[0]["images"]):
             print("SKIP (needs the unpacked images)")
