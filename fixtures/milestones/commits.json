@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "568cbed",
+   "subject": "M287: 0x800704e0 byte-exact at 123 -- the accessor trio is complete",
+   "milestones": [
+    287
+   ]
+  },
+  {
    "sha": "8f21442",
    "subject": "M286: 0x8006e68c byte-exact at 41, 0x8006e574 at 17/23 -- and the index defect behind both",
    "milestones": [

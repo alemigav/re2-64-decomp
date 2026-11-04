@@ -167,10 +167,14 @@ def _corpus(root: Path) -> dict:
         covered += len(words)
     image_bytes = sum(i["size"] for i in images)
     tenths = (1000 * covered + image_bytes // 2) // image_bytes if image_bytes else 0
+    ci = json.loads((root / "manifests" / "code_index.json").read_text())["images"]
     return {
         "images": len(images),
         "image_bytes": image_bytes,
         "functions": len(list((root / "src").glob("*/*.c"))),
+        # M288: the provider labels a jump table's case bodies `switchD_::caseD_`; they are code, not
+        # functions, and the projection keeps them under `src/<image>/switch/`.
+        "fragments": sum(i.get("fragments", 0) for i in ci),
         "ranges": sum(len(v) for v in ranges.values()),
         "covered_bytes": covered,
         "coverage_whole": tenths // 10,
@@ -219,7 +223,10 @@ def check(root: Path, quiet: bool = False):
                       f"{got[2]:,} of {got[3]:,} B", got == want, f"{got} != {want}" if got != want else "ok"))
 
     sizes = []
-    for p in sorted((root / "src").glob("*/*.c")):
+    # M288: `src/<image>/*.c` is the function list; `src/<image>/switch/*.c` holds the provider's
+    # `switchD_::caseD_` bodies, which are code but not functions. Both carry a body size, and the sum of the
+    # two is what has to equal coverage -- counting only the first would under-report by every case body.
+    for p in sorted(list((root / "src").glob("*/*.c")) + list((root / "src").glob("*/switch/*.c"))):
         m = re.search(r"size (\d+) B", p.read_text()[:600])
         if m:
             sizes.append(int(m.group(1)))
@@ -239,10 +246,11 @@ def check(root: Path, quiet: bool = False):
                       f"covered + unclaimed tiles all {len(imgs)} images", ok,
                       "ok" if ok else f"covered {cov} vs {vals['covered_bytes']}; untiled {tile[:3]}"))
 
-    ok = len(sizes) == vals["functions"] and total == vals["covered_bytes"]
-    cases.append((f"the {len(sizes)} per-function headers sum to the covered bytes — {total:,} B, "
+    ok = len(sizes) == vals["functions"] + vals["fragments"] and total == vals["covered_bytes"]
+    cases.append((f"the {len(sizes)} body headers ({vals['functions']} functions + {vals['fragments']} switch "
+                  f"case bodies) sum to the covered bytes — {total:,} B, "
                   f"which is the union and not {total + 2384:,}", ok,
-                  "ok" if ok else f"{total} != {vals['covered_bytes']}"))
+                  "ok" if ok else f"{len(sizes)} headers, {total} B vs {vals['covered_bytes']} B"))
     if not quiet:
         passed = 0
         for label, ok, detail in cases:

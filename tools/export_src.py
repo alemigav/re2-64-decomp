@@ -29,6 +29,11 @@ import sys
 from pathlib import Path
 
 SAFE = re.compile(r"[^A-Za-z0-9_.]")
+# M288: the provider labels a jump-table's case bodies `switchD_<dispatch>::caseD_<n>`. They are **not
+# functions** -- they are reachable only through the table that the enclosing function owner dispatches on --
+# and a seed name must not promote one, because the seed list is a naming aid and the provider's label is the
+# evidence about *kind*. The projection therefore keeps their pseudocode but publishes them as fragments.
+FRAGMENT = re.compile(r"^switchD_([0-9a-f]{8})::(?:caseD_[0-9a-z]+|default)$")
 
 
 def read_seeds(path: Path) -> dict:
@@ -136,12 +141,16 @@ def main() -> None:
 
         outdir = src / img["name"]
         outdir.mkdir(parents=True, exist_ok=True)
-        for stale in outdir.glob("*.c"):
+        fragdir = outdir / "switch"          # M288: case bodies, kept but not functions
+        fragdir.mkdir(parents=True, exist_ok=True)
+        for stale in list(outdir.glob("*.c")) + list(fragdir.glob("*.c")):
             stale.unlink()
+        written = 0
 
-        covered, functions = set(), []
+        covered, functions, fragments = set(), [], []
         for e in entries:
             addr = int(e["address"], 16)
+            frag = FRAGMENT.match(e.get("name", ""))
             name = seeds.get(addr) or e["name"]
             if addr not in seeds and name in ("entry", "entrypoint"):
                 # `tools/wrap_mips_elf.py` sets e_entry = the image base, so Ghidra labels the
@@ -174,14 +183,22 @@ def main() -> None:
                       f"({sum(1 for c in callees if c in corpus)} in corpus)\n"
                       f" * provider {provider['name']} {provider['version']}\n"
                       f" */\n")
-            (outdir / fname).write_text(header + body)
-            functions.append(dict(address=e["address"], name=name, file=str(outdir / fname),
-                                  size=sum(int(r["end"], 16) - int(r["start"], 16) + 1
-                                           for r in ranges),
-                                  sha256=body_sha, provider_sha256=e.get("sha256", ""),
-                                  status=e["status"],
-                                  callees=[hex(c) for c in callees if c in corpus],
-                                  callees_unknown=len([c for c in callees if c not in corpus])))
+            target = (fragdir if frag else outdir) / fname
+            target.write_text(header + body)
+            record = dict(address=e["address"], name=name, file=str(target),
+                          size=sum(int(r["end"], 16) - int(r["start"], 16) + 1
+                                   for r in ranges),
+                          sha256=body_sha, provider_sha256=e.get("sha256", ""),
+                          status=e["status"],
+                          callees=[hex(c) for c in callees if c in corpus],
+                          callees_unknown=len([c for c in callees if c not in corpus]))
+            if frag:
+                # the provider says this body is a case of the switch at frag.group(1); it is published
+                # with its pseudocode intact but not counted, not listed and not named as a function
+                record["switch"] = "0x" + frag.group(1)
+                fragments.append(record)
+            else:
+                functions.append(record)
 
         gaps = sorted(set(range(img["base"], img["base"] + img["size"], 4)) - covered)
         runs = []
@@ -200,7 +217,8 @@ def main() -> None:
             # fixed one layer up.
             covered_words=len(covered), covered_bytes=len(covered) * 4,
             coverage=round(len(covered) * 4 / max(img["size"], 1), 4),
-            unclaimed_runs=len(runs), unclaimed_bytes=len(gaps) * 4, functions_list=functions))
+            unclaimed_runs=len(runs), unclaimed_bytes=len(gaps) * 4, functions_list=functions,
+            fragments=len(fragments), fragments_list=fragments))
         rows.append((img, len(functions), named, len(covered) * 4, len(gaps) * 4, len(runs)))
 
     Path("manifests/code_index.json").write_text(json.dumps(merged, indent=1) + "\n")

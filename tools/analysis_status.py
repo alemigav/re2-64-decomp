@@ -85,7 +85,10 @@ def check(rep):
     t = rep["totals"]
     F = rep["functions"]
     cases = []
-    cases.append((f"every function is at F0 — {t['F0']} indexed", t["F0"] == len(F) == 3638))
+    indexed = sum(len(i["functions_list"]) for i in
+                  json.loads((ROOT / "manifests" / "code_index.json").read_text())["images"])
+    cases.append((f"every function is at F0 — {t['F0']} indexed",
+                  t["F0"] == len(F) == indexed))
     mono = t["F0"] >= t["F1"] >= t["F2"]
     cases.append((f"the ladder is cumulative: {t['F0']} ≥ {t['F1']} ≥ {t['F2']} → named {t['named']}, "
                   f"validated {t['validated']}", mono))
