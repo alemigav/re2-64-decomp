@@ -35,6 +35,11 @@ CP0 = 0x10
 # instructions whose `rt` is a source, not a destination: stores, branches, jumps, coprocessor moves
 RT_IS_SOURCE = {0x28, 0x29, 0x2A, 0x2B, 0x2E, 0x2F, 4, 5, 6, 7, 1, 2, 3, 0x11}
 AT, K0 = 1, 26
+# MIPS III 64-bit-ISA SPECIAL functions. Our cc1 emits `multu` + `mfhi`/`mflo` (32-bit register pairs) for
+# `long long` under -mips2, -mips3 AND -mgp64 -- verified in M321 -- so a body containing any of these was
+# not produced by this compiler from C. It is hand-written DSP assembly (the three 46-word transforms and the
+# 95-word boot routine in this corpus are exactly that).
+D64_FUNCTS = {0x1C, 0x1D, 0x1E, 0x1F, 0x2C, 0x2D, 0x2E, 0x2F, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F}
 
 REGS = ("zero at v0 v1 a0 a1 a2 a3 t0 t1 t2 t3 t4 t5 t6 t7 "
         "s0 s1 s2 s3 s4 s5 s6 s7 t8 t9 k0 k1 gp sp fp ra").split()
@@ -79,6 +84,8 @@ def why_rejected(words: list[int], addr: int = 0) -> str | None:
     for i, w in enumerate(words):
         if op(w) == CP0:
             return "cp0 access"
+        if op(w) == 0 and fn(w) in D64_FUNCTS:
+            return "MIPS III 64-bit op (this cc1 never emits it from C)"
         # `b .` assembles as `beq $0,$0,-1`; `j .` as a self-targeting j
         if op(w) == 4 and rs(w) == 0 and rt(w) == 0 and simm(w) == -1:
             return "branch to itself"
@@ -263,6 +270,8 @@ def self_test() -> int:
     cases.append(("a body with no jr ra is rejected", why_rejected([0x24020001, 0x00000000], 0) == "no trailing jr ra"))
     cases.append(("a CP0 access is rejected (mfc0 v0,$9)", why_rejected([0x40026000, JR_RA, 0], 0) == "cp0 access"))
     cases.append(("a branch to itself is rejected (b .)", why_rejected([0x1000FFFF, JR_RA, 0], 0) == "branch to itself"))
+    cases.append(("a MIPS III 64-bit op is rejected (dmult), because this cc1 cannot emit one from C",
+                  why_rejected([0x0189001C, JR_RA, 0], 0).startswith("MIPS III 64-bit op")))
     cases.append(("a write to $at is rejected (lui at,0x8001)", why_rejected([0x3C018001, JR_RA, 0], 0) == "writes $at/$k0"))
     cases.append(("a write to $k0 is rejected (addiu k0,k0,20480)", why_rejected([0x275A5000, JR_RA, 0], 0) == "writes $at/$k0"))
     cases.append(("a jump through $at is rejected (jr at, with jr ra present)",

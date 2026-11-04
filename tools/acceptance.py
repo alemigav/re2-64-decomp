@@ -121,7 +121,7 @@ SUITES = [
     # M319: the leaf screen's pure half -- the five rules that separate compiled code from hand-written
     # assembly (no `jr ra`, CP0, branch-to-self, writes $at/$k0, jumps through them). Listing needs the
     # cartridge; the rules do not.
-    ("leaf screen (repository)", [sys.executable, "tools/leaf_screen.py", "--self-test"], 11, False),
+    ("leaf screen (repository)", [sys.executable, "tools/leaf_screen.py", "--self-test"], 12, False),
     ("preflight (repository)", [sys.executable, "tools/preflight.py", "--self-test"], 6, False),
     ("handler region (cartridge)", [sys.executable, "tools/handler_region.py", "--check"], 13, True),
     ("script vm decoder (cartridge)", [sys.executable, "tools/scd_vm.py", "--check"], 34, True),
