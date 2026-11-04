@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "f6d5cf2",
+   "subject": "M295: the register is lost to a conflict in global_alloc, not a local_alloc tie-break",
+   "milestones": [
+    295
+   ]
+  },
+  {
    "sha": "3a78860",
    "subject": "M294: the delay-slot scan -- 718 sites, and it does not justify a local_alloc change",
    "milestones": [

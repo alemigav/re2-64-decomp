@@ -59,7 +59,10 @@ def derive(root: Path = ROOT):
             fid = f"{img['name']}:{f['address']}"
             src = root / f["file"]
             level = 0
-            if src.exists() and f.get("status") == "written":
+            # M296: a *recovered* function -- one whose src file is our own byte-exact reconstruction, published from
+            # `fixtures/decomp/recovered.json` -- is strictly more evidence than a provider "written" body, so it
+            # takes the same rung. Without this the first library function demoted the ladder by one.
+            if src.exists() and f.get("status") in ("written", "recovered"):
                 level = 1
             if level >= 1 and not f.get("callees_unknown"):
                 level = 2

@@ -969,17 +969,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80006d30",
-     "name": "osCreateMesgQueue",
-     "file": "src/boot/osCreateMesgQueue.c",
-     "size": 36,
-     "sha256": "2b745931095f0111344f87e584219692d649e54d62ebe5383bcc4722abefcb13",
-     "provider_sha256": "1e1047541ce89d9acdb098d82a7bde899149a0c7fa275750763c9b8f43a0475f",
-     "status": "written",
-     "callees": [],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80006d60",
      "name": "osCreateThread",
      "file": "src/boot/osCreateThread.c",
@@ -2897,6 +2886,17 @@
      "sha256": "11b52ed8375ab330c46960b9d8651740c8927e96cb31508eb4340be70bdc7db6",
      "provider_sha256": "35a5b7963f3754bb7c1c79ed35f38024cd2b3d15a93f1af2e70ab023a3008d5c",
      "status": "written",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80006d30",
+     "name": "osCreateMesgQueue",
+     "file": "src/boot/osCreateMesgQueue.c",
+     "size": 36,
+     "sha256": "8816a6821dc97e5cdbbdeb27939d7d01ac4ba02a5c93df92a73da3ee8b93e177",
+     "provider_sha256": "",
+     "status": "recovered",
      "callees": [],
      "callees_unknown": 0
     }

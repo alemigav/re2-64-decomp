@@ -1,7 +1,7 @@
 # Resident Evil 2 (N64) — decompilation research
 
 Black-box decompilation of **Resident Evil 2 (Nintendo 64, `NREE` rev 1 USA)** — analysis, decompiled
-pseudocode, and a **1012-case verification suite** that anyone can run. Every claim in the docs is either
+pseudocode, and a **1013-case verification suite** that anyone can run. Every claim in the docs is either
 measured by one of those cases or explicitly labelled a reading of the code.
 
 **This is not a matching build** — of the whole cartridge. But that sentence is no longer the only thing the
@@ -44,7 +44,7 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
   through the table their owner dispatches on, so they are kept under `src/<image>/switch/` instead of being
   published as functions (M288).
 * **What is actually understood** (M209, derived by `tools/analysis_status.py`): of **3 416 functions**,
-  **3 315** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour
+  **3 329** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour
   pinned by a gate or an executed experiment — and all **12** of those are still called `FUN_…`, because a
   name needs evidence of its own.
 * **The script VM**: a 141-entry handler table, **18 distinct instruction lengths** from 1 to 40 bytes
@@ -84,7 +84,7 @@ assets, no emulator:
 
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp && cd re2-64-decomp
-python3 tools/acceptance.py      # 31 suites / 280 of 1012 cases run; the other 41 suites SKIP
+python3 tools/acceptance.py      # 31 suites / 280 of 1013 cases run; the other 41 suites SKIP
 python3 tools/audit_gates.py     # 146/146 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 22/22 — every doc anchor, heading and note pointer holds
@@ -96,7 +96,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 
 The suites that need the cartridge print `SKIP (needs the cartridge)` — **never PASS**. A suite that cannot
 run and reports success is the same error as a test that asserts nothing, so the split is stated everywhere
-it is counted: **732 of 1012 cases cannot run without your dump**, and the CI job summary lists them by name.
+it is counted: **733 of 1013 cases cannot run without your dump**, and the CI job summary lists them by name.
 
 Two things worth knowing about how the gate works:
 
@@ -116,7 +116,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**296** numbers, 0-295: **240** with a row, and **56** named gaps. The full index — every number, its title,
+**297** numbers, 0-296: **241** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -139,7 +139,7 @@ worth reading before you believe any older note.
 | P13 | M211–M222 | the script VM's opcode registry, a call graph whose edges carry evidence, verification split into tiers, `TYRANT` named as a codename, and the three work packages that closed the sound family |
 | P14 | M223–M230 | the RSP microcode decoded and deliberately not named; the interface read as a frame loop; the vector unit named 252 of 254; the dispatch-head queue resolved |
 | P15 | M231–M250 | **the toolchain identified**: the sound backlog closed, a verification prototype (warm quarter-second), splat's rehearsal on the boot image, binutils 2.7 and IDO built natively, IDO refuted by a move census, gcc 2.7.2 then **gcc 2.8.1** reproducing every probe |
-| P16 | **M251–M295** | **whole functions reproduced from the image**: the compile-probe corpus, fourteen functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`, `0x800701d8`, `0x8006fc5c`, `0x8006ff48`, `0x8006e68c`, `0x8006e574`, `0x800704e0`), **thirteen byte-exact** — the map below shows eleven of the thirteen, because `manifests/code_index.json` does not contain `0x8006e68c` or `0x8006e574`: it lists the seven dispatch arms of the first as if they were the functions and never names the leaf that encloses them (M286), and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, `-g` on the assembler so it stops swapping branches with the preceding instruction, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
+| P16 | **M251–M296** | **whole functions reproduced from the image**: the compile-probe corpus, fifteen functions recovered (`0x8004fd1c`, `0x80057e1c`, `0x80024558`, `0x80070120`, `0x80059868`, `0x80059530`, `0x800acae4`, `0x8007e590`, `0x800701d8`, `0x8006fc5c`, `0x8006ff48`, `0x8006e68c`, `0x8006e574`, `0x800704e0`, `0x80006d30`), **fourteen byte-exact** — all fifteen are in the map, because the recovered-function fixture put their measured extents into the index (M289) — and the build facts that made it possible — `-mcpu=r4300` on both compiler and assembler, `-g` on the assembler so it stops swapping branches with the preceding instruction, the FP constant pool's values and placement, and the aliasing rule that decides instruction order |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be
 indistinguishable from one written from measurement, and that distinction is the project's whole claim.
@@ -177,6 +177,7 @@ With that profile, fourteen functions have been reconstructed from the disassemb
 | `0x800acae4` | 53 words | **byte-exact**, jump table included — a clamp-then-dispatch predicate, the first target dispatching on an offset domain (`(cmd & 0xff) - 128`) |
 | `0x800704e0` | 123 words | **byte-exact**, jump table included — the third member of the accessor family: each of 44 arms returns `p + offset`, and ten also bump a `u16` counter at `0x80115120`, sharing one increment tail through a `j` |
 | `0x8006e68c` | 41 words | **byte-exact**, jump table included — a seven-operator predicate dispatcher (the same operator set as `0x80070120`), and the leaf that `0x8006e6b8`'s embedded dispatch actually belongs to |
+| `0x80006d30` | 9 words | **byte-exact** — `osCreateMesgQueue`, and the first **library** function recovered: Nintendo's libultra C compiled by this pipeline reproduces the image's nine instructions exactly, which is what says RE2's runtime was rebuilt from libultra source with this compiler (M296) |
 | `0x8006e574` | 23 words | **byte-exact** — a bit-test leaf (`(word & (0x80000000 >> (b & 31))) != 0` XOR `(c == 0)`), exact once the table pointer is the *first* addend and the offset is written as a shift (`<< 2`) rather than a multiply |
 | `0x8006ff48` | 98 words | **byte-exact**, jump table included — the write half of the accessor pair whose read half is `0x800701d8`: same 44 indices, same offsets, one store per arm, and only 2 words per arm because the store rides in the `jr ra` slot |
 | `0x8006fc5c` | 53 words | **byte-exact**, jump table included — the smallest member of the arm-shaped family, a seven-way dispatch writing a halfword into `base + a * 376`, with its case bodies in the image's order 2, 3, 0, 1, 4, 5, 6 |
@@ -197,7 +198,7 @@ question, one cell per group of functions; the bottom panel is the record, one b
 ```
 the cartridge — one cell per group of functions, shaded by how far each is *matched*
 
-boot         213│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
+boot         213│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 stage2       1689│█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒█▒▒▒▒▒▒██▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒│
 ovl_0072610  105│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_007688e  42│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
@@ -234,10 +235,10 @@ ovl_00b5346  19│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 ovl_00b5e64   3│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 
-3416 functions across 36 images · █ 13 reproduced byte-for-byte (0.38%) · ▓ 1 recovered, residue itemised
+3416 functions across 36 images · █ 14 reproduced byte-for-byte (0.41%) · ▓ 1 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M295)
+the record — one bar per phase, from the phase table's own ranges (M0–M296)
 
 P0   M0  │██│ 10
 P1   M10 │███│ 21
@@ -255,7 +256,7 @@ P12  M200│██│ 11
 P13  M211│██│ 12
 P14  M223│█│ 8
 P15  M231│███│ 20
-P16  M251│███████│ 45
+P16  M251│███████│ 46
 ```
 <!-- progress-map:end -->
 
@@ -297,7 +298,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       99 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 416 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    220 notes, one per milestone that has one
+docs/log/    221 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
@@ -351,8 +352,12 @@ licence text reproduced there.
   record is quoted in each file's header.
 * **[OpenBiohazard2](https://github.com/OpenBiohazard2/OpenBiohazard2)** (MIT) — a Go re-implementation whose
   RDT opcode table is the one transcription here. Read as code, because MIT permits it.
-* **[n64decomp/perfect_dark](https://github.com/n64decomp/perfect_dark)** (MIT) — assessed for method; nothing
-  was ported.
+* **[n64decomp/perfect_dark](https://github.com/n64decomp/perfect_dark)** (MIT) — **struct layouts only**, from
+  `include/PR/` (M124). It is *not* a code reference: Rare modified libultra heavily, their own RSP microcode among
+  it, so its runtime is not the stock one.
+* **[zeldaret/oot](https://github.com/zeldaret/oot)** (MIT) — the reference for **stock libultra**: its
+  `src/libultra/os/` is Nintendo's own C, and it is where `osCreateMesgQueue` came from. Its revision is *later* than
+  RE2's — see `osSetEventMesg`, which there carries an `OS_EVENT_PRENMI` branch this image does not have (M296).
 * **[n64decomp/banjo-kazooie](https://github.com/n64decomp/banjo-kazooie)**,
   **[n64decomp/sm64](https://github.com/n64decomp/sm64)** — the decomps whose frontpage conventions this one
   follows, and whose CC0 choice it shares.

@@ -76,7 +76,7 @@
   {"id":"boot:0x80006a6c","image":"boot","addr":"0x80006a6c","name":"FUN_80006a6c","file":"src/boot/FUN_80006a6c.c","size":180,"status":"written"},
   {"id":"boot:0x80006b20","image":"boot","addr":"0x80006b20","name":"FUN_80006b20","file":"src/boot/FUN_80006b20.c","size":188,"status":"written"},
   {"id":"boot:0x80006be0","image":"boot","addr":"0x80006be0","name":"FUN_80006be0","file":"src/boot/FUN_80006be0.c","size":336,"status":"written"},
-  {"id":"boot:0x80006d30","image":"boot","addr":"0x80006d30","name":"osCreateMesgQueue","file":"src/boot/osCreateMesgQueue.c","size":36,"status":"written"},
+  {"id":"boot:0x80006d30","image":"boot","addr":"0x80006d30","name":"osCreateMesgQueue","file":"src/boot/osCreateMesgQueue.c","size":36,"status":"recovered"},
   {"id":"boot:0x80006d60","image":"boot","addr":"0x80006d60","name":"osCreateThread","file":"src/boot/osCreateThread.c","size":208,"status":"written"},
   {"id":"boot:0x80006e30","image":"boot","addr":"0x80006e30","name":"FUN_80006e30","file":"src/boot/FUN_80006e30.c","size":204,"status":"written"},
   {"id":"boot:0x80006f60","image":"boot","addr":"0x80006f60","name":"FUN_80006f60","file":"src/boot/FUN_80006f60.c","size":148,"status":"written"},

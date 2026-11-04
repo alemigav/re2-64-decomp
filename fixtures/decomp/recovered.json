@@ -113,6 +113,14 @@
    "verdict": "byte-exact",
    "probe": "pacae4: 53 of 53",
    "source": "PACAE4_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x80006d30",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "osmq: 9 of 9",
+   "source": "OSMQ_SOURCE"
   }
  ]
 }

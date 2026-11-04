@@ -9,8 +9,8 @@
  },
  "totals": {
   "F0": 3416,
-  "F1": 3402,
-  "F2": 3315,
+  "F1": 3416,
+  "F2": 3329,
   "named": 33,
   "validated": 12,
   "validated_unnamed": 12
@@ -758,16 +758,6 @@
    "callees_unknown": 0,
    "level": 2,
    "named": false,
-   "validated": false
-  },
-  "boot:0x80006d30": {
-   "name": "osCreateMesgQueue",
-   "image": "boot",
-   "address": "0x80006d30",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": true,
    "validated": false
   },
   "boot:0x80006d60": {
@@ -2158,6 +2148,16 @@
    "callees_unknown": 0,
    "level": 2,
    "named": false,
+   "validated": false
+  },
+  "boot:0x80006d30": {
+   "name": "osCreateMesgQueue",
+   "image": "boot",
+   "address": "0x80006d30",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": true,
    "validated": false
   },
   "stage2:0x80018a80": {
@@ -18916,7 +18916,7 @@
    "address": "0x80024558",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18926,7 +18926,7 @@
    "address": "0x8004fd1c",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18936,7 +18936,7 @@
    "address": "0x80057e1c",
    "callees": 2,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18946,7 +18946,7 @@
    "address": "0x80059530",
    "callees": 7,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18956,7 +18956,7 @@
    "address": "0x80059868",
    "callees": 5,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18966,7 +18966,7 @@
    "address": "0x8006e574",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18976,7 +18976,7 @@
    "address": "0x8006e68c",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18986,7 +18986,7 @@
    "address": "0x8006fc5c",
    "callees": 1,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18996,7 +18996,7 @@
    "address": "0x8006ff48",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -19006,7 +19006,7 @@
    "address": "0x80070120",
    "callees": 1,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -19016,7 +19016,7 @@
    "address": "0x800701d8",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -19026,7 +19026,7 @@
    "address": "0x800704e0",
    "callees": 0,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -19036,7 +19036,7 @@
    "address": "0x8007e590",
    "callees": 3,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -19046,7 +19046,7 @@
    "address": "0x800acae4",
    "callees": 1,
    "callees_unknown": 0,
-   "level": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },

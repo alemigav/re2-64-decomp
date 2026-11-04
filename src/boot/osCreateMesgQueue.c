@@ -1,19 +1,33 @@
 /* osCreateMesgQueue
  * image   boot (boot), base 0x80000480
  * address 0x80006d30  body 0x80006d30..0x80006d53  size 36 B
- * body sha256 2b745931095f0111344f87e584219692d649e54d62ebe5383bcc4722abefcb13
- * provider record sha256 1e1047541ce89d9acdb098d82a7bde899149a0c7fa275750763c9b8f43a0475f
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 8816a6821dc97e5cdbbdeb27939d7d01ac4ba02a5c93df92a73da3ee8b93e177
+ * recovered byte-exact (osmq: 9 of 9)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as OSMQ_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void osCreateMesgQueue(undefined4 *param_1,undefined4 param_2,undefined4 param_3)
+typedef int s32;
+typedef unsigned int u32;
+typedef struct OSThread_s OSThread;
+typedef void *OSMesg;
 
+typedef struct {
+    OSThread *mtqueue;
+    OSThread *fullqueue;
+    s32 validCount;
+    s32 first;
+    s32 msgCount;
+    OSMesg *msg;
+} OSMesgQueue;
+
+extern OSThread __osThreadTail;
+
+void osCreateMesgQueue(OSMesgQueue *mq, OSMesg *msg, s32 count)
 {
-  *param_1 = 0x80012940;
-  param_1[1] = 0x80012940;
-  param_1[2] = 0;
-  param_1[3] = 0;
-  param_1[4] = param_3;
-  param_1[5] = param_2;
-  return;
+    mq->mtqueue = (OSThread *)&__osThreadTail;
+    mq->fullqueue = (OSThread *)&__osThreadTail;
+    mq->validCount = 0;
+    mq->first = 0;
+    mq->msgCount = count;
+    mq->msg = msg;
 }

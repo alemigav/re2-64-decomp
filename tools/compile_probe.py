@@ -47,6 +47,13 @@ IMAGE = ROOT / "assets" / "unpacked" / "00000_0014420_1172240.bin"
 RANGES = ROOT / "fixtures" / "decomp" / "ranges.json"
 BASE = 0x80018A80
 WORK = ROOT / "build" / "probe"
+# M296: the *boot* image is not an unpacked member -- it sits raw at ROM 0x1000 and loads at 0x80000480, which is where
+# the runtime lives. Every other probe compares against the stage-2 payload above, so the library layer needs its own
+# reader. Same skip semantics: no cartridge, no case.
+ROM = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
+BOOT_ROM_OFF = 0x1000
+BOOT_BASE = 0x80000480
+BOOT_SIZE = 69952
 
 # (id, source, address, size, class). Addresses are real stage-2 functions chosen by shape, not by address.
 # The four codegen classes the corpus does NOT cover, and why. This is a refusal with a measurement behind
@@ -1899,6 +1906,35 @@ P704E0_TABLE = 0x800B9778
 P704E0_WORDS = 123
 P704E0_SYMS = [("D_80115120", 0x80115120)]
 
+OSMQ_SOURCE = """typedef int s32;
+typedef unsigned int u32;
+typedef struct OSThread_s OSThread;
+typedef void *OSMesg;
+
+typedef struct {
+    OSThread *mtqueue;
+    OSThread *fullqueue;
+    s32 validCount;
+    s32 first;
+    s32 msgCount;
+    OSMesg *msg;
+} OSMesgQueue;
+
+extern OSThread __osThreadTail;
+
+void osCreateMesgQueue(OSMesgQueue *mq, OSMesg *msg, s32 count)
+{
+    mq->mtqueue = (OSThread *)&__osThreadTail;
+    mq->fullqueue = (OSThread *)&__osThreadTail;
+    mq->validCount = 0;
+    mq->first = 0;
+    mq->msgCount = count;
+    mq->msg = msg;
+}"""
+OSMQ_ADDR = 0x80006D30
+OSMQ_WORDS = 9
+OSMQ_SYMS = [("__osThreadTail", 0x80012940)]
+
 
 def pacae4_function():
     """Compile the clamp-then-dispatch predicate and compare its 53 words plus the 7-word jump table."""
@@ -2209,6 +2245,54 @@ def p704e0_function():
     return _arm_probe(P704E0_SOURCE, 0x800704E0, P704E0_WORDS, P704E0_TABLE, 44, P704E0_SYMS, "p704e0")
 
 
+def osmq_function():
+    """`osCreateMesgQueue` from the *boot* image -- the first library function in the corpus (M296).
+
+    Nintendo's libultra C, transcribed with our own typedefs, compiled by the same pipeline: 9 words that come out
+    byte-identical, including the shared `&__osThreadTail` (0x80012940) and the store that lands in the `jr` delay slot.
+    It is also the first case that does not read the stage-2 payload: `boot` is raw at ROM 0x1000 and loads at
+    0x80000480.
+    """
+    import difflib
+    cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
+    if not cc1.exists() or not gas.exists() or not ROM.exists():
+        return None
+    rom = ROM.read_bytes()
+    image = rom[BOOT_ROM_OFF:BOOT_ROM_OFF + BOOT_SIZE]
+    if len(image) != BOOT_SIZE:
+        return None
+    c = WORK / "osmq.c"
+    c.parent.mkdir(parents=True, exist_ok=True)
+    c.write_text(OSMQ_SOURCE)
+    s, o, fx = c.with_suffix(".s"), c.with_suffix(".o"), c.with_suffix(".fix.o")
+    if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                      capture_output=True).returncode:
+        return None
+    subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                   capture_output=True)
+    subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                    str(o), str(fx)], capture_output=True)
+    ld = c.with_suffix(".ld")
+    syms = "".join("%s = 0x%X;\n" % (n, a) for n, a in OSMQ_SYMS)
+    ld.write_text("SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  /DISCARD/ : { *(.reginfo) "
+                  "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) "
+                  "*(.gnu.attributes) *(.note.GNU-stack) }\n}\n" % OSMQ_ADDR + syms)
+    elf = c.with_suffix(".elf")
+    if subprocess.run([str(GAS / "mips-linux-gnu-ld"), "-T", str(ld), "-o", str(elf), str(fx)],
+                      capture_output=True).returncode:
+        return None
+    lo, n = OSMQ_ADDR, OSMQ_WORDS
+    want = [image[lo - BOOT_BASE + 4 * i:lo - BOOT_BASE + 4 * i + 4] for i in range(n)]
+    txt = text_of(elf)
+    got = [txt[4 * i:4 * i + 4] for i in range(len(txt) // 4)]
+    off = sum(1 for a, b in zip(want, got) if a == b)
+    sm = difflib.SequenceMatcher(a=[w.hex() for w in want], b=[w.hex() for w in got], autojunk=False)
+    hunks = len([o for o in sm.get_opcodes() if o[0] != "equal"])
+    return {"image_instrs": n, "got_instrs": len(got), "same_offset": off, "hunks": hunks,
+            "extra": len(got) - n}
+
+
 def check():
     if not IMAGE.exists():
         print("SKIP (needs assets/unpacked, i.e. the unpacked cartridge)")
@@ -2324,6 +2408,7 @@ def check():
     p6e68cf = p6e68c_function()
     p6e574f = p6e574_function()
     p704e0f = p704e0_function()
+    osmqf = osmq_function()
     fpf = fp_pool_check()
     cases.append((f"p6's whole function, content-aligned: {p6f['same']} of {p6f['image_instrs']} instructions "
                   f"identical, {p6f['hunks']} difference hunk(s), {p6f['extra']} extra instruction(s), "
@@ -2500,6 +2585,13 @@ def check():
                   f"counter arms sharing one increment tail through a `j`"
                   if p704e0f else "0x800704e0 table: not run",
                   bool(p704e0f) and p704e0f["table_same"] == 44))
+
+    cases.append((f"`osCreateMesgQueue` in the *boot* image at 0x80006d30 is BYTE-EXACT: "
+                  f"{osmqf['same_offset']} of {osmqf['image_instrs']} words -- the first library function in the "
+                  f"corpus, the first case that does not read the stage-2 payload, and the proof that RE2's runtime "
+                  f"was rebuilt from libultra source with this compiler (M296)"
+                  if osmqf else "osCreateMesgQueue: not run",
+                  bool(osmqf) and osmqf["same_offset"] == osmqf["image_instrs"]))
 
     cases.append((f"the {len(CLASSES_WITHOUT_A_PROBE)} remaining uncovered classes are refused with a reason, "
                   f"not silently dropped ({', '.join(sorted(CLASSES_WITHOUT_A_PROBE))})",

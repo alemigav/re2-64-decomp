@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-296 milestones are indexed. 218 of them have a note; the rest are rows in the log that cite
+297 milestones are indexed. 219 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -313,6 +313,7 @@ at the foot of this file.
 | 293 | **M293** — `0x8007e590` at 226 of 229: the toolchain is ruled out, and the last register is local | `docs/log/M293-0x8007e590-the-last-register-is-local.md` |
 | 294 | **M294** — the delay-slot scan: 718 sites, and it does **not** justify a `local_alloc` change | `docs/log/M294-the-delay-slot-scan-and-why-it-does-not-justify-a-patch.md` |
 | 295 | **M295** — why the register is lost: a conflict, not a tie-break, and not `local_alloc` at all | `docs/log/M295-why-the-register-is-lost-a-conflict-not-a-tie-break.md` |
+| 296 | **M296** — the reference-decompilation experiment: `osCreateMesgQueue` byte-exact, and OoT is a *later* libultra | `docs/log/M296-the-reference-decompilation-experiment.md` |
 
 ## The gaps, and why they are empty
 
