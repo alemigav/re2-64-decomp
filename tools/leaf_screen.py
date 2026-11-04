@@ -137,7 +137,44 @@ def body_of(cp, inv, image: str, addr: int, words: int):
             for i in range(words)]
 
 
-def screen(lo: int, hi: int) -> list[dict]:
+def called_report(lo: int, hi: int) -> list[dict]:
+    """Entries rejected as "no `jr ra`" that the call graph *references* -- i.e. truncated extents, not stubs.
+
+    The screen can only see a body, so "no return" reads as hand-written assembly. The call graph settles it: a
+    function with 96 `jal` sites is not a stub, it is a function whose census extent stops early. Walk forward to
+    the first `jr ra` and report the true extent, so the defect is a work item rather than a skip (M320).
+    """
+    cp = load_probe()
+    inv = cp.image_inventory()
+    graph = ROOT / "manifests" / "call_graph.json"
+    if inv is None or not graph.exists():
+        return []
+    refs = {}
+    for e in json.loads(graph.read_text()).get("edges", []):
+        d = e.get("dst")
+        if isinstance(d, str):
+            refs[d.lower()] = refs.get(d.lower(), 0) + 1
+    out = []
+    for r in screen(lo, hi, include_rejected=True):
+        if r["why"] is None:
+            continue
+        key = ("%s:%s" % (r["image"], r["address"])).lower()
+        if not refs.get(key):
+            continue
+        a = int(r["address"], 16)
+        words = body_of(cp, inv, r["image"], a, 96) or []
+        true = None
+        for i, w in enumerate(words):
+            if w == JR_RA:
+                true = i + 2
+                break
+        out.append({"image": r["image"], "address": r["address"], "census_words": r["words"],
+                    "true_words": true, "callers": refs[key], "why": r["why"]})
+    out.sort(key=lambda r: -r["callers"])
+    return out
+
+
+def screen(lo: int, hi: int, include_rejected: bool = False) -> list[dict]:
     cp = load_probe()
     inv = cp.image_inventory()
     index = ROOT / "manifests" / "code_index.json"
@@ -153,9 +190,12 @@ def screen(lo: int, hi: int) -> list[dict]:
                 continue
             a = f["address"] if isinstance(f["address"], int) else int(f["address"], 16)
             words = body_of(cp, inv, img["name"], a, n)
-            if words is None or why_rejected(words, a) is not None:
+            if words is None:
                 continue
-            out.append({"image": img["name"], "address": "0x%08x" % a, "words": n})
+            why = why_rejected(words, a)
+            if why is not None and not include_rejected:
+                continue
+            out.append({"image": img["name"], "address": "0x%08x" % a, "words": n, "why": why})
     out.sort(key=lambda r: (r["words"], r["address"]))
     return out
 
@@ -194,7 +234,17 @@ def try_draft(cp, draft: Path, image: str, addr: int, words: int, syms) -> int:
         return 2
     got = cp.text_of(elf)
     ours = [int.from_bytes(got[4 * i:4 * i + 4], "big") for i in range(len(got) // 4)]
-    want = [int.from_bytes(blob[addr - base + 4 * i:addr - base + 4 * i + 4], "big") for i in range(words)]
+    want, short = [], False
+    for _i in range(words):
+        _sl = blob[addr - base + 4 * _i:addr - base + 4 * _i + 4]
+        if len(_sl) < 4:
+            short = True
+            break
+        want.append(int.from_bytes(_sl, "big"))
+    if short:
+        print("the function runs past the %s window (%d words available of %d)"
+              % (image, len(want), words), file=sys.stderr)
+        return 2
     same = sum(1 for a, b in zip(want, ours) if a == b)
     print("%d/%d words identical (%d compiled)" % (same, words, len(ours)))
     if same != words:
@@ -237,6 +287,8 @@ def main(argv):
     ap.add_argument("--words", default="2:8", help="MIN:MAX word count (default 2:8)")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--self-test", action="store_true")
+    ap.add_argument("--called", action="store_true",
+                    help="entries rejected as 'no jr ra' but referenced by the call graph (truncated extents)")
     ap.add_argument("--try", dest="draft", metavar="DRAFT.c")
     ap.add_argument("--image")
     ap.add_argument("--addr")
@@ -258,6 +310,17 @@ def main(argv):
         return try_draft(load_probe(), Path(a.draft), a.image, int(a.addr, 16), a.count, syms)
 
     lo, _, hi = a.words.partition(":")
+    if a.called:
+        rows = called_report(int(lo), int(hi or lo))
+        if a.json:
+            print(json.dumps(rows, indent=1))
+        else:
+            print("%-13s %-11s %-6s %-5s %s" % ("image", "address", "census", "true", "callers"))
+            for r in rows:
+                print("%-13s %s %5sw %4sw %6d" % (r["image"], r["address"], r["census_words"],
+                                                  r["true_words"], r["callers"]))
+            print("%d truncated extent(s) at %s words" % (len(rows), a.words))
+        return 0
     rows = screen(int(lo), int(hi or lo))
     if a.json:
         print(json.dumps(rows, indent=1))

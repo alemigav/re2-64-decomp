@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-320 milestones are indexed. 242 of them have a note; the rest are rows in the log that cite
+321 milestones are indexed. 243 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -337,6 +337,7 @@ at the foot of this file.
 | 317 | **M317** — the 4-word set: 9 of 17, and four of the misses were one known residue | `docs/log/M317-the-four-word-set.md` |
 | 318 | **M318** — `volatile` answered, and the 5-word sample: 6 of 8 | `docs/log/M318-volatile-answered-and-the-5-word-sample.md` |
 | 319 | **M319** — the leaf screen, a toolchain defect it exposed, and 20 functions from the 6-8 word pool | `docs/log/M319-the-leaf-screen-and-the-6-8-word-pool.md` |
+| 320 | **M320** — the 4-word misses and the tail: five truncated extents, no new functions | `docs/log/M320-the-4-word-misses-and-the-tail.md` |
 
 ## The gaps, and why they are empty
 

@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "3b40b72",
+   "subject": "M319: the leaf screen (+ normalise_object for a 2.7-as object defect), 0x80001180 as 16-byte records, and 19 of 29 from the 6-8 word pool \u2014 recovered 109 -> 129",
+   "milestones": [
+    319
+   ]
+  },
+  {
    "sha": "4b04954",
    "subject": "M318: volatile is what produces the image's address materialisation (residue is scheduling); 5-word sample 6/8 \u2014 recovered 103 -> 109",
    "milestones": [

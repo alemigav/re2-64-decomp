@@ -869,6 +869,8 @@ void FUN_x(u32 a)
 }
 """
 
+# M320: the 2-3 word tail's one real candidate (5 words by its true extent, and a caller confirms it)
+
 # M319: the record-array retry and the 6-8 word sweep
 S_80001180_SOURCE = """typedef unsigned int u32;
 
@@ -1540,6 +1542,21 @@ def normalise_object(path):
     if fixed:
         path.write_bytes(bytes(data))
     return fixed
+
+
+def truncated_extents():
+    """Called functions whose census extent contains no `jr ra`: truncated extents, not hand-written stubs.
+
+    The leaf screen can only see a body, so "no return" reads as assembly. The call graph settles it — a function
+    with 96 `jal` sites is not a stub — and walking forward to the first `jr ra` gives the true extent. Found by
+    the 2-3 word tail in M320 and delegated to `tools/leaf_screen.py --called`, which is the tool that reports it.
+    """
+    import importlib.util as _iu
+    spec = _iu.spec_from_file_location("_ls_extents", ROOT / "tools" / "leaf_screen.py")
+    ls = _iu.module_from_spec(spec)
+    spec.loader.exec_module(ls)
+    rows = ls.called_report(2, 8)
+    return [r for r in rows if r["true_words"] and r["true_words"] > r["census_words"]]
 
 
 def image_inventory():
@@ -3647,6 +3664,7 @@ def check():
     selc = select_shape_census()
     fams = family_probe()
     dupc = duplicate_census()
+    trunc = truncated_extents()
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
@@ -3796,6 +3814,16 @@ def check():
                       f"({got[1]} compiled, the rest `as` padding) -- one draft, no search (M315/M316/M319)"
                       if got is not None else f"0x{addr:08x}: not run",
                       bool(got) and got[0] == words))
+
+    cases.append((f"the 2-3 word tail is mostly a CENSUS DEFECT, not a set of stubs: "
+                  f"{len(trunc)} entries the screen rejects as \"no jr ra\" are referenced by the call graph and "
+                  f"run far past their census extent -- "
+                  + ", ".join("%s:%s %dw->%dw (%d callers)" % (r["image"], r["address"], r["census_words"],
+                                                               r["true_words"], r["callers"])
+                              for r in trunc[:4]) + " (M320)"
+                  if trunc else "truncated extents: not run",
+                  bool(trunc) and sorted(r["true_words"] for r in trunc) == [5, 32, 46, 46, 46, 95]
+                  and max(r["callers"] for r in trunc) == 96))
 
     # one case per multi-member family, generated from the fixture so a new cohort needs no code here
     for src_name, fam in sorted((fams or {}).items()):
