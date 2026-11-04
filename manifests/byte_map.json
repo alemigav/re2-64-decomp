@@ -1271,9 +1271,339 @@
    ],
    [
     2147554748,
-    2147554751,
+    2147554903,
     "unclassified",
     "no artifact names it"
+   ],
+   [
+    2147554904,
+    2147554907,
+    "jump_table",
+    "manifests/jump_tables.json"
+   ],
+   [
+    2147554908,
+    2147554999,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147555000,
+    2147555003,
+    "jump_table",
+    "manifests/jump_tables.json"
+   ],
+   [
+    2147555004,
+    2147555215,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147555216,
+    2147555219,
+    "jump_table",
+    "manifests/jump_tables.json"
+   ],
+   [
+    2147555220,
+    2147555599,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147555600,
+    2147555603,
+    "jump_table",
+    "manifests/jump_tables.json"
+   ],
+   [
+    2147555604,
+    2147556255,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147556256,
+    2147556271,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147556272,
+    2147556559,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147556560,
+    2147556575,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147556576,
+    2147557007,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147557008,
+    2147557011,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147557012,
+    2147557079,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147557080,
+    2147557087,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147557088,
+    2147557103,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147557104,
+    2147557107,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147557108,
+    2147557119,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147557120,
+    2147557651,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147557652,
+    2147557703,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147557704,
+    2147558999,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559000,
+    2147559039,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559040,
+    2147559251,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559252,
+    2147559267,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559268,
+    2147559443,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559444,
+    2147559471,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559472,
+    2147559515,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559516,
+    2147559531,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559532,
+    2147559547,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559548,
+    2147559559,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559560,
+    2147559563,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147559564,
+    2147559591,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559592,
+    2147559619,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559620,
+    2147559635,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559636,
+    2147559663,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559664,
+    2147559667,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147559668,
+    2147559695,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559696,
+    2147559703,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559704,
+    2147559747,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559748,
+    2147559751,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559752,
+    2147559755,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147559756,
+    2147559759,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559760,
+    2147559775,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559776,
+    2147559779,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559780,
+    2147559839,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559840,
+    2147559843,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147559844,
+    2147559887,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559888,
+    2147559895,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147559896,
+    2147559903,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559904,
+    2147559907,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147559908,
+    2147559935,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147559936,
+    2147563651,
+    "unclassified",
+    "no artifact names it"
+   ],
+   [
+    2147563652,
+    2147563663,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2147563664,
+    2147563667,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2147563668,
+    2147563679,
+    "padding",
+    "run of 0x00 in the unpacked image"
    ]
   ],
   "stage2": [
@@ -23431,7 +23761,7 @@
   "boot": {
    "table_in_body": 0,
    "data_in_body": 0,
-   "padding_in_body": 8
+   "padding_in_body": 13
   },
   "stage2": {
    "table_in_body": 0,
@@ -23612,9 +23942,10 @@
  "totals": {
   "boot": {
    "function_body": 57636,
-   "unclassified": 12164,
-   "padding": 148,
-   "data_named": 4
+   "unclassified": 20520,
+   "padding": 664,
+   "data_named": 44,
+   "jump_table": 16
   },
   "stage2": {
    "function_body": 560792,

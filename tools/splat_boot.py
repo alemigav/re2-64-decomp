@@ -48,7 +48,9 @@ ASM = OUT / "asm"
 RANGES = ROOT / "fixtures" / "decomp" / "ranges.json"
 
 BOOT_ROM = 0x1000
-BOOT_SIZE = 0x11140           # 69 952 B, from manifests: the boot image's extent in the cartridge
+BOOT_SIZE = 0x13420           # 78 880 B (M324): code to 0x11140, then the version string, the overlay table
+                              # at 0x80012150 and the ASCII table -- all loaded, and the end is exactly
+                              # `__bss_start` = 0x800138a0 from the recovered `main`
 BOOT_BASE = 0x80000480
 
 SECTION = re.compile(r"^(\w+)_ROM_START = __romPos;", re.M)

@@ -170,13 +170,17 @@ def check(rep):
     srcs = [r[3] for rs in rep["images"].values() for r in rs]
     cases.append((f"every word is in one of the {len(CLASSES)} declared classes and every range names its "
                   f"source ({sum(1 for s in srcs if not s)} unnamed)", all(srcs)))
+    # the total is DERIVED from the images fixture, not pinned: a wider boot image (M324) must not need
+    # this assertion edited, it must still close
+    images_total = sum(i["size"] for i in json.loads((ROOT / "fixtures" / "decomp" / "images.json").read_text())["images"])
     cases.append((f"the partition closes: {' + '.join(f'{tot[c]:,}' for c in CLASSES)} = "
-                  f"{sum(tot.values()):,} B of image bytes", sum(tot.values()) == 1947632))
+                  f"{sum(tot.values()):,} B of image bytes, which is the fixture's {images_total:,}",
+                  sum(tot.values()) == images_total))
     ov = {k: sum(v[k] for v in rep["overlaps"].values()) for k in
           ("table_in_body", "data_in_body", "padding_in_body")}
     cases.append((f"precedence resolved {ov['table_in_body']} table, {ov['data_in_body']} named-data and "
                   f"{ov['padding_in_body']} padding words that fall inside a body — counted, not hidden", True))
-    cases.append((f"unclassified is {tot['unclassified']:,} B ({100.0 * tot['unclassified'] / 1947632:.1f} %) "
+    cases.append((f"unclassified is {tot['unclassified']:,} B ({100.0 * tot['unclassified'] / images_total:.1f} %) "
                   f"— a published bucket, never renamed to data", tot["unclassified"] > 0))
     return cases
 

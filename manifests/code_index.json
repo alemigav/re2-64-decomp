@@ -5,7 +5,7 @@
    "name": "boot",
    "role": "boot",
    "base": "0x80000480",
-   "size": 69952,
+   "size": 78880,
    "functions": 213,
    "named": 19,
    "functions_named": 19,
@@ -28,9 +28,9 @@
    ],
    "covered_words": 14410,
    "covered_bytes": 57640,
-   "coverage": 0.824,
+   "coverage": 0.7307,
    "unclaimed_runs": 102,
-   "unclaimed_bytes": 12312,
+   "unclaimed_bytes": 21240,
    "functions_list": [
     {
      "address": "0x80000480",

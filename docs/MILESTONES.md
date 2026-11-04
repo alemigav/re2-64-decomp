@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-324 milestones are indexed. 246 of them have a note; the rest are rows in the log that cite
+325 milestones are indexed. 247 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -341,6 +341,7 @@ at the foot of this file.
 | 321 | **M321** — `0x8004276c` cannot be written in C, and the test that proves it | `docs/log/M321-the-46-word-transform-is-not-c.md` |
 | 322 | **M322** — `main` at 0x80000520: 30 of 30, and a retraction the root view earned | `docs/log/M322-main-at-0x80000520.md` |
 | 323 | **M323** — the two boot roots and the boot edge: two negations and one settled boundary | `docs/log/M323-the-two-boot-roots-and-the-boot-edge.md` |
+| 324 | **M324** — the boot extent corrected: 0x11140 → 0x13420, and the function it unlocked | `docs/log/M324-the-boot-extent-correction.md` |
 
 ## The gaps, and why they are empty
 

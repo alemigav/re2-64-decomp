@@ -1,12 +1,12 @@
 {
- "note": "The 36 executable images: load address, extent and ROM origin. Layout metadata only - no cartridge bytes. Derived from the cartridge header and the overlay table, the same facts `src/INDEX.md` publishes; `tools/export_src.py --images build/elfs/images.json` writes the build-side copy, and `tools/counts.py` asserts the totals in these rows.",
+ "note": "the 36 executable images: load address, extent and origin. Layout metadata only - no cartridge bytes. Regenerate with tools/export_ranges.py --write-images.",
  "cart_sha256": "71f3f779613bf1f0e2050bfa600425385d2c257a647d2e40f63be1a7986e9aac",
  "images": [
   {
    "name": "boot",
    "role": "boot",
    "base": 2147484800,
-   "size": 69952,
+   "size": 78880,
    "source": "ROM 0x01000"
   },
   {

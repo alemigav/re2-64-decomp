@@ -10,7 +10,7 @@ either measured by one of those cases or explicitly labelled a reading of the co
 |---|---|
 | **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **129 functions now match the cartridge exactly**, down to the last byte — from Nintendo's own libultra runtime down to single-instruction accessors, including **59 that come from eight shared bodies**, so one proven shape registers every copy |
 | **The unusual part** | **298 checks run with no ROM, no assets and no emulator** — the other 806 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses to report `PASS` unless it has first proved each gate *can* fail |
-| **The scale of what is left** | 62.2 % of the image bytes sit inside a known function body and the other 37.8 % is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
+| **The scale of what is left** | 61.9 % of the image bytes sit inside a known function body and the other 38.1 % is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
 
 [![ci](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml/badge.svg)](https://github.com/alemigav/re2-64-decomp/actions/workflows/acceptance.yml)
 [![release](https://img.shields.io/badge/release-v1.1-lightgrey)](https://github.com/alemigav/re2-64-decomp/releases)
@@ -98,11 +98,11 @@ Not affiliated with, endorsed by or sponsored by Capcom or Nintendo. See [Legal 
   version of it was wrong by `0x480` and had invalidated every address (M7).
 * **The container**: 4 761 zlib members, 8 748 242 → 18 550 424 B, plus 1 227 MJPEG frames and 271 MPEG-1
   blocks, all verified byte-for-byte (M9/M10).
-* **The code corpus**: **36 images** (boot + stage-2 + 34 overlays, 1 947 632 B) censused from the cart's own
-  load table, **3 416 functions** over **3 678** ranges, **62.2 %** of the **1 947 632** image bytes inside
-  a known body (**1 211 256 B**) — `src/`, `src/INDEX.md`. The other 37.8 % is classified, not shrugged at
-  (M207): **407 608 B padding**, **6 640 B** data the decompiler names, **964 B** of jump tables, and
-  **321 820 B (16.5 %) unclassified** — a bucket that is published and never renamed `data` on a hunch.
+* **The code corpus**: **36 images** (boot + stage-2 + 34 overlays, 1 956 560 B) censused from the cart's own
+  load table, **3 416 functions** over **3 678** ranges, **61.9 %** of the **1 956 560** image bytes inside
+  a known body (**1 211 256 B**) — `src/`, `src/INDEX.md`. The other 38.1 % is classified, not shrugged at
+  (M207): **408 124 B padding**, **6 680 B** data the decompiler names, **980 B** of jump tables, and
+  **330 176 B (16.9 %) unclassified** — a bucket that is published and never renamed `data` on a hunch.
   The function count excludes the **174 switch case bodies** the provider itself labels `switchD_::caseD_`:
   they are code, they are counted in the 3 678 ranges and in the byte total, but they are reachable only
   through the table their owner dispatches on, so they are kept under `src/<image>/switch/` instead of being
@@ -180,7 +180,7 @@ Two things worth knowing about how the gate works:
 
 ## Milestones
 
-**324** numbers, 0-323: **268** with a row, and **56** named gaps. The full index — every number, its title,
+**325** numbers, 0-324: **269** with a row, and **56** named gaps. The full index — every number, its title,
 and the note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table
 worth reading before you believe any older note.
@@ -365,7 +365,7 @@ samples, and 187 of the 1 192 records name one.
 tools/       101 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 416 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        handover.md (start here), format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    248 notes, one per milestone that has one
+docs/log/    249 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

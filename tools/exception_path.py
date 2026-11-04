@@ -52,7 +52,7 @@ def load_boot():
                 return data, v, o, s
     if ROM.exists():
         rom = ROM.read_bytes()
-        base, size = 0x80000000, 69952
+        base, size = 0x80000000, 78880   # M324: the boot load extent (0x13420)
         return rom[0x1000:0x1000 + size], base, 0, size
     return None, None, None, None
 

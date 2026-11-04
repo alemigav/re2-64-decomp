@@ -23,7 +23,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-BOOT = dict(name="boot", rom=0x1000, length=0x11140, base=0x80000480)
+BOOT = dict(name="boot", rom=0x1000, length=0x13420, base=0x80000480)   # M324: the load extent, not the code extent
 WRAPPER = Path(__file__).with_name("wrap_mips_elf.py")
 
 

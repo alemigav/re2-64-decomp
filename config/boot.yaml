@@ -1,4 +1,5 @@
-# splat config for ONE image: the boot image (ROM 0x1000, 69952 B, vram 0x80000480).
+# splat config for ONE image: the boot image (ROM 0x1000, 78880 B = 0x13420 as a LOAD extent, vram 0x80000480;
+# its code stops at 0x11140 -- the rest is the version string, the overlay table and the ASCII table, M324).
 #
 # A dress rehearsal of the matching pipeline's left half: segregate the image, disassemble it, emit a symbol
 # map and a linker script, and check that the segmentation tiles the image exactly -- before any function is

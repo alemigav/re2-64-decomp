@@ -135,7 +135,7 @@ def main() -> None:
     for r in table["records"]:
         if r["stored"]:
             known[r["cart"]] = r["vram_start"]
-    boot = dict(path=None, idx=-1, rom=0x1000, size=0x11140, base=0x80000480)
+    boot = dict(path=None, idx=-1, rom=0x1000, size=0x13420, base=0x80000480)   # M324: load extent
 
     rows, code_rows = [], []
     for m in members(Path(a.unpacked)):

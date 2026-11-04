@@ -53,7 +53,7 @@ WORK = ROOT / "build" / "probe"
 ROM = ROOT / "rom" / "Resident Evil 2 (USA) (Rev 1).z64"
 BOOT_ROM_OFF = 0x1000
 BOOT_BASE = 0x80000480
-BOOT_SIZE = 69952
+BOOT_SIZE = 78880   # 0x13420: the boot LOAD extent (M324); its code ends at 0x11140
 
 # (id, source, address, size, class). Addresses are real stage-2 functions chosen by shape, not by address.
 # The four codegen classes the corpus does NOT cover, and why. This is a refusal with a measurement behind
@@ -1610,8 +1610,8 @@ def boot_edge():
             "magic": rom[off:off + 16].decode("latin1"),
             "table_vaddr": tbl, "table_rom": off,
             "first_entry": [int.from_bytes(rom[off + 16 + 4 * i:off + 20 + 4 * i], "big") for i in range(4)],
-            "stage2_rom": 0x14420, "code_extent": BOOT_SIZE,
-            "load_extent": 0x14420 - 0x1000}
+            "stage2_rom": 0x14420, "code_extent": 0x11140,
+            "load_extent": 0x14420 - 0x1000, "boot_size_constant": BOOT_SIZE}
 
 
 def image_inventory():
@@ -3882,18 +3882,21 @@ def check():
                   and max(r["callers"] for r in trunc) == 96))
 
     cases.append((f"the boot segment's edge is a SEGMENT boundary, not a truncation: the word at 0x800115c0 is "
-                  f"ROM 0x{edge['edge_rom']:x}, exactly where BOOT_SIZE ({edge['code_extent']}) stops, and it is a "
+                  f"ROM 0x{edge['edge_rom']:x}, exactly where the CODE extent ({edge['code_extent']} B) stops, and it is a "
                   f"real instruction (0x{edge['edge_word']:08x}); the same region continues to stage2 at ROM "
                   f"0x{edge['stage2_rom']:x} carrying the overlay table — magic {edge['magic']!r} at virtual "
                   f"0x{edge['table_vaddr']:x} (ROM 0x{edge['table_rom']:x}), first entry "
-                  f"{[hex(x) for x in edge['first_entry']]} (rom_start flags in the high nibble) = stage2 — so the boot's CODE extent is 0x{edge['code_extent']:x} "
-                  f"but its LOAD extent is 0x{edge['load_extent']:x} (M323)"
+                  f"{[hex(x) for x in edge['first_entry']]} (rom_start flags in the high nibble) = stage2 — so the boot's CODE extent is "
+                  f"0x{edge['code_extent']:x} and its LOAD extent 0x{edge['load_extent']:x} is what `BOOT_SIZE` now carries "
+                  f"({edge['boot_size_constant']}), because the two extents end at `__bss_start` = 0x800138a0 (M324)"
                   if edge else "boot edge: not run",
                   bool(edge) and edge["magic"].startswith("OVERLAYTABLENUMC")
                   # the rom_start field carries flags in its high nibble: 0xb0014420 -> 0x14420
                   and (edge["first_entry"][0] & 0x0FFFFFFF) == 0x14420
                   and edge["first_entry"][2] == 0x80018A80
-                  and edge["edge_word"] == 0x28420000))
+                  and edge["edge_word"] == 0x28420000
+                  and edge["boot_size_constant"] == 0x13420 == edge["load_extent"]
+                  and 0x80000480 + edge["load_extent"] == 0x800138A0))
 
     # one case per multi-member family, generated from the fixture so a new cohort needs no code here
     for src_name, fam in sorted((fams or {}).items()):

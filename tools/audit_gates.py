@@ -377,7 +377,7 @@ AUDITS = [
     # the drift the missing generator allowed for a milestone -- must fail it.
     dict(name="image inventory: a committed extent is edited by hand",
          tool="export_ranges.py", args=["--check-images"], file="fixtures/decomp/images.json",
-         old='"size": 69952', new='"size": 69960'),
+         old='"size": 78880', new='"size": 78888'),
     dict(name="handler_region: the extent queue drops one correction",
          tool="handler_region.py", args=["--check"], file="manifests/extent_corrections.json",
          old='"entry": "0x8006da14",', new='"entry": "0x8006da18",'),
