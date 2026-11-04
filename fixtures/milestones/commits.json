@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "687f437",
+   "subject": "M291: the pool's sharing rule is a mode test -- 0x80024558 at 137/139, and a patch-script reproducibility fix",
+   "milestones": [
+    291
+   ]
+  },
+  {
    "sha": "8a31830",
    "subject": "M290: the three partials -- 0x8006e574 closes at 23/23, two stay pinned",
    "milestones": [

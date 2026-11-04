@@ -22,8 +22,8 @@
    "image": "stage2",
    "address": "0x80024558",
    "words": 139,
-   "verdict": "partial: 137 of 139, one register (\"$at\" against \"$v0\" for the pool address)",
-   "probe": "p8: 137 of 139",
+   "verdict": "byte-exact",
+   "probe": "p8: 139 of 139",
    "source": "P8_SOURCE"
   },
   {

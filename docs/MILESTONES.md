@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-292 milestones are indexed. 214 of them have a note; the rest are rows in the log that cite
+293 milestones are indexed. 215 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -309,6 +309,7 @@ at the foot of this file.
 | 289 | **M289** — the recovered functions are in the index: 14 pinned, the map shows all of them | `docs/log/M289-recovered-functions-in-the-index.md` |
 | 290 | **M290** — the three partials: one closes, two are pinned where they are | `docs/log/M290-the-three-partials-one-closes.md` |
 | 291 | **M291** — the pool's sharing rule: the double is per use, the float is per value — and a reproducibility bug the patch had | `docs/log/M291-the-pools-sharing-rule-and-a-patch-bug.md` |
+| 292 | **M292** — the `$at`/`$v0` partial closes: the image splits no float address, and `0x80024558` is 139 of 139 | `docs/log/M292-the-float-address-split-and-0x80024558.md` |
 
 ## The gaps, and why they are empty
 

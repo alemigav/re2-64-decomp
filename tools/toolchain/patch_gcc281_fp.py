@@ -49,6 +49,18 @@ EDITS += [
 ]
 
 
+# M292: the other half of the $at/$v0 residue, one layer over. `mips_check_split` refuses to split an address when
+# the *mode* is wider than a word, which is why a DFmode pool load stays symbolic and the assembler expands it with
+# $1 -- but SFmode is 4 bytes, so the SF pool address was being split into a pseudo register and the load came out as
+# `lui $2` where the image has `lui $1`. The image splits no float address at all, so the guard also excludes the
+# float class: FUN_80024558 goes from 137 to 139 of 139 with no change to any other recovered function.
+EDITS += [
+    ('config/mips/mips.c',
+     '  if (GET_MODE_SIZE (mode) > UNITS_PER_WORD)\n    return 0;',
+     '  /* M292: the image splits no *float* address. A load whose address stays symbolic is expanded by\n     the assembler with $1, which is what its pool loads show (lui $1 + a %lo displacement). A DFmode\n     load already took that path because 8 > UNITS_PER_WORD; an SFmode one is 4 bytes and was being\n     split into a pseudo register instead.  */\n  if (GET_MODE_CLASS (mode) == MODE_FLOAT\n      || GET_MODE_SIZE (mode) > UNITS_PER_WORD)\n    return 0;'),
+]
+
+
 # M291: the pool's *sharing* rule. The image gives every DFmode constant its own pool slot -- the double 2^32
 # appears seven times inside FUN_800a3094, at 0x800ba630..0x800ba660 -- and shares its SFmode ones (both 4.0f
 # reads in FUN_80024558 hit one slot). M267 removed deduplication for *every* mode and lost 46 words, because
