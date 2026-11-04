@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "ff2e061",
+   "subject": "M322: main at 0x80000520 recovered 30/30 \u2014 the boot initialiser, plus a retraction: the census had it right and my root walk ran through a spin",
+   "milestones": [
+    322
+   ]
+  },
+  {
    "sha": "986df83",
    "subject": "M321: 0x8004276c is hand-written 64-bit DSP assembly \u2014 no cc1 flag emits dmult/dadd from C; the test is now a screen rule",
    "milestones": [

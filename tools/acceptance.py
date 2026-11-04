@@ -104,7 +104,7 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 117, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 118, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     # M273: the README's progress map is generated from the fixtures, so it cannot drift from them, and every
     # function it claims as recovered must exist in the corpus. Repository-only: no cartridge needed.

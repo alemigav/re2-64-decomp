@@ -1587,6 +1587,33 @@ def truncated_extents():
     return [r for r in rows if r["true_words"] and r["true_words"] > r["census_words"]]
 
 
+def boot_edge():
+    """What sits exactly at the boot segment's end, and what the same cartridge region carries beyond it.
+
+    `BOOT_SIZE` (69 952 = 0x11140) is the boot **code** extent: virtual 0x80000480..0x800115C0. The word at
+    0x800115C0 — the delay slot of the last function's `jr ra` — is one word past it, and the cartridge keeps
+    going to stage2 at ROM 0x14420. That region is not filler: it carries the version string, the **overlay
+    table** (magic `OVERLAYTABLENUMC`, virtual 0x80012150, entries of {rom_start, rom_end, vram_start,
+    vram_end} whose first row is 0x14420/0x80018A80 — stage2), and the ASCII table that precedes stage2's zlib.
+    So the edge is a **segment** boundary and the boot's *load* extent is 0x13420, not 0x11140 (M323).
+    """
+    import struct
+    if not ROM.exists():
+        return None
+    rom = ROM.read_bytes()
+    def word(vaddr):
+        return int.from_bytes(rom[0x1000 + vaddr - 0x80000480:0x1000 + vaddr - 0x80000480 + 4], "big")
+    tbl = 0x80012150
+    off = 0x1000 + tbl - 0x80000480
+    return {"edge_word": word(0x800115C0),
+            "edge_rom": 0x1000 + 0x800115C0 - 0x80000480,
+            "magic": rom[off:off + 16].decode("latin1"),
+            "table_vaddr": tbl, "table_rom": off,
+            "first_entry": [int.from_bytes(rom[off + 16 + 4 * i:off + 20 + 4 * i], "big") for i in range(4)],
+            "stage2_rom": 0x14420, "code_extent": BOOT_SIZE,
+            "load_extent": 0x14420 - 0x1000}
+
+
 def image_inventory():
     """name -> {source, base, size} for the 36 images, or None when the corpus has not been built."""
     import json as _json
@@ -3693,6 +3720,7 @@ def check():
     fams = family_probe()
     dupc = duplicate_census()
     trunc = truncated_extents()
+    edge = boot_edge()
     p7f = p7_function()
     p8f = p8_function()
     p9f = p9_function()
@@ -3852,6 +3880,20 @@ def check():
                   if trunc else "truncated extents: not run",
                   bool(trunc) and sorted(r["true_words"] for r in trunc) == [5, 46, 46, 46, 95]
                   and max(r["callers"] for r in trunc) == 96))
+
+    cases.append((f"the boot segment's edge is a SEGMENT boundary, not a truncation: the word at 0x800115c0 is "
+                  f"ROM 0x{edge['edge_rom']:x}, exactly where BOOT_SIZE ({edge['code_extent']}) stops, and it is a "
+                  f"real instruction (0x{edge['edge_word']:08x}); the same region continues to stage2 at ROM "
+                  f"0x{edge['stage2_rom']:x} carrying the overlay table — magic {edge['magic']!r} at virtual "
+                  f"0x{edge['table_vaddr']:x} (ROM 0x{edge['table_rom']:x}), first entry "
+                  f"{[hex(x) for x in edge['first_entry']]} (rom_start flags in the high nibble) = stage2 — so the boot's CODE extent is 0x{edge['code_extent']:x} "
+                  f"but its LOAD extent is 0x{edge['load_extent']:x} (M323)"
+                  if edge else "boot edge: not run",
+                  bool(edge) and edge["magic"].startswith("OVERLAYTABLENUMC")
+                  # the rom_start field carries flags in its high nibble: 0xb0014420 -> 0x14420
+                  and (edge["first_entry"][0] & 0x0FFFFFFF) == 0x14420
+                  and edge["first_entry"][2] == 0x80018A80
+                  and edge["edge_word"] == 0x28420000))
 
     # one case per multi-member family, generated from the fixture so a new cohort needs no code here
     for src_name, fam in sorted((fams or {}).items()):
