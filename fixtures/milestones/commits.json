@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "4cff9c5",
+   "subject": "M312: the duplicate census vetted (85 reconstructible in 38 groups, 4 fragments) \u2014 next target the 4x53 group",
+   "milestones": [
+    312
+   ]
+  },
+  {
    "sha": "b57fbf7",
    "subject": "M311: REG_TRACE says it is a reference-count tie-break in global_alloc, so the compiler work stops; also fixes M309's patch, which never compiled",
    "milestones": [
