@@ -66,3 +66,21 @@ checking whether anything references it* (the run-selector loses its size floor)
 - `unclassified` **72 384 → 56 252 B (2.9 %)** = 209 profiled runs (56 096 B) + six read records (156 B)
 - byte map **17 → 18 cases**; probe cases re-based on the smaller population (**135/135**); audit **157 → 158 mutations**
   (lint-clean, not run); **recovered 155 / 154 byte-exact — unchanged**
+
+---
+
+## Retracted by M352 — the displacements were the page base, not the address
+
+**The numbers in §2 above do not survive re-measurement.** `referenced_runs()` tested the **64 KB page base**
+(`run_of(hi)`, where `hi = imm << 16`) for the `lui` + load/store path. The run it highlighted,
+`stage2:0x8012ffac..0x801302cf`, **straddles the boundary `0x80130000`**, so every `lui rt,0x8013` followed by a load
+was charged to it: **401 of the 403 sites** were that artifact, and **all 401 land outside the run** once
+`base + displacement` is computed. The two survivors are the `addiu/ori` path, which always tested the address.
+
+Class-wide the same defect inflated the evidence by about five times: **860 sites counted, 162 real (19 %)**.
+
+So: the *class* is real (162 genuine sites, and the run above still has 2), the **"400 sites at +84/+85"** evidence is
+not, and the per-run displacement sets were mixtures of a real number and a `-1` placeholder. Fixed in M352 — both paths
+now compute `base + sign_extend(displacement)` and record the address minus the run start — and the class re-derives to
+**18 928 B** (up, because other runs gained their true sites). The table in §2 is kept as published: this project
+retracts by addition, not by rewriting, so the mistake and its mechanism stay legible.

@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-352 milestones are indexed. 274 of them have a note; the rest are rows in the log that cite
+353 milestones are indexed. 275 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -370,6 +370,7 @@ at the foot of this file.
 | 349 | **M349** — eagle vision: the residue is *bounded*, and the cap was mine | `docs/log/M349-eagle-vision-the-residue-is-bounded.md` |
 | 350 | **M350** — the last nine runs, read in one sitting | `docs/log/M350-the-last-nine-runs-read.md` |
 | 351 | **M351** — the audit unparked: three harness defects, and the first full `PASS` | `docs/log/M351-the-audit-unparked-three-harness-defects.md` |
+| 352 | **M352** — `referenced_data` measured the page base, not the address (a correction and a retraction) | `docs/log/M352-referenced-data-measured-the-page-base.md` |
 
 ## The gaps, and why they are empty
 

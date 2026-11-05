@@ -1378,8 +1378,8 @@
    [
     2147555732,
     2147556235,
-    "enclosed_data",
-    "bounded by pointer_table and string_table -- the same structure, content unnamed"
+    "referenced_data",
+    "4 site(s) materialise its address; displacements [44, 476]"
    ],
    [
     2147556236,
@@ -1456,8 +1456,8 @@
    [
     2147557120,
     2147557651,
-    "enclosed_data",
-    "bounded by padding and padding -- the same structure, content unnamed"
+    "referenced_data",
+    "6 site(s) materialise its address; displacements [0, 256]"
    ],
    [
     2147557652,
@@ -6276,8 +6276,8 @@
    [
     2148244716,
     2148244939,
-    "enclosed_data",
-    "bounded by pointer_table and data_named -- the same structure, content unnamed"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [220]"
    ],
    [
     2148244940,
@@ -8832,8 +8832,8 @@
    [
     2148446700,
     2148446863,
-    "enclosed_data",
-    "bounded by data_named and data_named -- the same structure, content unnamed"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [120]"
    ],
    [
     2148446864,
@@ -8845,7 +8845,7 @@
     2148446868,
     2148447251,
     "referenced_data",
-    "1 site(s) materialise its address; displacements [76]"
+    "3 site(s) materialise its address; displacements [4, 8, 76]"
    ],
    [
     2148447252,
@@ -9289,7 +9289,7 @@
     2148466596,
     2148466755,
     "referenced_data",
-    "309 site(s) materialise its address; displacements base only"
+    "5 site(s) materialise its address; displacements [103, 120, 122]"
    ],
    [
     2148466756,
@@ -10651,7 +10651,7 @@
     2148603484,
     2148604599,
     "referenced_data",
-    "2 site(s) materialise its address; displacements [12]"
+    "3 site(s) materialise its address; displacements [12, 1024]"
    ],
    [
     2148604600,
@@ -11184,8 +11184,8 @@
    [
     2148612096,
     2148612243,
-    "enclosed_data",
-    "bounded by padding and data_named -- the same structure, content unnamed"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [0]"
    ],
    [
     2148612244,
@@ -13513,7 +13513,7 @@
     2148728748,
     2148729551,
     "referenced_data",
-    "403 site(s) materialise its address; displacements [85]"
+    "2 site(s) materialise its address; displacements [85]"
    ],
    [
     2148729552,
@@ -13572,8 +13572,8 @@
    [
     2148732092,
     2148733055,
-    "enclosed_data",
-    "bounded by data_named and data_named -- the same structure, content unnamed"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [128]"
    ],
    [
     2148733056,
@@ -13669,7 +13669,7 @@
     2148733812,
     2148733919,
     "referenced_data",
-    "6 site(s) materialise its address; displacements [20, 56, 84]"
+    "8 site(s) materialise its address; displacements [20, 22, 56, 57]"
    ],
    [
     2148733920,
@@ -13741,7 +13741,7 @@
     2148734120,
     2148734287,
     "referenced_data",
-    "1 site(s) materialise its address; displacements [20]"
+    "4 site(s) materialise its address; displacements [16, 20, 32, 36]"
    ],
    [
     2148734288,
@@ -15480,8 +15480,8 @@
    [
     2148752436,
     2148752543,
-    "enclosed_data",
-    "bounded by padding and data_named -- the same structure, content unnamed"
+    "referenced_data",
+    "1 site(s) materialise its address; displacements [104]"
    ],
    [
     2148752544,
@@ -17089,7 +17089,7 @@
     2149058384,
     2149058943,
     "referenced_data",
-    "1 site(s) materialise its address; displacements [36]"
+    "9 site(s) materialise its address; displacements [32, 36]"
    ],
    [
     2149058944,
@@ -19625,7 +19625,7 @@
     2148950132,
     2148950219,
     "referenced_data",
-    "1 site(s) materialise its address; displacements [60]"
+    "3 site(s) materialise its address; displacements [12, 14, 60]"
    ],
    [
     2148950220,
@@ -21378,8 +21378,8 @@
    [
     2148950484,
     2148950567,
-    "enclosed_data",
-    "bounded by jump_table and data_named -- the same structure, content unnamed"
+    "referenced_data",
+    "20 site(s) materialise its address; displacements [32, 34, 36, 38]"
    ],
    [
     2148950568,
@@ -21860,8 +21860,8 @@
    [
     2148950260,
     2148950327,
-    "enclosed_data",
-    "bounded by pointer_table and data_named -- the same structure, content unnamed"
+    "referenced_data",
+    "2 site(s) materialise its address; displacements [56, 58]"
    ],
    [
     2148950328,
@@ -25598,7 +25598,7 @@
    "function_body": 58328,
    "gap": 396,
    "dense_data": 7756,
-   "enclosed_data": 5368,
+   "enclosed_data": 4332,
    "padding": 632,
    "slack": 136,
    "data_named": 44,
@@ -25606,17 +25606,17 @@
    "string_table": 852,
    "jump_table": 16,
    "pointer_table": 600,
-   "referenced_data": 72,
+   "referenced_data": 1108,
    "u16_table": 4104
   },
   "stage2": {
    "function_body": 579632,
-   "referenced_data": 8844,
+   "referenced_data": 10452,
    "padding": 345552,
    "dense_data": 114660,
    "slack": 6376,
    "data_named": 4312,
-   "enclosed_data": 37720,
+   "enclosed_data": 36112,
    "fill": 660,
    "gap": 2116,
    "string_table": 12080,
@@ -25832,19 +25832,21 @@
    "pointer_table": 420,
    "fill": 12,
    "slack": 212,
-   "enclosed_data": 1048,
+   "referenced_data": 84,
    "data_named": 56,
+   "enclosed_data": 964,
    "padding": 216,
    "u16_table": 220
   },
   "ovl_009aed0": {
    "function_body": 16548,
    "gap": 96,
-   "enclosed_data": 1448,
+   "enclosed_data": 1380,
    "jump_table": 24,
    "slack": 44,
    "pointer_table": 304,
    "fill": 4,
+   "referenced_data": 68,
    "data_named": 80,
    "padding": 52,
    "u16_table": 280

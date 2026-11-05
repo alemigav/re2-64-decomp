@@ -458,6 +458,19 @@ def check(rep):
     cases.append(("a 128-byte run between two bodies is `enclosed_data` too (the cap was arbitrary, and the label "
                   "names both neighbours)", _enclosed("function_body", "function_body") == "enclosed_data"))
 
+    # M352: the case that would have caught M348. The 64 KB page base 0x80130000 lands in run 0; the ADDRESS the
+    # instruction computes (0x80134000) lands in run 1. The old rule tested the base and charged run 0.
+    body = b"".join(int(v).to_bytes(4, "big") for v in (0x3C028013, 0x8C424000, 0x03E00008, 0x00000000))
+    strad = referenced_runs(body + b"\xAA" * 64, 0x80100000, [(0x80100000, 0x8010000F)],
+                            [(0x80130000, 0x8013003F), (0x80134000, 0x8013403F)])
+    cases.append(("a `lui` whose page base lands in one run but whose ADDRESS lands in another counts the address, "
+                  "not the base", 1 in strad and 0 not in strad and strad[1][0][1] == 0))
+    body2 = b"".join(int(v).to_bytes(4, "big") for v in (0x3C028013, 0x8C420010, 0x03E00008, 0x00000000))
+    mid = referenced_runs(body2 + b"\xAA" * 64, 0x80100000, [(0x80100000, 0x8010000F)],
+                          [(0x80130000, 0x8013003F)])
+    cases.append(("the recorded displacement is the ADDRESS minus the run start, not a placeholder",
+                  mid.get(0) and mid[0][0][1] == 0x10))
+
     # M348: `referenced_data` -- the code materialises the run's address, or it does not. The synthetic body below is
     # `lui $v0,0x8010 ; addiu $v0,$v0,0x100`, which names the run at 0x80100100 and nothing else.
     code = b"".join(int(v).to_bytes(4, "big") for v in (0x3C028010, 0x24420100, 0x03E00008, 0x00000000))
@@ -652,6 +665,11 @@ def referenced_runs(blob, base, bodies, runs):
 
     Conservative by construction: it finds only *absolute* materialisations, so data reached through a computed base
     register (or through another data structure) is missed, never invented.
+
+    **M352 correction**: the load path used to test the 64 KB page *base* for membership, so a run straddling a page
+    boundary collected every access in that page -- 401 of the 403 sites published for `stage2:0x8012ffac..0x801302cf`
+    were that artifact, all of them landing outside the run at base+displacement (class-wide 860 counted, 162 real).
+    Both paths now compute `base + sign_extend(displacement)` and test *that*, and record the real displacement.
     """
     def run_of(addr):
         for k, (lo, hi) in enumerate(runs):
@@ -681,9 +699,15 @@ def referenced_runs(blob, base, bodies, runs):
                         hits.setdefault(k, []).append((s + 4 * (i + j), addr - runs[k][0]))
                     break
                 if op in (0x20, 0x21, 0x23, 0x24, 0x25, 0x28, 0x29, 0x2B) and ((n >> 21) & 31) == rt:
-                    k = run_of(hi)
+                    # M352: the ADDRESS, not the 64 KB page base. `run_of(hi)` counted every `lui rt,0x8013` plus a
+                    # load as referencing any run that straddles 0x80130000 -- 401 of the 403 sites published for one
+                    # run were that artifact, and all 401 landed outside it at base+displacement. Same arithmetic as
+                    # the `addiu/ori` path, and the recorded displacement is now real for both.
+                    d = n & 0xFFFF
+                    addr = (hi + (d - 0x10000 if d & 0x8000 else d)) & 0xFFFFFFFF
+                    k = run_of(addr)
                     if k is not None:
-                        hits.setdefault(k, []).append((s + 4 * i, -1))
+                        hits.setdefault(k, []).append((s + 4 * (i + j), addr - runs[k][0]))
                     break
                 if op == 0x0F:
                     break
