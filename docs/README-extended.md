@@ -55,7 +55,7 @@ suites are named and timed in `acceptance.HEAVY_SUITES` rather than quietly move
   **3 603 functions** over **3 678 ranges**, **1 235 844 B (63.2 %)** inside a known body.
 - **The other 38.1 % is classified, never shrugged at:** 408 124 B padding, 6 680 B data the decompiler names,
   980 B of jump tables, **23 980 B** of float tables, **20 380 B** of pointer tables, **13 200 B** of string
-  tables, and **56 252 B (2.9 %) unclassified** — a bucket that is published and is never renamed
+  tables, and **440 B (0.0 %) unclassified** — a bucket that is published and is never renamed
   `data` on a hunch.
 - **174 switch case bodies** are code and are counted in the ranges and the byte total, but the provider itself labels
   them `switchD_::caseD_`, so they live under `src/<image>/switch/` instead of being published as functions.

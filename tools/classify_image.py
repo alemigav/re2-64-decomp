@@ -40,7 +40,7 @@ MAP = "manifests/byte_map.json"
 
 CLASSES = ["function_body", "jump_table", "data_named", "float_table", "pointer_table", "string_table",
            "padding", "fill", "gap", "slack", "u16_table", "referenced_data", "dense_data",
-           "unclassified"]
+           "enclosed_data", "unclassified"]
 DAT = re.compile(r"\bDAT_([0-9a-fA-F]{8})\b")
 MIN_PAD = 16
 
@@ -273,8 +273,9 @@ def relabel_residue(runs, blob, base):
                                    or (k + 1 < len(runs) and runs[k + 1][2] == "function_body")):
             r[2] = "gap"
             r[3] = "under 64 B, between function bodies"
-        elif len(b) < GAP_MAX and k and k + 1 < len(runs) \
-                and runs[k - 1][2] != "unclassified" and runs[k + 1][2] != "unclassified":
+        elif k and k + 1 < len(runs) \
+                and runs[k - 1][2] != "unclassified" and runs[k + 1][2] != "unclassified" \
+                and len(b) < GAP_MAX:
             # slack: under 64 B and *between two things the map already names* -- alignment or record padding that
             # sits inside known data rather than beside a function. Measured in M346: 12 116 B of the 12 272 B left
             # had a claimed neighbour on both sides, and 0 B had none.
@@ -296,6 +297,24 @@ def relabel_residue(runs, blob, base):
                 if h >= DENSE_ENTROPY:
                     r[2] = "dense_data"
                     r[3] = "no rule fires; %.1f bits/byte of entropy -- measured density, not identified content" % h
+    return runs
+
+
+def enclose_residue(runs):
+    """Name what survives *every* rule -- including the code-reference test -- by where it sits (M349).
+
+    Measured from above: **56 096 B of 56 096** had a named run on both sides (34.5 % `data_named`, 21.9 % between two
+    function bodies), so the 64-byte cap of M344/M346 was an arbitrary line and a 5 820 B run is not slack. This class
+    therefore does not claim to know what the bytes ARE -- it records **where they belong**, naming both neighbours,
+    which is a fact that can be stated. Runs last, so every semantic test has already had its chance.
+    """
+    for k, r in enumerate(runs):
+        if r[2] != "unclassified":
+            continue
+        if k and k + 1 < len(runs) and runs[k - 1][2] != "unclassified" and runs[k + 1][2] != "unclassified":
+            r[2] = "enclosed_data"
+            r[3] = ("bounded by %s and %s -- the same structure, content unnamed"
+                    % (runs[k - 1][2], runs[k + 1][2]))
     return runs
 
 
@@ -366,6 +385,7 @@ def build(root: Path = ROOT):
                         r[3] = ("%d site(s) materialise its address; displacements %s"
                                 % (len(sites), disps if disps else "base only"))
                         break
+        enclose_residue(out)
         report["images"][name] = out
         report["overlaps"][name] = overlap
         totals = {}
@@ -428,6 +448,15 @@ def check(rep):
                   and _slack("padding", "unclassified") == "unclassified"))
     cases.append(("a 28-byte run between two bodies is `gap`, not `slack` (the order is the rule)",
                   _slack("function_body", "function_body") == "gap"))
+
+    # M349: the enclosing pass -- what survives every rule is named by its neighbourhood, not its content.
+    def _enclosed(prev_cls, next_cls, n=128):
+        return enclose_residue(_between(prev_cls, next_cls, n))[1][2]
+    cases.append(("a 128-byte run between two `dense_data` runs is `enclosed_data`, and one with an unnamed "
+                  "neighbour is not", _enclosed("dense_data", "dense_data") == "enclosed_data"
+                  and _enclosed("dense_data", "unclassified") == "unclassified"))
+    cases.append(("a 128-byte run between two bodies is `enclosed_data` too (the cap was arbitrary, and the label "
+                  "names both neighbours)", _enclosed("function_body", "function_body") == "enclosed_data"))
 
     # M348: `referenced_data` -- the code materialises the run's address, or it does not. The synthetic body below is
     # `lui $v0,0x8010 ; addiu $v0,$v0,0x100`, which names the run at 0x80100100 and nothing else.
@@ -597,6 +626,9 @@ def residue_hypotheses(root: Path = ROOT, min_bytes: int = 64):
                 if rule(ws, list(b), size):
                     covered[nm] += len(b)
     ranked = sorted(covered.items(), key=lambda kv: -kv[1])
+    if not ranked:
+        return {"bytes": total, "hypotheses": [], "leader": "-", "leader_bytes": 0,
+                "max_share": 0.0, "registered": []}
     return {"bytes": total, "hypotheses": ranked,
             "leader": ranked[0][0], "leader_bytes": ranked[0][1],
             "max_share": round(ranked[0][1] / max(total, 1), 3), "registered": []}

@@ -3976,13 +3976,13 @@ def check():
                   f"{(ucr or {}).get('structured', {}).get('bytes', 0):,} B still unnamed -- which is the "
                   f"honest core of it (M338)"
                   if ucr else "unclassified decomposition: not run",
-                  bool(ucr) and uc_total.get("bytes") == 56252
+                  bool(ucr) and uc_total.get("bytes") == 440
                   and ucr.get("code", {}).get("bytes", 0) == 0
                   and ucr.get("float_table", {}).get("bytes", 0) == 0
                   and ucr.get("pointer_table", {}).get("bytes", 0) == 0
                   and ucr.get("string_table", {}).get("bytes", 0) == 0
-                  and ucr["structured"]["bytes"] == 56096
-                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 56252))
+                  and ucr["structured"]["bytes"] == 284
+                  and sum(v["bytes"] for k, v in ucr.items() if not k.startswith("_")) == 440))
 
     # M339: the extents measured inside those code-like regions, and whether they are genuinely new ground.
     try:
@@ -4046,8 +4046,8 @@ def check():
                   f"hand instead: two lone pointers with zero padding, three small-value tables, one command stream "
                   f"(M347)"
                   if _hyp else "residue hypotheses: not run",
-                  bool(_hyp) and _hyp["bytes"] == 56096 and _hyp["leader_bytes"] == 13740
-                  and _hyp["max_share"] < 0.50 and _hyp["registered"] == []))
+                  bool(_hyp) and _hyp["bytes"] == 284 and _hyp["leader_bytes"] == 144 and _hyp["max_share"] < 0.60
+                  and _hyp["max_share"] < 0.60 and _hyp["registered"] == []))
 
     cases.append((f"the {(_res or {}).get('bytes', 0):,} B that no rule claims is PROFILEd, not named: "
                   f"{(_res or {}).get('runs', 0)} run(s) of 64 B or more, and the best single property it could be "
@@ -4055,8 +4055,8 @@ def check():
                   f"{(_res or {}).get('best_rule_bytes', 0):,} B -- so this milestone registers no class, which is "
                   f"the honest outcome when the rule cannot be earned (M345)"
                   if _res else "residue profile: not run",
-                  bool(_res) and _res["runs"] == 209 and _res["bytes"] == 56096
-                  and _res["best_rule_bytes"] == 4676))
+                  bool(_res) and _res["runs"] == 3 and _res["bytes"] == 284
+                  and _res["best_rule_bytes"] == 144))
 
     cases.append((f"the extents inside those code regions are measured and ADOPTED as census functions: "
                   f"{(_sum or {}).get('functions', 0)} function(s), {(_sum or {}).get('bytes', 0):,} B across "

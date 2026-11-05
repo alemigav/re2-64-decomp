@@ -14,6 +14,7 @@
   "u16_table",
   "referenced_data",
   "dense_data",
+  "enclosed_data",
   "unclassified"
  ],
  "images": {
@@ -63,8 +64,8 @@
    [
     2147486900,
     2147487187,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147487188,
@@ -207,8 +208,8 @@
    [
     2147496480,
     2147497687,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147497688,
@@ -267,8 +268,8 @@
    [
     2147503076,
     2147503155,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147503156,
@@ -291,8 +292,8 @@
    [
     2147503564,
     2147503767,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147503768,
@@ -303,8 +304,8 @@
    [
     2147504000,
     2147504567,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147504568,
@@ -363,8 +364,8 @@
    [
     2147512060,
     2147512159,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147512160,
@@ -651,8 +652,8 @@
    [
     2147533620,
     2147533859,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147533860,
@@ -759,8 +760,8 @@
    [
     2147536192,
     2147536351,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147536352,
@@ -999,8 +1000,8 @@
    [
     2147541512,
     2147541839,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147541840,
@@ -1185,8 +1186,8 @@
    [
     2147546648,
     2147547735,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147547736,
@@ -1377,8 +1378,8 @@
    [
     2147555732,
     2147556235,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and string_table -- the same structure, content unnamed"
    ],
    [
     2147556236,
@@ -1425,8 +1426,8 @@
    [
     2147557012,
     2147557079,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2147557080,
@@ -1455,8 +1456,8 @@
    [
     2147557120,
     2147557651,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2147557652,
@@ -2009,8 +2010,8 @@
    [
     2147638928,
     2147639023,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147639024,
@@ -2213,8 +2214,8 @@
    [
     2147674048,
     2147674119,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147674120,
@@ -2351,8 +2352,8 @@
    [
     2147689596,
     2147690475,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147690476,
@@ -2399,8 +2400,8 @@
    [
     2147707692,
     2147707779,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147707780,
@@ -2435,8 +2436,8 @@
    [
     2147709712,
     2147709807,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and padding -- the same structure, content unnamed"
    ],
    [
     2147709808,
@@ -2621,8 +2622,8 @@
    [
     2147747960,
     2147748031,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147748032,
@@ -2633,8 +2634,8 @@
    [
     2147749384,
     2147749463,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147749464,
@@ -2681,8 +2682,8 @@
    [
     2147755716,
     2147755883,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147755884,
@@ -2807,8 +2808,8 @@
    [
     2147778824,
     2147779219,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147779220,
@@ -2831,8 +2832,8 @@
    [
     2147780492,
     2147781183,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147781184,
@@ -2843,8 +2844,8 @@
    [
     2147781548,
     2147782031,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147782032,
@@ -2855,8 +2856,8 @@
    [
     2147785348,
     2147785619,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147785620,
@@ -2999,8 +3000,8 @@
    [
     2147825232,
     2147825535,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147825536,
@@ -3251,8 +3252,8 @@
    [
     2147918892,
     2147919055,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147919056,
@@ -3263,8 +3264,8 @@
    [
     2147920000,
     2147920115,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147920116,
@@ -3359,8 +3360,8 @@
    [
     2147930284,
     2147930367,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147930368,
@@ -3371,8 +3372,8 @@
    [
     2147932928,
     2147933079,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147933080,
@@ -3395,8 +3396,8 @@
    [
     2147934364,
     2147934519,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147934520,
@@ -3425,8 +3426,8 @@
    [
     2147935884,
     2147935967,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147935968,
@@ -3515,8 +3516,8 @@
    [
     2147941192,
     2147941283,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147941284,
@@ -3611,8 +3612,8 @@
    [
     2147952428,
     2147952507,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147952508,
@@ -3623,8 +3624,8 @@
    [
     2147952560,
     2147952675,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147952676,
@@ -3755,8 +3756,8 @@
    [
     2147959344,
     2147959411,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147959412,
@@ -3767,8 +3768,8 @@
    [
     2147960264,
     2147960335,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147960336,
@@ -3851,8 +3852,8 @@
    [
     2147980640,
     2147980715,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147980716,
@@ -3923,8 +3924,8 @@
    [
     2147984876,
     2147985071,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147985072,
@@ -3935,8 +3936,8 @@
    [
     2147985228,
     2147985379,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147985380,
@@ -4379,8 +4380,8 @@
    [
     2148046528,
     2148046639,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148046640,
@@ -4391,8 +4392,8 @@
    [
     2148052716,
     2148052815,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148052816,
@@ -4571,8 +4572,8 @@
    [
     2148123276,
     2148123503,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148123504,
@@ -4937,8 +4938,8 @@
    [
     2148221856,
     2148222071,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148222072,
@@ -5027,8 +5028,8 @@
    [
     2148231212,
     2148231359,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and string_table -- the same structure, content unnamed"
    ],
    [
     2148231360,
@@ -5063,8 +5064,8 @@
    [
     2148231652,
     2148231795,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and string_table -- the same structure, content unnamed"
    ],
    [
     2148231796,
@@ -5075,8 +5076,8 @@
    [
     2148231868,
     2148231971,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and padding -- the same structure, content unnamed"
    ],
    [
     2148231972,
@@ -5363,8 +5364,8 @@
    [
     2148239300,
     2148239667,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148239668,
@@ -5375,8 +5376,8 @@
    [
     2148239672,
     2148239935,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148239936,
@@ -5663,8 +5664,8 @@
    [
     2148241556,
     2148241631,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and jump_table -- the same structure, content unnamed"
    ],
    [
     2148241632,
@@ -5981,8 +5982,8 @@
    [
     2148243604,
     2148243679,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and jump_table -- the same structure, content unnamed"
    ],
    [
     2148243680,
@@ -6155,8 +6156,8 @@
    [
     2148244184,
     2148244291,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148244292,
@@ -6167,8 +6168,8 @@
    [
     2148244296,
     2148244447,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and jump_table -- the same structure, content unnamed"
    ],
    [
     2148244448,
@@ -6191,8 +6192,8 @@
    [
     2148244476,
     2148244543,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and jump_table -- the same structure, content unnamed"
    ],
    [
     2148244544,
@@ -6275,8 +6276,8 @@
    [
     2148244716,
     2148244939,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148244940,
@@ -6551,8 +6552,8 @@
    [
     2148246452,
     2148246515,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and string_table -- the same structure, content unnamed"
    ],
    [
     2148246516,
@@ -6623,8 +6624,8 @@
    [
     2148246772,
     2148246911,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and jump_table -- the same structure, content unnamed"
    ],
    [
     2148246912,
@@ -6635,8 +6636,8 @@
    [
     2148246916,
     2148247423,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and jump_table -- the same structure, content unnamed"
    ],
    [
     2148247424,
@@ -6665,8 +6666,8 @@
    [
     2148247472,
     2148247583,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and float_table -- the same structure, content unnamed"
    ],
    [
     2148247584,
@@ -6761,8 +6762,8 @@
    [
     2148248260,
     2148248539,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148248540,
@@ -6857,8 +6858,8 @@
    [
     2148250672,
     2148250735,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and padding -- the same structure, content unnamed"
    ],
    [
     2148250736,
@@ -6869,8 +6870,8 @@
    [
     2148250768,
     2148250971,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148250972,
@@ -6881,8 +6882,8 @@
    [
     2148250992,
     2148251123,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148251124,
@@ -6893,8 +6894,8 @@
    [
     2148251184,
     2148251263,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148251264,
@@ -6935,8 +6936,8 @@
    [
     2148251648,
     2148251711,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and padding -- the same structure, content unnamed"
    ],
    [
     2148251712,
@@ -6947,8 +6948,8 @@
    [
     2148251744,
     2148251951,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148251952,
@@ -6959,8 +6960,8 @@
    [
     2148251968,
     2148252459,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148252460,
@@ -7067,8 +7068,8 @@
    [
     2148254608,
     2148254719,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and padding -- the same structure, content unnamed"
    ],
    [
     2148254720,
@@ -7133,8 +7134,8 @@
    [
     2148255664,
     2148255775,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and padding -- the same structure, content unnamed"
    ],
    [
     2148255776,
@@ -7181,8 +7182,8 @@
    [
     2148256704,
     2148256815,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and padding -- the same structure, content unnamed"
    ],
    [
     2148256816,
@@ -7229,8 +7230,8 @@
    [
     2148257744,
     2148257807,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and padding -- the same structure, content unnamed"
    ],
    [
     2148257808,
@@ -7241,8 +7242,8 @@
    [
     2148257840,
     2148258047,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148258048,
@@ -8735,8 +8736,8 @@
    [
     2148444776,
     2148445263,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and padding -- the same structure, content unnamed"
    ],
    [
     2148445264,
@@ -8807,8 +8808,8 @@
    [
     2148445776,
     2148446679,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148446680,
@@ -8831,8 +8832,8 @@
    [
     2148446700,
     2148446863,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148446864,
@@ -8975,8 +8976,8 @@
    [
     2148448184,
     2148448487,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148448488,
@@ -9035,8 +9036,8 @@
    [
     2148449076,
     2148449171,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148449172,
@@ -9179,8 +9180,8 @@
    [
     2148465764,
     2148465863,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148465864,
@@ -9191,8 +9192,8 @@
    [
     2148465868,
     2148465967,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148465968,
@@ -9203,8 +9204,8 @@
    [
     2148465972,
     2148466051,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and padding -- the same structure, content unnamed"
    ],
    [
     2148466052,
@@ -9239,8 +9240,8 @@
    [
     2148466164,
     2148466279,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148466280,
@@ -9251,8 +9252,8 @@
    [
     2148466284,
     2148466375,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148466376,
@@ -9263,8 +9264,8 @@
    [
     2148466380,
     2148466495,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148466496,
@@ -9275,8 +9276,8 @@
    [
     2148466500,
     2148466591,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148466592,
@@ -9353,8 +9354,8 @@
    [
     2148472000,
     2148472123,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and float_table -- the same structure, content unnamed"
    ],
    [
     2148472124,
@@ -9497,8 +9498,8 @@
    [
     2148524548,
     2148524663,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148524664,
@@ -9581,8 +9582,8 @@
    [
     2148578024,
     2148578087,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148578088,
@@ -9659,8 +9660,8 @@
    [
     2148579504,
     2148579839,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148579840,
@@ -9683,8 +9684,8 @@
    [
     2148579884,
     2148579959,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148579960,
@@ -9707,8 +9708,8 @@
    [
     2148580028,
     2148580095,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148580096,
@@ -9719,8 +9720,8 @@
    [
     2148580100,
     2148580387,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and padding -- the same structure, content unnamed"
    ],
    [
     2148580388,
@@ -9827,8 +9828,8 @@
    [
     2148582020,
     2148587839,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148587840,
@@ -9881,8 +9882,8 @@
    [
     2148588080,
     2148588415,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148588416,
@@ -10331,8 +10332,8 @@
    [
     2148597904,
     2148598403,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148598404,
@@ -10385,8 +10386,8 @@
    [
     2148599292,
     2148601039,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148601040,
@@ -10475,8 +10476,8 @@
    [
     2148601716,
     2148601815,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148601816,
@@ -10577,8 +10578,8 @@
    [
     2148602324,
     2148602943,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148602944,
@@ -10613,8 +10614,8 @@
    [
     2148603144,
     2148603223,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and padding -- the same structure, content unnamed"
    ],
    [
     2148603224,
@@ -10625,8 +10626,8 @@
    [
     2148603240,
     2148603355,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148603356,
@@ -10661,8 +10662,8 @@
    [
     2148604612,
     2148604907,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148604908,
@@ -10673,8 +10674,8 @@
    [
     2148604940,
     2148605899,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148605900,
@@ -10685,8 +10686,8 @@
    [
     2148605920,
     2148606139,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148606140,
@@ -10811,8 +10812,8 @@
    [
     2148607192,
     2148607287,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148607288,
@@ -10841,8 +10842,8 @@
    [
     2148607344,
     2148607679,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148607680,
@@ -11183,8 +11184,8 @@
    [
     2148612096,
     2148612243,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148612244,
@@ -11261,8 +11262,8 @@
    [
     2148618048,
     2148618383,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148618384,
@@ -11279,8 +11280,8 @@
    [
     2148618536,
     2148618879,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148618880,
@@ -11387,8 +11388,8 @@
    [
     2148620808,
     2148621807,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148621808,
@@ -11543,8 +11544,8 @@
    [
     2148636576,
     2148637263,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148637264,
@@ -11555,8 +11556,8 @@
    [
     2148637276,
     2148637955,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148637956,
@@ -11567,8 +11568,8 @@
    [
     2148637960,
     2148638067,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and padding -- the same structure, content unnamed"
    ],
    [
     2148638068,
@@ -12005,8 +12006,8 @@
    [
     2148644276,
     2148644399,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148644400,
@@ -12029,8 +12030,8 @@
    [
     2148644468,
     2148644543,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148644544,
@@ -12107,8 +12108,8 @@
    [
     2148647844,
     2148647915,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and padding -- the same structure, content unnamed"
    ],
    [
     2148647916,
@@ -12131,8 +12132,8 @@
    [
     2148647968,
     2148648055,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148648056,
@@ -12227,8 +12228,8 @@
    [
     2148648640,
     2148648983,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and padding -- the same structure, content unnamed"
    ],
    [
     2148648984,
@@ -12281,8 +12282,8 @@
    [
     2148649108,
     2148649171,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148649172,
@@ -12449,8 +12450,8 @@
    [
     2148698148,
     2148698383,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148698384,
@@ -12461,8 +12462,8 @@
    [
     2148698404,
     2148698503,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148698504,
@@ -12497,8 +12498,8 @@
    [
     2148698612,
     2148698711,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148698712,
@@ -12509,8 +12510,8 @@
    [
     2148698756,
     2148698991,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148698992,
@@ -12521,8 +12522,8 @@
    [
     2148699012,
     2148699119,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148699120,
@@ -12629,8 +12630,8 @@
    [
     2148699828,
     2148699927,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148699928,
@@ -12641,8 +12642,8 @@
    [
     2148699972,
     2148700207,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148700208,
@@ -12665,8 +12666,8 @@
    [
     2148702824,
     2148703195,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and padding -- the same structure, content unnamed"
    ],
    [
     2148703196,
@@ -12677,8 +12678,8 @@
    [
     2148703212,
     2148703471,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148703472,
@@ -12689,8 +12690,8 @@
    [
     2148703500,
     2148703659,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148703660,
@@ -12701,8 +12702,8 @@
    [
     2148703696,
     2148703823,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148703824,
@@ -12803,8 +12804,8 @@
    [
     2148709748,
     2148709899,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148709900,
@@ -13121,8 +13122,8 @@
    [
     2148712132,
     2148712339,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and padding -- the same structure, content unnamed"
    ],
    [
     2148712340,
@@ -13235,8 +13236,8 @@
    [
     2148726244,
     2148727019,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148727020,
@@ -13247,8 +13248,8 @@
    [
     2148727024,
     2148727087,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148727088,
@@ -13499,8 +13500,8 @@
    [
     2148728436,
     2148728743,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148728744,
@@ -13523,8 +13524,8 @@
    [
     2148729556,
     2148729643,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148729644,
@@ -13535,8 +13536,8 @@
    [
     2148729656,
     2148730659,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148730660,
@@ -13547,8 +13548,8 @@
    [
     2148730664,
     2148730835,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148730836,
@@ -13571,8 +13572,8 @@
    [
     2148732092,
     2148733055,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148733056,
@@ -13859,8 +13860,8 @@
    [
     2148736800,
     2148736899,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148736900,
@@ -13985,8 +13986,8 @@
    [
     2148737536,
     2148737883,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148737884,
@@ -13997,8 +13998,8 @@
    [
     2148737888,
     2148738219,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148738220,
@@ -14009,8 +14010,8 @@
    [
     2148738224,
     2148738363,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148738364,
@@ -14843,8 +14844,8 @@
    [
     2148748944,
     2148749071,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148749072,
@@ -15005,8 +15006,8 @@
    [
     2148749768,
     2148749859,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148749860,
@@ -15065,8 +15066,8 @@
    [
     2148750040,
     2148750131,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148750132,
@@ -15125,8 +15126,8 @@
    [
     2148750316,
     2148750407,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148750408,
@@ -15185,8 +15186,8 @@
    [
     2148750588,
     2148750675,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148750676,
@@ -15245,8 +15246,8 @@
    [
     2148750864,
     2148750955,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148750956,
@@ -15299,8 +15300,8 @@
    [
     2148751136,
     2148751247,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148751248,
@@ -15347,8 +15348,8 @@
    [
     2148751412,
     2148751523,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148751524,
@@ -15389,8 +15390,8 @@
    [
     2148751684,
     2148751783,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148751784,
@@ -15437,8 +15438,8 @@
    [
     2148751960,
     2148752051,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148752052,
@@ -15455,8 +15456,8 @@
    [
     2148752164,
     2148752327,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148752328,
@@ -15479,8 +15480,8 @@
    [
     2148752436,
     2148752543,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148752544,
@@ -15527,8 +15528,8 @@
    [
     2148753072,
     2148753151,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by float_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148753152,
@@ -15943,8 +15944,8 @@
    [
     2149076384,
     2149076587,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2149076588,
@@ -16051,8 +16052,8 @@
    [
     2149078016,
     2149078107,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and padding -- the same structure, content unnamed"
    ],
    [
     2149078108,
@@ -16317,8 +16318,8 @@
    [
     2148907148,
     2148907591,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148907592,
@@ -16341,8 +16342,8 @@
    [
     2148916976,
     2148917623,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148917624,
@@ -16395,8 +16396,8 @@
    [
     2148926628,
     2148926719,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and string_table -- the same structure, content unnamed"
    ],
    [
     2148926720,
@@ -16407,8 +16408,8 @@
    [
     2148926752,
     2148927599,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by string_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148927600,
@@ -16467,8 +16468,8 @@
    [
     2148927692,
     2148928311,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148928312,
@@ -17051,8 +17052,8 @@
    [
     2149057648,
     2149057747,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2149057748,
@@ -17063,8 +17064,8 @@
    [
     2149057752,
     2149058267,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2149058268,
@@ -17395,8 +17396,8 @@
    [
     2149047868,
     2149048151,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2149048152,
@@ -17479,8 +17480,8 @@
    [
     2149048236,
     2149048847,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2149048848,
@@ -17601,8 +17602,8 @@
    [
     2148997244,
     2148997803,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148997804,
@@ -17697,8 +17698,8 @@
    [
     2148998056,
     2148998175,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148998176,
@@ -17733,8 +17734,8 @@
    [
     2148998376,
     2148998479,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148998480,
@@ -17951,8 +17952,8 @@
    [
     2149049652,
     2149050067,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2149050068,
@@ -18017,8 +18018,8 @@
    [
     2149050208,
     2149050547,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2149050548,
@@ -18505,8 +18506,8 @@
    [
     2148983644,
     2148983715,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148983716,
@@ -18517,8 +18518,8 @@
    [
     2148983832,
     2148983999,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and padding -- the same structure, content unnamed"
    ],
    [
     2148984000,
@@ -18553,8 +18554,8 @@
    [
     2148984572,
     2148984815,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148984816,
@@ -19351,8 +19352,8 @@
    [
     2148960712,
     2148961039,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148961040,
@@ -19363,8 +19364,8 @@
    [
     2148961044,
     2148961231,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148961232,
@@ -19491,8 +19492,8 @@
    [
     2148946392,
     2148946523,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148946524,
@@ -19641,8 +19642,8 @@
    [
     2148950336,
     2148950611,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148950612,
@@ -19671,8 +19672,8 @@
    [
     2148950680,
     2148950799,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and padding -- the same structure, content unnamed"
    ],
    [
     2148950800,
@@ -19943,8 +19944,8 @@
    [
     2148954572,
     2148954899,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148954900,
@@ -19955,8 +19956,8 @@
    [
     2148954904,
     2148955091,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148955092,
@@ -20301,8 +20302,8 @@
    [
     2148935804,
     2148935867,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148935868,
@@ -20815,8 +20816,8 @@
    [
     2148958252,
     2148958891,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148958892,
@@ -20973,8 +20974,8 @@
    [
     2148939876,
     2148939999,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148940000,
@@ -21377,8 +21378,8 @@
    [
     2148950484,
     2148950567,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148950568,
@@ -21389,8 +21390,8 @@
    [
     2148950572,
     2148951127,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148951128,
@@ -21407,8 +21408,8 @@
    [
     2148951172,
     2148951335,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148951336,
@@ -21437,8 +21438,8 @@
    [
     2148951380,
     2148951543,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by padding and data_named -- the same structure, content unnamed"
    ],
    [
     2148951544,
@@ -21539,8 +21540,8 @@
    [
     2148951732,
     2148951811,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148951812,
@@ -21643,8 +21644,8 @@
    [
     2148937700,
     2148937831,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148937832,
@@ -21763,8 +21764,8 @@
    [
     2148944324,
     2148944699,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148944700,
@@ -21859,8 +21860,8 @@
    [
     2148950260,
     2148950327,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148950328,
@@ -21871,8 +21872,8 @@
    [
     2148950332,
     2148950751,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148950752,
@@ -21883,8 +21884,8 @@
    [
     2148950756,
     2148951043,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and padding -- the same structure, content unnamed"
    ],
    [
     2148951044,
@@ -21919,8 +21920,8 @@
    [
     2148951344,
     2148951507,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148951508,
@@ -22097,8 +22098,8 @@
    [
     2148937684,
     2148937759,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148937760,
@@ -22183,8 +22184,8 @@
    [
     2148953292,
     2148953363,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148953364,
@@ -22401,8 +22402,8 @@
    [
     2148941068,
     2148941135,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by jump_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148941136,
@@ -22443,8 +22444,8 @@
    [
     2148941348,
     2148941415,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148941416,
@@ -23307,8 +23308,8 @@
    [
     2148957456,
     2148957535,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by pointer_table and data_named -- the same structure, content unnamed"
    ],
    [
     2148957536,
@@ -23373,8 +23374,8 @@
    [
     2148957776,
     2148958027,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and pointer_table -- the same structure, content unnamed"
    ],
    [
     2148958028,
@@ -23957,8 +23958,8 @@
    [
     2148976000,
     2148976255,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148976256,
@@ -24067,8 +24068,8 @@
    [
     2148940068,
     2148940147,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148940148,
@@ -24837,8 +24838,8 @@
    [
     2148954624,
     2148954743,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148954744,
@@ -24977,8 +24978,8 @@
    [
     2148933916,
     2148934051,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148934052,
@@ -25243,8 +25244,8 @@
    [
     2148952160,
     2148952235,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by data_named and data_named -- the same structure, content unnamed"
    ],
    [
     2148952236,
@@ -25281,8 +25282,8 @@
    [
     2148936404,
     2148936475,
-    "unclassified",
-    "no artifact names it"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2148936476,
@@ -25597,7 +25598,7 @@
    "function_body": 58328,
    "gap": 396,
    "dense_data": 7756,
-   "unclassified": 5368,
+   "enclosed_data": 5368,
    "padding": 632,
    "slack": 136,
    "data_named": 44,
@@ -25615,7 +25616,7 @@
    "dense_data": 114660,
    "slack": 6376,
    "data_named": 4312,
-   "unclassified": 37720,
+   "enclosed_data": 37720,
    "fill": 660,
    "gap": 2116,
    "string_table": 12080,
@@ -25634,12 +25635,12 @@
    "data_named": 428,
    "slack": 664,
    "referenced_data": 488,
-   "unclassified": 296,
+   "enclosed_data": 296,
    "u16_table": 1132
   },
   "ovl_007688e": {
    "function_body": 20372,
-   "unclassified": 2652,
+   "enclosed_data": 2652,
    "gap": 24,
    "jump_table": 12,
    "pointer_table": 72,
@@ -25656,7 +25657,7 @@
    "data_named": 296,
    "slack": 456,
    "fill": 8,
-   "unclassified": 616,
+   "enclosed_data": 616,
    "u16_table": 108,
    "referenced_data": 744,
    "padding": 36444
@@ -25669,7 +25670,7 @@
    "jump_table": 4,
    "slack": 132,
    "data_named": 100,
-   "unclassified": 896,
+   "enclosed_data": 896,
    "referenced_data": 796,
    "pointer_table": 44,
    "padding": 8316
@@ -25684,7 +25685,7 @@
    "padding": 1464,
    "slack": 84,
    "data_named": 172,
-   "unclassified": 784,
+   "enclosed_data": 784,
    "u16_table": 180
   },
   "ovl_007e132": {
@@ -25694,7 +25695,7 @@
    "pointer_table": 60,
    "referenced_data": 376,
    "data_named": 100,
-   "unclassified": 756,
+   "enclosed_data": 756,
    "slack": 76,
    "padding": 60
   },
@@ -25708,7 +25709,7 @@
    "data_named": 20,
    "referenced_data": 948,
    "padding": 136,
-   "unclassified": 484
+   "enclosed_data": 484
   },
   "ovl_008505e": {
    "function_body": 20348,
@@ -25739,14 +25740,14 @@
    "fill": 12,
    "data_named": 56,
    "u16_table": 76,
-   "unclassified": 516,
+   "enclosed_data": 516,
    "referenced_data": 192,
    "padding": 16
   },
   "ovl_008bef8": {
    "function_body": 16684,
    "gap": 72,
-   "unclassified": 528,
+   "enclosed_data": 528,
    "fill": 12,
    "jump_table": 28,
    "pointer_table": 260,
@@ -25765,7 +25766,7 @@
    "fill": 8,
    "data_named": 48,
    "u16_table": 72,
-   "unclassified": 516,
+   "enclosed_data": 516,
    "referenced_data": 284,
    "padding": 16
   },
@@ -25783,12 +25784,13 @@
   },
   "ovl_0093192": {
    "function_body": 4004,
-   "unclassified": 92,
+   "enclosed_data": 64,
    "gap": 24,
    "fill": 4,
    "jump_table": 4,
    "slack": 112,
-   "data_named": 16
+   "data_named": 16,
+   "unclassified": 28
   },
   "ovl_0093aba": {
    "function_body": 13904,
@@ -25810,7 +25812,7 @@
    "pointer_table": 208,
    "referenced_data": 124,
    "string_table": 36,
-   "unclassified": 640
+   "enclosed_data": 640
   },
   "ovl_0097e42": {
    "function_body": 6796,
@@ -25819,7 +25821,7 @@
    "slack": 108,
    "pointer_table": 124,
    "data_named": 44,
-   "unclassified": 124,
+   "enclosed_data": 124,
    "dense_data": 432,
    "padding": 16
   },
@@ -25830,7 +25832,7 @@
    "pointer_table": 420,
    "fill": 12,
    "slack": 212,
-   "unclassified": 1048,
+   "enclosed_data": 1048,
    "data_named": 56,
    "padding": 216,
    "u16_table": 220
@@ -25838,7 +25840,7 @@
   "ovl_009aed0": {
    "function_body": 16548,
    "gap": 96,
-   "unclassified": 1448,
+   "enclosed_data": 1448,
    "jump_table": 24,
    "slack": 44,
    "pointer_table": 304,
@@ -25855,7 +25857,7 @@
    "gap": 72,
    "fill": 12,
    "jump_table": 4,
-   "unclassified": 76,
+   "enclosed_data": 76,
    "data_named": 8,
    "slack": 40,
    "pointer_table": 148,
@@ -25865,21 +25867,23 @@
   "ovl_009dd02": {
    "function_body": 21524,
    "gap": 68,
-   "unclassified": 140,
+   "enclosed_data": 72,
    "data_named": 52,
    "slack": 224,
-   "pointer_table": 280
+   "pointer_table": 280,
+   "unclassified": 68
   },
   "ovl_00a0344": {
    "function_body": 8160,
    "gap": 32,
    "jump_table": 8,
    "slack": 60,
-   "unclassified": 152,
+   "enclosed_data": 136,
    "data_named": 20,
    "pointer_table": 164,
    "padding": 76,
-   "u16_table": 64
+   "u16_table": 64,
+   "unclassified": 16
   },
   "ovl_00a1414": {
    "function_body": 28636,
@@ -25910,9 +25914,10 @@
    "fill": 12,
    "jump_table": 12,
    "pointer_table": 332,
-   "unclassified": 384,
+   "enclosed_data": 332,
    "data_named": 48,
-   "slack": 148
+   "slack": 148,
+   "unclassified": 52
   },
   "ovl_00a9d94": {
    "function_body": 41940,
@@ -25925,12 +25930,12 @@
    "padding": 72,
    "referenced_data": 140,
    "string_table": 36,
-   "unclassified": 256
+   "enclosed_data": 256
   },
   "ovl_00ae24a": {
    "function_body": 20640,
    "gap": 80,
-   "unclassified": 80,
+   "enclosed_data": 80,
    "jump_table": 20,
    "pointer_table": 184,
    "fill": 8,
@@ -25950,14 +25955,15 @@
    "pointer_table": 392,
    "referenced_data": 76,
    "data_named": 60,
-   "unclassified": 140,
+   "enclosed_data": 120,
    "u16_table": 284,
-   "padding": 112
+   "padding": 112,
+   "unclassified": 20
   },
   "ovl_00b2d7a": {
    "function_body": 2036,
    "gap": 48,
-   "unclassified": 136,
+   "enclosed_data": 136,
    "fill": 4,
    "jump_table": 4,
    "referenced_data": 1364,
@@ -25973,16 +25979,18 @@
    "referenced_data": 96,
    "pointer_table": 308,
    "data_named": 44,
-   "unclassified": 216
+   "enclosed_data": 76,
+   "unclassified": 140
   },
   "ovl_00b5346": {
    "function_body": 4776,
    "gap": 16,
-   "unclassified": 96,
+   "enclosed_data": 72,
    "referenced_data": 80,
    "data_named": 20,
    "slack": 64,
-   "pointer_table": 36
+   "pointer_table": 36,
+   "unclassified": 24
   },
   "ovl_00b5e64": {
    "function_body": 588,

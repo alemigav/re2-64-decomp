@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "53f34b7",
+   "subject": "M348: referenced_data \u2014 the code that points at the residue, and what its displacements say",
+   "milestones": [
+    348
+   ]
+  },
+  {
    "sha": "73cd878",
    "subject": "M347: the last 72,384 B \u2014 ten candidate rules measured, none registered, six records read",
    "milestones": [

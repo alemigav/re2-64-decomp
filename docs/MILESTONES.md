@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-349 milestones are indexed. 271 of them have a note; the rest are rows in the log that cite
+350 milestones are indexed. 272 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -367,6 +367,7 @@ at the foot of this file.
 | 346 | **M346** — `slack`: the sub-64 B residue is padding *inside* known data, and 156 B is all that is left | `docs/log/M346-slack-the-sub-64B-residue.md` |
 | 347 | **M347** — the last 72 384 B: ten candidate rules measured, none registered, and six records read by hand | `docs/log/M347-the-last-72384-measured-and-the-six-records-read.md` |
 | 348 | **M348** — `referenced_data`: the code that points at the residue, and what its displacements say | `docs/log/M348-referenced-data-the-code-that-points-at-the-residue.md` |
+| 349 | **M349** — eagle vision: the residue is *bounded*, and the cap was mine | `docs/log/M349-eagle-vision-the-residue-is-bounded.md` |
 
 ## The gaps, and why they are empty
 
