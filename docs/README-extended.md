@@ -24,14 +24,14 @@ Every figure on the front page is **derived from the fixtures and asserted by `t
 including in this file's shorter sibling. A phrase that *disappears* counts as a failure, so a stale line cannot be
 fixed by deleting it. Where a number is a *reading* rather than a measurement, the text says so.
 
-**The corpus of recovered functions is 155 entries, 154 of them byte-exact.** The composition matters more than the
+**The corpus of recovered functions is 165 entries, 164 of them byte-exact.** The composition matters more than the
 total, and any headline quoting it must carry this line:
 
 | | count | what it is |
 | --- | --- | --- |
 | reconstructed by hand from the disassembly | **16** | the information-bearing core — the table in §3 |
 | singles landed from one shape each | **55** | one draft per body, measured against `leaf_screen.py` |
-| copies of twelve proven body shapes | **84** | one proven reconstruction registers every copy: 34 empty functions, 11 nine-word masked calls, six smaller shapes, **17 of the dispatch family** across eight table addresses (M335), and three two-copy shapes found by the *statement order* rather than the expression (M336) |
+| copies of thirteen proven body shapes | **94** | one proven reconstruction registers every copy: 34 empty functions, 11 nine-word masked calls, six smaller shapes, **17 of the dispatch family** across eight table addresses (M335), and three two-copy shapes found by the *statement order* rather than the expression (M336) |
 
 So "155" is a **corpus** number, not 155 independent reconstructions. The remaining published residue is one function
 at **226 of 229 words**; everything else is byte-exact. And the cohort gain is not free but it is not
@@ -59,8 +59,8 @@ suites are named and timed in `acceptance.HEAVY_SUITES` rather than quietly move
   `data` on a hunch.
 - **174 switch case bodies** are code and are counted in the ranges and the byte total, but the provider itself labels
   them `switchD_::caseD_`, so they live under `src/<image>/switch/` instead of being published as functions.
-- **The analysis ladder** (`tools/analysis_status.py`): F0 3 603 / F1 3 411 / F2 3 343 — of **3 603 functions**,
-  **3 343** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
+- **The analysis ladder** (`tools/analysis_status.py`): F0 3 603 / F1 3 421 / F2 3 353 — of **3 603 functions**,
+  **3 353** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
   a gate or an executed experiment. All 12 are still called `FUN_…`: a name needs evidence of its own.
 - **The boot image has two extents, and the difference is what the loader loads.** Code is `0x11140`
   (`0x80000480..0x800115C0`); the **load** extent is `0x13420`, and it ends exactly at `__bss_start` (`0x800138A0`) —
@@ -257,7 +257,7 @@ stale block, or a function claimed as recovered that is not in the corpus. Two p
 - **the record**, one bar per phase, parsed from the front page's own phase table, so the picture cannot drift from the
   table beside it.
 
-It draws the **16** hand-recovered functions. The 84 cohort copies and 55 singles are counted in `fixtures/decomp/` and
+It draws the **16** hand-recovered functions. The 94 cohort copies and 55 singles are counted in `fixtures/decomp/` and
 in §1, not in the picture, and the legend on the front page says so. Regenerating it is `python3 tools/progress_map.py
 --write` after any change to the recovered corpus **or to the phase table**.
 

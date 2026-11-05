@@ -2,7 +2,7 @@
 
 **What it is:** a black-box study of *Resident Evil 2* on the Nintendo 64 (`NREE` rev 1 USA), reverse-engineered from the
 cartridge up — 3 603 functions catalogued, the file formats decoded, the script virtual machine and three audio codecs
-worked out from the bytes, and **155 functions reconstructed in C and recompiled — 154 of them matching the game's own
+worked out from the bytes, and **165 functions reconstructed in C and recompiled — 164 of them matching the game's own
 machine code byte for byte**. It ships a **1162-case verification suite**, and every claim here is either measured by
 one of those cases or explicitly labelled a reading of the code.
 
@@ -79,7 +79,7 @@ has the architecture, the ratchet's three invariants and the 30-second rule.
 
 ## Milestones
 
-**354** numbers, 0-353: **298** with a row, and **56** named gaps. The full index — every number, its title, and the
+**355** numbers, 0-354: **299** with a row, and **56** named gaps. The full index — every number, its title, and the
 note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table worth reading
 before you believe any older note.
@@ -105,7 +105,7 @@ before you believe any older note.
 | P16 | **M251–M300** | **whole functions reproduced from the image**: the compile-probe corpus and sixteen hand reconstructions, fifteen byte-exact, plus the build facts that made them possible |
 | P17 | **M301–M307** | **the duplicate-body cohorts**: 148 of the 3 400 unmatched functions have a body byte-identical to another's, in 48 groups — one proven shape registers every copy |
 | P18 | **M308–M331** | **the singles sweep and the boot image's own geometry**: the boot extent corrected to its load extent because a recovered `main` named `__bss_start`; `main` at 30 of 30; the 46-word DSP family closed as hand-written assembly; `vector_installer` taken to a measured near-miss |
-| P19 | **M332–M352** | **the front page, the last functions, and the byte map closed**: the README split into a short page and a dense companion; the duplicate cohorts banked **+25 functions from five shapes**, three of them closed by *statement order* rather than expression; then the twelve-milestone byte-map arc — `unclassified` **330 176 B (16.9 %) → 440 B (0.0 %)**, eleven measured classes each earned by a rule the audit mutates, and the last nine runs read by hand; and **admission unparked to `PASS`** (160/160, 0 vacuous, 0 broken), which immediately caught a class measuring a 64 KB page base instead of an address |
+| P19 | **M332–M354** | **the front page, the last functions, and the byte map closed**: the README split into a short page and a dense companion; the duplicate cohorts banked **+25 functions from five shapes**, three of them closed by *statement order* rather than expression; then the twelve-milestone byte-map arc — `unclassified` **330 176 B (16.9 %) → 440 B (0.0 %)**, eleven measured classes each earned by a rule the audit mutates, and the last nine runs read by hand; and **admission unparked to `PASS`** (160/160, 0 vacuous, 0 broken), which immediately caught a class measuring a 64 KB page base instead of an address |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be indistinguishable from
 one written from measurement, and that distinction is the project's whole claim.
@@ -114,7 +114,7 @@ one written from measurement, and that distinction is the project's whole claim.
 
 Generated from the fixtures by `tools/progress_map.py` and checked by the gate — a hand-drawn chart would be a habit
 with better typography. The top panel is the *matching* question, one cell per group of functions; the bottom panel is
-the record, one bar per phase. It draws the **16 functions reconstructed by hand**; the 84 cohort copies and 55 singles
+the record, one bar per phase. It draws the **16 functions reconstructed by hand**; the 94 cohort copies and 55 singles
 are counted in the corpus below, not in the picture.
 
 <!-- progress-map:begin -->
@@ -161,11 +161,11 @@ ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 3603 functions across 36 images · █ 15 reproduced byte-for-byte (0.42%) · ▓ 1 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M352)
+the record — one bar per phase, from the phase table's own ranges (M0–M354)
 
 P0   M0  │█│ 10
 P1   M10 │███│ 21
-P2   M31 │███████│ 48
+P2   M31 │██████│ 48
 P3   M79 │█│ 2
 P4   M81 │████│ 30
 P5   M111│██│ 15
@@ -182,7 +182,7 @@ P15  M231│███│ 20
 P16  M251│███████│ 50
 P17  M301│█│ 7
 P18  M308│███│ 24
-P19  M332│███│ 21
+P19  M332│███│ 23
 ```
 <!-- progress-map:end -->
 
@@ -193,11 +193,11 @@ P19  M332│███│ 21
   (**1 235 844 B**); `src/`, `src/INDEX.md`. The other 36.8 % is classified, not shrugged at: **408 124 B padding**,
   **6 680 B** data the decompiler names, **980 B** of jump tables, and **440 B (0.0 %) unclassified** — a bucket
   that is published and never renamed `data` on a hunch.
-- **What is actually understood**: of **3 603 functions**, **3 343** resolve every call target in their bodies, **33**
+- **What is actually understood**: of **3 603 functions**, **3 353** resolve every call target in their bodies, **33**
   carry a curated name, and **12** have behaviour pinned by a gate or an executed experiment — and all **12** of those
   are still called `FUN_…`, because a name needs evidence of its own.
-- **The recovered corpus is 155 entries, 154 byte-exact** — and the count needs its qualifier: **16** were reconstructed
-  by hand from the disassembly, **55** are singles landed from one shape each, and **84** are copies of twelve proven
+- **The recovered corpus is 165 entries, 164 byte-exact** — and the count needs its qualifier: **16** were reconstructed
+  by hand from the disassembly, **55** are singles landed from one shape each, and **94** are copies of thirteen proven
   body shapes (34 the empty function, **17 the dispatch family** across eight table addresses, three two-copy shapes
   closed by statement order, and a 13-word call-and-add pair). Read the **16** as the measure of how much was really understood; the
   [extended page](docs/README-extended.md#1-what-the-numbers-mean-and-which-ones-to-trust) has the table.
@@ -239,7 +239,7 @@ record the cartridge never labels — is
 tools/       102 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 603 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        README-extended.md (the dense version), handover.md, format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    279 notes, one per milestone that has one
+docs/log/    280 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

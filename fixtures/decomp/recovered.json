@@ -252,6 +252,14 @@
   },
   {
    "image": "ovl_009dd02",
+   "address": "0x801665b8",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_009dd02",
    "address": "0x80166960",
    "words": 6,
    "verdict": "byte-exact",
@@ -524,11 +532,27 @@
   },
   {
    "image": "stage2",
+   "address": "0x800341ec",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
    "address": "0x80035e34",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "ret2: 2 of 2",
    "source": "RET2_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036ed0",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",
@@ -916,6 +940,14 @@
   },
   {
    "image": "stage2",
+   "address": "0x8006e684",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
    "address": "0x8006e68c",
    "words": 41,
    "verdict": "byte-exact",
@@ -964,6 +996,22 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007230c",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072354",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
    "address": "0x80076044",
    "words": 2,
    "verdict": "byte-exact",
@@ -980,11 +1028,43 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007a3d8",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
    "address": "0x8007a8e8",
    "words": 7,
    "verdict": "byte-exact",
    "probe": "single: 7 of 7, one draft",
    "source": "S_8007A8E8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007c714",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007c71c",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007cce4",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
+   "source": "STUB_SOURCE"
   },
   {
    "image": "stage2",

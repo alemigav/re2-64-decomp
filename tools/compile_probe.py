@@ -4023,8 +4023,8 @@ def check():
                   f"F2 {_st.get('F2', 0)}, extent_measured {_st.get('extent_measured', 0)}; "
                   f"{len(_wrong or [])} of them disagree with the fixture (M340)"
                   if _me else "measured-extent rung: not run",
-                  bool(_me) and not _wrong and _st.get("extent_measured") == 192
-                  and _st.get("F0") == 3603 and _st.get("F1") == 3411 and _st.get("F2") == 3343))
+                  bool(_me) and not _wrong and _st.get("extent_measured") == 182
+                  and _st.get("F0") == 3603 and _st.get("F1") == 3421 and _st.get("F2") == 3353))
 
     # M345: the last residue, profiled rather than named. No rule covers more than 8.9 % of it, so no class is
     # registered and the measurement is what gets gated.
