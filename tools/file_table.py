@@ -989,8 +989,17 @@ def check() -> int:
     total = sum(len(v) for v in ranges.values())
     missing = [(img, s) for img, rs in ranges.items() for s, _e in rs
                if f"func_{s:08x}" not in have and f"fun_{s:08x}" not in have]
-    cases.append((f"the corpus holds 3678 function ranges and 74 without a src file "
-                  f"({total} / {len(missing)})", total == 3678 and len(missing) == 74))
+    # M351: this case pinned "74 without a src file" and the number had drifted twice (the switch bodies live one
+    # directory deeper and were never in `have`, and a recovered function published under its seed name -- `main.c`,
+    # `osCreateMesgQueue.c` -- is not `fun_xxxxxxx.c`). It is the invariant that matters, not the count, so it asks
+    # the map instead of a literal: every function `code_index.json` lists must name a file that exists.
+    ci = json.loads((root / "manifests" / "code_index.json").read_text())
+    unfiled = [(i["name"], f["address"]) for i in ci["images"] for f in i["functions_list"]
+               if not (root / f["file"]).exists()]
+    cases.append((f"every one of the {sum(len(i['functions_list']) for i in ci['images'])} functions in "
+                  f"code_index.json names a src file that exists ({len(unfiled)} without), inside a corpus of "
+                  f"{total} ranges and {len(have)} published bodies",
+                  not unfiled and total == 3678))
     audio = [(s, e) for s, e in ranges["stage2"] if 0x800B3000 <= s < 0x800B6000]
     audio_missing = [(s, e) for s, e in audio
                      if f"func_{s:08x}" not in have and f"fun_{s:08x}" not in have]

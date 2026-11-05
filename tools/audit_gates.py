@@ -771,8 +771,8 @@ AUDITS = [
          new='        if k and k + 1 < len(runs):'),
     dict(name="byte_map: the referenced-data rule stops checking whether anything references it",
          tool="classify_image.py", args=["--check"], file="tools/classify_image.py",
-         old='        resid = [(r[0], r[1]) for r in out if r[2] == "unclassified" and (r[1] - r[0] + 1) >= 64]',
-         new='        resid = [(r[0], r[1]) for r in out if r[2] == "unclassified"]'),
+         old='                return k\n        return None',
+         new='                return len(runs) - 1\n        return None'),
     dict(name="byte_map: a residue hypothesis is quietly allowed to claim everything",
          tool="compile_probe.py", args=["--check"], file="tools/classify_image.py",
          old='                if rule(ws, list(b), size):',
@@ -930,7 +930,9 @@ COPY_FIXTURES = ["fixtures/decomp/measured_extents.json"]
 # Ghidra decompile index, and `voice_sweep` looks for `unicorn` in `./.venv/bin/python` and reports no
 # interpreter when the sandbox has no `.venv` — a missing toolchain that read, through an exit code, as a
 # caught mutation. `.venv` is only ever *run*, never written, so a link is enough.
-LINK = ["rom", "assets", "build/elfs", "build/decomp", "src", ".venv"]
+# M351: `build/toolchain` is the ninth environment gap in this arc -- `compile_probe.py` needs `cc1`, so in a
+# sandbox without it the tool fails 106 of its cases and two mutations could never be judged ("BROKEN").
+LINK = ["rom", "assets", "build/elfs", "build/decomp", "build/toolchain", "src", ".venv"]
 
 
 def build_env(dst: Path) -> None:

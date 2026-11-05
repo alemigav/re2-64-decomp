@@ -484,7 +484,11 @@ def check(rep):
     # not, and neither is a run of one repeated text-safe byte. These are the cases the audit mutates.
     txt = list(b"first string entry\x00\x00second entry here\x00\x00third")
     txt += [0] * (-len(txt) % 4)
-    codes = list(b"\x00 \x00\x00\x00!\x00\x00\x00" * 8)          # a table of numbers: text-safe, no words
+    # A table of *letter-bearing* codes: sixteen letters and nine distinct bytes, but no run of four -- so only
+    # the word test excludes it. The earlier payload had no letters at all and was caught by the letters threshold,
+    # which left the word-test mutation vacuous (M351).
+    codes = list((b"\x00A\x00\x00\x00B\x00\x00\x00C\x00\x00\x00D\x00\x00"
+                  b"\x00E\x00\x00\x00F\x00\x00\x00G\x00\x00\x00H\x00\x00") * 2)   # 64 B: 16 words, 9 distinct
     spaces = list(b" " * 40)                                          # one repeated byte: fill, not text
     _pad = lambda v: v + [0] * (-len(v) % 4)
     kind_of = lambda vals: {c for _a, _b, c in

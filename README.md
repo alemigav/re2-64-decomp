@@ -79,7 +79,7 @@ has the architecture, the ratchet's three invariants and the 30-second rule.
 
 ## Milestones
 
-**351** numbers, 0-350: **295** with a row, and **56** named gaps. The full index — every number, its title, and the
+**352** numbers, 0-351: **296** with a row, and **56** named gaps. The full index — every number, its title, and the
 note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table worth reading
 before you believe any older note.
@@ -237,7 +237,7 @@ record the cartridge never labels — is
 tools/       102 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 603 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        README-extended.md (the dense version), handover.md, format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    276 notes, one per milestone that has one
+docs/log/    277 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
