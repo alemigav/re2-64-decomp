@@ -4039,6 +4039,20 @@ def check():
         _hyp = _ci3.residue_hypotheses()
     except Exception:
         _hyp = None
+    # M350: the nine runs that are left, read in one sitting -- and the structural fact they share, gated.
+    try:
+        import classify_image as _ci4
+        _tail = _ci4.residue_profile(min_bytes=1)
+    except Exception:
+        _tail = None
+    cases.append((f"the {(_tail or {}).get('bytes', 0)} B still unnamed is {(_tail or {}).get('runs', 0)} run(s), and "
+                  f"**all {(_tail or {}).get('tails', 0)} of them end at their image's last byte**: the residue is not "
+                  f"scattered data, it is the TAIL of nine images -- 4 RDP/Gfx display-list fragments, 2 lone pointers "
+                  f"with a 16-bit code, 3 copies of one small-value record, and one 140 B table of signed s16 "
+                  f"coordinates with type codes (M350)"
+                  if _tail else "residue tail census: not run",
+                  bool(_tail) and _tail["runs"] == 9 and _tail["bytes"] == 440 and _tail["tails"] == 9))
+
     cases.append((f"ten candidate rules were tested against the {(_hyp or {}).get('bytes', 0):,} B residue and NONE is "
                   f"registered: the leader ({(_hyp or {}).get('leader', '?')}) reaches "
                   f"{100 * (_hyp or {}).get('max_share', 0):.0f} %, and it asserts a *shape*, not a data type -- which is "

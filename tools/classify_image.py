@@ -720,9 +720,14 @@ def residue_profile(root: Path = ROOT, min_bytes: int = 64):
                          "u16": round(sum(1 for w in words if w <= 0xFFFF) / n, 3),
                          "s16": round(sum(1 for w in words if w <= 0x7FFF or w >= 0xFFFF8000) / n, 3),
                          "s20": round(sum(1 for w in words if w <= 0xFFFFF or w >= 0xFFF00000) / n, 3),
-                         "alphabet": len(set(b)), "entropy": round(entropy(b), 2)})
+                         "alphabet": len(set(b)), "entropy": round(entropy(b), 2),
+                         # M350: every one of the nine runs that were left turned out to sit at the END of its
+                         # image -- the last segment of the map, with nothing after it. That is a structural fact
+                         # about the *images*, not about the bytes, and it is the one claim here worth gating.
+                         "at_tail": hi == base + size - 1})
     rows.sort(key=lambda r: -r["bytes"])
     return {"runs": len(rows), "bytes": sum(r["bytes"] for r in rows),
+            "tails": sum(1 for r in rows if r["at_tail"]),
             "best_rule_bytes": sum(r["bytes"] for r in rows if r["alphabet"] <= 16),
             "best_rule": "alphabet <= 16 bytes", "largest": rows[:20], "all": rows}
 
