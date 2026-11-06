@@ -106,6 +106,7 @@ SUITES = [
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
     ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 152, True),
     ("other corpus (repository)", [sys.executable, "tools/other_corpus.py", "--self-test"], 16, True),
+    ("toolchain matrix (cartridge)", [sys.executable, "tools/toolchain_matrix.py", "--check"], 4, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     # M273: the README's progress map is generated from the fixtures, so it cannot drift from them, and every
     # function it claims as recovered must exist in the corpus. Repository-only: no cartridge needed.

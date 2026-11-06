@@ -3,7 +3,7 @@
 **What it is:** a black-box study of *Resident Evil 2* on the Nintendo 64 (`NREE` rev 1 USA), reverse-engineered from the
 cartridge up — 3 603 functions catalogued, the file formats decoded, the script virtual machine and three audio codecs
 worked out from the bytes, and **183 functions reconstructed in C and recompiled — 182 of them matching the game's own
-machine code byte for byte**. It ships a **1194-case verification suite**, and every claim here is either measured by
+machine code byte for byte**. It ships a **1198-case verification suite**, and every claim here is either measured by
 one of those cases or explicitly labelled a reading of the code.
 
 > **Two versions of this page.** This is the short one: what the project is, what it proves, how to check it in a
@@ -60,7 +60,7 @@ requires it to fail. With a dump of your own, see [Rebuild with your own dump](#
 ## Verify it without the cartridge
 
 ```sh
-python3 tools/acceptance.py      # 34 suites / 323 of 1194 cases run; the other 42 suites SKIP
+python3 tools/acceptance.py      # 34 suites / 323 of 1198 cases run; the other 43 suites SKIP
 python3 tools/audit_gates.py     # 160/160 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 25/25 — every doc anchor, heading and note pointer holds
@@ -71,7 +71,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 ```
 
 A suite that cannot run prints `SKIP (needs the cartridge)` — **never PASS** — and the split is stated wherever it is
-counted: **871 of 1194 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
+counted: **875 of 1198 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
 audit is the unusual one: it **disables each check's mechanism** and requires the check to fail, 146 mechanisms and 146
 failures with **0 vacuous**, after first running the unmutated tool as a positive control — that control once found that
 49 of 132 audits had never tested their mutation. [The extended page](docs/README-extended.md#6-the-verification-architecture)
@@ -79,7 +79,7 @@ has the architecture, the ratchet's three invariants and the 30-second rule.
 
 ## Milestones
 
-**357** numbers, 0-356: **301** with a row, and **56** named gaps. The full index — every number, its title, and the
+**358** numbers, 0-357: **302** with a row, and **56** named gaps. The full index — every number, its title, and the
 note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table worth reading
 before you believe any older note.
@@ -105,7 +105,7 @@ before you believe any older note.
 | P16 | **M251–M300** | **whole functions reproduced from the image**: the compile-probe corpus and sixteen hand reconstructions, fifteen byte-exact, plus the build facts that made them possible |
 | P17 | **M301–M307** | **the duplicate-body cohorts**: 148 of the 3 400 unmatched functions have a body byte-identical to another's, in 48 groups — one proven shape registers every copy |
 | P18 | **M308–M331** | **the singles sweep and the boot image's own geometry**: the boot extent corrected to its load extent because a recovered `main` named `__bss_start`; `main` at 30 of 30; the 46-word DSP family closed as hand-written assembly; `vector_installer` taken to a measured near-miss |
-| P19 | **M332–M356** | **the front page, the last functions, and the byte map closed**: the README split into a short page and a dense companion; the duplicate cohorts banked **+25 functions from five shapes**, three of them closed by *statement order* rather than expression; then the twelve-milestone byte-map arc — `unclassified` **330 176 B (16.9 %) → 440 B (0.0 %)**, eleven measured classes each earned by a rule the audit mutates, and the last nine runs read by hand; and **admission unparked to `PASS`** (160/160, 0 vacuous, 0 broken), which immediately caught a class measuring a 64 KB page base instead of an address |
+| P19 | **M332–M357** | **the front page, the last functions, and the byte map closed**: the README split into a short page and a dense companion; the duplicate cohorts banked **+25 functions from five shapes**, three of them closed by *statement order* rather than expression; then the twelve-milestone byte-map arc — `unclassified` **330 176 B (16.9 %) → 440 B (0.0 %)**, eleven measured classes each earned by a rule the audit mutates, and the last nine runs read by hand; and **admission unparked to `PASS`** (160/160, 0 vacuous, 0 broken), which immediately caught a class measuring a 64 KB page base instead of an address |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be indistinguishable from
 one written from measurement, and that distinction is the project's whole claim.
@@ -161,7 +161,7 @@ ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 3603 functions across 36 images · █ 15 reproduced byte-for-byte (0.42%) · ▓ 1 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M356)
+the record — one bar per phase, from the phase table's own ranges (M0–M357)
 
 P0   M0  │█│ 10
 P1   M10 │███│ 21
@@ -182,7 +182,7 @@ P15  M231│███│ 20
 P16  M251│███████│ 50
 P17  M301│█│ 7
 P18  M308│███│ 24
-P19  M332│███│ 25
+P19  M332│███│ 26
 ```
 <!-- progress-map:end -->
 
@@ -239,10 +239,10 @@ record the cartridge never labels — is
 ## Layout
 
 ```
-tools/       103 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+tools/       104 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 603 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        README-extended.md (the dense version), handover.md, format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    282 notes, one per milestone that has one
+docs/log/    283 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
