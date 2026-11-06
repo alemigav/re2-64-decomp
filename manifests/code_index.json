@@ -171,17 +171,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x800013b0",
-     "name": "FUN_800013b0",
-     "file": "src/boot/FUN_800013b0.c",
-     "size": 36,
-     "sha256": "a181696ff403c2fccd5761279fa75b72269f3a6f6b8c6ddf9383a26b52a81841",
-     "provider_sha256": "69752f1e6c1a8101dbdae94df8f6d0888ecfa3ab622858e50c393abd756aada8",
-     "status": "written",
-     "callees": [],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x800013d4",
      "name": "FUN_800013d4",
      "file": "src/boot/FUN_800013d4.c",
@@ -240,32 +229,6 @@
      "status": "written",
      "callees": [
       "0x80004370"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x800022bc",
-     "name": "FUN_800022bc",
-     "file": "src/boot/FUN_800022bc.c",
-     "size": 88,
-     "sha256": "56621a7f03d6d239be9c3b5d31077d5c7d65386c1da2a25c924d86713fccdf08",
-     "provider_sha256": "0a8685b4c6e2bc44bbcdfc4ad47c493876021287cc5307d44b38c92b89ae849e",
-     "status": "written",
-     "callees": [
-      "0x80001510"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80002314",
-     "name": "FUN_80002314",
-     "file": "src/boot/FUN_80002314.c",
-     "size": 76,
-     "sha256": "21262b8427e21d88a1e56413f11e47a1a02a7f46bafcfebb4d94b4dcc23e63f8",
-     "provider_sha256": "d8b3ce97647ce44841303c3101621588f16a8808815d3327ddf89c4e6cb32744",
-     "status": "written",
-     "callees": [
-      "0x8000de9c"
      ],
      "callees_unknown": 0
     },
@@ -353,19 +316,6 @@
       "0x800015e0",
       "0x80002f80",
       "0x80002fe8"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x8000319c",
-     "name": "FUN_8000319c",
-     "file": "src/boot/FUN_8000319c.c",
-     "size": 40,
-     "sha256": "e1f2fd86ede6782f618769438d86ec039f66bc45333e0788113a63e5da9ff538",
-     "provider_sha256": "e88c78aa48704d0d534c033981d0d487f0506722ab30fb1a8ea41bf216d06471",
-     "status": "written",
-     "callees": [
-      "0x8000305c"
      ],
      "callees_unknown": 0
     },
@@ -473,17 +423,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x800042f4",
-     "name": "FUN_800042f4",
-     "file": "src/boot/FUN_800042f4.c",
-     "size": 124,
-     "sha256": "cff06dd8f78846eaa960f65e553fea2d0ee469204aae30c81302ba95405daf1c",
-     "provider_sha256": "7e270632b5e04046caf65c0d25e99401dd867592e3494c6f0138bd95569dd984",
-     "status": "written",
-     "callees": [],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80004370",
      "name": "FUN_80004370",
      "file": "src/boot/FUN_80004370.c",
@@ -503,20 +442,6 @@
      "size": 96,
      "sha256": "6ff62d2c5f124fff15a14a99d43b453c8d5ff66608fb72004b0a3792ecacdce5",
      "provider_sha256": "19239652563614ddd628cc71b81ba6e2f5b96a1a2308e72d5a9b39d5132349a4",
-     "status": "written",
-     "callees": [
-      "0x800013b0",
-      "0x800013d4"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80004550",
-     "name": "inflate_init",
-     "file": "src/boot/inflate_init.c",
-     "size": 68,
-     "sha256": "9982576cc83e4af0b7e0dd07c2cdec82822b8a73a382027a83f5c90ceb4af93a",
-     "provider_sha256": "f2acaca27c929f513be592e7d1ef70d124489082e1e9c4846e93525e197d5660",
      "status": "written",
      "callees": [
       "0x800013b0",
@@ -571,17 +496,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x800048b0",
-     "name": "FUN_800048b0",
-     "file": "src/boot/FUN_800048b0.c",
-     "size": 48,
-     "sha256": "bd3ca2d443199f2706dab5b1172683c80caa79e572d9274f89a6da95ce3b53de",
-     "provider_sha256": "ac00d0b6fb163725f1eab95132420ea686a12e842a8fa8d2f72ca555612346b7",
-     "status": "written",
-     "callees": [],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x800048e8",
      "name": "FUN_800048e8",
      "file": "src/boot/FUN_800048e8.c",
@@ -591,19 +505,6 @@
      "status": "written",
      "callees": [
       "0x800013d4"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x8000490c",
-     "name": "FUN_8000490c",
-     "file": "src/boot/FUN_8000490c.c",
-     "size": 28,
-     "sha256": "7fe507371a517ef6335358fd7008fc01f08dc3bd4cfee2e1a87a639e08944ba9",
-     "provider_sha256": "cd5589fd099a5504ea61800d10e067fc8772fe3e9fe7cb1b07eb9fba7e4811da",
-     "status": "written",
-     "callees": [
-      "0x800014ac"
      ],
      "callees_unknown": 0
     },
@@ -619,19 +520,6 @@
       "0x80001180",
       "0x800888ec",
       "0x8008af80"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80004a50",
-     "name": "FUN_80004a50",
-     "file": "src/boot/FUN_80004a50.c",
-     "size": 28,
-     "sha256": "cc6a8f79f815e3665d8859e562c500a75275c73dc3f003bb2508513bb91ce3d7",
-     "provider_sha256": "07aef32731645afa2e2738960b1082728d9003ca29e3489ddc8e206fc0c1764d",
-     "status": "written",
-     "callees": [
-      "0x80004bac"
      ],
      "callees_unknown": 0
     },
@@ -660,17 +548,6 @@
       "0x800b431c"
      ],
      "callees_unknown": 1
-    },
-    {
-     "address": "0x80004bac",
-     "name": "FUN_80004bac",
-     "file": "src/boot/FUN_80004bac.c",
-     "size": 56,
-     "sha256": "2d930f5040d6aca70664230cf121834c6548231f0ce850a3e96077bd18761cc8",
-     "provider_sha256": "dc8b35ae61b6aa3b42a090635ceaf435893171a749216d8322b65f09b60186ae",
-     "status": "written",
-     "callees": [],
-     "callees_unknown": 0
     },
     {
      "address": "0x80004c34",
@@ -708,19 +585,6 @@
       "0x800044f0",
       "0x80004594",
       "0x800888ec"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80004ec4",
-     "name": "FUN_80004ec4",
-     "file": "src/boot/FUN_80004ec4.c",
-     "size": 28,
-     "sha256": "cdb65e3b4c8f730cfe292a865509dcd90057ba38f61eb8896f48b87ab53d8557",
-     "provider_sha256": "12c9ad9dfcf3758ab19444dc4882af609ac89b8a1098820963b34043e3f85e9c",
-     "status": "written",
-     "callees": [
-      "0x80004cfc"
      ],
      "callees_unknown": 0
     },
@@ -2193,20 +2057,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8000d66c",
-     "name": "FUN_8000d66c",
-     "file": "src/boot/FUN_8000d66c.c",
-     "size": 44,
-     "sha256": "19c1b259429dd6f68b87f3233f137bc11ed04c82beebb80acde0e95ca373d95e",
-     "provider_sha256": "728207afb2b32a96f6e0d372cc1f7db6b0b4027569625b1cf3f494ae0261d1df",
-     "status": "written",
-     "callees": [
-      "0x8000d9c0",
-      "0x8000db10"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x8000d6a0",
      "name": "FUN_8000d6a0",
      "file": "src/boot/FUN_8000d6a0.c",
@@ -2345,17 +2195,6 @@
      "size": 56,
      "sha256": "94d3119cacfafee6eab613e2b6e99804e225165961794deb47827e6fb85e08a1",
      "provider_sha256": "29366beae48e967b651496375f6700b70ba9771ffba5145f2f050a87e3475950",
-     "status": "written",
-     "callees": [],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x8000de9c",
-     "name": "FUN_8000de9c",
-     "file": "src/boot/FUN_8000de9c.c",
-     "size": 40,
-     "sha256": "0d7985280746a3d235ce705c9ae3ddcaa480beabcb6cc1a6df12105219a4aa39",
-     "provider_sha256": "9184e069596adbcfa1dc3876295bee2dbf772f23ec48d6479df28f6f4d272654",
      "status": "written",
      "callees": [],
      "callees_unknown": 0
@@ -2509,19 +2348,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8000e800",
-     "name": "FUN_8000e800",
-     "file": "src/boot/FUN_8000e800.c",
-     "size": 84,
-     "sha256": "5c7c41faecc5382215f614d0abd6f6399ba5c501ac92cd522709718a092ec478",
-     "provider_sha256": "f92976e12595742d93a2ce7faf204a5e01f23b3d499dde32885e8cc2b0ed4a4a",
-     "status": "written",
-     "callees": [
-      "0x8000e860"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x8000e860",
      "name": "FUN_8000e860",
      "file": "src/boot/FUN_8000e860.c",
@@ -2530,20 +2356,6 @@
      "provider_sha256": "9be3568da6f8db228490c4779fc06df8333e8d5a5c7ed66fef5488a1eb8ba296",
      "status": "written",
      "callees": [],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x8000e920",
-     "name": "FUN_8000e920",
-     "file": "src/boot/FUN_8000e920.c",
-     "size": 88,
-     "sha256": "ea2ab758bf8b050584ca0fb7c7dc4a7372617002fd67ae75862348f90dacace6",
-     "provider_sha256": "b6f326a97dd1477f2574b19db2c03a42b7f45d6c61a80cc9aafb98931e9a1df7",
-     "status": "written",
-     "callees": [
-      "0x800072e0",
-      "0x80007300"
-     ],
      "callees_unknown": 0
     },
     {
@@ -2858,6 +2670,142 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x800013b0",
+     "name": "FUN_800013b0",
+     "file": "src/boot/FUN_800013b0.c",
+     "size": 36,
+     "sha256": "fc97b7677ea8a81b0327f9ae6d2fd8401cef02b600bc7e6b1b46ce2ca20a27f0",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800022bc",
+     "name": "FUN_800022bc",
+     "file": "src/boot/FUN_800022bc.c",
+     "size": 88,
+     "sha256": "48730513d37b0bd0efc9e7926549f112daa2488c6d1ce2e9bb46979809557d72",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80001510"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80002314",
+     "name": "FUN_80002314",
+     "file": "src/boot/FUN_80002314.c",
+     "size": 76,
+     "sha256": "202353756205e7c88e5e33bc3803494aaeb43783d0ccbab3aeffffd443682bd6",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000de9c"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8000319c",
+     "name": "FUN_8000319c",
+     "file": "src/boot/FUN_8000319c.c",
+     "size": 40,
+     "sha256": "eef72f22053797c661bf18a80ed4b9400b1e8297c2469f01ae64ae5e917755fb",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000305c"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800042f4",
+     "name": "FUN_800042f4",
+     "file": "src/boot/FUN_800042f4.c",
+     "size": 124,
+     "sha256": "c3d90145280f44d6e78a23a1ad099363fa88656deb952ebf3490f8771799338e",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80004550",
+     "name": "inflate_init",
+     "file": "src/boot/inflate_init.c",
+     "size": 68,
+     "sha256": "16650798b1394c228e95b4fbfb14c78084014fd87c61399dd73aa6171d8952ff",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800013b0",
+      "0x800013d4"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800048b0",
+     "name": "FUN_800048b0",
+     "file": "src/boot/FUN_800048b0.c",
+     "size": 48,
+     "sha256": "f52cc6ec2ea246ce79e0ab6b6927503fafb8bf944b26b6e3e8c9300345f45eba",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8000490c",
+     "name": "FUN_8000490c",
+     "file": "src/boot/FUN_8000490c.c",
+     "size": 28,
+     "sha256": "4197146281c3d341d2de45f6112fce9dbacf52cbe0bc6418f49c3511f905b20d",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800014ac"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80004a50",
+     "name": "FUN_80004a50",
+     "file": "src/boot/FUN_80004a50.c",
+     "size": 28,
+     "sha256": "01e6f462fac609bf5d8bfe5ca7ea7bc7cf787af4f24ac394e1e5e3f7ea4aa496",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80004bac"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80004bac",
+     "name": "FUN_80004bac",
+     "file": "src/boot/FUN_80004bac.c",
+     "size": 56,
+     "sha256": "17f791fb9f7d87a322d53faa87457771dcd68962f8d01c262f8c987d772c1615",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80004ec4",
+     "name": "FUN_80004ec4",
+     "file": "src/boot/FUN_80004ec4.c",
+     "size": 28,
+     "sha256": "88746cee85a562f4d1ac9df704efd5af864954987dc097c6ceabd0d6690541f5",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80004cfc"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x80006d30",
      "name": "osCreateMesgQueue",
      "file": "src/boot/osCreateMesgQueue.c",
@@ -2918,6 +2866,20 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x8000d66c",
+     "name": "FUN_8000d66c",
+     "file": "src/boot/FUN_8000d66c.c",
+     "size": 44,
+     "sha256": "f2aa6743cd034efa07d468c9d5a419b767330aff43db1b2e349e3e39e2a9967b",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000d9c0",
+      "0x8000db10"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x8000d9c0",
      "name": "FUN_8000d9c0",
      "file": "src/boot/FUN_8000d9c0.c",
@@ -2926,6 +2888,44 @@
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8000de9c",
+     "name": "FUN_8000de9c",
+     "file": "src/boot/FUN_8000de9c.c",
+     "size": 40,
+     "sha256": "ca63e5a655195df36d3af3cb634f49ea61c90f3c41fcb27cec70bb4e19d5d22d",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8000e800",
+     "name": "FUN_8000e800",
+     "file": "src/boot/FUN_8000e800.c",
+     "size": 84,
+     "sha256": "98cb6ae021b8cb8122d396485a55dcd24998c5118a69d52c016a4d4c9695213f",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000e860"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8000e920",
+     "name": "FUN_8000e920",
+     "file": "src/boot/FUN_8000e920.c",
+     "size": 88,
+     "sha256": "48b5af6a266d1923314716bc46157f76ae439ada53be0c8f7bc54fb48d51a53c",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800072e0",
+      "0x80007300"
+     ],
      "callees_unknown": 0
     }
    ],

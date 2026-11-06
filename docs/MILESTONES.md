@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-356 milestones are indexed. 278 of them have a note; the rest are rows in the log that cite
+357 milestones are indexed. 279 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -374,6 +374,7 @@ at the foot of this file.
 | 353 | **M353** — P19: the phase table catches up with twenty-one milestones | `docs/log/M353-p19-the-phase-table-catches-up.md` |
 | 354 | **M354** — the empty-function shape: ten copies for one proven reconstruction | `docs/log/M354-the-empty-function-shape-ten-copies.md` |
 | 355 | **M355** — the masked loop: the walk was the bug, and the index is the shape | `docs/log/M355-the-masked-loop-the-walk-was-the-bug.md` |
+| 356 | **M356** — the other decompilation: 1 525 claimed, 51 survive our gate, 15 are new | `docs/log/M356-the-other-decompilation.md` |
 
 ## The gaps, and why they are empty
 

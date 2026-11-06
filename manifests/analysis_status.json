@@ -142,16 +142,6 @@
    "named": false,
    "validated": false
   },
-  "boot:0x800013b0": {
-   "name": "FUN_800013b0",
-   "image": "boot",
-   "address": "0x800013b0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x800013d4": {
    "name": "FUN_800013d4",
    "image": "boot",
@@ -196,26 +186,6 @@
    "name": "FUN_80001698",
    "image": "boot",
    "address": "0x80001698",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x800022bc": {
-   "name": "FUN_800022bc",
-   "image": "boot",
-   "address": "0x800022bc",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80002314": {
-   "name": "FUN_80002314",
-   "image": "boot",
-   "address": "0x80002314",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
@@ -287,16 +257,6 @@
    "image": "boot",
    "address": "0x8000305c",
    "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x8000319c": {
-   "name": "FUN_8000319c",
-   "image": "boot",
-   "address": "0x8000319c",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -382,16 +342,6 @@
    "named": false,
    "validated": false
   },
-  "boot:0x800042f4": {
-   "name": "FUN_800042f4",
-   "image": "boot",
-   "address": "0x800042f4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x80004370": {
    "name": "FUN_80004370",
    "image": "boot",
@@ -410,16 +360,6 @@
    "callees_unknown": 0,
    "level": 2,
    "named": false,
-   "validated": false
-  },
-  "boot:0x80004550": {
-   "name": "inflate_init",
-   "image": "boot",
-   "address": "0x80004550",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": true,
    "validated": false
   },
   "boot:0x80004594": {
@@ -452,30 +392,10 @@
    "named": false,
    "validated": false
   },
-  "boot:0x800048b0": {
-   "name": "FUN_800048b0",
-   "image": "boot",
-   "address": "0x800048b0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x800048e8": {
    "name": "FUN_800048e8",
    "image": "boot",
    "address": "0x800048e8",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x8000490c": {
-   "name": "FUN_8000490c",
-   "image": "boot",
-   "address": "0x8000490c",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
@@ -487,16 +407,6 @@
    "image": "boot",
    "address": "0x80004954",
    "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80004a50": {
-   "name": "FUN_80004a50",
-   "image": "boot",
-   "address": "0x80004a50",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -519,16 +429,6 @@
    "callees": 1,
    "callees_unknown": 1,
    "level": 1,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80004bac": {
-   "name": "FUN_80004bac",
-   "image": "boot",
-   "address": "0x80004bac",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
    "named": false,
    "validated": false
   },
@@ -557,16 +457,6 @@
    "image": "boot",
    "address": "0x80004cfc",
    "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80004ec4": {
-   "name": "FUN_80004ec4",
-   "image": "boot",
-   "address": "0x80004ec4",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -1622,16 +1512,6 @@
    "named": false,
    "validated": false
   },
-  "boot:0x8000d66c": {
-   "name": "FUN_8000d66c",
-   "image": "boot",
-   "address": "0x8000d66c",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x8000d6a0": {
    "name": "FUN_8000d6a0",
    "image": "boot",
@@ -1742,16 +1622,6 @@
    "named": false,
    "validated": false
   },
-  "boot:0x8000de9c": {
-   "name": "FUN_8000de9c",
-   "image": "boot",
-   "address": "0x8000de9c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x8000ded0": {
    "name": "FUN_8000ded0",
    "image": "boot",
@@ -1852,31 +1722,11 @@
    "named": false,
    "validated": false
   },
-  "boot:0x8000e800": {
-   "name": "FUN_8000e800",
-   "image": "boot",
-   "address": "0x8000e800",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x8000e860": {
    "name": "FUN_8000e860",
    "image": "boot",
    "address": "0x8000e860",
    "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x8000e920": {
-   "name": "FUN_8000e920",
-   "image": "boot",
-   "address": "0x8000e920",
-   "callees": 2,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -2122,6 +1972,116 @@
    "named": true,
    "validated": false
   },
+  "boot:0x800013b0": {
+   "name": "FUN_800013b0",
+   "image": "boot",
+   "address": "0x800013b0",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x800022bc": {
+   "name": "FUN_800022bc",
+   "image": "boot",
+   "address": "0x800022bc",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80002314": {
+   "name": "FUN_80002314",
+   "image": "boot",
+   "address": "0x80002314",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x8000319c": {
+   "name": "FUN_8000319c",
+   "image": "boot",
+   "address": "0x8000319c",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x800042f4": {
+   "name": "FUN_800042f4",
+   "image": "boot",
+   "address": "0x800042f4",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004550": {
+   "name": "inflate_init",
+   "image": "boot",
+   "address": "0x80004550",
+   "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": true,
+   "validated": false
+  },
+  "boot:0x800048b0": {
+   "name": "FUN_800048b0",
+   "image": "boot",
+   "address": "0x800048b0",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x8000490c": {
+   "name": "FUN_8000490c",
+   "image": "boot",
+   "address": "0x8000490c",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004a50": {
+   "name": "FUN_80004a50",
+   "image": "boot",
+   "address": "0x80004a50",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004bac": {
+   "name": "FUN_80004bac",
+   "image": "boot",
+   "address": "0x80004bac",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004ec4": {
+   "name": "FUN_80004ec4",
+   "image": "boot",
+   "address": "0x80004ec4",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "boot:0x80006d30": {
    "name": "osCreateMesgQueue",
    "image": "boot",
@@ -2172,11 +2132,51 @@
    "named": false,
    "validated": false
   },
+  "boot:0x8000d66c": {
+   "name": "FUN_8000d66c",
+   "image": "boot",
+   "address": "0x8000d66c",
+   "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "boot:0x8000d9c0": {
    "name": "FUN_8000d9c0",
    "image": "boot",
    "address": "0x8000d9c0",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x8000de9c": {
+   "name": "FUN_8000de9c",
+   "image": "boot",
+   "address": "0x8000de9c",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x8000e800": {
+   "name": "FUN_8000e800",
+   "image": "boot",
+   "address": "0x8000e800",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x8000e920": {
+   "name": "FUN_8000e920",
+   "image": "boot",
+   "address": "0x8000e920",
+   "callees": 2,
    "callees_unknown": 0,
    "level": 2,
    "named": false,

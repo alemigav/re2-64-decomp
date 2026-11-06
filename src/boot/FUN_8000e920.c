@@ -1,24 +1,37 @@
 /* FUN_8000e920
  * image   boot (boot), base 0x80000480
  * address 0x8000e920  body 0x8000e920..0x8000e977  size 88 B
- * body sha256 ea2ab758bf8b050584ca0fb7c7dc4a7372617002fd67ae75862348f90dacace6
- * provider record sha256 b6f326a97dd1477f2574b19db2c03a42b7f45d6c61a80cc9aafb98931e9a1df7
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 48b5af6a266d1923314716bc46157f76ae439ada53be0c8f7bc54fb48d51a53c
+ * recovered byte-exact (import: 22 of 22 words, from the decompdecomp corpus and verified against this cartridge)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_8000E920_SOURCE
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
 
-void FUN_8000e920(undefined4 param_1,undefined4 param_2,undefined2 param_3)
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
 
-{
-  int iVar1;
-  undefined4 uVar2;
-  
-  uVar2 = FUN_800072e0();
-  iVar1 = _DAT_800129d4;
-  *(undefined4 *)(_DAT_800129d4 + 0x10) = param_1;
-  *(undefined4 *)(iVar1 + 0x14) = param_2;
-  *(undefined2 *)(iVar1 + 2) = param_3;
-  FUN_80007300(uVar2);
-  return;
+s32 func_800072E0();                                
+M2C_UNK func_80007300(s32);                         
+extern void *D_800129D4;
+
+void func_8000E920(s32 arg0, s32 arg1, s16 arg2) {
+    s32 temp_a0;
+
+    temp_a0 = func_800072E0();
+    (*(s32 *)((s8 *)(D_800129D4) + (0x10))) = arg0;
+    (*(s32 *)((s8 *)(D_800129D4) + (0x14))) = arg1;
+    (*(s16 *)((s8 *)(D_800129D4) + (2))) = arg2;
+    func_80007300(temp_a0);
 }

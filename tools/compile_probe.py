@@ -1458,6 +1458,438 @@ void FUN_x(u8 *p, u8 a, u8 b)
 }
 """
 
+
+# --- imported from another decompilation (M356) ----------------------------------------------------------
+# `delibrete/Resident-Evil-II-Decompilation-N64` publishes 1 525 functions its own judge calls byte-exact, from a
+# *different ROM file* and under eight different toolchains. `tools/other_corpus.py` scores every one of them
+# through this project's profile against this cartridge; these fifteen came back word-exact and are registered
+# because of that, not because the other project says so. Their text is kept as published (the `M2C_UNK` types
+# are m2c's, and `tools/other_corpus.py` expands the `M2C_FIELD` macros by hand because this cc1 has **no
+# preprocessor**: a `#define` is silently ignored and an unexpanded macro is a parse error at its first comma).
+
+# func_800013B0: 9 of 9 words at 0x800013b0 (imported; verified here)
+S_800013B0_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+extern s32 D_800138A0;
+extern s32 D_800138A4;
+extern s32 D_800138A8;
+extern s32 D_80013EB4;
+
+void func_800013B0(s32 arg0) {
+    D_800138A0 = arg0;
+    D_800138A8 = arg0;
+    D_80013EB4 = 0;
+    D_800138A4 = arg0;
+}"""
+
+# func_800022BC: 22 of 22 words at 0x800022bc (imported; verified here)
+S_800022BC_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+M2C_UNK func_80001510();                            
+
+s32 func_800022BC(void *arg0, void *arg1) {
+    func_80001510();
+    (*(M2C_UNK (**)(s32, void *))((s8 *)(arg1) + (0x24)))((*(s32 *)((s8 *)(arg1) + (0x28))), (*(void **)((s8 *)(arg0) + (0x24))));
+    (*(M2C_UNK (**)(s32, void *))((s8 *)(arg1) + (0x24)))((*(s32 *)((s8 *)(arg1) + (0x28))), arg0);
+    return 0;
+}"""
+
+# func_80002314: 19 of 19 words at 0x80002314 (imported; verified here)
+S_80002314_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_8000DE9C();
+
+void func_80002314(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 temp_v0;
+
+    func_8000DE9C((*(s32 *)((s8 *)(arg0) + (0x24))), arg2, arg3);
+    temp_v0 = (*(s32 *)((s8 *)(arg0) + (0x24))) + arg3;
+    (*(s32 *)((s8 *)(arg0) + (0x30))) = temp_v0;
+    (*(s32 *)((s8 *)(arg0) + (0x2C))) = temp_v0;
+}"""
+
+# func_8000319C: 10 of 10 words at 0x8000319c (imported; verified here)
+S_8000319C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_8000305C();
+
+void func_8000319C(s32 arg0, s32 arg1, s32 arg2) {
+    func_8000305C(arg0, 0xE, arg1, arg2);
+}"""
+
+# func_800042F4: 31 of 31 words at 0x800042f4 (imported; verified here)
+S_800042F4_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+s32 func_800042F4(s32 *arg0, void *arg1) {
+    s32 *prev = 0;
+    s32 *p = arg0;
+
+    while (p != 0) {
+        s32 *t = *(s32 **)((u8 *)p - 4);
+        *(s32 **)((u8 *)p - 4) = prev;
+        prev = p;
+        p = t;
+    }
+    if (prev != 0) {
+        void (*fn)(s32, s32 *);
+        s32 a;
+
+        do {
+            prev = (s32 *)((u8 *)prev - 8);
+            fn = *(void (**)(s32, s32 *))((u8 *)arg1 + 0x24);
+            a = *(s32 *)((u8 *)arg1 + 0x28);
+            p = *(s32 **)((u8 *)prev + 4);
+            fn(a, prev);
+            prev = p;
+p = 0;
+        } while (prev != 0);
+    }
+    return 0;
+}"""
+
+# func_80004550: 17 of 17 words at 0x80004550 (imported; verified here)
+S_80004550_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+M2C_UNK func_800013B0(M2C_UNK);                     
+s32 func_800013D4(M2C_UNK);                         
+
+void *func_80004550(void *arg0, M2C_UNK arg1) {
+    (*(s32 *)((s8 *)(arg0) + (0x20))) = 0;
+    (*(s32 *)((s8 *)(arg0) + (0x24))) = 0;
+    (*(s32 *)((s8 *)(arg0) + (0x28))) = 0;
+    func_800013B0(arg1);
+    (*(s32 *)((s8 *)(arg0) + (0x4C))) = func_800013D4(0x8000);
+    return arg0;
+}"""
+
+# func_800048B0: 12 of 12 words at 0x800048b0 (imported; verified here)
+S_800048B0_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_800048B0(void *arg0) {
+    s32 temp_v0;
+    s32 temp_v1;
+
+    temp_v1 = 0x8000 - (*(s32 *)((s8 *)(arg0) + (0x10)));
+    if (temp_v1 != 0) {
+        (*(s32 *)((s8 *)(arg0) + (0x10))) = 0x8000;
+        temp_v0 = (*(s32 *)((s8 *)(arg0) + (0x50))) + temp_v1;
+        (*(s32 *)((s8 *)(arg0) + (0x50))) = temp_v0;
+        (*(s32 *)((s8 *)(arg0) + (0xC))) = temp_v0;
+    }
+    return temp_v1;
+}"""
+
+# func_8000490C: 7 of 7 words at 0x8000490c (imported; verified here)
+S_8000490C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_800014AC();
+
+void func_8000490C(s32 arg0, s32 arg1) {
+    func_800014AC(arg1);
+}"""
+
+# func_80004A50: 7 of 7 words at 0x80004a50 (imported; verified here)
+S_80004A50_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+M2C_UNK func_80004BAC();                     
+
+void func_80004A50(void) {
+    func_80004BAC();
+}"""
+
+# func_80004BAC: 14 of 14 words at 0x80004bac (imported; verified here)
+S_80004BAC_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef void (*Fn)(void);
+extern s32 D_80012884;
+extern Fn D_8001288C[];
+
+void func_80004BAC(void) {
+    volatile Fn *table = D_8001288C;
+    table[D_80012884]();
+}"""
+
+# func_80004EC4: 7 of 7 words at 0x80004ec4 (imported; verified here)
+S_80004EC4_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+M2C_UNK func_80004CFC();                     
+
+void func_80004EC4(void) {
+    func_80004CFC();
+}"""
+
+# func_8000D66C: 11 of 11 words at 0x8000d66c (imported; verified here)
+S_8000D66C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_8000D9C0();                                
+M2C_UNK func_8000DB10(M2C_UNK);                     
+
+void func_8000D66C(void) {
+    do {
+
+    } while (func_8000D9C0() != 0);
+    func_8000DB10(0x125);
+}"""
+
+# func_8000DE9C: 10 of 10 words at 0x8000de9c (imported; verified here)
+S_8000DE9C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+u8 *func_8000DE9C(u8 *arg0, u8 *arg1, s32 arg2) {
+    s32 var_a2;
+    u8 *var_a1;
+    u8 *var_v1;
+    u8 temp_v0;
+
+    var_a1 = arg1;
+    var_a2 = arg2;
+    var_v1 = arg0;
+    if (var_a2 != 0) {
+        do {
+            temp_v0 = *var_a1;
+            var_a1 += 1;
+            var_a2 -= 1;
+            *var_v1 = temp_v0;
+            var_v1 += 1;
+        } while (var_a2 != 0);
+    }
+    return arg0;
+}"""
+
+# func_8000E800: 21 of 21 words at 0x8000e800 (imported; verified here)
+S_8000E800_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+s32 func_8000E860(s32);
+
+s32 func_8000E800(s32 arg0)
+{
+  if ((u32) (arg0 - 0x80000000) > 0x1FFFFFFFU)
+  {
+    if ((u32) (arg0 + 0x60000000) > 0x1FFFFFFFU)
+    {
+      return func_8000E860(arg0);
+    }
+    return arg0 & 0x1FFFFFFF;
+  }
+  return arg0 & 0x1FFFFFFF;
+}"""
+
+# func_8000E920: 22 of 22 words at 0x8000e920 (imported; verified here)
+S_8000E920_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_800072E0();                                
+M2C_UNK func_80007300(s32);                         
+extern void *D_800129D4;
+
+void func_8000E920(s32 arg0, s32 arg1, s16 arg2) {
+    s32 temp_a0;
+
+    temp_a0 = func_800072E0();
+    (*(s32 *)((s8 *)(D_800129D4) + (0x10))) = arg0;
+    (*(s32 *)((s8 *)(D_800129D4) + (0x14))) = arg1;
+    (*(s16 *)((s8 *)(D_800129D4) + (2))) = arg2;
+    func_80007300(temp_a0);
+}"""
+
 SINGLES = [
     ("S_80165C68_SOURCE", "ovl_0087352", 0x80165c68, 3, ()),
     ("S_800478AC_SOURCE", "stage2", 0x800478ac, 3, ()),
@@ -1511,6 +1943,21 @@ SINGLES = [
     ("S_80163020_SOURCE", "ovl_0097e42", 0x80163020, 8, ()),
     ("S_801675EC_SOURCE", "ovl_00a733e", 0x801675ec, 8, (('D_800E1130', 0x800E1130),)),
     ("S_80000520_SOURCE", "boot", 0x80000520, 30, (('__bss_start', 0x800138A0), ('__bss_end', 0x80018A80), ('FUN_800004f0', 0x800004F0), ('FUN_800070c0', 0x800070C0), ('FUN_80000598', 0x80000598))),
+        ("S_800013B0_SOURCE", "boot", 0x800013b0, 9, (('D_80013EB4', 2147565236), ('D_800138A8', 2147563688), ('D_800138A0', 2147563680), ('D_800138A4', 2147563684))),
+        ("S_800022BC_SOURCE", "boot", 0x800022bc, 22, (('func_80001510', 2147489040),)),
+        ("S_80002314_SOURCE", "boot", 0x80002314, 19, (('func_8000DE9C', 2147540636),)),
+        ("S_8000319C_SOURCE", "boot", 0x8000319c, 10, (('func_8000305C', 2147496028),)),
+        ("S_800042F4_SOURCE", "boot", 0x800042f4, 31, ()),
+        ("S_80004550_SOURCE", "boot", 0x80004550, 17, (('func_800013B0', 2147488688), ('func_800013D4', 2147488724))),
+        ("S_800048B0_SOURCE", "boot", 0x800048b0, 12, ()),
+        ("S_8000490C_SOURCE", "boot", 0x8000490c, 7, (('func_800014AC', 2147488940),)),
+        ("S_80004A50_SOURCE", "boot", 0x80004a50, 7, (('func_80004BAC', 2147503020),)),
+        ("S_80004BAC_SOURCE", "boot", 0x80004bac, 14, (('D_80012884', 2147559556), ('D_8001288C', 2147559564))),
+        ("S_80004EC4_SOURCE", "boot", 0x80004ec4, 7, (('func_80004CFC', 2147503356),)),
+        ("S_8000D66C_SOURCE", "boot", 0x8000d66c, 11, (('func_8000D9C0', 2147539392), ('func_8000DB10', 2147539728))),
+        ("S_8000DE9C_SOURCE", "boot", 0x8000de9c, 10, ()),
+        ("S_8000E800_SOURCE", "boot", 0x8000e800, 21, (('func_8000E860', 2147543136),)),
+        ("S_8000E920_SOURCE", "boot", 0x8000e920, 22, (('D_800129D4', 2147559892), ('func_80007300', 2147513088), ('func_800072E0', 2147513056))),
 ]
 
 

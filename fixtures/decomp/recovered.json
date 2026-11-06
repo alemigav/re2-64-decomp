@@ -1345,6 +1345,126 @@
    "verdict": "byte-exact",
    "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
    "source": "MASKLOOP_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x800013b0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import: 9 of 9 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_800013B0_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x800022bc",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "import: 22 of 22 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_800022BC_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x80002314",
+   "words": 19,
+   "verdict": "byte-exact",
+   "probe": "import: 19 of 19 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_80002314_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000319c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "import: 10 of 10 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_8000319C_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x800042f4",
+   "words": 31,
+   "verdict": "byte-exact",
+   "probe": "import: 31 of 31 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_800042F4_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004550",
+   "words": 17,
+   "verdict": "byte-exact",
+   "probe": "import: 17 of 17 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_80004550_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x800048b0",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "import: 12 of 12 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_800048B0_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000490c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "import: 7 of 7 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_8000490C_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004a50",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "import: 7 of 7 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_80004A50_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004bac",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "import: 14 of 14 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_80004BAC_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004ec4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "import: 7 of 7 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_80004EC4_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000d66c",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "import: 11 of 11 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_8000D66C_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000de9c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "import: 10 of 10 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_8000DE9C_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000e800",
+   "words": 21,
+   "verdict": "byte-exact",
+   "probe": "import: 21 of 21 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_8000E800_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000e920",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "import: 22 of 22 words, from the decompdecomp corpus and verified against this cartridge",
+   "source": "S_8000E920_SOURCE"
   }
  ]
 }

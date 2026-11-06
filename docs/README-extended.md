@@ -24,23 +24,24 @@ Every figure on the front page is **derived from the fixtures and asserted by `t
 including in this file's shorter sibling. A phrase that *disappears* counts as a failure, so a stale line cannot be
 fixed by deleting it. Where a number is a *reading* rather than a measurement, the text says so.
 
-**The corpus of recovered functions is 168 entries, 167 of them byte-exact.** The composition matters more than the
+**The corpus of recovered functions is 183 entries, 182 of them byte-exact.** The composition matters more than the
 total, and any headline quoting it must carry this line:
 
 | | count | what it is |
 | --- | --- | --- |
 | reconstructed by hand from the disassembly | **16** | the information-bearing core — the table in §3 |
 | singles landed from one shape each | **55** | one draft per body, measured against `leaf_screen.py` |
+| imported from another decompilation and re-verified here | **15** | one tool scores that corpus through this profile against this cartridge (`tools/other_corpus.py`); these fifteen came back word-exact, and nothing else about that project is taken on trust |
 | copies of twenty-one proven body shapes | **97** | one proven reconstruction registers every copy: 44 empty functions, 11 nine-word masked calls, **17 of the dispatch family** across eight table addresses (M335), three of a masked read-modify-write loop, three of a three-store setter, and the rest two-copy shapes found by the *statement order*, by the *stride* rather than the walk (M355), or by where a constant sits in an OR chain |
 
-So "168" is a **corpus** number, not 168 independent reconstructions. The remaining published residue is one function
+So "183" is a **corpus** number, not 183 independent reconstructions. The remaining published residue is one function
 at **226 of 229 words**; everything else is byte-exact. And the cohort gain is not free but it is not
 closed either: the eight dispatch groups were reachable (M335), and three of the four bodies drafted alongside them
 were then closed by moving a *materialisation* ahead of a load — 11, 12 and 18 words, two copies each (M336) — while
 the fourth stayed 7 of 11 for a reason the words name.
 
 The progress map on the front page draws only the **16** hand-recovered functions, one cell per group of functions. The
-152 singles and copies are in the fixtures and in the counts above, not in the picture — the map's job is to show where
+167 singles, copies and imports are in the fixtures and in the counts above, not in the picture — the map's job is to show where
 the *matching* question stands per image, and a picture that inflated itself with cohort copies would be the same error
 as a test that asserts nothing.
 
