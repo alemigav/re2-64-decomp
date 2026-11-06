@@ -831,6 +831,36 @@ u32 FUN_call13(u32 a0, u32 a1, u32 a2)
 CALL13_SYMS = [("FUN_8000de9c", 0x8000DE9C)]
 
 
+# The masked read-modify-write loop, three copies (M355). Two independent facts make this 20 of 20 and both are
+# statement shape, not allocation:
+#
+#   * the walk is an **index with a stride**, not a pointer. `p[i * 94 + 24]` / `r[i].v` on a 376-byte record
+#     keeps the field at displacement 96 and gives the induction variable the *base* as its initial value
+#     (`addu v1,a0,zero`). Every pointer spelling -- `p[24]` then `p += 94`, a byte pointer with `p += 376`,
+#     a bound address, the increment before the store -- folds the +96 into the initial value instead:
+#     `addiu v1,a0,0x0060` then `lw v0,0(v1)`. Six spellings, all 17 of 20, and no flag in the profile's
+#     neighbourhood moves it (`-fno-strength-reduce` produces the right displacement by dropping the copy).
+#   * the OR chain is ordered `(hi << 16) | (mid << 8) | lo` with `lo` on the **right**. The left-associative
+#     tree then accumulates into the register that already holds `lo` -- `$a2`, which is the third argument's
+#     register and dead after this point -- and the whole invariant folds to one `or a2,v0,a2` in the preheader.
+#     Reversed (`lo` first) it is 4 of 20.
+#
+# The mask is `lui t1,0xff00` + `and`: a constant that fits neither `andi` nor a sign-extended immediate.
+MASKLOOP_SOURCE = """typedef unsigned int u32;
+
+typedef struct { u32 hdr[24]; u32 v; u32 rest[69]; } Rec;
+
+void FUN_maskloop(u32 a0, u32 n, u32 lo, u32 mid, u32 hi)
+{
+    Rec *r = (Rec *)*(u32 **)(a0 + 0x234);
+    u32 i;
+
+    for (i = 0; i < n; i++)
+        r[i].v = (r[i].v & 0xff000000u) | (hi << 16 | mid << 8 | lo);
+}
+"""
+
+
 # --- singles: one draft each (M315 first batch, M316 screen sweep) ---------------------------------------
 S_80165C68_SOURCE = """typedef unsigned char u8;
 typedef unsigned short u16;
@@ -1778,6 +1808,11 @@ def family_probe():
                                  "-o", str(s)], capture_output=True).returncode
         ok = ok and not subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o",
                                         str(o), str(s)], capture_output=True).returncode
+        # The single path has always normalised the object before objcopy (M319); this one did not, so a body
+        # whose zero-sized `.rel.text` sits one byte past EOF -- a body with *no* relocations at all, which is
+        # what a fully self-contained loop compiles to -- died inside objcopy and reported "0 of N" with no
+        # reason. The defect was latent only because no existing family produced such an object (M355).
+        normalise_object(o)
         subprocess.run([str(GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
                         "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
         matched = 0

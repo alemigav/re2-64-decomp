@@ -32,7 +32,7 @@
   "tyrant header (repository)": 1,
   "match diff (cartridge)": 4,
   "splat rehearsal (cartridge)": 5,
-  "compile probes (cartridge)": 136,
+  "compile probes (cartridge)": 137,
   "image inventory (cartridge)": 1,
   "progress map (repository)": 3,
   "analysis status (repository)": 7,
@@ -76,5 +76,5 @@
   "acceptance self-test": 6,
   "verifier self-test": 8
  },
- "src_tree": "89b099354cc58fbcfc6d24fe00abc160a856e8dc5160954cbcdbbcf9d4efe887"
+ "src_tree": "1081d27a90ca6f4f84ede4da70022fe7a33846664ae86f7cc6943d6f1f8c86aa"
 }

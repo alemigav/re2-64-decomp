@@ -25472,16 +25472,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_008900e:0x80162f08": {
-   "name": "FUN_80162f08",
-   "image": "ovl_008900e",
-   "address": "0x80162f08",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_008900e:0x80162f58": {
    "name": "FUN_80162f58",
    "image": "ovl_008900e",
@@ -26002,6 +25992,16 @@
    "named": false,
    "validated": false
   },
+  "ovl_008900e:0x80162f08": {
+   "name": "FUN_80162f08",
+   "image": "ovl_008900e",
+   "address": "0x80162f08",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "ovl_008900e:0x801630bc": {
    "name": "FUN_801630bc",
    "image": "ovl_008900e",
@@ -26472,16 +26472,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_008bef8:0x80165dc4": {
-   "name": "FUN_80165dc4",
-   "image": "ovl_008bef8",
-   "address": "0x80165dc4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_008bef8:0x80165e14": {
    "name": "FUN_80165e14",
    "image": "ovl_008bef8",
@@ -26496,6 +26486,16 @@
    "name": "FUN_80164624",
    "image": "ovl_008bef8",
    "address": "0x80164624",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_008bef8:0x80165dc4": {
+   "name": "FUN_80165dc4",
+   "image": "ovl_008bef8",
+   "address": "0x80165dc4",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -26646,16 +26646,6 @@
    "name": "FUN_80162e10",
    "image": "ovl_008e046",
    "address": "0x80162e10",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_008e046:0x80162f08": {
-   "name": "FUN_80162f08",
-   "image": "ovl_008e046",
-   "address": "0x80162f08",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -27057,6 +27047,16 @@
    "image": "ovl_008e046",
    "address": "0x80166ee0",
    "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_008e046:0x80162f08": {
+   "name": "FUN_80162f08",
+   "image": "ovl_008e046",
+   "address": "0x80162f08",
+   "callees": 0,
    "callees_unknown": 0,
    "level": 2,
    "named": false,

@@ -1321,6 +1321,30 @@
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_800B4DAC_SOURCE"
+  },
+  {
+   "image": "ovl_008900e",
+   "address": "0x80162f08",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
+   "source": "MASKLOOP_SOURCE"
+  },
+  {
+   "image": "ovl_008bef8",
+   "address": "0x80165dc4",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
+   "source": "MASKLOOP_SOURCE"
+  },
+  {
+   "image": "ovl_008e046",
+   "address": "0x80162f08",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
+   "source": "MASKLOOP_SOURCE"
   }
  ]
 }

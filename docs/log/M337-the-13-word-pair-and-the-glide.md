@@ -84,3 +84,28 @@ body is **not registered** and is published at 12 of 20 with both causes named.
 - **The glide's measurement: 26 shapes for 59 functions** — the cohort family count is now zero
 - 4 drafts for the 20-word residue, best **12 of 20**, causes named (address fold, OR destination)
 - The gated headline caught the change on the first `counts.py --check`, as designed
+
+---
+
+## Retracted by M355 — both causes were right, and neither is allocation
+
+**The body is registered at 20 of 20.** §3's two causes survive verbatim — the store address *is* an address fold and the
+OR chain *does* land in `$a3` — but the verdict drawn around them does not: **neither is an allocation decision, and no
+flag was ever going to move them.** Both are *shape*.
+
+- The address fold is what gcc's loop optimiser does to a **pointer walk**: it eliminates the base's induction variable
+  and promotes the access address, so the +96 moves into the initial value (`addiu v1,a0,0x0060`, then `0(v1)`). Written
+  as an **index with a stride** — `p[i * 94 + 24]`, or `r[i].v` on a 376-byte record — the induction variable is
+  `base + i * 376` and the 96 has nowhere to go but the operand, which is the image's `lw v0,96(v1)`. 20 of 20, first
+  try. Six pointer spellings, all 17 of 20: the milestone's §1 table has them.
+- The destination is the **operand order** of the OR chain. `(hi << 16 | mid << 8 | lo)` with `lo` on the right
+  accumulates into `$a2` — the register holding the third argument, dead after this point — and folds the whole invariant
+  into it (`or a2,v0,a2`). Reversed, the body collapses to 4 of 20.
+
+So §3's closing sentence — *"Both are the allocation class M334 measured: no flag in 25 moves them"* — is retracted, and
+so is §4's **"best-measured residue … one allocation decision away"**. Seven more flags were measured in M355 and none
+moves the 17-of-20 pointer residue, which is exactly what makes the boundary worth restating: **a partial whose two
+causes are both explained as allocation has not been diagnosed**; "no flag moves it" is evidence about flags, not about
+shape. §4's census line (*24 complete groups / 57 functions*) is replaced by a derivation in M355 §5 — **34 candidates
+in 17 complete two-copy groups** — because neither it nor M314's *74 in 35 groups* can be recomputed from a committed
+artefact.
