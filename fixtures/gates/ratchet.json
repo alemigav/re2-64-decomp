@@ -33,7 +33,7 @@
   "match diff (cartridge)": 4,
   "splat rehearsal (cartridge)": 5,
   "compile probes (cartridge)": 329,
-  "other corpus (repository)": 16,
+  "other corpus (repository)": 21,
   "toolchain matrix (cartridge)": 4,
   "image inventory (cartridge)": 1,
   "progress map (repository)": 3,

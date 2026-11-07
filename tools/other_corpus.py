@@ -355,6 +355,208 @@ def align(corpus: Path, as_json: bool) -> int:
     return 0
 
 
+# The segment deltas measured in M358, by the address the *other* project declares: boot agrees, stage2 is 48
+# bytes high, and the overlays sit at one of the two enemy slots.
+SEGMENT_DELTAS = ((0x80000480, 0x800138A0, (0,)), (0x80018A80, 0x80036D90, (-48, 0)),
+                  (0x80000000, 0x80200000, (128, -51984, 0)))
+
+
+def _deltas_for(vram: int):
+    for lo, hi, deltas in SEGMENT_DELTAS:
+        if lo <= vram < hi:
+            return deltas
+    return (0,)
+
+
+def classify_body(owner_start, owner_size, owner_offset, words, ends_return, prev_return) -> str:
+    """The decision, as a pure function so it can be tested without a cartridge.
+
+    A content match is a *body*; whether it is a *function* is a question about our own model, and there are only
+    five answers: it starts a function of ours at the same size (`at_start`), at a different size (`extent`), it is
+    inside one of ours (`interior` — their corpus splits at every `jr ra`, ours does not), or nothing of ours
+    covers it, in which case the bytes decide whether it looks like a function (`unclaimed_function`: the previous
+    body returned and this one does too) or does not (`unclaimed_other`).
+    """
+    if owner_start is None:
+        return "unclaimed_function" if (ends_return and prev_return) else "unclaimed_other"
+    if owner_offset == 0:
+        return "at_start" if owner_size == 4 * words else "extent"
+    return "interior"
+
+
+def occupancy(probe) -> dict:
+    """image -> sorted [(start, end, kind, name)] — what this project already claims, at word resolution."""
+    index = json.loads((ROOT / "manifests" / "code_index.json").read_text())
+    out = {}
+    for image in index["images"]:
+        rows = []
+        for f in image.get("functions_list", []):
+            start = int(f["address"], 16)
+            rows.append((start, start + int(f.get("size") or 0), f.get("status") or "?", f.get("name") or ""))
+        out[image["name"]] = sorted(rows)
+    return out
+
+
+def _scan_bodies(corpus: Path):
+    """[(their function name, words, [(image, our address, delta)])] for every draft whose body turns up somewhere."""
+    probe = _probe()
+    data = json.loads((corpus / "decompdecomp.json").read_text())
+    matches, functions, layout = data["verification"]["matches"], data["functions"], {x["vram"]: x for x in data["layout"]}
+    known = {n: f["vram"] for n, f in functions.items()}
+    header = corpus / "include" / "common.h"
+    prelude = (strip_preprocessor(header.read_text()) if header.exists() else FALLBACK_TYPES) + MACROS
+    images = build_candidates(probe)
+    blobs = {n: b for n, _base, b in images}
+    bases = {n: base for n, base, _b in images}
+    cc1 = probe.TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+    gas = probe.AS27 if probe.AS27.exists() else probe.GAS / "mips-linux-gnu-as"
+    rows = []
+    for name in sorted(matches):
+        if not (corpus / "src" / (name + ".c")).exists():
+            continue
+        if len(function_names((corpus / "src" / (name + ".c")).read_text())) != 1:
+            continue
+        entry = functions.get(name)
+        place = layout.get(entry["vram"]) if entry else None
+        if not place:
+            continue
+        words = place["size"] // 4
+        text = prelude + "\n" + expand_macros(strip_preprocessor((corpus / "src" / (name + ".c")).read_text()))
+        syms = symbol_table(text, known)
+        found = None
+        for delta in _deltas_for(entry["vram"]):
+            scratch = Path(tempfile.mkdtemp(prefix="ext_", dir=str(probe.WORK)))
+            c, s, o, fx, elf = scratch / "c.c", scratch / "c.s", scratch / "c.o", scratch / "c.fix.o", scratch / "c.elf"
+            c.write_text(text)
+            if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                              capture_output=True).returncode:
+                shutil.rmtree(scratch, ignore_errors=True)
+                continue
+            if subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                              capture_output=True).returncode:
+                shutil.rmtree(scratch, ignore_errors=True)
+                continue
+            probe.normalise_object(o)
+            subprocess.run([str(probe.GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                            "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+            (scratch / "l.ld").write_text(
+                "SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  /DISCARD/ : { *(.reginfo) "
+                "*(.MIPS.abiflags) *(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) *(.rodata) "
+                "*(.gnu.attributes) }\n}\n" % (entry["vram"] + delta)
+                + "".join("%s = 0x%X;\n" % (k, v + delta) for k, v in syms.items()))
+            if subprocess.run([str(probe.GAS / "mips-linux-gnu-ld"), "-T", str(scratch / "l.ld"), "-o", str(elf),
+                               str(fx)], capture_output=True).returncode:
+                shutil.rmtree(scratch, ignore_errors=True)
+                continue
+            got = probe.text_of(elf)
+            want = got[:4 * words]
+            hits = []
+            for image_name, blob in blobs.items():
+                off = 0
+                while True:
+                    i = blob.find(want[:16], off)
+                    if i < 0:
+                        break
+                    if i % 4 == 0 and blob[i:i + 4 * words] == want:
+                        hits.append((image_name, bases[image_name] + i, delta))
+                    off = i + 1
+            shutil.rmtree(scratch, ignore_errors=True)
+            if hits:
+                found = hits
+                break
+        if found:
+            rows.append((name, words, found))
+    return rows, probe
+
+
+def _probe():
+    spec = __import__("importlib.util").util.spec_from_file_location("cp", str(ROOT / "tools" / "compile_probe.py"))
+    module = __import__("importlib.util").util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def extent(corpus: Path, as_json: bool) -> int:
+    """Decide, body by body, whether a content match is a *function* — the question 650 leftovers left open.
+
+    M358/M359 banked the 177 found bodies that landed exactly on one of our function starts at our size. The rest
+    are not thereby wrong: their address in our model may be **interior** to a function we already know (a block or
+    a case arm, not a function), or **unclaimed** (a gap), or at a start whose **extent disagrees**. Telling those
+    apart is a measurement against our own occupancy and the bytes, not against anybody's symbol table:
+
+      * `interior`  — the address falls inside a known body at offset k > 0: their corpus splits finer than our index.
+      * `extent`    — it *is* a function start here, but our size and the matched length differ.
+      * `unclaimed` — nothing we claim covers it; split further by whether the bytes say it is a function at all:
+        a word before it is a `jr ra` (the previous body returned) and its second-to-last word is a `jr ra`.
+    """
+    from bisect import bisect_right
+    rows, probe = _scan_bodies(corpus)
+    occ = occupancy(probe)
+    inventory = probe.image_inventory()
+    blobs, bases = {}, {}
+    for name, entry in inventory.items():
+        window = probe.image_window(name, inventory)
+        if window:
+            blobs[name], bases[name] = window[0], entry["base"]
+
+    def owner(image, addr):
+        start_of = [r[0] for r in occ.get(image, [])]
+        i = bisect_right(start_of, addr) - 1
+        if i < 0:
+            return None
+        row = occ[image][i]
+        return row if row[0] <= addr < row[1] else None
+
+    def word(image, addr):
+        base = bases[image]
+        off = addr - base
+        blob = blobs[image]
+        if off < 0 or off + 4 > len(blob):
+            return None
+        return int.from_bytes(blob[off:off + 4], "big")
+
+    buckets = {"already_ours": [], "at_start": [], "interior": [], "extent": [],
+               "unclaimed_function": [], "unclaimed_other": []}
+    seen = set()
+    for name, words, found in rows:
+        for image, addr, delta in found:
+            key = (image, addr, words)
+            if key in seen:
+                continue
+            seen.add(key)
+            who = owner(image, addr)
+            ends_return = words >= 2 and word(image, addr + 4 * (words - 2)) == 0x03E00008
+            prev_return = word(image, addr - 8) == 0x03E00008
+            item = {"function": name, "image": image, "address": addr, "words": words, "delta": delta,
+                    "owner": (who[3], who[2], (addr - who[0]) // 4) if who else None,
+                    "ends_with_jr_ra": ends_return, "previous_word_is_jr_ra": prev_return}
+            verdict = classify_body(who[0] if who else None, (who[1] - who[0]) if who else 0,
+                                    ((addr - who[0]) // 4) if who else -1, words, ends_return, prev_return)
+            buckets[verdict].append(item)
+    if as_json:
+        print(json.dumps({"bodies": len(seen), "buckets": {k: len(v) for k, v in buckets.items()},
+                          "rows": buckets}, indent=1))
+        return 0
+    print("%d distinct found bodies; what our own index makes of each address:\n" % len(seen))
+    for k in ("at_start", "already_ours", "extent", "interior", "unclaimed_function", "unclaimed_other"):
+        print("  %-20s %5d" % (k, len(buckets[k])))
+    for k in ("extent", "interior", "unclaimed_function"):
+        sample = buckets[k][:8]
+        if not sample:
+            continue
+        print("\n%s:" % k)
+        for it in sample:
+            extra = ""
+            if k == "extent" and it["owner"]:
+                ours = next((r[1] - r[0] for r in occ[it["image"]] if r[0] == it["address"]), 0)
+                extra = " our extent=%dB matched=%dB" % (ours, it["words"] * 4)
+            if k == "interior" and it["owner"]:
+                extra = " in %s +%d words" % (it["owner"][0], it["owner"][2])
+            print("  %-10s %08x %3dw %s%s" % (it["image"], it["address"], it["words"],
+                                              "jr_ra" if it["ends_with_jr_ra"] else "--", extra))
+    return 0
+
+
 def self_test() -> int:
     cases = []
     cases.append(("a comment is removed and does not survive to the compiler",
@@ -380,6 +582,16 @@ def self_test() -> int:
                   == "(*(s32 (**)(s32, s32))((s8 *)(a) + (0x34)))"))
     cases.append(("a macro nested in its own argument expands too",
                   "M2C_FIELD" not in expand_macros("M2C_FIELD(M2C_FIELD(a, s32 *, 4), s32 *, 0)")))
+    cases.append(("a body that starts a function of ours at our own size is a function",
+                  classify_body(0x8000, 0xC0, 0, 48, True, True) == "at_start"))
+    cases.append(("a body that starts a function of ours at a different size is an extent disagreement",
+                  classify_body(0x8000, 0x04, 0, 48, True, True) == "extent"))
+    cases.append(("a body inside one of our functions is an interior block, not a function",
+                  classify_body(0x8000, 0xC0, 5, 2, True, True) == "interior"))
+    cases.append(("an uncovered body with a return on both sides is a candidate function",
+                  classify_body(None, 0, -1, 6, True, True) == "unclaimed_function"))
+    cases.append(("an uncovered body without a return before it is not",
+                  classify_body(None, 0, -1, 6, True, False) == "unclaimed_other"))
     cases.append(("one definition is one function", len(function_names("int f(void) {\n}\n")) == 1))
     cases.append(("two definitions are two functions",
                   len(function_names("int f(void) {\n}\nint g(int a) {\n}\n")) == 2))
@@ -397,19 +609,23 @@ def main(argv) -> int:
     ap.add_argument("--report", action="store_true")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--self-test", action="store_true")
+    ap.add_argument("--extent", action="store_true",
+                    help="classify every found body against our own occupancy: function, interior block, or gap")
     ap.add_argument("--align", action="store_true",
                     help="score by content: find each compiled body anywhere in the cartridge and report the offset")
     ap.add_argument("--corpus", default=str(DEFAULT_CORPUS))
     a = ap.parse_args(argv)
     if a.self_test:
         return self_test()
-    if not (a.report or a.align):
+    if not (a.report or a.align or a.extent):
         ap.error("nothing to do: --report, --align or --self-test")
     corpus = Path(a.corpus)
     if not (corpus / "decompdecomp.json").exists():
         print("no external corpus at %s — it is never committed (see the module docstring); nothing to score"
               % corpus, file=sys.stderr)
         return 2
+    if a.extent:
+        return extent(corpus, a.json)
     return align(corpus, a.json) if a.align else report(corpus, a.json)
 
 
