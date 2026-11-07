@@ -3,7 +3,7 @@
  * address 0x8009c1e0  body 0x8009c1e0..0x8009c28b  size 172 B
  * body sha256 6e89a6e1075a95871c458cea0b8b7059405a381a47b4319157f8ee6955fa562b
  * provider record sha256 a661d88b1b08976284d03c53cae4a239d49e0b6b1e9d46fa275c5a3148a4d6cc
- * callees 3 direct (2 in corpus)
+ * callees 3 direct (3 in corpus)
  * provider Ghidra 12.2
  */
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */

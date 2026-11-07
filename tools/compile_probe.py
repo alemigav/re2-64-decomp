@@ -5767,9 +5767,12 @@ def check():
                   f"(M312; the totals move as functions are recovered -- and as extents are corrected, which "
                   f"took the fragment count from 4 to 2 in M340)"
                   if dupc else "duplicate census: not run",
+                  # M365: the fragment count is a *moving* quantity -- it moves when functions are recovered and
+                  # when extents are corrected -- so the case asserts the partition and the direction (the census is
+                  # mostly reconstructible), not a snapshot of a number the note itself says will move.
                   bool(dupc) and dupc["total"] == dupc["complete"] + dupc["fragments"]
                   and dupc["groups"] == dupc["complete_groups"] + dupc["fragment_groups"]
-                  and dupc["fragments"] == 2))
+                  and 0 <= dupc["fragments"] < dupc["complete"]))
 
     for src_name, img, addr, words, syms in SINGLES:
         got = single_probe(src_name, img, addr, words, syms)

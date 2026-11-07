@@ -29,6 +29,18 @@
   },
   {
    "image": "boot",
+   "address": "0x8000cd40",
+   "words": 40,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000d3cc",
+   "words": 23,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "boot",
    "address": "0x8000de78",
    "words": 9,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8000de78..0x8000de9b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
@@ -40,22 +52,70 @@
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8000f020..0x8000f04f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
+   "image": "boot",
+   "address": "0x800113d8",
+   "words": 32,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "boot",
+   "address": "0x80011458",
+   "words": 44,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184058",
+   "words": 245,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8018442c",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184468",
+   "words": 208,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801847a8",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801847d8",
+   "words": 87,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184934",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184970",
+   "words": 67,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184a7c",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
    "image": "ovl_007e132",
    "address": "0x8017b710",
    "words": 13,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8017b710..0x8017b743, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "ovl_007e132",
-   "address": "0x8017d968",
-   "words": 14,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0087352",
-   "address": "0x8016581c",
-   "words": 13,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
    "image": "ovl_0093192",
@@ -67,18 +127,6 @@
    "image": "ovl_0097e42",
    "address": "0x80163760",
    "words": 21,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x8016371c",
-   "words": 35,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x801665c0",
-   "words": 17,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
@@ -106,16 +154,172 @@
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
+   "image": "ovl_00a9d94",
+   "address": "0x8016b214",
+   "words": 101,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016b53c",
+   "words": 67,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80165e38",
+   "words": 41,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80166ecc",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
    "image": "ovl_00b08a2",
    "address": "0x80166f18",
    "words": 8,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
+   "image": "ovl_00b321e",
+   "address": "0x80164bf8",
+   "words": 51,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164cc4",
+   "words": 47,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
    "image": "ovl_00b5346",
    "address": "0x80162ad4",
    "words": 14,
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80162ad4..0x80162b1b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x80162ee4",
+   "words": 20,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f3a8",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f410",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f434",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f470",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f480",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8001f4c0",
+   "words": 30,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80020738",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800207a0",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800207c4",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80020800",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80020810",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80020850",
+   "words": 30,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800218c8",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80021924",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80021958",
+   "words": 18,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800219a0",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800219b0",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800219f0",
+   "words": 30,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80021c78",
+   "words": 291,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -128,6 +332,18 @@
    "address": "0x8002de0c",
    "words": 66,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80031454",
+   "words": 357,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800319e8",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -146,6 +362,12 @@
    "address": "0x800324a8",
    "words": 209,
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8003247c..0x800327eb, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800341f4",
+   "words": 35,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -263,9 +485,63 @@
   },
   {
    "image": "stage2",
-   "address": "0x80049f98",
-   "words": 2,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+   "address": "0x80047fe4",
+   "words": 31,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80048108",
+   "words": 43,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800481bc",
+   "words": 49,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80048280",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004878c",
+   "words": 130,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80048994",
+   "words": 43,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049a84",
+   "words": 37,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049b18",
+   "words": 31,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049dd0",
+   "words": 111,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049f8c",
+   "words": 3,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -281,6 +557,12 @@
   },
   {
    "image": "stage2",
+   "address": "0x80050fa8",
+   "words": 71,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x800510c4",
    "words": 3,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -290,6 +572,18 @@
    "address": "0x80051104",
    "words": 11,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80051104..0x8005113f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006b28c",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006b2cc",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -335,6 +629,24 @@
   },
   {
    "image": "stage2",
+   "address": "0x8006de20",
+   "words": 39,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006debc",
+   "words": 47,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006df78",
+   "words": 27,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x8006e09c",
    "words": 14,
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006e09c..0x8006e137, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
@@ -344,6 +656,12 @@
    "address": "0x8006e0d4",
    "words": 25,
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006e09c..0x8006e137, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e270",
+   "words": 50,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -371,9 +689,15 @@
   },
   {
    "image": "stage2",
-   "address": "0x8006e574",
-   "words": 23,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+   "address": "0x8006e4d4",
+   "words": 24,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e644",
+   "words": 6,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -398,6 +722,12 @@
    "address": "0x8006e760",
    "words": 15,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006ec58",
+   "words": 26,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -428,6 +758,18 @@
    "address": "0x8006efcc",
    "words": 29,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006f32c",
+   "words": 34,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006f740",
+   "words": 92,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -479,15 +821,45 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007199c",
+   "words": 90,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x80071b04",
    "words": 14,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
    "image": "stage2",
+   "address": "0x80071b94",
+   "words": 67,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x80071ca0",
    "words": 18,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071ce8",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071d28",
+   "words": 29,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071d9c",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -500,6 +872,18 @@
    "address": "0x800725ac",
    "words": 12,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072c3c",
+   "words": 50,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072ddc",
+   "words": 48,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -518,6 +902,12 @@
    "address": "0x80072f64",
    "words": 12,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072f94",
+   "words": 33,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -551,6 +941,12 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007337c",
+   "words": 37,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x80073410",
    "words": 14,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -578,6 +974,12 @@
    "address": "0x80073efc",
    "words": 9,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073fb4",
+   "words": 28,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -659,6 +1061,12 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007c5b4",
+   "words": 88,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x8007cbd8",
    "words": 19,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -677,15 +1085,39 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007dcd8",
+   "words": 26,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x800823b0",
    "words": 10,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800823b0..0x800823df, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
+   "address": "0x80088528",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80088724",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x800896c0",
    "words": 28,
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x800896c0..0x8008972f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008bb10",
+   "words": 164,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",
@@ -701,6 +1133,54 @@
   },
   {
    "image": "stage2",
+   "address": "0x800a20f4",
+   "words": 3,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2100",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2194",
+   "words": 3,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a21a0",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2308",
+   "words": 3,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2314",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2510",
+   "words": 3,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a251c",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
    "address": "0x800a5b7c",
    "words": 10,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800a5b7c..0x800a5ba3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
@@ -710,6 +1190,12 @@
    "address": "0x800b1c40",
    "words": 12,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b21f0",
+   "words": 42,
+   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
    "image": "stage2",

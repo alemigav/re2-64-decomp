@@ -3,7 +3,7 @@
  * address 0x8008b0a4  body 0x8008b0a4..0x8008b0eb  size 72 B
  * body sha256 57af4efb85683654b3faa53fbeab121971034f5b59300a20450396f4ccd77c99
  * provider record sha256 b74abd0b14dff20352260bad67716d6a4fdffdd9f6de98d6181bc194d19fdca4
- * callees 2 direct (1 in corpus)
+ * callees 2 direct (2 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_8008b0a4(int param_1)
