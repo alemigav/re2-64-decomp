@@ -6,7 +6,7 @@
    "role": "boot",
    "base": "0x80000480",
    "size": 78880,
-   "functions": 215,
+   "functions": 217,
    "named": 19,
    "functions_named": 19,
    "limitations": [
@@ -26,11 +26,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 14583,
-   "covered_bytes": 58332,
-   "coverage": 0.7395,
-   "unclaimed_runs": 100,
-   "unclaimed_bytes": 20548,
+   "covered_words": 14679,
+   "covered_bytes": 58716,
+   "coverage": 0.7444,
+   "unclaimed_runs": 101,
+   "unclaimed_bytes": 20164,
    "functions_list": [
     {
      "address": "0x80000480",
@@ -2803,6 +2803,28 @@
      "callees": [
       "0x80004cfc"
      ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80004fb4",
+     "name": "FUN_80004fb4",
+     "file": "src/boot/FUN_80004fb4.c",
+     "size": 192,
+     "sha256": "5c7823aebdba8fa4241114921503170b74530a48d1381db779e8a4e6d1fae76d",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80005074",
+     "name": "FUN_80005074",
+     "file": "src/boot/FUN_80005074.c",
+     "size": 192,
+     "sha256": "af9e200aa33066153cef97532cee7ce7b821cd61466d756ab174947acd61011e",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
      "callees_unknown": 0
     },
     {

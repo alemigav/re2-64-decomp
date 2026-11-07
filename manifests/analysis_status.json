@@ -9,9 +9,9 @@
   "validated": "pinned by a gate or an executed experiment (curated, evidence per entry)"
  },
  "totals": {
-  "F0": 3603,
-  "F1": 3428,
-  "F2": 3360,
+  "F0": 3605,
+  "F1": 3430,
+  "F2": 3362,
   "named": 33,
   "validated": 12,
   "validated_unnamed": 12,
@@ -2077,6 +2077,26 @@
    "image": "boot",
    "address": "0x80004ec4",
    "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004fb4": {
+   "name": "FUN_80004fb4",
+   "image": "boot",
+   "address": "0x80004fb4",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80005074": {
+   "name": "FUN_80005074",
+   "image": "boot",
+   "address": "0x80005074",
+   "callees": 0,
    "callees_unknown": 0,
    "level": 2,
    "named": false,

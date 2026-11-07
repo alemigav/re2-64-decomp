@@ -27,12 +27,12 @@
   "full-tier guard": 3,
   "cartridge fetch": 4,
   "mips harness": 15,
-  "byte map (repository)": 22,
+  "byte map (repository)": 23,
   "hook certificate (repository)": 9,
   "tyrant header (repository)": 1,
   "match diff (cartridge)": 4,
   "splat rehearsal (cartridge)": 5,
-  "compile probes (cartridge)": 329,
+  "compile probes (cartridge)": 331,
   "other corpus (repository)": 21,
   "toolchain matrix (cartridge)": 4,
   "image inventory (cartridge)": 1,
@@ -78,5 +78,5 @@
   "acceptance self-test": 6,
   "verifier self-test": 8
  },
- "src_tree": "7e3a5750939ef578c65a0d61b089450f577764ce5d22d70a8623699b796c0c20"
+ "src_tree": "aa86291191bad643ac84d1b8c07eb50a795b0f9cc46409478534830f6b0f845c"
 }

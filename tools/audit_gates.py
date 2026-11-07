@@ -817,9 +817,13 @@ AUDITS = [
          new='    return True'),
     # --- M206: the manifest that published a word count as `covered_bytes`. The mutation restores the
     # word count, which the tiling case catches because covered + unclaimed then falls short of the image.
+    # M361: this anchor used to pin `boot`'s covered_bytes, which moved every time a function was recovered and
+    # finally broke the lint when two were admitted. It now targets `ovl_009d282`, a 464-byte image that is fully
+    # covered, so the number cannot drift while the image does not -- the same rule the project applies to every
+    # gate that reads a growing corpus.
     dict(name="counts: code_index's covered_bytes is a word count again",
          tool="counts.py", args=["--check"], file="manifests/code_index.json",
-         old='"covered_bytes": 58332', new='"covered_bytes": 14583'),
+         old='"covered_bytes": 464', new='"covered_bytes": 116'),
     # --- the M205 coverage arithmetic. The published figure was one 4-byte word per function body too
     # high; these four mutations are the ways to reintroduce it or to undermine the derivation that now
     # catches it: an exclusive end one word too far, a union taken across images instead of within one
@@ -926,7 +930,10 @@ COPY_FILES = ["docs/handover.md", "docs/reverse_engineering_log.md", "docs/MILES
 # M340/M341: these read `fixtures/decomp/measured_extents.json`. Missing it made 38 audits report BROKEN (the
 # unmutated tool failed in the sandbox), which is the seventh environment gap in this arc and the same lesson as
 # README.md above: an input a tool reads belongs here, not in that tool's task list.
-COPY_FIXTURES = ["fixtures/decomp/measured_extents.json"]
+# M361: `fixtures/decomp/imported/` is the tenth environment gap in this arc, and the same lesson a third time:
+# `compile_probe.py` loads those files at import, so a sandbox without them reports a broken probe and eight counts
+# audits can never be judged. An input a tool reads belongs here, not in that tool's task list.
+COPY_FIXTURES = ["fixtures/decomp/measured_extents.json", "fixtures/decomp/imported"]
 # `build/elfs` holds the built images and `src/` the decompiled corpus; both are read-only for every
 # audit, and a copy is 18 MB per audit for nothing. Not linking them was invisible until an image-
 # dependent tool was audited: the mutated copy failed on a missing `images.json`, not on its mutation.
@@ -936,7 +943,10 @@ COPY_FIXTURES = ["fixtures/decomp/measured_extents.json"]
 # caught mutation. `.venv` is only ever *run*, never written, so a link is enough.
 # M351: `build/toolchain` is the ninth environment gap in this arc -- `compile_probe.py` needs `cc1`, so in a
 # sandbox without it the tool fails 106 of its cases and two mutations could never be judged ("BROKEN").
-LINK = ["rom", "assets", "build/elfs", "build/decomp", "build/toolchain", "src", ".venv"]
+# M361: `include/` is the eleventh environment gap and the fourth of its kind -- `t64_selftest.py` compiles
+# `tools/t64info.c`, which includes `../include/re2_formats.h`, so without it that suite reports "no verdict" and
+# every counts audit is judged against a total the sandbox cannot reproduce. Read-only, so a link is enough.
+LINK = ["rom", "assets", "build/elfs", "build/decomp", "build/toolchain", "src", ".venv", "include"]
 
 
 def build_env(dst: Path) -> None:
@@ -946,8 +956,12 @@ def build_env(dst: Path) -> None:
             shutil.copytree(src, dst / item)
     for item in COPY_FILES + COPY_FIXTURES:
         src = ROOT / item
-        if src.exists():
-            (dst / item).parent.mkdir(parents=True, exist_ok=True)
+        if not src.exists():
+            continue
+        (dst / item).parent.mkdir(parents=True, exist_ok=True)
+        if src.is_dir():                      # M361: a *directory* of inputs, not just a file
+            shutil.copytree(src, dst / item, dirs_exist_ok=True)
+        else:
             shutil.copy2(src, dst / item)
     for item in LINK:
         src = ROOT / item

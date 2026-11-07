@@ -337,6 +337,12 @@ def build(root: Path = ROOT):
         for a in recovered.load_additions().get(name, []):
             for w in range(a["start"], a["end"] + 1, 4):
                 claimed[w] = ("function_body", "fixtures/decomp/measured_extents.json")
+        # M361: a *reconstructed* function is a body too, including the ones the census did not have. Without this
+        # the index would claim a function the byte map calls `enclosed_data` -- the same drift M340 fixed for the
+        # measured rung, one fixture later. Placed before the provider ranges so a range still wins where it exists.
+        for e in recovered.load().get(name, []):
+            for w in range(e["start"], e["end"] + 1, 4):
+                claimed[w] = ("function_body", "fixtures/decomp/recovered.json")
         for s, e in ranges["images"].get(name, []):
             for w in range(int(s), int(e) + 1, 4):
                 claimed[w] = ("function_body", "fixtures/decomp/ranges.json")
@@ -527,9 +533,28 @@ def check(rep):
     # below the coverage union `counts.py` computes, and always has: the union counts every byte of every range,
     # the map counts the whole words it can classify. Both moved by 812 B together, which is the property that
     # matters -- the two projections agree on the *change* even where their absolutes differ.
-    cases.append((f"the body class totals {tot['function_body']:,} B, 24 680 B of it measured extents "
-                  f"(812 B corrected + 23 868 B adopted)",
-                  tot["function_body"] == 1235280))
+    # M361: the total is derived, not pinned. M340 pinned it at 1 235 280 with the note that the class and the
+    # coverage union moved together; the *mechanism* is now what is asserted, twice: every body range names a
+    # fixture, and every word of every reconstructed function is in the class -- so admitting a function cannot
+    # move the total without moving the map, and moving the map cannot leave the index behind.
+    body_sources = {"fixtures/decomp/ranges.json", "fixtures/decomp/measured_extents.json",
+                    "fixtures/decomp/recovered.json"}
+    stray = sum(1 for rs in rep["images"].values() for r in rs if r[2] == "function_body" and r[3] not in body_sources)
+    bad_rec, rec_words = 0, 0
+    for image_name, ents in recovered.load().items():
+        body = set()
+        for a, b, c, _s in (rep["images"].get(image_name) or []):
+            if c == "function_body":
+                body.update(range(a, b + 1, 4))
+        for e in ents:
+            ws = range(e["start"], e["end"] + 1, 4)
+            rec_words += len(ws)
+            bad_rec += sum(1 for w in ws if w not in body)
+    cases.append((f"the body class totals {tot['function_body']:,} B and every one of its ranges names a fixture "
+                  f"({stray} name something else)", stray == 0))
+    cases.append((f"every one of the {rec_words:,} words in recovered.json is a `function_body` word in the map "
+                  f"({bad_rec} are not) — the index and the map cannot disagree about a reconstruction, which is "
+                  f"what lets a function be admitted at an address no provider range covers", bad_rec == 0))
     srcs = [r[3] for rs in rep["images"].values() for r in rs]
     cases.append((f"every word is in one of the {len(CLASSES)} declared classes and every range names its "
                   f"source ({sum(1 for s in srcs if not s)} unnamed)", all(srcs)))

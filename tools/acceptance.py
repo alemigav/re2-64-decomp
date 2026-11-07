@@ -91,7 +91,7 @@ SUITES = [
     # The file table is the cartridge's whole file system, and it is mostly *not* zlib (M178). One
     # suite because the finding is one object: the census, the two files the 17.6 MB turned out to be,
     # the MORT record format, and the refutations that keep the unsolved field unsolved.
-    ("byte map (repository)", [sys.executable, "tools/classify_image.py", "--check"], 22, False),
+    ("byte map (repository)", [sys.executable, "tools/classify_image.py", "--check"], 23, False),
     ("hook certificate (repository)", [sys.executable, "tools/hook_cert.py", "--self-test"], 9, False),
     # M241: the generated Script-VM header must be exactly what the registry derives. It is the file a
     # matching reconstruction includes, so drift in it is drift in every future function signature.
@@ -104,7 +104,7 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 329, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 331, True),
     ("other corpus (repository)", [sys.executable, "tools/other_corpus.py", "--self-test"], 21, True),
     ("toolchain matrix (cartridge)", [sys.executable, "tools/toolchain_matrix.py", "--check"], 4, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),

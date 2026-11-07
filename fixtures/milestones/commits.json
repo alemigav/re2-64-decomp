@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "af3a4c4",
+   "subject": "M360: the leftover 650, measured \u2014 mostly stubs, and the tail is a hole in our map",
+   "milestones": [
+    360
+   ]
+  },
+  {
    "sha": "b1acea1",
    "subject": "M359: the imported-source channel, and the 139 overlays it unlocked",
    "milestones": [
