@@ -67,6 +67,13 @@ CHECKS = [
     # the repository gets a case.
     ("README.md", r"\*\*(\d+) functions reconstructed in C and recompiled \u2014 (\d+) of them matching",
      ("recovered", "recovered_exact"), 1),
+    # M366: three front-page claims that had rotted silently -- the shape census, and the two split counts in the
+    # "verify it without the cartridge" table. A third party found them by reading; a regex is cheaper than a reader.
+    ("README.md", r"(\d+) of them are copies of (\d+) proven body shapes",
+     ("cohort_copies", "cohort_shapes"), 1),
+    ("README.md", r"\*\*(\d+) checks run with no ROM, no assets and no emulator\*\* \u2014 the other (\d+) need",
+     ("runnable_cases", "gated_cases"), 1),
+    ("README.md", r"PASS-FAST: (\d+) cases run, (\d+) SKIP", ("runnable_cases", "gated_cases"), 1),
     ("README.md", r"tools/\s+(\d+) analysis and gate scripts", ("tool_count",), 1),
     ("README.md", r"docs/log/\s+(\d+) notes", ("note_count",), 1),
     # the codec claim on the front page, tied to the committed fixture rather than to prose
@@ -152,8 +159,17 @@ def _recovered(root: Path) -> dict:
     """
     per_image = recovered.load(root / "fixtures" / "decomp" / "recovered.json")
     entries = [e for group in per_image.values() for e in group]
+    # M366: the front page's *other* two numbers -- how many of the corpus are copies of a proven shape, and how
+    # many shapes that is -- were quoted and asserted nowhere, exactly like the headline pair before M335. They are
+    # grouped from the same fixture: a source shared by two or more functions is a cohort, a unique one is a single.
+    from collections import Counter as _Counter
+    groups = _Counter((e.get("source") or e.get("source_file")) for e in entries)
+    copies = sum(v for v in groups.values() if v > 1)
     return {"recovered": len(entries),
-            "recovered_exact": sum(1 for e in entries if e["verdict"] == "byte-exact")}
+            "recovered_exact": sum(1 for e in entries if e["verdict"] == "byte-exact"),
+            "cohort_copies": copies,
+            "cohort_shapes": sum(1 for v in groups.values() if v > 1),
+            "imported": sum(1 for e in entries if e.get("source_file"))}
 
 
 def _status(root: Path) -> dict:

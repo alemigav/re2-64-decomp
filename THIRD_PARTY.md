@@ -5,6 +5,38 @@ This repository contains one artefact transcribed from another project, one body
 
 `LICENSE` (CC0-1.0) applies to the last group only.
 
+## 0a. **Committed verbatim, with no licence to check: the imported reconstructions (M361–M366)**
+
+**This is a problem the repository has not resolved, and it is stated here rather than buried.**
+
+`fixtures/decomp/imported/` holds **170 C files** (plus the `recovered.json` entries that point at them) taken
+verbatim from another *Resident Evil 2* (N64) decompilation:
+
+| | |
+|---|---|
+| project | `delibrete/Resident-Evil-II-Decompilation-N64` (produced by the `decompdecomp` harness) |
+| licence | **none published** — the repository has no `LICENSE`, `COPYING` or `NOTICE` file, so by default **all rights are reserved** |
+| what was taken | the C text of 192 reconstructions, committed verbatim under `fixtures/decomp/imported/` |
+| what was **not** taken | no tool of theirs, no corpus (that stays gitignored under `build/other-corpus/`) |
+
+The contradiction is worth naming: **M356's note says that corpus is "never committed here"**, and the milestone
+immediately after it (M359) built a channel that commits exactly that text. Both statements are in the tree. The
+note is wrong, not the channel's intent, and the honest reading is that the *source text* should have stayed out
+while the *claims* stayed in.
+
+**What is not in doubt**: every one of those functions is byte-exact against *this* cartridge under *this*
+profile, verified by a case that compiles it at its own address (`compile_probe.py --check`). The verification is
+the project's; the C is somebody else's, and verification does not confer a licence.
+
+**Options, none taken unilaterally** — the owner has to choose:
+
+1. **Remove** `fixtures/decomp/imported/` and the 192 entries that depend on it. The claims (address, extent,
+   word count, probe) can stay as `measured_extents`, published as listings. Cost: F1 falls by 192.
+2. **Ask the other project** for permission or a licence, and record the answer here.
+3. **Keep and attribute**, as section 2 does for the Capcom-derived `src/` — but note that section 2's material is
+   the game's own code, acknowledged as Capcom's, while this is a third party's *work product* with no licence at
+   all, which is a different position and a weaker one.
+
 ## 0. Read as a specification, not copied: the sound codecs (GPL-3.0)
 
 Two sound codecs in `fixtures/sound/codec.json`, `tools/sound_decode.py` and `tools/file_table.py` were

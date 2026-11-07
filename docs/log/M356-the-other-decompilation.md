@@ -92,3 +92,20 @@ closed as exact, and see whether any of the eight profiles reproduces it — and
 - the transfer rate, stated plainly: **51 of 693 (7.4 %) word-exact, 15 new, 219 words** — and the 688 functions at
   addresses outside our images are why the overlays remain untouched by it
 - `unclassified` **440 B (0.0 %)**, **15 classes**, coverage **63.2 %**; `verify.py --full` **PASS**, audit 160/160
+
+---
+
+## Retracted by M361/M366 — "never committed here"
+
+§1 says the corpus is **"never committed here: it is somebody else's reconstruction of a commercial game, it lives
+under gitignored `build/other-corpus/`"**. That is true of the *corpus* and false of its **output**: M359 built
+`fixtures/decomp/imported/` and M361–M366 filled it with **170 C files committed verbatim**, and `THIRD_PARTY.md`
+did not mention them until M366.
+
+The sentence stands only for the download. What it should have said is that *the source text is what must not be
+committed without a licence*, and that project publishes **no licence at all** — no `LICENSE`, `COPYING` or
+`NOTICE` — so the committed text is all-rights-reserved third-party work. `THIRD_PARTY.md` §0a states the
+position and three options; the choice is the owner's, because it is a legal one.
+
+The **verification** is unaffected: every imported function is byte-exact against this cartridge under this
+profile, re-derived by its own case. Verification is not a licence, and this note had the two confused.
