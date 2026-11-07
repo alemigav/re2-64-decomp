@@ -1951,6 +1951,109 @@
    "syms": {
     "D_800c76b0": 2148300464
    }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800844e4",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 10 of 10, ten words, a byte swap written as four masked terms -- the order of the four `or`s is the whole function",
+   "source_file": "fixtures/decomp/authored/stage2/800844e4.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x800283f0",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 11 of 11, eleven words, a method-table call at slot 0 with a 0x84 size argument, then one field cleared in the result",
+   "source_file": "fixtures/decomp/authored/stage2/800283f0.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002841c",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 11 of 11, eleven words, the same call with 0x118 and a different cleared field -- the twin of 0x800283f0",
+   "source_file": "fixtures/decomp/authored/stage2/8002841c.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016baa0",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 10 of 10, ten words, a 28-byte stride into a base whose `addiu` immediate is negative (0x8016C3AC, not 0x8017C3AC)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016baa0.c",
+   "syms": {
+    "D_8016c3ac": 2148975532
+   }
+  },
+  {
+   "image": "ovl_0093192",
+   "address": "0x80162c6c",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 9 of 9, nine words, four byte stores then a flag set in the same record -- the load hoists above the stores because the offsets prove no alias",
+   "source_file": "fixtures/decomp/authored/ovl_0093192/80162c6c.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x80164dec",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 9 of 9, nine words, a no-argument indirect call through a global function pointer",
+   "source_file": "fixtures/decomp/authored/ovl_009aed0/80164dec.c",
+   "syms": {
+    "D_80166638": 2148951608
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801664c4",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 10 of 10, ten words, a flags word read/masked/stored around a halfword clear and a `jal`",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/801664c4.c",
+   "syms": {
+    "FUN_801664ec": 2148951276
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80162158",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 11 of 11, eleven words, one guarded call on bit 0 of a halfword at +426",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80162158.c",
+   "syms": {
+    "FUN_8016ba54": 2148973140
+   }
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80161fe8",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 12 of 12, twelve words, the same guard through two loads (a pointer at +564, then its first word)",
+   "source_file": "fixtures/decomp/authored/ovl_00b08a2/80161fe8.c",
+   "syms": {
+    "FUN_8016664c": 2148951628
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x8000d66c",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 11 of 11, eleven words, a wait loop on a callee's result then a one-argument call with 0x125 -- the boot image's first reconstruction in this band",
+   "source_file": "fixtures/decomp/authored/boot/8000d66c.c",
+   "syms": {
+    "FUN_8000d9c0": 2147539392,
+    "FUN_8000db10": 2147539728
+   }
   }
  ]
 }
