@@ -1880,6 +1880,77 @@
    "syms": {
     "FUN_800283b0": 2147648432
    }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80082474",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 9 of 9, nine words, a do-while byte copy bounded by a precomputed end pointer",
+   "source_file": "fixtures/decomp/authored/stage2/80082474.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x800667b0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 9 of 9, nine words, a four-valued comparison built from two sign bits -- `srl 31` / `srl 30` then two `sllv`s, so the source shifts by the sign, not by a `slt`",
+   "source_file": "fixtures/decomp/authored/stage2/800667b0.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x800837ac",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 9 of 9, nine words, a bit test: `0x80000000u >> (i & 31)` is why the mask is a `lui` and not an `ori`",
+   "source_file": "fixtures/decomp/authored/stage2/800837ac.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5b7c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 10 of 10, ten words, a 104-byte stride into a pointer read from a global -- and an EXTENT CORRECTION: the rung said 11, but word 11 is the next function's `addiu sp,sp,-0x18` prologue, so the body ends in its own delay slot",
+   "source_file": "fixtures/decomp/authored/stage2/800a5b7c.c",
+   "syms": {
+    "D_80143f0c": 2148810508
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003b640",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 11 of 11, eleven words, two halfword accumulations through one loaded pointer -- and an EXTENT CORRECTION: the rung said 12, but word 12 is the next function's `addiu sp,sp,-0x30` prologue",
+   "source_file": "fixtures/decomp/authored/stage2/8003b640.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003247c",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 11 of 11, eleven words, the M372 shape a third time: symbol plus 0x18000 kept apart, then a byte decremented through it",
+   "source_file": "fixtures/decomp/authored/stage2/8003247c.c",
+   "syms": {
+    "D_800c76b0": 2148300464
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073564",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 11 of 11, eleven words, the same shape used for a nonzero test -- `sltu` in the delay slot is the return",
+   "source_file": "fixtures/decomp/authored/stage2/80073564.c",
+   "syms": {
+    "D_800c76b0": 2148300464
+   }
   }
  ]
 }

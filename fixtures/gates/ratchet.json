@@ -32,7 +32,7 @@
   "tyrant header (repository)": 1,
   "match diff (cartridge)": 4,
   "splat rehearsal (cartridge)": 5,
-  "compile probes (cartridge)": 243,
+  "compile probes (cartridge)": 250,
   "other corpus (repository)": 21,
   "toolchain matrix (cartridge)": 4,
   "corpus build (cartridge)": 2,
@@ -79,5 +79,5 @@
   "acceptance self-test": 6,
   "verifier self-test": 8
  },
- "src_tree": "30d299e5d379d44e0d7db67f131f1a5ca1e27279b400bb63ec2290d1e99a6772"
+ "src_tree": "9000bbf82a4cbc7bf398245572668271f2e010bf9a6dd1a9771218bee5305442"
 }

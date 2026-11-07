@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-378 milestones are indexed. 300 of them have a note; the rest are rows in the log that cite
+379 milestones are indexed. 301 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -396,6 +396,7 @@ at the foot of this file.
 | 375 | **M375** — the 9–12 word band: ten read, two refused, three left standing | `docs/log/M375-the-9-12-word-band.md` |
 | 376 | **M376** — the 13–20 word band: one read, four left standing | `docs/log/M376-the-13-20-band-and-its-wall.md` |
 | 377 | **M377** — the four rules come back, and the population they measured is gone | `docs/log/M377-the-four-rules-and-the-lost-population.md` |
+| 378 | **M378** — the second pass over 9–12 words: seven read, two extents corrected | `docs/log/M378-seven-more-and-two-extents-corrected.md` |
 
 ## The gaps, and why they are empty
 
