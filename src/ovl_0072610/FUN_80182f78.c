@@ -1,52 +1,48 @@
 /* FUN_80182f78
  * image   ovl_0072610 (ovl), base 0x8017b410
  * address 0x80182f78  body 0x80182f78..0x801830cf  size 344 B
- * body sha256 677b44c992a4a7edd053eb9b6d8af937a0a6c02c92e91906e833a86ae1337dd9
- * recovered byte-exact (import by content alignment: 86 of 86 words at our own address (func_80182EF8_ovl_02, delta +128))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_0072610/80182f78.c
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 35fd46fafab04a3440387b236e4344ebab875b8759569de0f5d109b1496b2fe5
+ * provider record sha256 273315eefaa1dc55f2f206fa367223d63a274b0d73c2f2409f436d1265342722
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
-void func_80182EF8_ovl_02(u8 *arg0, u8 *arg1, s32 arg2, s32 arg3) {
-    u8 *p;
-    u8 *q;
-    s32 i;
-    u32 a;
-    u32 b;
+void FUN_80182f78(byte *param_1,byte *param_2,int param_3,int param_4)
 
-    i = 0;
-    if (arg3 > 0) {
-        p = arg0;
-        q = arg1;
-        do {
-            a = p[0];
-            b = p[1];
-            q[0] = (u8)((q[0] + ((a + b + 1) >> 1) + 1) >> 1);
-            a = p[2];
-            q[1] = (u8)((q[1] + ((b + a + 1) >> 1) + 1) >> 1);
-            b = p[3];
-            q[2] = (u8)((q[2] + ((a + b + 1) >> 1) + 1) >> 1);
-            a = p[4];
-            q[3] = (u8)((q[3] + ((b + a + 1) >> 1) + 1) >> 1);
-            b = p[5];
-            q[4] = (u8)((q[4] + ((a + b + 1) >> 1) + 1) >> 1);
-            a = p[6];
-            q[5] = (u8)((q[5] + ((b + a + 1) >> 1) + 1) >> 1);
-            b = p[7];
-            q[6] = (u8)((q[6] + ((a + b + 1) >> 1) + 1) >> 1);
-            q[7] = (u8)((q[7] + ((b + p[8] + 1) >> 1) + 1) >> 1);
-            p += arg2;
-            q += arg2;
-            i++;
-        } while (i < arg3);
-    }
+{
+  byte bVar1;
+  byte bVar2;
+  byte *pbVar3;
+  byte *pbVar4;
+  int iVar5;
+  
+  iVar5 = 0;
+  if (0 < param_4) {
+    pbVar3 = param_2 + 7;
+    pbVar4 = param_1 + 8;
+    do {
+      bVar1 = *param_1;
+      param_1 = param_1 + param_3;
+      iVar5 = iVar5 + 1;
+      bVar2 = pbVar4[-7];
+      *param_2 = (byte)((uint)*param_2 + ((uint)bVar1 + (uint)bVar2 + 1 >> 1) + 1 >> 1);
+      param_2 = param_2 + param_3;
+      bVar1 = pbVar4[-6];
+      pbVar3[-6] = (byte)((uint)pbVar3[-6] + ((uint)bVar2 + (uint)bVar1 + 1 >> 1) + 1 >> 1);
+      bVar2 = pbVar4[-5];
+      pbVar3[-5] = (byte)((uint)pbVar3[-5] + ((uint)bVar1 + (uint)bVar2 + 1 >> 1) + 1 >> 1);
+      bVar1 = pbVar4[-4];
+      pbVar3[-4] = (byte)((uint)pbVar3[-4] + ((uint)bVar2 + (uint)bVar1 + 1 >> 1) + 1 >> 1);
+      bVar2 = pbVar4[-3];
+      pbVar3[-3] = (byte)((uint)pbVar3[-3] + ((uint)bVar1 + (uint)bVar2 + 1 >> 1) + 1 >> 1);
+      bVar1 = pbVar4[-2];
+      pbVar3[-2] = (byte)((uint)pbVar3[-2] + ((uint)bVar2 + (uint)bVar1 + 1 >> 1) + 1 >> 1);
+      bVar2 = pbVar4[-1];
+      pbVar3[-1] = (byte)((uint)pbVar3[-1] + ((uint)bVar1 + (uint)bVar2 + 1 >> 1) + 1 >> 1);
+      bVar1 = *pbVar4;
+      pbVar4 = pbVar4 + param_3;
+      *pbVar3 = (byte)((uint)*pbVar3 + ((uint)bVar2 + (uint)bVar1 + 1 >> 1) + 1 >> 1);
+      pbVar3 = pbVar3 + param_3;
+    } while (iVar5 < param_4);
+  }
+  return;
 }

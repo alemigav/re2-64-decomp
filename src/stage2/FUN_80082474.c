@@ -1,38 +1,21 @@
 /* FUN_80082474
  * image   stage2 (stage2), base 0x80018a80
  * address 0x80082474  body 0x80082474..0x80082497  size 36 B
- * body sha256 1dc973c9b5fe97b265e29bb89996f4a81f6aebf8aa0292e2cd839ac9658c3ae9
- * recovered byte-exact (import by content alignment: 9 of 9 words at our own address (func_800824A4_ovl_01))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_80082474_SOURCE
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 b3343858898404f8bed4ff1fee99d159a88c13e523700ce83c266885a3dc18a7
+ * provider record sha256 fa9bb723b77feda5bd7a609ec51a35f8971da44a214e86c2405e3d02e4e97367
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
+void FUN_80082474(undefined1 *param_1,undefined1 *param_2,int param_3)
 
-typedef s32 M2C_UNK;
-typedef s8 M2C_UNK8;
-typedef s16 M2C_UNK16;
-typedef s32 M2C_UNK32;
-
-void func_800824A4_ovl_01(u8 *arg0, u8 *arg1, s32 arg2) {
-    u32 temp_v1;
-    u8 *var_a0;
-    u8 *var_a1;
-
-    var_a0 = arg0;
-    var_a1 = arg1;
-    temp_v1 = var_a0 + arg2;
-    do {
-        *var_a0 = *var_a1;
-        var_a0 += 1;
-        var_a1 += 1;
-    } while ((u32) var_a0 < temp_v1);
+{
+  undefined1 *puVar1;
+  
+  puVar1 = param_1 + param_3;
+  do {
+    *param_1 = *param_2;
+    param_1 = param_1 + 1;
+    param_2 = param_2 + 1;
+  } while (param_1 < puVar1);
+  return;
 }

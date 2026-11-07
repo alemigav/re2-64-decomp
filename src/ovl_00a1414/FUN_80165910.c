@@ -3,7 +3,7 @@
  * address 0x80165910  body 0x80165910..0x8016591f  size 16 B
  * body sha256 b3a499d2ff2b1e9cbab4a86f06666a0d967e4e31f5817fc382d8e0cb28bdea00
  * recovered byte-exact (read from the words (M363): 4 of 4, measured extent turned into a reconstruction)
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_00a1414/80165910.c
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_00a1414/80165910.c
  * extents and pins: fixtures/decomp/recovered.json
  */
 typedef signed char s8;

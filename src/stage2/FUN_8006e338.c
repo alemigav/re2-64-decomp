@@ -3,7 +3,7 @@
  * address 0x8006e338  body 0x8006e338..0x8006e34b  size 20 B
  * body sha256 8ae13d3c9aae6c205a63a627571da5715160b28c4211ac94d8cd9714e63d52b1
  * recovered byte-exact (read from the words (M364): 5 of 5, measured extent turned into a reconstruction)
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/stage2/8006e338.c
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/stage2/8006e338.c
  * extents and pins: fixtures/decomp/recovered.json
  */
 typedef signed char s8;

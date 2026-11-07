@@ -323,7 +323,7 @@
     2147504052,
     2147504435,
     "function_body",
-    "fixtures/decomp/recovered.json"
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147504436,
@@ -3065,18 +3065,6 @@
    ],
    [
     2147786192,
-    2147786647,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
-   ],
-   [
-    2147786648,
-    2147786655,
-    "function_body",
-    "fixtures/decomp/recovered.json"
-   ],
-   [
-    2147786656,
     2147786743,
     "function_body",
     "fixtures/decomp/measured_extents.json"
@@ -4067,15 +4055,9 @@
    ],
    [
     2147958524,
-    2147958559,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
-   ],
-   [
-    2147958560,
     2147958567,
     "function_body",
-    "fixtures/decomp/recovered.json"
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147958568,
@@ -16693,6 +16675,30 @@
    ],
    [
     2149079084,
+    2149080155,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2149080156,
+    2149080159,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2149080160,
+    2149082771,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2149082772,
+    2149082775,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2149082776,
     2149084307,
     "padding",
     "run of 0x00 in the unpacked image"
@@ -18349,7 +18355,7 @@
     2149046632,
     2149046687,
     "function_body",
-    "fixtures/decomp/recovered.json"
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2149046688,
@@ -19209,12 +19215,6 @@
    ],
    [
     2148953976,
-    2148953979,
-    "slack",
-    "under 64 B, between two claimed runs"
-   ],
-   [
-    2148953980,
     2148953987,
     "data_named",
     "src/<image>/*.c DAT_"
@@ -19321,7 +19321,7 @@
     2148947996,
     2148948047,
     "function_body",
-    "fixtures/decomp/recovered.json"
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148948048,
@@ -19849,12 +19849,6 @@
    ],
    [
     2148961612,
-    2148961615,
-    "padding",
-    "run of 0x00 in the unpacked image"
-   ],
-   [
-    2148961616,
     2148961619,
     "data_named",
     "src/<image>/*.c DAT_"
@@ -21054,8 +21048,8 @@
    [
     2148947276,
     2148947279,
-    "fill",
-    "run of 0x00, shorter than the padding law's 16-byte floor"
+    "data_named",
+    "src/<image>/*.c DAT_"
    ]
   ],
   "ovl_0095446": [
@@ -22617,7 +22611,7 @@
     2148939548,
     2148939687,
     "function_body",
-    "fixtures/decomp/recovered.json"
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148939688,
@@ -22639,12 +22633,12 @@
    ],
    [
     2148951480,
-    2148951555,
+    2148951487,
     "function_body",
     "fixtures/decomp/recovered.json"
    ],
    [
-    2148951556,
+    2148951488,
     2148951619,
     "function_body",
     "fixtures/decomp/measured_extents.json"
@@ -24103,7 +24097,7 @@
     2148969448,
     2148969743,
     "function_body",
-    "fixtures/decomp/recovered.json"
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148969744,
@@ -25347,9 +25341,33 @@
    ],
    [
     2148954748,
+    2148954767,
+    "slack",
+    "under 64 B, between two claimed runs"
+   ],
+   [
+    2148954768,
+    2148954771,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2148954772,
+    2148954823,
+    "slack",
+    "under 64 B, between two claimed runs"
+   ],
+   [
+    2148954824,
+    2148954827,
+    "data_named",
+    "src/<image>/*.c DAT_"
+   ],
+   [
+    2148954828,
     2148954943,
-    "referenced_data",
-    "5 site(s) materialise its address; displacements [20, 56, 76]"
+    "u16_table",
+    "packed values: 90 %+ of the u16 halves under 4096"
    ],
    [
     2148954944,
@@ -25523,9 +25541,15 @@
    ],
    [
     2148935216,
-    2148936479,
+    2148936475,
     "referenced_data",
-    "4 site(s) materialise its address; displacements [640, 1252, 1260]"
+    "3 site(s) materialise its address; displacements [640, 1252]"
+   ],
+   [
+    2148936476,
+    2148936479,
+    "data_named",
+    "src/<image>/*.c DAT_"
    ]
   ],
   "ovl_00b321e": [
@@ -25905,7 +25929,7 @@
   "ovl_0072610": {
    "table_in_body": 0,
    "data_in_body": 0,
-   "padding_in_body": 81
+   "padding_in_body": 83
   },
   "ovl_007688e": {
    "table_in_body": 0,
@@ -25950,7 +25974,7 @@
   "ovl_008900e": {
    "table_in_body": 0,
    "data_in_body": 0,
-   "padding_in_body": 4
+   "padding_in_body": 5
   },
   "ovl_008bef8": {
    "table_in_body": 0,
@@ -26109,10 +26133,10 @@
    "function_body": 38472,
    "gap": 32,
    "fill": 52,
-   "padding": 7660,
+   "padding": 7652,
    "string_table": 56,
    "pointer_table": 40,
-   "data_named": 420,
+   "data_named": 428,
    "slack": 664,
    "referenced_data": 488,
    "enclosed_data": 296,
@@ -26195,8 +26219,8 @@
    "function_body": 20348,
    "gap": 8,
    "fill": 12,
-   "data_named": 52,
-   "slack": 132,
+   "data_named": 56,
+   "slack": 128,
    "referenced_data": 108,
    "pointer_table": 480,
    "unclassified": 76
@@ -26218,11 +26242,11 @@
    "slack": 232,
    "pointer_table": 528,
    "fill": 12,
-   "data_named": 52,
+   "data_named": 56,
    "u16_table": 76,
    "enclosed_data": 516,
    "referenced_data": 192,
-   "padding": 20
+   "padding": 16
   },
   "ovl_008bef8": {
    "function_body": 16684,
@@ -26277,8 +26301,9 @@
    "jump_table": 20,
    "pointer_table": 304,
    "slack": 28,
-   "fill": 8,
-   "referenced_data": 80
+   "fill": 4,
+   "referenced_data": 80,
+   "data_named": 4
   },
   "ovl_0095446": {
    "function_body": 24820,
@@ -26430,13 +26455,13 @@
    "gap": 220,
    "fill": 16,
    "jump_table": 52,
-   "slack": 148,
+   "slack": 220,
    "pointer_table": 392,
-   "referenced_data": 272,
-   "data_named": 52,
+   "referenced_data": 76,
+   "data_named": 60,
    "enclosed_data": 120,
+   "u16_table": 284,
    "padding": 112,
-   "u16_table": 168,
    "unclassified": 20
   },
   "ovl_00b2d7a": {
@@ -26445,8 +26470,9 @@
    "enclosed_data": 136,
    "fill": 4,
    "jump_table": 4,
-   "referenced_data": 1368,
-   "pointer_table": 36
+   "referenced_data": 1364,
+   "pointer_table": 36,
+   "data_named": 4
   },
   "ovl_00b321e": {
    "function_body": 18608,

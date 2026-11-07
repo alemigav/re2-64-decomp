@@ -1,34 +1,17 @@
 /* FUN_8016557c
  * image   ovl_0090698 (ovl), base 0x80161cf0
  * address 0x8016557c  body 0x8016557c..0x801655df  size 100 B
- * body sha256 6558a8d51c4c15e7f2ad72a0574dbd8efdad0fc4efc1d999935ada8567410659
- * recovered byte-exact (import by content alignment: 25 of 25 words at our own address (func_801654FC_ovl_17, delta +128))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_0090698/8016557c.c
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 4f1d59e1ed2ca76e7425b116fa15d361e124b5abe1273be7df8cf166cdc0961d
+ * provider record sha256 b2a8d57805bdc5f79ba566f625aa51fa4e5bcc49e64c2a423dc8781ce438c932
+ * callees 2 direct (2 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
+void FUN_8016557c(int param_1,undefined4 param_2,undefined4 param_3)
 
-
-typedef s32 M2C_UNK;
-typedef s8 M2C_UNK8;
-typedef s16 M2C_UNK16;
-typedef s32 M2C_UNK32;
-
-s32 func_801649F8_ovl_17();
-s32 func_80166FBC_ovl_17();
-
-void func_801654FC_ovl_17(void *arg0, s32 arg1, s32 arg2) {
-    (*(s8 *)((s8 *)(arg0) + (0x2D7))) = 0x14;
-    func_80166FBC_ovl_17(arg0, 0, 0xA);
-    (*(s8 *)((s8 *)(arg0) + (5))) = 7;
-    func_801649F8_ovl_17(arg0, arg1, arg2);
+{
+  *(undefined1 *)(param_1 + 0x2d7) = 0x14;
+  FUN_8016703c(param_1,0,10);
+  *(undefined1 *)(param_1 + 5) = 7;
+  FUN_80164a78(param_1,param_2,param_3);
+  return;
 }

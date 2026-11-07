@@ -1,31 +1,14 @@
 /* FUN_80161dc4
  * image   ovl_00a0344 (ovl), base 0x80161cf0
  * address 0x80161dc4  body 0x80161dc4..0x80161ddf  size 28 B
- * body sha256 80203911571feb57954bbb3c698fff61f454a51f7b29711d2794ea7763233249
- * recovered byte-exact (import by content alignment: 7 of 7 words at our own address (func_80161D44_ovl_27, delta +128))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_00a0344/80161dc4.c
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 11553479f37ab5c61fe6673c57fda9397f9a88227dc1644106e84ba942775116
+ * provider record sha256 a0e3da4465881c46a901e4f639b81083846ffa65e4b420625eaf571c91d9bac7
+ * callees 1 direct (1 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
+void FUN_80161dc4(void)
 
-
-
-typedef s32 M2C_UNK;
-typedef s8 M2C_UNK8;
-typedef s16 M2C_UNK16;
-typedef s32 M2C_UNK32;
-
-M2C_UNK func_80163C10_ovl_27();                     
-
-void func_80161D44_ovl_27(void) {
-    func_80163C10_ovl_27();
+{
+  FUN_80163c90();
+  return;
 }

@@ -11,9 +11,69 @@
  "functions": [
   {
    "image": "boot",
+   "address": "0x800013b0",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x800022bc",
+   "words": 22,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x80002314",
+   "words": 19,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000319c",
+   "words": 10,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x800042f4",
+   "words": 31,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004550",
+   "words": 17,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x800048b0",
+   "words": 12,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000490c",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
    "address": "0x80004a20",
    "words": 12,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80004a20..0x80004a4f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004a50",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004bac",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "boot",
@@ -29,6 +89,24 @@
   },
   {
    "image": "boot",
+   "address": "0x80004ec4",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004fb4",
+   "words": 48,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x80005074",
+   "words": 48,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
    "address": "0x8000cd40",
    "words": 40,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
@@ -41,9 +119,33 @@
   },
   {
    "image": "boot",
+   "address": "0x8000d66c",
+   "words": 11,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
    "address": "0x8000de78",
    "words": 9,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8000de78..0x8000de9b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000de9c",
+   "words": 10,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000e800",
+   "words": 21,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000e920",
+   "words": 22,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "boot",
@@ -62,6 +164,138 @@
    "address": "0x80011458",
    "words": 44,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b50c",
+   "words": 35,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b7a8",
+   "words": 16,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b98c",
+   "words": 12,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b9bc",
+   "words": 12,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017bbb0",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017bbcc",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017befc",
+   "words": 12,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017d158",
+   "words": 47,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017d214",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017d404",
+   "words": 23,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017d81c",
+   "words": 25,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017dd78",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017df4c",
+   "words": 8,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017ee88",
+   "words": 19,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017f370",
+   "words": 17,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017ff78",
+   "words": 39,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801802a8",
+   "words": 79,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801813d8",
+   "words": 15,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80182d00",
+   "words": 158,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80182f78",
+   "words": 86,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801833a0",
+   "words": 178,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801837f0",
+   "words": 148,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "ovl_0072610",
@@ -112,10 +346,274 @@
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
+   "image": "ovl_007688e",
+   "address": "0x8015d8c0",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0078c0e",
+   "address": "0x8017fe54",
+   "words": 25,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_007c552",
+   "address": "0x8017138c",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_007e132",
+   "address": "0x8017b4f8",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
    "image": "ovl_007e132",
    "address": "0x8017b710",
    "words": 13,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8017b710..0x8017b743, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_007e132",
+   "address": "0x8017d968",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_007fc12",
+   "address": "0x80162a2c",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80162dd4",
+   "words": 22,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80162f54",
+   "words": 17,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80163100",
+   "words": 15,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801633f4",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x8016387c",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801648a8",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801649fc",
+   "words": 17,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80165a0c",
+   "words": 20,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80165ab0",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80166338",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80166528",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x8016655c",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80166590",
+   "words": 22,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80161e14",
+   "words": 35,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x8016558c",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x8016581c",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80165ff0",
+   "words": 11,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008900e",
+   "address": "0x80162a30",
+   "words": 38,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008900e",
+   "address": "0x80168448",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008e046",
+   "address": "0x80162a30",
+   "words": 38,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_008e046",
+   "address": "0x80164d00",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80162218",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80162f40",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80163834",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x8016461c",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80164650",
+   "words": 12,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80164910",
+   "words": 44,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801649c0",
+   "words": 46,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80164a78",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x8016557c",
+   "words": 25,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x8016577c",
+   "words": 19,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801658fc",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80165bd8",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80165ec8",
+   "words": 19,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801660b8",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80166634",
+   "words": 35,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801679c8",
+   "words": 11,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0093192",
+   "address": "0x80161f74",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "ovl_0093192",
@@ -124,10 +622,142 @@
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8016287c..0x801628bb, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
+   "image": "ovl_0093192",
+   "address": "0x80162c6c",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0093aba",
+   "address": "0x801621a8",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0093aba",
+   "address": "0x80164a28",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0093aba",
+   "address": "0x8016535c",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x801626f4",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x80166e58",
+   "words": 17,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
    "image": "ovl_0097e42",
    "address": "0x80163760",
    "words": 21,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0098ee0",
+   "address": "0x80162d6c",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_0098ee0",
+   "address": "0x80165cb0",
+   "words": 29,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x80162f84",
+   "words": 24,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x80163068",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x80164c70",
+   "words": 22,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x80164dec",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009d3ba",
+   "address": "0x80162c28",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80162678",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80162e28",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801636e8",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x8016371c",
+   "words": 35,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801653a0",
+   "words": 23,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801655bc",
+   "words": 24,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801664c4",
+   "words": 10,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166584",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801665c0",
+   "words": 17,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "ovl_009dd02",
@@ -142,16 +772,160 @@
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80166ccc..0x80166d13, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
+   "image": "ovl_00a0344",
+   "address": "0x80161dc4",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80162024",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x801624a4",
+   "words": 11,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163498",
+   "words": 16,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163b24",
+   "words": 11,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80162624",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80162754",
+   "words": 8,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x801625b0",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
    "image": "ovl_00a43b6",
    "address": "0x80164e50",
    "words": 17,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
+   "image": "ovl_00a43b6",
+   "address": "0x80168ab0",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x80162114",
+   "words": 32,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x80163860",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x80163d9c",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801644e4",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x80165094",
+   "words": 19,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
    "image": "ovl_00a733e",
    "address": "0x801664f0",
    "words": 24,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801669f4",
+   "words": 15,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801671cc",
+   "words": 20,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x8016721c",
+   "words": 20,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80162158",
+   "words": 11,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016250c",
+   "words": 23,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x801671dc",
+   "words": 19,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016834c",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80168cb4",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80169f84",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016abe8",
+   "words": 74,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "ovl_00a9d94",
@@ -166,10 +940,70 @@
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
   },
   {
+   "image": "ovl_00a9d94",
+   "address": "0x8016baa0",
+   "words": 10,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80161fc0",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x801623b0",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x801623e8",
+   "words": 39,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80164734",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
    "image": "ovl_00ae24a",
    "address": "0x80165e38",
    "words": 41,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80161fe8",
+   "words": 12,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80162434",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80165ad8",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80165b30",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x801664dc",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "ovl_00b08a2",
@@ -184,6 +1018,60 @@
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
+   "image": "ovl_00b2d7a",
+   "address": "0x80161ebc",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b2d7a",
+   "address": "0x801621a4",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b2d7a",
+   "address": "0x80162568",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x801623ac",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80162564",
+   "words": 31,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x801628e0",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x8016345c",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80163cdc",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164398",
+   "words": 15,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
    "image": "ovl_00b321e",
    "address": "0x80164bf8",
    "words": 51,
@@ -194,6 +1082,54 @@
    "address": "0x80164cc4",
    "words": 47,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x8016518c",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x801654f8",
+   "words": 13,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80165d10",
+   "words": 36,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80165da0",
+   "words": 22,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80165df8",
+   "words": 42,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x801665a0",
+   "words": 17,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x8016264c",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x80162a8c",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "ovl_00b5346",
@@ -329,9 +1265,99 @@
   },
   {
    "image": "stage2",
+   "address": "0x800283f0",
+   "words": 11,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002841c",
+   "words": 11,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80028450",
+   "words": 41,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800284f4",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80028510",
+   "words": 27,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80028780",
+   "words": 80,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002a4f8",
+   "words": 28,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002aee0",
+   "words": 49,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002d164",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
    "address": "0x8002de0c",
    "words": 66,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e810",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e848",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fc00",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fd00",
+   "words": 14,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80030ea0",
+   "words": 15,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80030edc",
+   "words": 15,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "stage2",
@@ -365,9 +1391,33 @@
   },
   {
    "image": "stage2",
+   "address": "0x80032b5c",
+   "words": 31,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80032c6c",
+   "words": 42,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80033160",
+   "words": 22,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
    "address": "0x800341f4",
    "words": 35,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800351e8",
+   "words": 55,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "stage2",
@@ -446,6 +1496,12 @@
    "address": "0x80040e30",
    "words": 10,
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80040e08..0x80040e57, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800411b8",
+   "words": 90,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "stage2",
@@ -539,6 +1595,12 @@
   },
   {
    "image": "stage2",
+   "address": "0x80049f98",
+   "words": 2,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
    "address": "0x80049fa0",
    "words": 22,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -560,6 +1622,42 @@
    "address": "0x80051104",
    "words": 11,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80051104..0x8005113f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80052eec",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80054084",
+   "words": 20,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005c308",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006087c",
+   "words": 19,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800667b0",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006b220",
+   "words": 17,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "stage2",
@@ -965,6 +2063,12 @@
   },
   {
    "image": "stage2",
+   "address": "0x80073f20",
+   "words": 2,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
    "address": "0x80073fb4",
    "words": 28,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
@@ -1085,6 +2189,42 @@
   },
   {
    "image": "stage2",
+   "address": "0x80082474",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800837ac",
+   "words": 9,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80083e60",
+   "words": 8,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800844e4",
+   "words": 10,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800878fc",
+   "words": 20,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008794c",
+   "words": 20,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
    "address": "0x80088528",
    "words": 8,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
@@ -1172,6 +2312,30 @@
    "address": "0x800a5b7c",
    "words": 10,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800a5b7c..0x800a5ba3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5c34",
+   "words": 7,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5c50",
+   "words": 18,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab1a0",
+   "words": 43,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab2cc",
+   "words": 25,
+   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "stage2",

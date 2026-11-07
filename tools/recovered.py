@@ -91,7 +91,7 @@ def source(entry: dict) -> str:
     """The reconstruction text for one entry.
 
     Two channels, one reader: a reasoned reconstruction lives in `tools/compile_probe.py` as a constant, and an
-    *imported* one lives in `fixtures/decomp/imported/<image>/<address>.c` (M359) — 139 sources of the second kind
+    *imported* one lives in `fixtures/decomp/authored/<image>/<address>.c` (M369) — 139 sources of the second kind
     would have added four thousand lines to the probe for a corpus that is imported rather than reasoned about.
     The entry says which, with `source` or `source_file`, and everything downstream asks this function.
     """

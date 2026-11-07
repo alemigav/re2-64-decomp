@@ -1,37 +1,33 @@
 /* FUN_801665c0
  * image   ovl_009dd02 (ovl), base 0x80161cf0
  * address 0x801665c0  body 0x801665c0..0x80166603  size 68 B
- * body sha256 560806b31b6687f50a407530d731b69fa4df818b2e94624d5daee8cfb9906b12
- * recovered byte-exact (import by content alignment: 17 of 17 words at our own address (func_80166540_ovl_26, delta +128))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_009dd02/801665c0.c
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 3a472a9498d23c4368d4da9977e49b92b53620deb0441ffb9644ebf8479ba39e
+ * EXTENT MEASURED, NOT RECONSTRUCTED: 17 words, found by the extent scan inside a byte-map region no artifact names (extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not)
+ * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
+ * extents: fixtures/decomp/measured_extents.json
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
-
-typedef s32 M2C_UNK;
-typedef s8 M2C_UNK8;
-typedef s16 M2C_UNK16;
-typedef s32 M2C_UNK32;
-
-void func_80166540_ovl_26(s32 arg0, void *arg1) {
-    u16 temp_v0;
-
-    if ((*(u8 *)((s8 *)(arg1) + (0x13))) == 0) {
-        (*(s8 *)((s8 *)(arg1) + (4))) = 1;
-        temp_v0 = (*(u16 *)((s8 *)(arg1) + (6))) + (*(u8 *)((s8 *)(arg1) + (0x14)));
-        (*(u16 *)((s8 *)(arg1) + (6))) = temp_v0;
-        if ((s16) temp_v0 >= 0x100) {
-            (*(u8 *)((s8 *)(arg1) + (0x13))) = 1U;
-            (*(u16 *)((s8 *)(arg1) + (6))) = 0x100U;
-        }
-    }
-}
+/*
+ * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.
+ *
+ * These are the bytes of a function the provider never claimed, decoded word by word.
+ * This file is a listing: not ours, not C, and no claim that the body is understood. It
+ * exists so the census, the byte map and the coverage union can all name these bytes
+ * (fixtures/decomp/measured_extents.json, M341).
+ * 0x801665c0  90a20013  lbu $v0,19($a1)
+ * 0x801665c4  1440000d  bne $v0,$zero,+13
+ * 0x801665c8  24040001  addiu $a0,$zero,0x0001
+ * 0x801665cc  90a30014  lbu $v1,20($a1)
+ * 0x801665d0  94a20006  lhu $v0,6($a1)
+ * 0x801665d4  a0a40004  sb $a0,4($a1)
+ * 0x801665d8  00431021  addu $v0,$v0,$v1
+ * 0x801665dc  a4a20006  sh $v0,6($a1)
+ * 0x801665e0  00021400  sll $v0,$v0,16
+ * 0x801665e4  00021403  sra $v0,$v0,16
+ * 0x801665e8  28420100  op&0x0a $v0,$v0,0x0100
+ * 0x801665ec  14400003  bne $v0,$zero,+3
+ * 0x801665f0  24020100  addiu $v0,$zero,0x0100
+ * 0x801665f4  a0a40013  sb $a0,19($a1)
+ * 0x801665f8  a4a20006  sh $v0,6($a1)
+ * 0x801665fc  03e00008  jr $ra
+ * 0x80166600  00000000  sll $zero,$zero,0
+ */

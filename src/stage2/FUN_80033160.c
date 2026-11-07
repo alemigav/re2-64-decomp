@@ -1,29 +1,17 @@
 /* FUN_80033160
  * image   stage2 (stage2), base 0x80018a80
  * address 0x80033160  body 0x80033160..0x800331b7  size 88 B
- * body sha256 7eef964090f33634b46cf2e8b6be34d4ef29f56033186ce55a2174b65666f8c9
- * recovered byte-exact (import by content alignment: 22 of 22 words at our own address (func_80033190_ovl_01))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_80033160_SOURCE
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 0a4d6757a0b95189bce06c200fb9f7cd3b3376e38894f49e29e18118e267f848
+ * provider record sha256 88cf043d166b5ad179eed55fe0a4d052cb04ea9ba9b7a25a5bc9fcf7e89e3e9f
+ * callees 1 direct (1 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
+bool FUN_80033160(int param_1,int param_2)
 
-typedef s32 M2C_UNK;
-typedef s8 M2C_UNK8;
-typedef s16 M2C_UNK16;
-typedef s32 M2C_UNK32;
-
-s16 func_80032D44_overlay_001(s16, s16, s16, s16);  
-
-s32 func_80033190_ovl_01(void *arg0, void *arg1) {
-    return ((((*(s16 *)((s8 *)(arg1) + (0x66))) - func_80032D44_overlay_001((*(s16 *)((s8 *)(arg0) + (0x2A))), (*(s16 *)((s8 *)(arg0) + (0x32))), (*(s16 *)((s8 *)(arg1) + (0x2A))), (*(s16 *)((s8 *)(arg1) + (0x32))))) + 0x400) & 0xFFF) < 0x800;
+{
+  short sVar1;
+  
+  sVar1 = FUN_80032d14((int)*(short *)(param_1 + 0x2a),(int)*(short *)(param_1 + 0x32),
+                       (int)*(short *)(param_2 + 0x2a),(int)*(short *)(param_2 + 0x32));
+  return (((int)*(short *)(param_2 + 0x66) - (int)sVar1) + 0x400U & 0xfff) < 0x800;
 }

@@ -1,30 +1,19 @@
 /* FUN_80054084
  * image   stage2 (stage2), base 0x80018a80
  * address 0x80054084  body 0x80054084..0x800540d3  size 80 B
- * body sha256 2bdcc3fa0478e4bf714f5b235cb29f3aae1bd3a011cbcd39cd5a87aaa4898be9
- * recovered byte-exact (import by content alignment: 20 of 20 words at our own address (func_800540B4_ovl_01))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_80054084_SOURCE
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 d0f379ba1c60108f1bb310040613dd29c9e3f32356511913c06940f9c833cad2
+ * provider record sha256 d3e934b5c907ed71e532ab544b25d7d1f021831ce9275e1e82d434785c787adb
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
+void FUN_80054084(undefined4 *param_1,undefined4 *param_2)
 
-typedef s32 M2C_UNK;
-typedef s8 M2C_UNK8;
-typedef s16 M2C_UNK16;
-typedef s32 M2C_UNK32;
-
-void func_800540B4_ovl_01(void *arg0, void *arg1) {
-    (*(s32 *)((s8 *)(arg0) + (0))) = (s32) (*(s32 *)((s8 *)(arg1) + (0)));
-    (*(s32 *)((s8 *)(arg0) + (4))) = (s32) (*(s32 *)((s8 *)(arg1) + (4)));
-    (*(s32 *)((s8 *)(arg0) + (8))) = (s32) ((*(s32 *)((s8 *)(arg1) + (8))) + (*(u16 *)((s8 *)(arg1) + (0xA))));
-    (*(s32 *)((s8 *)(arg0) + (0xC))) = (s32) (((*(u8 *)((s8 *)(arg1) + (0xC))) << 0x18) + ((*(u8 *)((s8 *)(arg1) + (0xD))) << 0x10) + ((*(u8 *)((s8 *)(arg1) + (0xE))) << 8) + (*(u8 *)((s8 *)(arg1) + (0xF))));
+{
+  *param_1 = *param_2;
+  param_1[1] = param_2[1];
+  param_1[2] = param_2[2] + (uint)*(ushort *)((int)param_2 + 10);
+  param_1[3] = (uint)*(byte *)(param_2 + 3) * 0x1000000 +
+               (uint)*(byte *)((int)param_2 + 0xd) * 0x10000 +
+               (uint)*(byte *)((int)param_2 + 0xe) * 0x100 + (uint)*(byte *)((int)param_2 + 0xf);
+  return;
 }

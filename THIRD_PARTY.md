@@ -5,43 +5,30 @@ This repository contains one artefact transcribed from another project, one body
 
 `LICENSE` (CC0-1.0) applies to the last group only.
 
-## 0a. **Committed verbatim, with no licence to check: the imported reconstructions (M361–M366)**
+## 0a. **Removed: the imported corpus (M356–M369)**
 
-**This is a problem the repository has not resolved, and it is stated here rather than buried.**
-
-`fixtures/decomp/imported/` holds **170 C files** (plus the `recovered.json` entries that point at them) taken
-verbatim from another *Resident Evil 2* (N64) decompilation:
+`fixtures/decomp/imported/` held **170 C files** taken verbatim from another *Resident Evil 2* (N64) decompilation,
+`delibrete/Resident-Evil-II-Decompilation-N64`. **They were removed in M369**, and this section is the record of why.
 
 | | |
 |---|---|
 | project | `delibrete/Resident-Evil-II-Decompilation-N64` (produced by the `decompdecomp` harness) |
-| licence | **none published** — the repository has no `LICENSE`, `COPYING` or `NOTICE` file, so by default **all rights are reserved** |
-| what was taken | the C text of 192 reconstructions, committed verbatim under `fixtures/decomp/imported/` |
-| what was **not** taken | no tool of theirs, no corpus (that stays gitignored under `build/other-corpus/`) |
+| licence | **none published** — no `LICENSE`, `COPYING` or `NOTICE`, so by default **all rights reserved** |
+| taken, then removed | the C text of **194 reconstructions**, and the 170 files under `fixtures/decomp/imported/` |
+| kept | the **claims**: every one of those functions stays in the census as a measured extent — address, extent, word count — published as a **listing**, not a reconstruction |
 
-The contradiction is worth naming: **M356's note says that corpus is "never committed here"**, and the milestone
-immediately after it (M359) built a channel that commits exactly that text. Both statements are in the tree. The
-note is wrong, not the channel's intent, and the honest reading is that the *source text* should have stayed out
-while the *claims* stayed in.
+The sequence is worth recording because the repository got it wrong twice. **M356** said that corpus is *"never
+committed here"*; **M359** built a channel that committed exactly its text; **M361–M366** filled it with 194 entries;
+**M366** documented the contradiction and offered three options; **M367** chose keep-and-attribute; **M369** reversed
+that and removed the text. The retractions are in the notes and in the log's retraction table, because the point is not
+that a decision changed but that each step is on the record.
 
-**What is not in doubt**: every one of those functions is byte-exact against *this* cartridge under *this*
-profile, verified by a case that compiles it at its own address (`compile_probe.py --check`). The verification is
-the project's; the C is somebody else's, and verification does not confer a licence.
+The distinction that survives all of it: **the verification was always this project's, the C never was, and
+verification is not a licence.** Every one of those 194 was byte-exact against this cartridge under this profile; that
+made them *claims*, not *property*.
 
-**The owner's decision (M367): keep and attribute.** Option 3 was chosen knowingly, and this section is the record of
-it. What that means concretely:
-
-- the files **stay** under `fixtures/decomp/imported/`, attributed to
-  `delibrete/Resident-Evil-II-Decompilation-N64`, and this file is the one place that says where they came from;
-- the **risk is stated rather than implied**: with no licence published, the default is all rights reserved, so this
-  is a redistribution the other project has not licensed. It is offered for removal on request, in the same terms
-  section 2 offers for `src/`;
-- if the other project publishes a licence, or asks for removal, **only this section and one `rm -rf` are needed** —
-  the fallback is already costed below, and the verification of every one of those functions survives either way,
-  because it is an address plus an extent plus a case, not the text;
-- **what the fallback costs**, kept here so the decision can be revisited without re-deriving it: removing the
-  directory and the 192 entries that point at it leaves the claims as `measured_extents` listings, and **F1 falls by
-  192** while coverage does not move (the bytes stay claimed, as listings rather than reconstructions).
+What remains third-party in this repository is section 2's material — the game's own code, acknowledged as Capcom's,
+offered for removal on request.
 
 ## 0. Read as a specification, not copied: the sound codecs (GPL-3.0)
 

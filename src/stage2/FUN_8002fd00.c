@@ -1,30 +1,16 @@
 /* FUN_8002fd00
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8002fd00  body 0x8002fd00..0x8002fd37  size 56 B
- * body sha256 d952da519763fecac89cf51e1ab871e6211264e5e634fbda15b02ecef899250d
- * recovered byte-exact (import by content alignment: 14 of 14 words at our own address (func_8002FD30_ovl_01))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in tools/compile_probe.py as S_8002FD00_SOURCE
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 40561dfd3346577beaa154ba2d4ae9a78f48a9e30bd822c9a38c2415bb07f51b
+ * provider record sha256 5dff6795a5fe8878042dee78a5411c4ba009f0b4b9c182d4123554ff94c417a5
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
+void FUN_8002fd00(int *param_1,undefined4 param_2)
 
-
-typedef s32 M2C_UNK;
-typedef s8 M2C_UNK8;
-typedef s16 M2C_UNK16;
-typedef s32 M2C_UNK32;
-
-void func_8002FD30_ovl_01(void **arg0, s32 arg1) {
-    (*(s32 *)((s8 *)(*arg0) + (0x14))) = 0x2E;
-    (*(s32 *)((s8 *)(*arg0) + (0x18))) = arg1;
-    (*(M2C_UNK (**)())((s8 *)(*arg0) + (0)))();
+{
+  *(undefined4 *)(*param_1 + 0x14) = 0x2e;
+  *(undefined4 *)(*param_1 + 0x18) = param_2;
+  (**(code **)*param_1)();
+  return;
 }

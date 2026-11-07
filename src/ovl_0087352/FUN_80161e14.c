@@ -1,38 +1,31 @@
 /* FUN_80161e14
  * image   ovl_0087352 (ovl), base 0x80161cf0
  * address 0x80161e14  body 0x80161e14..0x80161e9f  size 140 B
- * body sha256 7bbc28780fe9e7252f59036011811f95fdeb3d6536df3fd26732cd9fcf1cf0c7
- * recovered byte-exact (import by content alignment: 35 of 35 words at our own address (func_80161D94_ovl_13, delta +128))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_0087352/80161e14.c
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 aed01e8b4d4ef20d5f530fe9d0d2b1ffed7f54cb22cb7d8773fcd212deee6af7
+ * provider record sha256 b61db7f52ee993e19714836f54e161bffaceb2c8d099aacb8bd2e1489d3c113c
+ * callees 0 direct (0 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
+/* WARNING: Removing unreachable block (ram,0x80161e70) */
 
-typedef s32 M2C_UNK;
-typedef s8 M2C_UNK8;
-typedef s16 M2C_UNK16;
-typedef s32 M2C_UNK32;
+void FUN_80161e14(int param_1)
 
-void func_80161D94_ovl_13(void *arg0) {
-    s32 temp_a1;
-    s32 temp_lo;
-
-    if ((*(u8 *)((s8 *)(arg0) + (4))) != 7) {
-        temp_a1 = (*(s16 *)((s8 *)(arg0) + (0x25E))) - (*(s32 *)((s8 *)(arg0) + (0x2C)));
-        if ((temp_a1 - 0xFA) > 0) {
-            temp_lo = 0x57E40 / (s32) ((s32) (temp_a1 + 0x60E) >> 1);
-            (*(s32 *)((s8 *)((*(void **)((s8 *)(arg0) + (0x208)))) + (4))) = (s32) (temp_lo | (temp_lo << 0x10));
-            return;
-        }
-        (*(s32 *)((s8 *)((*(void **)((s8 *)(arg0) + (0x208)))) + (4))) = 0x01900190;
+{
+  int iVar1;
+  uint uVar2;
+  
+  if (*(char *)(param_1 + 4) != '\a') {
+    iVar1 = (int)*(short *)(param_1 + 0x25e) - *(int *)(param_1 + 0x2c);
+    if (0 < iVar1 + -0xfa) {
+      iVar1 = iVar1 + 0x60e >> 1;
+      uVar2 = 360000 / iVar1;
+      if (iVar1 == 0) {
+        trap(0x1c00);
+      }
+      *(uint *)(*(int *)(param_1 + 0x208) + 4) = uVar2 | uVar2 << 0x10;
+      return;
     }
+    *(undefined4 *)(*(int *)(param_1 + 0x208) + 4) = 0x1900190;
+  }
+  return;
 }

@@ -3116,7 +3116,7 @@ SINGLES = [
 
 # --- the imported-source channel (M359) -----------------------------------------------------------------
 # A reconstruction that was *imported* rather than reasoned about keeps its C in
-# `fixtures/decomp/imported/<image>/<address>.c`, and `fixtures/decomp/recovered.json` — still the single reader —
+# `fixtures/decomp/authored/<image>/<address>.c`, and `fixtures/decomp/recovered.json` — still the single reader —
 # says so with `source_file` instead of `source`. The 139 overlay imports of M359 would have grown this file by
 # four thousand lines of somebody else's C; the 15+38 that came before are constants because they were few.
 #

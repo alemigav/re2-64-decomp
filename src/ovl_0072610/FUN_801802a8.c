@@ -1,78 +1,53 @@
 /* FUN_801802a8
  * image   ovl_0072610 (ovl), base 0x8017b410
  * address 0x801802a8  body 0x801802a8..0x801803e3  size 316 B
- * body sha256 ef0b13438e9e5aaf0e50c008beb28f86d347abb77bba9747f9506ab7c4e211de
- * recovered byte-exact (import by content alignment: 79 of 79 words at our own address (func_80180228_ovl_02, delta +128))
- * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_0072610/801802a8.c
- * extents and pins: fixtures/decomp/recovered.json
+ * body sha256 cb4e9aec6e91017938557e88bc73947be735005c8f628ba17603dad58e48c2e1
+ * provider record sha256 694a88520a6e01c107a65e7e8aa3e79b04aa9c96c2e27f7b194e494d1291156b
+ * callees 4 direct (4 in corpus)
+ * provider Ghidra 12.2
  */
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long long s64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
-s32 func_8017BE48_ovl_02(s32 arg0);
-s32 func_8017F63C_ovl_02(void);
-s32 func_8017F720_ovl_02(void);
-void func_80180364_ovl_02(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-void func_80180228_ovl_02(s32 *arg0, s32 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6)
+void FUN_801802a8(int param_1,undefined4 *param_2,int param_3,int param_4,int param_5,int param_6,
+                 undefined4 param_7)
+
 {
-  s32 temp;
-  s32 helper;
-  s32 f4;
-  s32 f5;
-  s32 f6;
-  f4 = arg4;
-  f5 = arg5;
-  f6 = arg6;
-  temp = func_8017F63C_ovl_02();
-  if (arg2 != 0)
-  {
-    helper = 0;
-    if (temp != 0)
-    {
-      helper = func_8017BE48_ovl_02(arg2);
+  int iVar1;
+  undefined4 uVar2;
+  
+  iVar1 = FUN_8017f6bc();
+  if (param_3 == 0) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = 0;
+    if (iVar1 != 0) {
+      uVar2 = FUN_8017bec8(param_3);
     }
   }
-  else
-  {
-    helper = 0;
+  FUN_801803e4(param_1,param_3,iVar1,uVar2,param_7);
+  if (param_5 != 0) {
+    uVar2 = FUN_8017f7a0();
+    *param_2 = uVar2;
   }
-  func_80180364_ovl_02(arg0, arg2, temp, helper, f6);
-  if (f4 != 0)
-  {
-    arg1[0] = func_8017F720_ovl_02();
+  iVar1 = FUN_8017f6bc();
+  if (param_4 == 0) {
+    uVar2 = 0;
   }
-  temp = func_8017F63C_ovl_02();
-  if (arg3 != 0)
-  {
-    helper = 0;
-    if (temp != 0)
-    {
-      helper = func_8017BE48_ovl_02(arg3);
+  else {
+    uVar2 = 0;
+    if (iVar1 != 0) {
+      uVar2 = FUN_8017bec8(param_4);
     }
   }
-  else
-  {
-    helper = 0;
+  if (param_6 != 0) {
+    *(int *)(param_1 + 4) = *(int *)(param_1 + 4) >> 1;
   }
-  if (f5 != 0)
-  {
-    arg0[1] >>= 1;
+  FUN_801803e4(param_1 + 4,param_4,iVar1,uVar2,param_7);
+  if (param_6 != 0) {
+    *(int *)(param_1 + 4) = *(int *)(param_1 + 4) << 1;
   }
-  func_80180364_ovl_02(arg0 + 1, arg3, temp, helper, f6);
-  if (f5 != 0)
-  {
-    arg0[1] <<= 1;
+  if (param_5 != 0) {
+    uVar2 = FUN_8017f7a0();
+    param_2[1] = uVar2;
   }
-  if (f4 != 0)
-  {
-    temp = func_8017F720_ovl_02();
-    arg1[1] = temp;
-  }
+  return;
 }

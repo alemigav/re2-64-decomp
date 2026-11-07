@@ -36,3 +36,16 @@ that the absence of a build is worth stating rather than leaving to be discovere
 - README states the no-build limitation in the sentence that already claims "not a matching build"
 - corpus unchanged: **391 / 390 exact**, census 3 665, coverage 63.3 %; counts **29/29**, markers **25/25**,
   `verify.py --full` **PASS**, audit 160/160
+
+---
+
+## Superseded by M369 — the files are removed
+
+This note recorded **keep-and-attribute**. M369 reverses it: the imported text is **gone**
+(`fixtures/decomp/imported/`, 170 files, 194 entries), the claims stay as measured extents, and `recovered` falls
+**394 → 200** with **F1 3 462 → 3 453** and coverage **unchanged** — because the bytes are still claimed, as listings
+rather than reconstructions.
+
+The reasoning in this note was that the risk was stated and the fallback costed; the owner has now judged the risk not
+worth carrying. The note is kept for the sequence — retraction by addition, not by rewriting — and the fallback it
+priced at *"one `rm -rf` and one fixture edit"* is exactly what it took.
