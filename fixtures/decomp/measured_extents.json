@@ -443,12 +443,6 @@
   },
   {
    "image": "stage2",
-   "address": "0x80040e10",
-   "words": 8,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80040e08..0x80040e57, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "stage2",
    "address": "0x80040e30",
    "words": 10,
    "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80040e08..0x80040e57, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
@@ -560,12 +554,6 @@
    "address": "0x80050fa8",
    "words": 71,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800510c4",
-   "words": 3,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
    "image": "stage2",
@@ -1196,12 +1184,6 @@
    "address": "0x800b21f0",
    "words": 42,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
-  },
-  {
-   "image": "stage2",
-   "address": "0x800b2618",
-   "words": 8,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800b2618..0x800b2637, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",

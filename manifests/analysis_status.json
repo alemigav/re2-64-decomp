@@ -10,12 +10,12 @@
  },
  "totals": {
   "F0": 3665,
-  "F1": 3459,
-  "F2": 3400,
+  "F1": 3462,
+  "F2": 3403,
   "named": 33,
   "validated": 12,
   "validated_unnamed": 12,
-  "extent_measured": 206
+  "extent_measured": 203
  },
  "f4_evidence": {
   "stage2:0x800b53f4": "M199 \u2014 the voice synthesis, bit-exact against the cartridge",
@@ -18122,16 +18122,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80040e10": {
-   "name": "FUN_80040e10",
-   "image": "stage2",
-   "address": "0x80040e10",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80040e30": {
    "name": "FUN_80040e30",
    "image": "stage2",
@@ -18316,16 +18306,6 @@
    "name": "FUN_80050fa8",
    "image": "stage2",
    "address": "0x80050fa8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800510c4": {
-   "name": "FUN_800510c4",
-   "image": "stage2",
-   "address": "0x800510c4",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19382,16 +19362,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800b2618": {
-   "name": "FUN_800b2618",
-   "image": "stage2",
-   "address": "0x800b2618",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800b4400": {
    "name": "FUN_800b4400",
    "image": "stage2",
@@ -19902,6 +19872,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x80040e10": {
+   "name": "FUN_80040e10",
+   "image": "stage2",
+   "address": "0x80040e10",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x800411b8": {
    "name": "FUN_800411b8",
    "image": "stage2",
@@ -20136,6 +20116,16 @@
    "name": "FUN_8004fea4",
    "image": "stage2",
    "address": "0x8004fea4",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x800510c4": {
+   "name": "FUN_800510c4",
+   "image": "stage2",
+   "address": "0x800510c4",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -21176,6 +21166,16 @@
    "name": "FUN_800b2138",
    "image": "stage2",
    "address": "0x800b2138",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x800b2618": {
+   "name": "FUN_800b2618",
+   "image": "stage2",
+   "address": "0x800b2618",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,

@@ -29,12 +29,12 @@ total, and any headline quoting it must carry this line:
 
 | | count | what it is |
 | --- | --- | --- |
-| reconstructed by hand from the disassembly | **46** | the information-bearing core — the table in §3 |
+| reconstructed by hand from the disassembly | **49** | the information-bearing core — the table in §3 |
 | singles landed from one shape each | **55** | one draft per body, measured against `leaf_screen.py` |
 | imported from another decompilation and re-verified here | **194** | one tool scores that corpus through this profile against this cartridge (`tools/other_corpus.py`); these fifteen came back word-exact, and nothing else about that project is taken on trust |
 | copies of twenty-one proven body shapes | **97** | one proven reconstruction registers every copy: 44 empty functions, 11 nine-word masked calls, **17 of the dispatch family** across eight table addresses (M335), three of a masked read-modify-write loop, three of a three-store setter, and the rest two-copy shapes found by the *statement order*, by the *stride* rather than the walk (M355), or by where a constant sits in an OR chain |
 
-So "391" is a **corpus** number, not 360 independent reconstructions. The remaining published residue is one function
+So "394" is a **corpus** number, not 360 independent reconstructions. The remaining published residue is one function
 at **226 of 229 words**; everything else is byte-exact. And the cohort gain is not free but it is not
 closed either: the eight dispatch groups were reachable (M335), and three of the four bodies drafted alongside them
 were then closed by moving a *materialisation* ahead of a load — 11, 12 and 18 words, two copies each (M336) — while
@@ -60,8 +60,8 @@ suites are named and timed in `acceptance.HEAVY_SUITES` rather than quietly move
   `data` on a hunch.
 - **174 switch case bodies** are code and are counted in the ranges and the byte total, but the provider itself labels
   them `switchD_::caseD_`, so they live under `src/<image>/switch/` instead of being published as functions.
-- **The analysis ladder** (`tools/analysis_status.py`): F0 3 665 / F1 3 459 / F2 3 400 — of **3 665 functions**,
-  **3 400** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
+- **The analysis ladder** (`tools/analysis_status.py`): F0 3 665 / F1 3 462 / F2 3 403 — of **3 665 functions**,
+  **3 403** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
   a gate or an executed experiment. All 12 are still called `FUN_…`: a name needs evidence of its own.
 - **The boot image has two extents, and the difference is what the loader loads.** Code is `0x11140`
   (`0x80000480..0x800115C0`); the **load** extent is `0x13420`, and it ends exactly at `__bss_start` (`0x800138A0`) —

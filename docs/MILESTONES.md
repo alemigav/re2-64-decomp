@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-368 milestones are indexed. 290 of them have a note; the rest are rows in the log that cite
+369 milestones are indexed. 291 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -386,6 +386,7 @@ at the foot of this file.
 | 365 | **M365** — the glued pairs split, the mis-extented re-measured, and two of M364's own errors | `docs/log/M365-the-glued-pairs-split.md` |
 | 366 | **M366** — the front page audited: three stale claims, a licence problem, and the gates that now cover them | `docs/log/M366-the-front-page-audited.md` |
 | 367 | **M367** — the licence decision recorded, and the no-build limitation stated | `docs/log/M367-the-licence-decision-recorded.md` |
+| 368 | **M368** — the small batch: three read, twelve refused, and the lever that closed the table readers | `docs/log/M368-the-small-batch.md` |
 
 ## The gaps, and why they are empty
 
