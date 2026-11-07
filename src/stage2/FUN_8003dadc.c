@@ -1,22 +1,24 @@
 /* FUN_8003dadc
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8003dadc  body 0x8003dadc..0x8003daf3  size 24 B
- * body sha256 c8830e3cb9be5892cace18fbd07ec0b1e0dffc54f4e80ed72b49dac4668608bd
- * EXTENT MEASURED, NOT RECONSTRUCTED: 6 words, found by the extent scan inside a byte-map region no artifact names (extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8003dadc..0x8003daf3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362))
- * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
- * extents: fixtures/decomp/measured_extents.json
+ * body sha256 8842e32390b0fd096f973182a1c58a85c7386d00a70b958ac86e0455e9bc20b7
+ * recovered byte-exact (read from the words (M363): 6 of 6, measured extent turned into a reconstruction)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/stage2/8003dadc.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/*
- * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.
- *
- * These are the bytes of a function the provider never claimed, decoded word by word.
- * This file is a listing: not ours, not C, and no claim that the body is understood. It
- * exists so the census, the byte map and the coverage union can all name these bytes
- * (fixtures/decomp/measured_extents.json, M341).
- * 0x8003dadc  3c02800f  lui $v0,0x800f
- * 0x8003dae0  8c43bb94  lw $v1,-17516($v0)
- * 0x8003dae4  9462003a  lhu $v0,58($v1)
- * 0x8003dae8  24420087  addiu $v0,$v0,0x0087
- * 0x8003daec  03e00008  jr $ra
- * 0x8003daf0  a462003a  sh $v0,58($v1)
- */
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+extern u8 *D_800ebb94;
+
+void FUN_8003dadc(void)
+{
+    u8 *p = D_800ebb94;
+
+    *(u16 *)(p + 58) = *(u16 *)(p + 58) + 135;
+}

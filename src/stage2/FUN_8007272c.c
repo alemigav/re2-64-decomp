@@ -1,21 +1,22 @@
 /* FUN_8007272c
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8007272c  body 0x8007272c..0x8007273f  size 20 B
- * body sha256 fd79779486355a1b6b5be21e88e593026042410a64d6e70f8e7a2a0a0d26c9be
- * EXTENT MEASURED, NOT RECONSTRUCTED: 5 words, found by the extent scan inside a byte-map region no artifact names (extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8007272c..0x8007277b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362))
- * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
- * extents: fixtures/decomp/measured_extents.json
+ * body sha256 a29c49055216a200423c1006abde83d2bd375c836f97fc4a8570b600ec3bc70f
+ * recovered byte-exact (read from the words (M363): 5 of 5, measured extent turned into a reconstruction)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/stage2/8007272c.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/*
- * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.
- *
- * These are the bytes of a function the provider never claimed, decoded word by word.
- * This file is a listing: not ours, not C, and no claim that the body is understood. It
- * exists so the census, the byte map and the coverage union can all name these bytes
- * (fixtures/decomp/measured_extents.json, M341).
- * 0x8007272c  8c82001c  lw $v0,28($a0)
- * 0x80072730  24420004  addiu $v0,$v0,0x0004
- * 0x80072734  ac82001c  sw $v0,28($a0)
- * 0x80072738  03e00008  jr $ra
- * 0x8007273c  24020001  addiu $v0,$zero,0x0001
- */
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+u32 FUN_8007272c(u8 *a0)
+{
+    *(u32 *)(a0 + 28) = *(u32 *)(a0 + 28) + 4;
+
+    return 1;
+}

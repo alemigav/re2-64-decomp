@@ -591,8 +591,19 @@ def check(rep, committed: str):
     # callee list the provider could not have produced -- it stopped at the head. Those nodes are exempt from the
     # comparison, and the exemption is counted and named rather than silent: the byte scan above IS their record.
     exempt = measured & set(callees)
+    # M363: a node whose provider body carried unresolved calls (`callees_unknown`) can have *fewer* stored callees
+    # than the graph reaches, because admitting a function turns an unknown call target into a known one. The
+    # invariant is therefore "the graph reaches every callee the index lists, plus at most the calls the index
+    # itself counted as unknown" -- not equality, which would fail every time a function is admitted.
+    unknown = {}
+    for img in json.loads((ROOT / CODE_INDEX).read_text())["images"]:
+        for f in img["functions_list"]:
+            unknown[f"{img['name']}:{f['address']}"] = int(f.get("callees_unknown") or 0)
+    def _agrees(nid, want):
+        got = reached.get(nid, set())
+        return want <= got and len(got - want) <= unknown.get(nid, 0)
     disagree = sorted(nid for nid, want in callees.items()
-                      if nid not in exempt and reached.get(nid, set()) != want)
+                      if nid not in exempt and not _agrees(nid, want))
     cases.append((f"for every node the addresses its `jal` edges reach equal its code_index callees "
                   f"— {len(callees) - len(exempt)} nodes compared, {len(disagree)} disagree; "
                   f"{len(exempt)} exempt because their extent is measured and the provider saw only the head"

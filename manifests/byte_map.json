@@ -267,9 +267,15 @@
    ],
    [
     2147503076,
-    2147503139,
+    2147503123,
     "function_body",
     "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147503124,
+    2147503139,
+    "function_body",
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147503140,
@@ -2065,7 +2071,7 @@
     2147642008,
     2147642023,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147642024,
@@ -2263,7 +2269,7 @@
     2147674236,
     2147674255,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147674256,
@@ -2441,15 +2447,9 @@
    ],
    [
     2147707692,
-    2147707771,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
-   ],
-   [
-    2147707772,
     2147707779,
-    "gap",
-    "under 64 B, between function bodies"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147707780,
@@ -2496,8 +2496,8 @@
    [
     2147709712,
     2147709807,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "enclosed_data",
+    "bounded by function_body and padding -- the same structure, content unnamed"
    ],
    [
     2147709808,
@@ -2563,7 +2563,7 @@
     2147722616,
     2147722639,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147722640,
@@ -2575,7 +2575,7 @@
     2147725048,
     2147725071,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147725072,
@@ -2599,7 +2599,7 @@
     2147729332,
     2147729351,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147729352,
@@ -2647,7 +2647,7 @@
     2147736284,
     2147736307,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147736308,
@@ -2922,8 +2922,8 @@
    [
     2147781548,
     2147782031,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147782032,
@@ -3348,8 +3348,8 @@
    [
     2147918892,
     2147919055,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
    ],
    [
     2147919056,
@@ -3359,12 +3359,6 @@
    ],
    [
     2147920000,
-    2147920035,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
-   ],
-   [
-    2147920036,
     2147920059,
     "gap",
     "under 64 B, between function bodies"
@@ -3373,7 +3367,7 @@
     2147920060,
     2147920075,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147920076,
@@ -3385,7 +3379,7 @@
     2147920100,
     2147920115,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147920116,
@@ -3439,7 +3433,7 @@
     2147925664,
     2147925683,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147925684,
@@ -3499,7 +3493,7 @@
     2147932928,
     2147932967,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147932968,
@@ -3511,7 +3505,7 @@
     2147933060,
     2147933079,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147933080,
@@ -3775,7 +3769,7 @@
     2147952428,
     2147952507,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147952508,
@@ -4615,7 +4609,7 @@
     2148052828,
     2148052843,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2148052844,
@@ -4865,12 +4859,6 @@
    ],
    [
     2148148260,
-    2148148283,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
-   ],
-   [
-    2148148284,
     2148148291,
     "gap",
     "under 64 B, between function bodies"
@@ -5009,12 +4997,6 @@
    ],
    [
     2148182200,
-    2148182223,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
-   ],
-   [
-    2148182224,
     2148182235,
     "gap",
     "under 64 B, between function bodies"
@@ -5051,12 +5033,12 @@
    ],
    [
     2148186024,
-    2148186063,
+    2148186039,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
-    2148186064,
+    2148186040,
     2148186079,
     "gap",
     "under 64 B, between function bodies"
@@ -5165,6 +5147,12 @@
    ],
    [
     2148221856,
+    2148221951,
+    "enclosed_data",
+    "bounded by function_body and function_body -- the same structure, content unnamed"
+   ],
+   [
+    2148221952,
     2148221999,
     "function_body",
     "fixtures/decomp/measured_extents.json"
@@ -17540,8 +17528,8 @@
    [
     2149037400,
     2149037427,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "gap",
+    "under 64 B, between function bodies"
    ],
    [
     2149037428,
@@ -22435,6 +22423,12 @@
    ],
    [
     2148953292,
+    2148953323,
+    "gap",
+    "under 64 B, between function bodies"
+   ],
+   [
+    2148953324,
     2148953363,
     "function_body",
     "fixtures/decomp/measured_extents.json"
@@ -22631,7 +22625,7 @@
     2148939540,
     2148939555,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2148939556,
@@ -22873,7 +22867,7 @@
     2148948240,
     2148948255,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2148948256,
@@ -25844,15 +25838,15 @@
    "u16_table": 4104
   },
   "stage2": {
-   "function_body": 585676,
+   "function_body": 584648,
    "referenced_data": 10452,
    "padding": 345552,
    "dense_data": 114184,
    "slack": 6376,
    "data_named": 4312,
    "fill": 668,
-   "gap": 1176,
-   "enclosed_data": 31476,
+   "gap": 1276,
+   "enclosed_data": 32404,
    "string_table": 12080,
    "jump_table": 340,
    "u16_table": 24296,
@@ -25897,7 +25891,8 @@
    "padding": 36444
   },
   "ovl_007af7a": {
-   "function_body": 10496,
+   "function_body": 10468,
+   "gap": 28,
    "dense_data": 200,
    "fill": 8,
    "jump_table": 4,
@@ -26098,8 +26093,8 @@
    "padding": 12
   },
   "ovl_009dd02": {
-   "function_body": 21596,
-   "gap": 68,
+   "function_body": 21564,
+   "gap": 100,
    "data_named": 52,
    "slack": 224,
    "pointer_table": 280,

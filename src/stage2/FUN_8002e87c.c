@@ -1,21 +1,21 @@
 /* FUN_8002e87c
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8002e87c  body 0x8002e87c..0x8002e88f  size 20 B
- * body sha256 9bace9317eea8d6d4e6ed6d0bd42766378a531e5f2612e19efd750a52e30a8c5
- * EXTENT MEASURED, NOT RECONSTRUCTED: 5 words, found by the extent scan inside a byte-map region no artifact names (extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8002e86c..0x8002e88f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362))
- * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
- * extents: fixtures/decomp/measured_extents.json
+ * body sha256 613ec430753bc746452abcc65bdb7a737c3f19a845841d5aad3df606f20909a8
+ * recovered byte-exact (read from the words (M363): 5 of 5, measured extent turned into a reconstruction)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/stage2/8002e87c.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/*
- * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.
- *
- * These are the bytes of a function the provider never claimed, decoded word by word.
- * This file is a listing: not ours, not C, and no claim that the body is understood. It
- * exists so the census, the byte map and the coverage union can all name these bytes
- * (fixtures/decomp/measured_extents.json, M341).
- * 0x8002e87c  8c820000  lw $v0,0($a0)
- * 0x8002e880  ac40006c  sw $zero,108($v0)
- * 0x8002e884  8c820000  lw $v0,0($a0)
- * 0x8002e888  03e00008  jr $ra
- * 0x8002e88c  ac400014  sw $zero,20($v0)
- */
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+void FUN_8002e87c(u32 **a0)
+{
+    (*a0)[27] = 0;
+    (*a0)[5] = 0;
+}

@@ -1,22 +1,25 @@
 /* FUN_8003a578
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8003a578  body 0x8003a578..0x8003a58f  size 24 B
- * body sha256 73cd415acd73d3b5dd7299f0c08526ba5247f93637a8f992129781b9cd55b0f2
- * EXTENT MEASURED, NOT RECONSTRUCTED: 6 words, found by the extent scan inside a byte-map region no artifact names (extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8003a578..0x8003a58f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362))
- * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
- * extents: fixtures/decomp/measured_extents.json
+ * body sha256 0e036bf7905040d9d758b3b4904f9c5ac5109bf5d5ef3dddd016477c543b6d88
+ * recovered byte-exact (read from the words (M363): 6 of 6, measured extent turned into a reconstruction)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/stage2/8003a578.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/*
- * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.
- *
- * These are the bytes of a function the provider never claimed, decoded word by word.
- * This file is a listing: not ours, not C, and no claim that the body is understood. It
- * exists so the census, the byte map and the coverage union can all name these bytes
- * (fixtures/decomp/measured_extents.json, M341).
- * 0x8003a578  3c02800f  lui $v0,0x800f
- * 0x8003a57c  8c43bb94  lw $v1,-17516($v0)
- * 0x8003a580  3402a003  ori $v0,$zero,0xa003
- * 0x8003a584  a4620018  sh $v0,24($v1)
- * 0x8003a588  03e00008  jr $ra
- * 0x8003a58c  a0600000  sb $zero,0($v1)
- */
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+extern u8 *D_800ebb94;
+
+void FUN_8003a578(void)
+{
+    u8 *p = D_800ebb94;
+
+    *(u16 *)(p + 24) = 0xa003;
+    p[0] = 0;
+}

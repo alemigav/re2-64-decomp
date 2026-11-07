@@ -3,7 +3,7 @@
  * address 0x80163210  body 0x80163210..0x801635cf  size 960 B
  * body sha256 4ae5765a40847bbb194e4aefb261244d253fcefab968c443a8939433af96b458
  * provider record sha256 77ba0978defef453e8669238a6893b0271997d12d7173dd0c7c3759fcdedd7fc
- * callees 7 direct (7 in corpus)
+ * callees 7 direct (6 in corpus)
  * provider Ghidra 12.2
  */
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */

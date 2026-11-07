@@ -10280,6 +10280,213 @@
     "D_80011AC8": 2147556040,
     "func_80162CE0_ovl_15": 2148936928
    }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004c14",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/boot/80004c14.c",
+   "syms": {
+    "D_80012884": 2147559556
+   }
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163714",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/ovl_00a0344/80163714.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80165910",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/ovl_00a1414/80165910.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80026a98",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/80026a98.c",
+   "syms": {
+    "D_800e9130": 2148438320
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e87c",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8002e87c.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003a578",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8003a578.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003aef8",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8003aef8.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003bfb4",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8003bfb4.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003dadc",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8003dadc.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006a8bc",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8006a8bc.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006a8e4",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8006a8e4.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006bea0",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8006bea0.c",
+   "syms": {
+    "D_80139e60": 2148769376
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db00",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8006db00.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db14",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8006db14.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db84",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8006db84.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007272c",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8007272c.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072740",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/80072740.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072754",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/80072754.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072768",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/80072768.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008af5c",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/8008af5c.c",
+   "syms": {
+    "D_8012bd80": 2148711808
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab7a8",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/imported/stage2/800ab7a8.c",
+   "syms": {
+    "D_80136310": 2148754192
+   }
   }
  ]
 }
