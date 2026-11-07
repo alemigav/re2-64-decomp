@@ -236,7 +236,11 @@ def try_draft(cp, draft: Path, image: str, addr: int, words: int, syms, cc1_extr
     for cmd in ([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300"]
                 + list(cc1_extra) + [str(c), "-o", str(s)],
                 [str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)]):
-        r = subprocess.run(cmd, capture_output=True, text=True)
+        # M373: `errors="replace"`. M356's note claimed this crash ("`cc1` wrote non-UTF-8 bytes to stderr and the
+        # tool died with a traceback") was fixed by decoding leniently; it was not, and the file's last touch was
+        # M334 -- so for seventeen milestones a committed note described a tree that did not exist. A tool that
+        # cannot say *why* a compile failed is the M351 defect, and it is now also a self-test case.
+        r = _run(cmd)
         if r.returncode:
             print("compile failed: %s" % (r.stderr.strip().splitlines() or ["?"])[0], file=sys.stderr)
             return 2
@@ -276,6 +280,16 @@ def try_draft(cp, draft: Path, image: str, addr: int, words: int, syms, cc1_extr
     return 0 if same == words else 1
 
 
+def _run(cmd):
+    """One subprocess whose stderr is decoded leniently (M373).
+
+    `cc1` and the assembler both write raw bytes, and a draft that fails to compile is exactly when their stderr is
+    most interesting -- so a strict decode turns the tool's most useful message into a traceback. Kept as a named
+    helper so the self-test can aim at it directly instead of at a call site.
+    """
+    return subprocess.run(cmd, capture_output=True, text=True, errors="replace")
+
+
 def self_test() -> int:
     cases = []
     cases.append(("a clean leaf passes (jr ra + delay slot)", why_rejected([JR_RA, 0x00000000], 0) is None))
@@ -295,6 +309,18 @@ def self_test() -> int:
     cases.append(("the gloss decodes a store's offset and base", gloss(0xA4800006) == "sh $zero,6($a0)"))
     cases.append(("the gloss distinguishes that from the same store of $a0",
                   gloss(0xA4840006) == "sh $a0,6($a0)" and gloss(0xA4840006) != gloss(0xA4800006)))
+
+    # M373: the case that would have caught the M356 note. A subprocess writing invalid UTF-8 to stderr must come
+    # back as text with replacement characters, never as `UnicodeDecodeError`; reverting `_run` to a strict decode
+    # makes this return False instead of crashing the self-test.
+    def _non_utf8_stderr():
+        try:
+            r = _run([sys.executable, "-c", r"import sys; sys.stderr.buffer.write(b'\xff\xfe\x80')"])
+        except UnicodeDecodeError:
+            return False
+        return "\ufffd" in r.stderr
+
+    cases.append(("a non-UTF-8 stderr is decoded leniently, not raised", _non_utf8_stderr()))
     bad = 0
     for label, ok in cases:
         print("  %s %s" % ("PASS" if ok else "FAIL", label))

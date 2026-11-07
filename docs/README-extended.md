@@ -24,17 +24,23 @@ Every figure on the front page is **derived from the fixtures and asserted by `t
 including in this file's shorter sibling. A phrase that *disappears* counts as a failure, so a stale line cannot be
 fixed by deleting it. Where a number is a *reading* rather than a measurement, the text says so.
 
-**The corpus of recovered functions is 391 entries, 390 of them byte-exact.** The composition matters more than the
-total, and any headline quoting it must carry this line:
+**The corpus of recovered functions is 221 entries, 220 of them byte-exact.** The composition matters more than the
+total, and any headline quoting it must carry this line — every figure in it is derived from
+`fixtures/decomp/recovered.json` and asserted by `tools/counts.py`, because the hand-typed version of this table summed
+to 198 against a corpus of 210 and had been short since M369:
 
 | | count | what it is |
 | --- | --- | --- |
-| reconstructed by hand from the disassembly | **46** | the information-bearing core — the table in §3 |
-| singles landed from one shape each | **55** | one draft per body, measured against `leaf_screen.py` |
-| imported from another decompilation, **removed in M369** (no licence) | **0** | one tool scores that corpus through this profile against this cartridge (`tools/other_corpus.py`); these fifteen came back word-exact, and nothing else about that project is taken on trust |
+| read by hand from the disassembly | **53** | the information-bearing core — the table in §3 |
+| from the screening tool | **52** | one draft per body, measured against `leaf_screen.py` |
+| one-off probes | **19** | named probes whose shape needed its own routine (`p6`…`p9`, `osmq`, `osev`, …) |
+| imported from another decompilation, **removed in M369** (no licence) | **0** | one tool scores that corpus through this profile against this cartridge (`tools/other_corpus.py`); nothing else about that project is taken on trust |
 | copies of twenty-one proven body shapes | **97** | one proven reconstruction registers every copy: 44 empty functions, 11 nine-word masked calls, **17 of the dispatch family** across eight table addresses (M335), three of a masked read-modify-write loop, three of a three-store setter, and the rest two-copy shapes found by the *statement order*, by the *stride* rather than the walk (M355), or by where a constant sits in an OR chain |
 
-So "210" is a **corpus** number, not 360 independent reconstructions. The remaining published residue is one function
+The corpus is therefore **53** by hand from the disassembly, **52** from the screening tool, **19** as one-off probes,
+and **97** copies of a proven shape — 221 in all, and the four add up or `counts.py` fails.
+
+So "221" is a **corpus** number, not 210 independent reconstructions. The remaining published residue is one function
 at **226 of 229 words**; everything else is byte-exact. And the cohort gain is not free but it is not
 closed either: the eight dispatch groups were reachable (M335), and three of the four bodies drafted alongside them
 were then closed by moving a *materialisation* ahead of a load — 11, 12 and 18 words, two copies each (M336) — while
@@ -217,7 +223,7 @@ and its role are measured, but the cartridge never labels it. The loop points a 
 This is the part that is unusual for a decompilation, and the part that can be checked in a minute. No ROM, no assets,
 no emulator.
 
-- **`tools/audit_gates.py` disables each check's mechanism and requires the check to fail.** 146 mechanisms, 146
+- **`tools/audit_gates.py` disables each check's mechanism and requires the check to fail.** 160 mechanisms, 160
   failures, **0 vacuous**, and the unmutated tool runs first as a positive control: an audit whose sandbox cannot run
   the tool is reported **BROKEN**, not passed. That control found that **49 of 132** audits had never tested their
   mutation — the sandbox had no `manifests/` — so an earlier `127/127` was inflated. It has since caught checks that

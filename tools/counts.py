@@ -71,9 +71,44 @@ CHECKS = [
     # "verify it without the cartridge" table. A third party found them by reading; a regex is cheaper than a reader.
     ("README.md", r"(\d+) of them are copies of (\d+) proven body shapes",
      ("cohort_copies", "cohort_shapes"), 1),
+    # M373: the block M366 left behind. Four sentences on the front page and its companion counted the 194
+    # third-party reconstructions that M369 removed, or an audit case count forty milestones out of date, and
+    # `docs/README-extended.md` was not a file this tool read *at all* -- so the page that explains the numbers was
+    # the one page nothing checked. Each of those sentences now carries derived numbers.
+    ("README.md",
+     r"\*\*(\d+) functions match the cartridge exactly\*\*, to the last byte, out of \*\*(\d+) reconstructed in C\*\*",
+     ("recovered_exact", "recovered"), 1),
+    ("README.md", r"\*\*(\d+)\*\* landed\s+from the screening tool, \*\*(\d+)\*\* read by hand\s+from the "
+                  r"disassembly, \*\*(\d+)\*\* one-off probes",
+     ("split_screened", "split_read", "split_named"), 1),
+    ("README.md", r"disables each check's mechanism\*\* and requires the check to fail, (\d+) mechanisms and (\d+)",
+     ("audit_cases",) * 2, 1),
+    ("docs/README-extended.md",
+     r"The corpus of recovered functions is \*{0,2}(\d+) entries, (\d+) of them byte-exact",
+     ("recovered", "recovered_exact"), 1),
+    ("docs/README-extended.md",
+     r"\*\*(\d+)\*\* by hand from the disassembly, \*\*(\d+)\*\* from the screening tool, \*\*(\d+)\*\* as "
+     r"one-off probes,\s+and \*\*(\d+)\*\* copies of a proven shape",
+     ("split_read", "split_screened", "split_named", "cohort_copies"), 1),
+    ("docs/README-extended.md", r"disables each check's mechanism and requires the check to fail\.\*\* (\d+) mechanisms, (\d+)",
+     ("audit_cases",) * 2, 1),
+    # the byte map's four totals, on the handover page: the sentence still said 330 176 B (16.9 %) unclassified,
+    # which the twelve-milestone byte-map arc closed at 440 B (0.0 %) in M349
+    ("docs/handover.md",
+     r"\*\*([\d\s,]+?) B padding\*\*, \*\*([\d\s,]+?) B\*\* `DAT_`-named data, \*\*([\d\s,]+?) B\*\* jump tables, "
+     r"\*\*([\d\s,]+?) B \((\d+)\.(\d) %\) unclassified",
+     ("bm_padding", "bm_data_named", "bm_jump_table", "bm_unclassified", "bm_unclass_whole",
+      "bm_unclass_dec"), 1),
+    ("docs/handover.md", r"indexes \*\*all (\d+) milestones\*\*", ("milestone_total",), 1),
+    ("docs/handover.md", r"\*\*([\d\s,]+?) of ([\d\s,]+?) suites, ([\d\s,]+?) of ([\d\s,]+?) cases\*\*",
+     ("runnable_suites", "total_suites", "runnable_cases", "total_cases"), 1),
+    ("docs/handover.md", r"\*\*all ([\d\s,]+?) suites / ([\d\s,]+?) cases\*\*",
+     ("total_suites", "total_cases"), 2),
     ("README.md", r"\*\*(\d+) checks run with no ROM, no assets and no emulator\*\* \u2014 the other (\d+) need",
      ("runnable_cases", "gated_cases"), 1),
     ("README.md", r"PASS-FAST: (\d+) cases run, (\d+) SKIP", ("runnable_cases", "gated_cases"), 1),
+    ("README.md", r"compares every function against the cartridge: (\d+) exact, (\d+) differs",
+     ("recovered_exact", "build_differs"), 1),
     ("README.md", r"tools/\s+(\d+) analysis and gate scripts", ("tool_count",), 1),
     ("README.md", r"docs/log/\s+(\d+) notes", ("note_count",), 1),
     # the codec claim on the front page, tied to the committed fixture rather than to prose
@@ -146,6 +181,7 @@ def derive(root: Path) -> dict:
         "tool_count": len([p for p in (root / "tools").iterdir()
                            if p.suffix in (".py", ".sh", ".c", ".swift")]),
         **_corpus(root),
+        **_bytemap(root),
     }
 
 
@@ -165,11 +201,29 @@ def _recovered(root: Path) -> dict:
     from collections import Counter as _Counter
     groups = _Counter((e.get("source") or e.get("source_file")) for e in entries)
     copies = sum(v for v in groups.values() if v > 1)
+    # M373: and the split of the non-cohort remainder was typed, not derived -- "46 by hand + 55 singles" summed to
+    # 198 against a corpus of 210 and had been short since M369. It is derivable after all, from the `probe` string
+    # that every entry carries, so it is derived: three provenances, and they must add up to the solo count.
+    solo = [e for e in entries if groups[(e.get("source") or e.get("source_file"))] == 1]
+    screened = sum(1 for e in solo if (e.get("probe") or "").startswith("single"))
+    read = sum(1 for e in solo if (e.get("probe") or "").startswith("read from the words"))
     return {"recovered": len(entries),
             "recovered_exact": sum(1 for e in entries if e["verdict"] == "byte-exact"),
+            # M374: what `make check` prints, tied to the fixture rather than typed. The build compares every body
+            # against the cartridge, so the two numbers it reports are the fixture's own split -- byte-exact, and
+            # everything else (the published partial). If a byte-exact body ever fails to build, `make check` fails,
+            # which is the cartridge tier's job; what this key stops is the *prose* drifting between builds.
+            "build_differs": sum(1 for e in entries if e["verdict"] != "byte-exact"),
             "cohort_copies": copies,
             "cohort_shapes": sum(1 for v in groups.values() if v > 1),
-            "imported": sum(1 for e in entries if e.get("source_file"))}
+            "solo": len(solo),
+            "split_screened": screened,
+            "split_read": read,
+            "split_named": len(solo) - screened - read,
+            # M369: this key used to be called `imported`, which was the conflation M368 found -- it counts entries
+            # whose C is a *file*, and after the removal every one of those is authored here. The name went with the
+            # population; the invariant that no third-party corpus is present is a case in `check()`, not a number.
+            "authored_files": sum(1 for e in entries if e.get("source_file"))}
 
 
 def _status(root: Path) -> dict:
@@ -234,6 +288,30 @@ def _corpus(root: Path) -> dict:
         "coverage_whole": tenths // 10,
         "coverage_dec": tenths % 10,
     }
+
+
+def _bytemap(root: Path) -> dict:
+    """The byte map's own totals, so the sentence that describes the residue cannot rot (M373).
+
+    `manifests/byte_map.json` tiles all 1 956 560 B and is regenerated by `classify_image.py --write`; the prose
+    that quotes its residue was last correct before the byte-map arc closed, still claiming 330 176 B (16.9 %)
+    unclassified where the arc ended at 440 B (0.0 %). Derived per class here, summed over the runs, so a
+    regenerated map moves the sentence or fails the check.
+    """
+    bm = json.loads((root / "manifests" / "byte_map.json").read_text())
+    tot = {}
+    for runs in bm["images"].values():
+        for lo, hi, cls, _why in runs:
+            tot[cls] = tot.get(cls, 0) + hi - lo + 1
+    image_bytes = sum(tot.values()) or 1
+    unc = tot.get("unclassified", 0)
+    tenths = (1000 * unc + image_bytes // 2) // image_bytes
+    return {"bm_padding": tot.get("padding", 0),
+            "bm_data_named": tot.get("data_named", 0),
+            "bm_jump_table": tot.get("jump_table", 0),
+            "bm_unclassified": unc,
+            "bm_unclass_whole": tenths // 10,
+            "bm_unclass_dec": tenths % 10}
 
 
 def _overlap(root: Path) -> int:
@@ -324,6 +402,33 @@ def check(root: Path, quiet: bool = False):
                       f"covered + unclaimed tiles all {len(imgs)} images", ok,
                       "ok" if ok else f"covered {cov} vs {vals['covered_bytes']}; untiled {tile[:3]}"))
 
+    # M373: two invariants the record had no case for. (a) `fixtures/decomp/measured_extents.json` publishes a
+    # `summary` block that said 188 functions / 23 868 B while its own list held 382 / 40 516 B -- and it said so
+    # for four milestones, because `extent_scan.py --write` computes the summary from a *rescan*, while M365 and
+    # M369 edited the lists. The lists are the source of truth now, so the summary is checked against them and
+    # rebuilt from them (`extent_scan.py --resummary`). (b) the third-party corpus stays removed: M369 deleted it,
+    # and nothing stops a future milestone from importing it again.
+    meas_path = root / "fixtures" / "decomp" / "measured_extents.json"
+    if not meas_path.exists():
+        cases.append(("the rung's summary agrees with its own list", False, "file missing"))
+    else:
+        rung = json.loads(meas_path.read_text())
+        want = {"functions": len(rung.get("functions", [])),
+                "bytes": 4 * sum(f["words"] for f in rung.get("functions", [])),
+                "regions": len(rung.get("regions", [])),
+                "rejected": sum(len(r["rejected"]) for r in rung.get("regions", [])),
+                "tail_jumps": sum(len(r["tail_jumps"]) for r in rung.get("regions", []))}
+        got = rung.get("summary", {})
+        ok = all(got.get(k) == v for k, v in want.items())
+        cases.append((f"the rung's summary agrees with its own list — {want['functions']} functions, "
+                      f"{want['bytes']:,} B", ok,
+                      "ok" if ok else "; ".join(f"{k} {got.get(k)} != {v}" for k, v in want.items()
+                                                if got.get(k) != v)))
+    cases.append(("the imported third-party corpus stays removed (M369)",
+                  not (root / "fixtures" / "decomp" / "imported").exists(),
+                  "ok" if not (root / "fixtures" / "decomp" / "imported").exists()
+                  else "fixtures/decomp/imported/ exists again — no licence, no corpus"))
+
     ovl = _overlap(root)
     ok = (len(sizes) == vals["functions"] + vals["fragments"]
           and total == vals["covered_bytes"] + ovl)
@@ -366,7 +471,7 @@ def self_test() -> int:
                     "fixtures/decomp/images.json", "fixtures/decomp/ranges.json",
                     "fixtures/decomp/recovered.json", "fixtures/decomp/measured_extents.json",
                     "fixtures/scd/profile.json", "manifests/code_index.json",
-                    "manifests/analysis_status.json"):
+                    "manifests/analysis_status.json", "manifests/byte_map.json"):
             (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / rel, tmp / rel)
         (tmp / "src").symlink_to(ROOT / "src")

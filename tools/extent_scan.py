@@ -49,6 +49,84 @@ def is_jr(w):
     return (w >> 26) == 0 and (w & 0x3F) == 0x08
 
 
+def simm16(w):
+    """The signed 16-bit displacement of a branch or memory instruction."""
+    v = w & 0xFFFF
+    return v - 0x10000 if v & 0x8000 else v
+
+
+def check_body(ws, start, end):
+    """M364/M365's four rejections, applied to one candidate extent [start, end] (word indices).
+
+    They exist because a body that is only "words up to the next `jr ra`" can be a fragment, and eleven of the
+    eighty-five entries M362 admitted failed at least one of these. Written once, here, with a self-test case each,
+    because the original implementation lived in a `/tmp` script that no longer exists -- which is why the rules were
+    re-derived by hand in two later milestones and applied inconsistently (M377).
+
+      * a **branch that leaves the body** -- its target is outside [start, end], so this extent is a fragment of a
+        larger function;
+      * a **self-branch** (`b .`, or any branch whose target is itself) -- the body never returns;
+      * an **epilogue with no prologue** -- it restores `$ra` from a frame it never saved, so the head of the
+        function is not in this extent;
+      * and, from the splitter rather than from here, a body **cut at a tail `j`** (opcode 2 ends a control path;
+        `jal`, opcode 3, does not -- that was M365's correction of M364, and it cost thirteen functions).
+    """
+    saved_ra = False
+    for i in range(start, end + 1):
+        w = ws[i]
+        o = w >> 26
+        if o in (4, 5, 6, 7) or (o == 1 and (w >> 16) & 0x1F == 0):
+            target = i + 1 + simm16(w)
+            if o == 4 and ((w >> 21) & 0x1F) == ((w >> 16) & 0x1F) and target == i:
+                return "branch to itself: the body never falls through"
+            if target < start or target > end:
+                return "a branch leaves the body (target word %d of %d..%d)" % (target, start, end)
+        if o == 0x2B and ((w >> 21) & 0x1F) == 0x1D:       # sw $ra, N($sp)
+            saved_ra = True
+        if o == 0x23 and ((w >> 21) & 0x1F) == 0x1D and ((w >> 16) & 0x1F) == 0x1F:   # lw $ra, N($sp)
+            if not saved_ra:
+                return "restores $ra from a frame it never saved: the head is outside this extent"
+    return None
+
+
+def ends_path(w):
+    """True when the word ends a control path: a return, or a tail `j` (opcode 2 -- never `jal`)."""
+    return w == JR_RA or (w >> 26) == 2
+
+
+def scan_strict(blob, base):
+    """`scan`, but cutting at tail jumps too and applying the four rejections (M377).
+
+    Kept beside `scan` rather than replacing it: the committed rung was produced by M365's hand-run rebuild, and a
+    reader has to be able to reproduce that measurement *or* see that a stricter tool disagrees. `--strict` selects
+    this one, and `--write --strict` is the reproducible path.
+    """
+    ws = words_of(blob)
+    funcs, rejected = [], []
+    start, i = 0, 0
+    while i < len(ws):
+        if ends_path(ws[i]):
+            delay = i + 1 if i + 1 < len(ws) else i
+            body = {"start": base + 4 * start, "end": base + 4 * delay, "words": delay - start + 1}
+            if body["words"] < 2:
+                rejected.append({**body, "why": "a lone return with no delay slot"})
+            else:
+                why = check_body(ws, start, delay)
+                if why:
+                    rejected.append({**body, "why": why})
+                else:
+                    funcs.append({**body, "returns": 1})
+            start = delay + 1
+            i = delay + 1
+            continue
+        i += 1
+    if start < len(ws):
+        rejected.append({"start": base + 4 * start, "end": base + 4 * len(ws) - 4,
+                         "words": len(ws) - start,
+                         "why": "no trailing return or tail jump: %d word(s) left" % (len(ws) - start)})
+    return funcs, rejected
+
+
 def scan(blob, base):
     """Return (functions, rejected) for a byte range starting at `base`; every extent is in bytes."""
     ws = words_of(blob)
@@ -92,8 +170,14 @@ def tail_jumps(blob, base):
     return out
 
 
-def code_runs():
-    """Every code-like run from M338's decomposition, as (image, start, end) in address order."""
+def code_runs(want=("unclassified",)):
+    """Every code-like run of the given byte-map classes, as (image, start, end) in address order.
+
+    M377: the class matters and used to be hard-coded to `unclassified`. That was right in M338, when 28 764 B of
+    code sat in that bucket; the twelve-milestone byte-map arc classified those runs, so by M372 `unclassified` holds
+    440 B in nine tails and `--code-runs` returned **nothing**. The rung's later entries came from `enclosed_data`
+    (M362) and `gap`, so the classes are selectable now -- otherwise the tool cannot reproduce the fixture it wrote.
+    """
     import classify_image as ci
     images = json.loads((ci.ROOT / "fixtures/decomp/images.json").read_text())
     bmap = json.loads((ci.ROOT / "manifests/byte_map.json").read_text())
@@ -104,7 +188,7 @@ def code_runs():
         if blob is None:
             continue
         for lo, hi, cls, _why in bmap["images"].get(name, []):
-            if cls != "unclassified":
+            if cls not in want:
                 continue
             b = blob[lo - base:hi - base + 1]
             ev = ci.code_run_evidence(b, base, size)
@@ -114,6 +198,18 @@ def code_runs():
 
 
 def self_test():
+    def _blob(words):
+        return b"".join(w.to_bytes(4, "big") for w in words)
+
+    def _funcs_strict(words):
+        return scan_strict(_blob(words), 0)[0]
+
+    def _why_strict(words):
+        # index-safe on purpose: with the rules disabled this must FAIL, not raise (M204's rule -- a crash is not a
+        # message, and a mutation that crashes the self-test proves nothing about the rule it removed)
+        rej = scan_strict(_blob(words), 0)[1]
+        return rej[0]["why"] if rej else ""
+
     # a two-function body: prologue-free leaf, then a leaf with a delay-slot store
     two = (0x24020001, 0x03E00008, 0x00000000,           # li v0,1 ; jr ra ; nop
            0x8C820000, 0x24030002, 0x03E00008, 0xAC430000)  # lw v0,0(a0) ; li v1,2 ; jr ra ; sw v1,0(v0)
@@ -128,6 +224,20 @@ def self_test():
          and "delay slot" in scan(b"".join(w.to_bytes(4, "big") for w in (0x03E00008,)), 0)[1][0]["why"]),
         ("a tail with no return is rejected, never sized as a function",
          scan(b"".join(w.to_bytes(4, "big") for w in (0x24020001, 0x24020002)), 0)[1][0]["why"].startswith("no trailing")),
+        # M377: one case per rule the tool lacked -- each fails if its rule is removed.
+        ("strict: a body is cut at a tail `j`, because a `j` ends a control path",
+         scan_strict(b"".join(w.to_bytes(4, "big") for w in (0x08000010, 0x00000000, JR_RA, 0)), 0)[0][0]["words"] == 2
+         and len(scan_strict(b"".join(w.to_bytes(4, "big") for w in (0x08000010, 0x00000000, JR_RA, 0)), 0)[0]) == 2),
+        ("strict: `jal` is a call, not a tail jump -- the body continues past it",
+         [x["words"] for x in scan_strict(b"".join(w.to_bytes(4, "big") for w in
+                                                (0x0C000010, 0x00000000, JR_RA, 0)), 0)[0]] == [4]),
+        ("strict: a branch whose target leaves the body is rejected",
+         _why_strict((0x10800010, JR_RA, 0, 0)).startswith("a branch leaves")),
+        ("strict: a self-branch is rejected (b .)", "branch to itself" in _why_strict((0x1000FFFF, JR_RA, 0))),
+        ("strict: an epilogue restoring `ra` from a frame it never saved is rejected",
+         _funcs_strict((0x8FBF0010, JR_RA, 0)) == [] and "never saved" in _why_strict((0x8FBF0010, JR_RA, 0))),
+        ("strict: a saved-then-restored `ra` is a legal frame",
+         _funcs_strict((0xAFBF0010, 0x8FBF0010, JR_RA, 0)) != []),
         ("a `jr` through another register is reported as a tail jump, not a return",
          tail_jumps(b"".join(w.to_bytes(4, "big") for w in (0x03200008,)), 0x80100000)[0]["at"] == 0x80100000
          and scan(b"".join(w.to_bytes(4, "big") for w in (0x03200008,)), 0)[0] == []),
@@ -146,13 +256,44 @@ def main(argv=None):
     ap.add_argument("--image")
     ap.add_argument("--start")
     ap.add_argument("--end")
-    ap.add_argument("--code-runs", action="store_true", help="scan every code-like run M338 measured")
+    ap.add_argument("--code-runs", action="store_true", help="scan every code-like run of --region-class")
+    ap.add_argument("--region-class", default="unclassified",
+                    help="byte-map class to scan with --code-runs (comma-separated; default `unclassified`, which "
+                         "the byte-map arc emptied -- `enclosed_data` is where M362's entries came from)")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--strict", action="store_true",
+                    help="apply M364/M365's four rejections and cut at tail jumps (M377); the committed rung was "
+                         "produced without them, so a diff between the two is a reconciliation, not a regression")
     ap.add_argument("--write", metavar="FIXTURE", help="write the measured extents to a fixture")
+    ap.add_argument("--resummary", metavar="FIXTURE",
+                    help="recompute a fixture's `summary` block from its own lists, without rescanning")
     a = ap.parse_args(argv)
 
     if a.self_test:
         return self_test()
+
+    if a.resummary:
+        # M373: `--write` computes the summary from a *rescan*, but later milestones edit the lists (M365 split
+        # the glued pairs, M369 withdrew 194 entries as listings) without rescanning -- so the summary drifted to
+        # 188 functions / 23 868 B while the list held 382 / 40 516 B, and said so on the handover page. The lists
+        # are the source of truth once a correction has been adopted, so the summary is recomputed *from them*:
+        # this is a regeneration, not a hand patch, and `counts.py --check` now asserts the two agree.
+        dest = Path(a.resummary)
+        doc = json.loads(dest.read_text())
+        funcs, regions = doc.get("functions", []), doc.get("regions", [])
+        summary = {"regions": len(regions),
+                   "functions": len(funcs),
+                   "bytes": 4 * sum(f["words"] for f in funcs),
+                   "rejected": sum(len(r["rejected"]) for r in regions),
+                   "tail_jumps": sum(len(r["tail_jumps"]) for r in regions)}
+        before = doc.get("summary", {})
+        doc["summary"] = summary
+        dest.write_text(json.dumps(doc, indent=1) + "\n")
+        print("resummarised %s" % dest)
+        for k in summary:
+            if before.get(k) != summary[k]:
+                print("  %-10s %s -> %s" % (k, before.get(k), summary[k]))
+        return 0
 
     import classify_image as ci
     images = json.loads((ci.ROOT / "fixtures/decomp/images.json").read_text())
@@ -160,7 +301,7 @@ def main(argv=None):
 
     regions = []
     if a.code_runs:
-        regions = code_runs()
+        regions = code_runs(tuple(c.strip() for c in a.region_class.split(",") if c.strip()))
     elif a.image and a.start and a.end:
         regions = [(a.image, int(a.start, 16), int(a.end, 16))]
     else:
@@ -174,7 +315,8 @@ def main(argv=None):
             print("SKIP %s (no bytes)" % name)
             continue
         base = img["base"]
-        funcs, rejected = scan(blob[lo - base:hi - base + 1], lo)
+        slicer = scan_strict if a.strict else scan
+        funcs, rejected = slicer(blob[lo - base:hi - base + 1], lo)
         tails = tail_jumps(blob[lo - base:hi - base + 1], lo)
         out.append({"image": name, "region": [lo, hi], "functions": funcs,
                     "rejected": rejected, "tail_jumps": tails})

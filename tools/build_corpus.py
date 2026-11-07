@@ -46,11 +46,55 @@ def probe():
     return module
 
 
+def table_map() -> dict:
+    """image -> [(dispatcher, table, declared_cases)] from `manifests/jump_tables.json` (M374).
+
+    The manifest was built by `find_jump_tables.py`, which finds the `lui`/`addiu` pair that feeds a `jr v0` and
+    records the table it addresses. Keyed by *dispatcher* -- an address inside the function, not its head -- which is
+    exactly what containment needs.
+    """
+    out = {}
+    for img in json.loads((ROOT / "manifests" / "jump_tables.json").read_text())["images"]:
+        out[img["name"]] = [(int(t["dispatcher"], 16), int(t["table"], 16), t.get("declared_cases"))
+                            for t in img.get("tables", [])]
+    return out
+
+
+def pool_address(tables, image, addr: int, words: int):
+    """Where this function's constant pool belongs in the image, or (None, why).
+
+    A function whose C emits a jump table refers to it through `lui`/`addiu`, so the object carries a `.rodata` that
+    the build has to *place*. Parking it at `0x90000000` (the M356 lesson, kept as the fallback) makes the function
+    differ for a reason that has nothing to do with its code; the image's own address is what makes the linked words
+    match, and that address is not new knowledge -- the manifest already holds it, and containment finds it without a
+    new fixture key:
+
+        the unique table whose dispatcher lies inside [addr, addr + 4·words)
+
+    Zero matches means the pool is not a jump table (or the manifest missed it); more than one means the function
+    dispatches twice and the build cannot know which table its `.rodata` corresponds to. Both are reported, never
+    guessed -- a wrong pool would look like a code difference, which is the confusion this tool exists to end.
+    """
+    hits = {(d, t) for d, t, _n in tables.get(image, []) if addr <= d < addr + 4 * words}
+    if len(hits) == 1:
+        pool = sorted(hits)[0][1]
+        # the link script places `.text` first and `.rodata` afterwards, and ld cannot move the location counter
+        # backwards -- so a table that lives *before* the body has to keep the far fallback rather than fail the link
+        if pool < addr + 4 * words:
+            return None, "table 0x%08x precedes the body's end" % pool
+        return pool, "one dispatcher in extent"
+    if len(hits) > 1:
+        return None, "%d dispatchers in extent: %s" % (len(hits), ", ".join("0x%08x" % t for _d, t in sorted(hits)))
+    return None, "no dispatcher in extent"
+
+
 def recovered_by_image(cp) -> dict:
-    """image -> [(address, words, text, syms, label)] from the fixture, which stays the single reader.
+    """image -> [(address, words, text, syms, label, verdict)] from the fixture, which stays the single reader.
 
     The symbols of a constant-based reconstruction live in the probe's `SINGLES` table, not in the fixture (the
-    file-based ones carry theirs), so both channels are read here — the same two the probe itself uses.
+    file-based ones carry theirs), so both channels are read here — the same two the probe itself uses. The verdict
+    travels with the row because `--check` now distinguishes "a body that differs because it is a published partial"
+    from "a body that differs because the build is wrong", and only the fixture can tell them apart.
     """
     fixture = json.loads((ROOT / "fixtures" / "decomp" / "recovered.json").read_text())
     singles = {row[0]: tuple(row[4]) for row in getattr(cp, "SINGLES", [])}
@@ -68,13 +112,14 @@ def recovered_by_image(cp) -> dict:
         if text is None:
             continue
         out.setdefault(entry["image"], []).append(
-            (int(entry["address"], 16), int(entry["words"]), text, syms, entry.get("probe", "")[:60]))
+            (int(entry["address"], 16), int(entry["words"]), text, syms, entry.get("probe", "")[:60],
+             entry.get("verdict", "")))
     for rows in out.values():
         rows.sort()
     return out
 
 
-def build_image(cp, name, rows, check: bool) -> dict:
+def build_image(cp, name, rows, check: bool, tables=None) -> dict:
     """Compile, link and stitch every function of one image; report what went in and what matched.
 
     One object per link, not one link for the image: binutils 2.42 refuses to merge objects from binutils 2.7
@@ -95,8 +140,9 @@ def build_image(cp, name, rows, check: bool) -> dict:
     ld = cp.GAS / "mips-linux-gnu-ld"
     work = OUT / name
     work.mkdir(parents=True, exist_ok=True)
-    records, matched, mismatched = [], 0, 0
-    for index, (addr, words, text, syms, label) in enumerate(rows):
+    records, matched, mismatched, unexpected = [], 0, 0, []
+    tables = tables or {}
+    for index, (addr, words, text, syms, label, verdict) in enumerate(rows):
         stem = work / ("f%03d_%08x" % (index, addr))
         c, s, o, fx, elf = (stem.with_suffix(x) for x in (".c", ".s", ".o", ".fix.o", ".elf"))
         c.write_text(text)
@@ -112,13 +158,16 @@ def build_image(cp, name, rows, check: bool) -> dict:
         subprocess.run([str(objcopy), "--set-section-alignment", ".text=4", "--set-section-alignment",
                         ".rodata=8", str(o), str(fx)], capture_output=True)
         # `.rodata` is *placed*, not discarded: a function with a constant pool refers to that section, and a
-        # discarded section is a link error (M356's lesson, applied here). Far away, so it cannot disturb the words
-        # being compared.
+        # discarded section is a link error (M356's lesson, applied here). M374: placed at the *image's* address for
+        # that pool when the manifest names it, because 0x90000000 makes twelve byte-exact bodies look like
+        # differences; the far address stays the fallback for a pool the manifest cannot locate.
+        pool, why = pool_address(tables, name, addr, words)
         (stem.with_suffix(".ld")).write_text(
-            "SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  . = 0x90000000;\n"
+            "SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  . = %#x;\n"
             "  .rodata : { *(.rodata) *(.rodata.*) }\n  .data : { *(.data) *(.bss) *(.sbss) }\n"
             "  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) *(.comment) *(.pdr) *(.mdebug*) *(.gnu.attributes) }\n}\n"
-            % addr + "".join("%s = 0x%X;\n" % (k, v) for k, v in syms))
+            % (addr, pool if pool else 0x90000000)
+            + "".join("%s = 0x%X;\n" % (k, v) for k, v in syms))
         if subprocess.run([str(ld), "-T", str(stem.with_suffix(".ld")), "-o", str(elf), str(fx)],
                           capture_output=True).returncode:
             records.append({**record, "status": "link-failed"})
@@ -130,7 +179,7 @@ def build_image(cp, name, rows, check: bool) -> dict:
         # *image's* address for that pool is per-function knowledge (a jump table at 0x800b9c78, say). Those come out
         # "differs" for a reason that is not about the code, so they are counted apart instead of inflating the
         # residue: 12 of the 13 below are this, the thirteenth is the published 226-of-229.
-        pool = bool(cp.text_of(o, ".rodata")) if hasattr(cp, "text_of") else False
+        has_pool = bool(cp.text_of(o, ".rodata")) if hasattr(cp, "text_of") else False
         if ok:
             off = addr - base
             image[off:off + 4 * words] = want
@@ -139,9 +188,21 @@ def build_image(cp, name, rows, check: bool) -> dict:
         if check:
             matched += 1 if ok else 0
             mismatched += 0 if ok else 1
-        records.append({**record, "status": "exact" if ok else ("differs (constant pool not placed)" if pool else "differs"),
+            # a difference is only the build's fault if the fixture claims the body byte-exact; a published partial
+            # is expected to differ, and M374 is where that distinction becomes the exit status of `make check`
+            if not ok and verdict == "byte-exact":
+                unexpected.append("0x%08x" % addr)
+        if ok:
+            status = "exact"
+        elif has_pool and not pool:
+            status = "differs (constant pool not placed)"
+        else:
+            status = "differs"
+        records.append({**record, "status": status,
+                        "pool": ("0x%08x" % pool) if (has_pool and pool) else None,
+                        "pool_evidence": why if has_pool else None,
                         "sha256": hashlib.sha256(code).hexdigest()[:16]})
-    covered = sum(4 * w for _a, w, _t, _s, _l in rows)
+    covered = sum(4 * w for _a, w, _t, _s, _l, _v in rows)
     # the stitched image is the honest artefact: every recovered body at its own address, zero everywhere else
     flat = OUT / ("%s.bin" % name)
     flat.write_bytes(bytes(image))
@@ -152,7 +213,9 @@ def build_image(cp, name, rows, check: bool) -> dict:
             "compiled": sum(1 for r in records if r["status"] in ("exact", "differs")),
             "covered_bytes": covered, "claimed_bytes": sum(claimed),
             "share": round(sum(claimed) / max(len(blob), 1), 4), "linked": built,
-            "exact": matched, "mismatched": mismatched, "functions_list": records}
+            "exact": matched, "mismatched": mismatched, "unexpected": unexpected,
+            "pool_placed": sum(1 for r in records if r.get("pool")),
+            "functions_list": records}
 
 
 def main(argv) -> int:
@@ -165,14 +228,32 @@ def main(argv) -> int:
     a = ap.parse_args(argv)
     cp = probe()
     by_image = recovered_by_image(cp)
+    tables = table_map()
     if a.self_test:
         name = "ovl_00b2d7a"
-        record = build_image(cp, name, by_image.get(name, []), True)
+        record = build_image(cp, name, by_image.get(name, []), True, tables)
         ok = record.get("compiled", 0) == record.get("functions", -1) > 0 and record.get("mismatched", 1) == 0
         print("  %s %s: %d of %d functions linked and byte-exact"
               % ("PASS" if ok else "FAIL", name, record.get("exact", 0), record.get("functions", 0)))
-        print("%d/%d build-corpus case(s)" % (1 if ok else 0, 1))
-        return 0 if ok else 1
+        # M374: the second case cross-validates the two independent sources for a pool address. The probe places
+        # each of its twelve switch tables *by hand* (`P7_TABLE` 0x800B8F78, `P8_TABLE` 0x800B69B0, ...); the build
+        # derives the same address by containment in `manifests/jump_tables.json`. If either drifts -- a regenerated
+        # manifest, a renamed constant -- the two stop agreeing, and this case is what notices. Manifest-only, so it
+        # would hold even if every compile were skipped.
+        consts = {v for k, v in vars(cp).items() if k.endswith("_TABLE") and isinstance(v, int)}
+        found = set()
+        for img, rows in by_image.items():
+            for row in rows:
+                pool, _why = pool_address(tables, img, row[0], row[1])
+                if pool:
+                    found.add(pool)
+        missing = sorted(consts - found)
+        ok2 = not missing and len(consts) >= 12
+        print("  %s every table the probe places by hand is also found by containment: %d constant(s), "
+              "%d found%s" % ("PASS" if ok2 else "FAIL", len(consts), len(consts & found),
+                              "" if ok2 else " -- missing %s" % [hex(m) for m in missing]))
+        print("%d/2 build-corpus case(s)" % (sum(1 for x in (ok, ok2) if x)))
+        return 0 if (ok and ok2) else 1
     names = a.image or sorted(by_image)
     if OUT.exists() and not a.image:
         shutil.rmtree(OUT)
@@ -180,9 +261,13 @@ def main(argv) -> int:
     index, ok = [], True
     for name in names:
         rows = by_image.get(name, [])
-        record = build_image(cp, name, rows, a.check) if rows else {"image": name, "functions": 0}
+        record = build_image(cp, name, rows, a.check, tables) if rows else {"image": name, "functions": 0}
         index.append(record)
-        if a.check and record.get("mismatched"):
+        # M374: `--check` is now a verdict, not a report. A body that differs from the cartridge is the build's
+        # fault *unless* the fixture already publishes it as a partial (`0x8007e590`, 226 of 229) -- so the exit
+        # status turns on that distinction instead of on "there are still residues", which is what made
+        # `make check` red by construction for every milestone since the build existed.
+        if a.check and record.get("unexpected"):
             ok = False
     (OUT / "index.json").write_text(json.dumps({"tool": "build_corpus.py", "profile": CFLAGS,
                                                 "images": index}, indent=1) + "\n")
@@ -197,11 +282,19 @@ def main(argv) -> int:
         verdict = "linked" if r["linked"] else "LINK FAILED"
         if a.check:
             verdict = "%d exact, %d differ" % (r["exact"], r["mismatched"])
+            if r.get("unexpected"):
+                verdict += " (UNEXPECTED: %s)" % ", ".join(r["unexpected"])
         print("%-14s %6d %6d %9d %6.1f%% %s" % (r["image"], r["functions"], r["compiled"], r["covered_bytes"],
                                                  100.0 * r["share"], verdict))
     total = sum(r.get("covered_bytes", 0) for r in index)
     print("\n%d functions over %d images, %d bytes of the corpus built into ELFs under build/corpus/"
           % (sum(r.get("functions", 0) for r in index), len(index), total))
+    if a.check:
+        ex = sum(r.get("exact", 0) for r in index)
+        mm = sum(r.get("mismatched", 0) for r in index)
+        pl = sum(r.get("pool_placed", 0) for r in index)
+        print("%d exact, %d differ (%d with the image's own pool address placed); unexpected differences: %s"
+              % (ex, mm, pl, sum(len(r.get("unexpected", [])) for r in index)))
     return 0 if ok else 1
 
 

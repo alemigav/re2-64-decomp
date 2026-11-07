@@ -1767,6 +1767,119 @@
     "D_800c76b0": 2148300464,
     "D_80012884": 2147559556
    }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80043374",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a three-halfword copy out of 0x80139A80 -- the sign-extended base is the whole trap",
+   "source_file": "fixtures/decomp/authored/stage2/80043374.c",
+   "syms": {
+    "D_80139a80": 2148768384
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004343c",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, the same three-load copy storing sign-extended halves as words",
+   "source_file": "fixtures/decomp/authored/stage2/8004343c.c",
+   "syms": {
+    "D_80139a80": 2148768384
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004d320",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a load returned plus an eight-byte zero store -- the pair is what makes gcc materialise two zeros",
+   "source_file": "fixtures/decomp/authored/stage2/8004d320.c",
+   "syms": {
+    "D_8010b700": 2148579072
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071df0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a byte copied through two loaded pointers and a pointer field advanced by two",
+   "source_file": "fixtures/decomp/authored/stage2/80071df0.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x800390b8",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 10 of 10, ten words, an index of 124 bytes per entry (31 words) built by shift-subtract-shift",
+   "source_file": "fixtures/decomp/authored/stage2/800390b8.c",
+   "syms": {
+    "D_800ebda8": 2148449704
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80040e30",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 10 of 10, ten words, a masked float table read -- `lwc1` is the tell that the accessor returns a float",
+   "source_file": "fixtures/decomp/authored/stage2/80040e30.c",
+   "syms": {
+    "D_800f5e30": 2148490800
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80074024",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 10 of 10, ten words, the M372 shape again: symbol plus 0x18000 kept apart, then a loaded pointer indexed",
+   "source_file": "fixtures/decomp/authored/stage2/80074024.c",
+   "syms": {
+    "D_800c76b0": 2148300464
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002d164",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, three zero-stores through a re-read pointer field -- the reload is the alias rule doing the work",
+   "source_file": "fixtures/decomp/authored/stage2/8002d164.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e848",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a call through a method-table slot with a 200-byte stack buffer as its second argument",
+   "source_file": "fixtures/decomp/authored/stage2/8002e848.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80052eec",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a ten-byte-stride scan capped at 32 entries -- the unsigned index is what makes it `sltiu`",
+   "source_file": "fixtures/decomp/authored/stage2/80052eec.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e810",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M376): 14 of 14, a method-table call through slot 8 followed by a named callee -- the frame is 24 bytes and holds one saved register",
+   "source_file": "fixtures/decomp/authored/stage2/8002e810.c",
+   "syms": {
+    "FUN_800283b0": 2147648432
+   }
   }
  ]
 }

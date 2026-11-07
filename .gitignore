@@ -30,3 +30,9 @@ docs/*.pdf
 # macOS Finder metadata. Tracked by accident since the first commit and churned on every directory open;
 # the two files were removed from the index here, and this rule keeps them from coming back.
 .DS_Store
+
+# Python bytecode: these were tracked by accident, so every tool run churned 20+ files in `git status`, and a
+# stale `.pyc` beside a rebuilt module is a cache the interpreter trusts before it reads the source. Neither belongs
+# in the repository: they are derived artefacts of running the tools, never evidence (M373).
+__pycache__/
+*.pyc

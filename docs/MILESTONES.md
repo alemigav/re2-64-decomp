@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-373 milestones are indexed. 295 of them have a note; the rest are rows in the log that cite
+378 milestones are indexed. 300 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -391,6 +391,11 @@ at the foot of this file.
 | 370 | **M370** — the larger entries: strlen, memcpy, and a two-call combiner | `docs/log/M370-the-larger-entries.md` |
 | 371 | **M371** — the corpus builds: a Makefile, 23 image ELFs, and 194 functions that link and match | `docs/log/M371-the-corpus-builds.md` |
 | 372 | **M372** — the three-copy cohort that needed two addends: symbol plus a constant, kept apart | `docs/log/M372-the-symbol-plus-a-two-term-constant.md` |
+| 373 | **M373** — the truth pass: five stale numbers, and the page nothing was checking | `docs/log/M373-the-truth-pass.md` |
+| 374 | **M374** — the thirteen pools placed by containment, and `make check` becomes a verdict | `docs/log/M374-the-pools-placed-by-containment.md` |
+| 375 | **M375** — the 9–12 word band: ten read, two refused, three left standing | `docs/log/M375-the-9-12-word-band.md` |
+| 376 | **M376** — the 13–20 word band: one read, four left standing | `docs/log/M376-the-13-20-band-and-its-wall.md` |
+| 377 | **M377** — the four rules come back, and the population they measured is gone | `docs/log/M377-the-four-rules-and-the-lost-population.md` |
 
 ## The gaps, and why they are empty
 

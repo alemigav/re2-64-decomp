@@ -10,12 +10,12 @@
  },
  "totals": {
   "F0": 3665,
-  "F1": 3457,
-  "F2": 3397,
+  "F1": 3464,
+  "F2": 3404,
   "named": 33,
   "validated": 12,
   "validated_unnamed": 12,
-  "extent_measured": 208
+  "extent_measured": 201
  },
  "f4_evidence": {
   "stage2:0x800b53f4": "M199 \u2014 the voice synthesis, bit-exact against the cartridge",
@@ -3332,16 +3332,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8002d164": {
-   "name": "FUN_8002d164",
-   "image": "stage2",
-   "address": "0x8002d164",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8002d188": {
    "name": "FUN_8002d188",
    "image": "stage2",
@@ -3517,16 +3507,6 @@
    "image": "stage2",
    "address": "0x8002e810",
    "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8002e848": {
-   "name": "FUN_8002e848",
-   "image": "stage2",
-   "address": "0x8002e848",
-   "callees": 0,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -7106,16 +7086,6 @@
    "name": "FUN_80052e58",
    "image": "stage2",
    "address": "0x80052e58",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80052eec": {
-   "name": "FUN_80052eec",
-   "image": "stage2",
-   "address": "0x80052eec",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -18382,16 +18352,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800390b8": {
-   "name": "FUN_800390b8",
-   "image": "stage2",
-   "address": "0x800390b8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8003913c": {
    "name": "FUN_8003913c",
    "image": "stage2",
@@ -18482,40 +18442,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80040e30": {
-   "name": "FUN_80040e30",
-   "image": "stage2",
-   "address": "0x80040e30",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8004249c": {
    "name": "FUN_8004249c",
    "image": "stage2",
    "address": "0x8004249c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80043374": {
-   "name": "FUN_80043374",
-   "image": "stage2",
-   "address": "0x80043374",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8004343c": {
-   "name": "FUN_8004343c",
-   "image": "stage2",
-   "address": "0x8004343c",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -18656,16 +18586,6 @@
    "name": "FUN_80049fa0",
    "image": "stage2",
    "address": "0x80049fa0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8004d320": {
-   "name": "FUN_8004d320",
-   "image": "stage2",
-   "address": "0x8004d320",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19172,16 +19092,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80071df0": {
-   "name": "FUN_80071df0",
-   "image": "stage2",
-   "address": "0x80071df0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800725ac": {
    "name": "FUN_800725ac",
    "image": "stage2",
@@ -19376,16 +19286,6 @@
    "name": "FUN_80073fb4",
    "image": "stage2",
    "address": "0x80073fb4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80074024": {
-   "name": "FUN_80074024",
-   "image": "stage2",
-   "address": "0x80074024",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19822,10 +19722,30 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x8002d164": {
+   "name": "FUN_8002d164",
+   "image": "stage2",
+   "address": "0x8002d164",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x8002e808": {
    "name": "FUN_8002e808",
    "image": "stage2",
    "address": "0x8002e808",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8002e848": {
+   "name": "FUN_8002e848",
+   "image": "stage2",
+   "address": "0x8002e848",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -20002,6 +19922,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x800390b8": {
+   "name": "FUN_800390b8",
+   "image": "stage2",
+   "address": "0x800390b8",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x80039ba0": {
    "name": "FUN_80039ba0",
    "image": "stage2",
@@ -20066,6 +19996,36 @@
    "name": "FUN_80040e10",
    "image": "stage2",
    "address": "0x80040e10",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x80040e30": {
+   "name": "FUN_80040e30",
+   "image": "stage2",
+   "address": "0x80040e30",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x80043374": {
+   "name": "FUN_80043374",
+   "image": "stage2",
+   "address": "0x80043374",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8004343c": {
+   "name": "FUN_8004343c",
+   "image": "stage2",
+   "address": "0x8004343c",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -20252,6 +20212,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x8004d320": {
+   "name": "FUN_8004d320",
+   "image": "stage2",
+   "address": "0x8004d320",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x8004fc34": {
    "name": "FUN_8004fc34",
    "image": "stage2",
@@ -20306,6 +20276,16 @@
    "name": "FUN_80052bbc",
    "image": "stage2",
    "address": "0x80052bbc",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x80052eec": {
+   "name": "FUN_80052eec",
+   "image": "stage2",
+   "address": "0x80052eec",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -20732,6 +20712,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x80071df0": {
+   "name": "FUN_80071df0",
+   "image": "stage2",
+   "address": "0x80071df0",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x8007230c": {
    "name": "FUN_8007230c",
    "image": "stage2",
@@ -20786,6 +20776,16 @@
    "name": "FUN_80072768",
    "image": "stage2",
    "address": "0x80072768",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x80074024": {
+   "name": "FUN_80074024",
+   "image": "stage2",
+   "address": "0x80074024",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,

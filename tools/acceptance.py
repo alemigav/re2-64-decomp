@@ -104,10 +104,10 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 232, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 243, True),
     ("other corpus (repository)", [sys.executable, "tools/other_corpus.py", "--self-test"], 21, True),
     ("toolchain matrix (cartridge)", [sys.executable, "tools/toolchain_matrix.py", "--check"], 4, True),
-    ("corpus build (cartridge)", [sys.executable, "tools/build_corpus.py", "--self-test"], 1, True),
+    ("corpus build (cartridge)", [sys.executable, "tools/build_corpus.py", "--self-test"], 2, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     # M273: the README's progress map is generated from the fixtures, so it cannot drift from them, and every
     # function it claims as recovered must exist in the corpus. Repository-only: no cartridge needed.
@@ -124,7 +124,7 @@ SUITES = [
     # M319: the leaf screen's pure half -- the five rules that separate compiled code from hand-written
     # assembly (no `jr ra`, CP0, branch-to-self, writes $at/$k0, jumps through them). Listing needs the
     # cartridge; the rules do not.
-    ("leaf screen (repository)", [sys.executable, "tools/leaf_screen.py", "--self-test"], 12, False),
+    ("leaf screen (repository)", [sys.executable, "tools/leaf_screen.py", "--self-test"], 13, False),
     ("preflight (repository)", [sys.executable, "tools/preflight.py", "--self-test"], 6, False),
     ("handler region (cartridge)", [sys.executable, "tools/handler_region.py", "--check"], 13, True),
     ("script vm decoder (cartridge)", [sys.executable, "tools/scd_vm.py", "--check"], 34, True),
@@ -184,9 +184,9 @@ SUITES = [
     # is the one that notices the docs no longer agree. It caught its own registration (M180).
     # M339: measuring function extents inside byte-map regions no artifact names. The self-test covers the
     # split rule (a return is `jr ra` + its delay slot; a lone `jr ra` and a tail with no return are rejected).
-    ("extent scan (repository)", [sys.executable, "tools/extent_scan.py", "--self-test"], 5, False),
+    ("extent scan (repository)", [sys.executable, "tools/extent_scan.py", "--self-test"], 11, False),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
-    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 29, False),
+    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 42, False),
     # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain
     # loop cannot: drop a result, reorder the report, or swallow a death. Its own `--self-test` does not
     # run SUITES, so registering it is not the recursion that `--check` would be.

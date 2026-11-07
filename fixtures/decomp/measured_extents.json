@@ -3,8 +3,8 @@
  "note": "Function extents measured from the bytes. `corrections` (M340) replace a census entry's truncated body with the extent the bytes have. `functions` (M341) are extents inside byte-map regions that no artifact names: new census entries with no C and no provider record, published as a disassembly listing rather than pseudocode. `regions` is the raw scan evidence behind both.",
  "summary": {
   "regions": 74,
-  "functions": 188,
-  "bytes": 23868,
+  "functions": 371,
+  "bytes": 40088,
   "rejected": 12,
   "tail_jumps": 9
  },
@@ -1253,27 +1253,9 @@
   },
   {
    "image": "stage2",
-   "address": "0x8002d164",
-   "words": 9,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "stage2",
    "address": "0x8002de0c",
    "words": 66,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002e810",
-   "words": 14,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002e848",
-   "words": 9,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "stage2",
@@ -1373,12 +1355,6 @@
   },
   {
    "image": "stage2",
-   "address": "0x800390b8",
-   "words": 10,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "stage2",
    "address": "0x8003913c",
    "words": 18,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -1433,12 +1409,6 @@
   },
   {
    "image": "stage2",
-   "address": "0x80040e30",
-   "words": 10,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80040e08..0x80040e57, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "stage2",
    "address": "0x800411b8",
    "words": 90,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
@@ -1448,18 +1418,6 @@
    "address": "0x8004249c",
    "words": 8,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8004249c..0x800424bb, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80043374",
-   "words": 9,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80043374..0x80043397, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004343c",
-   "words": 9,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8004343c..0x8004345f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -1547,12 +1505,6 @@
   },
   {
    "image": "stage2",
-   "address": "0x8004d320",
-   "words": 9,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8004d320..0x8004d343, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "stage2",
    "address": "0x80050fa8",
    "words": 71,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
@@ -1562,12 +1514,6 @@
    "address": "0x80051104",
    "words": 11,
    "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80051104..0x8005113f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80052eec",
-   "words": 9,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
    "image": "stage2",
@@ -1889,12 +1835,6 @@
   },
   {
    "image": "stage2",
-   "address": "0x80071df0",
-   "words": 9,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "stage2",
    "address": "0x800725ac",
    "words": 12,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -2012,12 +1952,6 @@
    "address": "0x80073fb4",
    "words": 28,
    "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80074024",
-   "words": 10,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
    "image": "stage2",

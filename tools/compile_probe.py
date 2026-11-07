@@ -5672,6 +5672,10 @@ def check():
                         _clash += 1
                         break
         _sum = _me["summary"]
+        # M373: `_me` is reused below (M340 rebinds it to the `corrections` list), so the rung's own sizes are
+        # captured here, where they still mean what this case needs them to mean.
+        _me_n, _me_regions_n = len(_me["functions"]), len(_me["regions"])
+        _me_bytes = 4 * sum(f["words"] for f in _me["functions"])
     except Exception:
         _me = _sum = None
         _clash = -1
@@ -5757,8 +5761,12 @@ def check():
                   f"rejected for want of a return and {(_sum or {}).get('tail_jumps', 0)} `jr` tail jump(s) "
                   f"reported separately -- and **{_clash}** of them overlap a census function (M339)"
                   if _me else "measured extents: not run",
-                  bool(_me) and _sum["functions"] == 188 and _sum["bytes"] == 23868
-                  and _sum["regions"] == 74 and _clash == 0))
+                  # M373: this case pinned the summary's own numbers (188 / 23 868 / 74) and so turned a *correct*
+                  # regeneration red the moment the fixture's lists and its summary were reconciled -- the fourth
+                  # pinned count in this arc to fail that way, and the same fix as the other three: assert the
+                  # relationship (the summary is the list, summarised) instead of a number the lists are free to move.
+                  bool(_me) and _sum["functions"] == _me_n and _sum["bytes"] == _me_bytes
+                  and _sum["regions"] == _me_regions_n and _clash == 0))
 
     cases.append((f"the duplicate census is vetted before it is drafted: {dupc['total']} unmatched functions "
                   f"in {dupc['groups']} repeated bodies, of which {dupc['complete']} in "

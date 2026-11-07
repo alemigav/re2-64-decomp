@@ -32,10 +32,10 @@
   "tyrant header (repository)": 1,
   "match diff (cartridge)": 4,
   "splat rehearsal (cartridge)": 5,
-  "compile probes (cartridge)": 232,
+  "compile probes (cartridge)": 243,
   "other corpus (repository)": 21,
   "toolchain matrix (cartridge)": 4,
-  "corpus build (cartridge)": 1,
+  "corpus build (cartridge)": 2,
   "image inventory (cartridge)": 1,
   "progress map (repository)": 3,
   "analysis status (repository)": 7,
@@ -45,7 +45,7 @@
   "opcode registry (cartridge)": 17,
   "mutation anchors (repository)": 4,
   "shape solver (repository)": 6,
-  "leaf screen (repository)": 12,
+  "leaf screen (repository)": 13,
   "preflight (repository)": 6,
   "handler region (cartridge)": 13,
   "script vm decoder (cartridge)": 34,
@@ -73,11 +73,11 @@
   "sound fixtures self-test": 4,
   "ratchet self-test": 10,
   "ratchet (repository)": 4,
-  "extent scan (repository)": 5,
+  "extent scan (repository)": 11,
   "counts self-test": 4,
-  "counts (repository)": 29,
+  "counts (repository)": 42,
   "acceptance self-test": 6,
   "verifier self-test": 8
  },
- "src_tree": "4108d5c045e43464f178655fadb0d9464b1756adf7a88227203abde48ff9053b"
+ "src_tree": "30d299e5d379d44e0d7db67f131f1a5ca1e27279b400bb63ec2290d1e99a6772"
 }
