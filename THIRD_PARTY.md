@@ -28,14 +28,20 @@ while the *claims* stayed in.
 profile, verified by a case that compiles it at its own address (`compile_probe.py --check`). The verification is
 the project's; the C is somebody else's, and verification does not confer a licence.
 
-**Options, none taken unilaterally** — the owner has to choose:
+**The owner's decision (M367): keep and attribute.** Option 3 was chosen knowingly, and this section is the record of
+it. What that means concretely:
 
-1. **Remove** `fixtures/decomp/imported/` and the 192 entries that depend on it. The claims (address, extent,
-   word count, probe) can stay as `measured_extents`, published as listings. Cost: F1 falls by 192.
-2. **Ask the other project** for permission or a licence, and record the answer here.
-3. **Keep and attribute**, as section 2 does for the Capcom-derived `src/` — but note that section 2's material is
-   the game's own code, acknowledged as Capcom's, while this is a third party's *work product* with no licence at
-   all, which is a different position and a weaker one.
+- the files **stay** under `fixtures/decomp/imported/`, attributed to
+  `delibrete/Resident-Evil-II-Decompilation-N64`, and this file is the one place that says where they came from;
+- the **risk is stated rather than implied**: with no licence published, the default is all rights reserved, so this
+  is a redistribution the other project has not licensed. It is offered for removal on request, in the same terms
+  section 2 offers for `src/`;
+- if the other project publishes a licence, or asks for removal, **only this section and one `rm -rf` are needed** —
+  the fallback is already costed below, and the verification of every one of those functions survives either way,
+  because it is an address plus an extent plus a case, not the text;
+- **what the fallback costs**, kept here so the decision can be revisited without re-deriving it: removing the
+  directory and the 192 entries that point at it leaves the claims as `measured_extents` listings, and **F1 falls by
+  192** while coverage does not move (the bytes stay claimed, as listings rather than reconstructions).
 
 ## 0. Read as a specification, not copied: the sound codecs (GPL-3.0)
 
