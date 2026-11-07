@@ -34,6 +34,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -266,6 +267,94 @@ def report(corpus: Path, as_json: bool) -> int:
     return 0
 
 
+def align(corpus: Path, as_json: bool) -> int:
+    """Score by **content** rather than by address: find each compiled body anywhere in the cartridge.
+
+    Their overlay numbering is not ours — `func_80161C70_overlay_011` sits 0x80 below our shared slot base
+    `0x80161cf0`, and twenty-five of our overlay members load at that one base. So an overlay function cannot be
+    scored at the address its name declares, and the sweep's "outside our images" count is a statement about the
+    address, not about the code. This mode asks the code instead: compile the draft, then look for the exact word
+    sequence in every image. A **consistent delta** across many functions of one member is what turns a content
+    match into an address.
+    """
+    spec = __import__("importlib.util").util.spec_from_file_location("cp", str(ROOT / "tools" / "compile_probe.py"))
+    probe = __import__("importlib.util").util.module_from_spec(spec)
+    spec.loader.exec_module(probe)
+    data = json.loads((corpus / "decompdecomp.json").read_text())
+    matches, functions, layout = data["verification"]["matches"], data["functions"], {x["vram"]: x for x in data["layout"]}
+    known = {n: f["vram"] for n, f in functions.items()}
+    header = corpus / "include" / "common.h"
+    prelude = (strip_preprocessor(header.read_text()) if header.exists() else FALLBACK_TYPES) + MACROS
+    images = build_candidates(probe)
+    index = {}
+    for name, base, blob in images:
+        for off in range(0, len(blob) - 16, 4):
+            index.setdefault(blob[off:off + 16], []).append((name, base, off))
+    rows, misses = [], {"compile": 0, "absent": 0}
+    names = [n for n in sorted(matches) if (corpus / "src" / (n + ".c")).exists()]
+    for name in names:
+        if len(function_names((corpus / "src" / (name + ".c")).read_text())) != 1:
+            continue
+        entry = functions.get(name)
+        place = layout.get(entry["vram"]) if entry else None
+        if not place:
+            continue
+        words = place["size"] // 4
+        text = prelude + "\n" + expand_macros(strip_preprocessor((corpus / "src" / (name + ".c")).read_text()))
+        scratch = Path(tempfile.mkdtemp(prefix="align_", dir=str(probe.WORK)))
+        c, s, o, fx, elf = scratch / "c.c", scratch / "c.s", scratch / "c.o", scratch / "c.fix.o", scratch / "c.elf"
+        c.write_text(text)
+        cc1 = probe.TC / "mips-gcc-2.8.1" / "bin" / "cc1"
+        gas = probe.AS27 if probe.AS27.exists() else probe.GAS / "mips-linux-gnu-as"
+        if subprocess.run([str(cc1), "-quiet", "-O2", "-G", "0", "-mips2", "-mcpu=r4300", str(c), "-o", str(s)],
+                          capture_output=True).returncode:
+            misses["compile"] += 1
+            continue
+        if subprocess.run([str(gas), "-EB", "-mips2", "-mcpu=r4300", "-g", "-G", "0", "-o", str(o), str(s)],
+                          capture_output=True).returncode:
+            misses["compile"] += 1
+            continue
+        probe.normalise_object(o)
+        subprocess.run([str(probe.GAS / "mips-linux-gnu-objcopy"), "--set-section-alignment", ".text=4",
+                        "--set-section-alignment", ".rodata=8", str(o), str(fx)], capture_output=True)
+        (scratch / "l.ld").write_text(
+            "SECTIONS {\n  . = %#x;\n  .text : { *(.text) }\n  /DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) "
+            "*(.comment) *(.pdr) *(.data) *(.bss) *(.sbss) *(.mdebug*) *(.rodata) *(.gnu.attributes) }\n}\n"
+            % entry["vram"] + "".join("%s = 0x%X;\n" % (k, v) for k, v in symbol_table(text, known).items()))
+        if subprocess.run([str(probe.GAS / "mips-linux-gnu-ld"), "-T", str(scratch / "l.ld"), "-o", str(elf),
+                           str(fx)], capture_output=True).returncode:
+            misses["compile"] += 1
+            continue
+        got = probe.text_of(elf)
+        want = got[:4 * words]
+        blobs = {n: b for n, _base, b in images}
+        found = []
+        for image_name, base, off in index.get(want[:16], []):
+            if blobs[image_name][off:off + 4 * words] == want:
+                found.append((image_name, base + off, base + off - entry["vram"]))
+        if not found:
+            misses["absent"] += 1
+            shutil.rmtree(scratch, ignore_errors=True)
+            continue
+        rows.append({"function": name, "their": entry["vram"], "words": words,
+                     "found": [{"image": i, "address": a, "delta": d} for i, a, d in found]})
+        shutil.rmtree(scratch, ignore_errors=True)
+    if as_json:
+        print(json.dumps({"rows": rows, "misses": misses}, indent=1))
+        return 0
+    from collections import Counter
+    deltas = Counter()
+    for r in rows:
+        for f in r["found"]:
+            deltas[(f["image"], f["delta"])] += 1
+    print("%d bodies found in the cartridge by content; %d compile failures, %d absent"
+          % (len(rows), misses["compile"], misses["absent"]))
+    print("\nthe consistent offsets, per image (a mapping needs many functions agreeing):")
+    for (image, delta), n in deltas.most_common(15):
+        print("  %-14s delta %+7d  %3d function(s)" % (image, delta, n))
+    return 0
+
+
 def self_test() -> int:
     cases = []
     cases.append(("a comment is removed and does not survive to the compiler",
@@ -308,18 +397,20 @@ def main(argv) -> int:
     ap.add_argument("--report", action="store_true")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--self-test", action="store_true")
+    ap.add_argument("--align", action="store_true",
+                    help="score by content: find each compiled body anywhere in the cartridge and report the offset")
     ap.add_argument("--corpus", default=str(DEFAULT_CORPUS))
     a = ap.parse_args(argv)
     if a.self_test:
         return self_test()
-    if not a.report:
-        ap.error("nothing to do: --report or --self-test")
+    if not (a.report or a.align):
+        ap.error("nothing to do: --report, --align or --self-test")
     corpus = Path(a.corpus)
     if not (corpus / "decompdecomp.json").exists():
         print("no external corpus at %s — it is never committed (see the module docstring); nothing to score"
               % corpus, file=sys.stderr)
         return 2
-    return report(corpus, a.json)
+    return align(corpus, a.json) if a.align else report(corpus, a.json)
 
 
 if __name__ == "__main__":

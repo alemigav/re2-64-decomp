@@ -1465,6 +1465,310 @@
    "verdict": "byte-exact",
    "probe": "import: 22 of 22 words, from the decompdecomp corpus and verified against this cartridge",
    "source": "S_8000E920_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800283f0",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 11 of 11 words at our own address (func_80028420_ovl_01)",
+   "source": "S_800283F0_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002841c",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 11 of 11 words at our own address (func_8002844C_ovl_01)",
+   "source": "S_8002841C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80028450",
+   "words": 41,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 41 of 41 words at our own address (func_80028480_ovl_01)",
+   "source": "S_80028450_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800284f4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 7 of 7 words at our own address (func_80028524_ovl_01)",
+   "source": "S_800284F4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80028510",
+   "words": 27,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 27 of 27 words at our own address (func_80028540_ovl_01)",
+   "source": "S_80028510_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80028780",
+   "words": 80,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 80 of 80 words at our own address (func_800287B0_ovl_01)",
+   "source": "S_80028780_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002a4f8",
+   "words": 28,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 28 of 28 words at our own address (func_8002A528_ovl_01)",
+   "source": "S_8002A4F8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002aee0",
+   "words": 49,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 49 of 49 words at our own address (func_8002AF10_ovl_01)",
+   "source": "S_8002AEE0_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002d164",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 9 of 9 words at our own address (func_8002D194_ovl_01)",
+   "source": "S_8002D164_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e810",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 14 of 14 words at our own address (func_8002E840)",
+   "source": "S_8002E810_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e848",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 9 of 9 words at our own address (func_8002E878)",
+   "source": "S_8002E848_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fc00",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 9 of 9 words at our own address (func_8002FC30_ovl_01)",
+   "source": "S_8002FC00_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fd00",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 14 of 14 words at our own address (func_8002FD30_ovl_01)",
+   "source": "S_8002FD00_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80030ea0",
+   "words": 15,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 15 of 15 words at our own address (func_80030ED0_ovl_01)",
+   "source": "S_80030EA0_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80030edc",
+   "words": 15,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 15 of 15 words at our own address (func_80030F0C_ovl_01)",
+   "source": "S_80030EDC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80032b5c",
+   "words": 31,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 31 of 31 words at our own address (func_80032B8C_ovl_01)",
+   "source": "S_80032B5C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80032c6c",
+   "words": 42,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 42 of 42 words at our own address (func_80032C9C_ovl_01)",
+   "source": "S_80032C6C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80033160",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 22 of 22 words at our own address (func_80033190_ovl_01)",
+   "source": "S_80033160_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800351e8",
+   "words": 55,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 55 of 55 words at our own address (func_80035218_ovl_01)",
+   "source": "S_800351E8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800411b8",
+   "words": 90,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 90 of 90 words at our own address (func_800411E8_ovl_01)",
+   "source": "S_800411B8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049f98",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 2 of 2 words at our own address (func_8008B07C_ovl_01)",
+   "source": "S_80049F98_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80052eec",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 9 of 9 words at our own address (func_80052F1C_ovl_01)",
+   "source": "S_80052EEC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80054084",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 20 of 20 words at our own address (func_800540B4_ovl_01)",
+   "source": "S_80054084_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005c308",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 9 of 9 words at our own address (func_8005C338_ovl_01)",
+   "source": "S_8005C308_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006087c",
+   "words": 19,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 19 of 19 words at our own address (func_800608A8_ovl_01)",
+   "source": "S_8006087C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800667b0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 9 of 9 words at our own address (func_800667E0_ovl_01)",
+   "source": "S_800667B0_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006b220",
+   "words": 17,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 17 of 17 words at our own address (func_8006B250_ovl_01)",
+   "source": "S_8006B220_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073f20",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 2 of 2 words at our own address (func_800A585C_ovl_01)",
+   "source": "S_80073F20_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80082474",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 9 of 9 words at our own address (func_800824A4_ovl_01)",
+   "source": "S_80082474_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800837ac",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 9 of 9 words at our own address (func_800837DC_ovl_01)",
+   "source": "S_800837AC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80083e60",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 8 of 8 words at our own address (func_80083E90_ovl_01)",
+   "source": "S_80083E60_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800844e4",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 10 of 10 words at our own address (func_80084514_ovl_01)",
+   "source": "S_800844E4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800878fc",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 20 of 20 words at our own address (func_8008792C_ovl_01)",
+   "source": "S_800878FC_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008794c",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 20 of 20 words at our own address (func_8008797C_ovl_01)",
+   "source": "S_8008794C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5c34",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 7 of 7 words at our own address (func_800A5BD4_ovl_01)",
+   "source": "S_800A5C34_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5c50",
+   "words": 18,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 18 of 18 words at our own address (func_800A5BF0_ovl_01)",
+   "source": "S_800A5C50_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab1a0",
+   "words": 43,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 43 of 43 words at our own address (func_800AB140_ovl_01)",
+   "source": "S_800AB1A0_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab2cc",
+   "words": 25,
+   "verdict": "byte-exact",
+   "probe": "import by content alignment: 25 of 25 words at our own address (func_800AB26C_ovl_01)",
+   "source": "S_800AB2CC_SOURCE"
   }
  ]
 }

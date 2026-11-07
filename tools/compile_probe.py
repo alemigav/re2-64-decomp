@@ -1890,6 +1890,1122 @@ void func_8000E920(s32 arg0, s32 arg1, s16 arg2) {
     func_80007300(temp_a0);
 }"""
 
+
+# --- imported from the same corpus, located by content (M358) ------------------------------------------
+# These could not be scored at the address their names declare: the other project's stage2 segment sits 48
+# bytes above ours, so every one of them was "outside our images" in M356. `tools/other_corpus.py --align`
+# compiles a draft and looks for the body anywhere in the cartridge; where a found body lands on one of our
+# own function boundaries at our own size, the address is no longer a guess. Each entry below is verified at
+# *our* address with *our* symbol addresses, which is what the case re-derives.
+# func_80028420_ovl_01 -> 0x800283f0, 11 words, imported by content alignment (their stage2 is -48 from ours)
+S_800283F0_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef struct {
+    void *(*fn)(void *, s32, s32);
+} Vtbl;
+
+typedef struct {
+    u32 pad;
+    Vtbl *vt;
+} Obj;
+
+void func_80028420_ovl_01(Obj *arg0) {
+    Vtbl *vt = arg0->vt;
+    s32 a1_val = 0;
+    void *(*func)(void *, s32, s32) = vt->fn;
+    void *r = func(arg0, a1_val, 0x84);
+    *(volatile s32 *)((u8 *)r + 0x80) = 0;
+}"""
+
+# func_8002844C_ovl_01 -> 0x8002841c, 11 words, imported by content alignment (their stage2 is -48 from ours)
+S_8002841C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef void *(*VtblFn)(void *arg0, s32 arg1, s32 arg2);
+typedef struct Obj_8002844C { u32 pad0; struct { VtblFn fn; } *vt; } Obj_8002844C;
+
+void func_8002844C_ovl_01(Obj_8002844C *arg0) {
+    void *r = arg0->vt->fn(arg0, 0, 0x118);
+    *(volatile s32 *)((u8 *)r + 0x114) = 0;
+}"""
+
+# func_80028480_ovl_01 -> 0x80028450, 41 words, imported by content alignment (their stage2 is -48 from ours)
+S_80028450_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+void func_8002FC30_ovl_01(void *, s32, s32);
+void func_80030D98_ovl_01(void *);
+void func_8002D1B8_ovl_01(void *);
+
+typedef struct {
+    void **p0;
+    u8 pad[0x174 - 4];
+    u8 *p174;
+} S540;
+
+void func_80028540_ovl_01(S540 *arg0, u32 arg1, s32 arg2) ;
+          
+
+                       
+                                          
+               
+     
+                    
+                   
+                                                   
+               
+     
+                                           
+                                           
+                                           
+ 
+
+void func_80028480_ovl_01(u8 *arg0) {
+    s32 temp;
+    s32 i;
+
+    temp = *(s32 *)(arg0 + 0);
+    func_8002FC30_ovl_01(arg0, 0, 0x190);
+    *(s32 *)(arg0 + 0xC) = 1;
+    *(s32 *)(arg0 + 0) = temp;
+    func_80030D98_ovl_01(arg0);
+    *(s32 *)(arg0 + 8) = 0;
+    *(s32 *)(arg0 + 0x14) = 0;
+    for (i = 3; i >= 0; i--) {
+        *(s32 *)(arg0 + 0x7C + i * 4) = 0;
+    }
+    for (i = 0; i < 4; i++) {
+        *(s32 *)(arg0 + 0x8C + i * 4) = 0;
+        *(s32 *)(arg0 + 0x9C + i * 4) = 0;
+    }
+    *(s32 *)(arg0 + 0x114) = 0;
+    *(s32 *)(arg0 + 0x174) = 0;
+    func_8002D1B8_ovl_01(arg0);
+    *(s32 *)(arg0 + 0x10) = 0xC8;
+}
+
+typedef struct {
+    void *(*fn)(void *, s32, s32);
+} Vtbl;
+
+typedef struct {
+    u8 pad[4];
+    Vtbl *vt;
+} Obj;
+
+void func_8002844C_ovl_01(Obj *arg0) ;
+                                                             
+ 
+
+void func_80028420_ovl_01(Obj *arg0) ;
+                                                           
+ """
+
+# func_80028524_ovl_01 -> 0x800284f4, 7 words, imported by content alignment (their stage2 is -48 from ours)
+S_800284F4_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+M2C_UNK func_800283E0_ovl_01();                     
+
+void func_80028524_ovl_01(void) {
+    func_800283E0_ovl_01();
+}"""
+
+# func_80028540_ovl_01 -> 0x80028510, 27 words, imported by content alignment (their stage2 is -48 from ours)
+S_80028510_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_80028540_ovl_01(void *arg0, s32 arg1, s32 arg2) {
+    u32 temp_v1;
+
+    if (arg1 == 0xFE) {
+        (*(s32 *)((s8 *)((*(void **)((s8 *)(arg0) + (0x174)))) + (0xC))) = arg2;
+        return;
+    }
+    temp_v1 = arg1 - 0xE0;
+    if (temp_v1 < 0x10U) {
+        (*(s32 *)((s8 *)(((*(void **)((s8 *)(arg0) + (0x174))) + ((temp_v1 *= 4)))) + (0x10))) = arg2;
+        return;
+    }
+    (*(s32 *)((s8 *)((*(void **)((s8 *)(arg0) + (0)))) + (0x14))) = 0x3C;
+    (*(s32 *)((s8 *)((*(void **)((s8 *)(arg0) + (0)))) + (0x18))) = arg1;
+    (*(M2C_UNK (**)())((s8 *)((*(void **)((s8 *)(arg0) + (0)))) + (0)))();
+}"""
+
+# func_800287B0_ovl_01 -> 0x80028780, 80 words, imported by content alignment (their stage2 is -48 from ours)
+S_80028780_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef s32 M2C_UNK;
+M2C_UNK func_800285AC_ovl_01(void*);
+s32 func_800287B0_ovl_01(void*a,s32 b){
+ s32 t,v,r;
+ t=(*(s32*)((s8 *)(a) + (0x10)));
+ if(t==0xC8){(*(M2C_UNK(**)())((s8 *)((*(void**)((s8 *)(a) + (0)))) + (0x10)))();(*(M2C_UNK(**)(void*))((s8 *)((*(void**)((s8 *)(a) + (0x174)))) + (0)))(a);(*(M2C_UNK(**)(void*))((s8 *)((*(void**)((s8 *)(a) + (0x14)))) + (8)))(a);(*(s32*)((s8 *)(a) + (0x10)))=0xC9;}else if(t!=0xC9){(*(s32*)((s8 *)((*(void**)((s8 *)(a) + (0)))) + (0x14)))=0xE;(*(s32*)((s8 *)((*(void**)((s8 *)(a) + (0)))) + (0x18)))=(*(s32*)((s8 *)(a) + (0x10)));(*(M2C_UNK(**)(void*))((s8 *)((*(void**)((s8 *)(a) + (0)))) + (0)))(a);}
+ r=(*(s32(**)(void*))((s8 *)((*(void**)((s8 *)(a) + (0x174)))) + (4)))(a);
+ if(r==1)goto one;
+ if(r<2){if(r) return r;func_800285AC_ovl_01(a);v=0xCA;goto set;}
+ return r;
+ one:
+ if((*(s32*)((s8 *)((*(void**)((s8 *)(a) + (0x174)))) + (0x54)))){(*(s32*)((s8 *)((*(void**)((s8 *)(a) + (0)))) + (0x14)))=0x33;(*(M2C_UNK(**)(void*))((s8 *)((*(void**)((s8 *)(a) + (0)))) + (0)))(a);}
+ if(b){(*(s32*)((s8 *)((*(void**)((s8 *)(a) + (0)))) + (0x14)))=0x2B;(*(M2C_UNK(**)(void*))((s8 *)((*(void**)((s8 *)(a) + (0)))) + (0)))(a);}
+ v=0xC8;
+ set:(*(s32*)((s8 *)(a) + (0x10)))=v;return r;
+}"""
+
+# func_8002A528_ovl_01 -> 0x8002a4f8, 28 words, imported by content alignment (their stage2 is -48 from ours)
+S_8002A4F8_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+extern void func_80029718_ovl_01(void);
+extern void func_80029F38_ovl_01(void);
+void func_8002A528_ovl_01(u8 *p)
+{
+  u8 *n;
+  s32 i;
+ do { n = (u8 *) ((void *(*)(u8 *, s32, s32)) (*((void **) (*((void **) (p + 4))))))(p, 1, 0x48); *((void **) (p + 0x178)) = n; *((void **) (n + 0)) = ((u8 *) func_80029718_ovl_01) + 0x1B8; *((void **) (n + 4)) = ((u8 *) func_80029F38_ovl_01) + 0xA0; for (i = 0; i < 4; i++) { *((s32 *) ((n + (i * 4)) + 0x38)) = 0; *((s32 *) ((n + (i * 4)) + 0x28)) = 0; } } while (0);
+}"""
+
+# func_8002AF10_ovl_01 -> 0x8002aee0, 49 words, imported by content alignment (their stage2 is -48 from ours)
+S_8002AEE0_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+void func_8002AF10_ovl_01(u8 *p)
+{
+    s32 i;
+
+    *(s32 *)(*(u8 **)p + 0x14) = 0x5E;
+    (*(void (**)(u8 *, s32))(*(u8 **)p + 4))(p, 1);
+    if (*(s32 *)(*(u8 **)(p + 0x174) + 0x50) != 0) {
+        *(s32 *)(*(u8 **)p + 0x14) = 0x35;
+        (*(void (**)(u8 *))(*(u8 **)p))(p);
+    }
+    for (i = 0; i < 16; i++) {
+        u8 *q = p + i;
+        q[0xB4] = 0;
+        q[0xC4] = 1;
+        q[0xD4] = 5;
+    }
+    *(s16 *)(p + 0xF2) = 1;
+    *(s16 *)(p + 0xF4) = 1;
+    *(s32 *)(p + 0xE8) = 0;
+    *(s32 *)(p + 0x24) = 0;
+    *(s32 *)(p + 0x100) = 0;
+    *(s32 *)(p + 0xEC) = 0;
+    p[0xF0] = 0;
+    *(s32 *)(p + 0xF8) = 0;
+    p[0xFC] = 0;
+    *(s32 *)(*(u8 **)(p + 0x174) + 0x50) = 1;
+}"""
+
+# func_8002D194_ovl_01 -> 0x8002d164, 9 words, imported by content alignment (their stage2 is -48 from ours)
+S_8002D164_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_8002D194_ovl_01(void *arg0) {
+    (*(s32 *)((s8 *)(arg0) + (0x160))) = 0;
+    (*(s32 *)((s8 *)((*(void **)((s8 *)(arg0) + (0x174)))) + (0x50))) = 0;
+    (*(s32 *)((s8 *)((*(void **)((s8 *)(arg0) + (0x174)))) + (0x54))) = 0;
+    (*(s32 *)((s8 *)((*(void **)((s8 *)(arg0) + (0x174)))) + (0x5C))) = 0;
+    (*(s32 *)((s8 *)(arg0) + (0xB0))) = 0;
+}"""
+
+# func_8002E840 -> 0x8002e810, 14 words, imported by content alignment (their stage2 is -48 from ours)
+S_8002E810_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+M2C_UNK func_800283E0_overlay_001(void **);         
+
+void func_8002E840(void **arg0) {
+    (*(M2C_UNK (**)())((s8 *)(*arg0) + (8)))();
+    func_800283E0_overlay_001(arg0);
+}"""
+
+# func_8002E878 -> 0x8002e848, 9 words, imported by content alignment (their stage2 is -48 from ours)
+S_8002E848_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef struct {void *field0; void *field4; void *field8; void *fieldc;} V;
+void func_8002E878(void *arg0){
+ char loc[0xC8];
+ V *obj=(V*)arg0;
+ ((void(*)(void *, void *))((V*)obj->field0)->fieldc)(arg0, loc);
+}"""
+
+# func_8002FC30_ovl_01 -> 0x8002fc00, 9 words, imported by content alignment (their stage2 is -48 from ours)
+S_8002FC00_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_8002FC30_ovl_01(s32 arg0, s8 arg1, s32 arg2) {
+    s32 var_v1;
+    s8 *temp_v0;
+
+    var_v1 = arg2 - 1;
+    if (arg2 != 0) {
+        do {
+            temp_v0 = arg0 + var_v1;
+            var_v1 -= 1;
+            *temp_v0 = arg1;
+        } while (var_v1 != -1);
+    }
+}"""
+
+# func_8002FD30_ovl_01 -> 0x8002fd00, 14 words, imported by content alignment (their stage2 is -48 from ours)
+S_8002FD00_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_8002FD30_ovl_01(void **arg0, s32 arg1) {
+    (*(s32 *)((s8 *)(*arg0) + (0x14))) = 0x2E;
+    (*(s32 *)((s8 *)(*arg0) + (0x18))) = arg1;
+    (*(M2C_UNK (**)())((s8 *)(*arg0) + (0)))();
+}"""
+
+# func_80030ED0_ovl_01 -> 0x80030ea0, 15 words, imported by content alignment (their stage2 is -48 from ours)
+S_80030EA0_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_80030ED0_ovl_01(s32 arg0, s32 arg1) {
+    return (s32) ((arg0 + arg1) - 1) / arg1;
+}"""
+
+# func_80030F0C_ovl_01 -> 0x80030edc, 15 words, imported by content alignment (their stage2 is -48 from ours)
+S_80030EDC_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+s32 func_80030F0C_ovl_01(s32 arg0, s32 arg1)
+{
+  s32 temp_a0;
+  int new_var;
+  new_var = 1;
+  temp_a0 = (arg0 - new_var) + arg1;
+  return temp_a0 - (temp_a0 % arg1);
+}
+"""
+
+# func_80032B8C_ovl_01 -> 0x80032b5c, 31 words, imported by content alignment (their stage2 is -48 from ours)
+S_80032B5C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+s32 func_80032B40_ovl_01(void *p, s16 *b) ;
+                                                
+                                     
+                                            
+                                     
+             
+ 
+void func_80032B8C_ovl_01(void *p, s32 a) {
+    s16 h[4];
+    s32 tmp[8];
+    h[0]=0; h[1]=*(u16*)((u8*)p+0x66)+a; h[2]=0;
+    func_80040E88_ovl_01(h,tmp);
+    func_8004279C_ovl_01(tmp,(u8*)p+0x1e0,h);
+    *(s32*)((u8*)p+0x28)+=h[0];
+    *(s32*)((u8*)p+0x30)+=h[2];
+}
+void func_80032C08_ovl_01(void *p, s32 a, s32 b) ;
+                         
+                                                                     
+                                
+                                             
+                               
+                               
+                               
+ 
+void func_80032C9C_ovl_01(void *p, s32 a, s32 b) ;
+                                      
+                                                                     
+                                
+                                                        
+                                              
+                               
+                               
+                               
+ """
+
+# func_80032C9C_ovl_01 -> 0x80032c6c, 42 words, imported by content alignment (their stage2 is -48 from ours)
+S_80032C6C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+s32 func_80032B40_ovl_01(void *p, s16 *b) ;
+                                                
+                                     
+                                            
+                                     
+             
+ 
+void func_80032B8C_ovl_01(void *p, s32 a) ;
+             
+               
+                                                
+                                
+                                             
+                               
+                               
+ 
+void func_80032C08_ovl_01(void *p, s32 a, s32 b) ;
+                         
+                                                                     
+                                
+                                             
+                               
+                               
+                               
+ 
+void func_80032C9C_ovl_01(void *p, s32 a, s32 b) {
+    s16 h[4]; s32 tmp[8]; s32 tmp2[8];
+    h[0]=0; h[1]=*(u16*)((u8*)p+0x66)+a; h[2]=*(u16*)((u8*)p+0x68)+b;
+    func_80040E88_ovl_01(h,tmp);
+    func_8004251C_ovl_01(*(s32*)((u8*)p+0x70),tmp,tmp2);
+    func_8004279C_ovl_01(tmp2,(u8*)p+0x1e0,h);
+    *(s32*)((u8*)p+0x28)+=h[0];
+    *(s32*)((u8*)p+0x2c)+=h[1];
+    *(s32*)((u8*)p+0x30)+=h[2];
+}"""
+
+# func_80033190_ovl_01 -> 0x80033160, 22 words, imported by content alignment (their stage2 is -48 from ours)
+S_80033160_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s16 func_80032D44_overlay_001(s16, s16, s16, s16);  
+
+s32 func_80033190_ovl_01(void *arg0, void *arg1) {
+    return ((((*(s16 *)((s8 *)(arg1) + (0x66))) - func_80032D44_overlay_001((*(s16 *)((s8 *)(arg0) + (0x2A))), (*(s16 *)((s8 *)(arg0) + (0x32))), (*(s16 *)((s8 *)(arg1) + (0x2A))), (*(s16 *)((s8 *)(arg1) + (0x32))))) + 0x400) & 0xFFF) < 0x800;
+}"""
+
+# func_80035218_ovl_01 -> 0x800351e8, 55 words, imported by content alignment (their stage2 is -48 from ours)
+S_800351E8_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+extern s32 func_80040E88_ovl_01(void *arg0, void *arg1);
+extern s32 func_8004251C_ovl_01(void *arg0, void *arg1, void *arg2);
+extern s32 func_800352F4_ovl_01(s32 a0, s32 a1, s32 a2, s32 a3, s32 s4, s32 s5, s32 s6, s32 s7, s32 s8, s32 s9, s32 s10, s32 s11, s32 s12);
+void func_80035218_ovl_01(u8 *arg0)
+{
+  volatile u8 frame[0x80];
+  u8 *obj;
+  u8 *adv;
+  u8 *b;
+  s16 sum;
+  obj = *((u8 **) (arg0 + 0x234));
+  adv = obj;
+  adv = adv + 0x1608;
+  if (!((*((s32 *) arg0)) & 0x40000))
+  {
+    func_80040E88_ovl_01(arg0 + 0x64, arg0 + 0x14);
+  }
+  b = obj + 0x38;
+  func_8004251C_ovl_01(arg0 + 0x14, obj + 8, b);
+  sum = (s16) ((*((u16 *) (arg0 + 0x66))) + (*((u16 *) (obj + 0x5A))));
+  *((u16 *) (obj + 0x5C)) &= 0xFFF;
+  func_800352F4_ovl_01((s32) adv, (s32) b, 0x190, 0x64, 0x30, 4, 0, 0x32, 0, 0x30, 6, 0, sum);
+}
+"""
+
+# func_800411E8_ovl_01 -> 0x800411b8, 90 words, imported by content alignment (their stage2 is +128 from ours)
+S_800411B8_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_800411E8_ovl_01(void *arg0, void *arg1) {
+    (*(s32 *)((s8 *)(arg1) + (0))) = (s32) ((((*(s16 *)((s8 *)(arg0) + (0))) * 0x10) & 0xFFFF0000) | (((s32) ((*(u16 *)((s8 *)(arg0) + (6))) << 0x10) >> 0x1C) & 0xFFFF));
+    (*(s32 *)((s8 *)(arg1) + (0x20))) = (s32) ((((*(s16 *)((s8 *)(arg0) + (0))) << 0x14) & 0xFFFF0000) | (((s16) (*(u16 *)((s8 *)(arg0) + (6))) * 0x10) & 0xFFFF));
+    (*(s32 *)((s8 *)(arg1) + (4))) = (s32) (((*(s16 *)((s8 *)(arg0) + (0xC))) * 0x10) & 0xFFFF0000);
+    (*(s32 *)((s8 *)(arg1) + (0x24))) = (s32) (((*(s16 *)((s8 *)(arg0) + (0xC))) << 0x14) & 0xFFFF0000);
+    (*(s32 *)((s8 *)(arg1) + (8))) = (s32) ((((*(s16 *)((s8 *)(arg0) + (2))) * 0x10) & 0xFFFF0000) | (((s32) ((*(u16 *)((s8 *)(arg0) + (8))) << 0x10) >> 0x1C) & 0xFFFF));
+    (*(s32 *)((s8 *)(arg1) + (0x28))) = (s32) ((((*(s16 *)((s8 *)(arg0) + (2))) << 0x14) & 0xFFFF0000) | (((s16) (*(u16 *)((s8 *)(arg0) + (8))) * 0x10) & 0xFFFF));
+    (*(s32 *)((s8 *)(arg1) + (0xC))) = (s32) (((*(s16 *)((s8 *)(arg0) + (0xE))) * 0x10) & 0xFFFF0000);
+    (*(s32 *)((s8 *)(arg1) + (0x2C))) = (s32) (((*(s16 *)((s8 *)(arg0) + (0xE))) << 0x14) & 0xFFFF0000);
+    (*(s32 *)((s8 *)(arg1) + (0x10))) = (s32) ((((*(s16 *)((s8 *)(arg0) + (4))) * 0x10) & 0xFFFF0000) | (((s32) ((*(u16 *)((s8 *)(arg0) + (0xA))) << 0x10) >> 0x1C) & 0xFFFF));
+    (*(s32 *)((s8 *)(arg1) + (0x30))) = (s32) ((((*(s16 *)((s8 *)(arg0) + (4))) << 0x14) & 0xFFFF0000) | (((s16) (*(u16 *)((s8 *)(arg0) + (0xA))) * 0x10) & 0xFFFF));
+    (*(s32 *)((s8 *)(arg1) + (0x14))) = (s32) (((*(s16 *)((s8 *)(arg0) + (0x10))) * 0x10) & 0xFFFF0000);
+    (*(s32 *)((s8 *)(arg1) + (0x34))) = (s32) (((*(s16 *)((s8 *)(arg0) + (0x10))) << 0x14) & 0xFFFF0000);
+    (*(s32 *)((s8 *)(arg1) + (0x18))) = (s32) ((((*(s32 *)((s8 *)(arg0) + (0x14))) << 0x10) & 0xFFFF0000) | (*(u16 *)((s8 *)(arg0) + (0x1A))));
+    (*(s32 *)((s8 *)(arg1) + (0x38))) = 0;
+    (*(s32 *)((s8 *)(arg1) + (0x1C))) = (s32) ((((*(s32 *)((s8 *)(arg0) + (0x1C))) << 0x10) & 0xFFFF0000) + 1);
+    (*(s32 *)((s8 *)(arg1) + (0x3C))) = 0;
+}"""
+
+# func_8008B07C_ovl_01 -> 0x80049f98, 2 words, imported by content alignment (their stage2 is +128 from ours)
+S_80049F98_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_8008B07C_ovl_01(s32 arg0, s32 arg1) {
+    return arg1;
+}"""
+
+# func_80052F1C_ovl_01 -> 0x80052eec, 9 words, imported by content alignment (their stage2 is +128 from ours)
+S_80052EEC_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+u8 *func_80052F1C_ovl_01(u8 *arg0) {
+    u32 var_v1;
+    u8 *var_a0;
+
+    var_a0 = arg0;
+    var_v1 = 0;
+loop_1:
+    var_v1 += 1;
+    if (*var_a0 != 0) {
+        var_a0 += 0xA;
+        if (var_v1 < 0x20U) {
+            goto loop_1;
+        }
+    }
+    return var_a0;
+}"""
+
+# func_800540B4_ovl_01 -> 0x80054084, 20 words, imported by content alignment (their stage2 is +128 from ours)
+S_80054084_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_800540B4_ovl_01(void *arg0, void *arg1) {
+    (*(s32 *)((s8 *)(arg0) + (0))) = (s32) (*(s32 *)((s8 *)(arg1) + (0)));
+    (*(s32 *)((s8 *)(arg0) + (4))) = (s32) (*(s32 *)((s8 *)(arg1) + (4)));
+    (*(s32 *)((s8 *)(arg0) + (8))) = (s32) ((*(s32 *)((s8 *)(arg1) + (8))) + (*(u16 *)((s8 *)(arg1) + (0xA))));
+    (*(s32 *)((s8 *)(arg0) + (0xC))) = (s32) (((*(u8 *)((s8 *)(arg1) + (0xC))) << 0x18) + ((*(u8 *)((s8 *)(arg1) + (0xD))) << 0x10) + ((*(u8 *)((s8 *)(arg1) + (0xE))) << 8) + (*(u8 *)((s8 *)(arg1) + (0xF))));
+}"""
+
+# func_8005C338_ovl_01 -> 0x8005c308, 9 words, imported by content alignment (their stage2 is +128 from ours)
+S_8005C308_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_8005C338_ovl_01(void *arg0) {
+    void *var_v1;
+    unsigned int temp_a1;
+
+    temp_a1 = (*(s32 *)((s8 *)(arg0) + (0x234)));
+    var_v1 = temp_a1 + 0x1780;
+    if ((*(u8 *)((s8 *)(arg0) + (8))) & 1) {
+        var_v1 = temp_a1 + 0x1D60;
+    }
+    (*(s8 *)((s8 *)(var_v1) + (0x112))) = 1;
+}"""
+
+# func_800608A8_ovl_01 -> 0x8006087c, 19 words, imported by content alignment (their stage2 is +128 from ours)
+S_8006087C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_800608A8_ovl_01(s32 a, s32 b, s32 c, s16 *d) {
+    s16 temp_a1;
+    s16 var_v1;
+    s32 temp_t0;
+
+    temp_t0 = (c + (a - b)) & 0xFFF;
+    temp_a1 = b - c;
+    if (temp_t0 < ((s32) (c << 0x10) >> 0xF)) {
+        *d = (s16) a;
+        return 0;
+    }
+    var_v1 = temp_a1;
+    if ((u32) temp_t0 < 0x801U) {
+        var_v1 = temp_a1 + (c * 2);
+    }
+    *d = var_v1;
+    return 1;
+}"""
+
+# func_800667E0_ovl_01 -> 0x800667b0, 9 words, imported by content alignment (their stage2 is +128 from ours)
+S_800667B0_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_800667E0_ovl_01(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    return (1 << ((u32) (arg0 - arg2) >> 0x1F)) << (((u32) (arg1 - arg3) >> 0x1E) & 2);
+}"""
+
+# func_8006B250_ovl_01 -> 0x8006b220, 17 words, imported by content alignment (their stage2 is +128 from ours)
+S_8006B220_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+s32 func_8006B250_ovl_01(u8 *arg0) {
+    u32 x;
+    s32 a;
+    s32 b;
+
+    x = *(u16 *)(arg0 + 0xA);
+    b = ((x >> 6) & 0x1F) * 1800;
+    a = (x >> 11) * 100;
+    return -a - b;
+}"""
+
+# func_800A585C_ovl_01 -> 0x80073f20, 2 words, imported by content alignment (their stage2 is +128 from ours)
+S_80073F20_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_800A585C_ovl_01(void) {
+    return 0;
+}"""
+
+# func_800824A4_ovl_01 -> 0x80082474, 9 words, imported by content alignment (their stage2 is +128 from ours)
+S_80082474_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_800824A4_ovl_01(u8 *arg0, u8 *arg1, s32 arg2) {
+    u32 temp_v1;
+    u8 *var_a0;
+    u8 *var_a1;
+
+    var_a0 = arg0;
+    var_a1 = arg1;
+    temp_v1 = var_a0 + arg2;
+    do {
+        *var_a0 = *var_a1;
+        var_a0 += 1;
+        var_a1 += 1;
+    } while ((u32) var_a0 < temp_v1);
+}"""
+
+# func_800837DC_ovl_01 -> 0x800837ac, 9 words, imported by content alignment (their stage2 is +128 from ours)
+S_800837AC_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+void func_800837B0_ovl_01(s32 *arg0, u32 arg1) ;
+                                                       
+ 
+
+void func_80083788_ovl_01(s32 *arg0, u32 arg1) ;
+                                                    
+ 
+
+s32 func_800837DC_ovl_01(s32 *arg0, u32 arg1) {
+    return arg0[arg1 >> 5] & (0x80000000U >> (arg1 & 0x1F));
+}
+
+void func_80083778_ovl_01(void) ;
+ """
+
+# func_80083E90_ovl_01 -> 0x80083e60, 8 words, imported by content alignment (their stage2 is +128 from ours)
+S_80083E60_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+f32 func_80083E90_ovl_01(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    f32 temp_fa0;
+    f32 temp_fv0;
+
+    temp_fa0 = arg2 - arg0;
+    temp_fv0 = arg3 - arg1;
+    return (temp_fa0 * temp_fa0) + (temp_fv0 * temp_fv0);
+}"""
+
+# func_80084514_ovl_01 -> 0x800844e4, 10 words, imported by content alignment (their stage2 is +128 from ours)
+S_800844E4_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_80084514_ovl_01(u32 arg0) {
+    return (arg0 << 0x18) | ((arg0 & 0xFF00) << 8) | ((arg0 >> 8) & 0xFF00) | (arg0 >> 0x18);
+}"""
+
+# func_8008792C_ovl_01 -> 0x800878fc, 20 words, imported by content alignment (their stage2 is +128 from ours)
+S_800878FC_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_8008792C_ovl_01(void *arg0, void *arg1, s32 arg2) {
+    if (arg2 < (*(s16 *)((s8 *)(arg0) + (0x5E)))) {
+        (*(s32 *)((s8 *)(arg1) + (0xA8))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0x40))) + (arg2 * (*(s16 *)((s8 *)(arg0) + (0x5C))) * 4));
+        (*(s32 *)((s8 *)(arg1) + (0xAC))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0x44))) + (arg2 * (*(s16 *)((s8 *)(arg0) + (0x5C))) * 4));
+    }
+}"""
+
+# func_8008797C_ovl_01 -> 0x8008794c, 20 words, imported by content alignment (their stage2 is +128 from ours)
+S_8008794C_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_8008797C_ovl_01(void *arg0, void *arg1, s32 arg2) {
+    if (arg2 < (*(s16 *)((s8 *)(arg0) + (0xD6)))) {
+        (*(s32 *)((s8 *)(arg1) + (0xA8))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0xB8))) + (arg2 * (*(s16 *)((s8 *)(arg0) + (0xD4))) * 4));
+        (*(s32 *)((s8 *)(arg1) + (0xAC))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0xBC))) + (arg2 * (*(s16 *)((s8 *)(arg0) + (0xD4))) * 4));
+    }
+}"""
+
+# func_800A5BD4_ovl_01 -> 0x800a5c34, 7 words, imported by content alignment (their stage2 is +0 from ours)
+S_800A5C34_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+s32 func_8000EFA0();
+
+void func_800A5BD4_ovl_01(s32 arg0, s32 arg1) {
+    func_8000EFA0(arg0, arg1 * 2);
+}"""
+
+# func_800A5BF0_ovl_01 -> 0x800a5c50, 18 words, imported by content alignment (their stage2 is +0 from ours)
+S_800A5C50_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+void func_8000EFA0(void *, s32);
+
+void func_800A5BF0_ovl_01(u8 *arg0, s32 arg1) {
+    u16 *src = (u16 *)arg0;
+    u16 *dst = (u16 *)(arg1 * 2 + (s32)arg0);
+
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    dst[3] = src[3];
+    func_8000EFA0(dst, 8);
+}
+
+extern u8 *D_80143EAC;
+
+s32 func_800A5BA8_ovl_01(s32 arg0) ;
+                                                     
+ 
+
+extern s32 (*D_80143FA4)(void);
+
+s32 func_800A5C38_ovl_01(s32 arg0) ;
+                              
+
+                          
+                 
+     
+                          
+                 
+     
+                        
+    
+                
+ """
+
+# func_800AB140_ovl_01 -> 0x800ab1a0, 43 words, imported by content alignment (their stage2 is +128 from ours)
+S_800AB1A0_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_800AB140_ovl_01(void *arg0, void *arg1, void *arg2) {
+    (*(f32 *)((s8 *)(arg2) + (0))) = (f32) (((*(f32 *)((s8 *)(arg0) + (0))) * (*(f32 *)((s8 *)(arg1) + (0)))) + ((*(f32 *)((s8 *)(arg0) + (4))) * (*(f32 *)((s8 *)(arg1) + (4)))) + ((*(f32 *)((s8 *)(arg0) + (8))) * (*(f32 *)((s8 *)(arg1) + (8)))) + (*(f32 *)((s8 *)(arg0) + (0x24))));
+    (*(f32 *)((s8 *)(arg2) + (4))) = (f32) (((*(f32 *)((s8 *)(arg0) + (0xC))) * (*(f32 *)((s8 *)(arg1) + (0)))) + ((*(f32 *)((s8 *)(arg0) + (0x10))) * (*(f32 *)((s8 *)(arg1) + (4)))) + ((*(f32 *)((s8 *)(arg0) + (0x14))) * (*(f32 *)((s8 *)(arg1) + (8)))) + (*(f32 *)((s8 *)(arg0) + (0x28))));
+    (*(f32 *)((s8 *)(arg2) + (8))) = (f32) (((*(f32 *)((s8 *)(arg0) + (0x18))) * (*(f32 *)((s8 *)(arg1) + (0)))) + ((*(f32 *)((s8 *)(arg0) + (0x1C))) * (*(f32 *)((s8 *)(arg1) + (4)))) + ((*(f32 *)((s8 *)(arg0) + (0x20))) * (*(f32 *)((s8 *)(arg1) + (8)))) + (*(f32 *)((s8 *)(arg0) + (0x2C))));
+}"""
+
+# func_800AB26C_ovl_01 -> 0x800ab2cc, 25 words, imported by content alignment (their stage2 is +128 from ours)
+S_800AB2CC_SOURCE = """typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_800AB26C_ovl_01(void *arg0, void *arg1, void *arg2) {
+    (*(f32 *)((s8 *)(arg0) + (0))) = (f32) (((*(f32 *)((s8 *)(arg1) + (4))) * (*(f32 *)((s8 *)(arg2) + (8)))) - ((*(f32 *)((s8 *)(arg1) + (8))) * (*(f32 *)((s8 *)(arg2) + (4)))));
+    (*(f32 *)((s8 *)(arg0) + (4))) = (f32) (((*(f32 *)((s8 *)(arg1) + (8))) * (*(f32 *)((s8 *)(arg2) + (0)))) - ((*(f32 *)((s8 *)(arg1) + (0))) * (*(f32 *)((s8 *)(arg2) + (8)))));
+    (*(f32 *)((s8 *)(arg0) + (8))) = (f32) (((*(f32 *)((s8 *)(arg1) + (0))) * (*(f32 *)((s8 *)(arg2) + (4)))) - ((*(f32 *)((s8 *)(arg1) + (4))) * (*(f32 *)((s8 *)(arg2) + (0)))));
+}"""
+
+
 SINGLES = [
     ("S_80165C68_SOURCE", "ovl_0087352", 0x80165c68, 3, ()),
     ("S_800478AC_SOURCE", "stage2", 0x800478ac, 3, ()),
@@ -1958,6 +3074,44 @@ SINGLES = [
         ("S_8000DE9C_SOURCE", "boot", 0x8000de9c, 10, ()),
         ("S_8000E800_SOURCE", "boot", 0x8000e800, 21, (('func_8000E860', 2147543136),)),
         ("S_8000E920_SOURCE", "boot", 0x8000e920, 22, (('D_800129D4', 2147559892), ('func_80007300', 2147513088), ('func_800072E0', 2147513056))),
+        ("S_800283F0_SOURCE", "stage2", 0x800283f0, 11, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_8002841C_SOURCE", "stage2", 0x8002841c, 11, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_80028450_SOURCE", "stage2", 0x80028450, 41, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80030D98_ovl_01', 2147683688), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_8002844C_ovl_01', 2147648540), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('func_80028540_ovl_01', 2147648784), ('D_80011B10', 2147556064), ('func_8002FC30_ovl_01', 2147679232), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('func_80028420_ovl_01', 2147648496), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8002D1B8_ovl_01', 2147668360), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_800284F4_SOURCE", "stage2", 0x800284f4, 7, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_800283E0_ovl_01', 2147648432), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_80028510_SOURCE", "stage2", 0x80028510, 27, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_80028780_SOURCE", "stage2", 0x80028780, 80, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_800285AC_ovl_01', 2147648892), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_8002A4F8_SOURCE", "stage2", 0x8002a4f8, 28, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80029F38_ovl_01', 2147655432), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80029718_ovl_01', 2147653352), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_8002AEE0_SOURCE", "stage2", 0x8002aee0, 49, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_8002D164_SOURCE", "stage2", 0x8002d164, 9, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_8002E810_SOURCE", "stage2", 0x8002e810, 14, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('func_800283E0_overlay_001', 2147648432), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_8002E848_SOURCE", "stage2", 0x8002e848, 9, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_8002FC00_SOURCE", "stage2", 0x8002fc00, 9, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_8002FD00_SOURCE", "stage2", 0x8002fd00, 14, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_80030EA0_SOURCE", "stage2", 0x80030ea0, 15, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_80030EDC_SOURCE", "stage2", 0x80030edc, 15, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_80032B5C_SOURCE", "stage2", 0x80032b5c, 31, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_80040E88_ovl_01', 2147749464), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80032B40_ovl_01', 2147691280), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('func_8004279C_ovl_01', 2147755884), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('func_80032C08_ovl_01', 2147691480), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_80032C9C_ovl_01', 2147691628), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_80032C6C_SOURCE", "stage2", 0x80032c6c, 42, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_80040E88_ovl_01', 2147749464), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80032B40_ovl_01', 2147691280), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_8004251C_ovl_01', 2147755244), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('func_8004279C_ovl_01', 2147755884), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('func_80032B8C_ovl_01', 2147691356), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('func_80032C08_ovl_01', 2147691480), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_80033160_SOURCE", "stage2", 0x80033160, 22, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('func_80032D44_overlay_001', 2147691796), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_800351E8_SOURCE", "stage2", 0x800351e8, 55, (('D_80013874', 2147563588), ('func_80083788_ovl_01', 2148022104), ('func_80006100', 2147508432), ('func_8004CD84_ovl_01', 2147798356), ('func_8004C97C_ovl_01', 2147797324), ('D_80011AD8', 2147556008), ('D_80013860', 2147563568), ('func_80040E88_ovl_01', 2147749464), ('func_8016352C_ovl_15', 2148939004), ('D_80012100', 2147557584), ('func_800A5618_ovl_01', 2148161000), ('func_80162BAC_ovl_17', 2148936572), ('func_80010584', 2147550548), ('D_800128C8', 2147559576), ('func_800278AC_ovl_01', 2147645564), ('func_8004CA48_ovl_01', 2147797528), ('func_800750E0_ovl_01', 2147963056), ('D_80119E14_ovl_01', 2148638180), ('D_80011B20', 2147556080), ('D_80011B00', 2147556048), ('func_8000A2D0', 2147525280), ('func_8000A394', 2147525476), ('D_80011AF0', 2147556032), ('D_80011AF8', 2147556040), ('D_80011B08', 2147556056), ('func_800A5660_ovl_01', 2148161072), ('func_80162CE0_ovl_15', 2148936880), ('func_80036764_ovl_01_510', 2147706676), ('func_800AC334_ovl_01', 2148188932), ('func_8004251C_ovl_01', 2147755244), ('func_80010EC0', 2147552912), ('func_80036764_ovl_01_510_24', 2147707692), ('func_800837B0_ovl_01', 2148022144), ('func_80162998_ovl_23', 2148936040), ('func_8000F050', 2147545120), ('func_800099D0', 2147522976), ('func_800850D4_ovl_01', 2148028580), ('func_80162F38_ovl_15', 2148937480), ('func_800352F4_ovl_01', 2147701444), ('D_80011AD0', 2147556000), ('D_80011AE0', 2147556016), ('D_80011B10', 2147556064), ('func_80004A20', 2147502576), ('func_80075F84_ovl_01', 2147966804), ('D_80011AE8', 2147556024), ('D_80119E13_ovl_01', 2148638179), ('func_80031C44_ovl_01_868', 2147687444), ('func_801635F4_ovl_15', 2148939204), ('func_80042A54_ovl_01', 2147756580), ('D_80011AC8', 2147555992), ('func_8000D3D0', 2147537824), ('func_8003420C_ovl_01_18', 2147697116))),
+        ("S_800411B8_SOURCE", "stage2", 0x800411b8, 90, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_80049F98_SOURCE", "stage2", 0x80049f98, 2, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_80052EEC_SOURCE", "stage2", 0x80052eec, 9, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_80054084_SOURCE", "stage2", 0x80054084, 20, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_8005C308_SOURCE", "stage2", 0x8005c308, 9, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_8006087C_SOURCE", "stage2", 0x8006087c, 19, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_800667B0_SOURCE", "stage2", 0x800667b0, 9, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_8006B220_SOURCE", "stage2", 0x8006b220, 17, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_80073F20_SOURCE", "stage2", 0x80073f20, 2, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_80082474_SOURCE", "stage2", 0x80082474, 9, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_800837AC_SOURCE", "stage2", 0x800837ac, 9, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80083778_ovl_01', 2148022264), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_80083E60_SOURCE", "stage2", 0x80083e60, 8, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_800844E4_SOURCE", "stage2", 0x800844e4, 10, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_800878FC_SOURCE", "stage2", 0x800878fc, 20, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_8008794C_SOURCE", "stage2", 0x8008794c, 20, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_800A5C34_SOURCE", "stage2", 0x800a5c34, 7, (('D_80013874', 2147563636), ('func_80083788_ovl_01', 2148022152), ('func_80006100', 2147508480), ('func_8004CD84_ovl_01', 2147798404), ('func_8004C97C_ovl_01', 2147797372), ('D_80011AD8', 2147556056), ('D_80013860', 2147563616), ('func_8016352C_ovl_15', 2148939052), ('D_80012100', 2147557632), ('func_800A5618_ovl_01', 2148161048), ('func_80162BAC_ovl_17', 2148936620), ('func_80010584', 2147550596), ('D_800128C8', 2147559624), ('func_800278AC_ovl_01', 2147645612), ('func_8004CA48_ovl_01', 2147797576), ('func_800750E0_ovl_01', 2147963104), ('D_80119E14_ovl_01', 2148638228), ('D_80011B20', 2147556128), ('D_80011B00', 2147556096), ('func_8000A2D0', 2147525328), ('func_8000A394', 2147525524), ('D_80011AF0', 2147556080), ('D_80011AF8', 2147556088), ('D_80011B08', 2147556104), ('func_800A5660_ovl_01', 2148161120), ('func_80162CE0_ovl_15', 2148936928), ('func_80036764_ovl_01_510', 2147706724), ('func_800AC334_ovl_01', 2148188980), ('func_80010EC0', 2147552960), ('func_80036764_ovl_01_510_24', 2147707740), ('func_800837B0_ovl_01', 2148022192), ('func_80162998_ovl_23', 2148936088), ('func_8000F050', 2147545168), ('func_800099D0', 2147523024), ('func_800850D4_ovl_01', 2148028628), ('func_80162F38_ovl_15', 2148937528), ('D_80011AD0', 2147556048), ('D_80011AE0', 2147556064), ('D_80011B10', 2147556112), ('func_8000EFA0', 2147544992), ('func_80004A20', 2147502624), ('func_80075F84_ovl_01', 2147966852), ('D_80011AE8', 2147556072), ('D_80119E13_ovl_01', 2148638227), ('func_80031C44_ovl_01_868', 2147687492), ('func_801635F4_ovl_15', 2148939252), ('func_80042A54_ovl_01', 2147756628), ('D_80011AC8', 2147556040), ('func_8000D3D0', 2147537872), ('func_8003420C_ovl_01_18', 2147697164))),
+        ("S_800A5C50_SOURCE", "stage2", 0x800a5c50, 18, (('D_80013874', 2147563636), ('func_80083788_ovl_01', 2148022152), ('func_80006100', 2147508480), ('func_8004CD84_ovl_01', 2147798404), ('func_8004C97C_ovl_01', 2147797372), ('D_80011AD8', 2147556056), ('D_80143FA4', 2148810660), ('D_80013860', 2147563616), ('D_80143EAC', 2148810412), ('func_800A5C38_ovl_01', 2148162616), ('func_8016352C_ovl_15', 2148939052), ('D_80012100', 2147557632), ('func_800A5618_ovl_01', 2148161048), ('func_80162BAC_ovl_17', 2148936620), ('func_80010584', 2147550596), ('D_800128C8', 2147559624), ('func_800278AC_ovl_01', 2147645612), ('func_8004CA48_ovl_01', 2147797576), ('func_800750E0_ovl_01', 2147963104), ('D_80119E14_ovl_01', 2148638228), ('D_80011B20', 2147556128), ('D_80011B00', 2147556096), ('func_8000A2D0', 2147525328), ('func_8000A394', 2147525524), ('D_80011AF0', 2147556080), ('D_80011AF8', 2147556088), ('D_80011B08', 2147556104), ('func_800A5660_ovl_01', 2148161120), ('func_800A5BA8_ovl_01', 2148162472), ('func_80162CE0_ovl_15', 2148936928), ('func_80036764_ovl_01_510', 2147706724), ('func_800AC334_ovl_01', 2148188980), ('func_80010EC0', 2147552960), ('func_80036764_ovl_01_510_24', 2147707740), ('func_800837B0_ovl_01', 2148022192), ('func_80162998_ovl_23', 2148936088), ('func_8000F050', 2147545168), ('func_800099D0', 2147523024), ('func_800850D4_ovl_01', 2148028628), ('func_80162F38_ovl_15', 2148937528), ('D_80011AD0', 2147556048), ('D_80011AE0', 2147556064), ('D_80011B10', 2147556112), ('func_8000EFA0', 2147544992), ('func_80004A20', 2147502624), ('func_80075F84_ovl_01', 2147966852), ('D_80011AE8', 2147556072), ('D_80119E13_ovl_01', 2148638227), ('func_80031C44_ovl_01_868', 2147687492), ('func_801635F4_ovl_15', 2148939252), ('func_80042A54_ovl_01', 2147756628), ('D_80011AC8', 2147556040), ('func_8000D3D0', 2147537872), ('func_8003420C_ovl_01_18', 2147697164))),
+        ("S_800AB1A0_SOURCE", "stage2", 0x800ab1a0, 43, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
+        ("S_800AB2CC_SOURCE", "stage2", 0x800ab2cc, 25, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
 ]
 
 
@@ -4505,8 +5659,14 @@ def check():
                   f"F2 {_st.get('F2', 0)}, extent_measured {_st.get('extent_measured', 0)}; "
                   f"{len(_wrong or [])} of them disagree with the fixture (M340)"
                   if _me else "measured-extent rung: not run",
-                  bool(_me) and not _wrong and _st.get("extent_measured") == 182
-                  and _st.get("F0") == 3603 and _st.get("F1") == 3421 and _st.get("F2") == 3353))
+                  # M358: the rung is asserted by an *invariant*, not a pinned count -- the ladder's
+                  # extent_measured total must equal the number of functions the index actually carries at that
+                  # status. Banking an import graduated two of them (182 -> 180) and a pinned literal called that a
+                  # defect; the invariant says the rung is exactly what the index lists, whatever that is.
+                  bool(_me) and not _wrong
+                  and _st.get("extent_measured") == sum(1 for _i in _ci["images"] for _f in _i["functions_list"]
+                                                        if _f.get("status") == "extent-measured")
+                  and _st.get("F0") == sum(len(_i["functions_list"]) for _i in _ci["images"])))
 
     # M345: the last residue, profiled rather than named. No rule covers more than 8.9 % of it, so no class is
     # registered and the measurement is what gets gated.
