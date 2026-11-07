@@ -35,6 +35,7 @@
   "compile probes (cartridge)": 229,
   "other corpus (repository)": 21,
   "toolchain matrix (cartridge)": 4,
+  "corpus build (cartridge)": 1,
   "image inventory (cartridge)": 1,
   "progress map (repository)": 3,
   "analysis status (repository)": 7,

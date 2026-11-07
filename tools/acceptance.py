@@ -107,6 +107,7 @@ SUITES = [
     ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 229, True),
     ("other corpus (repository)", [sys.executable, "tools/other_corpus.py", "--self-test"], 21, True),
     ("toolchain matrix (cartridge)", [sys.executable, "tools/toolchain_matrix.py", "--check"], 4, True),
+    ("corpus build (cartridge)", [sys.executable, "tools/build_corpus.py", "--self-test"], 1, True),
     ("image inventory (cartridge)", [sys.executable, "tools/export_ranges.py", "--check-images"], 1, True),
     # M273: the README's progress map is generated from the fixtures, so it cannot drift from them, and every
     # function it claims as recovered must exist in the corpus. Repository-only: no cartridge needed.
