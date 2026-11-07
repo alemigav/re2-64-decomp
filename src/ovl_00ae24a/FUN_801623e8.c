@@ -1,20 +1,35 @@
 /* FUN_801623e8
  * image   ovl_00ae24a (ovl), base 0x80161cf0
  * address 0x801623e8  body 0x801623e8..0x80162483  size 156 B
- * body sha256 ff5ea803ebfb798eb1383cf0000c298a202c4f8ff47086544371b851527491a5
- * provider record sha256 ab07bd9580daf7e4bf84a92ca241f40098734d8bf2301077574d0d4d7b05aa94
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 b7ec5e0adc062703613a82f6ed8533d4bd48154d840ff021aec93ab2e3c3129e
+ * recovered byte-exact (import by content alignment: 39 of 39 words at our own address (func_80162368_ovl_32, delta +128))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_00ae24a/801623e8.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_801623e8(int param_1,undefined4 param_2,undefined4 param_3)
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
 
-{
-  if ((*(ushort *)(param_1 + 0x2c2) & 6) == 4) {
-    *(undefined4 *)(param_1 + 4) = 0x3000000;
-  }
-  else {
-    (*(code *)(&PTR_FUN_80166f90)[*(byte *)(param_1 + 5)])(param_1);
-    (*(code *)(&PTR_FUN_80166fa4)[*(byte *)(param_1 + 5)])(param_1,param_2,param_3);
-  }
-  return;
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+
+extern int (*D_80166F10_overlay_032[])();
+extern int (*D_80166F24_overlay_032[])();
+void func_80162368_ovl_32(void *arg0, M2C_UNK arg1, M2C_UNK arg2) {
+    if (((*(u16 *)((s8 *)(arg0) + (0x2C2))) & 6) == 4) {
+        (*(s32 *)((s8 *)(arg0) + (4))) = 0x03000000;
+        return;
+    }
+    D_80166F10_overlay_032[(*(u8 *)((s8 *)(arg0) + (5)))](arg0);
+    D_80166F24_overlay_032[(*(u8 *)((s8 *)(arg0) + (5)))](arg0, arg1, arg2);
 }

@@ -131,16 +131,19 @@ def main(argv) -> int:
     entries = json.loads((ROOT / "fixtures" / "decomp" / "recovered.json").read_text())["functions"]
     groups = {}
     for e in entries:
-        groups.setdefault(e["source"], []).append(e)
+        # a file-based import (M359) has no constant name; its own file is the group
+        groups.setdefault(e.get("source") or e.get("source_file"), []).append(e)
     singles = {row[0]: tuple(row[4]) for row in getattr(probe, "SINGLES", [])}
     corpus = []
     for src_name, members in sorted(groups.items()):
         text = getattr(probe, src_name, None)
+        if text is None and (ROOT / str(src_name)).exists():
+            text = (ROOT / str(src_name)).read_text()
         if text is None:
             continue
         first = members[0]
         syms = tuple(probe.__dict__.get(src_name.replace("_SOURCE", "_SYMS"), []) or ()) or \
-            singles.get(src_name, ())
+            singles.get(src_name, ()) or tuple(sorted(first.get("syms", {}).items()))
         corpus.append((src_name, text, int(first["address"], 16), int(first["words"]), syms, None))
     floaty = sum(1 for c in corpus if FLOATY.search(c[1]))
     focus = []

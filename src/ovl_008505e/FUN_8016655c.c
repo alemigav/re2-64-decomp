@@ -1,18 +1,29 @@
 /* FUN_8016655c
  * image   ovl_008505e (ovl), base 0x80161cf0
  * address 0x8016655c  body 0x8016655c..0x8016658f  size 52 B
- * body sha256 bde3c57b790b2a7c165727b735087decdaa33cfb7cbdc7b412d912dcc67094cd
- * provider record sha256 6308ad3c8a44057e44a54361e33582aac71338c916ced1e37d52a7e6b264209a
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 a27d82fc1c4b964e9cf1422a38fd37ee25071482fed76c16e0be00e0b8da6093
+ * recovered byte-exact (import by content alignment: 13 of 13 words at our own address (func_801664DC_ovl_12, delta +128))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_008505e/8016655c.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_8016655c(int param_1,int param_2,int param_3)
-
-{
-  param_2 = (uint)*(ushort *)(param_1 + 0x1e0) - param_2;
-  if ((param_3 < *(short *)(param_1 + 0x1e0)) &&
-     (*(short *)(param_1 + 0x1e0) = (short)param_2, param_2 * 0x10000 >> 0x10 < param_3)) {
-    *(short *)(param_1 + 0x1e0) = (short)param_3;
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+void func_801664DC_ovl_12(void *p, s32 d, s32 lim) {
+  u8 *b = p;
+  s16 old = *(s16 *)(b + 0x1E0);
+  u16 u = *(volatile u16 *)(b + 0x1E0);
+  if (lim < old) {
+    s16 n = u - d;
+    *(s16 *)(b + 0x1E0) = n;
+    if (n < lim)
+      *(s16 *)(b + 0x1E0) = lim;
   }
-  return;
 }

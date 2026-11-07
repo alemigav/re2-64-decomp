@@ -1,29 +1,32 @@
 /* FUN_8016581c
  * image   ovl_0087352 (ovl), base 0x80161cf0
  * address 0x8016581c  body 0x8016581c..0x8016584f  size 52 B
- * body sha256 e993d75463711c8bc2ad5435132acdff6665e6040c1ded34fa708d7399bf0df5
- * EXTENT MEASURED, NOT RECONSTRUCTED: 13 words, found by the extent scan inside a byte-map region no artifact names (extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists)
- * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
- * extents: fixtures/decomp/measured_extents.json
+ * body sha256 298bac605b59f369c1bbf569167ef339d2817886481c67acb9dba044b1e9af34
+ * recovered byte-exact (import by content alignment: 13 of 13 words at our own address (func_8016579C_ovl_13, delta +128))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_0087352/8016581c.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/*
- * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.
- *
- * These are the bytes of a function the provider never claimed, decoded word by word.
- * This file is a listing: not ours, not C, and no claim that the body is understood. It
- * exists so the census, the byte map and the coverage union can all name these bytes
- * (fixtures/decomp/measured_extents.json, M341).
- * 0x8016581c  90820006  lbu $v0,6($a0)
- * 0x80165820  14400009  bne $v0,$zero,+9
- * 0x80165824  24020080  addiu $v0,$zero,0x0080
- * 0x80165828  a082026f  sb $v0,623($a0)
- * 0x8016582c  8c820000  lw $v0,0($a0)
- * 0x80165830  8c830208  lw $v1,520($a0)
- * 0x80165834  34420002  ori $v0,$v0,0x0002
- * 0x80165838  ac820000  sw $v0,0($a0)
- * 0x8016583c  24020001  addiu $v0,$zero,0x0001
- * 0x80165840  a060000e  sb $zero,14($v1)
- * 0x80165844  a0820006  sb $v0,6($a0)
- * 0x80165848  03e00008  jr $ra
- * 0x8016584c  00000000  sll $zero,$zero,0
- */
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+
+typedef s32 M2C_UNK;
+typedef s8 M2C_UNK8;
+typedef s16 M2C_UNK16;
+typedef s32 M2C_UNK32;
+
+void func_8016579C_ovl_13(void *arg0) {
+    if ((*(u8 *)((s8 *)(arg0) + (6))) == 0) {
+        (*(u8 *)((s8 *)(arg0) + (0x26F))) = 0x80;
+        (*(s32 *)((s8 *)(arg0) + (0))) |= 2;
+        (*(s8 *)((s8 *)((*(void **)((s8 *)(arg0) + (0x208)))) + (0xE))) = 0;
+        (*(u8 *)((s8 *)(arg0) + (6))) = 1U;
+    }
+}

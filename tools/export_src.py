@@ -312,7 +312,8 @@ def main() -> None:
                       f" * body sha256 {body_sha}\n"
                       f" * recovered {e['verdict']} ({e['probe']})\n"
                       f" * provider {provider['name']} {provider['version']}: body was the head only; this file is "
-                      f"the reconstruction, kept in tools/compile_probe.py as {e['source']}\n"
+                      f"the reconstruction, kept in "
+                      f"{('tools/compile_probe.py as ' + e['source']) if e.get('source') else e.get('source_file')}\n"
                       f" * extents and pins: fixtures/decomp/recovered.json\n"
                       f" */\n")
             (outdir / fname).write_text(header + body)

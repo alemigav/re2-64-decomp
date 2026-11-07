@@ -16231,30 +16231,6 @@
    ],
    [
     2149079084,
-    2149080155,
-    "padding",
-    "run of 0x00 in the unpacked image"
-   ],
-   [
-    2149080156,
-    2149080159,
-    "data_named",
-    "src/<image>/*.c DAT_"
-   ],
-   [
-    2149080160,
-    2149082771,
-    "padding",
-    "run of 0x00 in the unpacked image"
-   ],
-   [
-    2149082772,
-    2149082775,
-    "data_named",
-    "src/<image>/*.c DAT_"
-   ],
-   [
-    2149082776,
     2149084307,
     "padding",
     "run of 0x00 in the unpacked image"
@@ -18765,6 +18741,12 @@
    ],
    [
     2148953976,
+    2148953979,
+    "slack",
+    "under 64 B, between two claimed runs"
+   ],
+   [
+    2148953980,
     2148953987,
     "data_named",
     "src/<image>/*.c DAT_"
@@ -19399,6 +19381,12 @@
    ],
    [
     2148961612,
+    2148961615,
+    "padding",
+    "run of 0x00 in the unpacked image"
+   ],
+   [
+    2148961616,
     2148961619,
     "data_named",
     "src/<image>/*.c DAT_"
@@ -20586,8 +20574,8 @@
    [
     2148947276,
     2148947279,
-    "data_named",
-    "src/<image>/*.c DAT_"
+    "fill",
+    "run of 0x00, shorter than the padding law's 16-byte floor"
    ]
   ],
   "ovl_0095446": [
@@ -24849,33 +24837,9 @@
    ],
    [
     2148954748,
-    2148954767,
-    "slack",
-    "under 64 B, between two claimed runs"
-   ],
-   [
-    2148954768,
-    2148954771,
-    "data_named",
-    "src/<image>/*.c DAT_"
-   ],
-   [
-    2148954772,
-    2148954823,
-    "slack",
-    "under 64 B, between two claimed runs"
-   ],
-   [
-    2148954824,
-    2148954827,
-    "data_named",
-    "src/<image>/*.c DAT_"
-   ],
-   [
-    2148954828,
     2148954943,
-    "u16_table",
-    "packed values: 90 %+ of the u16 halves under 4096"
+    "referenced_data",
+    "5 site(s) materialise its address; displacements [20, 56, 76]"
    ],
    [
     2148954944,
@@ -25049,15 +25013,9 @@
    ],
    [
     2148935216,
-    2148936475,
-    "referenced_data",
-    "3 site(s) materialise its address; displacements [640, 1252]"
-   ],
-   [
-    2148936476,
     2148936479,
-    "data_named",
-    "src/<image>/*.c DAT_"
+    "referenced_data",
+    "4 site(s) materialise its address; displacements [640, 1252, 1260]"
    ]
   ],
   "ovl_00b321e": [
@@ -25425,7 +25383,7 @@
   "ovl_0072610": {
    "table_in_body": 0,
    "data_in_body": 0,
-   "padding_in_body": 83
+   "padding_in_body": 81
   },
   "ovl_007688e": {
    "table_in_body": 0,
@@ -25470,7 +25428,7 @@
   "ovl_008900e": {
    "table_in_body": 0,
    "data_in_body": 0,
-   "padding_in_body": 5
+   "padding_in_body": 4
   },
   "ovl_008bef8": {
    "table_in_body": 0,
@@ -25629,10 +25587,10 @@
    "function_body": 38472,
    "gap": 32,
    "fill": 52,
-   "padding": 7652,
+   "padding": 7660,
    "string_table": 56,
    "pointer_table": 40,
-   "data_named": 428,
+   "data_named": 420,
    "slack": 664,
    "referenced_data": 488,
    "enclosed_data": 296,
@@ -25715,8 +25673,8 @@
    "function_body": 20348,
    "gap": 8,
    "fill": 12,
-   "data_named": 56,
-   "slack": 128,
+   "data_named": 52,
+   "slack": 132,
    "referenced_data": 108,
    "pointer_table": 480,
    "unclassified": 76
@@ -25738,11 +25696,11 @@
    "slack": 232,
    "pointer_table": 528,
    "fill": 12,
-   "data_named": 56,
+   "data_named": 52,
    "u16_table": 76,
    "enclosed_data": 516,
    "referenced_data": 192,
-   "padding": 16
+   "padding": 20
   },
   "ovl_008bef8": {
    "function_body": 16684,
@@ -25798,9 +25756,8 @@
    "jump_table": 20,
    "pointer_table": 304,
    "slack": 28,
-   "fill": 4,
-   "referenced_data": 80,
-   "data_named": 4
+   "fill": 8,
+   "referenced_data": 80
   },
   "ovl_0095446": {
    "function_body": 24820,
@@ -25953,13 +25910,13 @@
    "gap": 168,
    "fill": 16,
    "jump_table": 52,
-   "slack": 220,
+   "slack": 148,
    "pointer_table": 392,
-   "referenced_data": 76,
-   "data_named": 60,
+   "referenced_data": 272,
+   "data_named": 52,
    "enclosed_data": 120,
-   "u16_table": 284,
    "padding": 112,
+   "u16_table": 168,
    "unclassified": 20
   },
   "ovl_00b2d7a": {
@@ -25968,9 +25925,8 @@
    "enclosed_data": 136,
    "fill": 4,
    "jump_table": 4,
-   "referenced_data": 1364,
-   "pointer_table": 36,
-   "data_named": 4
+   "referenced_data": 1368,
+   "pointer_table": 36
   },
   "ovl_00b321e": {
    "function_body": 18668,

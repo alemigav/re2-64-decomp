@@ -3114,6 +3114,39 @@ SINGLES = [
         ("S_800AB2CC_SOURCE", "stage2", 0x800ab2cc, 25, (('D_80013874', 2147563764), ('func_80083788_ovl_01', 2148022280), ('func_80006100', 2147508608), ('func_8004CD84_ovl_01', 2147798532), ('func_8004C97C_ovl_01', 2147797500), ('D_80011AD8', 2147556184), ('D_80013860', 2147563744), ('func_8016352C_ovl_15', 2148939180), ('D_80012100', 2147557760), ('func_800A5618_ovl_01', 2148161176), ('func_80162BAC_ovl_17', 2148936748), ('func_80010584', 2147550724), ('D_800128C8', 2147559752), ('func_800278AC_ovl_01', 2147645740), ('func_8004CA48_ovl_01', 2147797704), ('func_800750E0_ovl_01', 2147963232), ('D_80119E14_ovl_01', 2148638356), ('D_80011B20', 2147556256), ('D_80011B00', 2147556224), ('func_8000A2D0', 2147525456), ('func_8000A394', 2147525652), ('D_80011AF0', 2147556208), ('D_80011AF8', 2147556216), ('D_80011B08', 2147556232), ('func_800A5660_ovl_01', 2148161248), ('func_80162CE0_ovl_15', 2148937056), ('func_80036764_ovl_01_510', 2147706852), ('func_800AC334_ovl_01', 2148189108), ('func_80010EC0', 2147553088), ('func_80036764_ovl_01_510_24', 2147707868), ('func_800837B0_ovl_01', 2148022320), ('func_80162998_ovl_23', 2148936216), ('func_8000F050', 2147545296), ('func_800099D0', 2147523152), ('func_800850D4_ovl_01', 2148028756), ('func_80162F38_ovl_15', 2148937656), ('D_80011AD0', 2147556176), ('D_80011AE0', 2147556192), ('D_80011B10', 2147556240), ('func_80004A20', 2147502752), ('func_80075F84_ovl_01', 2147966980), ('D_80011AE8', 2147556200), ('D_80119E13_ovl_01', 2148638355), ('func_80031C44_ovl_01_868', 2147687620), ('func_801635F4_ovl_15', 2148939380), ('func_80042A54_ovl_01', 2147756756), ('D_80011AC8', 2147556168), ('func_8000D3D0', 2147538000), ('func_8003420C_ovl_01_18', 2147697292))),
 ]
 
+# --- the imported-source channel (M359) -----------------------------------------------------------------
+# A reconstruction that was *imported* rather than reasoned about keeps its C in
+# `fixtures/decomp/imported/<image>/<address>.c`, and `fixtures/decomp/recovered.json` — still the single reader —
+# says so with `source_file` instead of `source`. The 139 overlay imports of M359 would have grown this file by
+# four thousand lines of somebody else's C; the 15+38 that came before are constants because they were few.
+#
+# The loader registers each file as `IMPORTED_<IMAGE>_<ADDRESS>_SOURCE` and appends its `SINGLES` row, so every
+# existing consumer (`single_probe`, the case generator, `recovered.source`) keeps working unchanged and there is
+# still exactly one place that decides where a reconstruction's text comes from.
+def _load_imported_sources():
+    fixture = ROOT / "fixtures" / "decomp" / "recovered.json"
+    if not fixture.exists():
+        return 0
+    loaded = 0
+    for entry in json.loads(fixture.read_text()).get("functions", []):
+        rel = entry.get("source_file")
+        if not rel:
+            continue
+        path = ROOT / rel
+        if not path.exists():
+            continue
+        const = "IMPORTED_%s_%s_SOURCE" % (path.parent.name.upper(), path.stem.upper())
+        globals()[const] = path.read_text()
+        globals()["IMPORTED_%s_%s_SYMS" % (path.parent.name.upper(), path.stem.upper())] = \
+            tuple(sorted(entry.get("syms", {}).items()))
+        SINGLES.append((const, entry["image"], int(entry["address"], 16), int(entry["words"]),
+                        globals()["IMPORTED_%s_%s_SYMS" % (path.parent.name.upper(), path.stem.upper())]))
+        loaded += 1
+    return loaded
+
+
+IMPORTED_SOURCE_COUNT = _load_imported_sources()
+
 
 CALL9_SYMS = [("FUN_8008cea0", 0x8008CEA0)]
 
@@ -3386,7 +3419,8 @@ def family_probe():
         return None
     groups = {}
     for e in _json.loads(fix.read_text())["functions"]:
-        groups.setdefault(e["source"], []).append(e)
+        # a file-based import has no constant name to group by; its own file is the group (M359)
+        groups.setdefault(e.get("source") or e.get("source_file"), []).append(e)
     cc1 = TC / "mips-gcc-2.8.1" / "bin" / "cc1"
     gas = AS27 if AS27.exists() else GAS / "mips-linux-gnu-as"
     if not cc1.exists() or not gas.exists():
@@ -3396,10 +3430,13 @@ def family_probe():
         if len(entries) < 2:
             continue
         text = globals().get(src_name)
+        if text is None and (ROOT / str(src_name)).exists():
+            text = (ROOT / str(src_name)).read_text()          # a file-based import (M359)
         if text is None:
             out[src_name] = {"members": len(entries), "matched": 0, "words": 0, "why": "no such source"}
             continue
-        syms = globals().get(src_name.replace("_SOURCE", "_SYMS"), [])
+        syms = globals().get(src_name.replace("_SOURCE", "_SYMS"), []) or \
+            tuple(sorted(entries[0].get("syms", {}).items()))
         words = int(entries[0]["words"])
         d = WORK / ("fam_%s" % src_name)
         d.mkdir(parents=True, exist_ok=True)

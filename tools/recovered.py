@@ -88,7 +88,15 @@ def load_additions(fixture: Path = MEASURED) -> dict:
 
 
 def source(entry: dict) -> str:
-    """The reconstruction text for one entry, from the compile-probe corpus (its single source of truth)."""
+    """The reconstruction text for one entry.
+
+    Two channels, one reader: a reasoned reconstruction lives in `tools/compile_probe.py` as a constant, and an
+    *imported* one lives in `fixtures/decomp/imported/<image>/<address>.c` (M359) — 139 sources of the second kind
+    would have added four thousand lines to the probe for a corpus that is imported rather than reasoned about.
+    The entry says which, with `source` or `source_file`, and everything downstream asks this function.
+    """
+    if entry.get("source_file"):
+        return (Path(entry["source_file"]).read_text()).rstrip("\n") + "\n"
     path = Path("tools/compile_probe.py")
     spec = importlib.util.spec_from_file_location("_cp_recovered", path)
     cp = importlib.util.module_from_spec(spec)

@@ -1,14 +1,26 @@
 /* FUN_801623b0
  * image   ovl_00ae24a (ovl), base 0x80161cf0
  * address 0x801623b0  body 0x801623b0..0x801623e7  size 56 B
- * body sha256 e54b9ccf62b2eea22839661cc37003890ad6c7cda47740a4a548bfaeaf7e7791
- * provider record sha256 173fda872885a6df09ecd5ae810df89c5435d5164c2166255344682e725e42e0
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 76ce40707841d8d42f6ecdde1ea08a5f1c457b319abf91cfac2a51c9cce70e79
+ * recovered byte-exact (import by content alignment: 14 of 14 words at our own address (func_8016EEC0_overlay_060, delta -51984))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/ovl_00ae24a/801623b0.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_801623b0(int param_1)
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
 
+extern int (*D_80173A9C_overlay_060[])();
+void func_8016EEC0_overlay_060(void *arg0)
 {
-  (*(code *)(&PTR_FUN_80166f8c)[*(ushort *)(param_1 + 0x1aa) & 0x3f])();
-  return;
+  int new_var;
+  new_var = (*((u16 *) (((char *) arg0) + 0x1AA))) & 0x3F;
+  D_80173A9C_overlay_060[new_var]();
 }
