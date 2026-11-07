@@ -1657,6 +1657,80 @@
    "syms": {
     "D_80147fb0": 2148827056
    }
+  },
+  {
+   "image": "boot",
+   "address": "0x800013b0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 9 of 9, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/800013b0.c",
+   "syms": {
+    "D_800138a0": 2147563680,
+    "D_800138a4": 2147563684,
+    "D_800138a8": 2147563688,
+    "D_80013eb4": 2147565236
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x8000de78",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 9 of 9, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/8000de78.c",
+   "syms": {}
+  },
+  {
+   "image": "boot",
+   "address": "0x8000de9c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 10 of 10, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/8000de9c.c",
+   "syms": {}
+  },
+  {
+   "image": "boot",
+   "address": "0x8000319c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 10 of 10, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/8000319c.c",
+   "syms": {
+    "FUN_8000305c": 2147496028
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x800048b0",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/800048b0.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b98c",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b98c.c",
+   "syms": {
+    "FUN_8017b8f4": 2149038324
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b9bc",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b9bc.c",
+   "syms": {
+    "FUN_8017b98c": 2149038476
+   }
   }
  ]
 }

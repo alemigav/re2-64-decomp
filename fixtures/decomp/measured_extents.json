@@ -11,12 +11,6 @@
  "functions": [
   {
    "image": "boot",
-   "address": "0x800013b0",
-   "words": 9,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "boot",
    "address": "0x800022bc",
    "words": 22,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
@@ -29,12 +23,6 @@
   },
   {
    "image": "boot",
-   "address": "0x8000319c",
-   "words": 10,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "boot",
    "address": "0x800042f4",
    "words": 31,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
@@ -43,12 +31,6 @@
    "image": "boot",
    "address": "0x80004550",
    "words": 17,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "boot",
-   "address": "0x800048b0",
-   "words": 12,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
@@ -125,18 +107,6 @@
   },
   {
    "image": "boot",
-   "address": "0x8000de78",
-   "words": 9,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8000de78..0x8000de9b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "boot",
-   "address": "0x8000de9c",
-   "words": 10,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "boot",
    "address": "0x8000e800",
    "words": 21,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
@@ -175,18 +145,6 @@
    "image": "ovl_0072610",
    "address": "0x8017b7a8",
    "words": 16,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017b98c",
-   "words": 12,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017b9bc",
-   "words": 12,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
