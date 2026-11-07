@@ -24,17 +24,17 @@ Every figure on the front page is **derived from the fixtures and asserted by `t
 including in this file's shorter sibling. A phrase that *disappears* counts as a failure, so a stale line cannot be
 fixed by deleting it. Where a number is a *reading* rather than a measurement, the text says so.
 
-**The corpus of recovered functions is 383 entries, 382 of them byte-exact.** The composition matters more than the
+**The corpus of recovered functions is 391 entries, 390 of them byte-exact.** The composition matters more than the
 total, and any headline quoting it must carry this line:
 
 | | count | what it is |
 | --- | --- | --- |
-| reconstructed by hand from the disassembly | **37** | the information-bearing core — the table in §3 |
+| reconstructed by hand from the disassembly | **46** | the information-bearing core — the table in §3 |
 | singles landed from one shape each | **55** | one draft per body, measured against `leaf_screen.py` |
 | imported from another decompilation and re-verified here | **194** | one tool scores that corpus through this profile against this cartridge (`tools/other_corpus.py`); these fifteen came back word-exact, and nothing else about that project is taken on trust |
 | copies of twenty-one proven body shapes | **97** | one proven reconstruction registers every copy: 44 empty functions, 11 nine-word masked calls, **17 of the dispatch family** across eight table addresses (M335), three of a masked read-modify-write loop, three of a three-store setter, and the rest two-copy shapes found by the *statement order*, by the *stride* rather than the walk (M355), or by where a constant sits in an OR chain |
 
-So "383" is a **corpus** number, not 360 independent reconstructions. The remaining published residue is one function
+So "391" is a **corpus** number, not 360 independent reconstructions. The remaining published residue is one function
 at **226 of 229 words**; everything else is byte-exact. And the cohort gain is not free but it is not
 closed either: the eight dispatch groups were reachable (M335), and three of the four bodies drafted alongside them
 were then closed by moving a *materialisation* ahead of a load — 11, 12 and 18 words, two copies each (M336) — while
@@ -53,15 +53,15 @@ suites are named and timed in `acceptance.HEAVY_SUITES` rather than quietly move
 ## 2. The corpus, and the geometry it came from
 
 - **36 images** — `boot`, `stage2`, and 34 overlays — censused from the cartridge's own load table: **1 956 560 B**,
-  **3 679 functions** over **3 678 ranges**, **1 241 400 B (63.4 %)** inside a known body.
+  **3 578 functions** over **3 678 ranges**, **1 223 008 B (62.5 %)** inside a known body.
 - **The other 38.1 % is classified, never shrugged at:** 408 124 B padding, 6 680 B data the decompiler names,
   980 B of jump tables, **23 980 B** of float tables, **20 380 B** of pointer tables, **13 200 B** of string
   tables, and **440 B (0.0 %) unclassified** — a bucket that is published and is never renamed
   `data` on a hunch.
 - **174 switch case bodies** are code and are counted in the ranges and the byte total, but the provider itself labels
   them `switchD_::caseD_`, so they live under `src/<image>/switch/` instead of being published as functions.
-- **The analysis ladder** (`tools/analysis_status.py`): F0 3 679 / F1 3 451 / F2 3 403 — of **3 679 functions**,
-  **3 403** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
+- **The analysis ladder** (`tools/analysis_status.py`): F0 3 578 / F1 3 459 / F2 3 389 — of **3 578 functions**,
+  **3 389** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
   a gate or an executed experiment. All 12 are still called `FUN_…`: a name needs evidence of its own.
 - **The boot image has two extents, and the difference is what the loader loads.** Code is `0x11140`
   (`0x80000480..0x800115C0`); the **load** extent is `0x13420`, and it ends exactly at `__bss_start` (`0x800138A0`) —

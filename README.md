@@ -1,9 +1,9 @@
 # Resident Evil 2 (N64) — decompilation research
 
 **What it is:** a black-box study of *Resident Evil 2* on the Nintendo 64 (`NREE` rev 1 USA), reverse-engineered from the
-cartridge up — 3 679 functions catalogued, the file formats decoded, the script virtual machine and three audio codecs
-worked out from the bytes, and **383 functions reconstructed in C and recompiled — 382 of them matching the game's own
-machine code byte for byte**. It ships a **1404-case verification suite**, and every claim here is either measured by
+cartridge up — 3 578 functions catalogued, the file formats decoded, the script virtual machine and three audio codecs
+worked out from the bytes, and **391 functions reconstructed in C and recompiled — 390 of them matching the game's own
+machine code byte for byte**. It ships a **1412-case verification suite**, and every claim here is either measured by
 one of those cases or explicitly labelled a reading of the code.
 
 > **Two versions of this page.** This is the short one: what the project is, what it proves, how to check it in a
@@ -22,7 +22,7 @@ one of those cases or explicitly labelled a reading of the code.
 |---|---|
 | **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **129 functions match the cartridge exactly**, to the last byte: from Nintendo's own libultra runtime down to single-instruction accessors. 59 of them are copies of eight proven body shapes, so one proven shape registers every copy ([the corpus, honestly counted](#the-corpus-and-what-is-left)) |
 | **The unusual part** | **302 checks run with no ROM, no assets and no emulator** — the other 839 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses `PASS` unless it has first proved each gate *can* fail |
-| **The scale of what is left** | 63.4 % of the image bytes sit inside a known function body and the rest is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
+| **The scale of what is left** | 62.5 % of the image bytes sit inside a known function body and the rest is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
 
 **This is not a matching build** — of the whole cartridge. But that is no longer the only thing the project can say
 about the matching question: the compiler that produced this game is identified and reproduced, whole functions are
@@ -60,7 +60,7 @@ requires it to fail. With a dump of your own, see [Rebuild with your own dump](#
 ## Verify it without the cartridge
 
 ```sh
-python3 tools/acceptance.py      # 34 suites / 324 of 1404 cases run; the other 43 suites SKIP
+python3 tools/acceptance.py      # 34 suites / 324 of 1412 cases run; the other 43 suites SKIP
 python3 tools/audit_gates.py     # 160/160 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 25/25 — every doc anchor, heading and note pointer holds
@@ -71,7 +71,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 ```
 
 A suite that cannot run prints `SKIP (needs the cartridge)` — **never PASS** — and the split is stated wherever it is
-counted: **1080 of 1404 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
+counted: **1088 of 1412 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
 audit is the unusual one: it **disables each check's mechanism** and requires the check to fail, 146 mechanisms and 146
 failures with **0 vacuous**, after first running the unmutated tool as a positive control — that control once found that
 49 of 132 audits had never tested their mutation. [The extended page](docs/README-extended.md#6-the-verification-architecture)
@@ -79,7 +79,7 @@ has the architecture, the ratchet's three invariants and the 30-second rule.
 
 ## Milestones
 
-**364** numbers, 0-363: **308** with a row, and **56** named gaps. The full index — every number, its title, and the
+**365** numbers, 0-364: **309** with a row, and **56** named gaps. The full index — every number, its title, and the
 note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table worth reading
 before you believe any older note.
@@ -105,7 +105,7 @@ before you believe any older note.
 | P16 | **M251–M300** | **whole functions reproduced from the image**: the compile-probe corpus and sixteen hand reconstructions, fifteen byte-exact, plus the build facts that made them possible |
 | P17 | **M301–M307** | **the duplicate-body cohorts**: 148 of the 3 400 unmatched functions have a body byte-identical to another's, in 48 groups — one proven shape registers every copy |
 | P18 | **M308–M331** | **the singles sweep and the boot image's own geometry**: the boot extent corrected to its load extent because a recovered `main` named `__bss_start`; `main` at 30 of 30; the 46-word DSP family closed as hand-written assembly; `vector_installer` taken to a measured near-miss |
-| P19 | **M332–M363** | **the front page, the last functions, and the byte map closed**: the README split into a short page and a dense companion; the duplicate cohorts banked **+25 functions from five shapes**, three of them closed by *statement order* rather than expression; then the twelve-milestone byte-map arc — `unclassified` **330 176 B (16.9 %) → 440 B (0.0 %)**, eleven measured classes each earned by a rule the audit mutates, and the last nine runs read by hand; and **admission unparked to `PASS`** (160/160, 0 vacuous, 0 broken), which immediately caught a class measuring a 64 KB page base instead of an address |
+| P19 | **M332–M364** | **the front page, the last functions, and the byte map closed**: the README split into a short page and a dense companion; the duplicate cohorts banked **+25 functions from five shapes**, three of them closed by *statement order* rather than expression; then the twelve-milestone byte-map arc — `unclassified` **330 176 B (16.9 %) → 440 B (0.0 %)**, eleven measured classes each earned by a rule the audit mutates, and the last nine runs read by hand; and **admission unparked to `PASS`** (160/160, 0 vacuous, 0 broken), which immediately caught a class measuring a 64 KB page base instead of an address |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be indistinguishable from
 one written from measurement, and that distinction is the project's whole claim.
@@ -121,9 +121,9 @@ are counted in the corpus below, not in the picture.
 ```
 the cartridge — one cell per group of functions, shaded by how far each is *matched*
 
-boot         226│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
-stage2       1902│█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒█▒▒▒▒▒▒██▒▒▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒│
-ovl_0072610  113│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
+boot         221│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
+stage2       1825│█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒█▒▒▒▒▒▒██▒▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒│
+ovl_0072610  105│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_007688e  42│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_0078c0e  27│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_007af7a  19│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
@@ -149,19 +149,19 @@ ovl_00a0344  44│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 ovl_00a1414  48│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_00a43b6  48│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_00a733e  76│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
-ovl_00a9d94  66│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
-ovl_00ae24a  39│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
-ovl_00b08a2  43│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
+ovl_00a9d94  64│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
+ovl_00ae24a  37│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
+ovl_00b08a2  41│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_00b2d7a  15│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
-ovl_00b321e  81│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
-ovl_00b5346  21│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
+ovl_00b321e  77│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
+ovl_00b5346  20│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_00b5e64   3│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│
 
-3679 functions across 36 images · █ 15 reproduced byte-for-byte (0.41%) · ▓ 1 recovered, residue itemised
+3578 functions across 36 images · █ 15 reproduced byte-for-byte (0.42%) · ▓ 1 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M363)
+the record — one bar per phase, from the phase table's own ranges (M0–M364)
 
 P0   M0  │█│ 10
 P1   M10 │███│ 21
@@ -182,21 +182,21 @@ P15  M231│███│ 20
 P16  M251│███████│ 50
 P17  M301│█│ 7
 P18  M308│███│ 24
-P19  M332│████│ 32
+P19  M332│████│ 33
 ```
 <!-- progress-map:end -->
 
 ## The corpus, and what is left
 
 - **The code corpus**: **36 images** (boot + stage-2 + 34 overlays, 1 956 560 B) censused from the cart's own load
-  table — **3 679 functions** over **3 678** ranges, **63.4 %** of the **1 956 560** image bytes inside a known body
-  (**1 241 400 B**); `src/`, `src/INDEX.md`. The other 36.8 % is classified, not shrugged at: **408 124 B padding**,
+  table — **3 578 functions** over **3 678** ranges, **62.5 %** of the **1 956 560** image bytes inside a known body
+  (**1 223 008 B**); `src/`, `src/INDEX.md`. The other 36.8 % is classified, not shrugged at: **408 124 B padding**,
   **6 680 B** data the decompiler names, **980 B** of jump tables, and **440 B (0.0 %) unclassified** — a bucket
   that is published and never renamed `data` on a hunch.
-- **What is actually understood**: of **3 679 functions**, **3 403** resolve every call target in their bodies, **33**
+- **What is actually understood**: of **3 578 functions**, **3 389** resolve every call target in their bodies, **33**
   carry a curated name, and **12** have behaviour pinned by a gate or an executed experiment — and all **12** of those
   are still called `FUN_…`, because a name needs evidence of its own.
-- **The recovered corpus is 383 entries, 382 byte-exact** — and the count needs its qualifier: **37** were reconstructed
+- **The recovered corpus is 391 entries, 390 byte-exact** — and the count needs its qualifier: **46** were reconstructed
   by hand from the disassembly, **55** are singles landed from one shape each, **97** are copies of **21** proven
   body shapes — 44 the empty function, **17 the dispatch family** across eight table addresses, 11 a masked call
   wrapper, and the rest two- and three-copy shapes closed by statement order, by a strided index, or by where a
@@ -242,7 +242,7 @@ record the cartridge never labels — is
 tools/       104 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 605 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        README-extended.md (the dense version), handover.md, format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    289 notes, one per milestone that has one
+docs/log/    290 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

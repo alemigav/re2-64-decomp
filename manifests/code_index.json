@@ -6,7 +6,7 @@
    "role": "boot",
    "base": "0x80000480",
    "size": 78880,
-   "functions": 226,
+   "functions": 221,
    "named": 19,
    "functions_named": 19,
    "limitations": [
@@ -26,11 +26,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 14795,
-   "covered_bytes": 59180,
-   "coverage": 0.7503,
-   "unclaimed_runs": 97,
-   "unclaimed_bytes": 19700,
+   "covered_words": 14639,
+   "covered_bytes": 58556,
+   "coverage": 0.7423,
+   "unclaimed_runs": 100,
+   "unclaimed_bytes": 20324,
    "functions_list": [
     {
      "address": "0x80000480",
@@ -2656,42 +2656,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x8000c464",
-     "name": "FUN_8000c464",
-     "file": "src/boot/FUN_8000c464.c",
-     "size": 36,
-     "sha256": "dea51e33f5530cfb230a30120e966027a4f7b2aaaa3443b1244fab08c93cef1f",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8000cd40",
-     "name": "FUN_8000cd40",
-     "file": "src/boot/FUN_8000cd40.c",
-     "size": 160,
-     "sha256": "8472f668fedc18cb2e1674809bd6562d48496ddcbdeb8cacae5ef474beb5e860",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8000d3cc",
-     "name": "FUN_8000d3cc",
-     "file": "src/boot/FUN_8000d3cc.c",
-     "size": 92,
-     "sha256": "4a236803677a6a8c0ce41ef06c275deaa92602d28e4193e33bbb7aee57b9fb68",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x8000de78",
      "name": "FUN_8000de78",
      "file": "src/boot/FUN_8000de78.c",
@@ -2704,35 +2668,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x8000e7d0",
-     "name": "FUN_8000e7d0",
-     "file": "src/boot/FUN_8000e7d0.c",
-     "size": 32,
-     "sha256": "7ed0cef5dd3fb1b63fc6e01aa96c32fb89828421b8ba692632b4db9da3a215d8",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x8000f020",
      "name": "FUN_8000f020",
      "file": "src/boot/FUN_8000f020.c",
      "size": 40,
      "sha256": "091721f03ca221b73ccd19733ab1fe8dc52c114accdf6273e5f7f18e0b770c14",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800113d8",
-     "name": "FUN_800113d8",
-     "file": "src/boot/FUN_800113d8.c",
-     "size": 304,
-     "sha256": "8a7f688329f7c5b318a7eb17635dd46b9afbdfa1dcc9ed9a90e83e910391c603",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -3066,7 +3006,7 @@
    "role": "stage2",
    "base": "0x80018a80",
    "size": 1172240,
-   "functions": 1902,
+   "functions": 1825,
    "named": 14,
    "functions_named": 14,
    "limitations": [
@@ -3088,11 +3028,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 146162,
-   "covered_bytes": 584648,
-   "coverage": 0.4987,
-   "unclaimed_runs": 176,
-   "unclaimed_bytes": 587592,
+   "covered_words": 142766,
+   "covered_bytes": 571064,
+   "coverage": 0.4872,
+   "unclaimed_runs": 210,
+   "unclaimed_bytes": 601176,
    "functions_list": [
     {
      "address": "0x80018a80",
@@ -17316,10 +17256,9 @@
      "provider_sha256": "7a9272861b800368f5c785a5b9428fd58208fa11738ab3387c6911fe9b0fa54b",
      "status": "written",
      "callees": [
-      "0x8000cd40",
       "0x8008af80"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x8008b0a4",
@@ -17330,10 +17269,9 @@
      "provider_sha256": "b74abd0b14dff20352260bad67716d6a4fdffdd9f6de98d6181bc194d19fdca4",
      "status": "written",
      "callees": [
-      "0x8000cd40",
       "0x8008b040"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x8008b0ec",
@@ -19993,10 +19931,9 @@
       "0x80006f60",
       "0x80007320",
       "0x8000c9e0",
-      "0x8000cd40",
       "0x8009c1e0"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x8009c0c4",
@@ -20010,10 +19947,9 @@
       "0x80006f60",
       "0x80007320",
       "0x8000c9e0",
-      "0x8000cd40",
       "0x8009c1e0"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x8009c1e0",
@@ -20025,10 +19961,9 @@
      "status": "written",
      "callees": [
       "0x80006650",
-      "0x80006d30",
-      "0x8000cd40"
+      "0x80006d30"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x8009c370",
@@ -24529,186 +24464,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8001b744",
-     "name": "FUN_8001b744",
-     "file": "src/stage2/FUN_8001b744.c",
-     "size": 388,
-     "sha256": "12008d010b64482a2d50cf23b76a5122c3000f01103940e0eb65a7cd3c5b8d55",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8001f35c",
-     "name": "FUN_8001f35c",
-     "file": "src/stage2/FUN_8001f35c.c",
-     "size": 48,
-     "sha256": "d0bb9ee5947f976ddcb0b6294accbc73052389189b663b4efde72a63fbf2a1df",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8001f38c",
-     "name": "FUN_8001f38c",
-     "file": "src/stage2/FUN_8001f38c.c",
-     "size": 28,
-     "sha256": "bed43be9579c06f9a24ab0860bb6fbbdfcb0107a617dd1030f7fa453dbffb260",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8001f3a8",
-     "name": "FUN_8001f3a8",
-     "file": "src/stage2/FUN_8001f3a8.c",
-     "size": 8,
-     "sha256": "d96f4daa6f3191ab2b83719304419dcffc94a212842b951f19528521889fb0c5",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8001f3b0",
-     "name": "FUN_8001f3b0",
-     "file": "src/stage2/FUN_8001f3b0.c",
-     "size": 392,
-     "sha256": "6c1f41bc08cf12e73b838aad6081ddba77524b69dd575331b5e0857d517a169a",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800206ec",
-     "name": "FUN_800206ec",
-     "file": "src/stage2/FUN_800206ec.c",
-     "size": 48,
-     "sha256": "bcee71c2be862c208e7f5e0fcae2960ab21882cdd9f722b323b9696d31daa55b",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8002071c",
-     "name": "FUN_8002071c",
-     "file": "src/stage2/FUN_8002071c.c",
-     "size": 28,
-     "sha256": "20e7b3915812bc0947bdbab93eb61ee6727586d1626e935f6add7e0bf8eadd6e",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80020738",
-     "name": "FUN_80020738",
-     "file": "src/stage2/FUN_80020738.c",
-     "size": 8,
-     "sha256": "f6d41e85c29636039b57fd00acb8dc06e2301940aa3dd9495bd6d8d5fc39e685",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80020740",
-     "name": "FUN_80020740",
-     "file": "src/stage2/FUN_80020740.c",
-     "size": 392,
-     "sha256": "5fa2309f30a1fc8833c8c99be552e1e33ecfa74e81471db3c4f7be9513a60af4",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8002187c",
-     "name": "FUN_8002187c",
-     "file": "src/stage2/FUN_8002187c.c",
-     "size": 48,
-     "sha256": "bda8ab20d277a7fe2422dcee99fae2ce5c9a266a190a38e8432aa730eb9a08d0",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800218ac",
-     "name": "FUN_800218ac",
-     "file": "src/stage2/FUN_800218ac.c",
-     "size": 28,
-     "sha256": "16fbbc7244aee7878edb08323fe71d0d4fb7ebcf51c508059a3ba1a95bcaec1d",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800218c8",
-     "name": "FUN_800218c8",
-     "file": "src/stage2/FUN_800218c8.c",
-     "size": 8,
-     "sha256": "41233cb20a799aee9d4859c544187587bcb2cb6f081f668d211124860fccacca",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800218d0",
-     "name": "FUN_800218d0",
-     "file": "src/stage2/FUN_800218d0.c",
-     "size": 408,
-     "sha256": "fa9a3468c151fc565e97aba12d3e89b534d1340064bbc9f30d224c187f633055",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80021b98",
-     "name": "FUN_80021b98",
-     "file": "src/stage2/FUN_80021b98.c",
-     "size": 224,
-     "sha256": "ec6245589b01bf890df391bf78837c7df2878b12df9e7896cf333c488cb046d7",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80021c78",
-     "name": "FUN_80021c78",
-     "file": "src/stage2/FUN_80021c78.c",
-     "size": 1164,
-     "sha256": "0b10a163e79ca93324565b6c44e3d6811843234cc25796f9d90589dbe175a4a0",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80025e90",
      "name": "FUN_80025e90",
      "file": "src/stage2/FUN_80025e90.c",
@@ -24726,30 +24481,6 @@
      "file": "src/stage2/FUN_8002de0c.c",
      "size": 264,
      "sha256": "4cade8bae0c700b3c29a76428356d821a3d8a2abd294cdb26d500ef40c05200a",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80031454",
-     "name": "FUN_80031454",
-     "file": "src/stage2/FUN_80031454.c",
-     "size": 1428,
-     "sha256": "ff3b237f541564afa01a53321ccd97cb613a9734dd463c2dec7d1d7f18c05fa0",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800319e8",
-     "name": "FUN_800319e8",
-     "file": "src/stage2/FUN_800319e8.c",
-     "size": 48,
-     "sha256": "6d24a0484b5770968fe77ef9f3c10c0c21c07411f84320969af9e20788e8f055",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -24793,54 +24524,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x800341f4",
-     "name": "FUN_800341f4",
-     "file": "src/stage2/FUN_800341f4.c",
-     "size": 140,
-     "sha256": "e0dc45d2d5b088c1586b9b2b3a02ab16d9ee29300314c30c13f9252dcda7be57",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80036c44",
-     "name": "FUN_80036c44",
-     "file": "src/stage2/FUN_80036c44.c",
-     "size": 36,
-     "sha256": "3d887d689cf3f26ada3e6e260a949e041c9005a1eed5e3265f93b595dab4d8fe",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80036ea0",
-     "name": "FUN_80036ea0",
-     "file": "src/stage2/FUN_80036ea0.c",
-     "size": 20,
-     "sha256": "a1482d9de00634562f90b84162eb3e7f2dae4a3c7e83a775945462b4830e264a",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80036eb4",
-     "name": "FUN_80036eb4",
-     "file": "src/stage2/FUN_80036eb4.c",
-     "size": 28,
-     "sha256": "e87a40b3f425b9cc906511b4f4345e1b9b3ea36bce7e543aa067dc9dc0c9e4f2",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80036ed8",
      "name": "FUN_80036ed8",
      "file": "src/stage2/FUN_80036ed8.c",
@@ -24877,35 +24560,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x800390e0",
-     "name": "FUN_800390e0",
-     "file": "src/stage2/FUN_800390e0.c",
-     "size": 92,
-     "sha256": "55c935177cd369541e16c5acd1d6a059e96d80c227d02a43ec9808c3a686ba28",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x8003913c",
      "name": "FUN_8003913c",
      "file": "src/stage2/FUN_8003913c.c",
      "size": 72,
      "sha256": "a4b5d1dafa1dd27001cb9e0257ea8754c81e7c09c23bb9580edbff195ff86c1c",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80039184",
-     "name": "FUN_80039184",
-     "file": "src/stage2/FUN_80039184.c",
-     "size": 92,
-     "sha256": "eb1593a18e0410ec74e479dea3cf20b2b22608923c1d0569067b0dd516669d86",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -24966,18 +24625,6 @@
      "file": "src/stage2/FUN_8003c114.c",
      "size": 92,
      "sha256": "8193bdb3c7e81b16d62629fdca5e8a565085481b34cf850afe33b0859b9b5d87",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8003c170",
-     "name": "FUN_8003c170",
-     "file": "src/stage2/FUN_8003c170.c",
-     "size": 24,
-     "sha256": "84fa2a96025b4bc8060d5190a3d8e4e5a80b3df3ca705887c239e192bb166843",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25105,126 +24752,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x80047fe4",
-     "name": "FUN_80047fe4",
-     "file": "src/stage2/FUN_80047fe4.c",
-     "size": 124,
-     "sha256": "26761e60fd0d5242cdcdbfcb9610675397d8a2102a4dcb962d057b618dae6e70",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80048108",
-     "name": "FUN_80048108",
-     "file": "src/stage2/FUN_80048108.c",
-     "size": 172,
-     "sha256": "eb7363143766c36a53c1983ba7bfc80d3208081b3a30a0da97df6483ccc4c3c2",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800481bc",
-     "name": "FUN_800481bc",
-     "file": "src/stage2/FUN_800481bc.c",
-     "size": 196,
-     "sha256": "fb658832518157150d1bf5ae0126ae0f759a32ec5890c24a75dfa0e03125e0a1",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80048280",
-     "name": "FUN_80048280",
-     "file": "src/stage2/FUN_80048280.c",
-     "size": 20,
-     "sha256": "832cdd086176cc2dd0591a2d7652130bb57dfd9f091b3e98d487c47983a87d03",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8004878c",
-     "name": "FUN_8004878c",
-     "file": "src/stage2/FUN_8004878c.c",
-     "size": 520,
-     "sha256": "e614fdde942cf6e4056eafd06db7dc7f612ab34b76e823eb22d650f929ad6350",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80048994",
-     "name": "FUN_80048994",
-     "file": "src/stage2/FUN_80048994.c",
-     "size": 172,
-     "sha256": "12c1afb6a0037da23c59559028c29fcb7bd609e8d4c00bfff838a06e5b51d60b",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80049a84",
-     "name": "FUN_80049a84",
-     "file": "src/stage2/FUN_80049a84.c",
-     "size": 148,
-     "sha256": "4cb34deaf0ef36aad3025d16c80f0e087411c61057a45265ca8d8e711bb85031",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80049b18",
-     "name": "FUN_80049b18",
-     "file": "src/stage2/FUN_80049b18.c",
-     "size": 124,
-     "sha256": "54cad7124031339709919a1397c2d3b443a40863615aa85a6e12f1a2a0ddbfe3",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80049dd0",
-     "name": "FUN_80049dd0",
-     "file": "src/stage2/FUN_80049dd0.c",
-     "size": 444,
-     "sha256": "d886e10ca4a76d177992d0c48f9a0e05b11f9d0ffb85638be126a95efe38c81e",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80049f8c",
-     "name": "FUN_80049f8c",
-     "file": "src/stage2/FUN_80049f8c.c",
-     "size": 12,
-     "sha256": "fa6341713cfa5161245ed15df103ee48bb668c1596f06ac4e511e0e728f99ab8",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80049fa0",
      "name": "FUN_80049fa0",
      "file": "src/stage2/FUN_80049fa0.c",
@@ -25249,30 +24776,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x80050f38",
-     "name": "FUN_80050f38",
-     "file": "src/stage2/FUN_80050f38.c",
-     "size": 112,
-     "sha256": "6c222072b402c8ab3509c7b27d36e3e59fd4bf68f2c70a94721647edc321e39e",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80050fa8",
-     "name": "FUN_80050fa8",
-     "file": "src/stage2/FUN_80050fa8.c",
-     "size": 284,
-     "sha256": "a8be61201a04d0551d6088489da1184434f25c4c244882dd32e41731f0e0e5b3",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x800510c4",
      "name": "FUN_800510c4",
      "file": "src/stage2/FUN_800510c4.c",
@@ -25290,18 +24793,6 @@
      "file": "src/stage2/FUN_80051104.c",
      "size": 44,
      "sha256": "ac1d11a6747fe1b46364a757fd0ffeed26daa137683552baa07b59c7c6f43e1b",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006b28c",
-     "name": "FUN_8006b28c",
-     "file": "src/stage2/FUN_8006b28c.c",
-     "size": 148,
-     "sha256": "21074e57291e14138f9df79e2240505f0a73bd0018f31be17fa6fa2cd95968e2",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25393,90 +24884,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x8006dd7c",
-     "name": "FUN_8006dd7c",
-     "file": "src/stage2/FUN_8006dd7c.c",
-     "size": 40,
-     "sha256": "84d30864f2e619abb46a471bb559548b67dcd2f10406d29ae893fc1c72c6dfe4",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006dda4",
-     "name": "FUN_8006dda4",
-     "file": "src/stage2/FUN_8006dda4.c",
-     "size": 44,
-     "sha256": "a4a960d3066b2fab1241edadcadc6f0a65944c072093d4321cef164e80c2ecd8",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006ddd0",
-     "name": "FUN_8006ddd0",
-     "file": "src/stage2/FUN_8006ddd0.c",
-     "size": 72,
-     "sha256": "e175425161ad89b994db90d0a9b29f53243285d96e29055f3a6feea4b2f9c420",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006de18",
-     "name": "FUN_8006de18",
-     "file": "src/stage2/FUN_8006de18.c",
-     "size": 8,
-     "sha256": "8bb75c349154335517623e37cc01f9b4c0b4181f091fe5280016e2b1d77b790f",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006de20",
-     "name": "FUN_8006de20",
-     "file": "src/stage2/FUN_8006de20.c",
-     "size": 156,
-     "sha256": "d74e0f7bff4d5c6fc61ff26d071a7ba0d5d313fb737298ef32addebcaa3de26e",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006debc",
-     "name": "FUN_8006debc",
-     "file": "src/stage2/FUN_8006debc.c",
-     "size": 188,
-     "sha256": "c34503982437d87c9c64129e5f4c9798325872822df804a96e1dbbfa8caa6782",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006df78",
-     "name": "FUN_8006df78",
-     "file": "src/stage2/FUN_8006df78.c",
-     "size": 108,
-     "sha256": "ab993d7e06e0ad0c43dd340561efef34e55c7fd80dabd45e4dc7475044eb040f",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x8006e09c",
      "name": "FUN_8006e09c",
      "file": "src/stage2/FUN_8006e09c.c",
@@ -25494,54 +24901,6 @@
      "file": "src/stage2/FUN_8006e0d4.c",
      "size": 100,
      "sha256": "0127adbd4bf6a512760bc01ad9a864dc3aad3d5096dff762275dd61f7bef3c19",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006e270",
-     "name": "FUN_8006e270",
-     "file": "src/stage2/FUN_8006e270.c",
-     "size": 200,
-     "sha256": "89221c379fd2a2b0fde7152cfa2b2bd56b73ac6b7b80a9ab6e5fe539e72482c4",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006e338",
-     "name": "FUN_8006e338",
-     "file": "src/stage2/FUN_8006e338.c",
-     "size": 20,
-     "sha256": "33348add88f2ea5838fa5064680d9dfa216534ff20306e17c7c87d4f1b98963f",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006e34c",
-     "name": "FUN_8006e34c",
-     "file": "src/stage2/FUN_8006e34c.c",
-     "size": 20,
-     "sha256": "6a75dbb877282530e5282dcb5791f6a3f74de1eb7f8bbba9817295bee3d88ab4",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006e360",
-     "name": "FUN_8006e360",
-     "file": "src/stage2/FUN_8006e360.c",
-     "size": 40,
-     "sha256": "49262babf7947dafbb8891993ca6a40f75db4a0df87ebe18508597cfeb9d9fe7",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25597,30 +24956,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x8006e4d4",
-     "name": "FUN_8006e4d4",
-     "file": "src/stage2/FUN_8006e4d4.c",
-     "size": 96,
-     "sha256": "eee3b468e7e389fa4618771592ca94bdbe916e0e12fd03f5f7a6ed4ef6a5218b",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006e5d0",
-     "name": "FUN_8006e5d0",
-     "file": "src/stage2/FUN_8006e5d0.c",
-     "size": 140,
-     "sha256": "9991a2cf35133da0b484605bed301a39fd05b8d8ed7ee4bc6fd19a12f320d497",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x8006e65c",
      "name": "FUN_8006e65c",
      "file": "src/stage2/FUN_8006e65c.c",
@@ -25662,18 +24997,6 @@
      "file": "src/stage2/FUN_8006e760.c",
      "size": 60,
      "sha256": "4c2360b6fb24daadd10817ee5f0767f8547f0750c317f575ef1abc0772028d7d",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006ec58",
-     "name": "FUN_8006ec58",
-     "file": "src/stage2/FUN_8006ec58.c",
-     "size": 104,
-     "sha256": "7460adbbc4215a011def5ab09398f92f3bc7a546bfc058f2f4a2aa21b0d41b57",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25734,30 +25057,6 @@
      "file": "src/stage2/FUN_8006efcc.c",
      "size": 116,
      "sha256": "29b92f45a7af75b739a80063f73ed0c49155455265f10654d8f96b6546f04341",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006f32c",
-     "name": "FUN_8006f32c",
-     "file": "src/stage2/FUN_8006f32c.c",
-     "size": 136,
-     "sha256": "6d908f8c5a49fd5c17c75f765c16fa7ff578ca84b5c5305d76e9aa3cdea8a8cb",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8006f740",
-     "name": "FUN_8006f740",
-     "file": "src/stage2/FUN_8006f740.c",
-     "size": 368,
-     "sha256": "e94c1e2dd3c3312aa65ba8a99aa17f311fc826b0126374b08c4e70805b4b1476",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25861,35 +25160,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x8007199c",
-     "name": "FUN_8007199c",
-     "file": "src/stage2/FUN_8007199c.c",
-     "size": 360,
-     "sha256": "066dd7ea001649589bd643aaf472aa66b1de910269b017fe7c7f01ea2e8c3cec",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80071b04",
      "name": "FUN_80071b04",
      "file": "src/stage2/FUN_80071b04.c",
      "size": 56,
      "sha256": "13a1d7ca2f89230b17e594d11e095020252b36a7f8300bb75c4bd9e69dd4cb39",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80071b94",
-     "name": "FUN_80071b94",
-     "file": "src/stage2/FUN_80071b94.c",
-     "size": 268,
-     "sha256": "fc828bc50184bf9c3b7ad1c49338a8d091a432a4a797854fe197df6e99734d32",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25909,42 +25184,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x80071ce8",
-     "name": "FUN_80071ce8",
-     "file": "src/stage2/FUN_80071ce8.c",
-     "size": 64,
-     "sha256": "56eb3ef3a1033ef5987a150bcbf271f48ad1f3b7e908c3f028c6655bd118ac29",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80071d28",
-     "name": "FUN_80071d28",
-     "file": "src/stage2/FUN_80071d28.c",
-     "size": 116,
-     "sha256": "96d9692463c90c5b6fd193df770f1d1b518c8fd39b1341ede41d695f1fe48333",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80071d9c",
-     "name": "FUN_80071d9c",
-     "file": "src/stage2/FUN_80071d9c.c",
-     "size": 84,
-     "sha256": "30312d94406136bd1c0366129db60151e976c90dd21d778f7c7a5c2d8a437da5",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80071df0",
      "name": "FUN_80071df0",
      "file": "src/stage2/FUN_80071df0.c",
@@ -25957,59 +25196,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x800722cc",
-     "name": "FUN_800722cc",
-     "file": "src/stage2/FUN_800722cc.c",
-     "size": 64,
-     "sha256": "ddc651ccc1cb7c82982b8eeefacba7246d1a3801f3c8a82fc9d84bd1cd8bc0f4",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80072314",
-     "name": "FUN_80072314",
-     "file": "src/stage2/FUN_80072314.c",
-     "size": 64,
-     "sha256": "0328d45cf0c8eae589e00c7849091d86ac42a5cb8f92fd9f43aacf8aa2315f86",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x800725ac",
      "name": "FUN_800725ac",
      "file": "src/stage2/FUN_800725ac.c",
      "size": 48,
      "sha256": "eb458101bb58301e4df557f4372dfd2db98bd533562a8a05dfa43be9bb897be0",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80072c3c",
-     "name": "FUN_80072c3c",
-     "file": "src/stage2/FUN_80072c3c.c",
-     "size": 200,
-     "sha256": "c9d83ff77aed5f671b4b52e867f1818b9a7795b973ec004188f8f42ab984c442",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80072ddc",
-     "name": "FUN_80072ddc",
-     "file": "src/stage2/FUN_80072ddc.c",
-     "size": 192,
-     "sha256": "23a787e8b940239b7876aaab74f0e14ce21c6551c830b4a555582afddf84b16a",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26046,18 +25237,6 @@
      "file": "src/stage2/FUN_80072f64.c",
      "size": 48,
      "sha256": "8d8c4d43cd8a1bcec25630b0b845823d3901e249741caff32923aec7827de265",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80072f94",
-     "name": "FUN_80072f94",
-     "file": "src/stage2/FUN_80072f94.c",
-     "size": 132,
-     "sha256": "2e52e8b38b3b418e6d2f5834f346c9cc4b7dd9bd221f1b4215ac08ded62c773c",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26125,18 +25304,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x8007337c",
-     "name": "FUN_8007337c",
-     "file": "src/stage2/FUN_8007337c.c",
-     "size": 148,
-     "sha256": "cce8d6a8552daaedc3699e55e19515d8bfdb85c64b490921666b7e1dfaacf3ae",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80073410",
      "name": "FUN_80073410",
      "file": "src/stage2/FUN_80073410.c",
@@ -26185,35 +25352,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x80073e38",
-     "name": "FUN_80073e38",
-     "file": "src/stage2/FUN_80073e38.c",
-     "size": 196,
-     "sha256": "57777d84aea39882283680d4631f5e079ce31668aa093cc779893c1c00575ac9",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80073efc",
      "name": "FUN_80073efc",
      "file": "src/stage2/FUN_80073efc.c",
      "size": 36,
      "sha256": "7a047e5eb127be610cb8f9d1ccf11a5df9de4a18807f6a185b7ebaf6432229ab",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80073fb4",
-     "name": "FUN_80073fb4",
-     "file": "src/stage2/FUN_80073fb4.c",
-     "size": 112,
-     "sha256": "70c196dddf80ea5a8b06cf6b839e4639a32c46a7ae603d9e8702d98db458bb55",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26377,30 +25520,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x8007c5b4",
-     "name": "FUN_8007c5b4",
-     "file": "src/stage2/FUN_8007c5b4.c",
-     "size": 352,
-     "sha256": "bfb9a8e9cdb7a7a64beeeda07e3840439ca88efaf376fab67a61c91a772442cf",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8007cb74",
-     "name": "FUN_8007cb74",
-     "file": "src/stage2/FUN_8007cb74.c",
-     "size": 100,
-     "sha256": "664611a56c4f0cfb5af7d79fd4029cc45c2e3aa8fc7d364d81cd904518b6c8e5",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x8007cbd8",
      "name": "FUN_8007cbd8",
      "file": "src/stage2/FUN_8007cbd8.c",
@@ -26425,35 +25544,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x8007dc7c",
-     "name": "FUN_8007dc7c",
-     "file": "src/stage2/FUN_8007dc7c.c",
-     "size": 76,
-     "sha256": "03b269f80970746a2ee1bfe7b08e7f10271438ae82cd52a05533930cacc4377d",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x8007dcc8",
      "name": "FUN_8007dcc8",
      "file": "src/stage2/FUN_8007dcc8.c",
      "size": 16,
      "sha256": "75cf3592232e83d6229d8076349b3c7f829bd42c382d7a5d24265d77ff30ecae",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8007dcd8",
-     "name": "FUN_8007dcd8",
-     "file": "src/stage2/FUN_8007dcd8.c",
-     "size": 104,
-     "sha256": "0162a0c8f16fd3fbb72dff9c869e2b2c56a0c6a4fe564ff3448ee14ab8436f8f",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26473,59 +25568,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x80088498",
-     "name": "FUN_80088498",
-     "file": "src/stage2/FUN_80088498.c",
-     "size": 144,
-     "sha256": "c148ecc1b992379e5f8c23ad84b4c63976bf163ee16a8fcea40cd14e3b364b05",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80088528",
-     "name": "FUN_80088528",
-     "file": "src/stage2/FUN_80088528.c",
-     "size": 32,
-     "sha256": "3994cd594ee8bb45b4afd5f699c0e1a29867358cc7313b2a708ccb4dc095be27",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80088724",
-     "name": "FUN_80088724",
-     "file": "src/stage2/FUN_80088724.c",
-     "size": 64,
-     "sha256": "de129ee1797a5de49310e289dfceac1796a80a30f77fe0e6eb7a66cc2bee456c",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x800896c0",
      "name": "FUN_800896c0",
      "file": "src/stage2/FUN_800896c0.c",
      "size": 112,
      "sha256": "55ab6b81abff9d48df3921dc0f33fde3ac73baa98cb6238ed0829c81582e4d91",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8008bb10",
-     "name": "FUN_8008bb10",
-     "file": "src/stage2/FUN_8008bb10.c",
-     "size": 656,
-     "sha256": "e89a0bf64223cb64d01863188200f088abf55d442c2eae0ab826ed18d9c13983",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26557,102 +25604,6 @@
      "extent_measured": true
     },
     {
-     "address": "0x800a2070",
-     "name": "FUN_800a2070",
-     "file": "src/stage2/FUN_800a2070.c",
-     "size": 132,
-     "sha256": "d1259cbc767d7e66402fec6db4b3920bf1c60fea6a0c6541beb0b298c5b72c76",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800a20f4",
-     "name": "FUN_800a20f4",
-     "file": "src/stage2/FUN_800a20f4.c",
-     "size": 20,
-     "sha256": "314fea647473d21f6066c5641a3e565402e089581ebaeb57d1507a19b1f3de24",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800a2108",
-     "name": "FUN_800a2108",
-     "file": "src/stage2/FUN_800a2108.c",
-     "size": 140,
-     "sha256": "db79d90bbe1d441ce8dce309c585b8083c6ccb938dd8143126f403f3183e6e0a",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800a2194",
-     "name": "FUN_800a2194",
-     "file": "src/stage2/FUN_800a2194.c",
-     "size": 20,
-     "sha256": "247401856a4d1a409a01068a6a4a1c04f47697103b3bc04fba096829d66426bf",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800a228c",
-     "name": "FUN_800a228c",
-     "file": "src/stage2/FUN_800a228c.c",
-     "size": 124,
-     "sha256": "087afe5b9f695ca58d463808321bb65cb159688b5ab1db8a8aee7c8f8f89ff6c",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800a2308",
-     "name": "FUN_800a2308",
-     "file": "src/stage2/FUN_800a2308.c",
-     "size": 20,
-     "sha256": "c10fe4eb09daf26b83386c97c208f33d43ef3f63f9641071df23d37358666aad",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800a2490",
-     "name": "FUN_800a2490",
-     "file": "src/stage2/FUN_800a2490.c",
-     "size": 128,
-     "sha256": "b5a2877a85fbb13cf1d4876bab592c8b6a155953698a99b5188c5a92c56485db",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800a2510",
-     "name": "FUN_800a2510",
-     "file": "src/stage2/FUN_800a2510.c",
-     "size": 64,
-     "sha256": "64a389481572b024e342428e8bb1967b700eab4727d06976c78f8e1198fc6930",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x800a5b7c",
      "name": "FUN_800a5b7c",
      "file": "src/stage2/FUN_800a5b7c.c",
@@ -26665,35 +25616,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x800b1bec",
-     "name": "FUN_800b1bec",
-     "file": "src/stage2/FUN_800b1bec.c",
-     "size": 84,
-     "sha256": "ec941a64f0d29ce214f34dd13d087eb3fd5c955388dd563de15822a9c9b31f8f",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x800b1c40",
      "name": "FUN_800b1c40",
      "file": "src/stage2/FUN_800b1c40.c",
      "size": 48,
      "sha256": "2ca0f80a3e0089d1f42b944eddf01b7748367081bf27a6499487c413db417f02",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x800b21f0",
-     "name": "FUN_800b21f0",
-     "file": "src/stage2/FUN_800b21f0.c",
-     "size": 168,
-     "sha256": "cbe2602ead2e1ff62d3677ae211f6ea0956ec11a1c0d9c36b22a77b2ac1fa3d7",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -27215,6 +26142,17 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x80036c44",
+     "name": "FUN_80036c44",
+     "file": "src/stage2/FUN_80036c44.c",
+     "size": 36,
+     "sha256": "fb7626c5d8bb4f6cdc265be472bbdb5bcc83acb6dffb9bf0275e292922593d22",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x80036ed0",
      "name": "FUN_80036ed0",
      "file": "src/stage2/FUN_80036ed0.c",
@@ -27264,6 +26202,17 @@
      "file": "src/stage2/FUN_8003bfb4.c",
      "size": 20,
      "sha256": "79dd2de2fd4c28f73c3b045e11f1ce474880a013a470b288e5a8146b02a4b5b9",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8003c170",
+     "name": "FUN_8003c170",
+     "file": "src/stage2/FUN_8003c170.c",
+     "size": 24,
+     "sha256": "d54fe36b67f6671d1bde45aae8c1bfd32e83f3c5fe809f4c8bf0482cb91c62a3",
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
@@ -27978,6 +26927,61 @@
      "file": "src/stage2/FUN_8006db84.c",
      "size": 20,
      "sha256": "07b7ddc24de2308c7a8f095cd5de5823187e0190407eb61f9f3ebe2bcbf46909",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8006dd7c",
+     "name": "FUN_8006dd7c",
+     "file": "src/stage2/FUN_8006dd7c.c",
+     "size": 40,
+     "sha256": "1c2eb2351a3776d6ca122f67b023b131c75ac0ea7b2b1f10ed32d8cb8866ec6c",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8006de18",
+     "name": "FUN_8006de18",
+     "file": "src/stage2/FUN_8006de18.c",
+     "size": 8,
+     "sha256": "83638c4460a969fde4d206d3b82b3dd6af85e4d8babc8175b6c5db2c2195cca3",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8006e338",
+     "name": "FUN_8006e338",
+     "file": "src/stage2/FUN_8006e338.c",
+     "size": 20,
+     "sha256": "8ae13d3c9aae6c205a63a627571da5715160b28c4211ac94d8cd9714e63d52b1",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8006e34c",
+     "name": "FUN_8006e34c",
+     "file": "src/stage2/FUN_8006e34c.c",
+     "size": 20,
+     "sha256": "b0334cc35fc3e37a229d9dbb52086690d9287ad0bd62a7bd0d33554cdb6429d9",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8006e360",
+     "name": "FUN_8006e360",
+     "file": "src/stage2/FUN_8006e360.c",
+     "size": 40,
+     "sha256": "a8936758cd080fdea9831ed383bd1b84326bfb2a20d6fa79df4b009936dedc84",
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
@@ -31053,7 +30057,7 @@
    "role": "ovl",
    "base": "0x8017b410",
    "size": 49312,
-   "functions": 113,
+   "functions": 105,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -31071,11 +30075,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 9618,
-   "covered_bytes": 38472,
-   "coverage": 0.7802,
+   "covered_words": 8954,
+   "covered_bytes": 35816,
+   "coverage": 0.7263,
    "unclaimed_runs": 13,
-   "unclaimed_bytes": 10840,
+   "unclaimed_bytes": 13496,
    "functions_list": [
     {
      "address": "0x8017b410",
@@ -32218,102 +31222,6 @@
      "status": "written",
      "callees": [],
      "callees_unknown": 0
-    },
-    {
-     "address": "0x80184058",
-     "name": "FUN_80184058",
-     "file": "src/ovl_0072610/FUN_80184058.c",
-     "size": 980,
-     "sha256": "ef7bea54ac970f30dda635ab8c75263542050be583821b07a8634ea3a6fd1375",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8018442c",
-     "name": "FUN_8018442c",
-     "file": "src/ovl_0072610/FUN_8018442c.c",
-     "size": 60,
-     "sha256": "62e4a2c5963a52c9b1a60dcf51e23dfcc0b051361f6eaee789e213eb810a3012",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80184468",
-     "name": "FUN_80184468",
-     "file": "src/ovl_0072610/FUN_80184468.c",
-     "size": 832,
-     "sha256": "df30a3b7783524d9a2db886b244d93225a3e8cffd23d994e0165ff206cf1b10d",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x801847a8",
-     "name": "FUN_801847a8",
-     "file": "src/ovl_0072610/FUN_801847a8.c",
-     "size": 48,
-     "sha256": "6638129c9407e12cdc872263cbf933b3f11c465d59dd4703821ecbdbcb314ee0",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x801847d8",
-     "name": "FUN_801847d8",
-     "file": "src/ovl_0072610/FUN_801847d8.c",
-     "size": 348,
-     "sha256": "16df52a7f0f5c9c1d50d5131339b6e4c70b4521ad324de888b274d93106344b0",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80184934",
-     "name": "FUN_80184934",
-     "file": "src/ovl_0072610/FUN_80184934.c",
-     "size": 60,
-     "sha256": "b722e2ae0b6423ffc0797acb11212b20e2a55a90e5d8d72f0b2d2863ace2daa9",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80184970",
-     "name": "FUN_80184970",
-     "file": "src/ovl_0072610/FUN_80184970.c",
-     "size": 268,
-     "sha256": "5e403fd769e228871b5c501e182f968cb05eeeb9ab869702a327e290f58e870b",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80184a7c",
-     "name": "FUN_80184a7c",
-     "file": "src/ovl_0072610/FUN_80184a7c.c",
-     "size": 60,
-     "sha256": "355c0636d8b0df17c9f8d1e6d7ea602046c85d4ff640a5e12de7d16bbd15a6b4",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
     },
     {
      "address": "0x8017b50c",
@@ -34897,12 +33805,11 @@
      "callees": [
       "0x80033604",
       "0x800339dc",
-      "0x800341ec",
       "0x8008794c",
       "0x80089d54",
       "0x80167910"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x80162a64",
@@ -36002,23 +34909,22 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80165424",
-     "name": "FUN_80165424",
-     "file": "src/ovl_007fc12/FUN_80165424.c",
-     "size": 32,
-     "sha256": "a02b8cb63cb4f3d0f4ffc66645a4b28c67fda763e27c359a3fbd49dadab66e04",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80162a2c",
      "name": "FUN_80162a2c",
      "file": "src/ovl_007fc12/FUN_80162a2c.c",
      "size": 56,
      "sha256": "d0fcfde045c91c6cf12644c0737ec2dbef56434676034ad692bf2895afc2e4eb",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80165424",
+     "name": "FUN_80165424",
+     "file": "src/ovl_007fc12/FUN_80165424.c",
+     "size": 32,
+     "sha256": "716c54b10b03c9983dc5f366eaba53bbfa5f74d1db86f7f3c43189240958a6ca",
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
@@ -38568,10 +37474,8 @@
      "sha256": "fc460507895421359d44f8716c8673edf8182034790c4b597fedf05267ab5ae4",
      "provider_sha256": "06fd90b3101179234fbd1058004bef32d0d9c69d6b23589bef6ac6cd1ffaf69e",
      "status": "written",
-     "callees": [
-      "0x80036ea0"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x801628a0",
@@ -38581,10 +37485,8 @@
      "sha256": "3d01112e5c227359e53eea408371bbaea6bf6cf67a0354dffac0c069246dd19d",
      "provider_sha256": "51b55f9d0c669cc8675ee20e4cef79a7f706722482f792e1697fbaad670d57fa",
      "status": "written",
-     "callees": [
-      "0x80036ea0"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x801629c0",
@@ -38955,13 +37857,12 @@
       "0x80036be4",
       "0x80036d14",
       "0x80036f64",
-      "0x8006b28c",
       "0x80161cf0",
       "0x80161e44",
       "0x80162000",
       "0x801620a4"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 2
     },
     {
      "address": "0x8016517c",
@@ -39063,10 +37964,9 @@
      "status": "written",
      "callees": [
       "0x80032d14",
-      "0x80033604",
-      "0x80036ea0"
+      "0x80033604"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x80166428",
@@ -39579,7 +38479,6 @@
       "0x80033648",
       "0x80034280",
       "0x800347b0",
-      "0x80036c44",
       "0x80040e58",
       "0x8004d3a0",
       "0x8004da40",
@@ -39588,7 +38487,7 @@
       "0x80163210",
       "0x80163764"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x80162010",
@@ -39612,10 +38511,8 @@
      "sha256": "ae9e6f492cf0ccc991ab313601a2ecd774d0e86634655eb8122d58ee81f5a4ff",
      "provider_sha256": "a32b422eee7bc3c5f1b1cf178e16372b39250c292557617526d403fea1aae2c7",
      "status": "written",
-     "callees": [
-      "0x80036c44"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x80162308",
@@ -39892,7 +38789,6 @@
       "0x80032ef4",
       "0x80035b84",
       "0x80036c68",
-      "0x80050f38",
       "0x80052bd0",
       "0x80052d10",
       "0x80077adc",
@@ -39906,7 +38802,7 @@
       "0x80165814",
       "0x80165c54"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 2
     },
     {
      "address": "0x80164074",
@@ -40419,10 +39315,8 @@
      "sha256": "fc460507895421359d44f8716c8673edf8182034790c4b597fedf05267ab5ae4",
      "provider_sha256": "ec2622488bcb9855e452bbdb289feb0e56cba37a2a6cf24e060e420e3999ba5d",
      "status": "written",
-     "callees": [
-      "0x80036ea0"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x801628a0",
@@ -40432,10 +39326,8 @@
      "sha256": "3d01112e5c227359e53eea408371bbaea6bf6cf67a0354dffac0c069246dd19d",
      "provider_sha256": "8d3c0a87376340559105338460a20de0ef76bcd182a0abc03719ce492659982f",
      "status": "written",
-     "callees": [
-      "0x80036ea0"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x801629c0",
@@ -40845,10 +39737,9 @@
      "status": "written",
      "callees": [
       "0x80032d14",
-      "0x80033604",
-      "0x80036ea0"
+      "0x80033604"
      ],
-     "callees_unknown": 0
+     "callees_unknown": 1
     },
     {
      "address": "0x801658a8",
@@ -43927,10 +42818,8 @@
      "sha256": "bf6f1b225220bad19239890670f5262da3ebb05205859c8e3d575b7fea03072a",
      "provider_sha256": "92b055a063aaf2dd8c9d611a9d0ee92caf739d99ac8deceb0f4700cf793fe581",
      "status": "written",
-     "callees": [
-      "0x800341f4"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x801626f4",
@@ -44606,10 +43495,8 @@
      "sha256": "2545778792117675911158f3350bdc49f00e9475cbdb8c72ab49a027553bd82e",
      "provider_sha256": "9ff3b6f125aafe1ad501457000475df5ddc86c2cb38f6cb7aa9b091927e41749",
      "status": "written",
-     "callees": [
-      "0x80036c44"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x801633bc",
@@ -45473,10 +44360,8 @@
      "sha256": "65462f7bfe3f233af78502044ea81b3a358092f2b7dc93e12ecea584940e6689",
      "provider_sha256": "efc18809cbde3d2bb76e4d074ab495d1fa9311a33bd1dbfb2710ec294cedeb44",
      "status": "written",
-     "callees": [
-      "0x80036c44"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x801636a0",
@@ -48946,10 +47831,8 @@
      "sha256": "79785f2bf76a6a84aa8be2e600afdf947603d81818d760b58562dc204c36e8c0",
      "provider_sha256": "496a8745f29c91404990595555a308c8e2e710f14717b75d710b0d5c8a169989",
      "status": "written",
-     "callees": [
-      "0x800341f4"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x80168720",
@@ -49751,10 +48634,8 @@
      "sha256": "50db2cc626e13e6a30ce7459951e6e830c494d1dca86588c9561ca08d553b851",
      "provider_sha256": "856cc31d0c7ec9292dbcbe7a0c66e99eb378abde491bdc6edda02cc278c07a04",
      "status": "written",
-     "callees": [
-      "0x800341f4"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x801691dc",
@@ -50913,10 +49794,8 @@
      "sha256": "b9861edd46345687e253263c0f0dee3ec2fe6c944c45799ee9dc4762bed491ae",
      "provider_sha256": "319942cd1235a1341766e31a27901658d97546c84dcca3ae68439181e80b65f4",
      "status": "written",
-     "callees": [
-      "0x800341f4"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x80167bd8",
@@ -51068,7 +49947,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 43488,
-   "functions": 66,
+   "functions": 64,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -51086,11 +49965,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 10485,
-   "covered_bytes": 41940,
-   "coverage": 0.9644,
-   "unclaimed_runs": 17,
-   "unclaimed_bytes": 1548,
+   "covered_words": 10317,
+   "covered_bytes": 41268,
+   "coverage": 0.949,
+   "unclaimed_runs": 19,
+   "unclaimed_bytes": 2220,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -51990,10 +50869,8 @@
      "sha256": "2af3b13b0b2e066cabb57d53e385352416e7f641b74d5f464404b285712dd68d",
      "provider_sha256": "abaa1eb46eed630b9e84d6b1af1e5b48288e5d4a77d3bc5e7b861d4f0e4a5f7e",
      "status": "written",
-     "callees": [
-      "0x800341f4"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x8016bdc4",
@@ -52026,30 +50903,6 @@
       "0x80040bb4"
      ],
      "callees_unknown": 0
-    },
-    {
-     "address": "0x8016b214",
-     "name": "FUN_8016b214",
-     "file": "src/ovl_00a9d94/FUN_8016b214.c",
-     "size": 404,
-     "sha256": "8db1106078c57ab1a1c8d4676ac9e46c06467cfa2fa96adf45c18cbd72629639",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x8016b53c",
-     "name": "FUN_8016b53c",
-     "file": "src/ovl_00a9d94/FUN_8016b53c.c",
-     "size": 268,
-     "sha256": "03df2931ec758720dce85fe9c2c47c9403de953f326db9c1f4cca048678ffc11",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
     },
     {
      "address": "0x80162158",
@@ -52174,7 +51027,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 22560,
-   "functions": 39,
+   "functions": 37,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -52192,11 +51045,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 5160,
-   "covered_bytes": 20640,
-   "coverage": 0.9149,
-   "unclaimed_runs": 8,
-   "unclaimed_bytes": 1920,
+   "covered_words": 5111,
+   "covered_bytes": 20444,
+   "coverage": 0.9062,
+   "unclaimed_runs": 9,
+   "unclaimed_bytes": 2116,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -52670,10 +51523,8 @@
      "sha256": "461bb059825efe78bb210380e54ffc02524f267dc6e95f206f08afc0b3fe794e",
      "provider_sha256": "fcd00314c86ccc5a7616f3c1ae893c4724459c81f5d9dcd16f3c0c40e68eb90a",
      "status": "written",
-     "callees": [
-      "0x800341f4"
-     ],
-     "callees_unknown": 0
+     "callees": [],
+     "callees_unknown": 1
     },
     {
      "address": "0x80166c40",
@@ -52688,30 +51539,6 @@
       "0x80037780"
      ],
      "callees_unknown": 0
-    },
-    {
-     "address": "0x80165e18",
-     "name": "FUN_80165e18",
-     "file": "src/ovl_00ae24a/FUN_80165e18.c",
-     "size": 32,
-     "sha256": "5cf3b87856ef4756131eaeeea3bc7dad30012d67aaaa99a4356d98e3f851898f",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80165e38",
-     "name": "FUN_80165e38",
-     "file": "src/ovl_00ae24a/FUN_80165e38.c",
-     "size": 164,
-     "sha256": "90deb7a56c68089aeb52f760aeaaa4708830538f043e3ff1d27c6a63e3eb5fa9",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
     },
     {
      "address": "0x80161fc0",
@@ -52792,7 +51619,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 22416,
-   "functions": 43,
+   "functions": 41,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -52810,11 +51637,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 5224,
-   "covered_bytes": 20896,
-   "coverage": 0.9322,
-   "unclaimed_runs": 20,
-   "unclaimed_bytes": 1520,
+   "covered_words": 5192,
+   "covered_bytes": 20768,
+   "coverage": 0.9265,
+   "unclaimed_runs": 21,
+   "unclaimed_bytes": 1648,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -53323,30 +52150,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80166e98",
-     "name": "FUN_80166e98",
-     "file": "src/ovl_00b08a2/FUN_80166e98.c",
-     "size": 52,
-     "sha256": "f6c667bbd66310d8227dc7bb68804ff58c818cc1d1f31a15b760af94eb4dfbe7",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80166ecc",
-     "name": "FUN_80166ecc",
-     "file": "src/ovl_00b08a2/FUN_80166ecc.c",
-     "size": 76,
-     "sha256": "b9011c6e1f4ea0a474fe3c6f63399287f5aa8710d3fdcedfcf21b0f1a1834ae8",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x80166f18",
      "name": "FUN_80166f18",
      "file": "src/ovl_00b08a2/FUN_80166f18.c",
@@ -53664,7 +52467,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 19536,
-   "functions": 81,
+   "functions": 77,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -53682,11 +52485,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 4667,
-   "covered_bytes": 18668,
-   "coverage": 0.9556,
-   "unclaimed_runs": 2,
-   "unclaimed_bytes": 868,
+   "covered_words": 4554,
+   "covered_bytes": 18216,
+   "coverage": 0.9324,
+   "unclaimed_runs": 3,
+   "unclaimed_bytes": 1320,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -54652,54 +53455,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80164bbc",
-     "name": "FUN_80164bbc",
-     "file": "src/ovl_00b321e/FUN_80164bbc.c",
-     "size": 44,
-     "sha256": "ea80f56023915ea3014f5d56a099bfb6fe62a84469d6b476a00061200bce2e5d",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80164be8",
-     "name": "FUN_80164be8",
-     "file": "src/ovl_00b321e/FUN_80164be8.c",
-     "size": 16,
-     "sha256": "2e66f463e190ec3060be83b8a2f30b74fe92f655f54cc3e9de0c983f9f0c517e",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80164bf8",
-     "name": "FUN_80164bf8",
-     "file": "src/ovl_00b321e/FUN_80164bf8.c",
-     "size": 204,
-     "sha256": "1918a4565ca73b283abe7c16551ae2a1453b21b4a177f0b5b5f560568f15b04d",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80164cc4",
-     "name": "FUN_80164cc4",
-     "file": "src/ovl_00b321e/FUN_80164cc4.c",
-     "size": 188,
-     "sha256": "484a34ed751a6503d99aa346aae21b83a29704bca0964102d5e227b4c406aa35",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
      "address": "0x801623ac",
      "name": "FUN_801623ac",
      "file": "src/ovl_00b321e/FUN_801623ac.c",
@@ -54851,7 +53606,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 5088,
-   "functions": 21,
+   "functions": 20,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -54869,11 +53624,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 1208,
-   "covered_bytes": 4832,
-   "coverage": 0.9497,
-   "unclaimed_runs": 4,
-   "unclaimed_bytes": 256,
+   "covered_words": 1188,
+   "covered_bytes": 4752,
+   "coverage": 0.934,
+   "unclaimed_runs": 5,
+   "unclaimed_bytes": 336,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -55121,18 +53876,6 @@
      "file": "src/ovl_00b5346/FUN_80162ad4.c",
      "size": 56,
      "sha256": "5113a292e1f422b2083c960bbb217bf4853b2d24d261ced91eb563d8a8c339ec",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80162ee4",
-     "name": "FUN_80162ee4",
-     "file": "src/ovl_00b5346/FUN_80162ee4.c",
-     "size": 80,
-     "sha256": "f4bf9a877d2bb54dc0f6a82e1670cc161a33efbc86817cae48f7b45212d269d8",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],

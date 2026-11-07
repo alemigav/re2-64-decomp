@@ -3,7 +3,7 @@
  * address 0x8016332c  body 0x8016332c..0x801633bb  size 144 B
  * body sha256 2545778792117675911158f3350bdc49f00e9475cbdb8c72ab49a027553bd82e
  * provider record sha256 9ff3b6f125aafe1ad501457000475df5ddc86c2cb38f6cb7aa9b091927e41749
- * callees 1 direct (1 in corpus)
+ * callees 1 direct (0 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_8016332c(int param_1,undefined4 param_2,undefined4 param_3)

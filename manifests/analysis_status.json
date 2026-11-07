@@ -9,13 +9,13 @@
   "validated": "pinned by a gate or an executed experiment (curated, evidence per entry)"
  },
  "totals": {
-  "F0": 3679,
-  "F1": 3451,
-  "F2": 3403,
+  "F0": 3578,
+  "F1": 3459,
+  "F2": 3389,
   "named": 33,
   "validated": 12,
   "validated_unnamed": 12,
-  "extent_measured": 228
+  "extent_measured": 119
  },
  "f4_evidence": {
   "stage2:0x800b53f4": "M199 \u2014 the voice synthesis, bit-exact against the cartridge",
@@ -1962,36 +1962,6 @@
    "named": false,
    "validated": false
   },
-  "boot:0x8000c464": {
-   "name": "FUN_8000c464",
-   "image": "boot",
-   "address": "0x8000c464",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x8000cd40": {
-   "name": "FUN_8000cd40",
-   "image": "boot",
-   "address": "0x8000cd40",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x8000d3cc": {
-   "name": "FUN_8000d3cc",
-   "image": "boot",
-   "address": "0x8000d3cc",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "boot:0x8000de78": {
    "name": "FUN_8000de78",
    "image": "boot",
@@ -2002,30 +1972,10 @@
    "named": false,
    "validated": false
   },
-  "boot:0x8000e7d0": {
-   "name": "FUN_8000e7d0",
-   "image": "boot",
-   "address": "0x8000e7d0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "boot:0x8000f020": {
    "name": "FUN_8000f020",
    "image": "boot",
    "address": "0x8000f020",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x800113d8": {
-   "name": "FUN_800113d8",
-   "image": "boot",
-   "address": "0x800113d8",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -12716,9 +12666,9 @@
    "name": "FUN_8008b048",
    "image": "stage2",
    "address": "0x8008b048",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 1,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -12726,9 +12676,9 @@
    "name": "FUN_8008b0a4",
    "image": "stage2",
    "address": "0x8008b0a4",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 1,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -14486,9 +14436,9 @@
    "name": "FUN_8009bf04",
    "image": "stage2",
    "address": "0x8009bf04",
-   "callees": 6,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 5,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -14496,9 +14446,9 @@
    "name": "FUN_8009c0c4",
    "image": "stage2",
    "address": "0x8009c0c4",
-   "callees": 5,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 4,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -14506,9 +14456,9 @@
    "name": "FUN_8009c1e0",
    "image": "stage2",
    "address": "0x8009c1e0",
-   "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 2,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -17742,156 +17692,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8001b744": {
-   "name": "FUN_8001b744",
-   "image": "stage2",
-   "address": "0x8001b744",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8001f35c": {
-   "name": "FUN_8001f35c",
-   "image": "stage2",
-   "address": "0x8001f35c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8001f38c": {
-   "name": "FUN_8001f38c",
-   "image": "stage2",
-   "address": "0x8001f38c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8001f3a8": {
-   "name": "FUN_8001f3a8",
-   "image": "stage2",
-   "address": "0x8001f3a8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8001f3b0": {
-   "name": "FUN_8001f3b0",
-   "image": "stage2",
-   "address": "0x8001f3b0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800206ec": {
-   "name": "FUN_800206ec",
-   "image": "stage2",
-   "address": "0x800206ec",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8002071c": {
-   "name": "FUN_8002071c",
-   "image": "stage2",
-   "address": "0x8002071c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80020738": {
-   "name": "FUN_80020738",
-   "image": "stage2",
-   "address": "0x80020738",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80020740": {
-   "name": "FUN_80020740",
-   "image": "stage2",
-   "address": "0x80020740",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8002187c": {
-   "name": "FUN_8002187c",
-   "image": "stage2",
-   "address": "0x8002187c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800218ac": {
-   "name": "FUN_800218ac",
-   "image": "stage2",
-   "address": "0x800218ac",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800218c8": {
-   "name": "FUN_800218c8",
-   "image": "stage2",
-   "address": "0x800218c8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800218d0": {
-   "name": "FUN_800218d0",
-   "image": "stage2",
-   "address": "0x800218d0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80021b98": {
-   "name": "FUN_80021b98",
-   "image": "stage2",
-   "address": "0x80021b98",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80021c78": {
-   "name": "FUN_80021c78",
-   "image": "stage2",
-   "address": "0x80021c78",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80025e90": {
    "name": "FUN_80025e90",
    "image": "stage2",
@@ -17906,26 +17706,6 @@
    "name": "FUN_8002de0c",
    "image": "stage2",
    "address": "0x8002de0c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80031454": {
-   "name": "FUN_80031454",
-   "image": "stage2",
-   "address": "0x80031454",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800319e8": {
-   "name": "FUN_800319e8",
-   "image": "stage2",
-   "address": "0x800319e8",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -17962,46 +17742,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800341f4": {
-   "name": "FUN_800341f4",
-   "image": "stage2",
-   "address": "0x800341f4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80036c44": {
-   "name": "FUN_80036c44",
-   "image": "stage2",
-   "address": "0x80036c44",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80036ea0": {
-   "name": "FUN_80036ea0",
-   "image": "stage2",
-   "address": "0x80036ea0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80036eb4": {
-   "name": "FUN_80036eb4",
-   "image": "stage2",
-   "address": "0x80036eb4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80036ed8": {
    "name": "FUN_80036ed8",
    "image": "stage2",
@@ -18032,30 +17772,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800390e0": {
-   "name": "FUN_800390e0",
-   "image": "stage2",
-   "address": "0x800390e0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8003913c": {
    "name": "FUN_8003913c",
    "image": "stage2",
    "address": "0x8003913c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80039184": {
-   "name": "FUN_80039184",
-   "image": "stage2",
-   "address": "0x80039184",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -18106,16 +17826,6 @@
    "name": "FUN_8003c114",
    "image": "stage2",
    "address": "0x8003c114",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8003c170": {
-   "name": "FUN_8003c170",
-   "image": "stage2",
-   "address": "0x8003c170",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -18222,106 +17932,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80047fe4": {
-   "name": "FUN_80047fe4",
-   "image": "stage2",
-   "address": "0x80047fe4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80048108": {
-   "name": "FUN_80048108",
-   "image": "stage2",
-   "address": "0x80048108",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800481bc": {
-   "name": "FUN_800481bc",
-   "image": "stage2",
-   "address": "0x800481bc",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80048280": {
-   "name": "FUN_80048280",
-   "image": "stage2",
-   "address": "0x80048280",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8004878c": {
-   "name": "FUN_8004878c",
-   "image": "stage2",
-   "address": "0x8004878c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80048994": {
-   "name": "FUN_80048994",
-   "image": "stage2",
-   "address": "0x80048994",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80049a84": {
-   "name": "FUN_80049a84",
-   "image": "stage2",
-   "address": "0x80049a84",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80049b18": {
-   "name": "FUN_80049b18",
-   "image": "stage2",
-   "address": "0x80049b18",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80049dd0": {
-   "name": "FUN_80049dd0",
-   "image": "stage2",
-   "address": "0x80049dd0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80049f8c": {
-   "name": "FUN_80049f8c",
-   "image": "stage2",
-   "address": "0x80049f8c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80049fa0": {
    "name": "FUN_80049fa0",
    "image": "stage2",
@@ -18342,26 +17952,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80050f38": {
-   "name": "FUN_80050f38",
-   "image": "stage2",
-   "address": "0x80050f38",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80050fa8": {
-   "name": "FUN_80050fa8",
-   "image": "stage2",
-   "address": "0x80050fa8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800510c4": {
    "name": "FUN_800510c4",
    "image": "stage2",
@@ -18376,16 +17966,6 @@
    "name": "FUN_80051104",
    "image": "stage2",
    "address": "0x80051104",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006b28c": {
-   "name": "FUN_8006b28c",
-   "image": "stage2",
-   "address": "0x8006b28c",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -18462,76 +18042,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8006dd7c": {
-   "name": "FUN_8006dd7c",
-   "image": "stage2",
-   "address": "0x8006dd7c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006dda4": {
-   "name": "FUN_8006dda4",
-   "image": "stage2",
-   "address": "0x8006dda4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006ddd0": {
-   "name": "FUN_8006ddd0",
-   "image": "stage2",
-   "address": "0x8006ddd0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006de18": {
-   "name": "FUN_8006de18",
-   "image": "stage2",
-   "address": "0x8006de18",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006de20": {
-   "name": "FUN_8006de20",
-   "image": "stage2",
-   "address": "0x8006de20",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006debc": {
-   "name": "FUN_8006debc",
-   "image": "stage2",
-   "address": "0x8006debc",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006df78": {
-   "name": "FUN_8006df78",
-   "image": "stage2",
-   "address": "0x8006df78",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8006e09c": {
    "name": "FUN_8006e09c",
    "image": "stage2",
@@ -18546,46 +18056,6 @@
    "name": "FUN_8006e0d4",
    "image": "stage2",
    "address": "0x8006e0d4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006e270": {
-   "name": "FUN_8006e270",
-   "image": "stage2",
-   "address": "0x8006e270",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006e338": {
-   "name": "FUN_8006e338",
-   "image": "stage2",
-   "address": "0x8006e338",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006e34c": {
-   "name": "FUN_8006e34c",
-   "image": "stage2",
-   "address": "0x8006e34c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006e360": {
-   "name": "FUN_8006e360",
-   "image": "stage2",
-   "address": "0x8006e360",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -18632,26 +18102,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8006e4d4": {
-   "name": "FUN_8006e4d4",
-   "image": "stage2",
-   "address": "0x8006e4d4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006e5d0": {
-   "name": "FUN_8006e5d0",
-   "image": "stage2",
-   "address": "0x8006e5d0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8006e65c": {
    "name": "FUN_8006e65c",
    "image": "stage2",
@@ -18686,16 +18136,6 @@
    "name": "FUN_8006e760",
    "image": "stage2",
    "address": "0x8006e760",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006ec58": {
-   "name": "FUN_8006ec58",
-   "image": "stage2",
-   "address": "0x8006ec58",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -18746,26 +18186,6 @@
    "name": "FUN_8006efcc",
    "image": "stage2",
    "address": "0x8006efcc",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006f32c": {
-   "name": "FUN_8006f32c",
-   "image": "stage2",
-   "address": "0x8006f32c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006f740": {
-   "name": "FUN_8006f740",
-   "image": "stage2",
-   "address": "0x8006f740",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -18852,30 +18272,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8007199c": {
-   "name": "FUN_8007199c",
-   "image": "stage2",
-   "address": "0x8007199c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80071b04": {
    "name": "FUN_80071b04",
    "image": "stage2",
    "address": "0x80071b04",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80071b94": {
-   "name": "FUN_80071b94",
-   "image": "stage2",
-   "address": "0x80071b94",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -18892,36 +18292,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80071ce8": {
-   "name": "FUN_80071ce8",
-   "image": "stage2",
-   "address": "0x80071ce8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80071d28": {
-   "name": "FUN_80071d28",
-   "image": "stage2",
-   "address": "0x80071d28",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80071d9c": {
-   "name": "FUN_80071d9c",
-   "image": "stage2",
-   "address": "0x80071d9c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80071df0": {
    "name": "FUN_80071df0",
    "image": "stage2",
@@ -18932,50 +18302,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800722cc": {
-   "name": "FUN_800722cc",
-   "image": "stage2",
-   "address": "0x800722cc",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80072314": {
-   "name": "FUN_80072314",
-   "image": "stage2",
-   "address": "0x80072314",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800725ac": {
    "name": "FUN_800725ac",
    "image": "stage2",
    "address": "0x800725ac",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80072c3c": {
-   "name": "FUN_80072c3c",
-   "image": "stage2",
-   "address": "0x80072c3c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80072ddc": {
-   "name": "FUN_80072ddc",
-   "image": "stage2",
-   "address": "0x80072ddc",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19006,16 +18336,6 @@
    "name": "FUN_80072f64",
    "image": "stage2",
    "address": "0x80072f64",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80072f94": {
-   "name": "FUN_80072f94",
-   "image": "stage2",
-   "address": "0x80072f94",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19072,16 +18392,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8007337c": {
-   "name": "FUN_8007337c",
-   "image": "stage2",
-   "address": "0x8007337c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80073410": {
    "name": "FUN_80073410",
    "image": "stage2",
@@ -19122,30 +18432,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80073e38": {
-   "name": "FUN_80073e38",
-   "image": "stage2",
-   "address": "0x80073e38",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80073efc": {
    "name": "FUN_80073efc",
    "image": "stage2",
    "address": "0x80073efc",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80073fb4": {
-   "name": "FUN_80073fb4",
-   "image": "stage2",
-   "address": "0x80073fb4",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19282,26 +18572,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8007c5b4": {
-   "name": "FUN_8007c5b4",
-   "image": "stage2",
-   "address": "0x8007c5b4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8007cb74": {
-   "name": "FUN_8007cb74",
-   "image": "stage2",
-   "address": "0x8007cb74",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8007cbd8": {
    "name": "FUN_8007cbd8",
    "image": "stage2",
@@ -19322,30 +18592,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8007dc7c": {
-   "name": "FUN_8007dc7c",
-   "image": "stage2",
-   "address": "0x8007dc7c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8007dcc8": {
    "name": "FUN_8007dcc8",
    "image": "stage2",
    "address": "0x8007dcc8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8007dcd8": {
-   "name": "FUN_8007dcd8",
-   "image": "stage2",
-   "address": "0x8007dcd8",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19362,50 +18612,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80088498": {
-   "name": "FUN_80088498",
-   "image": "stage2",
-   "address": "0x80088498",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80088528": {
-   "name": "FUN_80088528",
-   "image": "stage2",
-   "address": "0x80088528",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80088724": {
-   "name": "FUN_80088724",
-   "image": "stage2",
-   "address": "0x80088724",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800896c0": {
    "name": "FUN_800896c0",
    "image": "stage2",
    "address": "0x800896c0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8008bb10": {
-   "name": "FUN_8008bb10",
-   "image": "stage2",
-   "address": "0x8008bb10",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19432,86 +18642,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800a2070": {
-   "name": "FUN_800a2070",
-   "image": "stage2",
-   "address": "0x800a2070",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a20f4": {
-   "name": "FUN_800a20f4",
-   "image": "stage2",
-   "address": "0x800a20f4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a2108": {
-   "name": "FUN_800a2108",
-   "image": "stage2",
-   "address": "0x800a2108",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a2194": {
-   "name": "FUN_800a2194",
-   "image": "stage2",
-   "address": "0x800a2194",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a228c": {
-   "name": "FUN_800a228c",
-   "image": "stage2",
-   "address": "0x800a228c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a2308": {
-   "name": "FUN_800a2308",
-   "image": "stage2",
-   "address": "0x800a2308",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a2490": {
-   "name": "FUN_800a2490",
-   "image": "stage2",
-   "address": "0x800a2490",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a2510": {
-   "name": "FUN_800a2510",
-   "image": "stage2",
-   "address": "0x800a2510",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800a5b7c": {
    "name": "FUN_800a5b7c",
    "image": "stage2",
@@ -19522,30 +18652,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800b1bec": {
-   "name": "FUN_800b1bec",
-   "image": "stage2",
-   "address": "0x800b1bec",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800b1c40": {
    "name": "FUN_800b1c40",
    "image": "stage2",
    "address": "0x800b1c40",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800b21f0": {
-   "name": "FUN_800b21f0",
-   "image": "stage2",
-   "address": "0x800b21f0",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19992,6 +19102,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x80036c44": {
+   "name": "FUN_80036c44",
+   "image": "stage2",
+   "address": "0x80036c44",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x80036ed0": {
    "name": "FUN_80036ed0",
    "image": "stage2",
@@ -20036,6 +19156,16 @@
    "name": "FUN_8003bfb4",
    "image": "stage2",
    "address": "0x8003bfb4",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8003c170": {
+   "name": "FUN_8003c170",
+   "image": "stage2",
+   "address": "0x8003c170",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -20646,6 +19776,56 @@
    "name": "FUN_8006db84",
    "image": "stage2",
    "address": "0x8006db84",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8006dd7c": {
+   "name": "FUN_8006dd7c",
+   "image": "stage2",
+   "address": "0x8006dd7c",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8006de18": {
+   "name": "FUN_8006de18",
+   "image": "stage2",
+   "address": "0x8006de18",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8006e338": {
+   "name": "FUN_8006e338",
+   "image": "stage2",
+   "address": "0x8006e338",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8006e34c": {
+   "name": "FUN_8006e34c",
+   "image": "stage2",
+   "address": "0x8006e34c",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8006e360": {
+   "name": "FUN_8006e360",
+   "image": "stage2",
+   "address": "0x8006e360",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -22119,86 +21299,6 @@
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x80184058": {
-   "name": "FUN_80184058",
-   "image": "ovl_0072610",
-   "address": "0x80184058",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x8018442c": {
-   "name": "FUN_8018442c",
-   "image": "ovl_0072610",
-   "address": "0x8018442c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x80184468": {
-   "name": "FUN_80184468",
-   "image": "ovl_0072610",
-   "address": "0x80184468",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x801847a8": {
-   "name": "FUN_801847a8",
-   "image": "ovl_0072610",
-   "address": "0x801847a8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x801847d8": {
-   "name": "FUN_801847d8",
-   "image": "ovl_0072610",
-   "address": "0x801847d8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x80184934": {
-   "name": "FUN_80184934",
-   "image": "ovl_0072610",
-   "address": "0x80184934",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x80184970": {
-   "name": "FUN_80184970",
-   "image": "ovl_0072610",
-   "address": "0x80184970",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x80184a7c": {
-   "name": "FUN_80184a7c",
-   "image": "ovl_0072610",
-   "address": "0x80184a7c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
    "named": false,
    "validated": false
   },
@@ -23816,9 +22916,9 @@
    "name": "FUN_80162094",
    "image": "ovl_007fc12",
    "address": "0x80162094",
-   "callees": 6,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 5,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -24442,20 +23542,20 @@
    "named": false,
    "validated": false
   },
-  "ovl_007fc12:0x80165424": {
-   "name": "FUN_80165424",
-   "image": "ovl_007fc12",
-   "address": "0x80165424",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "ovl_007fc12:0x80162a2c": {
    "name": "FUN_80162a2c",
    "image": "ovl_007fc12",
    "address": "0x80162a2c",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_007fc12:0x80165424": {
+   "name": "FUN_80165424",
+   "image": "ovl_007fc12",
+   "address": "0x80165424",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -26106,9 +25206,9 @@
    "name": "FUN_80162768",
    "image": "ovl_008900e",
    "address": "0x80162768",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -26116,9 +25216,9 @@
    "name": "FUN_801628a0",
    "image": "ovl_008900e",
    "address": "0x801628a0",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -26346,8 +25446,8 @@
    "name": "FUN_80164db8",
    "image": "ovl_008900e",
    "address": "0x80164db8",
-   "callees": 8,
-   "callees_unknown": 1,
+   "callees": 7,
+   "callees_unknown": 2,
    "level": 1,
    "named": false,
    "validated": false
@@ -26406,9 +25506,9 @@
    "name": "FUN_80165fa8",
    "image": "ovl_008900e",
    "address": "0x80165fa8",
-   "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 2,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -26726,9 +25826,9 @@
    "name": "func_80161cf0",
    "image": "ovl_008bef8",
    "address": "0x80161cf0",
-   "callees": 11,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 10,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -26746,9 +25846,9 @@
    "name": "FUN_80162270",
    "image": "ovl_008bef8",
    "address": "0x80162270",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -26946,8 +26046,8 @@
    "name": "FUN_80163b34",
    "image": "ovl_008bef8",
    "address": "0x80163b34",
-   "callees": 17,
-   "callees_unknown": 1,
+   "callees": 16,
+   "callees_unknown": 2,
    "level": 1,
    "named": false,
    "validated": false
@@ -27286,9 +26386,9 @@
    "name": "FUN_80162768",
    "image": "ovl_008e046",
    "address": "0x80162768",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -27296,9 +26396,9 @@
    "name": "FUN_801628a0",
    "image": "ovl_008e046",
    "address": "0x801628a0",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -27546,9 +26646,9 @@
    "name": "FUN_80165528",
    "image": "ovl_008e046",
    "address": "0x80165528",
-   "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 2,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -29526,9 +28626,9 @@
    "name": "FUN_80167b18",
    "image": "ovl_0095446",
    "address": "0x80167b18",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -29956,9 +29056,9 @@
    "name": "FUN_8016332c",
    "image": "ovl_0098ee0",
    "address": "0x8016332c",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -30506,9 +29606,9 @@
    "name": "FUN_80163608",
    "image": "ovl_009aed0",
    "address": "0x80163608",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -32746,9 +31846,9 @@
    "name": "FUN_8016841c",
    "image": "ovl_00a1414",
    "address": "0x8016841c",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -33236,9 +32336,9 @@
    "name": "FUN_80168ee8",
    "image": "ovl_00a43b6",
    "address": "0x80168ee8",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -33976,9 +33076,9 @@
    "name": "FUN_801678e4",
    "image": "ovl_00a733e",
    "address": "0x801678e4",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -34616,9 +33716,9 @@
    "name": "FUN_8016bac8",
    "image": "ovl_00a9d94",
    "address": "0x8016bac8",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -34639,26 +33739,6 @@
    "callees": 3,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00a9d94:0x8016b214": {
-   "name": "FUN_8016b214",
-   "image": "ovl_00a9d94",
-   "address": "0x8016b214",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00a9d94:0x8016b53c": {
-   "name": "FUN_8016b53c",
-   "image": "ovl_00a9d94",
-   "address": "0x8016b53c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
    "named": false,
    "validated": false
   },
@@ -35056,9 +34136,9 @@
    "name": "FUN_801669b4",
    "image": "ovl_00ae24a",
    "address": "0x801669b4",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 0,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },
@@ -35069,26 +34149,6 @@
    "callees": 2,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00ae24a:0x80165e18": {
-   "name": "FUN_80165e18",
-   "image": "ovl_00ae24a",
-   "address": "0x80165e18",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00ae24a:0x80165e38": {
-   "name": "FUN_80165e38",
-   "image": "ovl_00ae24a",
-   "address": "0x80165e38",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
    "named": false,
    "validated": false
   },
@@ -35479,26 +34539,6 @@
    "callees": 2,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00b08a2:0x80166e98": {
-   "name": "FUN_80166e98",
-   "image": "ovl_00b08a2",
-   "address": "0x80166e98",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00b08a2:0x80166ecc": {
-   "name": "FUN_80166ecc",
-   "image": "ovl_00b08a2",
-   "address": "0x80166ecc",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
    "named": false,
    "validated": false
   },
@@ -36382,46 +35422,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_00b321e:0x80164bbc": {
-   "name": "FUN_80164bbc",
-   "image": "ovl_00b321e",
-   "address": "0x80164bbc",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00b321e:0x80164be8": {
-   "name": "FUN_80164be8",
-   "image": "ovl_00b321e",
-   "address": "0x80164be8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00b321e:0x80164bf8": {
-   "name": "FUN_80164bf8",
-   "image": "ovl_00b321e",
-   "address": "0x80164bf8",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00b321e:0x80164cc4": {
-   "name": "FUN_80164cc4",
-   "image": "ovl_00b321e",
-   "address": "0x80164cc4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "ovl_00b321e:0x801623ac": {
    "name": "FUN_801623ac",
    "image": "ovl_00b321e",
@@ -36716,16 +35716,6 @@
    "name": "FUN_80162ad4",
    "image": "ovl_00b5346",
    "address": "0x80162ad4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00b5346:0x80162ee4": {
-   "name": "FUN_80162ee4",
-   "image": "ovl_00b5346",
-   "address": "0x80162ee4",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,

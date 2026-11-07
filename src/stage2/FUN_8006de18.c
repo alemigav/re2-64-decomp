@@ -1,18 +1,20 @@
 /* FUN_8006de18
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8006de18  body 0x8006de18..0x8006de1f  size 8 B
- * body sha256 8bb75c349154335517623e37cc01f9b4c0b4181f091fe5280016e2b1d77b790f
- * EXTENT MEASURED, NOT RECONSTRUCTED: 2 words, found by the extent scan inside a byte-map region no artifact names (extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists)
- * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
- * extents: fixtures/decomp/measured_extents.json
+ * body sha256 83638c4460a969fde4d206d3b82b3dd6af85e4d8babc8175b6c5db2c2195cca3
+ * recovered byte-exact (read from the words (M364): 2 of 2, measured extent turned into a reconstruction)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/imported/stage2/8006de18.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/*
- * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.
- *
- * These are the bytes of a function the provider never claimed, decoded word by word.
- * This file is a listing: not ours, not C, and no claim that the body is understood. It
- * exists so the census, the byte map and the coverage union can all name these bytes
- * (fixtures/decomp/measured_extents.json, M341).
- * 0x8006de18  03e00008  jr $ra
- * 0x8006de1c  24020002  addiu $v0,$zero,0x0002
- */
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+u32 FUN_8006de18(void)
+{
+    return 2;
+}

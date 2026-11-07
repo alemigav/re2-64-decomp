@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-364 milestones are indexed. 286 of them have a note; the rest are rows in the log that cite
+365 milestones are indexed. 287 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -382,6 +382,7 @@ at the foot of this file.
 | 361 | **M361** — the admission gate: two functions the census did not have, and the three environments that hid them | `docs/log/M361-the-admission-gate.md` |
 | 362 | **M362** — 85 functions the byte map was calling data: the measured-extent path, widened once | `docs/log/M362-eighty-five-functions-the-map-called-data.md` |
 | 363 | **M363** — reading the admitted bodies: 21 reconstructions, 11 withdrawals, and F1 moves | `docs/log/M363-reading-the-admitted-bodies.md` |
+| 364 | **M364** — the rung audited: 101 of 241 entries are not functions, and 9 more read | `docs/log/M364-the-rung-audited.md` |
 
 ## The gaps, and why they are empty
 
