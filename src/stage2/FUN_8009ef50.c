@@ -3,7 +3,7 @@
  * address 0x8009ef50  body 0x8009ef50..0x8009f313  size 964 B
  * body sha256 e5ead78b85a7f8ba5f0887e20994c3ed483b4b26d566279e772c523394af90bd
  * provider record sha256 6ec12686894123522a7ba8230b9ea21dd71c9b92dd0c76ebdecaef6a6278f6f4
- * callees 4 direct (3 in corpus)
+ * callees 4 direct (4 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_8009ef50(uint param_1,uint param_2,int param_3,int param_4,int param_5,int param_6,

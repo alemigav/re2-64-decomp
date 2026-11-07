@@ -3,7 +3,7 @@
  * address 0x80026524  body 0x80026524..0x800265f3  size 208 B
  * body sha256 5e12d36fbc2b83992a253885e3249826f222b3a7d3403dcda1837febd0848b4e
  * provider record sha256 3e9a9986de9230248260c607cac5d6fc6c5b64b76edc1e56cd90b11eb0ed4f2f
- * callees 9 direct (8 in corpus)
+ * callees 9 direct (9 in corpus)
  * provider Ghidra 12.2
  */
 void FUN_80026524(void)

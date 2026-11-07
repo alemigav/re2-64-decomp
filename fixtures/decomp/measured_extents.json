@@ -11,14 +11,302 @@
  "functions": [
   {
    "image": "boot",
+   "address": "0x80004a20",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80004a20..0x80004a4f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004be4",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80004be4..0x80004c33, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004c14",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80004be4..0x80004c33, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x80004c6c",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80004c6c..0x80004c9b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000c464",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8000c464..0x8000c48f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000cd40",
+   "words": 40,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8000cd40..0x8000cddf, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
    "address": "0x8000d3cc",
    "words": 23,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
    "image": "boot",
+   "address": "0x8000de78",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8000de78..0x8000de9b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000e7d0",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8000e7d0..0x8000e7ef, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000f020",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8000f020..0x8000f04f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "boot",
    "address": "0x800113d8",
    "words": 76,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184058",
+   "words": 245,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8018442c",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184468",
+   "words": 208,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801847a8",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801847d8",
+   "words": 87,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184934",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184970",
+   "words": 67,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x80184a7c",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_007af7a",
+   "address": "0x8017b558",
+   "words": 7,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8017b558..0x8017b573, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_007e132",
+   "address": "0x8017b710",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8017b710..0x8017b743, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_007e132",
+   "address": "0x8017d968",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_007fc12",
+   "address": "0x80165424",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80165424..0x8016544b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x8016581c",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_0093192",
+   "address": "0x80162884",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8016287c..0x801628bb, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_0097e42",
+   "address": "0x80163760",
+   "words": 21,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x8016371c",
+   "words": 35,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801665b8",
+   "words": 2,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801665c0",
+   "words": 17,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166604",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166ccc",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80166ccc..0x80166d13, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166cec",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80166ccc..0x80166d13, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163714",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8016370c..0x80163723, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80165910",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80165910..0x8016591f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x80164e50",
+   "words": 17,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801664f0",
+   "words": 24,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016abe8",
+   "words": 74,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016b214",
+   "words": 101,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016b53c",
+   "words": 67,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80165e18",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80165e38",
+   "words": 41,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80166e98",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80166ecc",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80166f18",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164bbc",
+   "words": 11,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164be8",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164bf8",
+   "words": 51,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164cc4",
+   "words": 47,
+   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x80162ad4",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80162ad4..0x80162b1b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x80162ee4",
+   "words": 20,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
@@ -113,9 +401,27 @@
   },
   {
    "image": "stage2",
+   "address": "0x80025e90",
+   "words": 24,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80025e90..0x80025eef, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80026a98",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80026a98..0x80026aa7, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x8002de0c",
    "words": 66,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e87c",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8002e86c..0x8002e88f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -137,6 +443,18 @@
   },
   {
    "image": "stage2",
+   "address": "0x8003247c",
+   "words": 11,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8003247c..0x800327eb, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800324a8",
+   "words": 209,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8003247c..0x800327eb, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x800341ec",
    "words": 2,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -146,6 +464,18 @@
    "address": "0x800341f4",
    "words": 35,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036b2c",
+   "words": 20,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80036b2c..0x80036b83, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036c44",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80036c44..0x80036c67, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -170,6 +500,12 @@
    "address": "0x80036ed8",
    "words": 35,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80037310",
+   "words": 24,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80037310..0x8003736f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -221,6 +557,30 @@
   },
   {
    "image": "stage2",
+   "address": "0x8003a578",
+   "words": 6,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8003a578..0x8003a58f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003aef8",
+   "words": 6,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8003aef8..0x8003af0f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003b640",
+   "words": 11,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8003b640..0x8003b66b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003bfb4",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8003bfb4..0x8003bfc7, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x8003c114",
    "words": 23,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -239,15 +599,117 @@
   },
   {
    "image": "stage2",
+   "address": "0x8003dadc",
+   "words": 6,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8003dadc..0x8003daf3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003dd8c",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8003dd8c..0x8003ddc3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x8003ecb8",
    "words": 21,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
    "image": "stage2",
+   "address": "0x80040e10",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80040e08..0x80040e57, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80040e30",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80040e08..0x80040e57, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004249c",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8004249c..0x800424bb, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80043374",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80043374..0x80043397, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004343c",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8004343c..0x8004345f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047914",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80047914..0x8004794b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80047984",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80047984..0x800479bb, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x80047fe4",
    "words": 31,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80048108",
+   "words": 43,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80048108..0x80048293, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800481bc",
+   "words": 49,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80048108..0x80048293, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80048280",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80048108..0x80048293, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004878c",
+   "words": 130,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8004878c..0x80048a3f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80048994",
+   "words": 43,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8004878c..0x80048a3f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80048bac",
+   "words": 121,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80048bac..0x80048d8f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049a84",
+   "words": 37,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80049a84..0x80049b93, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80049b18",
+   "words": 31,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80049a84..0x80049b93, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -275,6 +737,12 @@
   },
   {
    "image": "stage2",
+   "address": "0x8004d320",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8004d320..0x8004d343, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x80050f38",
    "words": 28,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -293,9 +761,69 @@
   },
   {
    "image": "stage2",
+   "address": "0x80051104",
+   "words": 11,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80051104..0x8005113f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006a42c",
+   "words": 41,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006a42c..0x8006a4cf, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006a880",
+   "words": 9,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006a880..0x8006a8f3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006a8bc",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006a880..0x8006a8f3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006a8e4",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006a880..0x8006a8f3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x8006b28c",
    "words": 37,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006b9d4",
+   "words": 7,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8006b9bc..0x8006b9ef, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006bea0",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8006bea0..0x8006beb3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db00",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006db00..0x8006db97, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db14",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006db00..0x8006db97, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db84",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006db00..0x8006db97, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -374,6 +902,18 @@
    "address": "0x8006df78",
    "words": 27,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e09c",
+   "words": 14,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006e09c..0x8006e137, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e0d4",
+   "words": 25,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8006e09c..0x8006e137, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -647,6 +1187,30 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007272c",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8007272c..0x8007277b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072740",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8007272c..0x8007277b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072754",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8007272c..0x8007277b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072768",
+   "words": 5,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8007272c..0x8007277b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x80072c3c",
    "words": 50,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -731,6 +1295,18 @@
   },
   {
    "image": "stage2",
+   "address": "0x80073564",
+   "words": 11,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80073564..0x8007358f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073ac4",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80073ac4..0x80073af3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x80073e38",
    "words": 49,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -773,6 +1349,30 @@
   },
   {
    "image": "stage2",
+   "address": "0x80074230",
+   "words": 17,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80074230..0x80074273, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800745c8",
+   "words": 18,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x800745c8..0x8007460f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800765a4",
+   "words": 15,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800765a4..0x800765df, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80079560",
+   "words": 19,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80079560..0x800795ab, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x80079e9c",
    "words": 30,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -788,6 +1388,24 @@
    "address": "0x8007a3d8",
    "words": 2,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a510",
+   "words": 13,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8007a510..0x8007a54b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a5ec",
+   "words": 47,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8007a5ec..0x8007a6af, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a754",
+   "words": 36,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x8007a74c..0x8007a7e3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -857,6 +1475,12 @@
   },
   {
    "image": "stage2",
+   "address": "0x800823b0",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800823b0..0x800823df, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x80088498",
    "words": 36,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -872,6 +1496,18 @@
    "address": "0x80088724",
    "words": 16,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800896c0",
+   "words": 28,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x800896c0..0x8008972f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008af5c",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x8008af5c..0x8008af6b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -929,6 +1565,12 @@
   },
   {
    "image": "stage2",
+   "address": "0x800a2424",
+   "words": 6,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800a2424..0x800a2443, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
    "address": "0x800a2490",
    "words": 32,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
@@ -938,6 +1580,30 @@
    "address": "0x800a2510",
    "words": 16,
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5b7c",
+   "words": 10,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800a5b7c..0x800a5ba3, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800aa8b8",
+   "words": 6,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800aa8b8..0x800aa8db, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab7a8",
+   "words": 4,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800ab7a8..0x800ab7df, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab7b8",
+   "words": 6,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800ab7a8..0x800ab7df, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "stage2",
@@ -958,184 +1624,28 @@
    "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
   },
   {
-   "image": "ovl_0072610",
-   "address": "0x80184058",
-   "words": 245,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+   "image": "stage2",
+   "address": "0x800b2618",
+   "words": 8,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x800b2618..0x800b2637, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
-   "image": "ovl_0072610",
-   "address": "0x8018442c",
-   "words": 15,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x80184468",
-   "words": 208,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x801847a8",
-   "words": 12,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x801847d8",
-   "words": 87,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x80184934",
-   "words": 15,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x80184970",
-   "words": 67,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x80184a7c",
-   "words": 15,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_007e132",
-   "address": "0x8017d968",
-   "words": 14,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0087352",
-   "address": "0x8016581c",
-   "words": 13,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_0097e42",
-   "address": "0x80163760",
-   "words": 21,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x8016371c",
-   "words": 35,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x801665b8",
-   "words": 2,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x801665c0",
-   "words": 17,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x80166604",
-   "words": 16,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00a43b6",
-   "address": "0x80164e50",
-   "words": 17,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00a733e",
-   "address": "0x801664f0",
+   "image": "stage2",
+   "address": "0x800b43a0",
    "words": 24,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x800b43a0..0x800b4477, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
-   "image": "ovl_00a9d94",
-   "address": "0x8016abe8",
-   "words": 74,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+   "image": "stage2",
+   "address": "0x800b4400",
+   "words": 12,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x800b43a0..0x800b4477, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
-   "image": "ovl_00a9d94",
-   "address": "0x8016b214",
-   "words": 101,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00a9d94",
-   "address": "0x8016b53c",
-   "words": 67,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00ae24a",
-   "address": "0x80165e18",
-   "words": 8,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00ae24a",
-   "address": "0x80165e38",
-   "words": 41,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00b08a2",
-   "address": "0x80166e98",
-   "words": 13,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00b08a2",
-   "address": "0x80166ecc",
-   "words": 19,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00b08a2",
-   "address": "0x80166f18",
-   "words": 8,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00b321e",
-   "address": "0x80164bbc",
-   "words": 11,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00b321e",
-   "address": "0x80164be8",
-   "words": 4,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00b321e",
-   "address": "0x80164bf8",
-   "words": 51,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00b321e",
-   "address": "0x80164cc4",
-   "words": 47,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "ovl_00b5346",
-   "address": "0x80162ee4",
-   "words": 20,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+   "image": "stage2",
+   "address": "0x800b4438",
+   "words": 16,
+   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x800b43a0..0x800b4477, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   }
  ],
  "regions": [

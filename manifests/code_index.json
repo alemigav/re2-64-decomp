@@ -6,7 +6,7 @@
    "role": "boot",
    "base": "0x80000480",
    "size": 78880,
-   "functions": 217,
+   "functions": 226,
    "named": 19,
    "functions_named": 19,
    "limitations": [
@@ -26,11 +26,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 14679,
-   "covered_bytes": 58716,
-   "coverage": 0.7444,
-   "unclaimed_runs": 101,
-   "unclaimed_bytes": 20164,
+   "covered_words": 14795,
+   "covered_bytes": 59180,
+   "coverage": 0.7503,
+   "unclaimed_runs": 97,
+   "unclaimed_bytes": 19700,
    "functions_list": [
     {
      "address": "0x80000480",
@@ -545,9 +545,10 @@
      "provider_sha256": "11e8a88b976c19e82d0ea598906868a2b0497e81a7962e828371a94e19731be0",
      "status": "written",
      "callees": [
-      "0x800b431c"
+      "0x800b431c",
+      "0x800b43a0"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80004c34",
@@ -557,8 +558,10 @@
      "sha256": "9d729c392e42815f928a4cdd8fe22ee7fd15b864ab2595b6e7dcdc0dc4c70805",
      "provider_sha256": "fd00a33dfd7c1828385c7b6f47834232e22f2bf13d93d97ed23afd19a80aca9c",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x800b43a0"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x80004c9c",
@@ -2620,11 +2623,119 @@
      "extent_measured": true
     },
     {
+     "address": "0x80004a20",
+     "name": "FUN_80004a20",
+     "file": "src/boot/FUN_80004a20.c",
+     "size": 48,
+     "sha256": "f855df99d5f95801c54f1ed24c3f05e5584bc1918dcb570fdf56e790185eecec",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80004be4",
+     "name": "FUN_80004be4",
+     "file": "src/boot/FUN_80004be4.c",
+     "size": 48,
+     "sha256": "67ee746d702f1fd485fc70e3ffb5cbb5bb50782853b38e9194e35cdee536a91a",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80004c14",
+     "name": "FUN_80004c14",
+     "file": "src/boot/FUN_80004c14.c",
+     "size": 16,
+     "sha256": "ab5775bb239ff558b12d4cc6a976d3b70503002fbc5965d821981788d960944a",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80004c6c",
+     "name": "FUN_80004c6c",
+     "file": "src/boot/FUN_80004c6c.c",
+     "size": 48,
+     "sha256": "76d8fb46520a77bfd5b2c79292577ef1d3f402a88e345f23f5b84029ab30a495",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8000c464",
+     "name": "FUN_8000c464",
+     "file": "src/boot/FUN_8000c464.c",
+     "size": 36,
+     "sha256": "dea51e33f5530cfb230a30120e966027a4f7b2aaaa3443b1244fab08c93cef1f",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8000cd40",
+     "name": "FUN_8000cd40",
+     "file": "src/boot/FUN_8000cd40.c",
+     "size": 160,
+     "sha256": "8472f668fedc18cb2e1674809bd6562d48496ddcbdeb8cacae5ef474beb5e860",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x8000d3cc",
      "name": "FUN_8000d3cc",
      "file": "src/boot/FUN_8000d3cc.c",
      "size": 92,
      "sha256": "4a236803677a6a8c0ce41ef06c275deaa92602d28e4193e33bbb7aee57b9fb68",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8000de78",
+     "name": "FUN_8000de78",
+     "file": "src/boot/FUN_8000de78.c",
+     "size": 36,
+     "sha256": "756e16bf555c86248d435ff4dce26863933b47c4319926842dfba30c7dc40437",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8000e7d0",
+     "name": "FUN_8000e7d0",
+     "file": "src/boot/FUN_8000e7d0.c",
+     "size": 32,
+     "sha256": "7ed0cef5dd3fb1b63fc6e01aa96c32fb89828421b8ba692632b4db9da3a215d8",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8000f020",
+     "name": "FUN_8000f020",
+     "file": "src/boot/FUN_8000f020.c",
+     "size": 40,
+     "sha256": "091721f03ca221b73ccd19733ab1fe8dc52c114accdf6273e5f7f18e0b770c14",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -2959,7 +3070,7 @@
    "role": "stage2",
    "base": "0x80018a80",
    "size": 1172240,
-   "functions": 1844,
+   "functions": 1911,
    "named": 14,
    "functions_named": 14,
    "limitations": [
@@ -2981,11 +3092,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 145048,
-   "covered_bytes": 580192,
-   "coverage": 0.4949,
-   "unclaimed_runs": 204,
-   "unclaimed_bytes": 592048,
+   "covered_words": 146419,
+   "covered_bytes": 585676,
+   "coverage": 0.4996,
+   "unclaimed_runs": 173,
+   "unclaimed_bytes": 586564,
    "functions_list": [
     {
      "address": "0x80018a80",
@@ -3368,6 +3479,7 @@
      "provider_sha256": "3e9a9986de9230248260c607cac5d6fc6c5b64b76edc1e56cd90b11eb0ed4f2f",
      "status": "written",
      "callees": [
+      "0x80004a20",
       "0x80027874",
       "0x80042a24",
       "0x8004c94c",
@@ -3377,7 +3489,7 @@
       "0x80075f54",
       "0x800850a4"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x800265f4",
@@ -11979,9 +12091,10 @@
       "0x80007300",
       "0x8000d460",
       "0x8000d66c",
+      "0x8000f020",
       "0x8006b3dc"
      ],
-     "callees_unknown": 2
+     "callees_unknown": 1
     },
     {
      "address": "0x8006b8a0",
@@ -17207,9 +17320,10 @@
      "provider_sha256": "7a9272861b800368f5c785a5b9428fd58208fa11738ab3387c6911fe9b0fa54b",
      "status": "written",
      "callees": [
+      "0x8000cd40",
       "0x8008af80"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8008b0a4",
@@ -17220,9 +17334,10 @@
      "provider_sha256": "b74abd0b14dff20352260bad67716d6a4fdffdd9f6de98d6181bc194d19fdca4",
      "status": "written",
      "callees": [
+      "0x8000cd40",
       "0x8008b040"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8008b0ec",
@@ -19882,9 +19997,10 @@
       "0x80006f60",
       "0x80007320",
       "0x8000c9e0",
+      "0x8000cd40",
       "0x8009c1e0"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8009c0c4",
@@ -19898,9 +20014,10 @@
       "0x80006f60",
       "0x80007320",
       "0x8000c9e0",
+      "0x8000cd40",
       "0x8009c1e0"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8009c1e0",
@@ -19912,9 +20029,10 @@
      "status": "written",
      "callees": [
       "0x80006650",
-      "0x80006d30"
+      "0x80006d30",
+      "0x8000cd40"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8009c370",
@@ -20662,9 +20780,10 @@
      "provider_sha256": "9575c20c5a37c2fc9d4c828fc2b7d5dfaab65534b41b47480d21697cb0273f66",
      "status": "written",
      "callees": [
+      "0x8000f020",
       "0x8006c044"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8009ec98",
@@ -20701,10 +20820,11 @@
      "status": "written",
      "callees": [
       "0x8000efa0",
+      "0x8000f020",
       "0x80031a20",
       "0x8006c044"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8009f320",
@@ -24593,11 +24713,47 @@
      "extent_measured": true
     },
     {
+     "address": "0x80025e90",
+     "name": "FUN_80025e90",
+     "file": "src/stage2/FUN_80025e90.c",
+     "size": 96,
+     "sha256": "b29a6b667b9f6d2b13d1da648f30d18c417a0988789457044273844f3c4267a8",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80026a98",
+     "name": "FUN_80026a98",
+     "file": "src/stage2/FUN_80026a98.c",
+     "size": 16,
+     "sha256": "435c7962af8c2c8ed57b01fdae0da7353c4f9d6a8ce28d5802e22fb77fa00f14",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x8002de0c",
      "name": "FUN_8002de0c",
      "file": "src/stage2/FUN_8002de0c.c",
      "size": 264,
      "sha256": "4cade8bae0c700b3c29a76428356d821a3d8a2abd294cdb26d500ef40c05200a",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8002e87c",
+     "name": "FUN_8002e87c",
+     "file": "src/stage2/FUN_8002e87c.c",
+     "size": 20,
+     "sha256": "9bace9317eea8d6d4e6ed6d0bd42766378a531e5f2612e19efd750a52e30a8c5",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -24641,11 +24797,59 @@
      "extent_measured": true
     },
     {
+     "address": "0x8003247c",
+     "name": "FUN_8003247c",
+     "file": "src/stage2/FUN_8003247c.c",
+     "size": 44,
+     "sha256": "841c142528819d4a1d6477d4dfe14f0d48bc006d3c5d6a6f13f9a58b5c796eab",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800324a8",
+     "name": "FUN_800324a8",
+     "file": "src/stage2/FUN_800324a8.c",
+     "size": 836,
+     "sha256": "fad6ad950ac5cea863ddc4be49c0c5be42c0fc805d404529f9c18d15513b5d09",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x800341f4",
      "name": "FUN_800341f4",
      "file": "src/stage2/FUN_800341f4.c",
      "size": 140,
      "sha256": "e0dc45d2d5b088c1586b9b2b3a02ab16d9ee29300314c30c13f9252dcda7be57",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80036b2c",
+     "name": "FUN_80036b2c",
+     "file": "src/stage2/FUN_80036b2c.c",
+     "size": 80,
+     "sha256": "e574d53a3276838df0b89fdd36e12d6500e8f4a36b1343bcd1f29add3f22ed31",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80036c44",
+     "name": "FUN_80036c44",
+     "file": "src/stage2/FUN_80036c44.c",
+     "size": 36,
+     "sha256": "3d887d689cf3f26ada3e6e260a949e041c9005a1eed5e3265f93b595dab4d8fe",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -24682,6 +24886,18 @@
      "file": "src/stage2/FUN_80036ed8.c",
      "size": 140,
      "sha256": "4917279058b40bd0feac69f6d128861bb1ae5646c44fa94f8045386281a77fc6",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80037310",
+     "name": "FUN_80037310",
+     "file": "src/stage2/FUN_80037310.c",
+     "size": 96,
+     "sha256": "d749badcb8f539acca964029fd6b36d4bbdfb9540505c8a359d1116fa9fbd9d6",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -24785,6 +25001,54 @@
      "extent_measured": true
     },
     {
+     "address": "0x8003a578",
+     "name": "FUN_8003a578",
+     "file": "src/stage2/FUN_8003a578.c",
+     "size": 24,
+     "sha256": "73cd415acd73d3b5dd7299f0c08526ba5247f93637a8f992129781b9cd55b0f2",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8003aef8",
+     "name": "FUN_8003aef8",
+     "file": "src/stage2/FUN_8003aef8.c",
+     "size": 24,
+     "sha256": "36a18913e4e9cd70219df45cbdbf9222b1f606921aa6e2ff1b6a3a1846be610f",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8003b640",
+     "name": "FUN_8003b640",
+     "file": "src/stage2/FUN_8003b640.c",
+     "size": 44,
+     "sha256": "beb03bb94c1775244d4657538e2b9215a6c9d7e13201485ace9a7de9db8daecf",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8003bfb4",
+     "name": "FUN_8003bfb4",
+     "file": "src/stage2/FUN_8003bfb4.c",
+     "size": 20,
+     "sha256": "983c29b0cecfc57b78d7e095d9a963252074416a09d23d03fcaaac1f8f4608bf",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x8003c114",
      "name": "FUN_8003c114",
      "file": "src/stage2/FUN_8003c114.c",
@@ -24821,6 +25085,30 @@
      "extent_measured": true
     },
     {
+     "address": "0x8003dadc",
+     "name": "FUN_8003dadc",
+     "file": "src/stage2/FUN_8003dadc.c",
+     "size": 24,
+     "sha256": "c8830e3cb9be5892cace18fbd07ec0b1e0dffc54f4e80ed72b49dac4668608bd",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8003dd8c",
+     "name": "FUN_8003dd8c",
+     "file": "src/stage2/FUN_8003dd8c.c",
+     "size": 56,
+     "sha256": "8063f510f4e3dd255cde8323efaf70db351784f9c4805e2c85ccb318ab0bc3fd",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x8003ecb8",
      "name": "FUN_8003ecb8",
      "file": "src/stage2/FUN_8003ecb8.c",
@@ -24833,11 +25121,191 @@
      "extent_measured": true
     },
     {
+     "address": "0x80040e10",
+     "name": "FUN_80040e10",
+     "file": "src/stage2/FUN_80040e10.c",
+     "size": 32,
+     "sha256": "d03ee2fab409e570a57f47fcdb5cc21b4d9104725ac4246e01296e97cc2a35da",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80040e30",
+     "name": "FUN_80040e30",
+     "file": "src/stage2/FUN_80040e30.c",
+     "size": 40,
+     "sha256": "5f21bf87913e8b03788411fa0a6fc71ee859c576c546dd40d14617f80e4a17cc",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8004249c",
+     "name": "FUN_8004249c",
+     "file": "src/stage2/FUN_8004249c.c",
+     "size": 32,
+     "sha256": "08538e12761f9cfc6352fe79077971aeb1d33fb62d6724707f56095cdc926eba",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80043374",
+     "name": "FUN_80043374",
+     "file": "src/stage2/FUN_80043374.c",
+     "size": 36,
+     "sha256": "6554f225c8f1a04702bb8c05bf405eca275496808058d04b0ebd660a4da0f4e2",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8004343c",
+     "name": "FUN_8004343c",
+     "file": "src/stage2/FUN_8004343c.c",
+     "size": 36,
+     "sha256": "2db66242a341a25daaaeb066acc751609056b70ae5b247491463500901ce815a",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80047914",
+     "name": "FUN_80047914",
+     "file": "src/stage2/FUN_80047914.c",
+     "size": 56,
+     "sha256": "feee874af9f7a487008768d40d09a9f67a446edde2b8363431e6400c74994121",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80047984",
+     "name": "FUN_80047984",
+     "file": "src/stage2/FUN_80047984.c",
+     "size": 56,
+     "sha256": "0ed2956f4bb9a91428711263235e4f58eef6c9f6cd0e26842487b35bee3c9dfd",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x80047fe4",
      "name": "FUN_80047fe4",
      "file": "src/stage2/FUN_80047fe4.c",
      "size": 124,
      "sha256": "26761e60fd0d5242cdcdbfcb9610675397d8a2102a4dcb962d057b618dae6e70",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80048108",
+     "name": "FUN_80048108",
+     "file": "src/stage2/FUN_80048108.c",
+     "size": 172,
+     "sha256": "eb7363143766c36a53c1983ba7bfc80d3208081b3a30a0da97df6483ccc4c3c2",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800481bc",
+     "name": "FUN_800481bc",
+     "file": "src/stage2/FUN_800481bc.c",
+     "size": 196,
+     "sha256": "fb658832518157150d1bf5ae0126ae0f759a32ec5890c24a75dfa0e03125e0a1",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80048280",
+     "name": "FUN_80048280",
+     "file": "src/stage2/FUN_80048280.c",
+     "size": 20,
+     "sha256": "832cdd086176cc2dd0591a2d7652130bb57dfd9f091b3e98d487c47983a87d03",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8004878c",
+     "name": "FUN_8004878c",
+     "file": "src/stage2/FUN_8004878c.c",
+     "size": 520,
+     "sha256": "e614fdde942cf6e4056eafd06db7dc7f612ab34b76e823eb22d650f929ad6350",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80048994",
+     "name": "FUN_80048994",
+     "file": "src/stage2/FUN_80048994.c",
+     "size": 172,
+     "sha256": "12c1afb6a0037da23c59559028c29fcb7bd609e8d4c00bfff838a06e5b51d60b",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80048bac",
+     "name": "FUN_80048bac",
+     "file": "src/stage2/FUN_80048bac.c",
+     "size": 484,
+     "sha256": "94b6a5cf668c0d31489aba4e4687adc612f47dd44fc5eb5985bbab30805a97f2",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80049a84",
+     "name": "FUN_80049a84",
+     "file": "src/stage2/FUN_80049a84.c",
+     "size": 148,
+     "sha256": "4cb34deaf0ef36aad3025d16c80f0e087411c61057a45265ca8d8e711bb85031",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80049b18",
+     "name": "FUN_80049b18",
+     "file": "src/stage2/FUN_80049b18.c",
+     "size": 124,
+     "sha256": "54cad7124031339709919a1397c2d3b443a40863615aa85a6e12f1a2a0ddbfe3",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -24881,6 +25349,18 @@
      "extent_measured": true
     },
     {
+     "address": "0x8004d320",
+     "name": "FUN_8004d320",
+     "file": "src/stage2/FUN_8004d320.c",
+     "size": 36,
+     "sha256": "4ab698d03209e45f868508731b9766903220590c6e64ca6a459ee6220c3f503b",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x80050f38",
      "name": "FUN_80050f38",
      "file": "src/stage2/FUN_80050f38.c",
@@ -24917,11 +25397,131 @@
      "extent_measured": true
     },
     {
+     "address": "0x80051104",
+     "name": "FUN_80051104",
+     "file": "src/stage2/FUN_80051104.c",
+     "size": 44,
+     "sha256": "ac1d11a6747fe1b46364a757fd0ffeed26daa137683552baa07b59c7c6f43e1b",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006a42c",
+     "name": "FUN_8006a42c",
+     "file": "src/stage2/FUN_8006a42c.c",
+     "size": 164,
+     "sha256": "714996d9798818d661bddd18f26d45eec5c81bc5a20f30bcf39479bdbe004dbf",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006a880",
+     "name": "FUN_8006a880",
+     "file": "src/stage2/FUN_8006a880.c",
+     "size": 36,
+     "sha256": "f63e8d08af8b44f5cd243bb5bddb13a1cabfdd2cf94ea3cdde80e4e7fbf11f03",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006a8bc",
+     "name": "FUN_8006a8bc",
+     "file": "src/stage2/FUN_8006a8bc.c",
+     "size": 16,
+     "sha256": "7b3323544c39799d43e5ff23697d0ff9757503f671c05621da1834d90432049a",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006a8e4",
+     "name": "FUN_8006a8e4",
+     "file": "src/stage2/FUN_8006a8e4.c",
+     "size": 16,
+     "sha256": "96c0d3f9184441f16b9f6359f3b551abdb7549bf55118705e9c8d9bb95bada6a",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x8006b28c",
      "name": "FUN_8006b28c",
      "file": "src/stage2/FUN_8006b28c.c",
      "size": 148,
      "sha256": "21074e57291e14138f9df79e2240505f0a73bd0018f31be17fa6fa2cd95968e2",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006b9d4",
+     "name": "FUN_8006b9d4",
+     "file": "src/stage2/FUN_8006b9d4.c",
+     "size": 28,
+     "sha256": "8361ac17cec2acb31b43b199b513eb932a8a836c5cfa463b711552f7cbc5a219",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006bea0",
+     "name": "FUN_8006bea0",
+     "file": "src/stage2/FUN_8006bea0.c",
+     "size": 20,
+     "sha256": "aea75c3053cd4e0f9365d69c0a63663fda9d21815381f137b8f538c672785dd6",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006db00",
+     "name": "FUN_8006db00",
+     "file": "src/stage2/FUN_8006db00.c",
+     "size": 20,
+     "sha256": "e369476f785f7460562530b110874395b8c06e4fe1fa721ef890eb4cca1519b7",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006db14",
+     "name": "FUN_8006db14",
+     "file": "src/stage2/FUN_8006db14.c",
+     "size": 20,
+     "sha256": "2d3f68754adf9ee0928ff6fa9a6c1ec6867b4357825e2afefefc46cfac26c702",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006db84",
+     "name": "FUN_8006db84",
+     "file": "src/stage2/FUN_8006db84.c",
+     "size": 20,
+     "sha256": "29f1f702fc7263419c6652f9f86b730a6cd6b4591f64457b0a7b7f5395f09fd1",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25078,6 +25678,30 @@
      "file": "src/stage2/FUN_8006df78.c",
      "size": 108,
      "sha256": "ab993d7e06e0ad0c43dd340561efef34e55c7fd80dabd45e4dc7475044eb040f",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006e09c",
+     "name": "FUN_8006e09c",
+     "file": "src/stage2/FUN_8006e09c.c",
+     "size": 56,
+     "sha256": "29069e85c358b513410e11800e734d47bc00c9e0c0292a9910b2f63742d6aee5",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8006e0d4",
+     "name": "FUN_8006e0d4",
+     "file": "src/stage2/FUN_8006e0d4.c",
+     "size": 100,
+     "sha256": "0127adbd4bf6a512760bc01ad9a864dc3aad3d5096dff762275dd61f7bef3c19",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25577,6 +26201,54 @@
      "extent_measured": true
     },
     {
+     "address": "0x8007272c",
+     "name": "FUN_8007272c",
+     "file": "src/stage2/FUN_8007272c.c",
+     "size": 20,
+     "sha256": "fd79779486355a1b6b5be21e88e593026042410a64d6e70f8e7a2a0a0d26c9be",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80072740",
+     "name": "FUN_80072740",
+     "file": "src/stage2/FUN_80072740.c",
+     "size": 20,
+     "sha256": "cf3d1a19452fac9eb4822910ecad77ffa996ceab29bfbce6587a71320a900acf",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80072754",
+     "name": "FUN_80072754",
+     "file": "src/stage2/FUN_80072754.c",
+     "size": 20,
+     "sha256": "7be3ce1aea121e7dc8843f6e1669f09ff9baef824c735736be7ec3cd1a63eec2",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80072768",
+     "name": "FUN_80072768",
+     "file": "src/stage2/FUN_80072768.c",
+     "size": 20,
+     "sha256": "eaffe28800ef5c06f9665e0b24d12dff9b70ff3545f701d7009bc4fc496d4ae5",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x80072c3c",
      "name": "FUN_80072c3c",
      "file": "src/stage2/FUN_80072c3c.c",
@@ -25745,6 +26417,30 @@
      "extent_measured": true
     },
     {
+     "address": "0x80073564",
+     "name": "FUN_80073564",
+     "file": "src/stage2/FUN_80073564.c",
+     "size": 44,
+     "sha256": "529274d3225029332db0bfee006609b05d9944013fb145e5577dcb0e8789879b",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80073ac4",
+     "name": "FUN_80073ac4",
+     "file": "src/stage2/FUN_80073ac4.c",
+     "size": 48,
+     "sha256": "874844f26bbae54be23b4cf283e49a1eb1789c4289e5069ba7319f73e8912b18",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x80073e38",
      "name": "FUN_80073e38",
      "file": "src/stage2/FUN_80073e38.c",
@@ -25817,6 +26513,54 @@
      "extent_measured": true
     },
     {
+     "address": "0x80074230",
+     "name": "FUN_80074230",
+     "file": "src/stage2/FUN_80074230.c",
+     "size": 68,
+     "sha256": "31523a31ab9bdf2caec8d7c6fad285be52eeac4a2bf741680c67e45971e0d4f8",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800745c8",
+     "name": "FUN_800745c8",
+     "file": "src/stage2/FUN_800745c8.c",
+     "size": 72,
+     "sha256": "8ed539b563fd0fe0b6a212a628ddf56a919aa820466aaaa3b7e38ff6fcc38225",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800765a4",
+     "name": "FUN_800765a4",
+     "file": "src/stage2/FUN_800765a4.c",
+     "size": 60,
+     "sha256": "d7665ff0ba121763b6b303bb18e10cb2e804cbab76db2321bfb4e6c6edad85b8",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80079560",
+     "name": "FUN_80079560",
+     "file": "src/stage2/FUN_80079560.c",
+     "size": 76,
+     "sha256": "eb9061bb3ec9f86b291771216b45d6916af5b0a079c65a274f1325f3bc569af0",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x80079e9c",
      "name": "FUN_80079e9c",
      "file": "src/stage2/FUN_80079e9c.c",
@@ -25834,6 +26578,42 @@
      "file": "src/stage2/FUN_8007a360.c",
      "size": 120,
      "sha256": "27d475317e9369c64c172cdd6d4ebecda26533086f114d0b8bf3c4cb16b81f52",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8007a510",
+     "name": "FUN_8007a510",
+     "file": "src/stage2/FUN_8007a510.c",
+     "size": 52,
+     "sha256": "fd146e8ccf6be65ee6e45ea1cddbdfdac47ecb7128b9fa49a2fa36e09fc94f9d",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8007a5ec",
+     "name": "FUN_8007a5ec",
+     "file": "src/stage2/FUN_8007a5ec.c",
+     "size": 188,
+     "sha256": "53f886de104c6550041d99506703c2f68c7e144839bb4a7ea8ad39ce153279d1",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8007a754",
+     "name": "FUN_8007a754",
+     "file": "src/stage2/FUN_8007a754.c",
+     "size": 144,
+     "sha256": "11315efdc6abe8b14424af9b7bca2a50cd6a16cb068cbebfca9976907a3e26d7",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25937,6 +26717,18 @@
      "extent_measured": true
     },
     {
+     "address": "0x800823b0",
+     "name": "FUN_800823b0",
+     "file": "src/stage2/FUN_800823b0.c",
+     "size": 40,
+     "sha256": "4c532fe24688cc4cb2df5c33f4080413a990e884cdef1c5d326f08fefc924bd4",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x80088498",
      "name": "FUN_80088498",
      "file": "src/stage2/FUN_80088498.c",
@@ -25966,6 +26758,30 @@
      "file": "src/stage2/FUN_80088724.c",
      "size": 64,
      "sha256": "de129ee1797a5de49310e289dfceac1796a80a30f77fe0e6eb7a66cc2bee456c",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800896c0",
+     "name": "FUN_800896c0",
+     "file": "src/stage2/FUN_800896c0.c",
+     "size": 112,
+     "sha256": "55ab6b81abff9d48df3921dc0f33fde3ac73baa98cb6238ed0829c81582e4d91",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x8008af5c",
+     "name": "FUN_8008af5c",
+     "file": "src/stage2/FUN_8008af5c.c",
+     "size": 16,
+     "sha256": "6c07540d08dd63d17e32fd278cae5cb8462241089484c2d633154b105cdb433b",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26081,6 +26897,18 @@
      "extent_measured": true
     },
     {
+     "address": "0x800a2424",
+     "name": "FUN_800a2424",
+     "file": "src/stage2/FUN_800a2424.c",
+     "size": 24,
+     "sha256": "3253fe7fe9ac2848d38bd01231b8568b463ac8c9ac1a94d349408f52b3cfc0f5",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x800a2490",
      "name": "FUN_800a2490",
      "file": "src/stage2/FUN_800a2490.c",
@@ -26098,6 +26926,54 @@
      "file": "src/stage2/FUN_800a2510.c",
      "size": 64,
      "sha256": "64a389481572b024e342428e8bb1967b700eab4727d06976c78f8e1198fc6930",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800a5b7c",
+     "name": "FUN_800a5b7c",
+     "file": "src/stage2/FUN_800a5b7c.c",
+     "size": 40,
+     "sha256": "1a25a6104274b97b20b91bb1210444284c907cdb527bb3efea9a0c669176bd9f",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800aa8b8",
+     "name": "FUN_800aa8b8",
+     "file": "src/stage2/FUN_800aa8b8.c",
+     "size": 24,
+     "sha256": "254dc211ca6972c59da2f773827930ae996914faf62b2e52915551a9af91ea05",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800ab7a8",
+     "name": "FUN_800ab7a8",
+     "file": "src/stage2/FUN_800ab7a8.c",
+     "size": 16,
+     "sha256": "887bdd92d1e604c19147959de8d2acfc954b4fff3370322ac2face6441776edb",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800ab7b8",
+     "name": "FUN_800ab7b8",
+     "file": "src/stage2/FUN_800ab7b8.c",
+     "size": 24,
+     "sha256": "9c23ebaf2792df784fff5f45152e76b842961ac413e8315b0bd136e04dacb607",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26134,6 +27010,54 @@
      "file": "src/stage2/FUN_800b21f0.c",
      "size": 168,
      "sha256": "cbe2602ead2e1ff62d3677ae211f6ea0956ec11a1c0d9c36b22a77b2ac1fa3d7",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800b2618",
+     "name": "FUN_800b2618",
+     "file": "src/stage2/FUN_800b2618.c",
+     "size": 32,
+     "sha256": "f8ef9344921012197adcdbd746afa4d58e56ddf3f30ec73311423cd76727536f",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800b43a0",
+     "name": "FUN_800b43a0",
+     "file": "src/stage2/FUN_800b43a0.c",
+     "size": 96,
+     "sha256": "bafd107c3c55aee2b035e2c088bb62fcbde582ceb35d8c8cb2608c9083eb1a2e",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800b4400",
+     "name": "FUN_800b4400",
+     "file": "src/stage2/FUN_800b4400.c",
+     "size": 48,
+     "sha256": "113ca1344a5d00ca7edb4450f021a333aff2d14694887603f78e01bd819f37b1",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x800b4438",
+     "name": "FUN_800b4438",
+     "file": "src/stage2/FUN_800b4438.c",
+     "size": 64,
+     "sha256": "6b73941976935647853e80258e9b551ddc3d2a2d4e001439fda1569f39c97fed",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -30332,8 +31256,10 @@
      "sha256": "95cb2a8c308463acd663d931ae0934bebf27ca52ef7623de6c41e08813491d36",
      "provider_sha256": "9bdcf12fab61128489c5b78fa5a1301fa6b2504c7a1076150c9ffb0607e911ed",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x8000f020"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x8017b5e8",
@@ -32473,6 +33399,7 @@
      "status": "written",
      "callees": [
       "0x800274e4",
+      "0x800324a8",
       "0x800337c4",
       "0x80037380",
       "0x8004cca8",
@@ -32483,13 +33410,14 @@
       "0x8006bb0c",
       "0x80075fc0",
       "0x8007608c",
+      "0x8007a754",
       "0x80083afc",
       "0x80083c14",
       "0x8008b2e4",
       "0x8008b548",
       "0x8015bac8"
      ],
-     "callees_unknown": 3
+     "callees_unknown": 1
     },
     {
      "address": "0x8015d8c0",
@@ -32604,6 +33532,7 @@
       "0x8004c21c",
       "0x8004cd88",
       "0x80077adc",
+      "0x800823b0",
       "0x80082474",
       "0x8008c51c",
       "0x8008c568",
@@ -32625,7 +33554,7 @@
       "0x8017fe54",
       "0x8017feb8"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8017e0cc",
@@ -32796,10 +33725,11 @@
       "0x8000cb60",
       "0x8000de9c",
       "0x80082200",
+      "0x800823b0",
       "0x800879a0",
       "0x8009c0c4"
      ],
-     "callees_unknown": 3
+     "callees_unknown": 2
     },
     {
      "address": "0x8017facc",
@@ -32956,7 +33886,7 @@
    "role": "ovl",
    "base": "0x8017b410",
    "size": 20992,
-   "functions": 19,
+   "functions": 20,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -32974,11 +33904,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 2617,
-   "covered_bytes": 10468,
-   "coverage": 0.4987,
-   "unclaimed_runs": 3,
-   "unclaimed_bytes": 10524,
+   "covered_words": 2624,
+   "covered_bytes": 10496,
+   "coverage": 0.5,
+   "unclaimed_runs": 2,
+   "unclaimed_bytes": 10496,
    "functions_list": [
     {
      "address": "0x8017b410",
@@ -33257,6 +34187,18 @@
      "status": "written",
      "callees": [],
      "callees_unknown": 0
+    },
+    {
+     "address": "0x8017b558",
+     "name": "FUN_8017b558",
+     "file": "src/ovl_007af7a/FUN_8017b558.c",
+     "size": 28,
+     "sha256": "11b62a7c6478cc7230dfab7ecc71901395dcc94d43f43320a3734ae747834c97",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
     }
    ],
    "fragments": 0,
@@ -33608,7 +34550,7 @@
    "role": "ovl",
    "base": "0x8017b410",
    "size": 13568,
-   "functions": 25,
+   "functions": 26,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -33626,11 +34568,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 3016,
-   "covered_bytes": 12064,
-   "coverage": 0.8892,
-   "unclaimed_runs": 2,
-   "unclaimed_bytes": 1504,
+   "covered_words": 3029,
+   "covered_bytes": 12116,
+   "coverage": 0.893,
+   "unclaimed_runs": 1,
+   "unclaimed_bytes": 1452,
    "functions_list": [
     {
      "address": "0x8017b410",
@@ -33670,6 +34612,7 @@
      "provider_sha256": "1061d7fa24f8f884850568e795b2a89d48f5eeccde79f12fc642b24fcbe6e118",
      "status": "written",
      "callees": [
+      "0x80026a98",
       "0x800274e4",
       "0x800274f8",
       "0x800275c0",
@@ -33683,7 +34626,7 @@
       "0x8017bdb0",
       "0x8017e150"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8017bb20",
@@ -33874,9 +34817,10 @@
      "status": "written",
      "callees": [
       "0x800408c0",
-      "0x80040bb4"
+      "0x80040bb4",
+      "0x80047914"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8017ccec",
@@ -33886,8 +34830,10 @@
      "sha256": "9d5679c155929f3af19f075ce50dd7e3f7c16a6cf42d1574af681327ea8b6b00",
      "provider_sha256": "a8f5fab03131336e2b0250df7becb54b3e7159fb155a7291666e8ceaff9427f8",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x80047914"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x8017cee8",
@@ -33995,6 +34941,18 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x8017b710",
+     "name": "FUN_8017b710",
+     "file": "src/ovl_007e132/FUN_8017b710.c",
+     "size": 52,
+     "sha256": "521a0dc533a6d0a5702d5eaa91750fcabbbee3296fd5507a0c83c663c1c07416",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x8017b4f8",
      "name": "FUN_8017b4f8",
      "file": "src/ovl_007e132/FUN_8017b4f8.c",
@@ -34025,7 +34983,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 52112,
-   "functions": 65,
+   "functions": 66,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -34043,11 +35001,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 12248,
-   "covered_bytes": 48992,
-   "coverage": 0.9401,
+   "covered_words": 12256,
+   "covered_bytes": 49024,
+   "coverage": 0.9407,
    "unclaimed_runs": 13,
-   "unclaimed_bytes": 3120,
+   "unclaimed_bytes": 3088,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -35185,6 +36143,18 @@
       "0x80077d18"
      ],
      "callees_unknown": 0
+    },
+    {
+     "address": "0x80165424",
+     "name": "FUN_80165424",
+     "file": "src/ovl_007fc12/FUN_80165424.c",
+     "size": 32,
+     "sha256": "a02b8cb63cb4f3d0f4ffc66645a4b28c67fda763e27c359a3fbd49dadab66e04",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x80162a2c",
@@ -37355,9 +38325,10 @@
      "status": "written",
      "callees": [
       "0x80033604",
+      "0x8006a42c",
       "0x80165c68"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80165da8",
@@ -37672,9 +38643,10 @@
      "status": "written",
      "callees": [
       "0x80036a30",
+      "0x80036b2c",
       "0x800371a4"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801620a4",
@@ -37701,9 +38673,11 @@
      "callees": [
       "0x80032d14",
       "0x800667d4",
+      "0x8006a42c",
+      "0x8006a880",
       "0x8008383c"
      ],
-     "callees_unknown": 2
+     "callees_unknown": 0
     },
     {
      "address": "0x8016237c",
@@ -37835,9 +38809,10 @@
      "status": "written",
      "callees": [
       "0x800667d4",
+      "0x8006a42c",
       "0x8008383c"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801630f0",
@@ -38128,13 +39103,14 @@
       "0x80036be4",
       "0x80036d14",
       "0x80036f64",
+      "0x8006a42c",
       "0x8006b28c",
       "0x80161cf0",
       "0x80161e44",
       "0x80162000",
       "0x801620a4"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8016517c",
@@ -38147,12 +39123,13 @@
      "callees": [
       "0x80032c6c",
       "0x800334c8",
+      "0x8006a880",
       "0x800837d0",
       "0x8008a994",
       "0x801621c4",
       "0x80162768"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801654b4",
@@ -38314,10 +39291,11 @@
      "provider_sha256": "9263a523be6620afea7f336e1d4160494a2506436b28ba36334300de989d9384",
      "status": "written",
      "callees": [
+      "0x80036b2c",
       "0x80036be4",
       "0x80036d14"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80166a40",
@@ -38752,6 +39730,7 @@
       "0x80033648",
       "0x80034280",
       "0x800347b0",
+      "0x80036c44",
       "0x80040e58",
       "0x8004d3a0",
       "0x8004da40",
@@ -38760,7 +39739,7 @@
       "0x80163210",
       "0x80163764"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80162010",
@@ -38784,8 +39763,10 @@
      "sha256": "ae9e6f492cf0ccc991ab313601a2ecd774d0e86634655eb8122d58ee81f5a4ff",
      "provider_sha256": "a32b422eee7bc3c5f1b1cf178e16372b39250c292557617526d403fea1aae2c7",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x80036c44"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x80162308",
@@ -38965,6 +39946,7 @@
      "provider_sha256": "77ba0978defef453e8669238a6893b0271997d12d7173dd0c7c3759fcdedd7fc",
      "status": "written",
      "callees": [
+      "0x80036b2c",
       "0x80049ff8",
       "0x80082200",
       "0x80083758",
@@ -38972,7 +39954,7 @@
       "0x801635d0",
       "0x80163698"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801635d0",
@@ -39061,6 +40043,7 @@
       "0x80032b5c",
       "0x80032ef4",
       "0x80035b84",
+      "0x80036b2c",
       "0x80036c68",
       "0x80050f38",
       "0x80052bd0",
@@ -39076,7 +40059,7 @@
       "0x80165814",
       "0x80165c54"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80164074",
@@ -39103,11 +40086,12 @@
      "status": "written",
      "callees": [
       "0x80035b84",
+      "0x80036b2c",
       "0x80036c68",
       "0x800837ac",
       "0x80083c14"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80164588",
@@ -39520,9 +40504,10 @@
      "status": "written",
      "callees": [
       "0x80036a30",
+      "0x80036b2c",
       "0x800371a4"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801620a4",
@@ -39549,9 +40534,11 @@
      "callees": [
       "0x80032d14",
       "0x800667d4",
+      "0x8006a42c",
+      "0x8006a880",
       "0x8008383c"
      ],
-     "callees_unknown": 2
+     "callees_unknown": 0
     },
     {
      "address": "0x8016237c",
@@ -39683,9 +40670,10 @@
      "status": "written",
      "callees": [
       "0x800667d4",
+      "0x8006a42c",
       "0x8008383c"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801630f0",
@@ -41424,8 +42412,10 @@
      "sha256": "63911c619cede0ef5fd092c25d840335021595bf83fbc50be0d68d0874deb544",
      "provider_sha256": "630720a615cab1453a101dde5a0e6b0659e3110002a3e92354452af7cbb5b3cb",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x8006a42c"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x80166c70",
@@ -41460,8 +42450,10 @@
      "sha256": "3382368f27a60440f4f0006a7962a8c73c596259318f768fcc95fa46d9a7c620",
      "provider_sha256": "176d64c04f125c3bc970dd06ec2e49605a185201cef92c5b6b2529e82e523658",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x8006a880"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x80166e18",
@@ -41471,8 +42463,10 @@
      "sha256": "3154195e2564060737fd9c7750abc11b2980d4a3eb401d4f1786be0f573a27cd",
      "provider_sha256": "8eab6f1ca16739fe8ac4ec89001ecbe33435b6c319d2e8ef74a67610c74cae91",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x8006a880"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x80166ed0",
@@ -41881,7 +42875,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 4256,
-   "functions": 17,
+   "functions": 18,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -41899,11 +42893,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 1001,
-   "covered_bytes": 4004,
-   "coverage": 0.9408,
-   "unclaimed_runs": 3,
-   "unclaimed_bytes": 252,
+   "covered_words": 1011,
+   "covered_bytes": 4044,
+   "coverage": 0.9502,
+   "unclaimed_runs": 4,
+   "unclaimed_bytes": 212,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -42068,11 +43062,12 @@
      "provider_sha256": "f23e3e83da63435e680a28aa29e3d93af23927740be7c75fa8b78ae13f9a3516",
      "status": "written",
      "callees": [
+      "0x8003247c",
       "0x800341dc",
       "0x80077d18",
       "0x80162b9c"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801629d0",
@@ -42083,9 +43078,10 @@
      "provider_sha256": "ef2a8ca819be597f162694c0b45f0e0d9aebb3661fb8ca6afbddf9f3c1efa7f2",
      "status": "written",
      "callees": [
+      "0x8003247c",
       "0x80089d54"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80162a6c",
@@ -42130,6 +43126,18 @@
       "0x80074d64"
      ],
      "callees_unknown": 0
+    },
+    {
+     "address": "0x80162884",
+     "name": "FUN_80162884",
+     "file": "src/ovl_0093192/FUN_80162884.c",
+     "size": 40,
+     "sha256": "82c931712db5c56e9db4079984e5b6a2f443babf09ca25c5a6b0053012a55378",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x80161f74",
@@ -42435,10 +43443,11 @@
      "provider_sha256": "2a2039f6ae3c6ea37147395c08a2a93719f8b6c16aa9a6db136379d07de1eec5",
      "status": "written",
      "callees": [
+      "0x8003247c",
       "0x8004a5b4",
       "0x80089d54"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80165078",
@@ -43761,8 +44770,10 @@
      "sha256": "2545778792117675911158f3350bdc49f00e9475cbdb8c72ab49a027553bd82e",
      "provider_sha256": "9ff3b6f125aafe1ad501457000475df5ddc86c2cb38f6cb7aa9b091927e41749",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x80036c44"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x801633bc",
@@ -43794,11 +44805,12 @@
       "0x80032dbc",
       "0x80032f64",
       "0x80036c68",
+      "0x8006a42c",
       "0x801621c4",
       "0x80162b88",
       "0x801633bc"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801638e0",
@@ -43812,11 +44824,12 @@
       "0x80032dbc",
       "0x80032f64",
       "0x80036c68",
+      "0x8006a42c",
       "0x801621c4",
       "0x80162b88",
       "0x801633bc"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80163a38",
@@ -44065,6 +45078,7 @@
       "0x80032ef4",
       "0x80033144",
       "0x80036a30",
+      "0x80036b2c",
       "0x80036b84",
       "0x80036c68",
       "0x80037780",
@@ -44073,7 +45087,7 @@
       "0x80052d10",
       "0x800837d0"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x801655d8",
@@ -44626,8 +45640,10 @@
      "sha256": "65462f7bfe3f233af78502044ea81b3a358092f2b7dc93e12ecea584940e6689",
      "provider_sha256": "efc18809cbde3d2bb76e4d074ab495d1fa9311a33bd1dbfb2710ec294cedeb44",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x80036c44"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x801636a0",
@@ -45439,7 +46455,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 22288,
-   "functions": 92,
+   "functions": 94,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -45457,11 +46473,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 5381,
-   "covered_bytes": 21524,
-   "coverage": 0.9657,
-   "unclaimed_runs": 3,
-   "unclaimed_bytes": 764,
+   "covered_words": 5399,
+   "covered_bytes": 21596,
+   "coverage": 0.969,
+   "unclaimed_runs": 2,
+   "unclaimed_bytes": 692,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -46652,6 +47668,30 @@
      "extent_measured": true
     },
     {
+     "address": "0x80166ccc",
+     "name": "FUN_80166ccc",
+     "file": "src/ovl_009dd02/FUN_80166ccc.c",
+     "size": 32,
+     "sha256": "ef871bdf270d81bbb2faa33581a66fba96c47bcd50b6c78163c42b435986aa81",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
+     "address": "0x80166cec",
+     "name": "FUN_80166cec",
+     "file": "src/ovl_009dd02/FUN_80166cec.c",
+     "size": 40,
+     "sha256": "f74c03fe3447bc274ab77322904490695f3f1966c3eeb3da747763319b4bb820",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x80162678",
      "name": "FUN_80162678",
      "file": "src/ovl_009dd02/FUN_80162678.c",
@@ -46793,7 +47833,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 8736,
-   "functions": 43,
+   "functions": 44,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -46811,11 +47851,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 2040,
-   "covered_bytes": 8160,
-   "coverage": 0.9341,
+   "covered_words": 2044,
+   "covered_bytes": 8176,
+   "coverage": 0.9359,
    "unclaimed_runs": 3,
-   "unclaimed_bytes": 576,
+   "unclaimed_bytes": 560,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -47333,6 +48373,18 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x80163714",
+     "name": "FUN_80163714",
+     "file": "src/ovl_00a0344/FUN_80163714.c",
+     "size": 16,
+     "sha256": "6b767e3d5e5682be6b67fe8b2b088818c00147e260f78c0b35518378db924f43",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
+    },
+    {
      "address": "0x80161dc4",
      "name": "FUN_80161dc4",
      "file": "src/ovl_00a0344/FUN_80161dc4.c",
@@ -47423,7 +48475,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 29584,
-   "functions": 47,
+   "functions": 48,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -47441,11 +48493,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 7159,
-   "covered_bytes": 28636,
-   "coverage": 0.968,
-   "unclaimed_runs": 16,
-   "unclaimed_bytes": 948,
+   "covered_words": 7163,
+   "covered_bytes": 28652,
+   "coverage": 0.9685,
+   "unclaimed_runs": 15,
+   "unclaimed_bytes": 932,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -48155,6 +49207,18 @@
       "0x800424ec"
      ],
      "callees_unknown": 0
+    },
+    {
+     "address": "0x80165910",
+     "name": "FUN_80165910",
+     "file": "src/ovl_00a1414/FUN_80165910.c",
+     "size": 16,
+     "sha256": "9e2d19cad8082eab6f8a3c6059e47c658291a1b938b95df25669bc7cb457be1e",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x80162624",
@@ -50447,13 +51511,14 @@
       "0x80059e00",
       "0x800667d4",
       "0x80069f1c",
+      "0x8006a42c",
       "0x80077d18",
       "0x80089d54",
       "0x8016a87c",
       "0x8016b9c8",
       "0x8016bdc4"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80165158",
@@ -53968,7 +55033,7 @@
    "role": "ovl",
    "base": "0x80161cf0",
    "size": 5088,
-   "functions": 20,
+   "functions": 21,
    "named": 0,
    "functions_named": 0,
    "limitations": [
@@ -53986,11 +55051,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 1194,
-   "covered_bytes": 4776,
-   "coverage": 0.9387,
+   "covered_words": 1208,
+   "covered_bytes": 4832,
+   "coverage": 0.9497,
    "unclaimed_runs": 4,
-   "unclaimed_bytes": 312,
+   "unclaimed_bytes": 256,
    "functions_list": [
     {
      "address": "0x80161cf0",
@@ -54200,8 +55265,10 @@
      "sha256": "3d8ce8e32f1f7ca2de72aa5d12084082be4cf9843e8f11879261fc5ed0b9047b",
      "provider_sha256": "47bb83451f1929ad6c549badb388269fb2635827d549c0e01ff554965f62bbc0",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x8003247c"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x80162e00",
@@ -54229,6 +55296,18 @@
       "0x80031ff0"
      ],
      "callees_unknown": 0
+    },
+    {
+     "address": "0x80162ad4",
+     "name": "FUN_80162ad4",
+     "file": "src/ovl_00b5346/FUN_80162ad4.c",
+     "size": 56,
+     "sha256": "5113a292e1f422b2083c960bbb217bf4853b2d24d261ced91eb563d8a8c339ec",
+     "provider_sha256": "",
+     "status": "extent-measured",
+     "callees": [],
+     "callees_unknown": 0,
+     "extent_measured": true
     },
     {
      "address": "0x80162ee4",

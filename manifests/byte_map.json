@@ -256,8 +256,8 @@
    [
     2147502624,
     2147502671,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147502672,
@@ -267,9 +267,15 @@
    ],
    [
     2147503076,
+    2147503139,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147503140,
     2147503155,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "gap",
+    "under 64 B, between function bodies"
    ],
    [
     2147503156,
@@ -280,8 +286,8 @@
    [
     2147503212,
     2147503259,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147503260,
@@ -675,9 +681,15 @@
    ],
    [
     2147533924,
+    2147533959,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147533960,
     2147533967,
-    "gap",
-    "under 64 B, between function bodies"
+    "fill",
+    "run of 0x00, shorter than the padding law's 16-byte floor"
    ],
    [
     2147533968,
@@ -772,8 +784,8 @@
    [
     2147536192,
     2147536351,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147536352,
@@ -976,8 +988,8 @@
    [
     2147540600,
     2147540635,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147540636,
@@ -1048,8 +1060,8 @@
    [
     2147542992,
     2147543023,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147543024,
@@ -1185,9 +1197,15 @@
    ],
    [
     2147545120,
+    2147545159,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147545160,
     2147545167,
-    "gap",
-    "under 64 B, between function bodies"
+    "fill",
+    "run of 0x00, shorter than the padding law's 16-byte floor"
    ],
    [
     2147545168,
@@ -2022,8 +2040,8 @@
    [
     2147638928,
     2147639023,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147639024,
@@ -2046,8 +2064,8 @@
    [
     2147642008,
     2147642023,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147642024,
@@ -2237,9 +2255,15 @@
    ],
    [
     2147674220,
-    2147674255,
+    2147674235,
     "gap",
     "under 64 B, between function bodies"
+   ],
+   [
+    2147674236,
+    2147674255,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147674256,
@@ -2364,8 +2388,8 @@
    [
     2147689596,
     2147690475,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147690476,
@@ -2417,9 +2441,15 @@
    ],
    [
     2147707692,
+    2147707771,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147707772,
     2147707779,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "gap",
+    "under 64 B, between function bodies"
    ],
    [
     2147707780,
@@ -2430,8 +2460,8 @@
    [
     2147707972,
     2147708007,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147708008,
@@ -2466,8 +2496,8 @@
    [
     2147709712,
     2147709807,
-    "enclosed_data",
-    "bounded by function_body and padding -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147709808,
@@ -2532,8 +2562,8 @@
    [
     2147722616,
     2147722639,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147722640,
@@ -2544,8 +2574,8 @@
    [
     2147725048,
     2147725071,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147725072,
@@ -2556,8 +2586,8 @@
    [
     2147726912,
     2147726955,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147726956,
@@ -2568,8 +2598,8 @@
    [
     2147729332,
     2147729351,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147729352,
@@ -2616,8 +2646,8 @@
    [
     2147736284,
     2147736307,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147736308,
@@ -2628,8 +2658,8 @@
    [
     2147736972,
     2147737027,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147737028,
@@ -2663,9 +2693,15 @@
    ],
    [
     2147749384,
+    2147749391,
+    "gap",
+    "under 64 B, between function bodies"
+   ],
+   [
+    2147749392,
     2147749463,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147749464,
@@ -2700,8 +2736,8 @@
    [
     2147755164,
     2147755195,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147755196,
@@ -2766,8 +2802,8 @@
    [
     2147758964,
     2147758999,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147759000,
@@ -2778,8 +2814,8 @@
    [
     2147759164,
     2147759199,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147759200,
@@ -2790,8 +2826,8 @@
    [
     2147776788,
     2147776843,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147776844,
@@ -2802,8 +2838,8 @@
    [
     2147776900,
     2147776955,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147776956,
@@ -2837,9 +2873,21 @@
    ],
    [
     2147778824,
+    2147778995,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147778996,
+    2147779003,
+    "gap",
+    "under 64 B, between function bodies"
+   ],
+   [
+    2147779004,
     2147779219,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147779220,
@@ -2862,8 +2910,8 @@
    [
     2147780492,
     2147781183,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147781184,
@@ -2874,8 +2922,8 @@
    [
     2147781548,
     2147782031,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147782032,
@@ -2886,8 +2934,8 @@
    [
     2147785348,
     2147785619,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147785620,
@@ -2970,8 +3018,8 @@
    [
     2147799840,
     2147799875,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147799876,
@@ -3017,6 +3065,12 @@
    ],
    [
     2147815684,
+    2147815727,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147815728,
     2147815743,
     "gap",
     "under 64 B, between function bodies"
@@ -3294,8 +3348,8 @@
    [
     2147918892,
     2147919055,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147919056,
@@ -3305,9 +3359,33 @@
    ],
    [
     2147920000,
+    2147920035,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147920036,
+    2147920059,
+    "gap",
+    "under 64 B, between function bodies"
+   ],
+   [
+    2147920060,
+    2147920075,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147920076,
+    2147920099,
+    "gap",
+    "under 64 B, between function bodies"
+   ],
+   [
+    2147920100,
     2147920115,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147920116,
@@ -3341,9 +3419,15 @@
    ],
    [
     2147924412,
-    2147924463,
+    2147924435,
     "gap",
     "under 64 B, between function bodies"
+   ],
+   [
+    2147924436,
+    2147924463,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147924464,
@@ -3354,8 +3438,8 @@
    [
     2147925664,
     2147925683,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147925684,
@@ -3413,9 +3497,21 @@
    ],
    [
     2147932928,
-    2147933079,
+    2147932967,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147932968,
+    2147933059,
     "enclosed_data",
     "bounded by function_body and function_body -- the same structure, content unnamed"
+   ],
+   [
+    2147933060,
+    2147933079,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147933080,
@@ -3438,8 +3534,8 @@
    [
     2147934364,
     2147934519,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147934520,
@@ -3678,8 +3774,8 @@
    [
     2147952428,
     2147952507,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147952508,
@@ -3762,8 +3858,8 @@
    [
     2147956068,
     2147956111,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147956112,
@@ -3786,8 +3882,8 @@
    [
     2147957444,
     2147957491,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147957492,
@@ -3828,8 +3924,8 @@
    [
     2147959344,
     2147959411,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147959412,
@@ -3840,8 +3936,8 @@
    [
     2147960264,
     2147960335,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147960336,
@@ -3888,8 +3984,8 @@
    [
     2147968420,
     2147968479,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147968480,
@@ -3924,8 +4020,8 @@
    [
     2147980640,
     2147980715,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147980716,
@@ -3989,6 +4085,12 @@
    ],
    [
     2147984656,
+    2147984707,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147984708,
     2147984715,
     "gap",
     "under 64 B, between function bodies"
@@ -4001,9 +4103,15 @@
    ],
    [
     2147984876,
+    2147985063,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147985064,
     2147985071,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "gap",
+    "under 64 B, between function bodies"
    ],
    [
     2147985072,
@@ -4013,9 +4121,15 @@
    ],
    [
     2147985228,
+    2147985235,
+    "gap",
+    "under 64 B, between function bodies"
+   ],
+   [
+    2147985236,
     2147985379,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2147985380,
@@ -4337,9 +4451,15 @@
    ],
    [
     2148017072,
+    2148017111,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148017112,
     2148017119,
-    "gap",
-    "under 64 B, between function bodies"
+    "fill",
+    "run of 0x00, shorter than the padding law's 16-byte floor"
    ],
    [
     2148017120,
@@ -4470,8 +4590,8 @@
    [
     2148046528,
     2148046639,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148046640,
@@ -4494,8 +4614,8 @@
    [
     2148052828,
     2148052843,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148052844,
@@ -4745,6 +4865,12 @@
    ],
    [
     2148148260,
+    2148148283,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148148284,
     2148148291,
     "gap",
     "under 64 B, between function bodies"
@@ -4800,8 +4926,8 @@
    [
     2148162428,
     2148162467,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148162468,
@@ -4883,6 +5009,12 @@
    ],
    [
     2148182200,
+    2148182223,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148182224,
     2148182235,
     "gap",
     "under 64 B, between function bodies"
@@ -4919,6 +5051,12 @@
    ],
    [
     2148186024,
+    2148186063,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148186064,
     2148186079,
     "gap",
     "under 64 B, between function bodies"
@@ -4992,8 +5130,8 @@
    [
     2148214296,
     2148214327,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148214328,
@@ -5027,9 +5165,21 @@
    ],
    [
     2148221856,
+    2148221999,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148222000,
+    2148222007,
+    "gap",
+    "under 64 B, between function bodies"
+   ],
+   [
+    2148222008,
     2148222071,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148222072,
@@ -17390,8 +17540,8 @@
    [
     2149037400,
     2149037427,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2149037428,
@@ -17964,8 +18114,8 @@
    [
     2149037840,
     2149037891,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2149037892,
@@ -18193,6 +18343,12 @@
    ],
    [
     2148946980,
+    2148947011,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148947012,
     2148947019,
     "gap",
     "under 64 B, between function bodies"
@@ -20379,9 +20535,21 @@
    ],
    [
     2148935804,
+    2148935811,
+    "gap",
+    "under 64 B, between function bodies"
+   ],
+   [
+    2148935812,
+    2148935851,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148935852,
     2148935867,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "gap",
+    "under 64 B, between function bodies"
    ],
    [
     2148935868,
@@ -22268,8 +22436,8 @@
    [
     2148953292,
     2148953363,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148953364,
@@ -22455,9 +22623,15 @@
    ],
    [
     2148939532,
-    2148939555,
+    2148939539,
     "gap",
     "under 64 B, between function bodies"
+   ],
+   [
+    2148939540,
+    2148939555,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148939556,
@@ -22698,8 +22872,8 @@
    [
     2148948240,
     2148948255,
-    "gap",
-    "under 64 B, between function bodies"
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
    ],
    [
     2148948256,
@@ -25335,9 +25509,15 @@
    ],
    [
     2148936404,
+    2148936459,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2148936460,
     2148936475,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
+    "gap",
+    "under 64 B, between function bodies"
    ],
    [
     2148936476,
@@ -25649,14 +25829,14 @@
  },
  "totals": {
   "boot": {
-   "function_body": 58716,
-   "gap": 448,
+   "function_body": 59180,
+   "gap": 208,
    "dense_data": 7756,
-   "enclosed_data": 3896,
+   "enclosed_data": 3656,
    "padding": 632,
    "slack": 136,
    "data_named": 44,
-   "fill": 572,
+   "fill": 588,
    "string_table": 852,
    "jump_table": 16,
    "pointer_table": 600,
@@ -25664,15 +25844,15 @@
    "u16_table": 4104
   },
   "stage2": {
-   "function_body": 580192,
+   "function_body": 585676,
    "referenced_data": 10452,
    "padding": 345552,
    "dense_data": 114184,
    "slack": 6376,
    "data_named": 4312,
-   "enclosed_data": 36028,
-   "fill": 660,
-   "gap": 2116,
+   "fill": 668,
+   "gap": 1176,
+   "enclosed_data": 31476,
    "string_table": 12080,
    "jump_table": 340,
    "u16_table": 24296,
@@ -25717,8 +25897,7 @@
    "padding": 36444
   },
   "ovl_007af7a": {
-   "function_body": 10468,
-   "gap": 28,
+   "function_body": 10496,
    "dense_data": 200,
    "fill": 8,
    "jump_table": 4,
@@ -25743,8 +25922,8 @@
    "u16_table": 180
   },
   "ovl_007e132": {
-   "function_body": 12064,
-   "gap": 72,
+   "function_body": 12116,
+   "gap": 20,
    "jump_table": 4,
    "pointer_table": 60,
    "referenced_data": 376,
@@ -25754,8 +25933,8 @@
    "padding": 60
   },
   "ovl_007fc12": {
-   "function_body": 48992,
-   "gap": 200,
+   "function_body": 49024,
+   "gap": 168,
    "jump_table": 64,
    "pointer_table": 844,
    "slack": 416,
@@ -25837,9 +26016,8 @@
    "unclassified": 16
   },
   "ovl_0093192": {
-   "function_body": 4004,
-   "enclosed_data": 64,
-   "gap": 24,
+   "function_body": 4044,
+   "gap": 48,
    "fill": 4,
    "jump_table": 4,
    "slack": 112,
@@ -25920,17 +26098,16 @@
    "padding": 12
   },
   "ovl_009dd02": {
-   "function_body": 21524,
+   "function_body": 21596,
    "gap": 68,
-   "enclosed_data": 72,
    "data_named": 52,
    "slack": 224,
    "pointer_table": 280,
    "unclassified": 68
   },
   "ovl_00a0344": {
-   "function_body": 8160,
-   "gap": 32,
+   "function_body": 8176,
+   "gap": 16,
    "jump_table": 8,
    "slack": 60,
    "enclosed_data": 136,
@@ -25941,8 +26118,8 @@
    "unclassified": 16
   },
   "ovl_00a1414": {
-   "function_body": 28636,
-   "gap": 188,
+   "function_body": 28652,
+   "gap": 172,
    "jump_table": 32,
    "pointer_table": 324,
    "fill": 8,
@@ -26037,9 +26214,8 @@
    "unclassified": 140
   },
   "ovl_00b5346": {
-   "function_body": 4776,
-   "gap": 16,
-   "enclosed_data": 72,
+   "function_body": 4832,
+   "gap": 32,
    "referenced_data": 80,
    "data_named": 20,
    "slack": 64,

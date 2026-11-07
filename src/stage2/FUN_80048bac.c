@@ -1,0 +1,137 @@
+/* FUN_80048bac
+ * image   stage2 (stage2), base 0x80018a80
+ * address 0x80048bac  body 0x80048bac..0x80048d8f  size 484 B
+ * body sha256 94b6a5cf668c0d31489aba4e4687adc612f47dd44fc5eb5985bbab30805a97f2
+ * EXTENT MEASURED, NOT RECONSTRUCTED: 121 words, found by the extent scan inside a byte-map region no artifact names (extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80048bac..0x80048d8f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362))
+ * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
+ * extents: fixtures/decomp/measured_extents.json
+ */
+/*
+ * DISASSEMBLY LISTING — the extent is measured, the body is not reconstructed.
+ *
+ * These are the bytes of a function the provider never claimed, decoded word by word.
+ * This file is a listing: not ours, not C, and no claim that the body is understood. It
+ * exists so the census, the byte map and the coverage union can all name these bytes
+ * (fixtures/decomp/measured_extents.json, M341).
+ * 0x80048bac  c4aa0000  op&0x31 $t2,$a1,0x0000
+ * 0x80048bb0  460a5082  op&0x11 $t2,$s0,0x5082
+ * 0x80048bb4  c4a80004  op&0x31 $t0,$a1,0x0004
+ * 0x80048bb8  46084102  op&0x11 $t0,$s0,0x4102
+ * 0x80048bbc  c4a00008  op&0x31 $zero,$a1,0x0008
+ * 0x80048bc0  46000002  op&0x11 $zero,$s0,0x0002
+ * 0x80048bc4  46041080  op&0x11 $a0,$s0,0x1080
+ * 0x80048bc8  46001300  op&0x11 $zero,$s0,0x1300
+ * 0x80048bcc  3c01800c  lui $at,0x800c
+ * 0x80048bd0  d42289e0  op&0x35 $v0,$at,0x89e0
+ * 0x80048bd4  46006021  op&0x11 $zero,$s0,0x6021
+ * 0x80048bd8  4620103c  op&0x11 $zero,$s1,0x103c
+ * 0x80048bdc  00000000  sll $zero,$zero,0
+ * 0x80048be0  45010007  op&0x11 $at,$t0,0x0007
+ * 0x80048be4  00000000  sll $zero,$zero,0
+ * 0x80048be8  3c01800c  lui $at,0x800c
+ * 0x80048bec  c42089e8  op&0x31 $zero,$at,0x89e8
+ * 0x80048bf0  4600603c  op&0x11 $zero,$s0,0x603c
+ * 0x80048bf4  00000000  sll $zero,$zero,0
+ * 0x80048bf8  4500003b  op&0x11 $zero,$t0,0x003b
+ * 0x80048bfc  00000000  sll $zero,$zero,0
+ * 0x80048c00  3c01800c  lui $at,0x800c
+ * 0x80048c04  c42489ec  op&0x31 $a0,$at,0x89ec
+ * 0x80048c08  460c2103  op&0x11 $t4,$s0,0x2103
+ * 0x80048c0c  46045182  op&0x11 $a0,$s0,0x5182
+ * 0x80048c10  00000000  sll $zero,$zero,0
+ * 0x80048c14  46044202  op&0x11 $a0,$s0,0x4202
+ * 0x80048c18  c4a00024  op&0x31 $zero,$a1,0x0024
+ * 0x80048c1c  46003302  op&0x11 $zero,$s0,0x3302
+ * 0x80048c20  e4860000  op&0x39 $a2,$a0,0x0000
+ * 0x80048c24  c4a00008  op&0x31 $zero,$a1,0x0008
+ * 0x80048c28  46040182  op&0x11 $a0,$s0,0x0182
+ * 0x80048c2c  c4a20028  op&0x31 $v0,$a1,0x0028
+ * 0x80048c30  46024082  op&0x11 $v0,$s0,0x4082
+ * 0x80048c34  e488000c  op&0x39 $t0,$a0,0x000c
+ * 0x80048c38  c4a0000c  op&0x31 $zero,$a1,0x000c
+ * 0x80048c3c  46040202  op&0x11 $a0,$s0,0x0202
+ * 0x80048c40  c4a0002c  op&0x31 $zero,$a1,0x002c
+ * 0x80048c44  46003002  op&0x11 $zero,$s0,0x3002
+ * 0x80048c48  46026300  op&0x11 $v0,$s0,0x6300
+ * 0x80048c4c  46006300  op&0x11 $zero,$s0,0x6300
+ * 0x80048c50  e4860018  op&0x39 $a2,$a0,0x0018
+ * 0x80048c54  46006007  op&0x11 $zero,$s0,0x6007
+ * 0x80048c58  e4800024  op&0x39 $zero,$a0,0x0024
+ * 0x80048c5c  c4a00010  op&0x31 $zero,$a1,0x0010
+ * 0x80048c60  46040182  op&0x11 $a0,$s0,0x0182
+ * 0x80048c64  c4a00024  op&0x31 $zero,$a1,0x0024
+ * 0x80048c68  46004302  op&0x11 $zero,$s0,0x4302
+ * 0x80048c6c  e4880004  op&0x39 $t0,$a0,0x0004
+ * 0x80048c70  c4a00014  op&0x31 $zero,$a1,0x0014
+ * 0x80048c74  46040202  op&0x11 $a0,$s0,0x0202
+ * 0x80048c78  c4a20028  op&0x31 $v0,$a1,0x0028
+ * 0x80048c7c  46023082  op&0x11 $v0,$s0,0x3082
+ * 0x80048c80  e4860010  op&0x39 $a2,$a0,0x0010
+ * 0x80048c84  c4a00018  op&0x31 $zero,$a1,0x0018
+ * 0x80048c88  46040182  op&0x11 $a0,$s0,0x0182
+ * 0x80048c8c  c4a0002c  op&0x31 $zero,$a1,0x002c
+ * 0x80048c90  46004002  op&0x11 $zero,$s0,0x4002
+ * 0x80048c94  46026300  op&0x11 $v0,$s0,0x6300
+ * 0x80048c98  46006300  op&0x11 $zero,$s0,0x6300
+ * 0x80048c9c  e488001c  op&0x39 $t0,$a0,0x001c
+ * 0x80048ca0  46006007  op&0x11 $zero,$s0,0x6007
+ * 0x80048ca4  e4800028  op&0x39 $zero,$a0,0x0028
+ * 0x80048ca8  c4a0001c  op&0x31 $zero,$a1,0x001c
+ * 0x80048cac  46040202  op&0x11 $a0,$s0,0x0202
+ * 0x80048cb0  c4a00024  op&0x31 $zero,$a1,0x0024
+ * 0x80048cb4  46003302  op&0x11 $zero,$s0,0x3302
+ * 0x80048cb8  e4860008  op&0x39 $a2,$a0,0x0008
+ * 0x80048cbc  c4a00020  op&0x31 $zero,$a1,0x0020
+ * 0x80048cc0  46040182  op&0x11 $a0,$s0,0x0182
+ * 0x80048cc4  c4a20028  op&0x31 $v0,$a1,0x0028
+ * 0x80048cc8  46024082  op&0x11 $v0,$s0,0x4082
+ * 0x80048ccc  e4880014  op&0x39 $t0,$a0,0x0014
+ * 0x80048cd0  c4a0002c  op&0x31 $zero,$a1,0x002c
+ * 0x80048cd4  46003002  op&0x11 $zero,$s0,0x3002
+ * 0x80048cd8  46026300  op&0x11 $v0,$s0,0x6300
+ * 0x80048cdc  46006300  op&0x11 $zero,$s0,0x6300
+ * 0x80048ce0  08012361  j 0x80048d84
+ * 0x80048ce4  e4860020  op&0x39 $a2,$a0,0x0020
+ * 0x80048ce8  c4a80024  op&0x31 $t0,$a1,0x0024
+ * 0x80048cec  c4a40028  op&0x31 $a0,$a1,0x0028
+ * 0x80048cf0  c4a6002c  op&0x31 $a2,$a1,0x002c
+ * 0x80048cf4  46085302  op&0x11 $t0,$s0,0x5302
+ * 0x80048cf8  e48a0000  op&0x39 $t2,$a0,0x0000
+ * 0x80048cfc  c4aa0004  op&0x31 $t2,$a1,0x0004
+ * 0x80048d00  46045082  op&0x11 $a0,$s0,0x5082
+ * 0x80048d04  e48a000c  op&0x39 $t2,$a0,0x000c
+ * 0x80048d08  c4aa0008  op&0x31 $t2,$a1,0x0008
+ * 0x80048d0c  46065002  op&0x11 $a2,$s0,0x5002
+ * 0x80048d10  46026300  op&0x11 $v0,$s0,0x6300
+ * 0x80048d14  46006300  op&0x11 $zero,$s0,0x6300
+ * 0x80048d18  e48a0018  op&0x39 $t2,$a0,0x0018
+ * 0x80048d1c  46006007  op&0x11 $zero,$s0,0x6007
+ * 0x80048d20  e4800024  op&0x39 $zero,$a0,0x0024
+ * 0x80048d24  c4aa000c  op&0x31 $t2,$a1,0x000c
+ * 0x80048d28  46085302  op&0x11 $t0,$s0,0x5302
+ * 0x80048d2c  e48a0004  op&0x39 $t2,$a0,0x0004
+ * 0x80048d30  c4aa0010  op&0x31 $t2,$a1,0x0010
+ * 0x80048d34  46045082  op&0x11 $a0,$s0,0x5082
+ * 0x80048d38  e48a0010  op&0x39 $t2,$a0,0x0010
+ * 0x80048d3c  c4aa0014  op&0x31 $t2,$a1,0x0014
+ * 0x80048d40  46065002  op&0x11 $a2,$s0,0x5002
+ * 0x80048d44  46026300  op&0x11 $v0,$s0,0x6300
+ * 0x80048d48  46006300  op&0x11 $zero,$s0,0x6300
+ * 0x80048d4c  e48a001c  op&0x39 $t2,$a0,0x001c
+ * 0x80048d50  46006007  op&0x11 $zero,$s0,0x6007
+ * 0x80048d54  e4800028  op&0x39 $zero,$a0,0x0028
+ * 0x80048d58  c4aa0018  op&0x31 $t2,$a1,0x0018
+ * 0x80048d5c  46085302  op&0x11 $t0,$s0,0x5302
+ * 0x80048d60  e48a0008  op&0x39 $t2,$a0,0x0008
+ * 0x80048d64  c4aa001c  op&0x31 $t2,$a1,0x001c
+ * 0x80048d68  46045102  op&0x11 $a0,$s0,0x5102
+ * 0x80048d6c  e48a0014  op&0x39 $t2,$a0,0x0014
+ * 0x80048d70  c4aa0020  op&0x31 $t2,$a1,0x0020
+ * 0x80048d74  46065182  op&0x11 $a2,$s0,0x5182
+ * 0x80048d78  46046300  op&0x11 $a0,$s0,0x6300
+ * 0x80048d7c  46066300  op&0x11 $a2,$s0,0x6300
+ * 0x80048d80  e48a0020  op&0x39 $t2,$a0,0x0020
+ * 0x80048d84  46006007  op&0x11 $zero,$s0,0x6007
+ * 0x80048d88  03e00008  jr $ra
+ * 0x80048d8c  e480002c  op&0x39 $zero,$a0,0x002c
+ */
