@@ -10,12 +10,12 @@
  },
  "totals": {
   "F0": 3665,
-  "F1": 3454,
-  "F2": 3395,
+  "F1": 3457,
+  "F2": 3397,
   "named": 33,
   "validated": 12,
   "validated_unnamed": 12,
-  "extent_measured": 211
+  "extent_measured": 208
  },
  "f4_evidence": {
   "stage2:0x800b53f4": "M199 \u2014 the voice synthesis, bit-exact against the cartridge",
@@ -2042,36 +2042,6 @@
    "named": false,
    "validated": false
   },
-  "boot:0x80004a20": {
-   "name": "FUN_80004a20",
-   "image": "boot",
-   "address": "0x80004a20",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80004be4": {
-   "name": "FUN_80004be4",
-   "image": "boot",
-   "address": "0x80004be4",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80004c6c": {
-   "name": "FUN_80004c6c",
-   "image": "boot",
-   "address": "0x80004c6c",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "boot:0x80004fb4": {
    "name": "FUN_80004fb4",
    "image": "boot",
@@ -2192,10 +2162,40 @@
    "named": false,
    "validated": false
   },
+  "boot:0x80004a20": {
+   "name": "FUN_80004a20",
+   "image": "boot",
+   "address": "0x80004a20",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004be4": {
+   "name": "FUN_80004be4",
+   "image": "boot",
+   "address": "0x80004be4",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "boot:0x80004c14": {
    "name": "FUN_80004c14",
    "image": "boot",
    "address": "0x80004c14",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004c6c": {
+   "name": "FUN_80004c6c",
+   "image": "boot",
+   "address": "0x80004c6c",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
@@ -2556,9 +2556,9 @@
    "name": "FUN_80026524",
    "image": "stage2",
    "address": "0x80026524",
-   "callees": 9,
-   "callees_unknown": 0,
-   "level": 2,
+   "callees": 8,
+   "callees_unknown": 1,
+   "level": 1,
    "named": false,
    "validated": false
   },

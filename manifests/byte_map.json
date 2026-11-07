@@ -257,7 +257,7 @@
     2147502624,
     2147502671,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147502672,
@@ -267,12 +267,6 @@
    ],
    [
     2147503076,
-    2147503123,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
-   ],
-   [
-    2147503124,
     2147503139,
     "function_body",
     "fixtures/decomp/recovered.json"
@@ -293,7 +287,7 @@
     2147503212,
     2147503259,
     "function_body",
-    "fixtures/decomp/measured_extents.json"
+    "fixtures/decomp/recovered.json"
    ],
    [
     2147503260,

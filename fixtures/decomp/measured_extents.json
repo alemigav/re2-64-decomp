@@ -41,12 +41,6 @@
   },
   {
    "image": "boot",
-   "address": "0x80004a20",
-   "words": 12,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80004a20..0x80004a4f, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "boot",
    "address": "0x80004a50",
    "words": 7,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
@@ -56,18 +50,6 @@
    "address": "0x80004bac",
    "words": 14,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "boot",
-   "address": "0x80004be4",
-   "words": 12,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x80004be4..0x80004c33, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
-  },
-  {
-   "image": "boot",
-   "address": "0x80004c6c",
-   "words": 12,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `gap` run that no provider range covers; the run is 0x80004c6c..0x80004c9b, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
   },
   {
    "image": "boot",

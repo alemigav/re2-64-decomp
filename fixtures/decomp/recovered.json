@@ -1731,6 +1731,42 @@
    "syms": {
     "FUN_8017b98c": 2149038476
    }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004a20",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
+   "source_file": "fixtures/decomp/authored/boot/80004a20.c",
+   "syms": {
+    "D_800c76b0": 2148300464,
+    "D_80012884": 2147559556
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004be4",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
+   "source_file": "fixtures/decomp/authored/boot/80004be4.c",
+   "syms": {
+    "D_800c76b0": 2148300464,
+    "D_80012884": 2147559556
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004c6c",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
+   "source_file": "fixtures/decomp/authored/boot/80004c6c.c",
+   "syms": {
+    "D_800c76b0": 2148300464,
+    "D_80012884": 2147559556
+   }
   }
  ]
 }
