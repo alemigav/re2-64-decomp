@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-383 milestones are indexed. 305 of them have a note; the rest are rows in the log that cite
+384 milestones are indexed. 306 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -401,6 +401,7 @@ at the foot of this file.
 | 380 | **M380** — the 9–12 word band closed: five read, and every entry now has a verdict | `docs/log/M380-the-9-12-band-closed.md` |
 | 381 | **M381** — the 13–20 word band's call-bearing entries: ten of twelve, and the rule that predicted it | `docs/log/M381-the-call-bearing-entries.md` |
 | 382 | **M382** — the `jal` query at 21–50 words: six of nine, and the frame is what makes it work | `docs/log/M382-the-jal-query-at-21-50.md` |
+| 383 | **M383** — the live-range-first rank was tested, and it does not discriminate | `docs/log/M383-the-live-range-rank-refuted.md` |
 
 ## The gaps, and why they are empty
 
