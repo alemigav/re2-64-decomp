@@ -2054,6 +2054,58 @@
     "FUN_8000d9c0": 2147539392,
     "FUN_8000db10": 2147539728
    }
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x801624a4",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 11 of 11, eleven words, a state test then three stores -- the `lbu` of +703 hoists above them because the offsets prove no alias",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/801624a4.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163b24",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 11 of 11, eleven words, an if/else on bit 6 of the argument: one arm is two stores, the other packs `(v & 0xf) << 16 + 0x02000000` into one word",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80163b24.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80165ff0",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 11 of 11, eleven words, one guarded two-argument call -- `sltiu` against 1800 is the test",
+   "source_file": "fixtures/decomp/authored/ovl_0087352/80165ff0.c",
+   "syms": {
+    "FUN_80165c68": 2148949096
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80164650",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 12 of 12, twelve words, a call whose result is ignored, then two stores -- `s0` is saved only because the argument outlives the call",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80164650.c",
+   "syms": {
+    "FUN_80163868": 2148939880
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017befc",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 12 of 12, twelve words, a call with a constant argument, a second call with none, and the first call's result returned",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017befc.c",
+   "syms": {
+    "FUN_8017bbb0": 2149039024,
+    "FUN_8017bd8c": 2149039500
+   }
   }
  ]
 }

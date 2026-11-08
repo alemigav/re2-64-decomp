@@ -1,16 +1,25 @@
 /* FUN_80165ff0
  * image   ovl_0087352 (ovl), base 0x80161cf0
  * address 0x80165ff0  body 0x80165ff0..0x8016601b  size 44 B
- * body sha256 cc4cd916a8222580c93e5123588002bb62e09c274c8297a02be121eb2b354ed7
- * provider record sha256 8cfab1247b7eadaa271257544690c0a54a6672d1421ec2fab5d332b50043a829
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 6cab67ef7afaf138beedabd94e16fdc040d6d42b63557c937c8f1dafd50607b2
+ * recovered byte-exact (read from the words (M380): 11 of 11, eleven words, one guarded two-argument call -- `sltiu` against 1800 is the test)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_0087352/80165ff0.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80165ff0(int param_1)
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
 
+extern void FUN_80165c68(u8 *ctx, u32 n);
+
+void FUN_80165ff0(u8 *ctx)
 {
-  if (*(uint *)(param_1 + 0x28c) < 0x708) {
-    FUN_80165c68(param_1,7);
-  }
-  return;
+    if (*(u32 *)(ctx + 652) < 1800) {
+        FUN_80165c68(ctx, 7);
+    }
 }

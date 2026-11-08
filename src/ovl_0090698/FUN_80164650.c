@@ -1,16 +1,25 @@
 /* FUN_80164650
  * image   ovl_0090698 (ovl), base 0x80161cf0
  * address 0x80164650  body 0x80164650..0x8016467f  size 48 B
- * body sha256 0e23f26272b8add19d984afa4e98203f86f5123c9ec4a9e1e7d2c0249544cd38
- * provider record sha256 057039f25beb05e75d42a73e30f630d5e91954f2e5307ae511086af2c091545e
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 ccd84366d79f003d902e13a2895da60dd1a5da025ac6f82fbd9b999e06ad696e
+ * recovered byte-exact (read from the words (M380): 12 of 12, twelve words, a call whose result is ignored, then two stores -- `s0` is saved only because the argument outlives the call)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_0090698/80164650.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80164650(int param_1)
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
 
+extern void FUN_80163868(u8 *ctx);
+
+void FUN_80164650(u8 *ctx)
 {
-  FUN_80163868();
-  *(undefined1 *)(param_1 + 5) = 2;
-  *(undefined2 *)(param_1 + 6) = 0;
-  return;
+    FUN_80163868(ctx);
+    ctx[5] = 2;
+    *(u16 *)(ctx + 6) = 0;
 }

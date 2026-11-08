@@ -3,8 +3,8 @@
  "note": "Function extents measured from the bytes. `corrections` (M340) replace a census entry's truncated body with the extent the bytes have. `functions` (M341) are extents inside byte-map regions that no artifact names: new census entries with no C and no provider record, published as a disassembly listing rather than pseudocode. `regions` is the raw scan evidence behind both.",
  "summary": {
   "regions": 74,
-  "functions": 354,
-  "bytes": 39392,
+  "functions": 349,
+  "bytes": 39164,
   "rejected": 12,
   "tail_jumps": 9
  },
@@ -133,12 +133,6 @@
    "image": "ovl_0072610",
    "address": "0x8017bbcc",
    "words": 7,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017befc",
-   "words": 12,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
@@ -418,12 +412,6 @@
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
-   "image": "ovl_0087352",
-   "address": "0x80165ff0",
-   "words": 11,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
    "image": "ovl_008900e",
    "address": "0x80162a30",
    "words": 38,
@@ -469,12 +457,6 @@
    "image": "ovl_0090698",
    "address": "0x8016461c",
    "words": 13,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_0090698",
-   "address": "0x80164650",
-   "words": 12,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
@@ -701,20 +683,8 @@
   },
   {
    "image": "ovl_00a0344",
-   "address": "0x801624a4",
-   "words": 11,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_00a0344",
    "address": "0x80163498",
    "words": 16,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_00a0344",
-   "address": "0x80163b24",
-   "words": 11,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {

@@ -1,17 +1,27 @@
 /* FUN_8017befc
  * image   ovl_0072610 (ovl), base 0x8017b410
  * address 0x8017befc  body 0x8017befc..0x8017bf2b  size 48 B
- * body sha256 985441bc145f141d2ceed62350cce8e3534d1d2427d58052d74012d909a4f206
- * provider record sha256 f95efb0f3b5282a52c1a8a0a5f3efa6ac8285319612292f2f03b9087aa7ea2df
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 4f5c4a452b8daf97438ce59b3ae38a418c9b8eb3c13104259c16121ca9819449
+ * recovered byte-exact (read from the words (M380): 12 of 12, twelve words, a call with a constant argument, a second call with none, and the first call's result returned)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_0072610/8017befc.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-undefined4 FUN_8017befc(void)
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
 
+extern u32 FUN_8017bbb0(u32 n);
+extern void FUN_8017bd8c(void);
+
+u32 FUN_8017befc(void)
 {
-  undefined4 uVar1;
-  
-  uVar1 = FUN_8017bbb0(0x20);
-  FUN_8017bd8c();
-  return uVar1;
+    u32 r = FUN_8017bbb0(0x20);
+
+    FUN_8017bd8c();
+    return r;
 }
