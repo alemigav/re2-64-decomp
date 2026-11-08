@@ -2224,6 +2224,78 @@
     "FUN_801626f4": 2148935412,
     "FUN_80166e9c": 2148953756
    }
+  },
+  {
+   "image": "boot",
+   "address": "0x800022bc",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, one call then two indirect calls through the same slot with different arguments -- the second passes the first parameter as its own",
+   "source_file": "fixtures/decomp/authored/boot/800022bc.c",
+   "syms": {
+    "FUN_80001510": 2147489040
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80162dd4",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, a jump-table dispatch on `p[6]` then two named calls -- the table address is the image's own, so the dispatch reads as an array of function pointers",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80162dd4.c",
+   "syms": {
+    "D_80166db8": 2148953528,
+    "FUN_801664d8": 2148951256,
+    "FUN_80166980": 2148952448
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x8000e920",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, a call whose result becomes the next call's argument, with three stores into a pointer loaded from a global between them",
+   "source_file": "fixtures/decomp/authored/boot/8000e920.c",
+   "syms": {
+    "D_800129d4": 2147559892,
+    "FUN_800072e0": 2147513056,
+    "FUN_80007300": 2147513088
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80033160",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, four `lh` arguments into one call, then a signed wrap and a 12-bit modular compare -- `(x + 0x400) & 0xfff < 0x800` is a half-turn test",
+   "source_file": "fixtures/decomp/authored/stage2/80033160.c",
+   "syms": {
+    "FUN_80032d14": 2147691796
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80165da0",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, one call then the same callee twice with 3 and 4 and the second argument's halves",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80165da0.c",
+   "syms": {
+    "FUN_80165ea0": 2148949664,
+    "FUN_80165bd0": 2148948944
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801653a0",
+   "words": 23,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 23 of 23, twenty-three words, a guarded call with two constants, then one unconditional call carrying all three parameters",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/801653a0.c",
+   "syms": {
+    "FUN_80165310": 2148946704,
+    "FUN_80164e88": 2148945544
+   }
   }
  ]
 }

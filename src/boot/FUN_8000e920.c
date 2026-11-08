@@ -1,24 +1,32 @@
 /* FUN_8000e920
  * image   boot (boot), base 0x80000480
  * address 0x8000e920  body 0x8000e920..0x8000e977  size 88 B
- * body sha256 ea2ab758bf8b050584ca0fb7c7dc4a7372617002fd67ae75862348f90dacace6
- * provider record sha256 b6f326a97dd1477f2574b19db2c03a42b7f45d6c61a80cc9aafb98931e9a1df7
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 e6aa067f16d778ef161aac72fdc78287615486db21dea1890e03ed39b875ac82
+ * recovered byte-exact (read from the words (M382): 22 of 22, twenty-two words, a call whose result becomes the next call's argument, with three stores into a pointer loaded from a global between them)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/boot/8000e920.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
 
-void FUN_8000e920(undefined4 param_1,undefined4 param_2,undefined2 param_3)
+extern u32 D_800129d4;
+extern u32 FUN_800072e0(void);
+extern void FUN_80007300(u32 v);
 
+void FUN_8000e920(u32 a, u32 b, u16 c)
 {
-  int iVar1;
-  undefined4 uVar2;
-  
-  uVar2 = FUN_800072e0();
-  iVar1 = _DAT_800129d4;
-  *(undefined4 *)(_DAT_800129d4 + 0x10) = param_1;
-  *(undefined4 *)(iVar1 + 0x14) = param_2;
-  *(undefined2 *)(iVar1 + 2) = param_3;
-  FUN_80007300(uVar2);
-  return;
+    u8 *p;
+    u32 r = FUN_800072e0();
+
+    p = (u8 *)D_800129d4;
+    *(u32 *)(p + 16) = a;
+    *(u32 *)(p + 20) = b;
+    *(u16 *)(p + 2) = c;
+    FUN_80007300(r);
 }

@@ -3,18 +3,12 @@
  "note": "Function extents measured from the bytes. `corrections` (M340) replace a census entry's truncated body with the extent the bytes have. `functions` (M341) are extents inside byte-map regions that no artifact names: new census entries with no C and no provider record, published as a disassembly listing rather than pseudocode. `regions` is the raw scan evidence behind both.",
  "summary": {
   "regions": 74,
-  "functions": 339,
-  "bytes": 38568,
+  "functions": 333,
+  "bytes": 38036,
   "rejected": 12,
   "tail_jumps": 9
  },
  "functions": [
-  {
-   "image": "boot",
-   "address": "0x800022bc",
-   "words": 22,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
   {
    "image": "boot",
    "address": "0x80002314",
@@ -85,12 +79,6 @@
    "image": "boot",
    "address": "0x8000e800",
    "words": 21,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "boot",
-   "address": "0x8000e920",
-   "words": 22,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
@@ -295,12 +283,6 @@
    "image": "ovl_007fc12",
    "address": "0x80162a2c",
    "words": 14,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_008505e",
-   "address": "0x80162dd4",
-   "words": 22,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
@@ -577,12 +559,6 @@
    "image": "ovl_009dd02",
    "address": "0x8016371c",
    "words": 35,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x801653a0",
-   "words": 23,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {
@@ -911,12 +887,6 @@
   },
   {
    "image": "ovl_00b321e",
-   "address": "0x80165da0",
-   "words": 22,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "ovl_00b321e",
    "address": "0x80165df8",
    "words": 42,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
@@ -1171,12 +1141,6 @@
    "image": "stage2",
    "address": "0x80032c6c",
    "words": 42,
-   "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80033160",
-   "words": 22,
    "evidence": "extent measured, text withdrawn (M369): this function was reconstructed from an unlicensed third-party corpus and the reconstruction has been removed; the address, extent and word count stand, the C does not"
   },
   {

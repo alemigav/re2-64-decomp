@@ -192,16 +192,6 @@
    "named": false,
    "validated": false
   },
-  "boot:0x800022bc": {
-   "name": "FUN_800022bc",
-   "image": "boot",
-   "address": "0x800022bc",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x80002314": {
    "name": "FUN_80002314",
    "image": "boot",
@@ -1822,16 +1812,6 @@
    "named": false,
    "validated": false
   },
-  "boot:0x8000e920": {
-   "name": "FUN_8000e920",
-   "image": "boot",
-   "address": "0x8000e920",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x8000e980": {
    "name": "FUN_8000e980",
    "image": "boot",
@@ -2132,6 +2112,16 @@
    "named": false,
    "validated": false
   },
+  "boot:0x800022bc": {
+   "name": "FUN_800022bc",
+   "image": "boot",
+   "address": "0x800022bc",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "boot:0x8000319c": {
    "name": "FUN_8000319c",
    "image": "boot",
@@ -2277,6 +2267,16 @@
    "image": "boot",
    "address": "0x8000de9c",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x8000e920": {
+   "name": "FUN_8000e920",
+   "image": "boot",
+   "address": "0x8000e920",
+   "callees": 2,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -3977,16 +3977,6 @@
    "image": "stage2",
    "address": "0x8003307c",
    "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x80033160": {
-   "name": "FUN_80033160",
-   "image": "stage2",
-   "address": "0x80033160",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -19802,6 +19792,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x80033160": {
+   "name": "FUN_80033160",
+   "image": "stage2",
+   "address": "0x80033160",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x800341dc": {
    "name": "FUN_800341dc",
    "image": "stage2",
@@ -24472,16 +24472,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_008505e:0x80162dd4": {
-   "name": "FUN_80162dd4",
-   "image": "ovl_008505e",
-   "address": "0x80162dd4",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_008505e:0x80162e2c": {
    "name": "FUN_80162e2c",
    "image": "ovl_008505e",
@@ -25297,6 +25287,16 @@
    "image": "ovl_008505e",
    "address": "0x80166bd4",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_008505e:0x80162dd4": {
+   "name": "FUN_80162dd4",
+   "image": "ovl_008505e",
+   "address": "0x80162dd4",
+   "callees": 2,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -31352,16 +31352,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_009dd02:0x801653a0": {
-   "name": "FUN_801653a0",
-   "image": "ovl_009dd02",
-   "address": "0x801653a0",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_009dd02:0x801653fc": {
    "name": "FUN_801653fc",
    "image": "ovl_009dd02",
@@ -31806,6 +31796,16 @@
    "name": "FUN_80162e28",
    "image": "ovl_009dd02",
    "address": "0x80162e28",
+   "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_009dd02:0x801653a0": {
+   "name": "FUN_801653a0",
+   "image": "ovl_009dd02",
+   "address": "0x801653a0",
    "callees": 2,
    "callees_unknown": 0,
    "level": 2,
@@ -36262,16 +36262,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_00b321e:0x80165da0": {
-   "name": "FUN_80165da0",
-   "image": "ovl_00b321e",
-   "address": "0x80165da0",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_00b321e:0x80165df8": {
    "name": "FUN_80165df8",
    "image": "ovl_00b321e",
@@ -36399,6 +36389,16 @@
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
+   "named": false,
+   "validated": false
+  },
+  "ovl_00b321e:0x80165da0": {
+   "name": "FUN_80165da0",
+   "image": "ovl_00b321e",
+   "address": "0x80165da0",
+   "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
