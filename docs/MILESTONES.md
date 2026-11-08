@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-387 milestones are indexed. 309 of them have a note; the rest are rows in the log that cite
+388 milestones are indexed. 310 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -405,6 +405,7 @@ at the foot of this file.
 | 384 | **M384** — the 7–8 word call wrappers: fourteen of fourteen | `docs/log/M384-the-call-wrappers.md` |
 | 385 | **M385** — the 7–12 word entries without a `jal`: one read, three classified, two left standing | `docs/log/M385-the-small-entries-without-a-call.md` |
 | 386 | **M386** — the duplicate cohort, measured and closed: it is not a source | `docs/log/M386-the-duplicate-cohort-closed.md` |
+| 387 | **M387** — the 51+ word queue, screened before drafting: half of it is not a function | `docs/log/M387-the-large-queue-screened.md` |
 
 ## The gaps, and why they are empty
 
