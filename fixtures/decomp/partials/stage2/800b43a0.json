@@ -1,0 +1,11 @@
+{
+ "image": "stage2",
+ "address": "0x800b43a0",
+ "words": 38,
+ "score": 3,
+ "status": "partial",
+ "mechanism": "a two-slot search with short-circuit side effects: the beql delay slots are why `a0++` runs on the slot-empty path and `a2 = a0` on the match path",
+ "residue": "loop SHAPE, not spelling -- our draft hoists the two pointers into fresh registers and inverts the early-out (bne v0,zero,+5 against the image's beq v0,zero,+33), so the body diverges from word 2; the image keeps the index in $a0 and the found value in $a2, i.e. the argument registers themselves",
+ "measured": "M392, full output, no truncation: 3 of 38 words identical (40 compiled)",
+ "drafted": "M392"
+}

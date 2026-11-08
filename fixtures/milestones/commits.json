@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "0cf8eed",
+   "subject": "M391: the retraction -- the near-miss scores were read wrong, and no partial kept its draft",
+   "milestones": [
+    391
+   ]
+  },
+  {
    "sha": "33e5675",
    "subject": "M390: the permuter pointed at the near-misses, and the two metrics disagree",
    "milestones": [
