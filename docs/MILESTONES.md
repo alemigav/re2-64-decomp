@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-391 milestones are indexed. 313 of them have a note; the rest are rows in the log that cite
+392 milestones are indexed. 314 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -409,6 +409,7 @@ at the foot of this file.
 | 388 | **M388** — the five extent corrections: three trims, three merges, and one withdrawal the arithmetic found | `docs/log/M388-the-five-extent-corrections.md` |
 | 389 | **M389** — the front page answers "how close is this?" on the first screen | `docs/log/M389-the-front-page-answers.md` |
 | 390 | **M390** — the permuter pointed at the near-misses, and the two metrics disagree | `docs/log/M390-the-permuter-and-the-two-metrics.md` |
+| 391 | **M391** — the retraction: the "near-miss" scores were read wrong, and no partial kept its draft | `docs/log/M391-the-partial-scores-retracted.md` |
 
 ## The gaps, and why they are empty
 

@@ -8,6 +8,13 @@ binds it* — is exactly what a permuter automates. So the repo's own permuter (
 **It produced 150 candidates in about ten minutes and closed nothing.** The numbers say why, and they are worth more than
 a lucky hit would have been.
 
+> **Retracted by M391: the base figure, not the conclusion.** This note quotes the target as "**11 of 12** by this
+> project's word metric". Re-measured with the same tool two milestones later it is **2 of 12** — see
+> `M391-the-partial-scores-retracted.md`. The score was read from a `tail`-truncated diff, and the draft it was measured
+> on lived in `/tmp` and is gone. **What survives:** the permuter's objective is an unlinked-object instruction diff and
+> the verdict is a linked word comparison, and the 150 candidates were scored against the image in both cases — so the
+> divergence is real. **What does not:** "the permuter made a 1-word residue worse", since the residue was never 1 word.
+
 ## The run
 
 Target `stage2:0x800725ac`, twelve words, the closest residue in the corpus (**11 of 12** by this project's word metric;
