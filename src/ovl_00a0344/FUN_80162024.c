@@ -1,19 +1,28 @@
 /* FUN_80162024
  * image   ovl_00a0344 (ovl), base 0x80161cf0
  * address 0x80162024  body 0x80162024..0x8016205b  size 56 B
- * body sha256 f8a3d7ac14f9946f473e70c7efe7041ca06b58ec3368393eae73c26ed97e9263
- * provider record sha256 da162717ad59f4676250c8d1771b6dbcbb2d5c0e3f52c381ca4801288cba8d77
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 a863b0392780d021d2e3cb4ebcf1588a5fbd1cff999f42d52a225c4428d6e2b9
+ * recovered byte-exact (read from the words (M381): 14 of 14, fourteen words, the if/else call dispatch again -- `p[427]` is the test)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_00a0344/80162024.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80162024(int param_1)
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
 
+extern void FUN_8016205c(u8 *p);
+extern void FUN_80162064(u8 *p);
+
+void FUN_80162024(u8 *p)
 {
-  if (*(char *)(param_1 + 0x1ab) == '\0') {
-    FUN_8016205c();
-  }
-  else {
-    FUN_80162064();
-  }
-  return;
+    if (p[427] == 0) {
+        FUN_8016205c(p);
+    } else {
+        FUN_80162064(p);
+    }
 }

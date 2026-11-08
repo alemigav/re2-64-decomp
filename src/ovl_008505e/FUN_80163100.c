@@ -1,22 +1,28 @@
 /* FUN_80163100
  * image   ovl_008505e (ovl), base 0x80161cf0
  * address 0x80163100  body 0x80163100..0x8016313b  size 60 B
- * body sha256 6a5c1240588ec27e5da69791737d24741fb4c927db12e27c43893c24910da32b
- * provider record sha256 5f972c7c5703f8ef6e8113ca8d5ca879f911b7148e40c6262e1725fcddc2b79e
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 aab2f8030d14f4a921bd3c0717badf1dc7b7b7d134007b6bf7829a4657af8737
+ * recovered byte-exact (read from the words (M381): 15 of 15, fifteen words, the same guard and callee as `0x801649fc` with a different store set)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_008505e/80163100.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-void FUN_80163100(int param_1)
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long long s64;
+typedef unsigned long long u64;
 
+extern int FUN_8016313c(u8 *p);
+
+void FUN_80163100(u8 *p)
 {
-  int iVar1;
-  
-  iVar1 = FUN_8016313c();
-  if (iVar1 != 0) {
-    *(undefined1 *)(param_1 + 5) = 2;
-    *(undefined2 *)(param_1 + 6) = 0;
-    *(undefined1 *)(param_1 + 0x2b9) = 0;
-    *(undefined1 *)(param_1 + 0x2ba) = 0;
-  }
-  return;
+    if (FUN_8016313c(p) != 0) {
+        p[5] = 2;
+        *(u16 *)(p + 6) = 0;
+        p[697] = 0;
+        p[698] = 0;
+    }
 }

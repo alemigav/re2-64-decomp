@@ -2106,6 +2106,124 @@
     "FUN_8017bbb0": 2149039024,
     "FUN_8017bd8c": 2149039500
    }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x8016387c",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 14 of 14, fourteen words, an if/else whose arms are two different calls -- the shape three of the batch's entries share",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/8016387c.c",
+   "syms": {
+    "FUN_801638b4": 2148939956,
+    "FUN_80163c44": 2148940868
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80166338",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 14 of 14, fourteen words, a guarded init (two stores) followed by an unconditional call",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80166338.c",
+   "syms": {
+    "FUN_80166370": 2148950896
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801649fc",
+   "words": 17,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 17 of 17, seventeen words, one guarded callee then three stores -- `$s0` saved because the context outlives the call",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801649fc.c",
+   "syms": {
+    "FUN_8016313c": 2148938044
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80163100",
+   "words": 15,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 15 of 15, fifteen words, the same guard and callee as `0x801649fc` with a different store set",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80163100.c",
+   "syms": {
+    "FUN_8016313c": 2148938044
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017dd78",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 13 of 13, thirteen words, a wait loop: call, test, call-with-8, jump back -- the loop's back edge is a `j`, not a branch",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017dd78.c",
+   "syms": {
+    "FUN_8017bbcc": 2149039052,
+    "FUN_8017bbe8": 2149039080
+   }
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80162024",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 14 of 14, fourteen words, the if/else call dispatch again -- `p[427]` is the test",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80162024.c",
+   "syms": {
+    "FUN_8016205c": 2148933724,
+    "FUN_80162064": 2148933732
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80162e28",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 14 of 14, fourteen words, the third instance of the if/else call dispatch in this batch",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80162e28.c",
+   "syms": {
+    "FUN_80162e60": 2148937312,
+    "FUN_80163094": 2148937876
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801813d8",
+   "words": 15,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 15 of 15, fifteen words, a counter read passed to a call, incremented, then a second call -- the increment's store lands in the second `jal`'s delay slot",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/801813d8.c",
+   "syms": {
+    "D_80186c98": 2149084312,
+    "FUN_8017ddb0": 2149047728,
+    "FUN_8017d0f0": 2149044464
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b7a8",
+   "words": 16,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 16 of 16, sixteen words, five stores through a loaded pointer (three zeroes and one value twice) then a call with 0",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b7a8.c",
+   "syms": {
+    "D_80186c94": 2149084308,
+    "FUN_8017bbe8": 2149039080
+   }
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x80166e58",
+   "words": 17,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 17 of 17, seventeen words, a flag test whose taken arm loads, clears, stores and calls, and whose other arm is one call",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/80166e58.c",
+   "syms": {
+    "FUN_801626f4": 2148935412,
+    "FUN_80166e9c": 2148953756
+   }
   }
  ]
 }
