@@ -186,6 +186,7 @@ SUITES = [
     # split rule (a return is `jr ra` + its delay slot; a lone `jr ra` and a tail with no return are rejected).
     ("extent scan (repository)", [sys.executable, "tools/extent_scan.py", "--self-test"], 11, False),
     ("front page (repository)", [sys.executable, "tools/front_page.py", "--check"], 1, False),
+    ("permute target (repository)", [sys.executable, "tools/permute_target.py", "--self-test"], 3, False),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
     ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 45, False),
     # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain

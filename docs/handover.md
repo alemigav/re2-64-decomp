@@ -30,7 +30,7 @@ ground-truth RDRAM dumps. Nothing in the repo imports or requires it.
 | routine dispatch on `object+5` | **28** stage-2 sites, no mask and no compare; the class-1 table is 14 long, classes 2/3/4 are 4/2/27, and a class-1 writer stores **15** | M173, `tools/routine_index.py` |
 
 `assets/` is gitignored and regenerable in ~20 s. The repo tip is the last documentation commit;
-`docs/MILESTONES.md` indexes **all 390 milestones** — generated, and `--check`-gated against the log — and
+`docs/MILESTONES.md` indexes **all 391 milestones** — generated, and `--check`-gated against the log — and
 `docs/reverse_engineering_log.md` carries every milestone one-liner **plus a retraction table** — read the
 retraction table before believing any older note. The log's rows are not in file order (M30→M10 descend) and
 50 milestone numbers have no row or note at all; the index names them.
@@ -134,9 +134,9 @@ by three distinct stream-pointer pairs) all carry byte 3 = 31, so the path is in
 |---|---|---|
 | pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, **~60 s** with the cartridge (measured), blocks the commit |
 | local CI | `sh tools/ci.sh` | the same fixtures **plus** a tracked-artefact check, a fixture-size guard and the cartridge sha256 |
-| runner CI (GitHub-hosted) | `.github/workflows/acceptance.yml`, job `ci` | the same `ci.sh`: **35 of 79 suites, 351 of 1377 cases**; the 44 cartridge suites report SKIP |
-| runner CI (self-hosted) | the same file, job `full` | **all 79 suites / 1377 cases** — runs where the cartridge is, and fails if the cartridge suites skip |
-| runner CI (fetched) | the same file, job `full-url` | **all 79 suites / 1377 cases** — downloads the cartridge from a URL you host, verifies it, unpacks it, builds it |
+| runner CI (GitHub-hosted) | `.github/workflows/acceptance.yml`, job `ci` | the same `ci.sh`: **36 of 80 suites, 354 of 1380 cases**; the 44 cartridge suites report SKIP |
+| runner CI (self-hosted) | the same file, job `full` | **all 80 suites / 1380 cases** — runs where the cartridge is, and fails if the cartridge suites skip |
+| runner CI (fetched) | the same file, job `full-url` | **all 80 suites / 1380 cases** — downloads the cartridge from a URL you host, verifies it, unpacks it, builds it |
 
 **Two tiers cover the cartridge, and neither stores it on GitHub.** Both run `tools/ci_full.sh`, which fails
 rather than passing when the cartridge suites skipped, and both are gated by a repository variable so a push
@@ -305,7 +305,7 @@ python3 tools/export_ranges.py      # -> fixtures/decomp/ranges.json (function b
 python3 tools/script_profile.py --json fixtures/scd/profile.json
 
 # 5. gates
-python3 tools/acceptance.py         # 79 suites, 1377 cases
+python3 tools/acceptance.py         # 80 suites, 1380 cases
 sh tools/ci.sh                      # + tracked-artefact scan and cartridge sha256
 python3 tools/audit_gates.py        # 160/160: every check must fail when its mechanism is disabled
 python3 tools/ratchet.py --check    # the registry may not drift, and src/ may not move, silently
@@ -316,7 +316,7 @@ python3 tools/counts.py --check     # the seven numbers, derived once and assert
 **A green CI run does not vouch for everything.** Twelve suites are cartridge-gated and report `SKIP`
 on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
 `cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
-`routine index bounds`, `file table`, `voice decode`, `rsp interface` and the gate audit — **1026 of 1377 cases**. Their enforcement is the
+`routine index bounds`, `file table`, `voice decode`, `rsp interface` and the gate audit — **1026 of 1380 cases**. Their enforcement is the
 pre-commit hook and a local run, and the CI job summary lists them by name.
 
 ## 5b. Who verifies what, and the three edits that cannot happen silently
