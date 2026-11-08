@@ -2,6 +2,20 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "eb8cdf5",
+   "subject": "M388 follow-up: the regenerated src/ files the milestone commit left out",
+   "milestones": [
+    388
+   ]
+  },
+  {
+   "sha": "6214eeb",
+   "subject": "M388: the five extent corrections -- three trims, three merges, one withdrawal",
+   "milestones": [
+    388
+   ]
+  },
+  {
    "sha": "1804de4",
    "subject": "M387: the 51+ word queue screened before drafting -- half of it is not a function",
    "milestones": [

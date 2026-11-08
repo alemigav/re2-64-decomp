@@ -74,8 +74,9 @@
   "ratchet self-test": 10,
   "ratchet (repository)": 4,
   "extent scan (repository)": 11,
+  "front page (repository)": 1,
   "counts self-test": 4,
-  "counts (repository)": 42,
+  "counts (repository)": 45,
   "acceptance self-test": 6,
   "verifier self-test": 8
  },

@@ -67,6 +67,13 @@ CHECKS = [
     # the repository gets a case.
     ("README.md", r"\*\*(\d+) functions reconstructed in C and recompiled \u2014 (\d+) of them matching",
      ("recovered", "recovered_exact"), 1),
+    # M389: the front page's pictures. A generated block is not a licence to stop asserting -- the waffle's legend and
+    # its headline are the two sentences a newcomer reads first, so they get cases like every other number on the page.
+    ("README.md", r"\u2588 (\d+)\*\* reconstructed and byte-exact, \*\*\u2592 (\d+)\*\* a body the bytes give but "
+                  r"nobody has written, \*\*\u2591 ([\d\s,]+?)\*\* the decompiler's pseudocode",
+     ("recovered", "status_extent_measured", "status_pseudocode"), 1),
+    ("README.md", r"the remaining ([\d\s,]+?) would take about \*\*(\d+) more milestones\*\*",
+     ("status_remaining", "front_milestones_left"), 1),
     # M366: three front-page claims that had rotted silently -- the shape census, and the two split counts in the
     # "verify it without the cartridge" table. A third party found them by reading; a regex is cheaper than a reader.
     ("README.md", r"(\d+) of them are copies of (\d+) proven body shapes",
@@ -86,6 +93,8 @@ CHECKS = [
     ("docs/README-extended.md",
      r"The corpus of recovered functions is \*{0,2}(\d+) entries, (\d+) of them byte-exact",
      ("recovered", "recovered_exact"), 1),
+    # M389: the front page's pictures. A generated block is not a licence to stop asserting -- the waffle's legend and
+    # its headline are the two sentences a newcomer reads first, so they get cases like every other number on the page.
     ("docs/README-extended.md",
      r"\*\*(\d+)\*\* by hand from the disassembly, \*\*(\d+)\*\* from the screening tool, \*\*(\d+)\*\* as "
      r"one-off probes,\s+and \*\*(\d+)\*\* copies of a proven shape",
@@ -104,6 +113,8 @@ CHECKS = [
      ("runnable_suites", "total_suites", "runnable_cases", "total_cases"), 1),
     ("docs/handover.md", r"\*\*all ([\d\s,]+?) suites / ([\d\s,]+?) cases\*\*",
      ("total_suites", "total_cases"), 2),
+    ("README.md", r"\*\*(\d+) of ([\d\s,]+?) functions match the cartridge exactly \u2014 (\d+)\.(\d) %\.\*\*",
+     ("recovered_exact", "functions", "front_pct_whole", "front_pct_dec"), 1),
     ("README.md", r"\*\*(\d+) checks run with no ROM, no assets and no emulator\*\* \u2014 the other (\d+) need",
      ("runnable_cases", "gated_cases"), 1),
     ("README.md", r"PASS-FAST: (\d+) cases run, (\d+) SKIP", ("runnable_cases", "gated_cases"), 1),
@@ -234,7 +245,16 @@ def _status(root: Path) -> dict:
     sentence cannot drift from the artifact that measures them.
     """
     t = json.loads((root / "manifests" / "analysis_status.json").read_text())["totals"]
-    return {"status_f2": t["F2"], "status_named": t["named"], "status_validated": t["validated"]}
+    out = {"status_f2": t["F2"], "status_named": t["named"], "status_validated": t["validated"],
+           "status_extent_measured": t["extent_measured"]}
+    # M389: the front page's own arithmetic, derived here so the pictures cannot disagree with the ladder.
+    rec = _recovered(root)
+    out["status_pseudocode"] = t["F0"] - rec["recovered"] - t["extent_measured"]
+    out["status_remaining"] = t["F0"] - rec["recovered"]
+    tenths = (1000 * rec["recovered_exact"] + t["F0"] // 2) // t["F0"] if t["F0"] else 0
+    out["front_pct_whole"], out["front_pct_dec"] = tenths // 10, tenths % 10
+    out["front_milestones_left"] = int((t["F0"] - rec["recovered"]) / (53 / 10) + 0.5)
+    return out
 
 
 def _corpus(root: Path) -> dict:

@@ -185,8 +185,9 @@ SUITES = [
     # M339: measuring function extents inside byte-map regions no artifact names. The self-test covers the
     # split rule (a return is `jr ra` + its delay slot; a lone `jr ra` and a tail with no return are rejected).
     ("extent scan (repository)", [sys.executable, "tools/extent_scan.py", "--self-test"], 11, False),
+    ("front page (repository)", [sys.executable, "tools/front_page.py", "--check"], 1, False),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
-    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 42, False),
+    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 45, False),
     # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain
     # loop cannot: drop a result, reorder the report, or swallow a death. Its own `--self-test` does not
     # run SUITES, so registering it is not the recursion that `--check` would be.
