@@ -21312,16 +21312,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_0072610:0x8017bbb0": {
-   "name": "FUN_8017bbb0",
-   "image": "ovl_0072610",
-   "address": "0x8017bbb0",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_0072610:0x8017bbe8": {
    "name": "FUN_8017bbe8",
    "image": "ovl_0072610",
@@ -22277,6 +22267,16 @@
    "image": "ovl_0072610",
    "address": "0x8017b9bc",
    "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_0072610:0x8017bbb0": {
+   "name": "FUN_8017bbb0",
+   "image": "ovl_0072610",
+   "address": "0x8017bbb0",
+   "callees": 0,
    "callees_unknown": 0,
    "level": 2,
    "named": false,

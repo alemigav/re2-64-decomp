@@ -2451,6 +2451,17 @@
    "syms": {
     "FUN_80163c90": 2148940944
    }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017bbb0",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M385): 7 of 7, seven words, a scale getter: a global pointer, a depth field at +12, and `depth >> (32 - a)` -- the shift's operands are the trap, and the source order decides which register shifts",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017bbb0.c",
+   "syms": {
+    "D_80186c94": 2149084308
+   }
   }
  ]
 }

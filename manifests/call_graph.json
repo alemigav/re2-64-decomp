@@ -242,7 +242,7 @@
   {"id":"ovl_0072610:0x8017b98c","image":"ovl_0072610","addr":"0x8017b98c","name":"FUN_8017b98c","file":"src/ovl_0072610/FUN_8017b98c.c","size":48,"status":"recovered"},
   {"id":"ovl_0072610:0x8017b9bc","image":"ovl_0072610","addr":"0x8017b9bc","name":"FUN_8017b9bc","file":"src/ovl_0072610/FUN_8017b9bc.c","size":48,"status":"recovered"},
   {"id":"ovl_0072610:0x8017b9ec","image":"ovl_0072610","addr":"0x8017b9ec","name":"FUN_8017b9ec","file":"src/ovl_0072610/FUN_8017b9ec.c","size":452,"status":"written"},
-  {"id":"ovl_0072610:0x8017bbb0","image":"ovl_0072610","addr":"0x8017bbb0","name":"FUN_8017bbb0","file":"src/ovl_0072610/FUN_8017bbb0.c","size":28,"status":"written"},
+  {"id":"ovl_0072610:0x8017bbb0","image":"ovl_0072610","addr":"0x8017bbb0","name":"FUN_8017bbb0","file":"src/ovl_0072610/FUN_8017bbb0.c","size":28,"status":"recovered"},
   {"id":"ovl_0072610:0x8017bbcc","image":"ovl_0072610","addr":"0x8017bbcc","name":"FUN_8017bbcc","file":"src/ovl_0072610/FUN_8017bbcc.c","size":28,"status":"recovered"},
   {"id":"ovl_0072610:0x8017bbe8","image":"ovl_0072610","addr":"0x8017bbe8","name":"FUN_8017bbe8","file":"src/ovl_0072610/FUN_8017bbe8.c","size":420,"status":"written"},
   {"id":"ovl_0072610:0x8017bd8c","image":"ovl_0072610","addr":"0x8017bd8c","name":"FUN_8017bd8c","file":"src/ovl_0072610/FUN_8017bd8c.c","size":316,"status":"written"},
