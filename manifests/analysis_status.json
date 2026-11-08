@@ -9,13 +9,13 @@
   "validated": "pinned by a gate or an executed experiment (curated, evidence per entry)"
  },
  "totals": {
-  "F0": 3665,
+  "F0": 3664,
   "F1": 3468,
-  "F2": 3404,
+  "F2": 3408,
   "named": 33,
   "validated": 12,
   "validated_unnamed": 12,
-  "extent_measured": 197
+  "extent_measured": 196
  },
  "f4_evidence": {
   "stage2:0x800b53f4": "M199 \u2014 the voice synthesis, bit-exact against the cartridge",
@@ -456,9 +456,9 @@
    "name": "FUN_80004b5c",
    "image": "boot",
    "address": "0x80004b5c",
-   "callees": 1,
-   "callees_unknown": 1,
-   "level": 1,
+   "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -476,9 +476,9 @@
    "name": "FUN_80004c34",
    "image": "boot",
    "address": "0x80004c34",
-   "callees": 0,
-   "callees_unknown": 1,
-   "level": 1,
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -2012,10 +2012,10 @@
    "named": false,
    "validated": false
   },
-  "boot:0x8000d3cc": {
-   "name": "FUN_8000d3cc",
+  "boot:0x8000d3d0": {
+   "name": "FUN_8000d3d0",
    "image": "boot",
-   "address": "0x8000d3cc",
+   "address": "0x8000d3d0",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -14506,9 +14506,9 @@
    "name": "FUN_80099ed4",
    "image": "stage2",
    "address": "0x80099ed4",
-   "callees": 44,
-   "callees_unknown": 1,
-   "level": 1,
+   "callees": 45,
+   "callees_unknown": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -14616,9 +14616,9 @@
    "name": "FUN_8009ba38",
    "image": "stage2",
    "address": "0x8009ba38",
-   "callees": 5,
-   "callees_unknown": 1,
-   "level": 1,
+   "callees": 6,
+   "callees_unknown": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },
@@ -18272,16 +18272,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80039f28": {
-   "name": "FUN_80039f28",
-   "image": "stage2",
-   "address": "0x80039f28",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 0,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8003c114": {
    "name": "FUN_8003c114",
    "image": "stage2",
@@ -18442,10 +18432,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80049f8c": {
-   "name": "FUN_80049f8c",
+  "stage2:0x80049f90": {
+   "name": "FUN_80049f90",
    "image": "stage2",
-   "address": "0x80049f8c",
+   "address": "0x80049f90",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19132,10 +19122,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80073efc": {
-   "name": "FUN_80073efc",
+  "stage2:0x80073e38": {
+   "name": "FUN_80073e38",
    "image": "stage2",
-   "address": "0x80073efc",
+   "address": "0x80073e38",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
@@ -19502,10 +19492,10 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800b4400": {
-   "name": "FUN_800b4400",
+  "stage2:0x800b43a0": {
+   "name": "FUN_800b43a0",
    "image": "stage2",
-   "address": "0x800b4400",
+   "address": "0x800b43a0",
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,

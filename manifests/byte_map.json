@@ -849,6 +849,12 @@
    ],
    [
     2147537868,
+    2147537871,
+    "fill",
+    "run of 0x00, shorter than the padding law's 16-byte floor"
+   ],
+   [
+    2147537872,
     2147537959,
     "function_body",
     "fixtures/decomp/measured_extents.json"
@@ -3059,6 +3065,18 @@
    ],
    [
     2147786192,
+    2147786635,
+    "function_body",
+    "fixtures/decomp/measured_extents.json"
+   ],
+   [
+    2147786636,
+    2147786639,
+    "fill",
+    "run of 0x00, shorter than the padding law's 16-byte floor"
+   ],
+   [
+    2147786640,
     2147786743,
     "function_body",
     "fixtures/decomp/measured_extents.json"
@@ -4049,12 +4067,6 @@
    ],
    [
     2147958328,
-    2147958523,
-    "dense_data",
-    "no rule fires; 5.2 bits/byte of entropy -- measured density, not identified content"
-   ],
-   [
-    2147958524,
     2147958567,
     "function_body",
     "fixtures/decomp/measured_extents.json"
@@ -5375,24 +5387,6 @@
    ],
    [
     2148221856,
-    2148221951,
-    "enclosed_data",
-    "bounded by function_body and function_body -- the same structure, content unnamed"
-   ],
-   [
-    2148221952,
-    2148221999,
-    "function_body",
-    "fixtures/decomp/measured_extents.json"
-   ],
-   [
-    2148222000,
-    2148222007,
-    "gap",
-    "under 64 B, between function bodies"
-   ],
-   [
-    2148222008,
     2148222071,
     "function_body",
     "fixtures/decomp/measured_extents.json"
@@ -26111,14 +26105,14 @@
  },
  "totals": {
   "boot": {
-   "function_body": 59112,
+   "function_body": 59108,
    "gap": 284,
    "dense_data": 7756,
    "enclosed_data": 3656,
    "padding": 632,
    "slack": 136,
    "data_named": 44,
-   "fill": 580,
+   "fill": 584,
    "string_table": 852,
    "jump_table": 16,
    "pointer_table": 600,
@@ -26126,15 +26120,15 @@
    "u16_table": 4104
   },
   "stage2": {
-   "function_body": 581572,
+   "function_body": 581868,
    "referenced_data": 10452,
    "padding": 345552,
-   "dense_data": 115268,
+   "dense_data": 115072,
    "slack": 6376,
    "data_named": 4312,
-   "enclosed_data": 34216,
-   "gap": 1456,
-   "fill": 668,
+   "enclosed_data": 34120,
+   "gap": 1448,
+   "fill": 672,
    "string_table": 12080,
    "jump_table": 340,
    "u16_table": 24296,

@@ -3,8 +3,8 @@
  "note": "Function extents measured from the bytes. `corrections` (M340) replace a census entry's truncated body with the extent the bytes have. `functions` (M341) are extents inside byte-map regions that no artifact names: new census entries with no C and no provider record, published as a disassembly listing rather than pseudocode. `regions` is the raw scan evidence behind both.",
  "summary": {
   "regions": 74,
-  "functions": 318,
-  "bytes": 37608,
+  "functions": 317,
+  "bytes": 37900,
   "rejected": 12,
   "tail_jumps": 9
  },
@@ -53,9 +53,9 @@
   },
   {
    "image": "boot",
-   "address": "0x8000d3cc",
-   "words": 23,
-   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+   "address": "0x8000d3d0",
+   "words": 22,
+   "evidence": "M388 correction (same shape): the extent opened on a `nop`; the previous function ends `jr ra`+`addiu sp,sp,0x20` at 0x8000d3c4/0xc8. The real body starts at the first varargs spill (`sw $a1,4($sp)`) and is 22 words"
   },
   {
    "image": "boot",
@@ -1098,14 +1098,8 @@
   {
    "image": "stage2",
    "address": "0x80039f08",
-   "words": 8,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
-  },
-  {
-   "image": "stage2",
-   "address": "0x80039f28",
-   "words": 3,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+   "words": 11,
+   "evidence": "M388 correction (extent too short): the `beql` at word 3 targets 0x80039f28, which is INSIDE the same body -- the take-the-zero arm `sb $zero,0($v1); jr $ra; sh $zero,24($v1)`. Cut at the extent's own `jr ra` the body looked like a fragment; the function has two returns and is 11 words. M388: and the 11-word extent ABSORBS the separate 3-word entry that used to sit at 0x80039f28 -- that fragment (`sb $zero,0($v1)` reading v1 before writing it) is this body's second return, not a function, so it is withdrawn rather than left as a duplicate claim on the same words"
   },
   {
    "image": "stage2",
@@ -1211,9 +1205,9 @@
   },
   {
    "image": "stage2",
-   "address": "0x80049f8c",
-   "words": 3,
-   "evidence": "extent measured by walking to the first `jr ra`, then corrected (M365): split at every tail `j` and extended while a branch left the body, so the entry is self-contained -- no branch or jump leaves it, it opens no frame it does not save, and it overlaps no provider range"
+   "address": "0x80049f90",
+   "words": 2,
+   "evidence": "M388 correction (shape: a leading alignment `nop`): the extent opened one word early on a `sll $zero,$zero,0` that belongs to no body -- the preceding function ends `jr ra`+`nop` at 0x80049f84/88. From 0x80049f90 the body is `jr ra; addu $v0,$a1,$zero`, i.e. the two-word `return b;` shape, and it is self-contained by the M385 screen"
   },
   {
    "image": "stage2",
@@ -1649,9 +1643,9 @@
   },
   {
    "image": "stage2",
-   "address": "0x80073efc",
-   "words": 9,
-   "evidence": "extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists"
+   "address": "0x80073e38",
+   "words": 58,
+   "evidence": "M388 correction (split at an EARLY RETURN, not at a function end): the extent opened on `ori $v1,$v1,0x8000`, reading a register the previous 9 words had just materialised -- `bne` at 0x80073ea8 targets 0x80073efc, so this is the second half of one body whose real start is 0x80073e38 (the word after the previous `jr ra`+`addiu sp,sp,0x18` at 0x80073e30/34). 58 words, and it carries the M372 shape internally (`lui 1; ori 0x8000` = the 0x18000 constant)"
   },
   {
    "image": "stage2",
@@ -1907,9 +1901,9 @@
   },
   {
    "image": "stage2",
-   "address": "0x800b4400",
-   "words": 12,
-   "evidence": "extent measured by walking to the first `jr ra` inside a `enclosed_data` run that no provider range covers; the run is 0x800b43a0..0x800b4477, the segment starts with a non-branch word and is at least four words, and no C exists for it (M362)"
+   "address": "0x800b43a0",
+   "words": 38,
+   "evidence": "M388 correction (same class): the extent opened on `addiu $v0,$v0,0x8b20`, reading a `$v0` that the `bne` delay slot at 0x800b43f4 (`lui $v0,0x8016`) sets on the branch TO this address -- so 0x800b4400 is a target inside its own body, not a start. The body begins at 0x800b43a0 (after `jr ra`+`addrin sp,0x18` at 0x800b4398/9c) and is 38 words -- the `beq` at 0x800b43a8 targets 0x800b4430, which is the tail's own `jr ra`+`addu $v0,$zero,$zero`, so the extent must include it (the self-containment screen caught a 36-word draft of this correction)"
   },
   {
    "image": "stage2",

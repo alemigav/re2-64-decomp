@@ -3,7 +3,7 @@
  * address 0x80099ed4  body 0x800996b4..0x8009aceb  size 4568 B
  * body sha256 78f13ebd2ec66ec03ed485840ba696876a2b8f9549749cfb66714acc82a6adf9
  * provider record sha256 62fcce24a696cf5ff3f0c1521ba026c93abe7492dbdfbb0ee283c01e9372e4f2
- * callees 45 direct (44 in corpus)
+ * callees 45 direct (45 in corpus)
  * provider Ghidra 12.2
  */
 /* WARNING: Removing unreachable block (ram,0x80099714) */

@@ -26,11 +26,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 14778,
-   "covered_bytes": 59112,
-   "coverage": 0.7494,
-   "unclaimed_runs": 98,
-   "unclaimed_bytes": 19768,
+   "covered_words": 14777,
+   "covered_bytes": 59108,
+   "coverage": 0.7493,
+   "unclaimed_runs": 99,
+   "unclaimed_bytes": 19772,
    "functions_list": [
     {
      "address": "0x80000480",
@@ -583,9 +583,10 @@
      "provider_sha256": "11e8a88b976c19e82d0ea598906868a2b0497e81a7962e828371a94e19731be0",
      "status": "written",
      "callees": [
-      "0x800b431c"
+      "0x800b431c",
+      "0x800b43a0"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x80004bac",
@@ -606,8 +607,10 @@
      "sha256": "9d729c392e42815f928a4cdd8fe22ee7fd15b864ab2595b6e7dcdc0dc4c70805",
      "provider_sha256": "fd00a33dfd7c1828385c7b6f47834232e22f2bf13d93d97ed23afd19a80aca9c",
      "status": "written",
-     "callees": [],
-     "callees_unknown": 1
+     "callees": [
+      "0x800b43a0"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x80004c9c",
@@ -2718,11 +2721,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x8000d3cc",
-     "name": "FUN_8000d3cc",
-     "file": "src/boot/FUN_8000d3cc.c",
-     "size": 92,
-     "sha256": "4a236803677a6a8c0ce41ef06c275deaa92602d28e4193e33bbb7aee57b9fb68",
+     "address": "0x8000d3d0",
+     "name": "FUN_8000d3d0",
+     "file": "src/boot/FUN_8000d3d0.c",
+     "size": 88,
+     "sha256": "cc6e5b2d23e837cb2e76b9cce250911e050cf4aa7cc8c50dccbaf151cd3ac470",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -3052,7 +3055,7 @@
    "role": "stage2",
    "base": "0x80018a80",
    "size": 1172240,
-   "functions": 1893,
+   "functions": 1892,
    "named": 14,
    "functions_named": 14,
    "limitations": [
@@ -3074,11 +3077,11 @@
     "This session uses Ghidra 12.2. The bridge is verified against 12.1.4; other 12.x (>=12.1) builds are accepted and the observed version is reported.",
     "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
    ],
-   "covered_words": 145393,
-   "covered_bytes": 581572,
-   "coverage": 0.4961,
-   "unclaimed_runs": 198,
-   "unclaimed_bytes": 590668,
+   "covered_words": 145467,
+   "covered_bytes": 581868,
+   "coverage": 0.4964,
+   "unclaimed_runs": 196,
+   "unclaimed_bytes": 590372,
    "functions_list": [
     {
      "address": "0x80018a80",
@@ -19912,6 +19915,7 @@
      "provider_sha256": "62fcce24a696cf5ff3f0c1521ba026c93abe7492dbdfbb0ee283c01e9372e4f2",
      "status": "written",
      "callees": [
+      "0x8000d3d0",
       "0x800270a8",
       "0x800274e4",
       "0x800274f8",
@@ -19957,7 +19961,7 @@
       "0x8009af70",
       "0x8009b138"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8009acec",
@@ -20132,13 +20136,14 @@
      "provider_sha256": "594e15f0b17b0d8763698104347d49c3aef079f1d06788d106688e572299a807",
      "status": "written",
      "callees": [
+      "0x8000d3d0",
       "0x80040e58",
       "0x800411b8",
       "0x800424ec",
       "0x8004a7a0",
       "0x800855d8"
      ],
-     "callees_unknown": 1
+     "callees_unknown": 0
     },
     {
      "address": "0x8009bb70",
@@ -25149,20 +25154,8 @@
      "address": "0x80039f08",
      "name": "FUN_80039f08",
      "file": "src/stage2/FUN_80039f08.c",
-     "size": 32,
-     "sha256": "93b8113c27980f048cbe39a5e12efa37a05e455a905bc96d953bad09540a3f6e",
-     "provider_sha256": "",
-     "status": "extent-measured",
-     "callees": [],
-     "callees_unknown": 0,
-     "extent_measured": true
-    },
-    {
-     "address": "0x80039f28",
-     "name": "FUN_80039f28",
-     "file": "src/stage2/FUN_80039f28.c",
-     "size": 12,
-     "sha256": "9aadbeb4a176cfe1c332a7c21099eef9e8c967321719356097e36adfbf038560",
+     "size": 44,
+     "sha256": "30e270154663c52c9b26a257cc88a861065c8567b43a1ec1ec924f54140007d9",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -25362,11 +25355,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x80049f8c",
-     "name": "FUN_80049f8c",
-     "file": "src/stage2/FUN_80049f8c.c",
-     "size": 12,
-     "sha256": "fa6341713cfa5161245ed15df103ee48bb668c1596f06ac4e511e0e728f99ab8",
+     "address": "0x80049f90",
+     "name": "FUN_80049f90",
+     "file": "src/stage2/FUN_80049f90.c",
+     "size": 8,
+     "sha256": "c87953fcc35273cef4ce585123299a6b7086844fb01d0471cd3c3f4109b14387",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26190,11 +26183,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x80073efc",
-     "name": "FUN_80073efc",
-     "file": "src/stage2/FUN_80073efc.c",
-     "size": 36,
-     "sha256": "7a047e5eb127be610cb8f9d1ccf11a5df9de4a18807f6a185b7ebaf6432229ab",
+     "address": "0x80073e38",
+     "name": "FUN_80073e38",
+     "file": "src/stage2/FUN_80073e38.c",
+     "size": 232,
+     "sha256": "abe5a8d8fbad7d302f7bf034e484dd8be7e7e0239250fad2865f5480a112275d",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],
@@ -26634,11 +26627,11 @@
      "extent_measured": true
     },
     {
-     "address": "0x800b4400",
-     "name": "FUN_800b4400",
-     "file": "src/stage2/FUN_800b4400.c",
-     "size": 48,
-     "sha256": "113ca1344a5d00ca7edb4450f021a333aff2d14694887603f78e01bd819f37b1",
+     "address": "0x800b43a0",
+     "name": "FUN_800b43a0",
+     "file": "src/stage2/FUN_800b43a0.c",
+     "size": 152,
+     "sha256": "f27d7dcf25fa76c00a1a45a2f6cbc6d9be0b6fa9788034bbc8eeb89dcfae8c24",
      "provider_sha256": "",
      "status": "extent-measured",
      "callees": [],

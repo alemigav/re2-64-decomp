@@ -59,7 +59,7 @@ suites are named and timed in `acceptance.HEAVY_SUITES` rather than quietly move
 ## 2. The corpus, and the geometry it came from
 
 - **36 images** — `boot`, `stage2`, and 34 overlays — censused from the cartridge's own load table: **1 956 560 B**,
-  **3 665 functions** over **3 678 ranges**, **1 238 112 B (63.3 %)** inside a known body.
+  **3 664 functions** over **3 678 ranges**, **1 238 404 B (63.3 %)** inside a known body.
 - **The other 38.1 % is classified, never shrugged at:** 408 124 B padding, 6 680 B data the decompiler names,
   980 B of jump tables, **23 980 B** of float tables, **20 380 B** of pointer tables, **13 200 B** of string
   tables, and **440 B (0.0 %) unclassified** — a bucket that is published and is never renamed

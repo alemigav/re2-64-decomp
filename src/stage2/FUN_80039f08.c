@@ -1,8 +1,8 @@
 /* FUN_80039f08
  * image   stage2 (stage2), base 0x80018a80
- * address 0x80039f08  body 0x80039f08..0x80039f27  size 32 B
- * body sha256 93b8113c27980f048cbe39a5e12efa37a05e455a905bc96d953bad09540a3f6e
- * EXTENT MEASURED, NOT RECONSTRUCTED: 8 words, found by the extent scan inside a byte-map region no artifact names (extent measured by walking to the first `jr ra` inside a byte-map region no artifact names (M339); no C and no provider record exists)
+ * address 0x80039f08  body 0x80039f08..0x80039f33  size 44 B
+ * body sha256 30e270154663c52c9b26a257cc88a861065c8567b43a1ec1ec924f54140007d9
+ * EXTENT MEASURED, NOT RECONSTRUCTED: 11 words, found by the extent scan inside a byte-map region no artifact names (M388 correction (extent too short): the `beql` at word 3 targets 0x80039f28, which is INSIDE the same body -- the take-the-zero arm `sb $zero,0($v1); jr $ra; sh $zero,24($v1)`. Cut at the extent's own `jr ra` the body looked like a fragment; the function has two returns and is 11 words. M388: and the 11-word extent ABSORBS the separate 3-word entry that used to sit at 0x80039f28 -- that fragment (`sb $zero,0($v1)` reading v1 before writing it) is this body's second return, not a function, so it is withdrawn rather than left as a duplicate claim on the same words)
  * provider none: this address is not in the decompile index, so there is no pseudocode and no provider hash
  * extents: fixtures/decomp/measured_extents.json
  */
@@ -21,4 +21,7 @@
  * 0x80039f1c  2442ffff  addiu $v0,$v0,0xffff
  * 0x80039f20  03e00008  jr $ra
  * 0x80039f24  a0620002  sb $v0,2($v1)
+ * 0x80039f28  a0600000  sb $zero,0($v1)
+ * 0x80039f2c  03e00008  jr $ra
+ * 0x80039f30  a4600018  sh $zero,24($v1)
  */
