@@ -2296,6 +2296,161 @@
     "FUN_80165310": 2148946704,
     "FUN_80164e88": 2148945544
    }
+  },
+  {
+   "image": "boot",
+   "address": "0x8000490c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that calls with its second argument -- `addu $a0,$a1,$zero` in the delay slot is the whole body",
+   "source_file": "fixtures/decomp/authored/boot/8000490c.c",
+   "syms": {
+    "FUN_800014ac": 2147488940
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004a50",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper: frame, save `$ra`, jal, restore",
+   "source_file": "fixtures/decomp/authored/boot/80004a50.c",
+   "syms": {
+    "FUN_80004bac": 2147503020
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004ec4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, the same wrapper around a different callee",
+   "source_file": "fixtures/decomp/authored/boot/80004ec4.c",
+   "syms": {
+    "FUN_80004cfc": 2147503356
+   }
+  },
+  {
+   "image": "ovl_0093aba",
+   "address": "0x801621a8",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_0093aba/801621a8.c",
+   "syms": {
+    "FUN_801621c4": 2148934084
+   }
+  },
+  {
+   "image": "ovl_0098ee0",
+   "address": "0x80162d6c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_0098ee0/80162d6c.c",
+   "syms": {
+    "FUN_80161d84": 2148932996
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80168cb4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80168cb4.c",
+   "syms": {
+    "FUN_80168cd0": 2148961488
+   }
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80161fc0",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80161fc0.c",
+   "syms": {
+    "FUN_801655b4": 2148947380
+   }
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80164734",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80164734.c",
+   "syms": {
+    "FUN_80164750": 2148943696
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5c34",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that doubles its second argument (`sll $a1,$a1,1` in the delay slot)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5c34.c",
+   "syms": {
+    "FUN_8000efa0": 2147544992
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017df4c",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 8 of 8, eight words, a wrapper passing a fixed address -- it must be a SYMBOL, not a literal, or the `lui`/`addiu` pair becomes `ori`",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017df4c.c",
+   "syms": {
+    "D_80185710": 2149078800,
+    "FUN_8017b5e8": 2149037544
+   }
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80162754",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 8 of 8, eight words, a wrapper that loads a pointer from the context and offsets it before the call",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/80162754.c",
+   "syms": {
+    "FUN_80168b3c": 2148961084
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017bbcc",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that passes the constant 1",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017bbcc.c",
+   "syms": {
+    "FUN_8017bec8": 2149039816
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800284f4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/stage2/800284f4.c",
+   "syms": {
+    "FUN_800283b0": 2147648432
+   }
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80161dc4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80161dc4.c",
+   "syms": {
+    "FUN_80163c90": 2148940944
+   }
   }
  ]
 }

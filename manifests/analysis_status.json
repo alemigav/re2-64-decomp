@@ -432,31 +432,11 @@
    "named": false,
    "validated": false
   },
-  "boot:0x8000490c": {
-   "name": "FUN_8000490c",
-   "image": "boot",
-   "address": "0x8000490c",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x80004954": {
    "name": "FUN_80004954",
    "image": "boot",
    "address": "0x80004954",
    "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80004a50": {
-   "name": "FUN_80004a50",
-   "image": "boot",
-   "address": "0x80004a50",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -517,16 +497,6 @@
    "image": "boot",
    "address": "0x80004cfc",
    "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80004ec4": {
-   "name": "FUN_80004ec4",
-   "image": "boot",
-   "address": "0x80004ec4",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -2142,11 +2112,31 @@
    "named": false,
    "validated": false
   },
+  "boot:0x8000490c": {
+   "name": "FUN_8000490c",
+   "image": "boot",
+   "address": "0x8000490c",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "boot:0x80004a20": {
    "name": "FUN_80004a20",
    "image": "boot",
    "address": "0x80004a20",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004a50": {
+   "name": "FUN_80004a50",
+   "image": "boot",
+   "address": "0x80004a50",
+   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -2177,6 +2167,16 @@
    "image": "boot",
    "address": "0x80004c6c",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004ec4": {
+   "name": "FUN_80004ec4",
+   "image": "boot",
+   "address": "0x80004ec4",
+   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -2837,16 +2837,6 @@
    "image": "stage2",
    "address": "0x80028450",
    "callees": 3,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800284f4": {
-   "name": "FUN_800284f4",
-   "image": "stage2",
-   "address": "0x800284f4",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -16022,16 +16012,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x800a5c34": {
-   "name": "FUN_800a5c34",
-   "image": "stage2",
-   "address": "0x800a5c34",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x800a5c50": {
    "name": "FUN_800a5c50",
    "image": "stage2",
@@ -19612,6 +19592,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x800284f4": {
+   "name": "FUN_800284f4",
+   "image": "stage2",
+   "address": "0x800284f4",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x80029390": {
    "name": "FUN_80029390",
    "image": "stage2",
@@ -21022,6 +21012,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x800a5c34": {
+   "name": "FUN_800a5c34",
+   "image": "stage2",
+   "address": "0x800a5c34",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x800a5cdc": {
    "name": "FUN_800a5cdc",
    "image": "stage2",
@@ -21322,16 +21322,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_0072610:0x8017bbcc": {
-   "name": "FUN_8017bbcc",
-   "image": "ovl_0072610",
-   "address": "0x8017bbcc",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_0072610:0x8017bbe8": {
    "name": "FUN_8017bbe8",
    "image": "ovl_0072610",
@@ -21557,16 +21547,6 @@
    "image": "ovl_0072610",
    "address": "0x8017ddb0",
    "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_0072610:0x8017df4c": {
-   "name": "FUN_8017df4c",
-   "image": "ovl_0072610",
-   "address": "0x8017df4c",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -22302,6 +22282,16 @@
    "named": false,
    "validated": false
   },
+  "ovl_0072610:0x8017bbcc": {
+   "name": "FUN_8017bbcc",
+   "image": "ovl_0072610",
+   "address": "0x8017bbcc",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "ovl_0072610:0x8017befc": {
    "name": "FUN_8017befc",
    "image": "ovl_0072610",
@@ -22327,6 +22317,16 @@
    "image": "ovl_0072610",
    "address": "0x8017dd78",
    "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_0072610:0x8017df4c": {
+   "name": "FUN_8017df4c",
+   "image": "ovl_0072610",
+   "address": "0x8017df4c",
+   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -28912,16 +28912,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_0093aba:0x801621a8": {
-   "name": "FUN_801621a8",
-   "image": "ovl_0093aba",
-   "address": "0x801621a8",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_0093aba:0x801621c4": {
    "name": "FUN_801621c4",
    "image": "ovl_0093aba",
@@ -29087,6 +29077,16 @@
    "image": "ovl_0093aba",
    "address": "0x8016535c",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_0093aba:0x801621a8": {
+   "name": "FUN_801621a8",
+   "image": "ovl_0093aba",
+   "address": "0x801621a8",
+   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -29842,16 +29842,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_0098ee0:0x80162d6c": {
-   "name": "FUN_80162d6c",
-   "image": "ovl_0098ee0",
-   "address": "0x80162d6c",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_0098ee0:0x80162d88": {
    "name": "FUN_80162d88",
    "image": "ovl_0098ee0",
@@ -30166,6 +30156,16 @@
    "name": "FUN_80162114",
    "image": "ovl_0098ee0",
    "address": "0x80162114",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_0098ee0:0x80162d6c": {
+   "name": "FUN_80162d6c",
+   "image": "ovl_0098ee0",
+   "address": "0x80162d6c",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
@@ -31852,16 +31852,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_00a0344:0x80161dc4": {
-   "name": "FUN_80161dc4",
-   "image": "ovl_00a0344",
-   "address": "0x80161dc4",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_00a0344:0x80161de0": {
    "name": "FUN_80161de0",
    "image": "ovl_00a0344",
@@ -32222,6 +32212,16 @@
    "named": false,
    "validated": false
   },
+  "ovl_00a0344:0x80161dc4": {
+   "name": "FUN_80161dc4",
+   "image": "ovl_00a0344",
+   "address": "0x80161dc4",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "ovl_00a0344:0x80162024": {
    "name": "FUN_80162024",
    "image": "ovl_00a0344",
@@ -32327,16 +32327,6 @@
    "image": "ovl_00a1414",
    "address": "0x801626d8",
    "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00a1414:0x80162754": {
-   "name": "FUN_80162754",
-   "image": "ovl_00a1414",
-   "address": "0x80162754",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -32727,6 +32717,16 @@
    "image": "ovl_00a1414",
    "address": "0x80168cb4",
    "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_00a1414:0x80162754": {
+   "name": "FUN_80162754",
+   "image": "ovl_00a1414",
+   "address": "0x80162754",
+   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -34372,16 +34372,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_00a9d94:0x80168cb4": {
-   "name": "FUN_80168cb4",
-   "image": "ovl_00a9d94",
-   "address": "0x80168cb4",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_00a9d94:0x80168cd0": {
    "name": "FUN_80168cd0",
    "image": "ovl_00a9d94",
@@ -34632,6 +34622,16 @@
    "named": false,
    "validated": false
   },
+  "ovl_00a9d94:0x80168cb4": {
+   "name": "FUN_80168cb4",
+   "image": "ovl_00a9d94",
+   "address": "0x80168cb4",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "ovl_00a9d94:0x80169b88": {
    "name": "FUN_80169b88",
    "image": "ovl_00a9d94",
@@ -34667,16 +34667,6 @@
    "image": "ovl_00ae24a",
    "address": "0x80161cf0",
    "callees": 11,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00ae24a:0x80161fc0": {
-   "name": "FUN_80161fc0",
-   "image": "ovl_00ae24a",
-   "address": "0x80161fc0",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -34827,16 +34817,6 @@
    "image": "ovl_00ae24a",
    "address": "0x8016464c",
    "callees": 4,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "ovl_00ae24a:0x80164734": {
-   "name": "FUN_80164734",
-   "image": "ovl_00ae24a",
-   "address": "0x80164734",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -35019,6 +34999,26 @@
    "callees": 0,
    "callees_unknown": 0,
    "level": 0,
+   "named": false,
+   "validated": false
+  },
+  "ovl_00ae24a:0x80161fc0": {
+   "name": "FUN_80161fc0",
+   "image": "ovl_00ae24a",
+   "address": "0x80161fc0",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_00ae24a:0x80164734": {
+   "name": "FUN_80164734",
+   "image": "ovl_00ae24a",
+   "address": "0x80164734",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
    "named": false,
    "validated": false
   },

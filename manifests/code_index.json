@@ -547,19 +547,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8000490c",
-     "name": "FUN_8000490c",
-     "file": "src/boot/FUN_8000490c.c",
-     "size": 28,
-     "sha256": "7fe507371a517ef6335358fd7008fc01f08dc3bd4cfee2e1a87a639e08944ba9",
-     "provider_sha256": "cd5589fd099a5504ea61800d10e067fc8772fe3e9fe7cb1b07eb9fba7e4811da",
-     "status": "written",
-     "callees": [
-      "0x800014ac"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80004954",
      "name": "FUN_80004954",
      "file": "src/boot/FUN_80004954.c",
@@ -571,19 +558,6 @@
       "0x80001180",
       "0x800888ec",
       "0x8008af80"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80004a50",
-     "name": "FUN_80004a50",
-     "file": "src/boot/FUN_80004a50.c",
-     "size": 28,
-     "sha256": "cc6a8f79f815e3665d8859e562c500a75275c73dc3f003bb2508513bb91ce3d7",
-     "provider_sha256": "07aef32731645afa2e2738960b1082728d9003ca29e3489ddc8e206fc0c1764d",
-     "status": "written",
-     "callees": [
-      "0x80004bac"
      ],
      "callees_unknown": 0
     },
@@ -660,19 +634,6 @@
       "0x800044f0",
       "0x80004594",
       "0x800888ec"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80004ec4",
-     "name": "FUN_80004ec4",
-     "file": "src/boot/FUN_80004ec4.c",
-     "size": 28,
-     "sha256": "cdb65e3b4c8f730cfe292a865509dcd90057ba38f61eb8896f48b87ab53d8557",
-     "provider_sha256": "12c9ad9dfcf3758ab19444dc4882af609ac89b8a1098820963b34043e3f85e9c",
-     "status": "written",
-     "callees": [
-      "0x80004cfc"
      ],
      "callees_unknown": 0
     },
@@ -2879,6 +2840,19 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x8000490c",
+     "name": "FUN_8000490c",
+     "file": "src/boot/FUN_8000490c.c",
+     "size": 28,
+     "sha256": "bb2e1b373c581d2dcec22bd66ddf31d035302be5507583c3283d370a2cfa1f73",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800014ac"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x80004a20",
      "name": "FUN_80004a20",
      "file": "src/boot/FUN_80004a20.c",
@@ -2887,6 +2861,19 @@
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80004a50",
+     "name": "FUN_80004a50",
+     "file": "src/boot/FUN_80004a50.c",
+     "size": 28,
+     "sha256": "45cb36f8e80376612a2a9d64a6b5951d5c81167c063b5c1b27afe19ddf44fbf0",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80004bac"
+     ],
      "callees_unknown": 0
     },
     {
@@ -2920,6 +2907,19 @@
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80004ec4",
+     "name": "FUN_80004ec4",
+     "file": "src/boot/FUN_80004ec4.c",
+     "size": 28,
+     "sha256": "b22d2640f17c731175eeeeb17c53eb3508c3121b227cc0b23a17a9967f22042a",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80004cfc"
+     ],
      "callees_unknown": 0
     },
     {
@@ -3876,19 +3876,6 @@
       "0x8002d188",
       "0x8002fc00",
       "0x80030d68"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x800284f4",
-     "name": "FUN_800284f4",
-     "file": "src/stage2/FUN_800284f4.c",
-     "size": 28,
-     "sha256": "d6655e19f8ebf6bd5186434d754546da8fb120f70cfc858e1f175723c80a0f2c",
-     "provider_sha256": "c96bc7028bdb8a528dcc3339cb3737b274aed1dcb3ebbda62d7be5a97d398536",
-     "status": "written",
-     "callees": [
-      "0x800283b0"
      ],
      "callees_unknown": 0
     },
@@ -22086,19 +22073,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x800a5c34",
-     "name": "FUN_800a5c34",
-     "file": "src/stage2/FUN_800a5c34.c",
-     "size": 28,
-     "sha256": "e3fba30dc792fdde78a4d842150037b5a2aece33bcc8d652b00fbb226a4bab43",
-     "provider_sha256": "9361008542bf373a0854b22e1132db097dbe493188940f10d2f80278666033f7",
-     "status": "written",
-     "callees": [
-      "0x8000efa0"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x800a5c50",
      "name": "FUN_800a5c50",
      "file": "src/stage2/FUN_800a5c50.c",
@@ -26761,6 +26735,19 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x800284f4",
+     "name": "FUN_800284f4",
+     "file": "src/stage2/FUN_800284f4.c",
+     "size": 28,
+     "sha256": "163f93f3cb6c9b1e19f6e7d1c8766c41f3c5e136c7c9d472fa77846bddadff1f",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800283b0"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x80029390",
      "name": "FUN_80029390",
      "file": "src/stage2/FUN_80029390.c",
@@ -28370,6 +28357,19 @@
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800a5c34",
+     "name": "FUN_800a5c34",
+     "file": "src/stage2/FUN_800a5c34.c",
+     "size": 28,
+     "sha256": "c1b993367fb5e35d14f6b3877fd651f5049bfd8b499b38b6a6c903e9388de45a",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000efa0"
+     ],
      "callees_unknown": 0
     },
     {
@@ -31083,19 +31083,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8017bbcc",
-     "name": "FUN_8017bbcc",
-     "file": "src/ovl_0072610/FUN_8017bbcc.c",
-     "size": 28,
-     "sha256": "ffeb0f9d4c678f5103f6caf0b884d5487db5f5f74a7ccad48b5eb3828edb65cd",
-     "provider_sha256": "15bc1078ab2d6d3650d31044d74f271bad6eb1f8d83fc394f8e5fa309e0641ad",
-     "status": "written",
-     "callees": [
-      "0x8017bec8"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x8017bbe8",
      "name": "FUN_8017bbe8",
      "file": "src/ovl_0072610/FUN_8017bbe8.c",
@@ -31438,19 +31425,6 @@
      "callees": [
       "0x8017b5e8",
       "0x8017df6c"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x8017df4c",
-     "name": "FUN_8017df4c",
-     "file": "src/ovl_0072610/FUN_8017df4c.c",
-     "size": 32,
-     "sha256": "48b89ba8b490e6fc95627be8f4144ac1d69cfbdb0f5aecf2f03b5492058218e0",
-     "provider_sha256": "a4e4ccf5ece0ae23a635910d10d4ba6b13d62cf58be995894e17b50b652795d8",
-     "status": "written",
-     "callees": [
-      "0x8017b5e8"
      ],
      "callees_unknown": 0
     },
@@ -32432,6 +32406,19 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x8017bbcc",
+     "name": "FUN_8017bbcc",
+     "file": "src/ovl_0072610/FUN_8017bbcc.c",
+     "size": 28,
+     "sha256": "0fabaead39bf84de92409795e444925d78151af80c214809c52735ee32a0e7a2",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8017bec8"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x8017befc",
      "name": "FUN_8017befc",
      "file": "src/ovl_0072610/FUN_8017befc.c",
@@ -32467,6 +32454,19 @@
      "callees": [
       "0x8017bbcc",
       "0x8017bbe8"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8017df4c",
+     "name": "FUN_8017df4c",
+     "file": "src/ovl_0072610/FUN_8017df4c.c",
+     "size": 32,
+     "sha256": "10310979d2518ebd0b35ad8a66250bedf0645104b73bce73cb81af7497cc3ac7",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8017b5e8"
      ],
      "callees_unknown": 0
     },
@@ -42905,19 +42905,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x801621a8",
-     "name": "FUN_801621a8",
-     "file": "src/ovl_0093aba/FUN_801621a8.c",
-     "size": 28,
-     "sha256": "ef8b612551b0a7e366acd62c0b73f3cd4620ec004979eaaffd5e2451b5686aab",
-     "provider_sha256": "c47bee53ac96e805fde334efe09aa25b3f68262f6b4b22d5e40f3ef9f46a0e31",
-     "status": "written",
-     "callees": [
-      "0x801621c4"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x801621c4",
      "name": "FUN_801621c4",
      "file": "src/ovl_0093aba/FUN_801621c4.c",
@@ -43188,6 +43175,19 @@
      "provider_sha256": "bdd07bcb2395c4c184c169d19321f517c59d2bedc8681362c0afc305fc310827",
      "status": "written",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x801621a8",
+     "name": "FUN_801621a8",
+     "file": "src/ovl_0093aba/FUN_801621a8.c",
+     "size": 28,
+     "sha256": "996c11ae29c29fcda0673d5e2777b7fa656f681dba98433a3c4427091de00dcd",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x801621c4"
+     ],
      "callees_unknown": 0
     }
    ],
@@ -44425,19 +44425,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80162d6c",
-     "name": "FUN_80162d6c",
-     "file": "src/ovl_0098ee0/FUN_80162d6c.c",
-     "size": 28,
-     "sha256": "40722f881f79f28859e39516bd52fbfeb342deca5334d159c0f3dc19361a09ba",
-     "provider_sha256": "36846ba462252fe1fe74c33c4b5cc2e1b53f076f0416a04c511fa76bde5fce5a",
-     "status": "written",
-     "callees": [
-      "0x80161d84"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80162d88",
      "name": "FUN_80162d88",
      "file": "src/ovl_0098ee0/FUN_80162d88.c",
@@ -44949,6 +44936,19 @@
      "status": "recovered",
      "callees": [
       "0x80059e00"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80162d6c",
+     "name": "FUN_80162d6c",
+     "file": "src/ovl_0098ee0/FUN_80162d6c.c",
+     "size": 28,
+     "sha256": "00487b9f3237332403f2783bb8f566a16021ac6ac368e835b0c168ef879e76f3",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80161d84"
      ],
      "callees_unknown": 0
     },
@@ -47533,19 +47533,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80161dc4",
-     "name": "FUN_80161dc4",
-     "file": "src/ovl_00a0344/FUN_80161dc4.c",
-     "size": 28,
-     "sha256": "11553479f37ab5c61fe6673c57fda9397f9a88227dc1644106e84ba942775116",
-     "provider_sha256": "a0e3da4465881c46a901e4f639b81083846ffa65e4b420625eaf571c91d9bac7",
-     "status": "written",
-     "callees": [
-      "0x80163c90"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80161de0",
      "name": "FUN_80161de0",
      "file": "src/ovl_00a0344/FUN_80161de0.c",
@@ -48057,6 +48044,19 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x80161dc4",
+     "name": "FUN_80161dc4",
+     "file": "src/ovl_00a0344/FUN_80161dc4.c",
+     "size": 28,
+     "sha256": "2ec938c7a0717c200de9031d859dad1671d5507235f63483a74f7a2228e6468a",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80163c90"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x80162024",
      "name": "FUN_80162024",
      "file": "src/ovl_00a0344/FUN_80162024.c",
@@ -48227,19 +48227,6 @@
      "provider_sha256": "2b1d6ab2570a23c8c4828d59d89598ffc063dd2c0abff4d45025e91e1e480446",
      "status": "written",
      "callees": [],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80162754",
-     "name": "FUN_80162754",
-     "file": "src/ovl_00a1414/FUN_80162754.c",
-     "size": 32,
-     "sha256": "641805368edcece7262da42865cd50ba7541c9fc44cbee1cf5b137f82bed99c4",
-     "provider_sha256": "45f5244b23916cc9943d7611ea198fa96a2242efa097e24a0d7d3d0b296700f1",
-     "status": "written",
-     "callees": [
-      "0x80168b3c"
-     ],
      "callees_unknown": 0
     },
     {
@@ -48888,6 +48875,19 @@
      "callees": [
       "0x80040e58",
       "0x800424ec"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80162754",
+     "name": "FUN_80162754",
+     "file": "src/ovl_00a1414/FUN_80162754.c",
+     "size": 32,
+     "sha256": "9df9056658454919750bbbec2cf504f8da1c54da01f3575e4925cf776e53bc0c",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80168b3c"
      ],
      "callees_unknown": 0
     },
@@ -51585,19 +51585,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80168cb4",
-     "name": "FUN_80168cb4",
-     "file": "src/ovl_00a9d94/FUN_80168cb4.c",
-     "size": 28,
-     "sha256": "04395bd7390a8fe93d45d17428489d10865102ab9cc3b51e1eed03ddbb4ca72d",
-     "provider_sha256": "65171a17d46a250d6b32fe4db6246afe8d86018d3ee498158424aa8bdb806b61",
-     "status": "written",
-     "callees": [
-      "0x80168cd0"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80168cd0",
      "name": "FUN_80168cd0",
      "file": "src/ovl_00a9d94/FUN_80168cd0.c",
@@ -51973,6 +51960,19 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x80168cb4",
+     "name": "FUN_80168cb4",
+     "file": "src/ovl_00a9d94/FUN_80168cb4.c",
+     "size": 28,
+     "sha256": "532efeefdd196e40ff95262bd4d8f2e791ca6ac0db5b7142df9d9c0c71f20780",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80168cd0"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x80169b88",
      "name": "FUN_80169b88",
      "file": "src/ovl_00a9d94/FUN_80169b88.c",
@@ -52058,19 +52058,6 @@
       "0x8016698c",
       "0x801669b4",
       "0x80166c40"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80161fc0",
-     "name": "FUN_80161fc0",
-     "file": "src/ovl_00ae24a/FUN_80161fc0.c",
-     "size": 28,
-     "sha256": "c08af53c8b052153f27ccb36b19f8ba5d3bc1f90b705533bd08215c434bb428e",
-     "provider_sha256": "0d1da89565ade1580e4e8a2f7fc569290065d3fcbeb215443a7878a6afe711fa",
-     "status": "written",
-     "callees": [
-      "0x801655b4"
      ],
      "callees_unknown": 0
     },
@@ -52305,19 +52292,6 @@
       "0x800334c8",
       "0x80077d18",
       "0x80089d54"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80164734",
-     "name": "FUN_80164734",
-     "file": "src/ovl_00ae24a/FUN_80164734.c",
-     "size": 28,
-     "sha256": "d16adbd5fa18a5c3f5c89de9ad2a87f904d98baa6bb08e6911e01c0d1572ffa9",
-     "provider_sha256": "9e8bf9052b1355f501ca89219ed301c399d15716ea5fcc90dbd5424fda43dd08",
-     "status": "written",
-     "callees": [
-      "0x80164750"
      ],
      "callees_unknown": 0
     },
@@ -52588,6 +52562,32 @@
      "callees": [],
      "callees_unknown": 0,
      "extent_measured": true
+    },
+    {
+     "address": "0x80161fc0",
+     "name": "FUN_80161fc0",
+     "file": "src/ovl_00ae24a/FUN_80161fc0.c",
+     "size": 28,
+     "sha256": "db45da3b9d6ccf9421ad0fda3e87d047a7cbfc0f0403a7d166b735d412a7ae5c",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x801655b4"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80164734",
+     "name": "FUN_80164734",
+     "file": "src/ovl_00ae24a/FUN_80164734.c",
+     "size": 28,
+     "sha256": "cb2d2c66ab836d3ac05147432a54e283723e58f8104bfd6c8c14193d49c2779a",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80164750"
+     ],
+     "callees_unknown": 0
     },
     {
      "address": "0x80165308",

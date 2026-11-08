@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "bb93577",
+   "subject": "M383: the live-range-first rank was tested, and it does not discriminate",
+   "milestones": [
+    383
+   ]
+  },
+  {
    "sha": "58cb379",
    "subject": "M382: six of nine from the 21-50 word jal query, and the frame is the reason",
    "milestones": [
