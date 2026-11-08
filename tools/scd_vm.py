@@ -310,7 +310,7 @@ def step(reader, pc, reg, stack, table):
             succ = [{"target": nxt, "how": f"popped {kind} frame"}]
         elif cls == "gosub_slot_or_yield":
             why = (f"walk_stream.py's DYNAMIC record: {op:#04x} returns 2 to the dispatcher "
-                   f"(FUN_8009b880.c:26) with no GoSub slot open")
+                   f"(0x8009b880:26) with no GoSub slot open")
         elif cls == "block_pop":
             why = f"{op:#04x} pops a block slot and no opener pushed one"
         else:

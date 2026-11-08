@@ -2,7 +2,7 @@
  "answers": "where each of the 141 stage-2 opcodes sends the command pointer, and on what evidence",
  "inputs": {
   "function_bodies": "fixtures/decomp/ranges.json",
-  "handlers": "src/stage2/*.c",
+  "handlers": "src/stage2/ (functions only; paths come from tools/srcmap.py)",
   "inferred_names": "fixtures/scd/inferred_names.json",
   "opcodes": "fixtures/scd/opcodes.json",
   "profile": "fixtures/scd/profile.json",

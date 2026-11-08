@@ -15,85 +15,85 @@
     "field": "+0x11a0 blocks_remaining",
     "from": "cartridge:MORT+4",
     "value": 2598,
-    "via": "arith: src @ src/stage2/FUN_800b4a04.c:25: *(undefined2 *)(param_1 + 0x11a0) = *(undefined2 *)(param_1 + 0x1a4);"
+    "via": "arith: src @ @800b4a04:25: *(undefined2 *)(param_1 + 0x11a0) = *(undefined2 *)(param_1 + 0x1a4);"
    },
    {
     "field": "+0x11a2 header_blocks_echo",
     "from": "trace:+0x11a0 blocks_remaining",
     "value": 2598,
-    "via": "arith: src @ src/stage2/FUN_800b4a04.c:26: *(short *)(param_1 + 0x11a2) = (short)*(undefined4 *)(param_1 + 0x1a4);"
+    "via": "arith: src @ @800b4a04:26: *(short *)(param_1 + 0x11a2) = (short)*(undefined4 *)(param_1 + 0x1a4);"
    },
    {
     "field": "+0x11a4 record_words_remaining",
     "from": "cartridge:MORT+8",
     "value": 20106,
-    "via": "arith: src & 0xffffff @ src/stage2/FUN_800b4a04.c:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;"
+    "via": "arith: src & 0xffffff @ @800b4a04:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;"
    },
    {
     "field": "record bytes",
     "from": "cartridge:record_len",
     "value": 80424,
-    "via": "arith: src @ src/stage2/FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
+    "via": "arith: src @ @800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
    },
    {
     "field": "bytes implied by the declared words",
     "from": "trace:+0x11a4 record_words_remaining",
     "value": 80424,
-    "via": "arith: src * 4 @ src/stage2/FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
+    "via": "arith: src * 4 @ @800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
    },
    {
     "field": "+0x11c8 bit_cursor",
     "from": "cartridge:header_bytes",
     "value": 96,
-    "via": "arith: src * 8 @ src/stage2/FUN_800b4a04.c:24: *(undefined4 *)(param_1 + 0x11c8) = 0x60;"
+    "via": "arith: src * 8 @ @800b4a04:24: *(undefined4 *)(param_1 + 0x11c8) = 0x60;"
    },
    {
     "field": "chunk count",
     "from": "trace:record bytes",
     "value": 79,
-    "via": "arith: (src + 0x3ff) // 0x400 @ src/stage2/FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
+    "via": "arith: (src + 0x3ff) // 0x400 @ @800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
    },
    {
     "field": "words left when the tail chunk is issued",
     "from": "trace:+0x11a4 record_words_remaining",
     "value": 138,
-    "via": "arith: src - 0x100 * 78 @ src/stage2/FUN_800b4a04.c:35: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x11a4) - 0x100;"
+    "via": "arith: src - 0x100 * 78 @ @800b4a04:35: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x11a4) - 0x100;"
    },
    {
     "field": "tail chunk bytes",
     "from": "trace:words left when the tail chunk is issued",
     "value": 552,
-    "via": "arith: src * 4 @ src/stage2/FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
+    "via": "arith: src * 4 @ @800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
    },
    {
     "field": "+0x1208 rate",
     "from": "cartridge:MORT+6",
     "value": 16000,
-    "via": "arith: src @ src/stage2/FUN_800b3704.c:36: *(int *)(iVar3 + -0x7fea62d8) = param_2;"
+    "via": "arith: src @ @800b3704:36: *(int *)(iVar3 + -0x7fea62d8) = param_2;"
    },
    {
     "field": "+0x1214 pcm_capacity_alloc",
     "from": "trace:+0x1208 rate",
     "value": 4320,
-    "via": "arith: ((src << 3) // 0x1e + 0x9f) // 0xa0 * 0xa0 @ src/stage2/FUN_800b3704.c:42: *(uint *)(iVar3 + -0x7fea62cc) = (((uint)(param_2 << 3) / 0x1e + 0x9f) / 0xa0) * 0xa0;"
+    "via": "arith: ((src << 3) // 0x1e + 0x9f) // 0xa0 * 0xa0 @ @800b3704:42: *(uint *)(iVar3 + -0x7fea62cc) = (((uint)(param_2 << 3) / 0x1e + 0x9f) / 0xa0) * 0xa0;"
    },
    {
     "field": "+0x19c pcm_units",
     "from": "trace:+0x1214 pcm_capacity_alloc",
     "value": 4320,
-    "via": "arith: src @ src/stage2/FUN_800b4930.c:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"
+    "via": "arith: src @ @800b4930:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"
    },
    {
     "field": "buffer allocation bytes",
     "from": "trace:+0x1214 pcm_capacity_alloc",
     "value": 8648,
-    "via": "arith: (src + 4) * 2 @ src/stage2/FUN_800a9420.c:14:     return (a + 4) << 1;"
+    "via": "arith: (src + 4) * 2 @ @800a9420:14:     return (a + 4) << 1;"
    },
    {
     "field": "+0x11d8 units_written (whole clip)",
     "from": "trace:+0x11a0 blocks_remaining",
     "value": 415680,
-    "via": "arith: src * 160 @ src/stage2/FUN_800b4a04.c:75: *(int *)(param_1 + 0x11d8) = *(int *)(param_1 + 0x11d8) + 0xa0;"
+    "via": "arith: src * 160 @ @800b4a04:75: *(int *)(param_1 + 0x11d8) = *(int *)(param_1 + 0x11d8) + 0xa0;"
    }
   ]
  },
@@ -108,11 +108,11 @@
      "name": "flags_and_rate",
      "offset": 0,
      "reader": [
-      "src/stage2/FUN_800a54ec.c:65: if ((*(uint *)(param_2 + 4) & 0xf0000000) != 0x80000000) {"
+      "@800a54ec:65: if ((*(uint *)(param_2 + 4) & 0xf0000000) != 0x80000000) {"
      ],
      "width": 4,
      "writer": [
-      "src/stage2/FUN_800a924c.c:40: local_48 = param_4 | 0x400000;"
+      "@800a924c:40: local_48 = param_4 | 0x400000;"
      ]
     },
     {
@@ -122,11 +122,11 @@
      "name": "buffer",
      "offset": 4,
      "reader": [
-      "src/stage2/FUN_800a54ec.c:41: *(undefined4 *)(iVar1 + 0x2c) = *(undefined4 *)(param_2 + 4);"
+      "@800a54ec:41: *(undefined4 *)(iVar1 + 0x2c) = *(undefined4 *)(param_2 + 4);"
      ],
      "width": 4,
      "writer": [
-      "src/stage2/FUN_800a924c.c:44: local_44 = param_2;"
+      "@800a924c:44: local_44 = param_2;"
      ]
     },
     {
@@ -136,11 +136,11 @@
      "name": "position",
      "offset": 8,
      "reader": [
-      "src/stage2/FUN_800a54ec.c:42: dVar5 = (double)*(int *)(param_2 + 8);"
+      "@800a54ec:42: dVar5 = (double)*(int *)(param_2 + 8);"
      ],
      "width": 4,
      "writer": [
-      "src/stage2/FUN_800a924c.c:41: local_40 = 0;"
+      "@800a924c:41: local_40 = 0;"
      ]
     },
     {
@@ -150,11 +150,11 @@
      "name": "length_a",
      "offset": 12,
      "reader": [
-      "src/stage2/FUN_800a54ec.c:50: *(undefined4 *)(iVar1 + 0x30) = *(undefined4 *)(param_2 + 0xc);"
+      "@800a54ec:50: *(undefined4 *)(iVar1 + 0x30) = *(undefined4 *)(param_2 + 0xc);"
      ],
      "width": 4,
      "writer": [
-      "src/stage2/FUN_800a924c.c:45: local_3c = param_3;"
+      "@800a924c:45: local_3c = param_3;"
      ]
     },
     {
@@ -164,11 +164,11 @@
      "name": "length_b",
      "offset": 16,
      "reader": [
-      "src/stage2/FUN_800a54ec.c:51: *(undefined4 *)(iVar1 + 0x34) = *(undefined4 *)(param_2 + 0x10);"
+      "@800a54ec:51: *(undefined4 *)(iVar1 + 0x34) = *(undefined4 *)(param_2 + 0x10);"
      ],
      "width": 4,
      "writer": [
-      "src/stage2/FUN_800a924c.c:42: local_38 = 0;"
+      "@800a924c:42: local_38 = 0;"
      ]
     },
     {
@@ -178,11 +178,11 @@
      "name": "length_c",
      "offset": 20,
      "reader": [
-      "src/stage2/FUN_800a54ec.c:52: *(undefined4 *)(iVar1 + 0x38) = *(undefined4 *)(param_2 + 0x14);"
+      "@800a54ec:52: *(undefined4 *)(iVar1 + 0x38) = *(undefined4 *)(param_2 + 0x14);"
      ],
      "width": 4,
      "writer": [
-      "src/stage2/FUN_800a924c.c:46: local_34 = param_3;"
+      "@800a924c:46: local_34 = param_3;"
      ]
     },
     {
@@ -192,11 +192,11 @@
      "name": "mode",
      "offset": 24,
      "reader": [
-      "src/stage2/FUN_800a54ec.c:53: *(undefined1 *)(iVar1 + 0x5d) = *(undefined1 *)(param_2 + 0x18);"
+      "@800a54ec:53: *(undefined1 *)(iVar1 + 0x5d) = *(undefined1 *)(param_2 + 0x18);"
      ],
      "width": 1,
      "writer": [
-      "src/stage2/FUN_800a924c.c:43: local_30 = 0;"
+      "@800a924c:43: local_30 = 0;"
      ]
     }
    ],
@@ -210,11 +210,11 @@
       "name": "active",
       "offset": 0,
       "reader": [
-       "src/stage2/FUN_800a4560.c:35: if (*(char *)(iVar5 + _DAT_80143f0c) != '\\0') {"
+       "@800a4560:35: if (*(char *)(iVar5 + _DAT_80143f0c) != '\\0') {"
       ],
       "width": 1,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:22: *puVar4 = 0;"
+       "@800a54ec:22: *puVar4 = 0;"
       ]
      },
      {
@@ -226,7 +226,7 @@
       "reader": [],
       "width": 1,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:24: puVar4[1] = 1;"
+       "@800a54ec:24: puVar4[1] = 1;"
       ]
      },
      {
@@ -236,12 +236,12 @@
       "name": "voice_flags",
       "offset": 2,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:103: if ((*(ushort *)(param_1 + 2) & 1) == 0) {"
+       "@800a3bf4:103: if ((*(ushort *)(param_1 + 2) & 1) == 0) {"
       ],
       "width": 2,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:23: *(undefined2 *)(puVar4 + 2) = 0;",
-       "src/stage2/FUN_800a54ec.c:67: *(ushort *)(iVar1 + 2) = *(ushort *)(iVar1 + 2) | 1;"
+       "@800a54ec:23: *(undefined2 *)(puVar4 + 2) = 0;",
+       "@800a54ec:67: *(ushort *)(iVar1 + 2) = *(ushort *)(iVar1 + 2) | 1;"
       ]
      },
      {
@@ -251,12 +251,12 @@
       "name": "pitch_word",
       "offset": 4,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:272: puVar7[0x11] = *(ushort *)(param_1 + 4);"
+       "@800a3bf4:272: puVar7[0x11] = *(ushort *)(param_1 + 4);"
       ],
       "width": 2,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:21: *(undefined2 *)(puVar4 + 4) = 0x1000;",
-       "src/stage2/FUN_800a5a00.c:15: *(ushort *)(param_1 * 0x68 + _DAT_80143f0c + 4) = param_2;"
+       "@800a54ec:21: *(undefined2 *)(puVar4 + 4) = 0x1000;",
+       "@800a5a00:15: *(ushort *)(param_1 * 0x68 + _DAT_80143f0c + 4) = param_2;"
       ]
      },
      {
@@ -266,11 +266,11 @@
       "name": "position_double",
       "offset": 8,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:45: FUN_800a6258(*(undefined8 *)(param_1 + 8));"
+       "@800a3bf4:45: FUN_800a6258(*(undefined8 *)(param_1 + 8));"
       ],
       "width": 8,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:46: *(double *)(iVar1 + 8) = dVar5;"
+       "@800a54ec:46: *(double *)(iVar1 + 8) = dVar5;"
       ]
      },
      {
@@ -280,12 +280,12 @@
       "name": "position_integer",
       "offset": 16,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:113: *(uint *)(puVar7 + 0x18) = *(int *)(param_1 + 0x2c) + (local_44 & 0xfffc) * 2;"
+       "@800a3bf4:113: *(uint *)(puVar7 + 0x18) = *(int *)(param_1 + 0x2c) + (local_44 & 0xfffc) * 2;"
       ],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:49: *(undefined4 *)(iVar1 + 0x10) = uVar2;",
-       "src/stage2/FUN_800a485c.c:31: *(uint *)(pcVar2 + 0x10) = (int)(dVar4 - 2147483648.0) | 0x80000000;"
+       "@800a54ec:49: *(undefined4 *)(iVar1 + 0x10) = uVar2;",
+       "@800a485c:31: *(uint *)(pcVar2 + 0x10) = (int)(dVar4 - 2147483648.0) | 0x80000000;"
       ]
      },
      {
@@ -297,8 +297,8 @@
       "reader": [],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:48: *(undefined4 *)(iVar1 + 0x14) = uVar2;",
-       "src/stage2/FUN_800a485c.c:26: *(undefined4 *)(pcVar2 + 0x14) = *(undefined4 *)(pcVar2 + 0x10);"
+       "@800a54ec:48: *(undefined4 *)(iVar1 + 0x14) = uVar2;",
+       "@800a485c:26: *(undefined4 *)(pcVar2 + 0x14) = *(undefined4 *)(pcVar2 + 0x10);"
       ]
      },
      {
@@ -308,12 +308,12 @@
       "name": "gain_current",
       "offset": 24,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:243: *(int *)puVar7 = (int)*(short *)(param_1 + 0x18) << 0x10;"
+       "@800a3bf4:243: *(int *)puVar7 = (int)*(short *)(param_1 + 0x18) << 0x10;"
       ],
       "width": 2,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:25: *(undefined2 *)(puVar4 + 0x18) = 0;",
-       "src/stage2/FUN_800a3bf4.c:248: (short)(int)((float)(int)*(short *)(param_1 + 0x40) * *(float *)(param_1 + 0x4c));"
+       "@800a54ec:25: *(undefined2 *)(puVar4 + 0x18) = 0;",
+       "@800a3bf4:248: (short)(int)((float)(int)*(short *)(param_1 + 0x40) * *(float *)(param_1 + 0x4c));"
       ]
      },
      {
@@ -323,11 +323,11 @@
       "name": "pcm_base",
       "offset": 44,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:119: *(uint *)(puVar7 + 0x12) = *(int *)(param_1 + 0x2c) + (local_48 & 0xfffc) * 2;"
+       "@800a3bf4:119: *(uint *)(puVar7 + 0x12) = *(int *)(param_1 + 0x2c) + (local_48 & 0xfffc) * 2;"
       ],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:41: *(undefined4 *)(iVar1 + 0x2c) = *(undefined4 *)(param_2 + 4);"
+       "@800a54ec:41: *(undefined4 *)(iVar1 + 0x2c) = *(undefined4 *)(param_2 + 4);"
       ]
      },
      {
@@ -337,11 +337,11 @@
       "name": "buffer_end",
       "offset": 48,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:61: if (local_48 + iVar10 < *(uint *)(param_1 + 0x30)) goto LAB_800a3dfc;"
+       "@800a3bf4:61: if (local_48 + iVar10 < *(uint *)(param_1 + 0x30)) goto LAB_800a3dfc;"
       ],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:50: *(undefined4 *)(iVar1 + 0x30) = *(undefined4 *)(param_2 + 0xc);"
+       "@800a54ec:50: *(undefined4 *)(iVar1 + 0x30) = *(undefined4 *)(param_2 + 0xc);"
       ]
      },
      {
@@ -351,11 +351,11 @@
       "name": "loop_start",
       "offset": 52,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:57: uVar8 = *(int *)(param_1 + 0x34) + uVar2;"
+       "@800a3bf4:57: uVar8 = *(int *)(param_1 + 0x34) + uVar2;"
       ],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:51: *(undefined4 *)(iVar1 + 0x34) = *(undefined4 *)(param_2 + 0x10);"
+       "@800a54ec:51: *(undefined4 *)(iVar1 + 0x34) = *(undefined4 *)(param_2 + 0x10);"
       ]
      },
      {
@@ -365,11 +365,11 @@
       "name": "loop_end",
       "offset": 56,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:56: uVar2 = *(uint *)(param_1 + 0x38);"
+       "@800a3bf4:56: uVar2 = *(uint *)(param_1 + 0x38);"
       ],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:52: *(undefined4 *)(iVar1 + 0x38) = *(undefined4 *)(param_2 + 0x14);"
+       "@800a54ec:52: *(undefined4 *)(iVar1 + 0x38) = *(undefined4 *)(param_2 + 0x14);"
       ]
      },
      {
@@ -379,12 +379,12 @@
       "name": "loop_length",
       "offset": 60,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:58: if ((uVar2 == 0) ||"
+       "@800a3bf4:58: if ((uVar2 == 0) ||"
       ],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:59: uVar3 = *(int *)(iVar1 + 0x30) - (*(int *)(iVar1 + 0x34) + *(int *)(iVar1 + 0x38));",
-       "src/stage2/FUN_800a54ec.c:62: *(undefined4 *)(iVar1 + 0x3c) = 0;"
+       "@800a54ec:59: uVar3 = *(int *)(iVar1 + 0x30) - (*(int *)(iVar1 + 0x34) + *(int *)(iVar1 + 0x38));",
+       "@800a54ec:62: *(undefined4 *)(iVar1 + 0x3c) = 0;"
       ]
      },
      {
@@ -394,12 +394,12 @@
       "name": "gain_target_0",
       "offset": 64,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:249: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x40) * *(float *)(param_1 + 0x4c)) * 0x10000 -"
+       "@800a3bf4:249: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x40) * *(float *)(param_1 + 0x4c)) * 0x10000 -"
       ],
       "width": 2,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:29: *(undefined2 *)(puVar4 + 0x40) = 0;",
-       "src/stage2/FUN_800a5a60.c:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,iVar1 + 0x44,param_5,iVar1 + 0x46);"
+       "@800a54ec:29: *(undefined2 *)(puVar4 + 0x40) = 0;",
+       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,iVar1 + 0x44,param_5,iVar1 + 0x46);"
       ]
      },
      {
@@ -409,12 +409,12 @@
       "name": "gain_target_1",
       "offset": 66,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:255: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x42) * *(float *)(param_1 + 0x4c)) * 0x10000 -"
+       "@800a3bf4:255: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x42) * *(float *)(param_1 + 0x4c)) * 0x10000 -"
       ],
       "width": 2,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:30: *(undefined2 *)(puVar4 + 0x42) = 0;",
-       "src/stage2/FUN_800a5a60.c:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,iVar1 + 0x44,param_5,iVar1 + 0x46);"
+       "@800a54ec:30: *(undefined2 *)(puVar4 + 0x42) = 0;",
+       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,iVar1 + 0x44,param_5,iVar1 + 0x46);"
       ]
      },
      {
@@ -424,12 +424,12 @@
       "name": "gain_target_2",
       "offset": 68,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:261: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x44) * *(float *)(param_1 + 0x4c)) * 0x10000 -"
+       "@800a3bf4:261: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x44) * *(float *)(param_1 + 0x4c)) * 0x10000 -"
       ],
       "width": 2,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:31: *(undefined2 *)(puVar4 + 0x44) = 0;",
-       "src/stage2/FUN_800a5da0.c:32: *param_6 = (short)(int)(fVar3 * ((1.0 - fVar2) * *(float *)(&DAT_80136304 + (param_5 >> 0x16) * 4)"
+       "@800a54ec:31: *(undefined2 *)(puVar4 + 0x44) = 0;",
+       "@800a5da0:32: *param_6 = (short)(int)(fVar3 * ((1.0 - fVar2) * *(float *)(&DAT_80136304 + (param_5 >> 0x16) * 4)"
       ]
      },
      {
@@ -439,12 +439,12 @@
       "name": "gain_target_3",
       "offset": 70,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:265: fVar14 = (float)(int)*(short *)(param_1 + 0x46) * *(float *)(param_1 + 0x4c);"
+       "@800a3bf4:265: fVar14 = (float)(int)*(short *)(param_1 + 0x46) * *(float *)(param_1 + 0x4c);"
       ],
       "width": 2,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:32: *(undefined2 *)(puVar4 + 0x46) = 0;",
-       "src/stage2/FUN_800a5a60.c:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,iVar1 + 0x44,param_5,iVar1 + 0x46);"
+       "@800a54ec:32: *(undefined2 *)(puVar4 + 0x46) = 0;",
+       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,iVar1 + 0x44,param_5,iVar1 + 0x46);"
       ]
      },
      {
@@ -454,17 +454,17 @@
       "name": "record_mode",
       "offset": 93,
       "reader": [
-       "src/stage2/FUN_800a3bf4.c:104: if (param_1[0x5d] == '\\0') {"
+       "@800a3bf4:104: if (param_1[0x5d] == '\\0') {"
       ],
       "width": 1,
       "writer": [
-       "src/stage2/FUN_800a54ec.c:53: *(undefined1 *)(iVar1 + 0x5d) = *(undefined1 *)(param_2 + 0x18);"
+       "@800a54ec:53: *(undefined1 *)(iVar1 + 0x5d) = *(undefined1 *)(param_2 + 0x18);"
       ]
      }
     ],
     "stride": 104,
     "stride_evidence": [
-     "src/stage2/FUN_800a54ec.c:20: puVar4 = (undefined1 *)(_DAT_80143f0c + (param_1 & 0xffff) * 0x68);"
+     "@800a54ec:20: puVar4 = (undefined1 *)(_DAT_80143f0c + (param_1 & 0xffff) * 0x68);"
     ]
    },
    "handle": {
@@ -477,11 +477,11 @@
       "name": "started",
       "offset": 0,
       "reader": [
-       "src/stage2/FUN_800a942c.c:14: if ((&DAT_801481e0)[param_1 * 0x18] == '\\x01') {"
+       "@800a942c:14: if ((&DAT_801481e0)[param_1 * 0x18] == '\\x01') {"
       ],
       "width": 1,
       "writer": [
-       "src/stage2/FUN_800a924c.c:38: (&DAT_801481e0)[iVar2] = 1;"
+       "@800a924c:38: (&DAT_801481e0)[iVar2] = 1;"
       ]
      },
      {
@@ -491,11 +491,11 @@
       "name": "refill_callback",
       "offset": 4,
       "reader": [
-       "src/stage2/FUN_800b4478.c:14: FUN_800b4d30(param_5 + -0x7fea74e0,param_2 + param_4);"
+       "@800b4478:14: FUN_800b4d30(param_5 + -0x7fea74e0,param_2 + param_4);"
       ],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a924c.c:37: *(undefined4 *)(&DAT_801481e4 + iVar2) = param_9;"
+       "@800a924c:37: *(undefined4 *)(&DAT_801481e4 + iVar2) = param_9;"
       ]
      },
      {
@@ -507,7 +507,7 @@
       "reader": [],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a924c.c:34: *(undefined4 *)(&DAT_801481e8 + iVar2) = param_2;"
+       "@800a924c:34: *(undefined4 *)(&DAT_801481e8 + iVar2) = param_2;"
       ]
      },
      {
@@ -519,7 +519,7 @@
       "reader": [],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a924c.c:35: *(undefined4 *)(&DAT_801481ec + iVar2) = param_3;"
+       "@800a924c:35: *(undefined4 *)(&DAT_801481ec + iVar2) = param_3;"
       ]
      },
      {
@@ -531,7 +531,7 @@
       "reader": [],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a924c.c:36: *(undefined4 *)(&DAT_801481f0 + iVar2) = 0;"
+       "@800a924c:36: *(undefined4 *)(&DAT_801481f0 + iVar2) = 0;"
       ]
      },
      {
@@ -541,24 +541,24 @@
       "name": "voice_slot",
       "offset": 20,
       "reader": [
-       "src/stage2/FUN_800b4478.c:13: param_5 = param_5 * 0x1228;"
+       "@800b4478:13: param_5 = param_5 * 0x1228;"
       ],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a924c.c:39: *(undefined4 *)(&DAT_801481f4 + iVar2) = param_10;"
+       "@800a924c:39: *(undefined4 *)(&DAT_801481f4 + iVar2) = param_10;"
       ]
      }
     ],
     "stride": 24,
     "stride_evidence": [
-     "src/stage2/FUN_800a924c.c:33: iVar2 = iVar1 * 0x18;"
+     "@800a924c:33: iVar2 = iVar1 * 0x18;"
     ]
    },
    "name": "engine_handoff",
    "task": {
     "base": "0x80143c60",
     "evidence": [
-     "src/stage2/FUN_800a2e40.c:29: (*_DAT_80143ff0)(&DAT_80143c60);"
+     "@800a2e40:29: (*_DAT_80143ff0)(&DAT_80143c60);"
     ],
     "fields": [
      {
@@ -570,7 +570,7 @@
       "reader": [],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a2e40.c:18: _DAT_80143c60 = 2;"
+       "@800a2e40:18: _DAT_80143c60 = 2;"
       ]
      },
      {
@@ -582,8 +582,8 @@
       "reader": [],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a2e40.c:20: _DAT_80143c70 = &DAT_800b2700;",
-       "src/stage2/FUN_800a2e40.c:21: _DAT_80143c74 = 0x1000;"
+       "@800a2e40:20: _DAT_80143c70 = &DAT_800b2700;",
+       "@800a2e40:21: _DAT_80143c74 = 0x1000;"
       ]
      },
      {
@@ -595,8 +595,8 @@
       "reader": [],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a2e40.c:26: _DAT_80143c90 = _DAT_80143f50;",
-       "src/stage2/FUN_800a2e40.c:28: func_0x8000efa0(_DAT_80143f50,uVar1 * 0xa10);"
+       "@800a2e40:26: _DAT_80143c90 = _DAT_80143f50;",
+       "@800a2e40:28: func_0x8000efa0(_DAT_80143f50,uVar1 * 0xa10);"
       ]
      },
      {
@@ -608,7 +608,7 @@
       "reader": [],
       "width": 4,
       "writer": [
-       "src/stage2/FUN_800a2e40.c:27: _DAT_80143c94 = uVar1;"
+       "@800a2e40:27: _DAT_80143c94 = uVar1;"
       ]
      }
     ],
@@ -619,8 +619,8 @@
   },
   "end": "0x8015af70",
   "end_evidence": [
-   "src/stage2/FUN_800b3640.c:27: *(int *)(param_1 * 0x1228 + -0x7fea62bc) = _DAT_8015af70;",
-   "src/stage2/FUN_800b3704.c:27: iVar3 = iVar3 + 0x1228;"
+   "@800b3640:27: *(int *)(param_1 * 0x1228 + -0x7fea62bc) = _DAT_8015af70;",
+   "@800b3704:27: iVar3 = iVar3 + 0x1228;"
   ],
   "fields": [
    {
@@ -630,12 +630,12 @@
     "name": "predictor_period",
     "offset": 358,
     "reader": [
-     "src/stage2/FUN_800b63b4.c:20: iVar6 = (int)(short)param_1[0xb3];"
+     "@800b63b4:20: iVar6 = (int)(short)param_1[0xb3];"
     ],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b4930.c:13: *(undefined2 *)(param_1 + 0x166) = 0x28;",
-     "src/stage2/FUN_800b63b4.c:24: param_1[0xb3] = (short)iVar6;"
+     "@800b4930:13: *(undefined2 *)(param_1 + 0x166) = 0x28;",
+     "@800b63b4:24: param_1[0xb3] = (short)iVar6;"
     ]
    },
    {
@@ -645,11 +645,11 @@
     "name": "coefficient_banks",
     "offset": 360,
     "reader": [
-     "src/stage2/FUN_800b4dc0.c:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) * 0x10 + 0x168);"
+     "@800b4dc0:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) * 0x10 + 0x168);"
     ],
     "width": 32,
     "writer": [
-     "src/stage2/FUN_800b4dc0.c:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) * 0x10 + 0x168);"
+     "@800b4dc0:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) * 0x10 + 0x168);"
     ]
    },
    {
@@ -659,11 +659,11 @@
     "name": "bank_select",
     "offset": 392,
     "reader": [
-     "src/stage2/FUN_800b4dc0.c:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) * 0x10 + 0x168);"
+     "@800b4dc0:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) * 0x10 + 0x168);"
     ],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b4dc0.c:34: *(ushort *)(param_1 + 0x188) = *(ushort *)(param_1 + 0x188) ^ 1;"
+     "@800b4dc0:34: *(ushort *)(param_1 + 0x188) = *(ushort *)(param_1 + 0x188) ^ 1;"
     ]
    },
    {
@@ -673,12 +673,12 @@
     "name": "reader_cursor_a",
     "offset": 394,
     "reader": [
-     "src/stage2/FUN_800b53f4.c:72: if (*(short *)(param_1 + 0x18a) == 0) {"
+     "@800b53f4:72: if (*(short *)(param_1 + 0x18a) == 0) {"
     ],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b53f4.c:94: *(ushort *)(param_1 + 0x18a) = uVar5;",
-     "src/stage2/FUN_800b53f4.c:591: *(short *)(param_1 + 0x18a) = *(short *)(param_1 + 0x18a) + -1;"
+     "@800b53f4:94: *(ushort *)(param_1 + 0x18a) = uVar5;",
+     "@800b53f4:591: *(short *)(param_1 + 0x18a) = *(short *)(param_1 + 0x18a) + -1;"
     ]
    },
    {
@@ -688,12 +688,12 @@
     "name": "reader_cursor_b",
     "offset": 396,
     "reader": [
-     "src/stage2/FUN_800b53f4.c:73: if (*(short *)(param_1 + 0x18c) == 0) {"
+     "@800b53f4:73: if (*(short *)(param_1 + 0x18c) == 0) {"
     ],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b53f4.c:114: *(ushort *)(param_1 + 0x18c) = uVar5;",
-     "src/stage2/FUN_800b53f4.c:612: *(short *)(param_1 + 0x18c) = *(short *)(param_1 + 0x18c) + -1;"
+     "@800b53f4:114: *(ushort *)(param_1 + 0x18c) = uVar5;",
+     "@800b53f4:612: *(short *)(param_1 + 0x18c) = *(short *)(param_1 + 0x18c) + -1;"
     ]
    },
    {
@@ -703,11 +703,11 @@
     "name": "dma_callback",
     "offset": 400,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:54: (**(code **)(param_1 + 400))"
+     "@800b4a04:54: (**(code **)(param_1 + 400))"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:18: *(int *)(param_1 + 400) = param_5;"
+     "@800b4930:18: *(int *)(param_1 + 400) = param_5;"
     ]
    },
    {
@@ -717,11 +717,11 @@
     "name": "source_rom",
     "offset": 404,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:55: (*(int *)(param_1 + 0x194) + *(uint *)(param_1 + 0x11d0),"
+     "@800b4a04:55: (*(int *)(param_1 + 0x194) + *(uint *)(param_1 + 0x11d0),"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:14: *(int *)(param_1 + 0x194) = param_2;"
+     "@800b4930:14: *(int *)(param_1 + 0x194) = param_2;"
     ]
    },
    {
@@ -731,11 +731,11 @@
     "name": "pcm_buffer",
     "offset": 408,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:70: FUN_800b53f4(param_1,*(int *)(param_1 + 0x198) +"
+     "@800b4a04:70: FUN_800b53f4(param_1,*(int *)(param_1 + 0x198) +"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:15: *(undefined4 *)(param_1 + 0x198) = param_3;"
+     "@800b4930:15: *(undefined4 *)(param_1 + 0x198) = param_3;"
     ]
    },
    {
@@ -745,11 +745,11 @@
     "name": "pcm_units",
     "offset": 412,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:71: (*(uint *)(param_1 + 0x11d8) % *(uint *)(param_1 + 0x19c) >> 2) * 8);"
+     "@800b4a04:71: (*(uint *)(param_1 + 0x11d8) % *(uint *)(param_1 + 0x19c) >> 2) * 8);"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"
+     "@800b4930:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"
     ]
    },
    {
@@ -759,14 +759,14 @@
     "name": "blocks_remaining",
     "offset": 4512,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:63: if ((((*(char *)(param_1 + 0x11dd) != '\\x01') && (*(short *)(param_1 + 0x11a0) == 0)) ||",
-     "src/stage2/func_800b3b9c.c:43: *(float *)(iVar3 + 0x1220) = ((float)*(ushort *)(iVar3 + 0x11a0) * 160.0) / fVar5;"
+     "@800b4a04:63: if ((((*(char *)(param_1 + 0x11dd) != '\\x01') && (*(short *)(param_1 + 0x11a0) == 0)) ||",
+     "@800b3b9c:43: *(float *)(iVar3 + 0x1220) = ((float)*(ushort *)(iVar3 + 0x11a0) * 160.0) / fVar5;"
     ],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b4930.c:29: *(undefined2 *)(param_1 + 0x11a0) = 0;",
-     "src/stage2/FUN_800b4a04.c:25: *(undefined2 *)(param_1 + 0x11a0) = *(undefined2 *)(param_1 + 0x1a4);",
-     "src/stage2/FUN_800b4a04.c:73: *(short *)(param_1 + 0x11a0) = sVar3;"
+     "@800b4930:29: *(undefined2 *)(param_1 + 0x11a0) = 0;",
+     "@800b4a04:25: *(undefined2 *)(param_1 + 0x11a0) = *(undefined2 *)(param_1 + 0x1a4);",
+     "@800b4a04:73: *(short *)(param_1 + 0x11a0) = sVar3;"
     ]
    },
    {
@@ -778,8 +778,8 @@
     "reader": [],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b4930.c:27: *(undefined2 *)(param_1 + 0x11a2) = 0;",
-     "src/stage2/FUN_800b4a04.c:26: *(short *)(param_1 + 0x11a2) = (short)*(undefined4 *)(param_1 + 0x1a4);"
+     "@800b4930:27: *(undefined2 *)(param_1 + 0x11a2) = 0;",
+     "@800b4a04:26: *(short *)(param_1 + 0x11a2) = (short)*(undefined4 *)(param_1 + 0x1a4);"
     ]
    },
    {
@@ -789,13 +789,13 @@
     "name": "record_words_remaining",
     "offset": 4516,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
+     "@800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:28: *(undefined4 *)(param_1 + 0x11a4) = 0;",
-     "src/stage2/FUN_800b4a04.c:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;",
-     "src/stage2/FUN_800b4a04.c:35: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x11a4) - 0x100;"
+     "@800b4930:28: *(undefined4 *)(param_1 + 0x11a4) = 0;",
+     "@800b4a04:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;",
+     "@800b4a04:35: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x11a4) - 0x100;"
     ]
    },
    {
@@ -805,13 +805,13 @@
     "name": "drain_budget",
     "offset": 4520,
     "reader": [
-     "src/stage2/FUN_800b4d30.c:17: iVar2 = *(int *)(param_1 + 0x11a8) - param_2;"
+     "@800b4d30:17: iVar2 = *(int *)(param_1 + 0x11a8) - param_2;"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:17: *(undefined4 *)(param_1 + 0x11a8) = 0;",
-     "src/stage2/FUN_800b4a04.c:77: *(undefined4 *)(param_1 + 0x11a8) = *(undefined4 *)(param_1 + 0x19c);",
-     "src/stage2/FUN_800b4d30.c:18: if ((0 < *(int *)(param_1 + 0x11a8)) && (*(int *)(param_1 + 0x11a8) = iVar2, iVar2 < 1)) {"
+     "@800b4930:17: *(undefined4 *)(param_1 + 0x11a8) = 0;",
+     "@800b4a04:77: *(undefined4 *)(param_1 + 0x11a8) = *(undefined4 *)(param_1 + 0x19c);",
+     "@800b4d30:18: if ((0 < *(int *)(param_1 + 0x11a8)) && (*(int *)(param_1 + 0x11a8) = iVar2, iVar2 < 1)) {"
     ]
    },
    {
@@ -821,11 +821,11 @@
     "name": "dma_queue",
     "offset": 4524,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:20: iVar1 = osRecvMesg(param_1 + 0x11ac,0,0);"
+     "@800b4a04:20: iVar1 = osRecvMesg(param_1 + 0x11ac,0,0);"
     ],
     "width": 24,
     "writer": [
-     "src/stage2/FUN_800b4930.c:19: osCreateMesgQueue(param_1 + 0x11ac,param_1 + 0x11c4,1);"
+     "@800b4930:19: osCreateMesgQueue(param_1 + 0x11ac,param_1 + 0x11c4,1);"
     ]
    },
    {
@@ -837,7 +837,7 @@
     "reader": [],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:19: osCreateMesgQueue(param_1 + 0x11ac,param_1 + 0x11c4,1);"
+     "@800b4930:19: osCreateMesgQueue(param_1 + 0x11ac,param_1 + 0x11c4,1);"
     ]
    },
    {
@@ -847,12 +847,12 @@
     "name": "bit_cursor",
     "offset": 4552,
     "reader": [
-     "src/stage2/FUN_800b53f4.c:67: uVar14 = *(uint *)(param_1 + 0x11c8);"
+     "@800b53f4:67: uVar14 = *(uint *)(param_1 + 0x11c8);"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:30: *(undefined4 *)(param_1 + 0x11c8) = 0;",
-     "src/stage2/FUN_800b4a04.c:24: *(undefined4 *)(param_1 + 0x11c8) = 0x60;"
+     "@800b4930:30: *(undefined4 *)(param_1 + 0x11c8) = 0;",
+     "@800b4a04:24: *(undefined4 *)(param_1 + 0x11c8) = 0x60;"
     ]
    },
    {
@@ -862,12 +862,12 @@
     "name": "ring_consumed",
     "offset": 4556,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:42: ((uint)(*(int *)(param_1 + 0x11d0) - *(int *)(param_1 + 0x11cc)) < 0xc01)) {"
+     "@800b4a04:42: ((uint)(*(int *)(param_1 + 0x11d0) - *(int *)(param_1 + 0x11cc)) < 0xc01)) {"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:32: *(undefined4 *)(param_1 + 0x11cc) = 0;",
-     "src/stage2/FUN_800b4a04.c:74: *(uint *)(param_1 + 0x11cc) = *(uint *)(param_1 + 0x11c8) >> 3 & 0xfffffffc;"
+     "@800b4930:32: *(undefined4 *)(param_1 + 0x11cc) = 0;",
+     "@800b4a04:74: *(uint *)(param_1 + 0x11cc) = *(uint *)(param_1 + 0x11c8) >> 3 & 0xfffffffc;"
     ]
    },
    {
@@ -877,12 +877,12 @@
     "name": "rom_offset",
     "offset": 4560,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:43: if (*(int *)(param_1 + 0x11d0) == 0) {"
+     "@800b4a04:43: if (*(int *)(param_1 + 0x11d0) == 0) {"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:31: *(undefined4 *)(param_1 + 0x11d0) = 0;",
-     "src/stage2/FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
+     "@800b4930:31: *(undefined4 *)(param_1 + 0x11d0) = 0;",
+     "@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
     ]
    },
    {
@@ -892,12 +892,12 @@
     "name": "units_delivered",
     "offset": 4564,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:60: if ((uint)(*(int *)(param_1 + 0x11d8) - *(int *)(param_1 + 0x11d4)) <"
+     "@800b4a04:60: if ((uint)(*(int *)(param_1 + 0x11d8) - *(int *)(param_1 + 0x11d4)) <"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:34: *(undefined4 *)(param_1 + 0x11d4) = 0;",
-     "src/stage2/FUN_800b4d30.c:26: *(uint *)(param_1 + 0x11d4) = *(int *)(param_1 + 0x11d4) + uVar1;"
+     "@800b4930:34: *(undefined4 *)(param_1 + 0x11d4) = 0;",
+     "@800b4d30:26: *(uint *)(param_1 + 0x11d4) = *(int *)(param_1 + 0x11d4) + uVar1;"
     ]
    },
    {
@@ -907,12 +907,12 @@
     "name": "units_written",
     "offset": 4568,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:71: (*(uint *)(param_1 + 0x11d8) % *(uint *)(param_1 + 0x19c) >> 2) * 8);"
+     "@800b4a04:71: (*(uint *)(param_1 + 0x11d8) % *(uint *)(param_1 + 0x19c) >> 2) * 8);"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4930.c:33: *(undefined4 *)(param_1 + 0x11d8) = 0;",
-     "src/stage2/FUN_800b4a04.c:75: *(int *)(param_1 + 0x11d8) = *(int *)(param_1 + 0x11d8) + 0xa0;"
+     "@800b4930:33: *(undefined4 *)(param_1 + 0x11d8) = 0;",
+     "@800b4a04:75: *(int *)(param_1 + 0x11d8) = *(int *)(param_1 + 0x11d8) + 0xa0;"
     ]
    },
    {
@@ -922,30 +922,30 @@
     "name": "dma_in_flight",
     "offset": 4572,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:19: if (*(char *)(param_1 + 0x11dc) != '\\0') {"
+     "@800b4a04:19: if (*(char *)(param_1 + 0x11dc) != '\\0') {"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b4930.c:26: *(undefined1 *)(param_1 + 0x11dc) = 0;",
-     "src/stage2/FUN_800b4a04.c:53: *(undefined1 *)(param_1 + 0x11dc) = 1;"
+     "@800b4930:26: *(undefined1 *)(param_1 + 0x11dc) = 0;",
+     "@800b4a04:53: *(undefined1 *)(param_1 + 0x11dc) = 1;"
     ]
    },
    {
     "confidence": "established",
     "evidence": "instruction 0x800b49b0 (sb)",
-    "meaning": "the reader's phase: 0 idle, 1 armed (a source and a callback exist), 2 primed (the engine voice is live and the PCM has been consumed once), 3 draining, 4 done. Only 3 accepts pulls from the callback (FUN_800b4d30.c:16), so a chunk is never handed over before its PCM exists",
+    "meaning": "the reader's phase: 0 idle, 1 armed (a source and a callback exist), 2 primed (the engine voice is live and the PCM has been consumed once), 3 draining, 4 done. Only 3 accepts pulls from the callback (0x800b4d30:16), so a chunk is never handed over before its PCM exists",
     "name": "stream_state",
     "offset": 4573,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:41: if (((*(byte *)(param_1 + 0x11dd) - 1 < 2) || (*(byte *)(param_1 + 0x11dd) == 3)) &&"
+     "@800b4a04:41: if (((*(byte *)(param_1 + 0x11dd) - 1 < 2) || (*(byte *)(param_1 + 0x11dd) == 3)) &&"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b4930.c:24: *(undefined1 *)(param_1 + 0x11dd) = 1;",
-     "src/stage2/FUN_800b4a04.c:102: *(undefined1 *)(param_1 + 0x11dd) = 2;",
-     "src/stage2/FUN_800b4d90.c:17:         p[4573] = 3;",
-     "src/stage2/FUN_800b4d30.c:19: *(undefined1 *)(param_1 + 0x11dd) = 4;",
-     "src/stage2/FUN_800b4dac.c:14:     p[4573] = 4;"
+     "@800b4930:24: *(undefined1 *)(param_1 + 0x11dd) = 1;",
+     "@800b4a04:102: *(undefined1 *)(param_1 + 0x11dd) = 2;",
+     "@800b4d90:17:         p[4573] = 3;",
+     "@800b4d30:19: *(undefined1 *)(param_1 + 0x11dd) = 4;",
+     "@800b4dac:14:     p[4573] = 4;"
     ]
    },
    {
@@ -955,11 +955,11 @@
     "name": "pass_budget",
     "offset": 4574,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:18: uVar5 = (uint)*(byte *)(param_1 + 0x11de);"
+     "@800b4a04:18: uVar5 = (uint)*(byte *)(param_1 + 0x11de);"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b4930.c:35: *(undefined1 *)(param_1 + 0x11de) = 2;"
+     "@800b4930:35: *(undefined1 *)(param_1 + 0x11de) = 2;"
     ]
    },
    {
@@ -969,13 +969,13 @@
     "name": "slot_state",
     "offset": 4608,
     "reader": [
-     "src/stage2/FUN_800b3704.c:25: if (*(char *)(iVar3 + 0x1200) == '\\0') break;"
+     "@800b3704:25: if (*(char *)(iVar3 + 0x1200) == '\\0') break;"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b3704.c:62: (&DAT_80159d20)[iVar3] = 1;",
-     "src/stage2/func_800b3b9c.c:45: *(undefined1 *)(iVar3 + 0x1200) = 2;",
-     "src/stage2/FUN_800b40c4.c:29: *(undefined1 *)(iVar3 + 0x1200) = 0;"
+     "@800b3704:62: (&DAT_80159d20)[iVar3] = 1;",
+     "@800b3b9c:45: *(undefined1 *)(iVar3 + 0x1200) = 2;",
+     "@800b40c4:29: *(undefined1 *)(iVar3 + 0x1200) = 0;"
     ]
    },
    {
@@ -985,11 +985,11 @@
     "name": "param_a",
     "offset": 4609,
     "reader": [
-     "src/stage2/func_800b3b9c.c:49: *(undefined1 *)(iVar3 + 0x1201),*(undefined1 *)(iVar3 + 0x1202),"
+     "@800b3b9c:49: *(undefined1 *)(iVar3 + 0x1201),*(undefined1 *)(iVar3 + 0x1202),"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b3704.c:37: *(undefined1 *)(iVar3 + -0x7fea62df) = param_4;"
+     "@800b3704:37: *(undefined1 *)(iVar3 + -0x7fea62df) = param_4;"
     ]
    },
    {
@@ -999,11 +999,11 @@
     "name": "param_b",
     "offset": 4610,
     "reader": [
-     "src/stage2/func_800b3b9c.c:49: *(undefined1 *)(iVar3 + 0x1201),*(undefined1 *)(iVar3 + 0x1202),"
+     "@800b3b9c:49: *(undefined1 *)(iVar3 + 0x1201),*(undefined1 *)(iVar3 + 0x1202),"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b3704.c:38: *(undefined1 *)(iVar3 + -0x7fea62de) = param_5;"
+     "@800b3704:38: *(undefined1 *)(iVar3 + -0x7fea62de) = param_5;"
     ]
    },
    {
@@ -1013,11 +1013,11 @@
     "name": "param_c",
     "offset": 4611,
     "reader": [
-     "src/stage2/func_800b3b9c.c:50: *(undefined1 *)(iVar3 + 0x1203),*(undefined1 *)(iVar3 + 0x1219),"
+     "@800b3b9c:50: *(undefined1 *)(iVar3 + 0x1203),*(undefined1 *)(iVar3 + 0x1219),"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b3704.c:39: *(undefined1 *)(iVar3 + -0x7fea62dd) = param_6;"
+     "@800b3704:39: *(undefined1 *)(iVar3 + -0x7fea62dd) = param_6;"
     ]
    },
    {
@@ -1027,11 +1027,11 @@
     "name": "param_d",
     "offset": 4633,
     "reader": [
-     "src/stage2/func_800b3b9c.c:50: *(undefined1 *)(iVar3 + 0x1203),*(undefined1 *)(iVar3 + 0x1219),"
+     "@800b3b9c:50: *(undefined1 *)(iVar3 + 0x1203),*(undefined1 *)(iVar3 + 0x1219),"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b3704.c:40: *(undefined1 *)(iVar3 + -0x7fea62c7) = param_7;"
+     "@800b3704:40: *(undefined1 *)(iVar3 + -0x7fea62c7) = param_7;"
     ]
    },
    {
@@ -1041,11 +1041,11 @@
     "name": "engine_key",
     "offset": 4612,
     "reader": [
-     "src/stage2/func_800b3b9c.c:47: iVar2 = FUN_800a924c(*(undefined1 *)(iVar3 + 0x1204),*(undefined4 *)(iVar3 + 0x1210),"
+     "@800b3b9c:47: iVar2 = FUN_800a924c(*(undefined1 *)(iVar3 + 0x1204),*(undefined4 *)(iVar3 + 0x1210),"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/FUN_800b3704.c:35: *(undefined1 *)(iVar3 + -0x7fea62dc) = param_3;"
+     "@800b3704:35: *(undefined1 *)(iVar3 + -0x7fea62dc) = param_3;"
     ]
    },
    {
@@ -1055,11 +1055,11 @@
     "name": "rate",
     "offset": 4616,
     "reader": [
-     "src/stage2/func_800b3b9c.c:36: iVar2 = *(int *)(iVar3 + 0x1208);"
+     "@800b3b9c:36: iVar2 = *(int *)(iVar3 + 0x1208);"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b3704.c:36: *(int *)(iVar3 + -0x7fea62d8) = param_2;"
+     "@800b3704:36: *(int *)(iVar3 + -0x7fea62d8) = param_2;"
     ]
    },
    {
@@ -1069,12 +1069,12 @@
     "name": "engine_handle",
     "offset": 4620,
     "reader": [
-     "src/stage2/func_800b3b9c.c:66: FUN_800a942c(*(undefined4 *)(iVar3 + 0x120c));"
+     "@800b3b9c:66: FUN_800a942c(*(undefined4 *)(iVar3 + 0x120c));"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b3704.c:61: *(undefined4 *)(iVar3 + -0x7fea62d4) = 0xffffffff;",
-     "src/stage2/func_800b3b9c.c:52: *(int *)(iVar3 + 0x120c) = iVar2;"
+     "@800b3704:61: *(undefined4 *)(iVar3 + -0x7fea62d4) = 0xffffffff;",
+     "@800b3b9c:52: *(int *)(iVar3 + 0x120c) = iVar2;"
     ]
    },
    {
@@ -1084,11 +1084,11 @@
     "name": "pcm_buffer_alloc",
     "offset": 4624,
     "reader": [
-     "src/stage2/func_800b3b9c.c:47: iVar2 = FUN_800a924c(*(undefined1 *)(iVar3 + 0x1204),*(undefined4 *)(iVar3 + 0x1210),"
+     "@800b3b9c:47: iVar2 = FUN_800a924c(*(undefined1 *)(iVar3 + 0x1204),*(undefined4 *)(iVar3 + 0x1210),"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b3704.c:46: *(undefined4 *)(iVar3 + -0x7fea62d0) = uVar1;"
+     "@800b3704:46: *(undefined4 *)(iVar3 + -0x7fea62d0) = uVar1;"
     ]
    },
    {
@@ -1098,11 +1098,11 @@
     "name": "pcm_capacity_alloc",
     "offset": 4628,
     "reader": [
-     "src/stage2/func_800b3b9c.c:48: *(undefined4 *)(iVar3 + 0x1214),*(undefined4 *)(iVar3 + 0x1208),"
+     "@800b3b9c:48: *(undefined4 *)(iVar3 + 0x1214),*(undefined4 *)(iVar3 + 0x1208),"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b3704.c:42: *(uint *)(iVar3 + -0x7fea62cc) = (((uint)(param_2 << 3) / 0x1e + 0x9f) / 0xa0) * 0xa0;"
+     "@800b3704:42: *(uint *)(iVar3 + -0x7fea62cc) = (((uint)(param_2 << 3) / 0x1e + 0x9f) / 0xa0) * 0xa0;"
     ]
    },
    {
@@ -1112,12 +1112,12 @@
     "name": "stop_countdown",
     "offset": 4632,
     "reader": [
-     "src/stage2/func_800b3b9c.c:64: if (*(char *)(iVar3 + 0x1218) == '\\0') goto LAB_800b3d3c;"
+     "@800b3b9c:64: if (*(char *)(iVar3 + 0x1218) == '\\0') goto LAB_800b3d3c;"
     ],
     "width": 1,
     "writer": [
-     "src/stage2/func_800b3b9c.c:31: *(undefined1 *)(iVar3 + 0x1218) = 4;",
-     "src/stage2/func_800b3b9c.c:69: *(char *)(iVar3 + 0x1218) = *(char *)(iVar3 + 0x1218) + -1;"
+     "@800b3b9c:31: *(undefined1 *)(iVar3 + 0x1218) = 4;",
+     "@800b3b9c:69: *(char *)(iVar3 + 0x1218) = *(char *)(iVar3 + 0x1218) + -1;"
     ]
    },
    {
@@ -1127,12 +1127,12 @@
     "name": "pcm_units_delivered",
     "offset": 4636,
     "reader": [
-     "src/stage2/FUN_800b3ddc.c:34: fVar5 = (float)*(int *)(iVar2 + -0x7fea62c4);"
+     "@800b3ddc:34: fVar5 = (float)*(int *)(iVar2 + -0x7fea62c4);"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4478.c:15: *(int *)(param_5 + -0x7fea62c4) = *(int *)(param_5 + -0x7fea62c4) + param_2 + param_4;",
-     "src/stage2/func_800b3b9c.c:44: *(undefined4 *)(iVar3 + 0x121c) = 0;"
+     "@800b4478:15: *(int *)(param_5 + -0x7fea62c4) = *(int *)(param_5 + -0x7fea62c4) + param_2 + param_4;",
+     "@800b3b9c:44: *(undefined4 *)(iVar3 + 0x121c) = 0;"
     ]
    },
    {
@@ -1144,7 +1144,7 @@
     "reader": [],
     "width": 4,
     "writer": [
-     "src/stage2/func_800b3b9c.c:43: *(float *)(iVar3 + 0x1220) = ((float)*(ushort *)(iVar3 + 0x11a0) * 160.0) / fVar5;"
+     "@800b3b9c:43: *(float *)(iVar3 + 0x1220) = ((float)*(ushort *)(iVar3 + 0x11a0) * 160.0) / fVar5;"
     ]
    },
    {
@@ -1154,11 +1154,11 @@
     "name": "voice_id",
     "offset": 4644,
     "reader": [
-     "src/stage2/FUN_800b3ddc.c:23: if ((*(char *)(iVar2 + 0x1200) != '\\0') && (*(int *)(iVar2 + 0x1224) == param_1))"
+     "@800b3ddc:23: if ((*(char *)(iVar2 + 0x1200) != '\\0') && (*(int *)(iVar2 + 0x1224) == param_1))"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b3640.c:27: *(int *)(param_1 * 0x1228 + -0x7fea62bc) = _DAT_8015af70;"
+     "@800b3640:27: *(int *)(param_1 * 0x1228 + -0x7fea62bc) = _DAT_8015af70;"
     ]
    }
   ],
@@ -1174,8 +1174,8 @@
   ],
   "stride": 4648,
   "stride_evidence": [
-   "src/stage2/func_800b3b9c.c:72: iVar3 = iVar3 + 0x1228;",
-   "src/stage2/FUN_800b3704.c:27: iVar3 = iVar3 + 0x1228;"
+   "@800b3b9c:72: iVar3 = iVar3 + 0x1228;",
+   "@800b3704:27: iVar3 = iVar3 + 0x1228;"
   ]
  },
  "inputs": {
@@ -1303,8 +1303,8 @@
   "chunk": 1024,
   "chunking": {
    "evidence": [
-    "src/stage2/FUN_800b4a04.c:42: ((uint)(*(int *)(param_1 + 0x11d0) - *(int *)(param_1 + 0x11cc)) < 0xc01)) {",
-    "src/stage2/FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
+    "@800b4a04:42: ((uint)(*(int *)(param_1 + 0x11d0) - *(int *)(param_1 + 0x11cc)) < 0xc01)) {",
+    "@800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"
    ],
    "fetch_when": "stream_state in {1,2,3} and (rom_offset - ring_consumed) < 0xc01, so at most three chunks are ever outstanding in a 4 KiB ring",
    "rule": "the fetch destination is ring + (rom_offset & 0xff8); the byte count is 0x400, except that once descriptor+0x11a4 (words still declared) falls below 0x101 it becomes 0x11a4<<2, i.e. the record's own tail"
@@ -1322,7 +1322,7 @@
     "reader": [],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b4a04.c:56: param_1 + (*(uint *)(param_1 + 0x11d0) & 0xff8) + 0x1a0,iVar1,param_1 + 0x11ac);"
+     "@800b4a04:56: param_1 + (*(uint *)(param_1 + 0x11d0) & 0xff8) + 0x1a0,iVar1,param_1 + 0x11ac);"
     ]
    },
    {
@@ -1332,11 +1332,11 @@
     "name": "header_blocks",
     "offset": 420,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:25: *(undefined2 *)(param_1 + 0x11a0) = *(undefined2 *)(param_1 + 0x1a4);"
+     "@800b4a04:25: *(undefined2 *)(param_1 + 0x11a0) = *(undefined2 *)(param_1 + 0x1a4);"
     ],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
+     "@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
     ]
    },
    {
@@ -1348,7 +1348,7 @@
     "reader": [],
     "width": 2,
     "writer": [
-     "src/stage2/FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
+     "@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
     ]
    },
    {
@@ -1358,11 +1358,11 @@
     "name": "header_words",
     "offset": 424,
     "reader": [
-     "src/stage2/FUN_800b4a04.c:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;"
+     "@800b4a04:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;"
     ],
     "width": 4,
     "writer": [
-     "src/stage2/FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
+     "@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"
     ]
    }
   ],
@@ -1370,8 +1370,8 @@
   "overlap": {
    "claim": "the ring and the post-ring state do not overlap: 0x1a0 + 0x1000 == 0x11a0",
    "evidence": [
-    "src/stage2/FUN_800b53f4.c:71: uVar4 = *(uint *)(((int)uVar14 >> 3 & 0xffcU) + iVar6) >> (uVar14 & 0x1f);",
-    "src/stage2/FUN_800b4930.c:29: *(undefined2 *)(param_1 + 0x11a0) = 0;"
+    "@800b53f4:71: uVar4 = *(uint *)(((int)uVar14 >> 3 & 0xffcU) + iVar6) >> (uVar14 & 0x1f);",
+    "@800b4930:29: *(undefined2 *)(param_1 + 0x11a0) = 0;"
    ]
   },
   "read_window_mask": 4092,
@@ -1439,7 +1439,7 @@
   },
   {
    "question": "What is the boot pointer the task block at +0x08 receives?",
-   "why": "FUN_800a2e40 assigns the symbol Ghidra renders as `entry` to it, which is the image's own entry point (src/stage2/func_80018a80.c:11) and cannot be an RSP boot address; the decompiler has lost which variable that was.",
+   "why": "FUN_800a2e40 assigns the symbol Ghidra renders as `entry` to it, which is the image's own entry point (0x80018a80) and cannot be an RSP boot address; the decompiler has lost which variable that was.",
    "would_settle_it": "the linker symbol at that store, or a read of the value in a memory dump."
   }
  ]

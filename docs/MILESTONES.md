@@ -7,8 +7,8 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-393 milestones are indexed. 315 of them have a note; the rest are rows in the log that cite
-`docs/format_notes.md` instead. **56 have no record at all** — 24, 31–78, 80, 172, 240–244 — and they appear in place, marked
+395 milestones are indexed. 316 of them have a note; the rest are rows in the log that cite
+`docs/format_notes.md` instead. **57 have no record at all** — 24, 31–78, 80, 172, 240–244, 393 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
 
@@ -411,12 +411,14 @@ at the foot of this file.
 | 390 | **M390** — the permuter pointed at the near-misses, and the two metrics disagree | `docs/log/M390-the-permuter-and-the-two-metrics.md` |
 | 391 | **M391** — the retraction: the "near-miss" scores were read wrong, and no partial kept its draft | `docs/log/M391-the-partial-scores-retracted.md` |
 | 392 | **M392** — the 38-word M388 body read, and the partials gate that makes a score checkable | `docs/log/M392-the-38-word-body-and-the-partials-gate.md` |
+| 393 | **M393** — *(no row, no note)* | commit only: `65537e7` “M393: three mechanisms on 0x800b43a0, all 3 of 38 -- published with what was tried” |
+| 394 | **M394** — the address resolver: a name change stops being a code change | `docs/log/M394-the-address-resolver.md` |
 
 ## The gaps, and why they are empty
 
-**56** milestone numbers have neither a row in `docs/reverse_engineering_log.md` nor a note in `docs/log/`. The project did not keep a note for every number it used: much of the middle work was recorded in `docs/format_notes.md` and in commit messages instead, and the log's own numbering runs M10–M30 in that style before resuming per-milestone notes at M81.
+**57** milestone numbers have neither a row in `docs/reverse_engineering_log.md` nor a note in `docs/log/`. The project did not keep a note for every number it used: much of the middle work was recorded in `docs/format_notes.md` and in commit messages instead, and the log's own numbering runs M10–M30 in that style before resuming per-milestone notes at M81.
 
-* **M48, M51, M78, M172, M240, M241, M242, M243** survive only as commit subjects, quoted above. Nothing further is known about them, so nothing further is written.
+* **M48, M51, M78, M172, M240, M241, M242, M243, M393** survive only as commit subjects, quoted above. Nothing further is known about them, so nothing further is written.
 * **24, 31–47, 49–50, 52–77, 80, 244** have no evidence in the tree at all — no row, no note, no commit that names them.
 
 None of these gaps is reconstructed after the fact. A note written from guesswork would be indistinguishable from a note written from measurement, and this project's whole claim is that the difference is visible.

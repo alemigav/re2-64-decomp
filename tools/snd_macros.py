@@ -62,6 +62,8 @@ import hashlib
 import json
 import struct
 import sys
+
+import srcmap
 import zlib
 from collections import Counter
 from pathlib import Path
@@ -374,17 +376,17 @@ def derive():
             }],
             "requests": "one voice, on the class-0 record this key names",
             "evidence": [
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "if (uVar3 != 0) {",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "if (uVar3 != 0) {",
                  "claim": "tag 0 is the branch that falls through to the voice allocator"},
-                {"file": "src/stage2/FUN_800a6820.c",
+                {"file": str(srcmap.path("stage2", 0x800a6820)),
                  "witness": "iVar6 = FUN_800b185c(uVar8,uVar9,param_2,param_3,param_4 & 0xff,",
                  "claim": "FUN_800b185c is called with the key in bits 16..31 of the packed word"},
-                {"file": "src/stage2/FUN_800b185c.c", "witness": "iVar1 = FUN_800ad998(param_1 >> 0x10);",
+                {"file": str(srcmap.path("stage2", 0x800b185c)), "witness": "iVar1 = FUN_800ad998(param_1 >> 0x10);",
                  "claim": "the voice allocator looks the key up in the sample cache"},
-                {"file": "src/stage2/FUN_800b185c.c",
+                {"file": str(srcmap.path("stage2", 0x800b185c)),
                  "witness": "*(uint *)(iVar3 + -0x7febbbb4) = iVar1 + (uint)param_8 * 8;",
                  "claim": "and stores payload + index*8, which fixes the element size at 8"},
-                {"file": "src/stage2/FUN_800ad998.c",
+                {"file": str(srcmap.path("stage2", 0x800ad998)),
                  "witness": "FUN_800ab43c(0x8014e0e8,_DAT_8014e0e0 * 8 + -0x7feac1f0,",
                  "claim": "the sample cache is binary-searched at stride 8 and returns the record "
                           "payload pointer the cache was built with"},
@@ -430,16 +432,16 @@ def derive():
                         "and the channel, and re-enter the dispatcher (FUN_800a64c8) when the "
                         "substituted key is not a sample",
             "evidence": [
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "if (uVar3 == 0x4000) {",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "if (uVar3 == 0x4000) {",
                  "claim": "tag 1 is its own branch: the only one that reads a table"},
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "iVar6 = FUN_800adf54(uVar9);",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "iVar6 = FUN_800adf54(uVar9);",
                  "claim": "the branch looks up the class-1 payload for this key"},
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "psVar5 = (short *)(uVar3 * 8 + iVar6);",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "psVar5 = (short *)(uVar3 * 8 + iVar6);",
                  "claim": "and indexes it at stride 8 by `param_2 & 0x7f`"},
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "if ((uVar1 & 0xc000) != 0) {",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "if ((uVar1 & 0xc000) != 0) {",
                  "claim": "a non-class-0 substituted key goes to the sequence runner rather than "
                           "straight to a voice"},
-                {"file": "src/stage2/FUN_800adf54.c",
+                {"file": str(srcmap.path("stage2", 0x800adf54)),
                  "witness": "FUN_800ab43c(0x8014e138,0x801521f0,_DAT_801521e0,8,&LAB_800ae164);",
                  "claim": "the cache this reads is the 8-byte-stride one FUN_800acbc0 fills, whose "
                           "payload pointer is the pool record's +8 (FUN_800a86a0 passes `piVar5 + 2`)"},
@@ -506,28 +508,28 @@ def derive():
                         "start one voice with the row's offsets applied — one voice per live row, "
                         "and the caller links the voices it got back",
             "evidence": [
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "if (uVar3 != 0x8000) {",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "if (uVar3 != 0x8000) {",
                  "claim": "tag 2 is accepted here and 0xc000 is not — the refusal is in this test"},
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "iVar6 = FUN_800a64c8(uVar8,uVar9,",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "iVar6 = FUN_800a64c8(uVar8,uVar9,",
                  "claim": "the sequence runner is entered with the key in bits 16..31"},
-                {"file": "src/stage2/FUN_800a64c8.c",
+                {"file": str(srcmap.path("stage2", 0x800a64c8)),
                  "witness": "puVar1 = (ushort *)FUN_800adfb4(param_1 >> 0x10,&local_48);",
                  "claim": "the runner asks for the payload pointer and the element count"},
-                {"file": "src/stage2/FUN_800adfb4.c",
+                {"file": str(srcmap.path("stage2", 0x800adfb4)),
                  "witness": "*param_2 = *(undefined2 *)((int)_DAT_8014e15c + 6);",
                  "claim": "the count is the cache entry's own u16, handed to the runner"},
-                {"file": "src/stage2/FUN_800adfb4.c",
+                {"file": str(srcmap.path("stage2", 0x800adfb4)),
                  "witness": "FUN_800ab43c(0x8014e150,0x80152a00,_DAT_801529f0,0xc,&LAB_800ae174);",
                  "claim": "the cache is the 12-byte-stride one FUN_800ace1c fills, whose payload "
                           "pointer is the pool record's +12 (FUN_800a86a0 passes `piVar5 + 3`)"},
-                {"file": "src/stage2/FUN_800a64c8.c",
+                {"file": str(srcmap.path("stage2", 0x800a64c8)),
                  "witness": "if (((*puVar1 != 0xffff) && (*(byte *)(puVar1 + 1) <= param_3)) &&",
                  "claim": "0xffff is skipped by the body, not used to end the loop"},
-                {"file": "src/stage2/FUN_800a64c8.c", "witness": "puVar1 = puVar1 + 6;",
+                {"file": str(srcmap.path("stage2", 0x800a64c8)), "witness": "puVar1 = puVar1 + 6;",
                  "claim": "the stride is six ushorts, i.e. 12 bytes"},
-                {"file": "src/stage2/FUN_800a64c8.c", "witness": "iVar9 < (int)(uint)local_48",
+                {"file": str(srcmap.path("stage2", 0x800a64c8)), "witness": "iVar9 < (int)(uint)local_48",
                  "claim": "and the loop bound is the count, so the array is count-prefixed"},
-                {"file": "src/stage2/FUN_800a86a0.c",
+                {"file": str(srcmap.path("stage2", 0x800a86a0)),
                  "witness": "FUN_800ace1c(*psVar6,piVar5 + 3,*(undefined2 *)((int)piVar5 + 10));",
                  "claim": "the cache is filled while walking the pool chain: +12 is the payload and "
                           "+10 is the low half of the u32 count"},
@@ -565,18 +567,18 @@ def derive():
             "requests": "set a level ramp on a voice that already exists: a target level, a length, "
                         "and optionally an interpolated curve — NOT a note",
             "evidence": [
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "if (0x4000 < uVar3) {",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "if (0x4000 < uVar3) {",
                  "claim": "tag 3 takes the > 0x4000 path"},
-                {"file": "src/stage2/FUN_800a6820.c", "witness": "return -1;",
+                {"file": str(srcmap.path("stage2", 0x800a6820)), "witness": "return -1;",
                  "claim": "and that path rejects everything except 0x8000, so 0xc000 can never start "
                           "a voice through the dispatcher"},
-                {"file": "src/stage2/FUN_800afbfc.c",
+                {"file": str(srcmap.path("stage2", 0x800afbfc)),
                  "witness": "*(uint *)(param_1 + 0xb4) = (uint)*(ushort *)(param_2 + 1);",
                  "claim": "a class-3 payload is consumed as a voice parameter set"},
-                {"file": "src/stage2/FUN_800afbfc.c",
+                {"file": str(srcmap.path("stage2", 0x800afbfc)),
                  "witness": "*(int *)(param_1 + 0x84) = (int)(uVar5 - param_3) / iVar1;",
                  "claim": "the stored value is a per-tick delta from the current level to the target"},
-                {"file": "src/stage2/FUN_800afbfc.c", "witness": "iVar2 = FUN_800adef4();",
+                {"file": str(srcmap.path("stage2", 0x800afbfc)), "witness": "iVar2 = FUN_800adef4();",
                  "claim": "an optional interpolation table is fetched — with the argument dropped by "
                           "the decompiler, which is why its field is unresolved"},
             ],

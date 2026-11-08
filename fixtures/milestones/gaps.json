@@ -324,6 +324,16 @@
    "n": 244,
    "status": "unrecorded",
    "evidence": []
+  },
+  {
+   "n": 393,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "65537e7",
+     "subject": "M393: three mechanisms on 0x800b43a0, all 3 of 38 -- published with what was tried"
+    }
+   ]
   }
  ]
 }

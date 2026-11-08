@@ -49,6 +49,8 @@ import argparse
 import json
 import re
 import sys
+
+import srcmap
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -91,17 +93,17 @@ VARIABLE_PATH = {
     0x01: dict(expression="*(ctx + 0x144 + (s8[ctx+2] - 1) * 4)", store="0x8006db78",
                cite=("walk", 0x01)),
     0x03: dict(expression="*(0x80114f2c) + u16[cmd+3]", store="0x8006d624",
-               cite=("src", "src/stage2/FUN_8006d5dc.c")),
+               cite=("src", str(srcmap.path("stage2", 0x8006d5dc)))),
     0x07: dict(expression="cmd + u16[cmd+2]", store="0x8006dc90", cite=("walk", 0x07)),
     0x0D: dict(expression="cmd + s16[cmd+2] + 6", store="0x8006deb0", cite=("walk", 0x0D)),
     0x0E: dict(expression="*(ctx + s8[ctx+2]*16 + s8[ctx+s8[ctx+2]+8]*4 + 0x20)", store="0x8006dfc0",
                cite=("inferred", 0x0E)),
     0x0F: dict(expression="*(ctx + s8[ctx+2]*16 + (s8[ctx+s8[ctx+2]+8] + 1)*4 + 0x60)", store="0x8006e070",
-               cite=("src", "src/stage2/FUN_8006dfe4.c")),
+               cite=("src", str(srcmap.path("stage2", 0x8006dfe4)))),
     0x10: dict(expression="*(ctx + s8[ctx+2]*16 + s8[ctx+s8[ctx+2]+8]*4 + 0x20)", store="0x8006e0bc",
                cite=("walk", 0x10)),
     0x12: dict(expression="*(ctx + s8[ctx+2]*16 + s8[ctx+s8[ctx+2]+8]*4 + 0x20)", store="0x8006e1a4",
-               cite=("src", "src/stage2/FUN_8006e138.c")),
+               cite=("src", str(srcmap.path("stage2", 0x8006e138)))),
     0x13: dict(expression="cmd + 4, scanned by entry + u16[entry+2]; exit entry + 2 (tag 0x15) or entry + 6 "
                           "(case match)", store="0x8006e32c", cite=("walk", 0x13)),
     0x17: dict(expression="cmd + s16[cmd+4]", store="0x8006e3d0", cite=("walk", 0x17)),
@@ -115,9 +117,9 @@ VARIABLE_PATH = {
 # Only handlers whose decompiled body was read for the classification. Every other opcode's advance came from
 # the bytes: `walk_stream.resolve` where the corpus has a body for the handler, `(bytes)` where it does not.
 EVIDENCE = {
-    0x03: "src/stage2/FUN_8006d5dc.c:22",
-    0x0F: "src/stage2/FUN_8006dfe4.c:34",
-    0x12: "src/stage2/FUN_8006e138.c:25",
+    0x03: "@8006d5dc:22",
+    0x0F: "@8006dfe4:34",
+    0x12: "@8006e138:25",
 }
 
 BODIES = "fixtures/decomp/ranges.json"
@@ -125,7 +127,7 @@ BODIES = "fixtures/decomp/ranges.json"
 
 def _evidence(number, in_body):
     if number in EVIDENCE:
-        return EVIDENCE[number]
+        return srcmap.render(EVIDENCE[number])
     return "walk_stream.resolve" if in_body else "walk_stream.resolve (bytes)"
 
 
@@ -333,7 +335,7 @@ def build() -> dict:
             "refuses": "a folded constant as a constant, a length for the six dynamic opcodes, any scheduler "
                        "claim, and any name the inputs do not give",
             "inputs": {"profile": PROFILE, "opcodes": OPCODES, "inferred_names": INFERRED,
-                       "walk_stream": WALK, "handlers": "src/stage2/*.c", "function_bodies": BODIES},
+                       "walk_stream": WALK, "handlers": "src/stage2/ (functions only; paths come from tools/srcmap.py)", "function_bodies": BODIES},
             "totals": _totals(opcodes),
             "opcodes": opcodes}
 
@@ -374,7 +376,7 @@ def _constant_supported(number, value, resolved):
     """A constant advance must be one resolve() measured, or a literal in the handler's own source."""
     if value in resolved[number]["advances"]:
         return True
-    source = Path("src/stage2/FUN_%08x.c" % resolved[number]["handler"])
+    source = srcmap.path("stage2", resolved[number]["handler"])
     if not source.exists():
         return False
     return bool(re.search(r"(?<![\w$])%d(?![\w$])" % value, source.read_text()))

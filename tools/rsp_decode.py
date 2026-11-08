@@ -656,7 +656,7 @@ def task_section(image):
             "argument": "a0 = the block address, set in the delay slot at 0x800a2ee8 (%s)"
                         % decode(word_at(image, 0x800A2EE8), 0x800A2EE8)["text"],
             "handler": "*(0x80143ff0) — a function pointer, installed by FUN_800b1fc0 "
-                       "(src/stage2/FUN_800b1fc0.c:14 `_DAT_80143ff0 = *param_1;`), so the submit path is "
+                       "(0x800b1fc0:14 `_DAT_80143ff0 = *param_1;`), so the submit path is "
                        "whatever the driver installed and not a named OS entry point",
             "cache_flush": "between the stores and the submit, 0x800a2ed8 calls 0x8000efa0 with "
                            "(list, count*0xa10): the recipe at 0x800a2eb0-0x800a2ec0 is "
@@ -811,7 +811,7 @@ def program_section(dec, words, foff):
                 "0x80158b20) and load/store through it — an RSP load cannot name RDRAM (p139: the RSP software "
                 "can only access DMEM), so these are not RSP instructions" % foff,
                 "the arithmetic agrees with the corpus body: FUN_800b3640 walks a 0x1228-stride table and "
-                "compares +0x1224 against _DAT_8015af70 (src/stage2/FUN_800b3640.c:22-27), and the words here "
+                "compares +0x1224 against _DAT_8015af70 (0x800b3640:22-27), and the words here "
                 "carry `addiu a0,a0,0x1228` and `lw v0,0x1224(a0)`",
             ],
             "not_decoded_as": "program words: they are listed in no function, contribute to no jump target and "

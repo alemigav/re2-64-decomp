@@ -76,10 +76,10 @@ BLOCK_SAMPLES = 160
 OUTPUT_WORDS = ("microcode", "ucode", "rsp", "mixer", "envelope", "ramp", "saturat", "dither", "adpcm",
                 "reverb", "per-sample")
 
-CITE = re.compile(r"^(src/[A-Za-z0-9_./-]+):(\d+): (.+)$")
+CITE = re.compile(r"^@([0-9a-fA-F]{8}):(\d+): (.+)$")
 DECOMPOSED = re.compile(r"-0x[0-9a-fA-F]{8}")
 GLOBAL = re.compile(r"_[Dd][Aa][Tt]_([0-9a-fA-F]{8})")
-ARITH = re.compile(r"^arith: (.+?) @ (src/.*)$")
+ARITH = re.compile(r"^arith: (.+?) @ (@[0-9a-fA-F]{8}:\d+.*)$")
 
 
 class Unplaceable(Exception):
@@ -157,11 +157,16 @@ def _norm(text):
 
 
 def cite_line(citation):
-    """-> (path, line number, statement) or raise. The form is `src/...#<line>: <statement>`."""
+    """-> (path, line number, statement) or raise. The form is `@<address>:<line>: <statement>`.
+
+    The address is the identity and the path is resolved, so a function that gains a curated name does not break every
+    citation that mentions it (M395a).
+    """
     m = CITE.match(citation)
     if not m:
-        raise Unplaceable("not a src/ citation: %r" % citation)
-    return m.group(1), int(m.group(2)), m.group(3)
+        raise Unplaceable("not an @address citation: %r" % citation)
+    import srcmap
+    return str(srcmap.find(int(m.group(1), 16))), int(m.group(2)), m.group(3)
 
 
 def cite_source(citation):
@@ -228,184 +233,183 @@ def field(name, width, meaning, writers, readers=(), insn=None, offset=None, con
 
 def descriptor_fields():
     """The two 0x1228-byte slots at 0x80158b20: codec state, stream state, and the start parameters."""
-    B = "src/stage2/"
     return [
         # --- codec-private state, inside the 0x190 bytes FUN_800b4930 memsets --------------------------
         field("predictor_period", 2,
               "the long-term predictor's period in samples: initialised to 40, and re-latched from the "
               "incoming value only while it lies in 40..120 (a value outside is ignored, not clamped)",
-              writers=[B + "FUN_800b4930.c:13: *(undefined2 *)(param_1 + 0x166) = 0x28;",
-                       B + "FUN_800b63b4.c:24: param_1[0xb3] = (short)iVar6;"],
-              readers=[B + "FUN_800b63b4.c:20: iVar6 = (int)(short)param_1[0xb3];"],
+              writers=["@800b4930:13: *(undefined2 *)(param_1 + 0x166) = 0x28;",
+                       "@800b63b4:24: param_1[0xb3] = (short)iVar6;"],
+              readers=["@800b63b4:20: iVar6 = (int)(short)param_1[0xb3];"],
               insn=0x800B63D4),
         field("coefficient_banks", 0x20,
               "two 16-byte banks of eight dequantised coefficients; the reader selects one per call with "
               "+0x188, so 0x168 and 0x178 are one field with an index, not two",
-              writers=[B + "FUN_800b4dc0.c:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) "
+              writers=["@800b4dc0:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) "
                           "* 0x10 + 0x168);"],
-              readers=[B + "FUN_800b4dc0.c:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) "
+              readers=["@800b4dc0:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) "
                           "* 0x10 + 0x168);"],
               offset=0x168),
         field("bank_select", 2,
               "which of the two coefficient banks the next block reads; flipped after the mix, not before",
-              writers=[B + "FUN_800b4dc0.c:34: *(ushort *)(param_1 + 0x188) = *(ushort *)(param_1 + 0x188) ^ 1;"],
-              readers=[B + "FUN_800b4dc0.c:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) "
+              writers=["@800b4dc0:34: *(ushort *)(param_1 + 0x188) = *(ushort *)(param_1 + 0x188) ^ 1;"],
+              readers=["@800b4dc0:18: puVar4 = (undefined2 *)(param_1 + *(short *)(param_1 + 0x188) "
                           "* 0x10 + 0x168);"],
               offset=0x188),
         field("reader_cursor_a", 2,
               "one of the bit reader's two run-length cursors: decremented per code and reloaded when it "
               "reaches zero, at which point the other cursor is loaded (0x800b53f4's field map, M198)",
-              writers=[B + "FUN_800b53f4.c:94: *(ushort *)(param_1 + 0x18a) = uVar5;",
-                       B + "FUN_800b53f4.c:591: *(short *)(param_1 + 0x18a) = *(short *)(param_1 + 0x18a) + -1;"],
-              readers=[B + "FUN_800b53f4.c:72: if (*(short *)(param_1 + 0x18a) == 0) {"],
+              writers=["@800b53f4:94: *(ushort *)(param_1 + 0x18a) = uVar5;",
+                       "@800b53f4:591: *(short *)(param_1 + 0x18a) = *(short *)(param_1 + 0x18a) + -1;"],
+              readers=["@800b53f4:72: if (*(short *)(param_1 + 0x18a) == 0) {"],
               offset=0x18A),
         field("reader_cursor_b", 2,
               "the bit reader's second run-length cursor; same reload rule as +0x18a",
-              writers=[B + "FUN_800b53f4.c:114: *(ushort *)(param_1 + 0x18c) = uVar5;",
-                       B + "FUN_800b53f4.c:612: *(short *)(param_1 + 0x18c) = *(short *)(param_1 + 0x18c) + -1;"],
-              readers=[B + "FUN_800b53f4.c:73: if (*(short *)(param_1 + 0x18c) == 0) {"],
+              writers=["@800b53f4:114: *(ushort *)(param_1 + 0x18c) = uVar5;",
+                       "@800b53f4:612: *(short *)(param_1 + 0x18c) = *(short *)(param_1 + 0x18c) + -1;"],
+              readers=["@800b53f4:73: if (*(short *)(param_1 + 0x18c) == 0) {"],
               offset=0x18C),
 
         # --- the reader's interface: what the stream was told to consume --------------------------------
         field("dma_callback", 4,
               "the transfer routine the reader calls to fill the ring; FUN_800b44f4, which hands the bytes "
               "to FUN_800b4818 and posts the queue message",
-              writers=[B + "FUN_800b4930.c:18: *(int *)(param_1 + 400) = param_5;"],
-              readers=[B + "FUN_800b4a04.c:54: (**(code **)(param_1 + 400))"],
+              writers=["@800b4930:18: *(int *)(param_1 + 400) = param_5;"],
+              readers=["@800b4a04:54: (**(code **)(param_1 + 400))"],
               insn=0x800B4990),
         field("source_rom", 4,
               "the record's address in the cartridge: the bank base (0x8015af78) plus the per-clip offset's "
               "low 24 bits, computed by the caller",
-              writers=[B + "FUN_800b4930.c:14: *(int *)(param_1 + 0x194) = param_2;"],
-              readers=[B + "FUN_800b4a04.c:55: (*(int *)(param_1 + 0x194) + *(uint *)(param_1 + 0x11d0),"],
+              writers=["@800b4930:14: *(int *)(param_1 + 0x194) = param_2;"],
+              readers=["@800b4a04:55: (*(int *)(param_1 + 0x194) + *(uint *)(param_1 + 0x11d0),"],
               insn=0x800B497C),
         field("pcm_buffer", 4,
               "the PCM destination: 4320 16-bit samples for 16 kHz, either a heap block sized by "
               "FUN_800a9420 or one of the two static buffers at 0x8015af88",
-              writers=[B + "FUN_800b4930.c:15: *(undefined4 *)(param_1 + 0x198) = param_3;"],
-              readers=[B + "FUN_800b4a04.c:70: FUN_800b53f4(param_1,*(int *)(param_1 + 0x198) +"],
+              writers=["@800b4930:15: *(undefined4 *)(param_1 + 0x198) = param_3;"],
+              readers=["@800b4a04:70: FUN_800b53f4(param_1,*(int *)(param_1 + 0x198) +"],
               insn=0x800B4980),
         field("pcm_units", 4,
               "that buffer's capacity in 16-bit units, and simultaneously the ring-of-PCM length the "
               "engine voice is told: the synthesis wraps at it and the engine drains against it",
-              writers=[B + "FUN_800b4930.c:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"],
-              readers=[B + "FUN_800b4a04.c:71: (*(uint *)(param_1 + 0x11d8) % *(uint *)(param_1 + 0x19c) >> 2) * 8);"],
+              writers=["@800b4930:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"],
+              readers=["@800b4a04:71: (*(uint *)(param_1 + 0x11d8) % *(uint *)(param_1 + 0x19c) >> 2) * 8);"],
               insn=0x800B4984),
 
         # --- stream state, after the ring --------------------------------------------------------------
         field("blocks_remaining", 2,
               "blocks the record still declares, seeded from the header's +4 halfword and decremented per "
               "synthesised block; zero stops synthesis unless the stream is still fetching",
-              writers=[B + "FUN_800b4930.c:29: *(undefined2 *)(param_1 + 0x11a0) = 0;",
-                       B + "FUN_800b4a04.c:25: *(undefined2 *)(param_1 + 0x11a0) = *(undefined2 *)(param_1 + 0x1a4);",
-                       B + "FUN_800b4a04.c:73: *(short *)(param_1 + 0x11a0) = sVar3;"],
-              readers=[B + "FUN_800b4a04.c:63: if ((((*(char *)(param_1 + 0x11dd) != '\\x01') && "
+              writers=["@800b4930:29: *(undefined2 *)(param_1 + 0x11a0) = 0;",
+                       "@800b4a04:25: *(undefined2 *)(param_1 + 0x11a0) = *(undefined2 *)(param_1 + 0x1a4);",
+                       "@800b4a04:73: *(short *)(param_1 + 0x11a0) = sVar3;"],
+              readers=["@800b4a04:63: if ((((*(char *)(param_1 + 0x11dd) != '\\x01') && "
                           "(*(short *)(param_1 + 0x11a0) == 0)) ||",
-                       B + "func_800b3b9c.c:43: *(float *)(iVar3 + 0x1220) = "
+                       "@800b3b9c:43: *(float *)(iVar3 + 0x1220) = "
                           "((float)*(ushort *)(iVar3 + 0x11a0) * 160.0) / fVar5;"],
               insn=0x800B49C4),
         field("header_blocks_echo", 2,
               "written from the same header halfword as +0x11a0, in the same few instructions, and read "
               "by nothing in the corpus: kept here as an unexplained write rather than explained away",
-              writers=[B + "FUN_800b4930.c:27: *(undefined2 *)(param_1 + 0x11a2) = 0;",
-                       B + "FUN_800b4a04.c:26: *(short *)(param_1 + 0x11a2) = (short)*(undefined4 *)(param_1 + 0x1a4);"],
+              writers=["@800b4930:27: *(undefined2 *)(param_1 + 0x11a2) = 0;",
+                       "@800b4a04:26: *(short *)(param_1 + 0x11a2) = (short)*(undefined4 *)(param_1 + 0x1a4);"],
               insn=0x800B49BC, confidence="writer only"),
         field("record_words_remaining", 4,
               "the record's declared length in WORDS, from the header's +8 word masked to 24 bits: "
               "decremented by 0x100 per 0x400-byte chunk, and below 0x101 it becomes the tail chunk's "
               "size in words times four",
-              writers=[B + "FUN_800b4930.c:28: *(undefined4 *)(param_1 + 0x11a4) = 0;",
-                       B + "FUN_800b4a04.c:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;",
-                       B + "FUN_800b4a04.c:35: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x11a4) - 0x100;"],
-              readers=[B + "FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"],
+              writers=["@800b4930:28: *(undefined4 *)(param_1 + 0x11a4) = 0;",
+                       "@800b4a04:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;",
+                       "@800b4a04:35: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x11a4) - 0x100;"],
+              readers=["@800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"],
               insn=0x800B49C0),
         field("drain_budget", 4,
               "the PCM still owed to the engine once the last block is written: set to the capacity, "
               "reduced by what the engine pulls, and reaching zero it makes the stream state 4",
-              writers=[B + "FUN_800b4930.c:17: *(undefined4 *)(param_1 + 0x11a8) = 0;",
-                       B + "FUN_800b4a04.c:77: *(undefined4 *)(param_1 + 0x11a8) = *(undefined4 *)(param_1 + 0x19c);",
-                       B + "FUN_800b4d30.c:18: if ((0 < *(int *)(param_1 + 0x11a8)) && "
+              writers=["@800b4930:17: *(undefined4 *)(param_1 + 0x11a8) = 0;",
+                       "@800b4a04:77: *(undefined4 *)(param_1 + 0x11a8) = *(undefined4 *)(param_1 + 0x19c);",
+                       "@800b4d30:18: if ((0 < *(int *)(param_1 + 0x11a8)) && "
                           "(*(int *)(param_1 + 0x11a8) = iVar2, iVar2 < 1)) {"],
-              readers=[B + "FUN_800b4d30.c:17: iVar2 = *(int *)(param_1 + 0x11a8) - param_2;"],
+              readers=["@800b4d30:17: iVar2 = *(int *)(param_1 + 0x11a8) - param_2;"],
               insn=0x800B4988),
         field("dma_queue", 24,
               "the OSMesgQueue the reader blocks on while a chunk is in flight; osCreateMesgQueue is "
               "given 0x11ac as the queue and 0x11c4 as the message array, so the 24-byte object ends "
               "exactly where the message begins",
-              writers=[B + "FUN_800b4930.c:19: osCreateMesgQueue(param_1 + 0x11ac,param_1 + 0x11c4,1);"],
-              readers=[B + "FUN_800b4a04.c:20: iVar1 = osRecvMesg(param_1 + 0x11ac,0,0);"],
+              writers=["@800b4930:19: osCreateMesgQueue(param_1 + 0x11ac,param_1 + 0x11c4,1);"],
+              readers=["@800b4a04:20: iVar1 = osRecvMesg(param_1 + 0x11ac,0,0);"],
               insn=0x800B4968),
         field("dma_message", 4,
               "the one-message array beside that queue: the transfer routine posts to it and the reader "
               "only ever asks whether a message arrived, never what it says, so no instruction reads the "
               "value itself",
-              writers=[B + "FUN_800b4930.c:19: osCreateMesgQueue(param_1 + 0x11ac,param_1 + 0x11c4,1);"],
+              writers=["@800b4930:19: osCreateMesgQueue(param_1 + 0x11ac,param_1 + 0x11c4,1);"],
               insn=0x800B496C, confidence="writer only"),
         field("bit_cursor", 4,
               "the codec's bit position inside the ring, in bits; seeded to 96 so the reader starts after "
               "the 12-byte header, and advanced by the synthesis",
-              writers=[B + "FUN_800b4930.c:30: *(undefined4 *)(param_1 + 0x11c8) = 0;",
-                       B + "FUN_800b4a04.c:24: *(undefined4 *)(param_1 + 0x11c8) = 0x60;"],
-              readers=[B + "FUN_800b53f4.c:67: uVar14 = *(uint *)(param_1 + 0x11c8);"],
+              writers=["@800b4930:30: *(undefined4 *)(param_1 + 0x11c8) = 0;",
+                       "@800b4a04:24: *(undefined4 *)(param_1 + 0x11c8) = 0x60;"],
+              readers=["@800b53f4:67: uVar14 = *(uint *)(param_1 + 0x11c8);"],
               insn=0x800B49C8),
         field("ring_consumed", 4,
               "the bit cursor rounded down to a 4-byte boundary; the reader's low-water mark, which "
               "decides whether another chunk may land in the ring",
-              writers=[B + "FUN_800b4930.c:32: *(undefined4 *)(param_1 + 0x11cc) = 0;",
-                       B + "FUN_800b4a04.c:74: *(uint *)(param_1 + 0x11cc) = *(uint *)(param_1 + 0x11c8) >> 3 "
+              writers=["@800b4930:32: *(undefined4 *)(param_1 + 0x11cc) = 0;",
+                       "@800b4a04:74: *(uint *)(param_1 + 0x11cc) = *(uint *)(param_1 + 0x11c8) >> 3 "
                           "& 0xfffffffc;"],
-              readers=[B + "FUN_800b4a04.c:42: ((uint)(*(int *)(param_1 + 0x11d0) - *(int *)(param_1 + 0x11cc)) < 0xc01)) {"],
+              readers=["@800b4a04:42: ((uint)(*(int *)(param_1 + 0x11d0) - *(int *)(param_1 + 0x11cc)) < 0xc01)) {"],
               insn=0x800B49D0),
         field("rom_offset", 4,
               "bytes fetched from the record so far; it is also the ring window, because the destination "
               "is (rom_offset & 0xff8) + 0x1a0, and it is what the tail-chunk test keys off",
-              writers=[B + "FUN_800b4930.c:31: *(undefined4 *)(param_1 + 0x11d0) = 0;",
-                       B + "FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"],
-              readers=[B + "FUN_800b4a04.c:43: if (*(int *)(param_1 + 0x11d0) == 0) {"],
+              writers=["@800b4930:31: *(undefined4 *)(param_1 + 0x11d0) = 0;",
+                       "@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"],
+              readers=["@800b4a04:43: if (*(int *)(param_1 + 0x11d0) == 0) {"],
               insn=0x800B49CC),
         field("units_delivered", 4,
               "PCM units the engine has pulled; the engine's refill callback advances it, so it is the "
               "engine's read position, not a count of work done",
-              writers=[B + "FUN_800b4930.c:34: *(undefined4 *)(param_1 + 0x11d4) = 0;",
-                       B + "FUN_800b4d30.c:26: *(uint *)(param_1 + 0x11d4) = *(int *)(param_1 + 0x11d4) + uVar1;"],
-              readers=[B + "FUN_800b4a04.c:60: if ((uint)(*(int *)(param_1 + 0x11d8) - *(int *)(param_1 + 0x11d4)) <"],
+              writers=["@800b4930:34: *(undefined4 *)(param_1 + 0x11d4) = 0;",
+                       "@800b4d30:26: *(uint *)(param_1 + 0x11d4) = *(int *)(param_1 + 0x11d4) + uVar1;"],
+              readers=["@800b4a04:60: if ((uint)(*(int *)(param_1 + 0x11d8) - *(int *)(param_1 + 0x11d4)) <"],
               insn=0x800B49D8),
         field("units_written", 4,
               "PCM units synthesised, +160 per block with no bound other than the pass budget; the "
               "difference from +0x11d4 is what the engine still has to chew",
-              writers=[B + "FUN_800b4930.c:33: *(undefined4 *)(param_1 + 0x11d8) = 0;",
-                       B + "FUN_800b4a04.c:75: *(int *)(param_1 + 0x11d8) = *(int *)(param_1 + 0x11d8) + 0xa0;"],
-              readers=[B + "FUN_800b4a04.c:71: (*(uint *)(param_1 + 0x11d8) % *(uint *)(param_1 + 0x19c) >> 2) * 8);"],
+              writers=["@800b4930:33: *(undefined4 *)(param_1 + 0x11d8) = 0;",
+                       "@800b4a04:75: *(int *)(param_1 + 0x11d8) = *(int *)(param_1 + 0x11d8) + 0xa0;"],
+              readers=["@800b4a04:71: (*(uint *)(param_1 + 0x11d8) % *(uint *)(param_1 + 0x19c) >> 2) * 8);"],
               insn=0x800B49D4),
         field("dma_in_flight", 1,
               "set when a transfer is issued and cleared when its message arrives; while it is set the "
               "reader skips issuing another",
-              writers=[B + "FUN_800b4930.c:26: *(undefined1 *)(param_1 + 0x11dc) = 0;",
-                       B + "FUN_800b4a04.c:53: *(undefined1 *)(param_1 + 0x11dc) = 1;"],
-              readers=[B + "FUN_800b4a04.c:19: if (*(char *)(param_1 + 0x11dc) != '\\0') {"],
+              writers=["@800b4930:26: *(undefined1 *)(param_1 + 0x11dc) = 0;",
+                       "@800b4a04:53: *(undefined1 *)(param_1 + 0x11dc) = 1;"],
+              readers=["@800b4a04:19: if (*(char *)(param_1 + 0x11dc) != '\\0') {"],
               insn=0x800B49B8),
         field("stream_state", 1,
               "the reader's phase: 0 idle, 1 armed (a source and a callback exist), 2 primed (the engine "
               "voice is live and the PCM has been consumed once), 3 draining, 4 done. Only 3 accepts "
-              "pulls from the callback (FUN_800b4d30.c:16), so a chunk is never handed over before its "
+              "pulls from the callback (0x800b4d30:16), so a chunk is never handed over before its "
               "PCM exists",
-              writers=[B + "FUN_800b4930.c:24: *(undefined1 *)(param_1 + 0x11dd) = 1;",
-                       B + "FUN_800b4a04.c:102: *(undefined1 *)(param_1 + 0x11dd) = 2;",
+              writers=["@800b4930:24: *(undefined1 *)(param_1 + 0x11dd) = 1;",
+                       "@800b4a04:102: *(undefined1 *)(param_1 + 0x11dd) = 2;",
                        # M319: 0x800b4d90 is now a byte-exact reconstruction, so the evidence is our own line.
                        # `p[4573]` is `+0x11dd` and the stored value is the same 3 (phase 3).
-                       B + "FUN_800b4d90.c:17:         p[4573] = 3;",
-                       B + "FUN_800b4d30.c:19: *(undefined1 *)(param_1 + 0x11dd) = 4;",
+                       "@800b4d90:17:         p[4573] = 3;",
+                       "@800b4d30:19: *(undefined1 *)(param_1 + 0x11dd) = 4;",
                        # M316: 0x800b4dac is now a byte-exact reconstruction rather than a provider body, so the
                        # evidence is our own line -- `p[4573]` is `+0x11dd` and the stored value is the same 4
-                       B + "FUN_800b4dac.c:14:     p[4573] = 4;"],
-              readers=[B + "FUN_800b4a04.c:41: if (((*(byte *)(param_1 + 0x11dd) - 1 < 2) || "
+                       "@800b4dac:14:     p[4573] = 4;"],
+              readers=["@800b4a04:41: if (((*(byte *)(param_1 + 0x11dd) - 1 < 2) || "
                           "(*(byte *)(param_1 + 0x11dd) == 3)) &&"],
               insn=0x800B49B0),
         field("pass_budget", 1,
               "how many 160-sample blocks this pass may synthesise; FUN_800b4a04 copies it into a local "
               "and decrements that, so the field itself stays 2 for the stream's life",
-              writers=[B + "FUN_800b4930.c:35: *(undefined1 *)(param_1 + 0x11de) = 2;"],
-              readers=[B + "FUN_800b4a04.c:18: uVar5 = (uint)*(byte *)(param_1 + 0x11de);"],
+              writers=["@800b4930:35: *(undefined1 *)(param_1 + 0x11de) = 2;"],
+              readers=["@800b4a04:18: uVar5 = (uint)*(byte *)(param_1 + 0x11de);"],
               insn=0x800B49DC),
 
         # --- the start parameters: what the voice path was asked for, and where it went ----------------
@@ -413,37 +417,37 @@ def descriptor_fields():
               "the slot's own state, and the only thing the allocator scans for: 0 free, 1 started and "
               "waiting for the engine, 2 playing, 3 finishing. Written 1 by the starter and 2 by the "
               "frame thread when the stream reaches 2",
-              writers=[B + "FUN_800b3704.c:62: (&DAT_80159d20)[iVar3] = 1;",
-                       B + "func_800b3b9c.c:45: *(undefined1 *)(iVar3 + 0x1200) = 2;",
-                       B + "FUN_800b40c4.c:29: *(undefined1 *)(iVar3 + 0x1200) = 0;"],
-              readers=[B + "FUN_800b3704.c:25: if (*(char *)(iVar3 + 0x1200) == '\\0') break;"],
+              writers=["@800b3704:62: (&DAT_80159d20)[iVar3] = 1;",
+                       "@800b3b9c:45: *(undefined1 *)(iVar3 + 0x1200) = 2;",
+                       "@800b40c4:29: *(undefined1 *)(iVar3 + 0x1200) = 0;"],
+              readers=["@800b3704:25: if (*(char *)(iVar3 + 0x1200) == '\\0') break;"],
               insn=0x800B393C),
         field("param_a", 1,
               "the first of four parameters the caller passes straight through to the engine voice "
               "start; not interpreted anywhere on the MIPS side",
-              writers=[B + "FUN_800b3704.c:37: *(undefined1 *)(iVar3 + -0x7fea62df) = param_4;"],
-              readers=[B + "func_800b3b9c.c:49: *(undefined1 *)(iVar3 + 0x1201),*(undefined1 *)(iVar3 + 0x1202),"],
+              writers=["@800b3704:37: *(undefined1 *)(iVar3 + -0x7fea62df) = param_4;"],
+              readers=["@800b3b9c:49: *(undefined1 *)(iVar3 + 0x1201),*(undefined1 *)(iVar3 + 0x1202),"],
               insn=0x800B3824),
         field("param_b", 1,
               "the second passed-through parameter; live-updatable through func_800b3a68",
-              writers=[B + "FUN_800b3704.c:38: *(undefined1 *)(iVar3 + -0x7fea62de) = param_5;"],
-              readers=[B + "func_800b3b9c.c:49: *(undefined1 *)(iVar3 + 0x1201),*(undefined1 *)(iVar3 + 0x1202),"],
+              writers=["@800b3704:38: *(undefined1 *)(iVar3 + -0x7fea62de) = param_5;"],
+              readers=["@800b3b9c:49: *(undefined1 *)(iVar3 + 0x1201),*(undefined1 *)(iVar3 + 0x1202),"],
               insn=0x800B3828),
         field("param_c", 1,
               "the third passed-through parameter",
-              writers=[B + "FUN_800b3704.c:39: *(undefined1 *)(iVar3 + -0x7fea62dd) = param_6;"],
-              readers=[B + "func_800b3b9c.c:50: *(undefined1 *)(iVar3 + 0x1203),*(undefined1 *)(iVar3 + 0x1219),"],
+              writers=["@800b3704:39: *(undefined1 *)(iVar3 + -0x7fea62dd) = param_6;"],
+              readers=["@800b3b9c:50: *(undefined1 *)(iVar3 + 0x1203),*(undefined1 *)(iVar3 + 0x1219),"],
               insn=0x800B382C),
         field("param_d", 1,
               "the fourth passed-through parameter: a different byte, same forward-only role",
-              writers=[B + "FUN_800b3704.c:40: *(undefined1 *)(iVar3 + -0x7fea62c7) = param_7;"],
-              readers=[B + "func_800b3b9c.c:50: *(undefined1 *)(iVar3 + 0x1203),*(undefined1 *)(iVar3 + 0x1219),"],
+              writers=["@800b3704:40: *(undefined1 *)(iVar3 + -0x7fea62c7) = param_7;"],
+              readers=["@800b3b9c:50: *(undefined1 *)(iVar3 + 0x1203),*(undefined1 *)(iVar3 + 0x1219),"],
               insn=0x800B3830),
         field("engine_key", 1,
               "the first argument the engine voice start receives; it selects which of the engine's "
               "handles is allocated (FUN_800aedc0's search key), so it decides what kind of voice this is",
-              writers=[B + "FUN_800b3704.c:35: *(undefined1 *)(iVar3 + -0x7fea62dc) = param_3;"],
-              readers=[B + "func_800b3b9c.c:47: iVar2 = FUN_800a924c(*(undefined1 *)(iVar3 + 0x1204),"
+              writers=["@800b3704:35: *(undefined1 *)(iVar3 + -0x7fea62dc) = param_3;"],
+              readers=["@800b3b9c:47: iVar2 = FUN_800a924c(*(undefined1 *)(iVar3 + 0x1204),"
                           "*(undefined4 *)(iVar3 + 0x1210),"],
               insn=0x800B380C),
         field("rate", 4,
@@ -451,57 +455,57 @@ def descriptor_fields():
               "/_DAT_80147fa4*4096, and the block rate by way of 160 samples per block. The caller "
               "supplies it (16000 by default, 8000 when the bank's flag byte is zero); nothing reads the "
               "record's own rate halfword - see unresolved",
-              writers=[B + "FUN_800b3704.c:36: *(int *)(iVar3 + -0x7fea62d8) = param_2;"],
-              readers=[B + "func_800b3b9c.c:36: iVar2 = *(int *)(iVar3 + 0x1208);"],
+              writers=["@800b3704:36: *(int *)(iVar3 + -0x7fea62d8) = param_2;"],
+              readers=["@800b3b9c:36: iVar2 = *(int *)(iVar3 + 0x1208);"],
               insn=0x800B3810),
         field("engine_handle", 4,
               "the engine voice handle FUN_800a924c returned, or -1 while none is live; it is what the "
               "stop path passes to FUN_800a942c and what the release path tests before freeing the buffer",
-              writers=[B + "FUN_800b3704.c:61: *(undefined4 *)(iVar3 + -0x7fea62d4) = 0xffffffff;",
-                       B + "func_800b3b9c.c:52: *(int *)(iVar3 + 0x120c) = iVar2;"],
-              readers=[B + "func_800b3b9c.c:66: FUN_800a942c(*(undefined4 *)(iVar3 + 0x120c));"],
+              writers=["@800b3704:61: *(undefined4 *)(iVar3 + -0x7fea62d4) = 0xffffffff;",
+                       "@800b3b9c:52: *(int *)(iVar3 + 0x120c) = iVar2;"],
+              readers=["@800b3b9c:66: FUN_800a942c(*(undefined4 *)(iVar3 + 0x120c));"],
               insn=0x800B3934),
         field("pcm_buffer_alloc", 4,
               "the same pointer as +0x198, kept separately for the engine handoff and for the release "
               "path: on a freed slot the engine is handed +0x1210, not +0x198",
-              writers=[B + "FUN_800b3704.c:46: *(undefined4 *)(iVar3 + -0x7fea62d0) = uVar1;"],
-              readers=[B + "func_800b3b9c.c:47: iVar2 = FUN_800a924c(*(undefined1 *)(iVar3 + 0x1204),"
+              writers=["@800b3704:46: *(undefined4 *)(iVar3 + -0x7fea62d0) = uVar1;"],
+              readers=["@800b3b9c:47: iVar2 = FUN_800a924c(*(undefined1 *)(iVar3 + 0x1204),"
                           "*(undefined4 *)(iVar3 + 0x1210),"],
               insn=0x800B38A4),
         field("pcm_capacity_alloc", 4,
               "the same capacity as +0x19c: (((rate<<3)/30 + 0x9f)/0xa0)*0xa0, which is 4320 samples at "
               "16 kHz - 27 blocks' worth, a fixed lookahead and not the clip's own length",
-              writers=[B + "FUN_800b3704.c:42: *(uint *)(iVar3 + -0x7fea62cc) = (((uint)(param_2 << 3) / 0x1e + 0x9f) "
+              writers=["@800b3704:42: *(uint *)(iVar3 + -0x7fea62cc) = (((uint)(param_2 << 3) / 0x1e + 0x9f) "
                           "/ 0xa0) * 0xa0;"],
-              readers=[B + "func_800b3b9c.c:48: *(undefined4 *)(iVar3 + 0x1214),*(undefined4 *)(iVar3 + 0x1208),"],
+              readers=["@800b3b9c:48: *(undefined4 *)(iVar3 + 0x1214),*(undefined4 *)(iVar3 + 0x1208),"],
               insn=0x800B3858),
         field("stop_countdown", 1,
               "set to 4 when the stream reports done and decremented by the frame thread; the slot is "
               "released when it reaches 0, which is how a finished voice survives its own final drain",
-              writers=[B + "func_800b3b9c.c:31: *(undefined1 *)(iVar3 + 0x1218) = 4;",
-                       B + "func_800b3b9c.c:69: *(char *)(iVar3 + 0x1218) = *(char *)(iVar3 + 0x1218) + -1;"],
-              readers=[B + "func_800b3b9c.c:64: if (*(char *)(iVar3 + 0x1218) == '\\0') goto LAB_800b3d3c;"],
+              writers=["@800b3b9c:31: *(undefined1 *)(iVar3 + 0x1218) = 4;",
+                       "@800b3b9c:69: *(char *)(iVar3 + 0x1218) = *(char *)(iVar3 + 0x1218) + -1;"],
+              readers=["@800b3b9c:64: if (*(char *)(iVar3 + 0x1218) == '\\0') goto LAB_800b3d3c;"],
               offset=0x1218),
         field("pcm_units_delivered", 4,
               "PCM units the engine's callback has actually taken, accumulated by the callback itself and "
               "zeroed when the voice starts; FUN_800b3ddc divides it by the rate to build the progress the "
               "caller sees",
-              writers=[B + "FUN_800b4478.c:15: *(int *)(param_5 + -0x7fea62c4) = *(int *)(param_5 + -0x7fea62c4) "
+              writers=["@800b4478:15: *(int *)(param_5 + -0x7fea62c4) = *(int *)(param_5 + -0x7fea62c4) "
                           "+ param_2 + param_4;",
-                       B + "func_800b3b9c.c:44: *(undefined4 *)(iVar3 + 0x121c) = 0;"],
-              readers=[B + "FUN_800b3ddc.c:34: fVar5 = (float)*(int *)(iVar2 + -0x7fea62c4);"],
+                       "@800b3b9c:44: *(undefined4 *)(iVar3 + 0x121c) = 0;"],
+              readers=["@800b3ddc:34: fVar5 = (float)*(int *)(iVar2 + -0x7fea62c4);"],
               offset=0x121C),
         field("declared_seconds", 4,
               "a float duration the frame thread computes once: (blocks_remaining * 160) / rate. It is "
               "written, never read in the corpus",
-              writers=[B + "func_800b3b9c.c:43: *(float *)(iVar3 + 0x1220) = ((float)*(ushort *)(iVar3 + 0x11a0) "
+              writers=["@800b3b9c:43: *(float *)(iVar3 + 0x1220) = ((float)*(ushort *)(iVar3 + 0x11a0) "
                           "* 160.0) / fVar5;"],
               offset=0x1220, confidence="writer only"),
         field("voice_id", 4,
               "the caller's handle: FUN_800b3640 assigns a fresh id on every start and the control "
               "functions find a slot by scanning two entries for it",
-              writers=[B + "FUN_800b3640.c:27: *(int *)(param_1 * 0x1228 + -0x7fea62bc) = _DAT_8015af70;"],
-              readers=[B + "FUN_800b3ddc.c:23: if ((*(char *)(iVar2 + 0x1200) != '\\0') && "
+              writers=["@800b3640:27: *(int *)(param_1 * 0x1228 + -0x7fea62bc) = _DAT_8015af70;"],
+              readers=["@800b3ddc:23: if ((*(char *)(iVar2 + 0x1200) != '\\0') && "
                           "(*(int *)(iVar2 + 0x1224) == param_1))"],
               offset=0x1224),
     ]
@@ -509,82 +513,81 @@ def descriptor_fields():
 
 def engine_fields():
     """The 0x68-byte engine voice record the command lands in (FUN_800a54ec, `param_2` is the command)."""
-    B = "src/stage2/"
     return _by_offset([
         field("active", 1,
               "set by the engine when the record is armed by its start call (FUN_800a597c writes 1) and "
               "tested by the per-frame builder; 0 here means the frame is skipped",
-              writers=[B + "FUN_800a54ec.c:22: *puVar4 = 0;"],
-              readers=[B + "FUN_800a4560.c:35: if (*(char *)(iVar5 + _DAT_80143f0c) != '\\0') {"],
+              writers=["@800a54ec:22: *puVar4 = 0;"],
+              readers=["@800a4560:35: if (*(char *)(iVar5 + _DAT_80143f0c) != '\\0') {"],
               insn=0x800A5520),
         field("start_flag_b", 1,
               "set to 1 on every start beside the zeroing of the word above; no reader found",
-              writers=[B + "FUN_800a54ec.c:24: puVar4[1] = 1;"],
+              writers=["@800a54ec:24: puVar4[1] = 1;"],
               insn=0x800A5528, confidence="writer only"),
         field("voice_flags", 2,
               "zeroed, then bit 0 is set unless the buffer address in the command starts with 0x8; the "
               "per-frame builder branches on it to choose which command layout it writes",
-              writers=[B + "FUN_800a54ec.c:23: *(undefined2 *)(puVar4 + 2) = 0;",
-                       B + "FUN_800a54ec.c:67: *(ushort *)(iVar1 + 2) = *(ushort *)(iVar1 + 2) | 1;"],
-              readers=[B + "FUN_800a3bf4.c:103: if ((*(ushort *)(param_1 + 2) & 1) == 0) {"],
+              writers=["@800a54ec:23: *(undefined2 *)(puVar4 + 2) = 0;",
+                       "@800a54ec:67: *(ushort *)(iVar1 + 2) = *(ushort *)(iVar1 + 2) | 1;"],
+              readers=["@800a3bf4:103: if ((*(ushort *)(param_1 + 2) & 1) == 0) {"],
               insn=0x800A5524),
         field("pitch_word", 2,
               "the resampling ratio in 12-bit fixed point: (rate / _DAT_80147fa4) * 4096, clamped to "
               "0.5 (0x2000). At 16 kHz against a 32 kHz output this is 0x800",
-              writers=[B + "FUN_800a54ec.c:21: *(undefined2 *)(puVar4 + 4) = 0x1000;",
-                       B + "FUN_800a5a00.c:15: *(ushort *)(param_1 * 0x68 + _DAT_80143f0c + 4) = param_2;"],
-              readers=[B + "FUN_800a3bf4.c:272: puVar7[0x11] = *(ushort *)(param_1 + 4);"],
+              writers=["@800a54ec:21: *(undefined2 *)(puVar4 + 4) = 0x1000;",
+                       "@800a5a00:15: *(ushort *)(param_1 * 0x68 + _DAT_80143f0c + 4) = param_2;"],
+              readers=["@800a3bf4:272: puVar7[0x11] = *(ushort *)(param_1 + 4);"],
               insn=0x800A5518),
         field("position_double", 8,
               "the voice's playback position carried as a double, so the fractional part survives between "
               "frames: the builder subtracts the integer part and keeps the remainder times 65536",
-              writers=[B + "FUN_800a54ec.c:46: *(double *)(iVar1 + 8) = dVar5;"],
-              readers=[B + "FUN_800a3bf4.c:45: FUN_800a6258(*(undefined8 *)(param_1 + 8));"],
+              writers=["@800a54ec:46: *(double *)(iVar1 + 8) = dVar5;"],
+              readers=["@800a3bf4:45: FUN_800a6258(*(undefined8 *)(param_1 + 8));"],
               insn=0x800A55CC),
         field("position_integer", 4,
               "the integer part of that position, rewritten from it every frame by FUN_800a485c before "
               "the command list is built",
-              writers=[B + "FUN_800a54ec.c:49: *(undefined4 *)(iVar1 + 0x10) = uVar2;",
-                       B + "FUN_800a485c.c:31: *(uint *)(pcVar2 + 0x10) = (int)(dVar4 - 2147483648.0) | 0x80000000;"],
-              readers=[B + "FUN_800a3bf4.c:113: *(uint *)(puVar7 + 0x18) = *(int *)(param_1 + 0x2c) + "
+              writers=["@800a54ec:49: *(undefined4 *)(iVar1 + 0x10) = uVar2;",
+                       "@800a485c:31: *(uint *)(pcVar2 + 0x10) = (int)(dVar4 - 2147483648.0) | 0x80000000;"],
+              readers=["@800a3bf4:113: *(uint *)(puVar7 + 0x18) = *(int *)(param_1 + 0x2c) + "
                           "(local_44 & 0xfffc) * 2;"],
               insn=0x800A55D8),
         field("position_previous", 4,
               "last frame's integer position; FUN_800a485c copies +0x10 into it before advancing, so the "
               "pair is the one-frame stride the builder measures",
-              writers=[B + "FUN_800a54ec.c:48: *(undefined4 *)(iVar1 + 0x14) = uVar2;",
-                       B + "FUN_800a485c.c:26: *(undefined4 *)(pcVar2 + 0x14) = *(undefined4 *)(pcVar2 + 0x10);"],
+              writers=["@800a54ec:48: *(undefined4 *)(iVar1 + 0x14) = uVar2;",
+                       "@800a485c:26: *(undefined4 *)(pcVar2 + 0x14) = *(undefined4 *)(pcVar2 + 0x10);"],
               insn=0x800A55D4, confidence="writer only"),
         field("pcm_base", 4,
               "the sample buffer from the command: for a MORT voice, the PCM the synthesis filled",
-              writers=[B + "FUN_800a54ec.c:41: *(undefined4 *)(iVar1 + 0x2c) = *(undefined4 *)(param_2 + 4);"],
-              readers=[B + "FUN_800a3bf4.c:119: *(uint *)(puVar7 + 0x12) = *(int *)(param_1 + 0x2c) + "
+              writers=["@800a54ec:41: *(undefined4 *)(iVar1 + 0x2c) = *(undefined4 *)(param_2 + 4);"],
+              readers=["@800a3bf4:119: *(uint *)(puVar7 + 0x12) = *(int *)(param_1 + 0x2c) + "
                           "(local_48 & 0xfffc) * 2;"],
               insn=0x800A55A8),
         field("buffer_end", 4,
               "the first of the three length words the command carries; for a MORT voice it is the same "
               "capacity as +0x38, which is why the +0x3c loop length comes out zero",
-              writers=[B + "FUN_800a54ec.c:50: *(undefined4 *)(iVar1 + 0x30) = *(undefined4 *)(param_2 + 0xc);"],
-              readers=[B + "FUN_800a3bf4.c:61: if (local_48 + iVar10 < *(uint *)(param_1 + 0x30)) goto LAB_800a3dfc;"],
+              writers=["@800a54ec:50: *(undefined4 *)(iVar1 + 0x30) = *(undefined4 *)(param_2 + 0xc);"],
+              readers=["@800a3bf4:61: if (local_48 + iVar10 < *(uint *)(param_1 + 0x30)) goto LAB_800a3dfc;"],
               insn=0x800A55E0),
         field("loop_start", 4,
               "the command's second length word; the MORT voice hands 0 here",
-              writers=[B + "FUN_800a54ec.c:51: *(undefined4 *)(iVar1 + 0x34) = *(undefined4 *)(param_2 + 0x10);"],
-              readers=[B + "FUN_800a3bf4.c:57: uVar8 = *(int *)(param_1 + 0x34) + uVar2;"],
+              writers=["@800a54ec:51: *(undefined4 *)(iVar1 + 0x34) = *(undefined4 *)(param_2 + 0x10);"],
+              readers=["@800a3bf4:57: uVar8 = *(int *)(param_1 + 0x34) + uVar2;"],
               insn=0x800A55E8),
         field("loop_end", 4,
               "the command's third length word; the MORT voice hands the capacity, the same value as "
               "+0x30",
-              writers=[B + "FUN_800a54ec.c:52: *(undefined4 *)(iVar1 + 0x38) = *(undefined4 *)(param_2 + 0x14);"],
-              readers=[B + "FUN_800a3bf4.c:56: uVar2 = *(uint *)(param_1 + 0x38);"],
+              writers=["@800a54ec:52: *(undefined4 *)(iVar1 + 0x38) = *(undefined4 *)(param_2 + 0x14);"],
+              readers=["@800a3bf4:56: uVar2 = *(uint *)(param_1 + 0x38);"],
               insn=0x800A55F0),
         field("loop_length", 4,
               "buffer_end - (loop_start + loop_end), zeroed when it falls below 10: a derived word, not "
               "an input, and 0 for every MORT voice because +0x30 and +0x38 agree",
-              writers=[B + "FUN_800a54ec.c:59: uVar3 = *(int *)(iVar1 + 0x30) - (*(int *)(iVar1 + 0x34) + "
+              writers=["@800a54ec:59: uVar3 = *(int *)(iVar1 + 0x30) - (*(int *)(iVar1 + 0x34) + "
                           "*(int *)(iVar1 + 0x38));",
-                       B + "FUN_800a54ec.c:62: *(undefined4 *)(iVar1 + 0x3c) = 0;"],
-              readers=[B + "FUN_800a3bf4.c:58: if ((uVar2 == 0) ||"],
+                       "@800a54ec:62: *(undefined4 *)(iVar1 + 0x3c) = 0;"],
+              readers=["@800a3bf4:58: if ((uVar2 == 0) ||"],
               insn=0x800A560C),
         field("gain_target_0", 2,
               "one of four s16 TARGET gains at stride 2 (0x40, 0x42, 0x44, 0x46). The CPU computes each "
@@ -592,34 +595,34 @@ def engine_fields():
               "fraction and interpolated, then stored as gain*32767. Which output channel each of the "
               "four feeds is not stated by any MIPS instruction - it is one of the unobservable entries "
               "this map lists rather than guesses",
-              writers=[B + "FUN_800a54ec.c:29: *(undefined2 *)(puVar4 + 0x40) = 0;",
-                       B + "FUN_800a5a60.c:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
+              writers=["@800a54ec:29: *(undefined2 *)(puVar4 + 0x40) = 0;",
+                       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
                           "iVar1 + 0x44,param_5,iVar1 + 0x46);"],
-              readers=[B + "FUN_800a3bf4.c:249: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x40) * "
+              readers=["@800a3bf4:249: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x40) * "
                           "*(float *)(param_1 + 0x4c)) * 0x10000 -"],
               insn=0x800A553C),
         field("gain_target_1", 2,
               "the second target gain (see +0x40)",
-              writers=[B + "FUN_800a54ec.c:30: *(undefined2 *)(puVar4 + 0x42) = 0;",
-                       B + "FUN_800a5a60.c:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
+              writers=["@800a54ec:30: *(undefined2 *)(puVar4 + 0x42) = 0;",
+                       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
                           "iVar1 + 0x44,param_5,iVar1 + 0x46);"],
-              readers=[B + "FUN_800a3bf4.c:255: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x42) * "
+              readers=["@800a3bf4:255: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x42) * "
                           "*(float *)(param_1 + 0x4c)) * 0x10000 -"],
               insn=0x800A5540),
         field("gain_target_2", 2,
               "the third target gain (see +0x40)",
-              writers=[B + "FUN_800a54ec.c:31: *(undefined2 *)(puVar4 + 0x44) = 0;",
-                       B + "FUN_800a5da0.c:32: *param_6 = (short)(int)(fVar3 * ((1.0 - fVar2) * "
+              writers=["@800a54ec:31: *(undefined2 *)(puVar4 + 0x44) = 0;",
+                       "@800a5da0:32: *param_6 = (short)(int)(fVar3 * ((1.0 - fVar2) * "
                           "*(float *)(&DAT_80136304 + (param_5 >> 0x16) * 4)"],
-              readers=[B + "FUN_800a3bf4.c:261: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x44) * "
+              readers=["@800a3bf4:261: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x44) * "
                           "*(float *)(param_1 + 0x4c)) * 0x10000 -"],
               insn=0x800A5544),
         field("gain_target_3", 2,
               "the fourth target gain (see +0x40)",
-              writers=[B + "FUN_800a54ec.c:32: *(undefined2 *)(puVar4 + 0x46) = 0;",
-                       B + "FUN_800a5a60.c:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
+              writers=["@800a54ec:32: *(undefined2 *)(puVar4 + 0x46) = 0;",
+                       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
                           "iVar1 + 0x44,param_5,iVar1 + 0x46);"],
-              readers=[B + "FUN_800a3bf4.c:265: fVar14 = (float)(int)*(short *)(param_1 + 0x46) * "
+              readers=["@800a3bf4:265: fVar14 = (float)(int)*(short *)(param_1 + 0x46) * "
                           "*(float *)(param_1 + 0x4c);"],
               insn=0x800A554C),
         field("gain_current", 2,
@@ -628,89 +631,86 @@ def engine_fields():
               "the matching target by the float at +0x4c, writes the result back here, and carries the "
               "difference to the old value as a per-frame step in the command list. So the descriptor "
               "holds current and target gains, and the CPU computes both",
-              writers=[B + "FUN_800a54ec.c:25: *(undefined2 *)(puVar4 + 0x18) = 0;",
-                       B + "FUN_800a3bf4.c:248: (short)(int)((float)(int)*(short *)(param_1 + 0x40) * "
+              writers=["@800a54ec:25: *(undefined2 *)(puVar4 + 0x18) = 0;",
+                       "@800a3bf4:248: (short)(int)((float)(int)*(short *)(param_1 + 0x40) * "
                           "*(float *)(param_1 + 0x4c));"],
-              readers=[B + "FUN_800a3bf4.c:243: *(int *)puVar7 = (int)*(short *)(param_1 + 0x18) << 0x10;"],
+              readers=["@800a3bf4:243: *(int *)puVar7 = (int)*(short *)(param_1 + 0x18) << 0x10;"],
               insn=0x800A552C),
         field("record_mode", 1,
               "copied from the command's +0x18 byte, and it decides how the per-frame builder walks the "
               "buffer: 0 means stride-2 16-bit units at base + (position & ~3)*2, 3 means 0x28-byte "
               "blocks at base + 0x100, any other value falls through to the shared tail. The MORT voice "
               "always hands 0, so the PCM the codec writes is read back as plain 16-bit samples",
-              writers=[B + "FUN_800a54ec.c:53: *(undefined1 *)(iVar1 + 0x5d) = *(undefined1 *)(param_2 + 0x18);"],
-              readers=[B + "FUN_800a3bf4.c:104: if (param_1[0x5d] == '\\0') {"],
+              writers=["@800a54ec:53: *(undefined1 *)(iVar1 + 0x5d) = *(undefined1 *)(param_2 + 0x18);"],
+              readers=["@800a3bf4:104: if (param_1[0x5d] == '\\0') {"],
               insn=0x800A55F8),
     ])
 
 
 def handle_fields():
     """The 0x18-byte record FUN_800a924c keeps per handle: what the release path needs, nothing else."""
-    B = "src/stage2/"
     return [
         field("started", 1,
               "set to 1 by the start call and cleared by FUN_800a942c before it releases the handle",
-              writers=[B + "FUN_800a924c.c:38: (&DAT_801481e0)[iVar2] = 1;"],
-              readers=[B + "FUN_800a942c.c:14: if ((&DAT_801481e0)[param_1 * 0x18] == '\\x01') {"],
+              writers=["@800a924c:38: (&DAT_801481e0)[iVar2] = 1;"],
+              readers=["@800a942c:14: if ((&DAT_801481e0)[param_1 * 0x18] == '\\x01') {"],
               insn=0x800A92F4),
         field("refill_callback", 4,
               "the routine the engine calls when it wants more PCM; the voice path passes FUN_800b4478, "
               "which advances the slot's +0x11d4 and returns nothing",
-              writers=[B + "FUN_800a924c.c:37: *(undefined4 *)(&DAT_801481e4 + iVar2) = param_9;"],
-              readers=[B + "FUN_800b4478.c:14: FUN_800b4d30(param_5 + -0x7fea74e0,param_2 + param_4);"],
+              writers=["@800a924c:37: *(undefined4 *)(&DAT_801481e4 + iVar2) = param_9;"],
+              readers=["@800b4478:14: FUN_800b4d30(param_5 + -0x7fea74e0,param_2 + param_4);"],
               insn=0x800A92EC),
         field("buffer", 4,
               "the PCM buffer handed over, i.e. the slot's +0x1210; the engine passes it to the refill "
               "callback, whose calling side is not in the corpus",
-              writers=[B + "FUN_800a924c.c:34: *(undefined4 *)(&DAT_801481e8 + iVar2) = param_2;"],
+              writers=["@800a924c:34: *(undefined4 *)(&DAT_801481e8 + iVar2) = param_2;"],
               insn=0x800A92D8, confidence="writer only"),
         field("length", 4,
               "its capacity in 16-bit units, i.e. the slot's +0x1214, beside the buffer above",
-              writers=[B + "FUN_800a924c.c:35: *(undefined4 *)(&DAT_801481ec + iVar2) = param_3;"],
+              writers=["@800a924c:35: *(undefined4 *)(&DAT_801481ec + iVar2) = param_3;"],
               insn=0x800A92DC, confidence="writer only"),
         field("zero", 4,
               "zeroed on every start; no reader found",
-              writers=[B + "FUN_800a924c.c:36: *(undefined4 *)(&DAT_801481f0 + iVar2) = 0;"],
+              writers=["@800a924c:36: *(undefined4 *)(&DAT_801481f0 + iVar2) = 0;"],
               insn=0x800A92E8, confidence="writer only"),
         field("voice_slot", 4,
               "which of the two slots this handle belongs to: it is passed to the refill callback as its "
               "fifth argument and multiplied by 0x1228 there, which is the link back from the engine to "
               "the descriptor",
-              writers=[B + "FUN_800a924c.c:39: *(undefined4 *)(&DAT_801481f4 + iVar2) = param_10;"],
-              readers=[B + "FUN_800b4478.c:13: param_5 = param_5 * 0x1228;"],
+              writers=["@800a924c:39: *(undefined4 *)(&DAT_801481f4 + iVar2) = param_10;"],
+              readers=["@800b4478:13: param_5 = param_5 * 0x1228;"],
               insn=0x800A9300),
     ]
 
 
 def task_fields():
     """The task block FUN_800a2e40 fills and hands to the microcode; the CPU's last word on the mix."""
-    B = "src/stage2/"
     names = [("task_type", 4, 0x00,
               "the block's first word, written 2; the value is the only thing in the block that says what "
               "kind of task this is",
-              [B + "FUN_800a2e40.c:18: _DAT_80143c60 = 2;"], []),
+              ["@800a2e40:18: _DAT_80143c60 = 2;"], []),
              ("command_list", 4, 0x30,
               "the per-frame command list base (0x80143f50), written back after a cache flush of "
               "frames*0xa10 bytes: this is what the task hands over",
-              [B + "FUN_800a2e40.c:26: _DAT_80143c90 = _DAT_80143f50;",
-               B + "FUN_800a2e40.c:28: func_0x8000efa0(_DAT_80143f50,uVar1 * 0xa10);"], []),
+              ["@800a2e40:26: _DAT_80143c90 = _DAT_80143f50;",
+               "@800a2e40:28: func_0x8000efa0(_DAT_80143f50,uVar1 * 0xa10);"], []),
              ("frame_count", 4, 0x34,
               "how many 0xa10-byte frames that list holds, i.e. how many AI buffers are being handed over "
               "in one task",
-              [B + "FUN_800a2e40.c:27: _DAT_80143c94 = uVar1;"], []),
+              ["@800a2e40:27: _DAT_80143c94 = uVar1;"], []),
              ("blob_pointer", 4, 0x10,
               "a pointer into the stage-2 member (0x800b2700) with a size word of 0x1000 beside it at "
               "+0x14. The corpus has no body between 0x800b2694 and 0x800b3640, so most of that range is "
               "outside it - but the range's last 0xc0 bytes run into FUN_800b3640, which is why the pair "
               "is recorded as it stands and its meaning left to unresolved",
-              [B + "FUN_800a2e40.c:20: _DAT_80143c70 = &DAT_800b2700;",
-               B + "FUN_800a2e40.c:21: _DAT_80143c74 = 0x1000;"], [])]
+              ["@800a2e40:20: _DAT_80143c70 = &DAT_800b2700;",
+               "@800a2e40:21: _DAT_80143c74 = 0x1000;"], [])]
     rows = [field(n, w, m, wr, rd, offset=o, confidence="writer only") for n, w, o, m, wr, rd in names]
     return sorted(rows, key=lambda f: f["offset"])
 
 
 def ring_section():
-    B = "src/stage2/"
     return {
         "offset": RING_OFF,
         "size": RING_SIZE,
@@ -722,29 +722,29 @@ def ring_section():
         "layout": [
             {"offset": RING_OFF, "width": 2, "name": "magic",
              "meaning": "the record's first halfword, 'MO'; never read by the codec, which starts at +0x60",
-             "writer": [B + "FUN_800b4a04.c:56: param_1 + (*(uint *)(param_1 + 0x11d0) & 0xff8) + 0x1a0,iVar1,"
+             "writer": ["@800b4a04:56: param_1 + (*(uint *)(param_1 + 0x11d0) & 0xff8) + 0x1a0,iVar1,"
                              "param_1 + 0x11ac);"],
              "reader": [], "evidence": "the DMA destination arithmetic, not a field read",
              "confidence": "byte map only"},
             {"offset": RING_OFF + 4, "width": 2, "name": "header_blocks",
              "meaning": "the MORT header's block count, and the only thing the reader takes out of the "
                         "ring: read as a halfword into descriptor+0x11a0 when rom_offset is still 0",
-             "writer": [B + "FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"],
-             "reader": [B + "FUN_800b4a04.c:25: *(undefined2 *)(param_1 + 0x11a0) = "
+             "writer": ["@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"],
+             "reader": ["@800b4a04:25: *(undefined2 *)(param_1 + 0x11a0) = "
                              "*(undefined2 *)(param_1 + 0x1a4);"],
              "evidence": "instruction 0x800b4a50 (lhu r4,420(r16)) reads ring+4", "confidence": "established"},
             {"offset": RING_OFF + 6, "width": 2, "name": "header_rate",
              "meaning": "the MORT header's sample rate; NO instruction in any unpacked image reads this "
                         "halfword (every immediate 0x1a6/0x1a7 in the corpus belongs to a stack frame), so "
                         "the descriptor's rate cannot be traced through it - see unresolved",
-             "writer": [B + "FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"],
+             "writer": ["@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"],
              "reader": [], "evidence": "absence, established by scanning every image for the immediate",
              "confidence": "unread"},
             {"offset": RING_OFF + 8, "width": 4, "name": "header_words",
              "meaning": "the record's length in 32-bit words, masked to 24 bits into descriptor+0x11a4 and "
                         "from there into 4-byte tail-chunk arithmetic",
-             "writer": [B + "FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"],
-             "reader": [B + "FUN_800b4a04.c:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;"],
+             "writer": ["@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"],
+             "reader": ["@800b4a04:27: *(uint *)(param_1 + 0x11a4) = *(uint *)(param_1 + 0x1a8) & 0xffffff;"],
              "evidence": "instruction 0x800b4a58 (lw r3,424(r16)) reads ring+8", "confidence": "established"},
         ],
         "chunking": {
@@ -753,13 +753,13 @@ def ring_section():
                     "0x11a4<<2, i.e. the record's own tail",
             "fetch_when": "stream_state in {1,2,3} and (rom_offset - ring_consumed) < 0xc01, so at most "
                           "three chunks are ever outstanding in a 4 KiB ring",
-            "evidence": [B + "FUN_800b4a04.c:42: ((uint)(*(int *)(param_1 + 0x11d0) - *(int *)(param_1 + 0x11cc)) < 0xc01)) {",
-                         B + "FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"],
+            "evidence": ["@800b4a04:42: ((uint)(*(int *)(param_1 + 0x11d0) - *(int *)(param_1 + 0x11cc)) < 0xc01)) {",
+                         "@800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"],
         },
         "overlap": {
             "claim": "the ring and the post-ring state do not overlap: 0x1a0 + 0x1000 == 0x11a0",
-            "evidence": [B + "FUN_800b53f4.c:71: uVar4 = *(uint *)(((int)uVar14 >> 3 & 0xffcU) + iVar6) >> (uVar14 & 0x1f);",
-                         B + "FUN_800b4930.c:29: *(undefined2 *)(param_1 + 0x11a0) = 0;"],
+            "evidence": ["@800b53f4:71: uVar4 = *(uint *)(((int)uVar14 >> 3 & 0xffcU) + iVar6) >> (uVar14 & 0x1f);",
+                         "@800b4930:29: *(undefined2 *)(param_1 + 0x11a0) = 0;"],
         },
         "correction": "+0x1a4 and +0x1a8 are not stream state, though they sit where stream state would "
                       "expect to be: the ring spans 0x1a0..0x119f, so those two reads are ring bytes 4..11, "
@@ -871,7 +871,7 @@ def unresolved_section():
          "would_settle_it": "the routine that consumes the task block, or a dump of the block at run time."},
         {"question": "What is the boot pointer the task block at +0x08 receives?",
          "why": "FUN_800a2e40 assigns the symbol Ghidra renders as `entry` to it, which is the image's own "
-                "entry point (src/stage2/func_80018a80.c:11) and cannot be an RSP boot address; the "
+                "entry point (0x80018a80) and cannot be an RSP boot address; the "
                 "decompiler has lost which variable that was.",
          "would_settle_it": "the linker symbol at that store, or a read of the value in a memory dump."},
     ]
@@ -907,7 +907,6 @@ def clip_trace(index=0):
     tail = before_tail * 4
     capacity = (((rate << 3) // 0x1E + 0x9F) // 0xA0) * 0xA0
     samples = blocks * BLOCK_SAMPLES
-    B = "src/stage2/"
 
     def v(field_name, value, source, via):
         return {"field": field_name, "value": value, "from": source, "via": via}
@@ -917,39 +916,39 @@ def clip_trace(index=0):
         "record": {"bank_file": 1979, "bytes": length, "header_bytes": MORT_HEADER},
         "values": [
             v("+0x11a0 blocks_remaining", blocks, "cartridge:MORT+4",
-              "arith: src @ " + B + "FUN_800b4a04.c:25: *(undefined2 *)(param_1 + 0x11a0) = "
+              "arith: src @ " + "@800b4a04:25: *(undefined2 *)(param_1 + 0x11a0) = "
                                     "*(undefined2 *)(param_1 + 0x1a4);"),
             v("+0x11a2 header_blocks_echo", blocks, "trace:+0x11a0 blocks_remaining",
-              "arith: src @ " + B + "FUN_800b4a04.c:26: *(short *)(param_1 + 0x11a2) = "
+              "arith: src @ " + "@800b4a04:26: *(short *)(param_1 + 0x11a2) = "
                                     "(short)*(undefined4 *)(param_1 + 0x1a4);"),
             v("+0x11a4 record_words_remaining", words & 0xFFFFFF, "cartridge:MORT+8",
-              "arith: src & 0xffffff @ " + B + "FUN_800b4a04.c:27: *(uint *)(param_1 + 0x11a4) = "
+              "arith: src & 0xffffff @ " + "@800b4a04:27: *(uint *)(param_1 + 0x11a4) = "
                                                "*(uint *)(param_1 + 0x1a8) & 0xffffff;"),
             v("record bytes", length, "cartridge:record_len",
-              "arith: src @ " + B + "FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"),
+              "arith: src @ " + "@800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"),
             v("bytes implied by the declared words", length, "trace:+0x11a4 record_words_remaining",
-              "arith: src * 4 @ " + B + "FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"),
+              "arith: src * 4 @ " + "@800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"),
             v("+0x11c8 bit_cursor", 0x60, "cartridge:header_bytes",
-              "arith: src * 8 @ " + B + "FUN_800b4a04.c:24: *(undefined4 *)(param_1 + 0x11c8) = 0x60;"),
+              "arith: src * 8 @ " + "@800b4a04:24: *(undefined4 *)(param_1 + 0x11c8) = 0x60;"),
             v("chunk count", chunks, "trace:record bytes",
-              "arith: (src + 0x3ff) // 0x400 @ " + B + "FUN_800b4a04.c:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"),
+              "arith: (src + 0x3ff) // 0x400 @ " + "@800b4a04:30: *(int *)(param_1 + 0x11d0) = iVar1 + 0x400;"),
             v("words left when the tail chunk is issued", before_tail, "trace:+0x11a4 record_words_remaining",
-              "arith: src - 0x100 * %d @ " % (chunks - 1) + B + "FUN_800b4a04.c:35: *(uint *)(param_1 + 0x11a4) "
+              "arith: src - 0x100 * %d @ " % (chunks - 1) + "@800b4a04:35: *(uint *)(param_1 + 0x11a4) "
                                                           "= *(uint *)(param_1 + 0x11a4) - 0x100;"),
             v("tail chunk bytes", tail, "trace:words left when the tail chunk is issued",
-              "arith: src * 4 @ " + B + "FUN_800b4a04.c:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"),
+              "arith: src * 4 @ " + "@800b4a04:49: iVar1 = *(uint *)(param_1 + 0x11a4) << 2;"),
             v("+0x1208 rate", rate, "cartridge:MORT+6",
-              "arith: src @ " + B + "FUN_800b3704.c:36: *(int *)(iVar3 + -0x7fea62d8) = param_2;"),
+              "arith: src @ " + "@800b3704:36: *(int *)(iVar3 + -0x7fea62d8) = param_2;"),
             v("+0x1214 pcm_capacity_alloc", capacity, "trace:+0x1208 rate",
-              "arith: ((src << 3) // 0x1e + 0x9f) // 0xa0 * 0xa0 @ " + B + "FUN_800b3704.c:42: "
+              "arith: ((src << 3) // 0x1e + 0x9f) // 0xa0 * 0xa0 @ " + "@800b3704:42: "
                                                                          "*(uint *)(iVar3 + -0x7fea62cc) = "
                                                                          "(((uint)(param_2 << 3) / 0x1e + 0x9f) / 0xa0) * 0xa0;"),
             v("+0x19c pcm_units", capacity, "trace:+0x1214 pcm_capacity_alloc",
-              "arith: src @ " + B + "FUN_800b4930.c:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"),
+              "arith: src @ " + "@800b4930:16: *(undefined4 *)(param_1 + 0x19c) = param_4;"),
             v("buffer allocation bytes", (capacity + 4) * 2, "trace:+0x1214 pcm_capacity_alloc",
-              "arith: (src + 4) * 2 @ " + B + "FUN_800a9420.c:14:     return (a + 4) << 1;"),
+              "arith: (src + 4) * 2 @ " + "@800a9420:14:     return (a + 4) << 1;"),
             v("+0x11d8 units_written (whole clip)", samples, "trace:+0x11a0 blocks_remaining",
-              "arith: src * 160 @ " + B + "FUN_800b4a04.c:75: *(int *)(param_1 + 0x11d8) = "
+              "arith: src * 160 @ " + "@800b4a04:75: *(int *)(param_1 + 0x11d8) = "
                                          "*(int *)(param_1 + 0x11d8) + 0xa0;"),
         ],
         "hops_not_traced": [
@@ -1007,11 +1006,11 @@ def derive():
             "stride": SLOT_STRIDE,
             "slots": SLOT_COUNT,
             "end": hexstr(SLOT_END),
-            "end_evidence": ["src/stage2/FUN_800b3640.c:27: *(int *)(param_1 * 0x1228 + -0x7fea62bc) = "
+            "end_evidence": ["@800b3640:27: *(int *)(param_1 * 0x1228 + -0x7fea62bc) = "
                              "_DAT_8015af70;",
-                             "src/stage2/FUN_800b3704.c:27: iVar3 = iVar3 + 0x1228;"],
-            "stride_evidence": ["src/stage2/func_800b3b9c.c:72: iVar3 = iVar3 + 0x1228;",
-                                "src/stage2/FUN_800b3704.c:27: iVar3 = iVar3 + 0x1228;"],
+                             "@800b3704:27: iVar3 = iVar3 + 0x1228;"],
+            "stride_evidence": ["@800b3b9c:72: iVar3 = iVar3 + 0x1228;",
+                                "@800b3704:27: iVar3 = iVar3 + 0x1228;"],
             "starters": ["FUN_800b3704", "FUN_800b4930", "FUN_800b4a04", "FUN_800b53f4",
                          "func_800b3b9c", "FUN_800b40c4"],
             "fields": desc,
@@ -1022,60 +1021,60 @@ def derive():
                 "argument_block": [
                     {"offset": 0x00, "width": 4, "name": "flags_and_rate",
                      "meaning": "the rate OR'd with 0x00400000; the low half becomes the pitch word",
-                     "writer": ["src/stage2/FUN_800a924c.c:40: local_48 = param_4 | 0x400000;"],
-                     "reader": ["src/stage2/FUN_800a54ec.c:65: if ((*(uint *)(param_2 + 4) & 0xf0000000) != "
+                     "writer": ["@800a924c:40: local_48 = param_4 | 0x400000;"],
+                     "reader": ["@800a54ec:65: if ((*(uint *)(param_2 + 4) & 0xf0000000) != "
                                 "0x80000000) {"],
                      "evidence": "instruction 0x800a930c stores rate|0x400000 to the block's first word",
                      "confidence": "established"},
                     {"offset": 0x04, "width": 4, "name": "buffer",
                      "meaning": "the PCM buffer address (the slot's +0x1210)",
-                     "writer": ["src/stage2/FUN_800a924c.c:44: local_44 = param_2;"],
-                     "reader": ["src/stage2/FUN_800a54ec.c:41: *(undefined4 *)(iVar1 + 0x2c) = "
+                     "writer": ["@800a924c:44: local_44 = param_2;"],
+                     "reader": ["@800a54ec:41: *(undefined4 *)(iVar1 + 0x2c) = "
                                 "*(undefined4 *)(param_2 + 4);"],
                      "evidence": "instruction 0x800a9310", "confidence": "established"},
                     {"offset": 0x08, "width": 4, "name": "position",
                      "meaning": "a starting position, zero for the voice path",
-                     "writer": ["src/stage2/FUN_800a924c.c:41: local_40 = 0;"],
-                     "reader": ["src/stage2/FUN_800a54ec.c:42: dVar5 = (double)*(int *)(param_2 + 8);"],
+                     "writer": ["@800a924c:41: local_40 = 0;"],
+                     "reader": ["@800a54ec:42: dVar5 = (double)*(int *)(param_2 + 8);"],
                      "evidence": "instruction 0x800a9314", "confidence": "established"},
                     {"offset": 0x0C, "width": 4, "name": "length_a",
                      "meaning": "the capacity in 16-bit units (the slot's +0x1214)",
-                     "writer": ["src/stage2/FUN_800a924c.c:45: local_3c = param_3;"],
-                     "reader": ["src/stage2/FUN_800a54ec.c:50: *(undefined4 *)(iVar1 + 0x30) = "
+                     "writer": ["@800a924c:45: local_3c = param_3;"],
+                     "reader": ["@800a54ec:50: *(undefined4 *)(iVar1 + 0x30) = "
                                 "*(undefined4 *)(param_2 + 0xc);"],
                      "evidence": "instruction 0x800a9318", "confidence": "established"},
                     {"offset": 0x10, "width": 4, "name": "length_b",
                      "meaning": "zero for the voice path; this is the byte the MORT voice always hands 0",
-                     "writer": ["src/stage2/FUN_800a924c.c:42: local_38 = 0;"],
-                     "reader": ["src/stage2/FUN_800a54ec.c:51: *(undefined4 *)(iVar1 + 0x34) = "
+                     "writer": ["@800a924c:42: local_38 = 0;"],
+                     "reader": ["@800a54ec:51: *(undefined4 *)(iVar1 + 0x34) = "
                                 "*(undefined4 *)(param_2 + 0x10);"],
                      "evidence": "instruction 0x800a931c", "confidence": "established"},
                     {"offset": 0x14, "width": 4, "name": "length_c",
                      "meaning": "the same capacity again, which is why the derived loop length is zero",
-                     "writer": ["src/stage2/FUN_800a924c.c:46: local_34 = param_3;"],
-                     "reader": ["src/stage2/FUN_800a54ec.c:52: *(undefined4 *)(iVar1 + 0x38) = "
+                     "writer": ["@800a924c:46: local_34 = param_3;"],
+                     "reader": ["@800a54ec:52: *(undefined4 *)(iVar1 + 0x38) = "
                                 "*(undefined4 *)(param_2 + 0x14);"],
                      "evidence": "instruction 0x800a9320", "confidence": "established"},
                     {"offset": 0x18, "width": 1, "name": "mode",
                      "meaning": "the buffer's record mode; 0 for the voice path, which is what tells the "
                                 "consumer that the buffer holds plain 16-bit samples",
-                     "writer": ["src/stage2/FUN_800a924c.c:43: local_30 = 0;"],
-                     "reader": ["src/stage2/FUN_800a54ec.c:53: *(undefined1 *)(iVar1 + 0x5d) = "
+                     "writer": ["@800a924c:43: local_30 = 0;"],
+                     "reader": ["@800a54ec:53: *(undefined1 *)(iVar1 + 0x5d) = "
                                 "*(undefined1 *)(param_2 + 0x18);"],
                      "evidence": "instruction 0x800a9328", "confidence": "established"},
                 ],
                 "engine_voice": {"base": hexstr(ENGINE_BASE), "stride": ENGINE_STRIDE,
-                                 "stride_evidence": ["src/stage2/FUN_800a54ec.c:20: puVar4 = (undefined1 *)"
+                                 "stride_evidence": ["@800a54ec:20: puVar4 = (undefined1 *)"
                                                      "(_DAT_80143f0c + (param_1 & 0xffff) * 0x68);"],
                                  "fields": eng},
                 "handle": {"base": hexstr(HANDLE_BASE), "stride": HANDLE_STRIDE,
-                           "stride_evidence": ["src/stage2/FUN_800a924c.c:33: iVar2 = iVar1 * 0x18;"],
+                           "stride_evidence": ["@800a924c:33: iVar2 = iVar1 * 0x18;"],
                            "fields": handle},
                 "task": {"base": hexstr(TASK_BASE),
                          "list_base": hexstr(LIST_BASE),
                          "program_blob": hexstr(UCODE_BLOB),
                          "fields": task,
-                         "evidence": ["src/stage2/FUN_800a2e40.c:29: (*_DAT_80143ff0)(&DAT_80143c60);"]},
+                         "evidence": ["@800a2e40:29: (*_DAT_80143ff0)(&DAT_80143c60);"]},
             },
         },
         "ring": ring,
@@ -1264,7 +1263,7 @@ def check():
             continue
         m = ARITH.match(row["via"])
         if not m:
-            bad.append("%s: via is not an 'arith: ... @ src/...' hop" % row["field"])
+            bad.append("%s: via is not an 'arith: ... @ @<address>:<line>' hop" % row["field"])
             continue
         try:
             cite_source(m.group(2))
@@ -1304,7 +1303,7 @@ def check():
                                         totals["buffer allocation bytes"]),
          totals["+0x1214 pcm_capacity_alloc"] == 0x10E0
          and totals["buffer allocation bytes"] == (0x10E0 + 4) * 2
-         and "FUN_800a9420(0x10e0)" in cite_source("src/stage2/FUN_800b40c4.c:36: FUN_800a9420(0x10e0);"), "")
+         and "FUN_800a9420(0x10e0)" in cite_source("@800b40c4:36: FUN_800a9420(0x10e0);"), "")
 
     # The separation of the two halves.
     fields = [f["name"] for group, f in _iter_fields(committed)]

@@ -2,6 +2,20 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "65537e7",
+   "subject": "M393: three mechanisms on 0x800b43a0, all 3 of 38 -- published with what was tried",
+   "milestones": [
+    393
+   ]
+  },
+  {
+   "sha": "2e7ab47",
+   "subject": "M392 follow-up: the partials gate is cartridge-gated, so a missing dump is SKIP",
+   "milestones": [
+    392
+   ]
+  },
+  {
    "sha": "3d0326a",
    "subject": "M392: the 38-word M388 body read, and the partials gate that makes a score checkable",
    "milestones": [

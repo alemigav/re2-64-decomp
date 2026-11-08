@@ -58,6 +58,8 @@ import math
 import re
 import struct
 import sys
+
+import srcmap
 import zlib
 from collections import Counter
 from pathlib import Path
@@ -830,8 +832,8 @@ def check() -> int:
                   sum(SCALE_W) + 4 * (sum(SIDE_W) + 39) == 260))
     cases.append(("CODE: the synthesis path is FUN_800b62c0 / FUN_800b63b4 / FUN_800b4dc0, and all three are "
                   "in the corpus",
-                  all((HERE.parent / "src" / "stage2" / f"{f}.c").exists()
-                      for f in ("FUN_800b62c0", "FUN_800b63b4", "FUN_800b4dc0"))))
+                  all((HERE.parent / srcmap.path("stage2", a)).exists()
+                      for a in (0x800b62c0, 0x800b63b4, 0x800b4dc0))))
 
     # --- M200: the pool's classes from the DATA, and the resolver that consumes them. The four
     # sections are storage; the six `SND_PROJ` lists are roles, and each list's key space says which
