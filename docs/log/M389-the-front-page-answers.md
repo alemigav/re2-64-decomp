@@ -75,6 +75,22 @@ All three are answerable from the first screen. That is the gate, and it is the 
 table rather than below it — the first layout put it after the "not a matching build" paragraph, which is one screen too
 low.
 
+## The defect CI found, which review did not
+
+The first push of this milestone **failed** (`42495191804`): `front page (repository) — no verdict, exit 1`. The cause is the
+same class as M356's `.rodata` lesson and M389's own subject — **an input that is not in the tree cannot gate anything**:
+the build meter was rendered from `build/corpus/index.json`, which is **gitignored**, so the block rendered in CI (no build
+output) never equalled the committed block (rendered with it) and `--check` was guaranteed red on every future run.
+
+The fix is to derive the meter from a **committed** fixture: `make check`'s exact count *is* the corpus's byte-exact count
+(M374's invariant `exact = recovered − partials`), and the images are the ones that carry a reconstruction. The tool now
+renders **273 of 274 over 28 images** from `recovered.json` alone, and `--check` was verified green with `build/` moved
+out of the way — the exact condition CI reproduces.
+
+**The general form, worth keeping:** a generator whose `--check` reads a gitignored path is a gate that cannot pass. If a
+picture needs a build artefact, derive the number from the fixture that *predicts* the artefact and say in the prose where
+the artefact's own ledger lives.
+
 ## What this milestone did not do
 
 The plan's second half — **moving the dense inventory out of the front page into `docs/README-extended.md`** — is not

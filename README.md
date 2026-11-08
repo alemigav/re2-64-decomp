@@ -45,7 +45,7 @@ That is the whole picture. The other numbers on this page are context: **63.3 %*
 | bytes inside a known function body | 63.3 % — a *classification*, not a reconstruction |
 | functions with a curated name | **33** of 3 664 — the gap between a transcript and understanding |
 
-The build, which is the shape a static recompiler wants: **273 of 274** reconstructed bodies link at their cartridge address (28 image ELFs, 1 published partial, **0 data segments**).
+The build, which is the shape a static recompiler wants — `make check`: **273 of 274** reconstructed bodies link at their cartridge address, over **28** images — the one that does not is the published partial; the build emits `.text` only, so there are **no data segments**.
 
 <!-- front-page: end -->
 

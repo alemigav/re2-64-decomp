@@ -51,15 +51,14 @@ def derive(root: Path) -> dict:
     census = status["F0"]
     measured = status["extent_measured"]
     pseudocode = census - len(entries) - measured
-    # the build's own ledger, if it has been built; absence is stated, never guessed
-    index = root / "build" / "corpus" / "index.json"
-    linked = None
-    if index.exists():
-        d = json.loads(index.read_text())
-        linked = {"images": len(d["images"]),
-                  "functions": sum(i.get("functions", 0) for i in d["images"]),
-                  "exact": sum(i.get("exact", 0) for i in d["images"]),
-                  "differ": sum(i.get("mismatched", 0) for i in d["images"])}
+    # M389: the build meter must be derived from a COMMITTED fixture, not from `build/corpus/index.json` -- that path is
+    # gitignored, so a block rendered from it is "stale" on every CI run, which is how this tool first failed its own
+    # gate. The fixture already carries what the meter says: `make check`'s exact count IS the corpus's byte-exact count
+    # (M374's invariant `exact = recovered - partials`), and the images are the ones with a reconstruction.
+    linked = {"images": len({e["image"] for e in entries}),
+              "functions": len(entries),
+              "exact": exact,
+              "differ": len(entries) - exact}
     return {"census": census, "recovered": len(entries), "exact": exact, "measured": measured,
             "pseudocode": pseudocode, "named": status["named"], "validated": status["validated"],
             "build": linked}
@@ -95,8 +94,9 @@ def render(root: Path) -> str:
     milestones = int(remaining / rate + 0.5)
     b = v["build"]
     build_line = ("not built here — run `make check`" if b is None else
-                  "**%d of %d** reconstructed bodies link at their cartridge address (%d image ELFs, %d published "
-                  "partial, **0 data segments**)" % (b["exact"], b["functions"], b["images"], b["differ"]))
+                  "**%d of %d** reconstructed bodies link at their cartridge address, over **%d** images — the one that "
+                  "does not is the published partial; the build emits `.text` only, so there are **no data segments**"
+                  % (b["exact"], b["functions"], b["images"]))
     return "\n".join([
         BEGIN,
         "",
@@ -125,7 +125,7 @@ def render(root: Path) -> str:
         "| functions with a curated name | **%d** of %s — the gap between a transcript and understanding |"
         % (v["named"], f"{v['census']:,}".replace(",", " ")),
         "",
-        "The build, which is the shape a static recompiler wants: " + build_line + ".",
+        "The build, which is the shape a static recompiler wants — `make check`: " + build_line + ".",
         "",
         END,
     ])
