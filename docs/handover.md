@@ -30,7 +30,7 @@ ground-truth RDRAM dumps. Nothing in the repo imports or requires it.
 | routine dispatch on `object+5` | **28** stage-2 sites, no mask and no compare; the class-1 table is 14 long, classes 2/3/4 are 4/2/27, and a class-1 writer stores **15** | M173, `tools/routine_index.py` |
 
 `assets/` is gitignored and regenerable in ~20 s. The repo tip is the last documentation commit;
-`docs/MILESTONES.md` indexes **all 386 milestones** — generated, and `--check`-gated against the log — and
+`docs/MILESTONES.md` indexes **all 387 milestones** — generated, and `--check`-gated against the log — and
 `docs/reverse_engineering_log.md` carries every milestone one-liner **plus a retraction table** — read the
 retraction table before believing any older note. The log's rows are not in file order (M30→M10 descend) and
 50 milestone numbers have no row or note at all; the index names them.
