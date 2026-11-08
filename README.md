@@ -54,7 +54,7 @@ The build, which is the shape a static recompiler wants — `make check`: **273 
 | | |
 |---|---|
 | **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **273 functions match the cartridge exactly**, to the last byte, out of **274 reconstructed in C**: from Nintendo's own libultra runtime down to single-instruction accessors. 97 of them are copies of 21 proven body shapes, so one proven shape registers every copy; an earlier arc re-verified 194 more from another decompilation, and those are **gone** — removed in M369 for want of a licence ([the corpus, honestly counted](#the-corpus-and-what-is-left)) |
-| **The unusual part** | **355 checks run with no ROM, no assets and no emulator** — the other 1026 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses `PASS` unless it has first proved each gate *can* fail |
+| **The unusual part** | **354 checks run with no ROM, no assets and no emulator** — the other 1027 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses `PASS` unless it has first proved each gate *can* fail |
 | **The scale of what is left** | 63.3 % of the image bytes sit inside a known function body and the rest is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
 
 **This is not a matching build** — of the whole cartridge, and there is **no Makefile, linker script or ROM
@@ -85,7 +85,7 @@ published as **226 of 229 words** rather than rounded up, and the largest functi
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp
 cd re2-64-decomp
-python3 tools/verify.py     # -> PASS-FAST: 355 cases run, 1026 SKIP (they need your dump, never PASS)
+python3 tools/verify.py     # -> PASS-FAST: 354 cases run, 1027 SKIP (they need your dump, never PASS)
 ```
 
 That is the whole setup: Python 3, no dependencies, no cartridge. `python3 tools/acceptance.py` lists the suites by
@@ -116,7 +116,7 @@ covers — but it is the first artefact here that a downstream tool could open, 
 ## Verify it without the cartridge
 
 ```sh
-python3 tools/acceptance.py      # 37 suites / 355 of 1381 cases run; the other 44 suites SKIP
+python3 tools/acceptance.py      # 36 suites / 354 of 1381 cases run; the other 45 suites SKIP
 python3 tools/audit_gates.py     # 160/160 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 25/25 — every doc anchor, heading and note pointer holds
@@ -127,7 +127,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 ```
 
 A suite that cannot run prints `SKIP (needs the cartridge)` — **never PASS** — and the split is stated wherever it is
-counted: **1026 of 1381 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
+counted: **1027 of 1381 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
 audit is the unusual one: it **disables each check's mechanism** and requires the check to fail, 160 mechanisms and 160
 failures with **0 vacuous**, after first running the unmutated tool as a positive control — that control once found that
 49 of 132 audits had never tested their mutation. [The extended page](docs/README-extended.md#6-the-verification-architecture)

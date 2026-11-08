@@ -134,7 +134,7 @@ by three distinct stream-pointer pairs) all carry byte 3 = 31, so the path is in
 |---|---|---|
 | pre-commit hook | `tools/pre-commit.sh` (symlinked into `.git/hooks`) | `tools/acceptance.py`, **~60 s** with the cartridge (measured), blocks the commit |
 | local CI | `sh tools/ci.sh` | the same fixtures **plus** a tracked-artefact check, a fixture-size guard and the cartridge sha256 |
-| runner CI (GitHub-hosted) | `.github/workflows/acceptance.yml`, job `ci` | the same `ci.sh`: **37 of 81 suites, 355 of 1381 cases**; the 44 cartridge suites report SKIP |
+| runner CI (GitHub-hosted) | `.github/workflows/acceptance.yml`, job `ci` | the same `ci.sh`: **36 of 81 suites, 354 of 1381 cases**; the 44 cartridge suites report SKIP |
 | runner CI (self-hosted) | the same file, job `full` | **all 81 suites / 1381 cases** — runs where the cartridge is, and fails if the cartridge suites skip |
 | runner CI (fetched) | the same file, job `full-url` | **all 81 suites / 1381 cases** — downloads the cartridge from a URL you host, verifies it, unpacks it, builds it |
 
@@ -168,7 +168,7 @@ eleven skipped suites are the ones that assert facts about RE2 itself — the co
 at `0x800327ec`, the slot map at `0x800eb204`), the script VM, the model container, the T64 texture law, the
 exception path and the routine-index bounds (M173). Running them needs the cartridge's **bytes**, which are
 cartridge content and never committed. On a runner they print `SKIP (needs the cartridge)`, never PASS, and
-each run's job summary lists them. **A green CI run does not vouch for those 1026 cases.**
+each run's job summary lists them. **A green CI run does not vouch for those 1027 cases.**
 
 A route to close that gap *in a secret* was built and verified in M130 and then deliberately **not adopted**,
 because it means a copyrighted cartridge living in a CI secret store. M175 measured why it also does not work:
@@ -316,7 +316,7 @@ python3 tools/counts.py --check     # the seven numbers, derived once and assert
 **A green CI run does not vouch for everything.** Twelve suites are cartridge-gated and report `SKIP`
 on a runner: `provenance acceptance`, `synthetic-rdram walk`, `room script`, `script profile`,
 `cfg reachability`, `room scripts only`, `01 41 container`, `exception path`, `t64info`,
-`routine index bounds`, `file table`, `voice decode`, `rsp interface` and the gate audit — **1026 of 1381 cases**. Their enforcement is the
+`routine index bounds`, `file table`, `voice decode`, `rsp interface` and the gate audit — **1027 of 1381 cases**. Their enforcement is the
 pre-commit hook and a local run, and the CI job summary lists them by name.
 
 ## 5b. Who verifies what, and the three edits that cannot happen silently

@@ -3,8 +3,8 @@
 # Measured, not estimated (M174). A runner has no cartridge — `rom/` is gitignored by design, and so is
 # everything derived from it (`assets/`, `build/`) — so `tools/acceptance.py` reports:
 #
-#   37 suites / 355 cases  PASS
-#   44 suites / 1026 cases  SKIP (needs the cartridge)
+#   36 suites / 354 cases  PASS
+#   45 suites / 1027 cases  SKIP (needs the cartridge)
 #
 # Locally, with the ROM present, the same command runs all 81 suites / 1381 cases. Those numbers are asserted
 # by `tools/acceptance.py`'s own expected counts, so this comment goes stale loudly rather than quietly.

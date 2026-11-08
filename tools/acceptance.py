@@ -187,7 +187,7 @@ SUITES = [
     ("extent scan (repository)", [sys.executable, "tools/extent_scan.py", "--self-test"], 11, False),
     ("front page (repository)", [sys.executable, "tools/front_page.py", "--check"], 1, False),
     ("permute target (repository)", [sys.executable, "tools/permute_target.py", "--self-test"], 3, False),
-    ("partials (repository)", [sys.executable, "tools/partials.py", "--check"], 1, False),
+    ("partials (cartridge)", [sys.executable, "tools/partials.py", "--check"], 1, True),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
     ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 45, False),
     # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain

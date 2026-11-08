@@ -47,6 +47,16 @@ def score_one(c: Path, image: str, addr: str, words: int):
 
 def check(root: Path) -> list[tuple[str, bool, str]]:
     cases = []
+    # M393: this gate reads code out of the images, so it is CARTRIDGE-gated like the probe -- and a missing cartridge
+    # is SKIP, never PASS and never FAIL (the rule every cartridge suite here follows).
+    try:
+        sys.path.insert(0, str(HERE))
+        import classify_image as ci
+        imgs = json.loads((ROOT / "fixtures" / "decomp" / "images.json").read_text())["images"]
+        if ci.image_bytes(next(iter(imgs)), ROOT) is None:
+            return [("all partials skipped", None, "SKIP (needs the cartridge)")]
+    except Exception:
+        return [("all partials skipped", None, "SKIP (needs the cartridge)")]
     for meta_path in sorted(root.glob("*/*.json")):
         meta = json.loads(meta_path.read_text())
         c = meta_path.with_suffix(".c")
@@ -103,6 +113,9 @@ def main(argv=None) -> int:
             print("%-8s %s  %d/%d words" % (d["image"], d["address"], d["score"], d["words"]))
         return 0
     cases = check(DIR)
+    if cases and cases[0][1] is None:
+        print("SKIP (needs the cartridge)")
+        return 3
     passed = 0
     for label, ok, detail in cases:
         passed += ok

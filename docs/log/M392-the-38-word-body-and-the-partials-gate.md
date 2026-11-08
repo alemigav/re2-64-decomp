@@ -63,6 +63,20 @@ M391's rule — *a partial is published only with its draft committed* — is no
 So `3 of 38` is now a claim with an artefact behind it, re-derivable by one command — which is what none of the ~14
 scores withdrawn in M391 had.
 
+## The defect CI found
+
+The first push of this milestone **failed** (`42510780060`): `partials (repository) 0/1 FAIL`. The gate re-scores through
+`leaf_screen --try`, which **reads the cartridge** — so it is a *cartridge* suite and I had registered it as
+repository-only. CI has no dump, so it ran the gate, the gate could not read a byte, and the case failed.
+
+The fix is the rule this project already lives by, applied to one more tool: **absent cartridge means `SKIP`, never
+`PASS` and never `FAIL`.** `partials.py --check` now prints `SKIP (needs the cartridge)` and exits 3 when the images are
+absent, and the suite is registered as `partials (cartridge)` — which in turn moved one case from the runnable column to
+the gated one (**355 → 354 runnable, 1026 → 1027 gated**) and needed `ratchet.py --write --allow-decrease`, because a
+suite *renamed* from runnable to gated reads to the ratchet as a drop. That is the second CI-found defect in three
+milestones (M389's gitignored objective, this) and both are the same shape: **a gate whose environment differs from the
+one it was written in.**
+
 ## Moves
 
 **Nothing registered** — `recovered` stays **274 / 273**, `F1` **3 468**, rung **317**, coverage **1 238 404 B**. New:
