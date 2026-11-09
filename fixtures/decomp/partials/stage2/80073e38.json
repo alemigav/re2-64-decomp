@@ -14,7 +14,7 @@
   "the unconditional store writes the global read from 0x801152CC into t+1328; the flag tested is `*(u32*)(t+6716) & 0x40`",
   "the else-arm writes 2 to 0x8012BFA8 and 1 to 0x80131780, copies t+6752 to 0x80131780+0x1780+68, and ORs 0x8000 into t+6748"
  ],
- "residue": "two of the three materialisations now match; `0x18000` is still folded. The mechanism is established -- **integer arithmetic on a u32 base with a variable offset stops the fold, pointer arithmetic does not** -- so the remaining question is only why this one offset resists: it is used once, and it is the value added to the *table* rather than to a base already in a register. Next draft: make `off` the value added to a base that is itself loaded, or use it twice",
+ "residue": "ORDER from word 3 and register names after it. Every constant is materialised the way the image does it, so the mechanism question is closed; what is left is the statement order of the first six statements and the allocation that follows from it. Next draft: put the store-1 address expression immediately after the ctx save, before the table binding",
  "next_hypothesis": "order the source so the two byte stores come first and the pointer arithmetic follows, with both constants as separate values the compiler must materialise (they cannot be displacements, which the image proves)",
  "syms": {
   "D_800c76b0": "0x800C76B0",
@@ -29,6 +29,7 @@
   "M396: absolute literals for every address -- 0 of 58; the compiler folded the table plus its addend into one lui/ori and used $at for every absolute store",
   "M396: symbols with the addends kept in the access expression (M372's lever) -- 2 of 58; the addend still folds",
   "M396: the symbol placed at the PRE-addend address (`D_800fe288` + 0x8000 + 20495, sum 53263 > 0x7FFF) and the table bound as `t = D_800c76b0 + 0x18000` -- 0 of 58; **binding folds in every spelling**: ours emitted `lui 0x800e; addiu 0xf6b0` where the image keeps `lui 0x800c; addiu 0x76b0` and a separate `0x18000` in $a0, then `addu`",
-  "M396c: the addend as a VARIABLE with integer arithmetic (`u32 base = (u32)D_800c76b0; u32 off = 0x18000; u32 off2 = 0x20000; t = (u8*)(base + off);`) -- **3 of 58, the best yet**, and the diff shows why it is half right: ours now materialises the table (`lui 0x800c; addiu 0x76b0`) and 0x20000 (`lui 0x0002`) in REGISTERS exactly as the image does, where every earlier spelling folded them. What still differs is 0x18000, which the image holds in $a0 and ours propagated"
- ]
+  "M396c: the addend as a VARIABLE with integer arithmetic (`u32 base = (u32)D_800c76b0; u32 off = 0x18000; u32 off2 = 0x20000; t = (u8*)(base + off);`) -- **3 of 58, the best yet**. The first THREE words now match exactly, which means all three constant materialisations are right: the saved ctx (`addu $t0,$a0,$zero`), 0x18000 in `$a0` (`lui 1` / `ori 0x8000`), and later the table as `lui 0x800c`/`addiu 0x76b0` with 0x20000 as `lui 0x0002`"
+ ],
+ "correction": "M396c first reported that `0x18000` still propagates. That was WRONG -- the diff begins at word 3, so words 0-2 matched and 0x18000 IS in $a0 exactly as the image has it. The mis-reading came from summarising the diff by its first line instead of by its first MATCHING word. The residue is therefore not a materialisation problem at all: it is ORDER (the image builds the store-1 address next, ours builds the table) and register names from word 3 on."
 }
