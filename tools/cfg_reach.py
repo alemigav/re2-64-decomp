@@ -22,6 +22,8 @@ direction for a "does this ever execute?" question.
 import argparse
 import struct
 import sys
+
+import srcmap
 import tempfile
 import zlib
 from collections import Counter
@@ -234,7 +236,7 @@ def survey(rom, res, entry_only=False, generous=False, only_ids=None):
 
 
 def _scheduler_shape() -> bool:
-    p = HERE.parent / "src" / "stage2" / "FUN_8009b880.c"
+    p = srcmap.path("stage2", 0x8009b880)
     if not p.exists():
         return False
     s = p.read_text()

@@ -213,7 +213,7 @@ def check() -> int:
                   sum(1 for x in field if x % 2) == 272))
 
     src = (HERE.parent / "src")
-    f3704 = (src / "stage2" / "FUN_800b3704.c").read_text()
+    f3704 = srcmap.path("stage2", 0x800b3704).read_text()
     cases.append(("CODE: FUN_800b3704 bounds the index by the 588 count and reads the directory word's "
                   "top byte as the rate (0 -> 8000, else 16000)",
                   "param_1 < _DAT_8015af80" in f3704
@@ -221,7 +221,7 @@ def check() -> int:
                   and "param_2 = 16000" in f3704 and "param_2 = 8000;" in f3704))
     cases.append(("CODE: FUN_800b3704 takes the record address as the low 24 bits plus _DAT_8015af78",
                   "& 0xffffff) + _DAT_8015af78" in f3704))
-    f4a6c = (src / "boot" / "FUN_80004a6c.c").read_text()
+    f4a6c = srcmap.path("boot", 0x80004a6c).read_text()
     cases.append(("CODE: FUN_80004a6c uses the same idiom — bit 0x8000 selects 8000, & 0x7fff the index",
                   "uVar1 & 0x8000" in f4a6c and "uVar1 & 0x7fff" in f4a6c
                   and "uVar2 = 16000;" in f4a6c and "uVar2 = 8000;" in f4a6c))
@@ -491,23 +491,23 @@ def check() -> int:
                   all(a + b <= stream_len[k] for k, a, b, _l in loops)
                   and sum(1 for k, a, b, _l in loops if a + b <= smp_len[k]) == 4))
 
-    s_dir = (src / "stage2" / "FUN_800ada34.c").read_text()
+    s_dir = srcmap.path("stage2", 0x800ada34).read_text()
     cases.append(("CODE: the record reader takes +0x14 and +0x18 as 32-bit words and masks the length word "
                   "with 0xffffff",
                   "param_2[4] = *(undefined4 *)(iVar1 + 0x14);" in s_dir
                   and "param_2[5] = *(undefined4 *)(iVar1 + 0x18);" in s_dir
                   and "& 0xffffff" in s_dir))
-    s_setup = (src / "stage2" / "FUN_800a54ec.c").read_text()
+    s_setup = srcmap.path("stage2", 0x800a54ec).read_text()
     cases.append(("CODE: the voice stores the remainder as length - (start + length), zeroed below 10",
                   "uVar3 = *(int *)(iVar1 + 0x30) - (*(int *)(iVar1 + 0x34) + *(int *)(iVar1 + 0x38));"
                   in s_setup))
-    s_mix = (src / "stage2" / "FUN_800a3bf4.c").read_text()
+    s_mix = srcmap.path("stage2", 0x800a3bf4).read_text()
     cases.append(("CODE: the mixer's loop end is start + length, and after the wrap it reads from start for "
                   "length - (pos - start) more samples",
                   "uVar8 = *(int *)(param_1 + 0x34) + uVar2;" in s_mix
                   and "local_40 = (*(int *)(param_1 + 0x34) - local_48) + *(int *)(param_1 + 0x38);" in s_mix
                   and "iVar10 = *(int *)(param_1 + 0x34) - local_48;" in s_mix))
-    s_off = (src / "stage2" / "FUN_800a59d0.c").read_text()
+    s_off = srcmap.path("stage2", 0x800a59d0).read_text()
     cases.append(("CODE: note-off clears one byte per voice, and the mixer consults it before dropping the "
                   "loop to play the remainder",
                   "_DAT_80143f0c + 1) = 0;" in s_off
@@ -527,7 +527,7 @@ def check() -> int:
                   f"{len(sdir)} = {n_smp} x 28 + 4, so 28 bytes is the whole record and a 29th would be a "
                   f"different record's first",
                   sdir[28 * n_smp:] == b"\xff\xff\xff\xff" and len(sdir) == 28 * n_smp + 4))
-    s_count = (src / "stage2" / "FUN_800ad330.c").read_text()
+    s_count = srcmap.path("stage2", 0x800ad330).read_text()
     cases.append(("CODE: the cartridge touches this directory at two strides only — the search's 0x1c-byte "
                   "record stride and the count walker's 0xe shorts — and the reader's highest field load is "
                   "+0x18, which ends at +0x1b",
@@ -861,7 +861,7 @@ def check() -> int:
                   f"split M200 got from reading list 5 as keys (M219)",
                   _dist == [2026, 1192, 242, 4, 327]
                   and _cls == [[0], [0], [3], [1], [2]]))
-    _res = (HERE.parent / "src" / "stage2" / "FUN_800a86a0.c").read_text()
+    _res = srcmap.path("stage2", 0x800a86a0).read_text()
     cases.append(("CODE: the resolver walks the pool chain and hands list[4] to the cache at "
                   "0x8014e1e0, list[5] to 0x801521f0, and list[6] to the rate-keyed one at 0x80152a00",
                   all(f"FUN_800a{h}(" in _res for h in ("d0c0", "cbc0", "ce1c"))
@@ -940,7 +940,7 @@ def check() -> int:
                   f"{min(_s2b)}..{max(_s2b)}, and containing all {len(_dkeys)} directory keys (M219: 2026, not "
                   f"the 2027 M200 published)",
                   len(_s2b) == 2026 and min(_s2b) == 1 and max(_s2b) == 2026 and _dkeys <= _s2b))
-    _h2 = (HERE.parent / "src" / "stage2" / "FUN_800ad62c.c").read_text()
+    _h2 = (srcmap.path("stage2", 0x800ad62c)).read_text()
     cases.append(("CODE: list[2]'s handler is the only one of the six that references no cache table — "
                   "it binds the project's samples without going through a cache",
                   not any(g in _h2 for g in ("8014e1d0", "801521e0", "801529f0"))))
@@ -987,10 +987,16 @@ def check() -> int:
                   f"validated ({len(images)} files scanned, {len(images) - len(tagged)} without it)", not tagged))
 
     ranges = json.loads((root / "fixtures" / "decomp" / "ranges.json").read_text())["images"]
-    have = {p.stem.lower() for p in (root / "src").glob("*/*.c")}
+    # M395: this set used to be file STEMS, so a function published under a curated name (`snd_synth_lattice.c`) read as
+    # missing -- the same name-based test M351's comment above already had to abandon once. It asks the index instead:
+    # an address has a body if `code_index.json` names a file for it that exists.
+    _ci0 = json.loads((root / "manifests" / "code_index.json").read_text())
+    filed = {(i["name"], int(f["address"], 16)) for i in _ci0["images"] for f in i["functions_list"]
+             if (root / f["file"]).exists()}
+    have = {a for _img, a in filed}
     total = sum(len(v) for v in ranges.values())
     missing = [(img, s) for img, rs in ranges.items() for s, _e in rs
-               if f"func_{s:08x}" not in have and f"fun_{s:08x}" not in have]
+               if (img, int(s)) not in filed]
     # M351: this case pinned "74 without a src file" and the number had drifted twice (the switch bodies live one
     # directory deeper and were never in `have`, and a recovered function published under its seed name -- `main.c`,
     # `osCreateMesgQueue.c` -- is not `fun_xxxxxxx.c`). It is the invariant that matters, not the count, so it asks
@@ -1003,8 +1009,7 @@ def check() -> int:
                   f"{total} ranges and {len(have)} published bodies",
                   not unfiled and total == 3678))
     audio = [(s, e) for s, e in ranges["stage2"] if 0x800B3000 <= s < 0x800B6000]
-    audio_missing = [(s, e) for s, e in audio
-                     if f"func_{s:08x}" not in have and f"fun_{s:08x}" not in have]
+    audio_missing = [(s, e) for s, e in audio if ("stage2", int(s)) not in filed]
     cases.append((f"the audio cluster is fully decompiled — {len(audio)} functions in "
                   f"0x800b3000..0x800b6000, {len(audio_missing)} missing", len(audio) == 26 and not audio_missing))
     gaps_in_audio = [(s, e) for img, s in missing for e in [0] if img == "stage2" and 0x800B0000 <= s < 0x800C0000]
@@ -1021,7 +1026,7 @@ def check() -> int:
              if _re.search(r"80158[cde]", p.read_text())]
     cases.append((f"no decompiled function addresses the voice struct region 0x80158c..0x80158e ({len(voice)})",
                   not voice))
-    f4a04 = (root / "src" / "stage2" / "FUN_800b4a04.c").read_text()
+    f4a04 = (srcmap.path("stage2", 0x800b4a04)).read_text()
     cases.append(("CODE: FUN_800b4a04 reads +0x1a4 and +0x1a8 as stream state, never as a header to parse",
                   "*(undefined2 *)(param_1 + 0x1a4)" in f4a04
                   and "*(uint *)(param_1 + 0x1a8) & 0xffffff" in f4a04))

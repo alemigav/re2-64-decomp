@@ -1190,20 +1190,12 @@
     "sha256": "a9d55a5aded69f6f421b5e4bbfe36518da46c68e31d080fefa83349149bd9c5b"
    },
    {
-    "path": "src/stage2/FUN_800a3bf4.c",
-    "sha256": "67bc619920c08261f3280998f5b4f07e5c2d148299709ce132ded72b3ee48684"
-   },
-   {
     "path": "src/stage2/FUN_800a4560.c",
     "sha256": "62c383bab6e28fd8cb4618996fbb7e93952222f6d6efe15e2f815bc6e025d5e8"
    },
    {
     "path": "src/stage2/FUN_800a485c.c",
     "sha256": "416cc8f0d829ce0a78e9d8ce80ca48785abcfc5c120c4e0cd6cfdf986e83827e"
-   },
-   {
-    "path": "src/stage2/FUN_800a54ec.c",
-    "sha256": "6cf8f678d0dab162d55cedccb6988202f1d8d0630f95da05900b325c5e78d28a"
    },
    {
     "path": "src/stage2/FUN_800a5a00.c",
@@ -1232,10 +1224,6 @@
    {
     "path": "src/stage2/FUN_800b3640.c",
     "sha256": "28b5eb7319bda6d282a27918235dea6fd862826ca8de02db7947c1490eaacf2b"
-   },
-   {
-    "path": "src/stage2/FUN_800b3704.c",
-    "sha256": "9d0567c503ee1e9e59666cde6ea05d3baf82e17f634a98a27c98bcbdca4c3e0c"
    },
    {
     "path": "src/stage2/FUN_800b3ddc.c",
@@ -1270,20 +1258,32 @@
     "sha256": "9c63eea09b6ec4f9445f6f2295a6e2e1a8df93dc028ba0ef1e3ca73503ad8f14"
    },
    {
-    "path": "src/stage2/FUN_800b4dc0.c",
-    "sha256": "2c7b80a82077f4d90a96e46d3c118d50cca714cb8eb6f97064d3b9a2153d64ed"
-   },
-   {
-    "path": "src/stage2/FUN_800b53f4.c",
-    "sha256": "e18a24ce0a9d66482da93e9caefd89e1cf18ffb5b4d30d875cfe25040105fb8c"
-   },
-   {
-    "path": "src/stage2/FUN_800b63b4.c",
-    "sha256": "07fde107ec0519cd728189ae81d2a98b8083115218e143032d5424053bf4f472"
-   },
-   {
     "path": "src/stage2/func_800b3b9c.c",
     "sha256": "361b52bf40752e146b8918ab4efad123f6237cc2b4e204c3d9105184224b15ff"
+   },
+   {
+    "path": "src/stage2/snd_dequantise.c",
+    "sha256": "90ab03bb9d4da3edc26331f45fbb24f42d52f9a1bb0929bb2477c6f6e5be19c4"
+   },
+   {
+    "path": "src/stage2/snd_mixer_feed.c",
+    "sha256": "5b7d659f24c23266a42eadfe2161844e127554057d7315b29e249aa9309c57b3"
+   },
+   {
+    "path": "src/stage2/snd_sample_load.c",
+    "sha256": "3acb3655aabbb9fb220a95cd24f383ecef669f6100a417cfa459b5fcdf323eda"
+   },
+   {
+    "path": "src/stage2/snd_synth_lattice.c",
+    "sha256": "f4ddce420da90a8a00416d7ea577c3616565771a6a72063cef910a7c9f3c0d69"
+   },
+   {
+    "path": "src/stage2/snd_voice_setup.c",
+    "sha256": "7db18c434338aa61e2cb6fb834278aca350b7226cb72cb4b3fabb74012c8c762"
+   },
+   {
+    "path": "src/stage2/snd_voice_synthesis.c",
+    "sha256": "f3f2587e77f5b75a0f50183a3874cf50cddf416019cb2c8d6682af25079d1f4b"
    }
   ],
   "stage2_member": {

@@ -67,7 +67,7 @@ suites are named and timed in `acceptance.HEAVY_SUITES` rather than quietly move
 - **174 switch case bodies** are code and are counted in the ranges and the byte total, but the provider itself labels
   them `switchD_::caseD_`, so they live under `src/<image>/switch/` instead of being published as functions.
 - **The analysis ladder** (`tools/analysis_status.py`): F0 3 665 / F1 3 457 / F2 3 397 — of **3 665 functions**,
-  **3 397** resolve every call target in their bodies, **33** carry a curated name, and **12** have behaviour pinned by
+  **3 397** resolve every call target in their bodies, **45** carry a curated name, and **12** have behaviour pinned by
   a gate or an executed experiment. All 12 are still called `FUN_…`: a name needs evidence of its own.
 - **The boot image has two extents, and the difference is what the loader loads.** Code is `0x11140`
   (`0x80000480..0x800115C0`); the **load** extent is `0x13420`, and it ends exactly at `__bss_start` (`0x800138A0`) —

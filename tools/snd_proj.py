@@ -70,6 +70,8 @@ import hashlib
 import json
 import struct
 import sys
+
+import srcmap
 import zlib
 from collections import Counter
 from pathlib import Path
@@ -666,21 +668,21 @@ def check():
 
     # --- the code reading, so a re-decompile that loses it invalidates the claim
     src = HERE.parent / "src" / "stage2"
-    resolver = (src / "FUN_800a86a0.c").read_text()
+    resolver = srcmap.path("stage2", 0x800a86a0).read_text()
     case("CODE: FUN_800a86a0 bases the five walked lists on record + 8 and walks them as shorts "
          "(param_1[2] .. param_1[6]), and reads param_1[7] at +8 and +12 as a count and a pointer",
          all("(short *)((int)param_1 + param_1[%d] + 8)" % k in resolver for k in range(2, 7))
          and "*(undefined2 *)((int)param_1 + param_1[7] + 8)" in resolver
          and "(int)param_1 + param_1[7] + 0xc" in resolver
          and "psVar6 = psVar6 + 1;" in resolver)
-    bank = (src / "FUN_800adb48.c").read_text()
+    bank = srcmap.path("stage2", 0x800adb48).read_text()
     case("CODE: FUN_800adb48 takes the u16 at +0 as a count and the pointer at +4, and stamps 0x1f "
          "at +9 of each 12-byte row",
          "*(undefined1 *)(param_2 + 9) = 0x1f;" in bank and "param_2 = param_2 + 0xc;" in bank)
     case("CODE: the flag gate is `*(short *)((int)param_1 + 6) == 1`, i.e. the u16 at +6",
          "*(short *)((int)param_1 + 6) == 1" in resolver)
-    search = (src / "FUN_800ae034.c").read_text()
-    walker = (src / "FUN_800ab43c.c").read_text()
+    search = srcmap.path("stage2", 0x800ae034).read_text()
+    walker = srcmap.path("stage2", 0x800ab43c).read_text()
     case("CODE: FUN_800ae034 walks the row array at stride 0xc, and FUN_800ab43c is a binary search",
          ",0xc" in search.replace(" ", "") and "(iVar1 >> 1)" in walker
          and "param_2 + param_4 * iVar4" in walker)

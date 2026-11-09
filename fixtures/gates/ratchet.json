@@ -77,11 +77,11 @@
   "front page (repository)": 1,
   "permute target (repository)": 3,
   "partials (cartridge)": 1,
-  "resolve (repository)": 3,
+  "resolve (repository)": 4,
   "counts self-test": 4,
   "counts (repository)": 45,
   "acceptance self-test": 6,
   "verifier self-test": 8
  },
- "src_tree": "50472bdcce07930d3dffa522091801f985e8fbb2925fef693e02070669db2c25"
+ "src_tree": "671c5f25f3d845cfaabd5f846c2d0573497f087e3f399bb632e36fd481b3803b"
 }

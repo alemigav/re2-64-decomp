@@ -264,7 +264,7 @@
     },
     {
      "claim": "the cache is filled while walking the pool chain: +12 is the payload and +10 is the low half of the u32 count",
-     "file": "src/stage2/FUN_800a86a0.c",
+     "file": "src/stage2/snd_chain_walk.c",
      "witness": "FUN_800ace1c(*psVar6,piVar5 + 3,*(undefined2 *)((int)piVar5 + 10));"
     }
    ],

@@ -103,6 +103,10 @@ FORBIDDEN = [
     ("a source path literal", re.compile(r'"src/[^"]*\.c"')),
     ("a file-name citation", re.compile(r'"[^"]*\.c:\d+')),
     ("a runtime path join", re.compile(r'"src"\s*/\s*"[a-z_0-9]+"\s*/\s*f"')),
+    # M395: a bare `"FUN_xxxxxxxx.c"` joined to a src directory is still a filename, and the first version of this gate
+    # missed it -- `snd_proj` and `file_table` both built one that way. A name *with a `.c` extension* is never a C
+    # identifier, so this pattern has no false positives.
+    ("a bare file-name literal", re.compile(r'"(?:FUN|func)_[0-9a-fA-F]{8}\.c"')),
 ]
 
 

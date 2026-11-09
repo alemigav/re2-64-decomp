@@ -1,7 +1,7 @@
 /* FUN_801806f4
  * image   ovl_0072610 (ovl), base 0x8017b410
  * address 0x801806f4  body 0x801806f4..0x80180957  size 612 B
- * body sha256 549f8975d10a2f3ca93d58692cc41cee45e7072d461d70dded0c91e005393b0f
+ * body sha256 3974b9a5c118942b37cba6620c1375a20b425d71d92b8ab09e13ba8362a4a699
  * provider record sha256 4c9eed8a5366430f8898c11516740e0f0006a123ff59744701b0d55fc4bf05dc
  * callees 4 direct (4 in corpus)
  * provider Ghidra 12.2
@@ -18,7 +18,7 @@ void FUN_801806f4(void)
     if (DAT_80185484 != -1) {
       func_0x800b431c(DAT_80185484);
     }
-    iVar1 = func_0x800b3704((int)*(short *)((_DAT_801344b0 * 0x89 + DAT_80185474) * 2 + -0x7fecba3e)
+    iVar1 = snd_sample_load((int)*(short *)((_DAT_801344b0 * 0x89 + DAT_80185474) * 2 + -0x7fecba3e)
                             ,*(undefined2 *)(_DAT_801344b0 * 0x112 + -0x7fecba44),0x7f,
                             ((uint)*(ushort *)(_DAT_801344b0 * 0x112 + -0x7fecba42) *
                             (uint)DAT_80119e74) / 100 & 0xff,0x3f,0x3f,0);

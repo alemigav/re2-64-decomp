@@ -111,9 +111,13 @@ def check(rep):
     missing = [k for k in f4 if not rep["f4_evidence"].get(k)]
     cases.append((f"validated is {len(f4)} functions and each names its evidence ({len(missing)} without)",
                   bool(f4) and not missing))
-    cases.append((f"the residue is published: {t['F0'] - t['F2']:,} functions still have an unresolved call, "
-                  f"{t['validated_unnamed']} are validated by a gate yet unnamed",
-                  t["F0"] - t["F2"] > 0 and t["validated_unnamed"] > 0))
+    # M395: this case used to REQUIRE `validated_unnamed > 0` -- it asserted that the residue exists, and naming the
+    # twelve audio bodies falsified it. The invariant flips: a function whose behaviour a gate or an experiment pins must
+    # carry a name, because the evidence for the name already exists. The unresolved-call residue is still required to be
+    # non-empty, so the case cannot pass on an empty corpus.
+    cases.append((f"the residue is published: {t['F0'] - t['F2']:,} functions still have an unresolved call, and "
+                  f"{t['validated_unnamed']} behaviour-pinned function(s) are still unnamed",
+                  t["F0"] - t["F2"] > 0 and t["validated_unnamed"] == 0))
     return cases
 
 

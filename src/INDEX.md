@@ -8,7 +8,7 @@ the journals are authoritative and this tree is a projection of them.
 | image | role | base | bytes | functions | named | claimed | unclaimed | runs |
 |---|---|---|---|---|---|---|---|---|
 | `boot` | boot | `0x80000480` | 78,880 | 225 | 19 | 59,108 | 19,772 | 99 |
-| `stage2` | stage2 | `0x80018a80` | 1,172,240 | 1892 | 14 | 581,868 | 590,372 | 196 |
+| `stage2` | stage2 | `0x80018a80` | 1,172,240 | 1892 | 26 | 581,868 | 590,372 | 196 |
 | `ovl_0072610` | ovl | `0x8017b410` | 49,312 | 113 | 0 | 38,472 | 10,840 | 13 |
 | `ovl_007688e` | ovl | `0x8015b030` | 27,840 | 42 | 0 | 20,372 | 7,468 | 4 |
 | `ovl_0078c0e` | ovl | `0x8017b410` | 58,848 | 27 | 0 | 19,888 | 38,960 | 3 |

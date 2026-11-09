@@ -902,8 +902,8 @@ def check():
                                        "3": fresh["totals"]["sequence_sentinels"]})
 
     # --- the code reading, so a re-decompile that loses it invalidates the claim
-    dispatch = (HERE.parent / "src" / "stage2" / "FUN_800a6820.c").read_text()
-    runner = (HERE.parent / "src" / "stage2" / "FUN_800a64c8.c").read_text()
+    dispatch = srcmap.path("stage2", 0x800a6820).read_text()
+    runner = srcmap.path("stage2", 0x800a64c8).read_text()
     case("CODE: FUN_800a6820 dispatches on `uVar3 = uVar9 & 0xc000` with its own branch for 0x4000, "
          "0x8000 and 0, and a `return -1` for 0xc000",
          "uVar3 = uVar9 & 0xc000;" in dispatch and "if (uVar3 == 0x4000) {" in dispatch
@@ -916,9 +916,9 @@ def check():
          and "iVar9 < (int)(uint)local_48" in runner and "FUN_800b185c(uVar6" in runner)
     case("CODE: the pool cache for tag 2 is looked up at stride 0xc and hands back the count from the "
          "entry's own +6 — the same u16 the pool's record carries at +10",
-         "0xc,&LAB_800ae174" in (HERE.parent / "src" / "stage2" / "FUN_800adfb4.c").read_text()
+         "0xc,&LAB_800ae174" in srcmap.path("stage2", 0x800adfb4).read_text()
          and "*(undefined2 *)((int)_DAT_8014e15c + 6)" in
-         (HERE.parent / "src" / "stage2" / "FUN_800adfb4.c").read_text())
+         srcmap.path("stage2", 0x800adfb4).read_text())
 
     # --- the artefact stays small and carries no cartridge bytes
     rendered = render(committed)

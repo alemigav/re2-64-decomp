@@ -12,9 +12,9 @@
   "F0": 3664,
   "F1": 3468,
   "F2": 3408,
-  "named": 33,
+  "named": 45,
   "validated": 12,
-  "validated_unnamed": 12,
+  "validated_unnamed": 0,
   "extent_measured": 196
  },
  "f4_evidence": {
@@ -15733,13 +15733,13 @@
    "validated": false
   },
   "stage2:0x800a3bf4": {
-   "name": "FUN_800a3bf4",
+   "name": "snd_mixer_feed",
    "image": "stage2",
    "address": "0x800a3bf4",
    "callees": 6,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800a4560": {
@@ -15813,23 +15813,23 @@
    "validated": false
   },
   "stage2:0x800a54ec": {
-   "name": "FUN_800a54ec",
+   "name": "snd_voice_setup",
    "image": "stage2",
    "address": "0x800a54ec",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800a5678": {
-   "name": "FUN_800a5678",
+   "name": "snd_mutex_acquire",
    "image": "stage2",
    "address": "0x800a5678",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800a56c0": {
@@ -16303,13 +16303,13 @@
    "validated": false
   },
   "stage2:0x800a86a0": {
-   "name": "FUN_800a86a0",
+   "name": "snd_chain_walk",
    "image": "stage2",
    "address": "0x800a86a0",
    "callees": 8,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800a8a04": {
@@ -16983,13 +16983,13 @@
    "validated": false
   },
   "stage2:0x800ace1c": {
-   "name": "FUN_800ace1c",
+   "name": "snd_cache_resolve",
    "image": "stage2",
    "address": "0x800ace1c",
    "callees": 2,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800acfa8": {
@@ -17023,13 +17023,13 @@
    "validated": false
   },
   "stage2:0x800ad330": {
-   "name": "FUN_800ad330",
+   "name": "snd_sample_dir_walk",
    "image": "stage2",
    "address": "0x800ad330",
    "callees": 2,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800ad458": {
@@ -17073,13 +17073,13 @@
    "validated": false
   },
   "stage2:0x800ada34": {
-   "name": "FUN_800ada34",
+   "name": "snd_record_read",
    "image": "stage2",
    "address": "0x800ada34",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800adb48": {
@@ -17683,13 +17683,13 @@
    "validated": false
   },
   "stage2:0x800b3704": {
-   "name": "FUN_800b3704",
+   "name": "snd_sample_load",
    "image": "stage2",
    "address": "0x800b3704",
    "callees": 7,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800b398c": {
@@ -17863,13 +17863,13 @@
    "validated": false
   },
   "stage2:0x800b4dc0": {
-   "name": "FUN_800b4dc0",
+   "name": "snd_dequantise",
    "image": "stage2",
    "address": "0x800b4dc0",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800b4fd8": {
@@ -17893,33 +17893,33 @@
    "validated": false
   },
   "stage2:0x800b53f4": {
-   "name": "FUN_800b53f4",
+   "name": "snd_voice_synthesis",
    "image": "stage2",
    "address": "0x800b53f4",
    "callees": 4,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800b62c0": {
-   "name": "FUN_800b62c0",
+   "name": "snd_synth_kernel",
    "image": "stage2",
    "address": "0x800b62c0",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800b63b4": {
-   "name": "FUN_800b63b4",
+   "name": "snd_synth_lattice",
    "image": "stage2",
    "address": "0x800b63b4",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": true
   },
   "stage2:0x800b6470": {

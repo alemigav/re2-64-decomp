@@ -48,3 +48,19 @@
 0x80088668	function	thread9_entry	blocks on 0x8012bd30, for which no mapped code sends (M25)
 0x80088910	function	thread9_spawner	osCreateThread(&DAT_8012bb00, 9, ...) + osStartThread (M18)
 0x8008af6c	function	framebuffer_set	leaf: DAT_8012bd84 = DAT_8010b6f0, no frame (M18)
+
+# M395: the twelve functions whose BEHAVIOUR was already pinned by a gate or an executed experiment (M179-M204) and
+# which carried no name. The rule above is unchanged -- a name states only what the evidence column already pins -- and
+# `validated_unnamed` in manifests/analysis_status.json must fall to 0 rather than the validation count falling to 0.
+0x800b53f4	function	snd_voice_synthesis	M199 -- the voice synthesis, bit-exact against the cartridge: the body reproduces the image's output sample for sample
+0x800b62c0	function	snd_synth_kernel	M199 -- the kernel the synthesis calls, transcribed
+0x800b63b4	function	snd_synth_lattice	M199 -- the lattice stage of the synthesis, transcribed
+0x800b4dc0	function	snd_dequantise	M199 -- the dequantisation stage of the synthesis, transcribed
+0x800b3704	function	snd_sample_load	M179/M193 -- the sample loader; its index bound and rate byte are source-shape gated
+0x800a86a0	function	snd_chain_walk	M185 -- the chain walk both SND_PROJ and SND_POOL use
+0x800ad330	function	snd_sample_dir_walk	M185/M204 -- the sample-directory walker; its 0xe-short stride and terminator are gated
+0x800ada34	function	snd_record_read	M203 -- the record reader whose fields the loop map is built from
+0x800a54ec	function	snd_voice_setup	M203 -- the voice setup that derives the loop remainder
+0x800a3bf4	function	snd_mixer_feed	M203 -- the mixer feed that splits a block at the loop end
+0x800ace1c	function	snd_cache_resolve	M202 -- the cache-C resolver, keyed by key and rate
+0x800a5678	function	snd_mutex_acquire	M200 -- the audio mutex acquire, seen at every cache site
