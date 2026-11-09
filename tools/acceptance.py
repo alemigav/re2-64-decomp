@@ -187,7 +187,7 @@ SUITES = [
     ("extent scan (repository)", [sys.executable, "tools/extent_scan.py", "--self-test"], 11, False),
     ("front page (repository)", [sys.executable, "tools/front_page.py", "--check"], 1, False),
     ("permute target (repository)", [sys.executable, "tools/permute_target.py", "--self-test"], 3, False),
-    ("partials (cartridge)", [sys.executable, "tools/partials.py", "--check"], 1, True),
+    ("partials (cartridge)", [sys.executable, "tools/partials.py", "--check"], 2, True),
     ("resolve (repository)", [sys.executable, "tools/srcmap.py", "--check"], 4, False),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
     ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 45, False),

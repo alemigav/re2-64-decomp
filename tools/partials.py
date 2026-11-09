@@ -33,11 +33,17 @@ ROOT = HERE.parent
 DIR = ROOT / "fixtures" / "decomp" / "partials"
 
 
-def score_one(c: Path, image: str, addr: str, words: int):
-    """(identical, compiled) from `leaf_screen --try`, or the tool's message if it refused."""
-    r = subprocess.run([sys.executable, str(HERE / "leaf_screen.py"), "--try", str(c),
-                        "--image", image, "--addr", addr, "--count", str(words)],
-                       capture_output=True, text=True)
+def score_one(c: Path, image: str, addr: str, words: int, syms=None):
+    """(identical, compiled) from `leaf_screen --try`, or the tool's message if it refused.
+
+    `syms` is not optional in practice: a partial that declares `extern` symbols cannot link without them, and a partial
+    whose symbols are undeclared is the same defect as a reconstruction whose `syms` live outside the fixture (M371).
+    """
+    cmd = [sys.executable, str(HERE / "leaf_screen.py"), "--try", str(c),
+           "--image", image, "--addr", addr, "--count", str(words)]
+    for k, v in (syms or {}).items():
+        cmd += ["--sym", "%s=%s" % (k, v)]
+    r = subprocess.run(cmd, capture_output=True, text=True)
     out = r.stdout + r.stderr
     m = re.search(r"(\d+)/(\d+) words identical \((\d+) compiled\)", out)
     if not m:
@@ -64,7 +70,7 @@ def check(root: Path) -> list[tuple[str, bool, str]]:
             cases.append(("%s:%s has no draft" % (meta["image"], meta["address"]), False,
                           "the source is the artefact; a score without it is the M391 defect"))
             continue
-        got, err = score_one(c, meta["image"], meta["address"], int(meta["words"]))
+        got, err = score_one(c, meta["image"], meta["address"], int(meta["words"]), meta.get("syms"))
         if got is None:
             cases.append(("%s:%s re-scores" % (meta["image"], meta["address"]), False, err or "no verdict"))
             continue

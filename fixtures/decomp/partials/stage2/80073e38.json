@@ -1,0 +1,27 @@
+{
+ "image": "stage2",
+ "address": "0x80073e38",
+ "words": 58,
+ "score": 2,
+ "status": "partial",
+ "drafted": "M396",
+ "shape": [
+  "two returns: the body at 0x80073efc is the SECOND arm of `if (ctx[7] & 1)`, reached by a forward branch at 0x80073ea8 (+20)",
+  "the store `sw a2,1328(t)` sits in the DELAY SLOT of `beq` at 0x80073e84, so it is UNCONDITIONAL in the source: a statement before the test, not inside it",
+  "two constants exceed the 16-bit displacement range and therefore live in registers, not offsets: 0x18000 (`lui a0,1; ori a0,0x8000`, then `addu a0,v0,a0`) and 0x20000 (`lui a1,2`, then `addu v0,v0,a1`)",
+  "`ctx[1]` is read ONCE (`lbu a3,1(t0)`) and both byte stores use it, at 0x8010B297 (computed as 0x800FE288+0x8000+20495) and 0x800E8605 (base+0x20000+3925)",
+  "`ctx` is moved to $t0 in the first instruction because $a0 is needed for the 0x18000 constant",
+  "the unconditional store writes the global read from 0x801152CC into t+1328; the flag tested is `*(u32*)(t+6716) & 0x40`",
+  "the else-arm writes 2 to 0x8012BFA8 and 1 to 0x80131780, copies t+6752 to 0x80131780+0x1780+68, and ORs 0x8000 into t+6748"
+ ],
+ "residue": "statement ORDER and register assignment at the top: our draft builds `t` first and loads `ctx[1]` early, while the image builds the 0x18000 constant, then the store-1 address, then reads ctx[1]; two mechanisms spent (absolute literals; symbols with addends kept apart), 0/58 and 2/58",
+ "next_hypothesis": "order the source so the two byte stores come first and the pointer arithmetic follows, with both constants as separate values the compiler must materialise (they cannot be displacements, which the image proves)",
+ "syms": {
+  "D_800c76b0": "0x800C76B0",
+  "D_8010b297": "0x8010B297",
+  "D_800e8605": "0x800E8605",
+  "D_801152cc": "0x801152CC",
+  "D_8012bfa8": "0x8012BFA8",
+  "D_80131780": "0x80131780"
+ }
+}
