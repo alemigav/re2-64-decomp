@@ -14,7 +14,7 @@
   "the unconditional store writes the global read from 0x801152CC into t+1328; the flag tested is `*(u32*)(t+6716) & 0x40`",
   "the else-arm writes 2 to 0x8012BFA8 and 1 to 0x80131780, copies t+6752 to 0x80131780+0x1780+68, and ORs 0x8000 into t+6748"
  ],
- "residue": "statement ORDER and register assignment at the top: our draft builds `t` first and loads `ctx[1]` early, while the image builds the 0x18000 constant, then the store-1 address, then reads ctx[1]; two mechanisms spent (absolute literals; symbols with addends kept apart), 0/58 and 2/58",
+ "residue": "how a >0x7FFF addend is materialised. The image holds 0x18000 and 0x20000 in REGISTERS and `addu`s; every spelling that binds them to a pointer folds them into the symbol's address pair. **The one form not yet tried is the addend as a VARIABLE** (`u32 off = 0x18000; t = D_800c76b0 + off;`) -- a literal in any position is a constant gcc may fold, a variable is a value it must load. That is the next hypothesis and the last cheap one.",
  "next_hypothesis": "order the source so the two byte stores come first and the pointer arithmetic follows, with both constants as separate values the compiler must materialise (they cannot be displacements, which the image proves)",
  "syms": {
   "D_800c76b0": "0x800C76B0",
@@ -23,5 +23,10 @@
   "D_801152cc": "0x801152CC",
   "D_8012bfa8": "0x8012BFA8",
   "D_80131780": "0x80131780"
- }
+ },
+ "tried": [
+  "M396: absolute literals for every address -- 0 of 58; the compiler folded the table plus its addend into one lui/ori and used $at for every absolute store",
+  "M396: symbols with the addends kept in the access expression (M372's lever) -- 2 of 58; the addend still folds",
+  "M396: the symbol placed at the PRE-addend address (`D_800fe288` + 0x8000 + 20495, sum 53263 > 0x7FFF) and the table bound as `t = D_800c76b0 + 0x18000` -- 0 of 58; **binding folds in every spelling**: ours emitted `lui 0x800e; addiu 0xf6b0` where the image keeps `lui 0x800c; addiu 0x76b0` and a separate `0x18000` in $a0, then `addu`"
+ ]
 }
