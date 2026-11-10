@@ -5,7 +5,7 @@
  "score": 8,
  "status": "partial",
  "mechanism": "a two-slot search with short-circuit side effects: the beql delay slots are why `a0++` runs on the slot-empty path and `a2 = a0` on the match path",
- "residue": "**gcc 2.8 hoists `base + constant` for a strided loop in ALL THREE forms tried** -- index multiply, pointer walk in a `for`, pointer stride at the end of a `while` -- so the image's walked base is not produced by any of them. What none of them has: **no index multiply at all**. The next hypothesis is the pointer as the SOLE induction variable with the counter separate and a precomputed end (`u8 *end = base + 2*0x1228; while (p != end) { ...; p += 0x1228; }`), which is the only shape where the base cannot be hoisted because there is no constant to add to it",
+ "residue": "the induction-variable form, and the search is now measured in BOTH directions: every shape that removes the index multiply makes the hoisting worse (7, 7, 3) and the plain `for` + index form is the best at 8. So gcc 2.8's preference for a hoisted base is not something a draft can steer by rewriting the loop. The remaining possibilities are all structural rather than loop-shaped: the base arriving as a PARAMETER (so it is already in a register and only the stride is added), or the array reached through a struct member. Six mechanisms spent; the published score stays 8 of 38.",
  "measured": "M392, full output, no truncation: 3 of 38 words identical (40 compiled)",
  "drafted": "M392",
  "tried": [
@@ -14,8 +14,17 @@
   "M393: the work wrapped in `if (flag != 0) { ... }` with one trailing `return 0` (the image's early-out `beq` targets the trailing block) -- 2 of 38 and only 24 words compiled, because returning the lookup directly loses the find-index-then-look-up-by-index two-phase structure the image has",
   "M398: the LAYOUT hypothesis -- wrap the work in `if (*(u8*)0x80136d80 != 0) { ... }` with a trailing `return 0`, and put the not-found assignment after the loop as `if (i == 2) found = 0xffff;` -- **8 of 38, up from 3**. The image's early exit really is a forward branch to a cold trailing block, and wrapping the work supplies it",
   "M398: the pointer WALK (`p += 0x1228` in the loop, loads at `p + 4608`) instead of `i * 0x1228` indexing -- **7 of 38, slightly worse**: gcc hoists the base to 0x80169D20 and uses a negative displacement either way, so the walk does NOT reproduce the image's `addiu a1,a1,0x1228` in the branch delay",
-  "M399: the `while` form with the stride at the loop's end (`while (i < 2) { ...; i++; p += 0x1228; }`) -- **7 of 38, worse than the 8** the `for` + index form gives. gcc hoists again (`lui/ori 0x80169D44`, then `lbu -36(v1)`), so the while form does not reproduce the image's `addiu a1,a1,0x1228` in the `bne` delay either"
+  "M399: the `while` form with the stride at the loop's end (`while (i < 2) { ...; i++; p += 0x1228; }`) -- **7 of 38, worse than the 8** the `for` + index form gives. gcc hoists again (`lui/ori 0x80169D44`, then `lbu -36(v1)`), so the while form does not reproduce the image's `addiu a1,a1,0x1228` in the `bne` delay either",
+  "M400: the pointer as SOLE induction variable with a precomputed end (`end = p + 2*0x1228; while (p != end) { ...; i++; p += 0x1228; }`) -- **3 of 38, the WORST of the six.** Refuted: gcc hoists THREE bases now (`a1` = table, `a3` = table+0x2450 for `end`, `v1` = table+0x1224 for the indexing), so precomputing the end makes the hoisting worse, not better"
  ],
  "next_hypothesis": "the layout mechanism, not the variables: the image's flag==0 exit is a branch FORWARD to a cold trailing block, and the match path stores the index and re-loads through it -- one draft that keeps both, e.g. the loop as a separate statement group with the found-check after it inside the same `if (flag != 0)`",
- "syms": {}
+ "syms": {},
+ "scores": {
+  "fresh locals (M392)": 3,
+  "parameter reuse (M393)": 3,
+  "wrapped layout + for/index (M398)": 8,
+  "pointer walk in a for (M398)": 7,
+  "while with stride at the end (M399)": 7,
+  "sole induction variable + precomputed end (M400)": 3
+ }
 }
