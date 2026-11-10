@@ -2,16 +2,19 @@
  "image": "stage2",
  "address": "0x800b43a0",
  "words": 38,
- "score": 3,
+ "score": 8,
  "status": "partial",
  "mechanism": "a two-slot search with short-circuit side effects: the beql delay slots are why `a0++` runs on the slot-empty path and `a2 = a0` on the match path",
- "residue": "loop SHAPE, not spelling -- our draft hoists the two pointers into fresh registers and inverts the early-out (bne v0,zero,+5 against the image's beq v0,zero,+33), so the body diverges from word 2; the image keeps the index in $a0 and the found value in $a2, i.e. the argument registers themselves",
+ "residue": "the loop's pointer form. With the layout fixed, ours precomputes `lui/ori 0x80169D44` and indexes off it, where the image materialises the base once (`lui v0,0x8016; addiu a1,v0,0x8b20`) and does `addiu a1,a1,0x1228` in the `bne` delay slot. Both the index form and the walk form hoist -- so the next question is what makes gcc keep the base and add the stride at the loop's end (a `while` with the increment in the condition? a pointer compared against a precomputed end?)",
  "measured": "M392, full output, no truncation: 3 of 38 words identical (40 compiled)",
  "drafted": "M392",
  "tried": [
   "M392: fresh locals (`found`, `i`) -- 3 of 38",
   "M393: parameter reuse (the key overwritten with the index, `a2` serving both roles) -- 3 of 38; the register story it was based on is right (the image does keep the index in $a0 and the result in $a2) but the layout still diverges",
-  "M393: the work wrapped in `if (flag != 0) { ... }` with one trailing `return 0` (the image's early-out `beq` targets the trailing block) -- 2 of 38 and only 24 words compiled, because returning the lookup directly loses the find-index-then-look-up-by-index two-phase structure the image has"
+  "M393: the work wrapped in `if (flag != 0) { ... }` with one trailing `return 0` (the image's early-out `beq` targets the trailing block) -- 2 of 38 and only 24 words compiled, because returning the lookup directly loses the find-index-then-look-up-by-index two-phase structure the image has",
+  "M398: the LAYOUT hypothesis -- wrap the work in `if (*(u8*)0x80136d80 != 0) { ... }` with a trailing `return 0`, and put the not-found assignment after the loop as `if (i == 2) found = 0xffff;` -- **8 of 38, up from 3**. The image's early exit really is a forward branch to a cold trailing block, and wrapping the work supplies it",
+  "M398: the pointer WALK (`p += 0x1228` in the loop, loads at `p + 4608`) instead of `i * 0x1228` indexing -- **7 of 38, slightly worse**: gcc hoists the base to 0x80169D20 and uses a negative displacement either way, so the walk does NOT reproduce the image's `addiu a1,a1,0x1228` in the branch delay"
  ],
- "next_hypothesis": "the layout mechanism, not the variables: the image's flag==0 exit is a branch FORWARD to a cold trailing block, and the match path stores the index and re-loads through it -- one draft that keeps both, e.g. the loop as a separate statement group with the found-check after it inside the same `if (flag != 0)`"
+ "next_hypothesis": "the layout mechanism, not the variables: the image's flag==0 exit is a branch FORWARD to a cold trailing block, and the match path stores the index and re-loads through it -- one draft that keeps both, e.g. the loop as a separate statement group with the found-check after it inside the same `if (flag != 0)`",
+ "syms": {}
 }
