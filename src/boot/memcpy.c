@@ -1,4 +1,4 @@
-/* FUN_8000de9c
+/* memcpy
  * image   boot (boot), base 0x80000480
  * address 0x8000de9c  body 0x8000de9c..0x8000dec3  size 40 B
  * body sha256 ad8cb30bcc83138175f2d7ed54f9520da44bec4801f84e83c2e128b5190d8549

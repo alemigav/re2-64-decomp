@@ -1,7 +1,7 @@
 /* FUN_8017facc
  * image   ovl_0078c0e (ovl), base 0x8017b410
  * address 0x8017facc  body 0x8017facc..0x8017fc33  size 360 B
- * body sha256 8868edfaf5ce9bcc393cc35feef928e5fddf8ee956d7b1d3e0a9af14d89b9df0
+ * body sha256 2d2ad7bf9d85d74ddbf2e16f225ac11f90d2b8f904a3164abc2f0551ee715fbd
  * provider record sha256 11ed38ed66685dde977bacb2c85d4f19909b1d8376f98c4d751d221317b0aff1
  * callees 5 direct (4 in corpus)
  * provider Ghidra 12.2
@@ -25,7 +25,7 @@ FUN_8017facc(undefined4 param_1,int param_2,undefined2 param_3,undefined4 param_
   DAT_80180d74 = &DAT_80181f94;
   DAT_80180d70 = param_1;
   if (DAT_80180d78 == 0) {
-    func_0x8000de9c(param_1,&UNK_80181fec +
+    memcpy(param_1,&UNK_80181fec +
                             ((*(byte *)(param_2 + 0x12) - 0x1a) * 10 + -0x1a +
                             (uint)*(byte *)(param_2 + 0x13)) * 0x824 + param_6,DAT_80180d50);
     osSendMesg(DAT_80180d74,0,0);

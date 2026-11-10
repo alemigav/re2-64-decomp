@@ -12,7 +12,7 @@
   "F0": 3664,
   "F1": 3468,
   "F2": 3408,
-  "named": 45,
+  "named": 47,
   "validated": 12,
   "validated_unnamed": 0,
   "extent_measured": 196
@@ -2253,23 +2253,23 @@
    "validated": false
   },
   "boot:0x8000de78": {
-   "name": "FUN_8000de78",
+   "name": "strlen",
    "image": "boot",
    "address": "0x8000de78",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": false
   },
   "boot:0x8000de9c": {
-   "name": "FUN_8000de9c",
+   "name": "memcpy",
    "image": "boot",
    "address": "0x8000de9c",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,
-   "named": false,
+   "named": true,
    "validated": false
   },
   "boot:0x8000e920": {

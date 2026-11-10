@@ -1,7 +1,7 @@
 /* FUN_8017f85c
  * image   ovl_0078c0e (ovl), base 0x8017b410
  * address 0x8017f85c  body 0x8017f85c..0x8017facb  size 624 B
- * body sha256 5d64d3d6442be4027c20eb2f53818450aa69dc55dc928bc39648835791b6df59
+ * body sha256 f30911f36aac5a22b20bd64a68ac6aaafefa372f4515599a08efc1562a6277a8
  * provider record sha256 c6d21c520eac43a1082540e85bbd13fbdba0da256800d33c31b7741e79e561bc
  * callees 9 direct (7 in corpus)
  * provider Ghidra 12.2
@@ -47,7 +47,7 @@ FUN_8017f85c(int param_1,uint param_2,int param_3,undefined2 param_4,undefined4 
     (&DAT_80181fe0)[iVar4 * 0x209] = 0;
     (&DAT_80181fe4)[iVar4 * 0x209] = 0;
     (&DAT_80181fe8)[iVar4 * 0x209] = 0;
-    func_0x8000de9c(&UNK_80181fec + iVar4 * 0x824,DAT_80180d70,DAT_80180d50);
+    memcpy(&UNK_80181fec + iVar4 * 0x824,DAT_80180d70,DAT_80180d50);
     uVar3 = func_0x8009c28c(&DAT_80181fcc + iVar4 * 0x209,0x820);
     bVar1 = _DAT_800c52d0 == 0;
     (&DAT_80181fc8)[iVar4 * 0x209] = uVar3;

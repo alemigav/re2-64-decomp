@@ -43,7 +43,7 @@ That is the whole picture. The other numbers on this page are context: **63.3 %*
 | --- | --- |
 | **reconstructed and proved** — the score | **273 of 3 664** (7.5 %) |
 | bytes inside a known function body | 63.3 % — a *classification*, not a reconstruction |
-| functions with a curated name | **45** of 3 664 — the gap between a transcript and understanding |
+| functions with a curated name | **47** of 3 664 — the gap between a transcript and understanding |
 
 The build, which is the shape a static recompiler wants — `make check`: **273 of 274** reconstructed bodies link at their cartridge address, over **28** images — the one that does not is the published partial; the build emits `.text` only, so there are **no data segments**.
 
@@ -135,7 +135,7 @@ has the architecture, the ratchet's three invariants and the 30-second rule.
 
 ## Milestones
 
-**397** numbers, 0-396: **340** with a row, and **57** named gaps. The full index — every number, its title, and the
+**398** numbers, 0-397: **341** with a row, and **57** named gaps. The full index — every number, its title, and the
 note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table worth reading
 before you believe any older note.
@@ -161,7 +161,7 @@ before you believe any older note.
 | P16 | **M251–M300** | **whole functions reproduced from the image**: the compile-probe corpus and sixteen hand reconstructions, fifteen byte-exact, plus the build facts that made them possible |
 | P17 | **M301–M307** | **the duplicate-body cohorts**: 148 of the 3 400 unmatched functions have a body byte-identical to another's, in 48 groups — one proven shape registers every copy |
 | P18 | **M308–M331** | **the singles sweep and the boot image's own geometry**: the boot extent corrected to its load extent because a recovered `main` named `__bss_start`; `main` at 30 of 30; the 46-word DSP family closed as hand-written assembly; `vector_installer` taken to a measured near-miss |
-| P19 | **M332–M396** | **the front page, the last functions, and the byte map closed**: the README split into a short page and a dense companion; the duplicate cohorts banked **+25 functions from five shapes**, three of them closed by *statement order* rather than expression; then the twelve-milestone byte-map arc — `unclassified` **330 176 B (16.9 %) → 440 B (0.0 %)**, eleven measured classes each earned by a rule the audit mutates, and the last nine runs read by hand; and **admission unparked to `PASS`** (160/160, 0 vacuous, 0 broken), which immediately caught a class measuring a 64 KB page base instead of an address |
+| P19 | **M332–M397** | **the front page, the last functions, and the byte map closed**: the README split into a short page and a dense companion; the duplicate cohorts banked **+25 functions from five shapes**, three of them closed by *statement order* rather than expression; then the twelve-milestone byte-map arc — `unclassified` **330 176 B (16.9 %) → 440 B (0.0 %)**, eleven measured classes each earned by a rule the audit mutates, and the last nine runs read by hand; and **admission unparked to `PASS`** (160/160, 0 vacuous, 0 broken), which immediately caught a class measuring a 64 KB page base instead of an address |
 
 The gap at M31–M78 is stated rather than reconstructed: writing a note from guesswork would be indistinguishable from
 one written from measurement, and that distinction is the project's whole claim.
@@ -217,7 +217,7 @@ ovl_00b6040   4│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 3664 functions across 36 images · █ 15 reproduced byte-for-byte (0.41%) · ▓ 1 recovered, residue itemised
 █ matched byte-for-byte   ▓ recovered, not exact   ▒ pseudocode body only (not yet evidence of a match)
 
-the record — one bar per phase, from the phase table's own ranges (M0–M396)
+the record — one bar per phase, from the phase table's own ranges (M0–M397)
 
 P0   M0  │█│ 10
 P1   M10 │███│ 21
@@ -238,7 +238,7 @@ P15  M231│██│ 20
 P16  M251│██████│ 50
 P17  M301│█│ 7
 P18  M308│███│ 24
-P19  M332│████████│ 65
+P19  M332│████████│ 66
 ```
 <!-- progress-map:end -->
 
@@ -249,7 +249,7 @@ P19  M332│████████│ 65
   (**1 238 404 B**); `src/`, `src/INDEX.md`. The other 36.8 % is classified, not shrugged at: **408 124 B padding**,
   **6 680 B** data the decompiler names, **980 B** of jump tables, and **440 B (0.0 %) unclassified** — a bucket
   that is published and never renamed `data` on a hunch.
-- **What is actually understood**: of **3 664 functions**, **3 408** resolve every call target in their bodies, **45**
+- **What is actually understood**: of **3 664 functions**, **3 408** resolve every call target in their bodies, **47**
   carry a curated name, and **12** have behaviour pinned by a gate or an executed experiment — and since M395 all **12**
   of those carry a name derived from what the gate pins, so the naming and the behaviour evidence overlap instead of being
   disjoint. Naming the other 3 619 does not have that luxury: a name without a gate behind it is a guess.
@@ -303,7 +303,7 @@ record the cartridge never labels — is
 tools/       109 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 605 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        README-extended.md (the dense version), handover.md, format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    321 notes, one per milestone that has one
+docs/log/    322 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator

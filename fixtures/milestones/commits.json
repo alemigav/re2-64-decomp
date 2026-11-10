@@ -2,6 +2,14 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "9d05edb",
+   "subject": "M396: the 58-word M388 body read -- the shape, and a partial at 2 of 58",
+   "milestones": [
+    388,
+    396
+   ]
+  },
+  {
    "sha": "e6f5cf5",
    "subject": "M395: the twelve audio bodies named -- named 33 -> 45, validated flat at 12",
    "milestones": [

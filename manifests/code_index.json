@@ -7,8 +7,8 @@
    "base": "0x80000480",
    "size": 78880,
    "functions": 225,
-   "named": 19,
-   "functions_named": 19,
+   "named": 21,
+   "functions_named": 21,
    "limitations": [
     "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
     "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
@@ -3012,8 +3012,8 @@
     },
     {
      "address": "0x8000de78",
-     "name": "FUN_8000de78",
-     "file": "src/boot/FUN_8000de78.c",
+     "name": "strlen",
+     "file": "src/boot/strlen.c",
      "size": 36,
      "sha256": "6b211db9362eeae3137dd832164db2058dd1f00dbb2ab3b442df8a801e2a08ef",
      "provider_sha256": "",
@@ -3023,8 +3023,8 @@
     },
     {
      "address": "0x8000de9c",
-     "name": "FUN_8000de9c",
-     "file": "src/boot/FUN_8000de9c.c",
+     "name": "memcpy",
+     "file": "src/boot/memcpy.c",
      "size": 40,
      "sha256": "ad8cb30bcc83138175f2d7ed54f9520da44bec4801f84e83c2e128b5190d8549",
      "provider_sha256": "",
@@ -9188,7 +9188,7 @@
      "name": "FUN_8004f9f0",
      "file": "src/stage2/FUN_8004f9f0.c",
      "size": 580,
-     "sha256": "286b8be7b07253a5598bac7a00936c9a5e4a72c8a6b143092d70846134f76a25",
+     "sha256": "082723677cfe6108d5ab5093a9dca81f3cc43f1d9e34a19e1973d5f32d255824",
      "provider_sha256": "170cc4e83f34817408e62644ad4a2eb547e6bea20df53e02c64f3f2fa7bcff3b",
      "status": "written",
      "callees": [
@@ -16428,7 +16428,7 @@
      "name": "FUN_80082674",
      "file": "src/stage2/FUN_80082674.c",
      "size": 544,
-     "sha256": "f404bf7bf5a331a8ce2471966431b9eae4854b84529112d3cf0e4629f73574f5",
+     "sha256": "76546d0f70f8277f38004c49aff85f713648652c81a06f3d28f340f0a559e70b",
      "provider_sha256": "b9d3906976f85e8e25a424ff1039ef5b57ec7fc2b1e45251fbf07cf6a859a630",
      "status": "written",
      "callees": [
@@ -33438,7 +33438,7 @@
      "name": "FUN_8017f85c",
      "file": "src/ovl_0078c0e/FUN_8017f85c.c",
      "size": 624,
-     "sha256": "5d64d3d6442be4027c20eb2f53818450aa69dc55dc928bc39648835791b6df59",
+     "sha256": "f30911f36aac5a22b20bd64a68ac6aaafefa372f4515599a08efc1562a6277a8",
      "provider_sha256": "c6d21c520eac43a1082540e85bbd13fbdba0da256800d33c31b7741e79e561bc",
      "status": "written",
      "callees": [
@@ -33457,7 +33457,7 @@
      "name": "FUN_8017facc",
      "file": "src/ovl_0078c0e/FUN_8017facc.c",
      "size": 360,
-     "sha256": "8868edfaf5ce9bcc393cc35feef928e5fddf8ee956d7b1d3e0a9af14d89b9df0",
+     "sha256": "2d2ad7bf9d85d74ddbf2e16f225ac11f90d2b8f904a3164abc2f0551ee715fbd",
      "provider_sha256": "11ed38ed66685dde977bacb2c85d4f19909b1d8376f98c4d751d221317b0aff1",
      "status": "written",
      "callees": [

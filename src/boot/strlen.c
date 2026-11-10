@@ -1,4 +1,4 @@
-/* FUN_8000de78
+/* strlen
  * image   boot (boot), base 0x80000480
  * address 0x8000de78  body 0x8000de78..0x8000de9b  size 36 B
  * body sha256 6b211db9362eeae3137dd832164db2058dd1f00dbb2ab3b442df8a801e2a08ef

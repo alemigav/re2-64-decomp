@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-397 milestones are indexed. 318 of them have a note; the rest are rows in the log that cite
+398 milestones are indexed. 319 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **57 have no record at all** — 24, 31–78, 80, 172, 240–244, 393 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -415,6 +415,7 @@ at the foot of this file.
 | 394 | **M394** — the address resolver: a name change stops being a code change | `docs/log/M394-the-address-resolver.md` |
 | 395 | **M395** — the twelve audio bodies named: `named` 33 → 45, `validated` flat at 12 | `docs/log/M395-the-twelve-named.md` |
 | 396 | **M396** — the 58-word M388 body read: the shape, and a partial at 2 of 58 | `docs/log/M396-the-58-word-body-read.md` |
+| 397 | **M397** — `strlen` and `memcpy`: the first names whose evidence is a body | `docs/log/M397-strlen-and-memcpy-named.md` |
 
 ## The gaps, and why they are empty
 

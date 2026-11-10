@@ -64,3 +64,8 @@
 0x800a3bf4	function	snd_mixer_feed	M203 -- the mixer feed that splits a block at the loop end
 0x800ace1c	function	snd_cache_resolve	M202 -- the cache-C resolver, keyed by key and rate
 0x800a5678	function	snd_mutex_acquire	M200 -- the audio mutex acquire, seen at every cache site
+
+# M397: two names whose evidence is the reconstruction itself. The first batch where the citation is a BODY rather than a
+# gate: the byte-exact C has the function's contract in it, so the name states what the code provably does.
+0x8000de78	function	strlen	M370/M397 -- the byte-exact reconstruction (9 of 9, fixtures/decomp/authored/boot/8000de78.c) walks to the NUL byte and returns p - a0; that is strlen's contract and the body is the evidence
+0x8000de9c	function	memcpy	M370/M397 -- the byte-exact reconstruction (10 of 10, fixtures/decomp/authored/boot/8000de9c.c) copies a2 bytes forward and returns the destination; that is memcpy's contract

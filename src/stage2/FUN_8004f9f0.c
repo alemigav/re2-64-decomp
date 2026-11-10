@@ -1,7 +1,7 @@
 /* FUN_8004f9f0
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8004f9f0  body 0x8004f9f0..0x8004fc33  size 580 B
- * body sha256 286b8be7b07253a5598bac7a00936c9a5e4a72c8a6b143092d70846134f76a25
+ * body sha256 082723677cfe6108d5ab5093a9dca81f3cc43f1d9e34a19e1973d5f32d255824
  * provider record sha256 170cc4e83f34817408e62644ad4a2eb547e6bea20df53e02c64f3f2fa7bcff3b
  * callees 2 direct (2 in corpus)
  * provider Ghidra 12.2
@@ -62,7 +62,7 @@ LAB_8004fb9c:
         piVar8 = *(int **)(*(int *)((&DAT_800e19bc)[param_1 * 0xda] + 8) + 8);
         *(int **)(*(int *)((&DAT_800e19bc)[param_1 * 0xda] + 8) + 4) = piVar8;
         if ((&DAT_800e19b8)[param_1 * 0xda] != 0) {
-          func_0x8000de9c((&DAT_800e19b8)[param_1 * 0xda],*piVar8,
+          memcpy((&DAT_800e19b8)[param_1 * 0xda],*piVar8,
                           (int)*(short *)((int)piVar8 + 0xe) << 4);
         }
         iVar1 = *(short *)((int)piVar8 + 0xe) + -1;
