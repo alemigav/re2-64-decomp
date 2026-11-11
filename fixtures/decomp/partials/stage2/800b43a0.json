@@ -21,9 +21,13 @@
   "M402 refuted: explicit byte offsets on a `u8 *` walk (no struct type) -- 18, same score but the multiply chain is not typed",
   "M402 refuted: a `while` with two pointers (`q->slot`) and the increment at the loop's end -- 18, no change",
   "M402 refuted: the compare written against `found` rather than `want` -- **4 of 38**: it does give the image's register story (index in $a0, result in $a2) but gcc then coalesces `found = want` away, so the copy the image has at word 3 disappears and the prologue shifts",
-  "M402 refuted: parameter reuse (`i = want; i = 0;`) on top of the record type -- 4 of 38, same coalescing loss"
+  "M402 refuted: parameter reuse (`i = want; i = 0;`) on top of the record type -- 4 of 38, same coalescing loss",
+  "M403: the ARGUMENT-compare variant with the copy kept (`found = want;` then `p->key == want`) -- **18 of 38, unchanged, and it is the banked draft**. The sweep settles what the last draft's hypothesis left open: reordering the declarations (index first), routing the copy through a `key` temp, and moving the copy after `i = 0` all give 18 / 18 / **17**, so `found = want` before `i = 0` is the best placement of the copy",
+  "M403 refuted: **`found = want` IS the word-3 copy** -- deleting the statement (comparing the argument, no source copy) gives **4 of 38** and the `addu $a2,$a0,$zero` disappears with it. The copy is not an artefact of the allocator that a variant can conjure",
+  "M403 refuted: hoisting the copy ABOVE the flag test so gcc can drop it into that `beq`'s delay slot -- argument compare **14**, result compare **4**; the copy lands in the delay slot either way but the hoist moves `i = 0` and costs words elsewhere",
+  "M403 refuted: a dead initialiser (`u32 found = 0xffff;`) to stop `found` coalescing with `want` -- **4**, the initialiser is eliminated and the coalescing stands; a block-scoped `u32 found = want;` -- also **4**"
  ],
- "next_hypothesis": "the compare is the pivot: the image compares the loaded key against $a2 (`beql $v0,$a2`), which is the RESULT variable, not the argument -- and that is what frees $a0 for the index. Writing the compare against `found` instead of `want` does give the image's register story, but gcc then COALESCES `found = want` away (the copy at word 3 disappears) and the whole prologue shifts: 4 of 38. The draft has to keep the copy AND free $a0, which is a coalescing decision, not a source one",
+ "next_hypothesis": "the family is CLOSED at 18 and the reason is structural, not a missing spelling: keeping the copy requires `want` live for the compare (which pins it to `$a0`, so the index takes `$a1`), and every spelling that frees `$a0` -- comparing the result variable -- lets gcc coalesce the copy away (4 of 38). Nine variants across both directions, all at or below 18. A better draft must attack the REBASE instead (`addiu v1,v0,0x1224`, which is also the 40-vs-38 word count), or come from a compiler flag, not from the C",
  "syms": {
   "D_80158b20": "0x80158B20",
   "D_80136d80": "0x80136D80"
