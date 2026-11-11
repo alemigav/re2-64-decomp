@@ -334,6 +334,36 @@
      "subject": "M393: three mechanisms on 0x800b43a0, all 3 of 38 -- published with what was tried"
     }
    ]
+  },
+  {
+   "n": 398,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "57ff7fc",
+     "subject": "M398: the layout hypothesis on 0x800b43a0 -- 3 of 38 becomes 8 of 38"
+    }
+   ]
+  },
+  {
+   "n": 399,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "d0897ae",
+     "subject": "M399: the while form on 0x800b43a0 -- 7 of 38, worse than the for form's 8"
+    }
+   ]
+  },
+  {
+   "n": 400,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "196025f",
+     "subject": "M400: the sole-induction-variable form on 0x800b43a0 -- 3 of 38, the worst of six"
+    }
+   ]
   }
  ]
 }

@@ -2,6 +2,34 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "196025f",
+   "subject": "M400: the sole-induction-variable form on 0x800b43a0 -- 3 of 38, the worst of six",
+   "milestones": [
+    400
+   ]
+  },
+  {
+   "sha": "d0897ae",
+   "subject": "M399: the while form on 0x800b43a0 -- 7 of 38, worse than the for form's 8",
+   "milestones": [
+    399
+   ]
+  },
+  {
+   "sha": "57ff7fc",
+   "subject": "M398: the layout hypothesis on 0x800b43a0 -- 3 of 38 becomes 8 of 38",
+   "milestones": [
+    398
+   ]
+  },
+  {
+   "sha": "77a0316",
+   "subject": "M397: strlen and memcpy named -- the first names whose evidence is a body",
+   "milestones": [
+    397
+   ]
+  },
+  {
    "sha": "9d05edb",
    "subject": "M396: the 58-word M388 body read -- the shape, and a partial at 2 of 58",
    "milestones": [

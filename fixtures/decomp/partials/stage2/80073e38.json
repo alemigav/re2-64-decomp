@@ -2,34 +2,43 @@
  "image": "stage2",
  "address": "0x80073e38",
  "words": 58,
- "score": 3,
+ "score": 43,
  "status": "partial",
  "drafted": "M396",
  "shape": [
-  "two returns: the body at 0x80073efc is the SECOND arm of `if (ctx[7] & 1)`, reached by a forward branch at 0x80073ea8 (+20)",
+  "two returns: the body at 0x80073efc is the SECOND arm of `if (ctx[7] & 1)`, reached by a forward branch at 0x80073ea8 (+20); the else arm ends in `jr ra` with `v0 = 0` (word 32) and the tail arm ends in `jr ra` with `v0 = 1` (word 50), so the function RETURNS 0 or 1",
   "the store `sw a2,1328(t)` sits in the DELAY SLOT of `beq` at 0x80073e84, so it is UNCONDITIONAL in the source: a statement before the test, not inside it",
-  "two constants exceed the 16-bit displacement range and therefore live in registers, not offsets: 0x18000 (`lui a0,1; ori a0,0x8000`, then `addu a0,v0,a0`) and 0x20000 (`lui a1,2`, then `addu v0,v0,a1`)",
-  "`ctx[1]` is read ONCE (`lbu a3,1(t0)`) and both byte stores use it, at 0x8010B297 (computed as 0x800FE288+0x8000+20495) and 0x800E8605 (base+0x20000+3925)",
+  "three constants exceed the 16-bit displacement range and live in registers: 0x18000 (`lui a0,1; ori a0,0x8000`), 0x8000 (`ori v1,zero,0x8000`) and 0x20000 (`lui a1,0x0002`)",
+  "the build order is literal: 0x18000, then the store-1 address (0x800FE288 + 0x8000 in a register), then ctx[1], then 0x20000, then store 1, then the table, then t, then the global read from 0x801152CC, then store 2 (table + 0x20000, displacement 3925)",
+  "`ctx[1]` is read ONCE (`lbu a3,1(t0)`) and both byte stores use it",
   "`ctx` is moved to $t0 in the first instruction because $a0 is needed for the 0x18000 constant",
-  "the unconditional store writes the global read from 0x801152CC into t+1328; the flag tested is `*(u32*)(t+6716) & 0x40`",
-  "the else-arm writes 2 to 0x8012BFA8 and 1 to 0x80131780, copies t+6752 to 0x80131780+0x1780+68, and ORs 0x8000 into t+6748"
+  "the else arm RE-DERIVES the table: it materialises 0x18000 a second time (`lui a2,1; ori a2,0x8000`), rebuilds `lui v1,0x800c; addiu v1,0x76b0`, adds, then loads t+6748 and t+6752 -- five words that only a rematerialisation can produce",
+  "the tail arm's base is `table + (0x8000 | ctx[1])` (`ori v1,v1,0x8000`, reusing $v1 from the `v == 30` compare's zero-extension at word 21), NOT `table + 0x18000`: the two arms address different records"
  ],
- "residue": "ORDER from word 3 and register names after it. Every constant is materialised the way the image does it, so the mechanism question is closed; what is left is the statement order of the first six statements and the allocation that follows from it. Next draft: put the store-1 address expression immediately after the ctx save, before the table binding",
- "next_hypothesis": "order the source so the two byte stores come first and the pointer arithmetic follows, with both constants as separate values the compiler must materialise (they cannot be displacements, which the image proves)",
+ "residue": "15 words, three separate causes, all measured. (1) Words 3-5 are TRANSPOSED: gcc schedules `ori v1,zero,0x8000` before `lui v0,0x8010; addiu v0,0xe288` where the image has the base first -- tried as pointer arithmetic (`u8 *s1 = D_800fe288 + k8`), as `k8 + symbol`, and as a later statement; all three leave the transposition. (2) $a1/$a2 are SWAPPED between the 0x20000 constant and the loaded global (words 7, 9, 14, 16, 20): the image gives off2 $a1 and old $a2, ours the reverse. (3) The TAIL ARM re-narrows `v` (`andi v1,a3,0x00ff` at word 49) where the image reuses the compare's zero-extension, which shifts 49-57 by one word and also makes the add's destination $v1 instead of $a0.",
+ "next_hypothesis": "the last three are one allocation problem: the image keeps the compare's zero-extension in $v1 across the branch and reuses it in the tail, and gives the table's register ($a0) the add's destination. A draft that makes `v`'s narrowed value a single live pseudo reaching both the compare and the tail had to be written so the extension still costs one `andi` at word 21 (declaring `u32 vz = v` removes it -- `lbu` already zero-extends -- and that broke word 21)",
  "syms": {
   "D_800c76b0": "0x800C76B0",
-  "D_8010b297": "0x8010B297",
-  "D_800e8605": "0x800E8605",
+  "D_800fe288": "0x800FE288",
   "D_801152cc": "0x801152CC",
   "D_8012bfa8": "0x8012BFA8",
-  "D_80131780": "0x80131780",
-  "D_800fe288": "0x800FE288"
+  "D_80131780": "0x80131780"
  },
  "tried": [
   "M396: absolute literals for every address -- 0 of 58; the compiler folded the table plus its addend into one lui/ori and used $at for every absolute store",
   "M396: symbols with the addends kept in the access expression (M372's lever) -- 2 of 58; the addend still folds",
   "M396: the symbol placed at the PRE-addend address (`D_800fe288` + 0x8000 + 20495, sum 53263 > 0x7FFF) and the table bound as `t = D_800c76b0 + 0x18000` -- 0 of 58; **binding folds in every spelling**: ours emitted `lui 0x800e; addiu 0xf6b0` where the image keeps `lui 0x800c; addiu 0x76b0` and a separate `0x18000` in $a0, then `addu`",
-  "M396c: the addend as a VARIABLE with integer arithmetic (`u32 base = (u32)D_800c76b0; u32 off = 0x18000; u32 off2 = 0x20000; t = (u8*)(base + off);`) -- **3 of 58, the best yet**. The first THREE words now match exactly, which means all three constant materialisations are right: the saved ctx (`addu $t0,$a0,$zero`), 0x18000 in `$a0` (`lui 1` / `ori 0x8000`), and later the table as `lui 0x800c`/`addiu 0x76b0` with 0x20000 as `lui 0x0002`"
+  "M396c: the addend as a VARIABLE with integer arithmetic (`u32 base = (u32)D_800c76b0; u32 off = 0x18000; u32 off2 = 0x20000; t = (u8*)(base + off);`) -- **3 of 58, the best yet**. The first THREE words now match exactly, which means all three constant materialisations are right: the saved ctx (`addu $t0,$a0,$zero`), 0x18000 in `$a0` (`lui 1` / `ori 0x8000`), and later the table as `lui 0x800c`/`addiu 0x76b0` with 0x20000 as `lui 0x0002`",
+  "M401: reorder to the image's literal build order (store-1 address first, then t, then the global, then store-2, then the flag test) with 0x8000 as a VARIABLE -- **10 of 58**, up from 3. The schedule now mirrors the image word for word from 18 to 28; what is left is register allocation, which follows the order",
+  "M401: store 2's 3925 kept OUT of the integer sum, through a named pointer (`p2 = base + off2; p2[3925] = v;`) -- the fold to a single `lui 2; ori 0x0f55` (0x20F55) only happens when the two constants meet inside one expression; a named pointer forces the addend into a register and leaves 3925 a displacement, as the image has it",
+  "M401: the tail arm's base written `0x8000 | v` instead of `k8 + v` -- **10 -> 15**. The OR is what the image emits (`ori v1,v1,0x8000`), and with the OR form the tail arm's length stops overshooting",
+  "M401: the else arm re-deriving its pointer from a FRESH `u32 o = 0x18000` and `u8 *w = base + o` instead of reusing `t` -- **15 -> 43**, the milestone's whole gain. It supplies the five rematerialisation words (0x18000 again, table again, addu) and, as a side effect, rotates the allocation into the image's: v -> $a3, t -> $a0, old -> $a2",
+  "M401 refuted: inlining store 2's address without a pointer variable -- folds 0x20000+3925 into 0x20F55, 2 of 58",
+  "M401 refuted: the store-1 base as pointer arithmetic (`u8 *s1 = D_800fe288 + k8`, and `k8 + D_800fe288`) -- 43, identical output; the 3-5 transposition is the scheduler's, not the expression's",
+  "M401 refuted: `old` inlined into the store, `old` declared first, the global load moved before store 2 -- all 43; the $a1/$a2 swap does not follow the statement order",
+  "M401 refuted: a `vz` variable carrying the narrowed byte to both the compare and the tail -- 21 of 58. `u32 vz = v` costs nothing after `lbu`, so the `andi` at word 21 disappears and the whole prologue shifts"
  ],
- "correction": "M396c first reported that `0x18000` still propagates. That was WRONG -- the diff begins at word 3, so words 0-2 matched and 0x18000 IS in $a0 exactly as the image has it. The mis-reading came from summarising the diff by its first line instead of by its first MATCHING word. The residue is therefore not a materialisation problem at all: it is ORDER (the image builds the store-1 address next, ours builds the table) and register names from word 3 on."
+ "correction": "M396c first reported that `0x18000` still propagates. That was WRONG -- the diff begins at word 3, so words 0-2 matched and 0x18000 IS in $a0 exactly as the image has it. The mis-reading came from summarising the diff by its first line instead of by its first MATCHING word. The residue is therefore not a materialisation problem at all: it is ORDER (the image builds the store-1 address next, ours builds the table) and register names from word 3 on.",
+ "measured": "M401, full output, no truncation: 43 of 58 words identical (60 compiled -- the tail arm spends one word re-narrowing `v`, and two are alignment padding)",
+ "mechanism": "a two-slot search-free setter whose every constant is materialised in a register: the residue was never the expressions but the STATEMENT ORDER, and the allocation follows the order"
 }

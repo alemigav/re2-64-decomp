@@ -7,8 +7,8 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-398 milestones are indexed. 319 of them have a note; the rest are rows in the log that cite
-`docs/format_notes.md` instead. **57 have no record at all** — 24, 31–78, 80, 172, 240–244, 393 — and they appear in place, marked
+402 milestones are indexed. 320 of them have a note; the rest are rows in the log that cite
+`docs/format_notes.md` instead. **60 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
 
@@ -416,12 +416,16 @@ at the foot of this file.
 | 395 | **M395** — the twelve audio bodies named: `named` 33 → 45, `validated` flat at 12 | `docs/log/M395-the-twelve-named.md` |
 | 396 | **M396** — the 58-word M388 body read: the shape, and a partial at 2 of 58 | `docs/log/M396-the-58-word-body-read.md` |
 | 397 | **M397** — `strlen` and `memcpy`: the first names whose evidence is a body | `docs/log/M397-strlen-and-memcpy-named.md` |
+| 398 | **M398** — *(no row, no note)* | commit only: `57ff7fc` “M398: the layout hypothesis on 0x800b43a0 -- 3 of 38 becomes 8 of 38” |
+| 399 | **M399** — *(no row, no note)* | commit only: `d0897ae` “M399: the while form on 0x800b43a0 -- 7 of 38, worse than the for form's 8” |
+| 400 | **M400** — *(no row, no note)* | commit only: `196025f` “M400: the sole-induction-variable form on 0x800b43a0 -- 3 of 38, the worst of six” |
+| 401 | **M401** — `0x80073e38`: the residue was ORDER, and the order is the allocation | `docs/log/M401-the-order-not-the-expression.md` |
 
 ## The gaps, and why they are empty
 
-**57** milestone numbers have neither a row in `docs/reverse_engineering_log.md` nor a note in `docs/log/`. The project did not keep a note for every number it used: much of the middle work was recorded in `docs/format_notes.md` and in commit messages instead, and the log's own numbering runs M10–M30 in that style before resuming per-milestone notes at M81.
+**60** milestone numbers have neither a row in `docs/reverse_engineering_log.md` nor a note in `docs/log/`. The project did not keep a note for every number it used: much of the middle work was recorded in `docs/format_notes.md` and in commit messages instead, and the log's own numbering runs M10–M30 in that style before resuming per-milestone notes at M81.
 
-* **M48, M51, M78, M172, M240, M241, M242, M243, M393** survive only as commit subjects, quoted above. Nothing further is known about them, so nothing further is written.
+* **M48, M51, M78, M172, M240, M241, M242, M243, M393, M398, M399, M400** survive only as commit subjects, quoted above. Nothing further is known about them, so nothing further is written.
 * **24, 31–47, 49–50, 52–77, 80, 244** have no evidence in the tree at all — no row, no note, no commit that names them.
 
 None of these gaps is reconstructed after the fact. A note written from guesswork would be indistinguishable from a note written from measurement, and this project's whole claim is that the difference is visible.
