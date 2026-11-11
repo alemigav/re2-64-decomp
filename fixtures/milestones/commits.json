@@ -2,6 +2,20 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "ee34d57",
+   "subject": "M402: the record on 0x800b43a0 -- 8 of 38 becomes 18, and the base was wrong by 0x10000",
+   "milestones": [
+    402
+   ]
+  },
+  {
+   "sha": "b3b562a",
+   "subject": "M401: the reorder on 0x80073e38 -- 3 of 58 becomes 43, and the residue is allocation",
+   "milestones": [
+    401
+   ]
+  },
+  {
    "sha": "196025f",
    "subject": "M400: the sole-induction-variable form on 0x800b43a0 -- 3 of 38, the worst of six",
    "milestones": [

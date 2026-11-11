@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-402 milestones are indexed. 320 of them have a note; the rest are rows in the log that cite
+403 milestones are indexed. 321 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **60 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -420,6 +420,7 @@ at the foot of this file.
 | 399 | **M399** — *(no row, no note)* | commit only: `d0897ae` “M399: the while form on 0x800b43a0 -- 7 of 38, worse than the for form's 8” |
 | 400 | **M400** — *(no row, no note)* | commit only: `196025f` “M400: the sole-induction-variable form on 0x800b43a0 -- 3 of 38, the worst of six” |
 | 401 | **M401** — `0x80073e38`: the residue was ORDER, and the order is the allocation | `docs/log/M401-the-order-not-the-expression.md` |
+| 402 | **M402** — `0x800b43a0`: the base was wrong by `0x10000`, and the stride is a struct | `docs/log/M402-the-record-and-the-wrong-base.md` |
 
 ## The gaps, and why they are empty
 
