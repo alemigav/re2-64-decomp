@@ -2,11 +2,11 @@
  "image": "stage2",
  "address": "0x800b43a0",
  "words": 38,
- "score": 8,
+ "score": 18,
  "status": "partial",
- "mechanism": "a two-slot search with short-circuit side effects: the beql delay slots are why `a0++` runs on the slot-empty path and `a2 = a0` on the match path",
- "residue": "the induction-variable form, and the search is now measured in BOTH directions: every shape that removes the index multiply makes the hoisting worse (7, 7, 3) and the plain `for` + index form is the best at 8. So gcc 2.8's preference for a hoisted base is not something a draft can steer by rewriting the loop. The remaining possibilities are all structural rather than loop-shaped: the base arriving as a PARAMETER (so it is already in a register and only the stride is added), or the array reached through a struct member. Six mechanisms spent; the published score stays 8 of 38.",
- "measured": "M392, full output, no truncation: 3 of 38 words identical (40 compiled)",
+ "mechanism": "a two-slot search over an array of 0x1228-byte RECORDS: the loop walks a record pointer (`addiu a1,a1,0x1228`) while the post-loop lookup INDEXES the array (a found*4648 multiply chain)",
+ "residue": "20 words. The type is settled -- gcc now emits the struct-typed multiply chain (words 24-33 match) -- and what is left is one allocation decision with three consequences: the image keeps the INDEX in $a0 and the record pointer in $a1 at the record base, while ours keeps the key in $a0 (it stays live for the loop's compare) and puts the index in $a1, and it REBASES the record pointer to +0x1224 so `slot` becomes `-36(v1)` and `key` becomes `0(v1)`. That rebase is also why the draft is 40 words to the image's 38.",
+ "measured": "M402, full output, no truncation: 18 of 38 words identical (40 compiled)",
  "drafted": "M392",
  "tried": [
   "M392: fresh locals (`found`, `i`) -- 3 of 38",
@@ -15,16 +15,34 @@
   "M398: the LAYOUT hypothesis -- wrap the work in `if (*(u8*)0x80136d80 != 0) { ... }` with a trailing `return 0`, and put the not-found assignment after the loop as `if (i == 2) found = 0xffff;` -- **8 of 38, up from 3**. The image's early exit really is a forward branch to a cold trailing block, and wrapping the work supplies it",
   "M398: the pointer WALK (`p += 0x1228` in the loop, loads at `p + 4608`) instead of `i * 0x1228` indexing -- **7 of 38, slightly worse**: gcc hoists the base to 0x80169D20 and uses a negative displacement either way, so the walk does NOT reproduce the image's `addiu a1,a1,0x1228` in the branch delay",
   "M399: the `while` form with the stride at the loop's end (`while (i < 2) { ...; i++; p += 0x1228; }`) -- **7 of 38, worse than the 8** the `for` + index form gives. gcc hoists again (`lui/ori 0x80169D44`, then `lbu -36(v1)`), so the while form does not reproduce the image's `addiu a1,a1,0x1228` in the `bne` delay either",
-  "M400: the pointer as SOLE induction variable with a precomputed end (`end = p + 2*0x1228; while (p != end) { ...; i++; p += 0x1228; }`) -- **3 of 38, the WORST of the six.** Refuted: gcc hoists THREE bases now (`a1` = table, `a3` = table+0x2450 for `end`, `v1` = table+0x1224 for the indexing), so precomputing the end makes the hoisting worse, not better"
+  "M400: the pointer as SOLE induction variable with a precomputed end (`end = p + 2*0x1228; while (p != end) { ...; i++; p += 0x1228; }`) -- **3 of 38, the WORST of the six.** Refuted: gcc hoists THREE bases now (`a1` = table, `a3` = table+0x2450 for `end`, `v1` = table+0x1224 for the indexing), so precomputing the end makes the hoisting worse, not better",
+  "M402: the base address CORRECTED from 0x80168B20 to **0x80158B20** -- `lui $v0,0x8016; addiu $a1,$v0,0x8b20` sign-extends 0x8b20, so the base is 0x80160000 - 0x74E0; the old reading was 0x10000 too high and every prior draft was compiled against it",
+  "M402: the array typed as an **array of records** (`u8 pad0[4608]; u8 slot; u8 gap[35]; u32 key;` = 0x1228 bytes, the stride exactly) with the loop walking `Rec *p` and the lookup indexing `D_80158b20[found]` -- **8 -> 18 of 38**, and words 24-33 (the multiply chain) now match because gcc emits the struct-typed index arithmetic",
+  "M402 refuted: explicit byte offsets on a `u8 *` walk (no struct type) -- 18, same score but the multiply chain is not typed",
+  "M402 refuted: a `while` with two pointers (`q->slot`) and the increment at the loop's end -- 18, no change",
+  "M402 refuted: the compare written against `found` rather than `want` -- **4 of 38**: it does give the image's register story (index in $a0, result in $a2) but gcc then coalesces `found = want` away, so the copy the image has at word 3 disappears and the prologue shifts",
+  "M402 refuted: parameter reuse (`i = want; i = 0;`) on top of the record type -- 4 of 38, same coalescing loss"
  ],
- "next_hypothesis": "the layout mechanism, not the variables: the image's flag==0 exit is a branch FORWARD to a cold trailing block, and the match path stores the index and re-loads through it -- one draft that keeps both, e.g. the loop as a separate statement group with the found-check after it inside the same `if (flag != 0)`",
- "syms": {},
+ "next_hypothesis": "the compare is the pivot: the image compares the loaded key against $a2 (`beql $v0,$a2`), which is the RESULT variable, not the argument -- and that is what frees $a0 for the index. Writing the compare against `found` instead of `want` does give the image's register story, but gcc then COALESCES `found = want` away (the copy at word 3 disappears) and the whole prologue shifts: 4 of 38. The draft has to keep the copy AND free $a0, which is a coalescing decision, not a source one",
+ "syms": {
+  "D_80158b20": "0x80158B20",
+  "D_80136d80": "0x80136D80"
+ },
  "scores": {
   "fresh locals (M392)": 3,
   "parameter reuse (M393)": 3,
   "wrapped layout + for/index (M398)": 8,
   "pointer walk in a for (M398)": 7,
   "while with stride at the end (M399)": 7,
-  "sole induction variable + precomputed end (M400)": 3
- }
+  "sole induction variable + precomputed end (M400)": 3,
+  "records + walking pointer (M402)": 18
+ },
+ "shape": [
+  "the base is 0x80158B20, not 0x80168B20: `lui $v0,0x8016; addiu $a1,$v0,0x8b20` SIGN-EXTENDS 0x8b20, so the address is 0x80160000 - 0x74E0",
+  "the record is 0x1228 (4648) bytes and the two fields sit at 4608 (slot, a u8) and 4644 (key, a u32) -- and 4608 + 1 + 35 + 4 = 4648 exactly, which is what makes it a struct rather than a stride",
+  "the loop WALKS a record pointer (`addiu a1,a1,0x1228` in the back-edge delay) and reads `4608(a1)` / `4644(a1)`; only the post-loop lookup multiplies (`sll/addiu` chain to found*4648 + 4608)",
+  "the flag `*(u8*)0x80136D80` is tested first and its `beq` delay slot holds `a2 = want`, so the result variable starts at the wanted key",
+  "both slot tests are `beql` (branch-likely): the delay slot holds the `i++` on the empty-slot path and `found = i` on the match path, which is why those side effects appear to sit 'in' the branch",
+  "there are two `jr ra` exits: `return 0` on the not-found path and `return slot != 0` after the indexed lookup"
+ ]
 }
