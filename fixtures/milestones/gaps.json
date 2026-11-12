@@ -364,6 +364,46 @@
      "subject": "M400: the sole-induction-variable form on 0x800b43a0 -- 3 of 38, the worst of six"
     }
    ]
+  },
+  {
+   "n": 403,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "97e066d",
+     "subject": "M403: the argument-compare family on 0x800b43a0 closes at 18, and the copy is the score"
+    }
+   ]
+  },
+  {
+   "n": 404,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "a6a1aa8",
+     "subject": "M404: the pointer rebase on 0x800b43a0 -- removable, but it takes the word-3 copy with it"
+    }
+   ]
+  },
+  {
+   "n": 405,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "fbb677a",
+     "subject": "M405: indexed wording with the index forced into $a0 -- 7 of 38, and the index never gets there"
+    }
+   ]
+  },
+  {
+   "n": 406,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "fe0c30e",
+     "subject": "M406: the caller-set global on 0x800b43a0 -- 2 of 38, ruled out by the image itself"
+    }
+   ]
   }
  ]
 }
