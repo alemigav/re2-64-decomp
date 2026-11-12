@@ -2,6 +2,20 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "c7a4667",
+   "subject": "M408: the loop decision-structure class on 0x800b43a0 -- 18 again, and the residue is one cause",
+   "milestones": [
+    408
+   ]
+  },
+  {
+   "sha": "31cc72c",
+   "subject": "M407: the residues are not toolchain artefacts -- no available compiler or flag closes them",
+   "milestones": [
+    407
+   ]
+  },
+  {
    "sha": "fe0c30e",
    "subject": "M406: the caller-set global on 0x800b43a0 -- 2 of 38, ruled out by the image itself",
    "milestones": [

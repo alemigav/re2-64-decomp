@@ -188,9 +188,14 @@ SUITES = [
     ("front page (repository)", [sys.executable, "tools/front_page.py", "--check"], 1, False),
     ("permute target (repository)", [sys.executable, "tools/permute_target.py", "--self-test"], 3, False),
     ("partials (cartridge)", [sys.executable, "tools/partials.py", "--check"], 2, True),
+    # M409: the distance map. `--check` re-derives the published distribution from the committed records and
+    # re-measures a 24-body sample; the full `--write` is an AUTHOR operation (like `--seed-gaps`) because it is
+    # ~3 500 compiles, and a gate that re-measures the world cannot fit the 30-second rule.
+    ("distance map (cartridge)", [sys.executable, "tools/distance_map.py", "--check"], 4, True),
+    ("distance map self-test", [sys.executable, "tools/distance_map.py", "--self-test"], 3, True),
     ("resolve (repository)", [sys.executable, "tools/srcmap.py", "--check"], 4, False),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
-    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 45, False),
+    ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 46, False),
     # The pool that runs the rest of this list. Graded because a scheduler can lie in ways a plain
     # loop cannot: drop a result, reorder the report, or swallow a death. Its own `--self-test` does not
     # run SUITES, so registering it is not the recursion that `--check` would be.

@@ -77,9 +77,11 @@
   "front page (repository)": 1,
   "permute target (repository)": 3,
   "partials (cartridge)": 2,
+  "distance map (cartridge)": 4,
+  "distance map self-test": 3,
   "resolve (repository)": 4,
   "counts self-test": 4,
-  "counts (repository)": 45,
+  "counts (repository)": 46,
   "acceptance self-test": 6,
   "verifier self-test": 8
  },

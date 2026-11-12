@@ -404,6 +404,16 @@
      "subject": "M406: the caller-set global on 0x800b43a0 -- 2 of 38, ruled out by the image itself"
     }
    ]
+  },
+  {
+   "n": 408,
+   "status": "commit-only",
+   "evidence": [
+    {
+     "sha": "c7a4667",
+     "subject": "M408: the loop decision-structure class on 0x800b43a0 -- 18 again, and the residue is one cause"
+    }
+   ]
   }
  ]
 }

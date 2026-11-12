@@ -67,6 +67,11 @@ CHECKS = [
     # the repository gets a case.
     ("README.md", r"\*\*(\d+) functions reconstructed in C and recompiled \u2014 (\d+) of them matching",
      ("recovered", "recovered_exact"), 1),
+    # M409: the distance map's line. "Already byte-exact" and "nobody had noticed" are the two sentences a reader
+    # needs to judge the remaining work, and both are derived from the fixture, never typed.
+    ("README.md", r"\*\*(\d+) bodies already compile byte-exact\*\*, \*\*(\d+) of them nobody had noticed\*\*, "
+                  r"and \*\*(\d+) more are within eight words",
+     ("distance_exact", "distance_unclaimed", "distance_within_8"), 1),
     # M389: the front page's pictures. A generated block is not a licence to stop asserting -- the waffle's legend and
     # its headline are the two sentences a newcomer reads first, so they get cases like every other number on the page.
     ("README.md", r"\u2588 (\d+)\*\* reconstructed and byte-exact, \*\*\u2592 (\d+)\*\* a body the bytes give but "
@@ -189,11 +194,30 @@ def derive(root: Path) -> dict:
                                  if v.get("length")}),
         **_status(root),
         **_recovered(root),
+        **_distance(root),
         "tool_count": len([p for p in (root / "tools").iterdir()
                            if p.suffix in (".py", ".sh", ".c", ".swift")]),
         **_corpus(root),
         **_bytemap(root),
     }
+
+
+def _distance(root: Path) -> dict:
+    """M409: the distance map's published figures, derived from the fixture the tool writes.
+
+    The front page now carries the one number the last thirty milestones could not see: how many bodies are already
+    byte-exact, and how many of those nobody had noticed. Derived from `fixtures/decomp/distance.json` so the page
+    cannot drift from the measurement.
+    """
+    path = root / "fixtures" / "decomp" / "distance.json"
+    if not path.exists():
+        return {"distance_exact": 0, "distance_unclaimed": 0, "distance_within_8": 0, "distance_measured": 0}
+    doc = json.loads(path.read_text())
+    hist = doc["histogram"]
+    return {"distance_exact": doc["overlap"]["exact"],
+            "distance_unclaimed": doc["overlap"]["exact_unclaimed"],
+            "distance_within_8": hist["within_1"] + hist["within_2"] + hist["within_4"] + hist["within_8"],
+            "distance_measured": doc["totals"]["measured"]}
 
 
 def _recovered(root: Path) -> dict:
@@ -490,6 +514,7 @@ def self_test() -> int:
         for rel in ("fixtures/milestones/gaps.json", "fixtures/sound/codec.json",
                     "fixtures/decomp/images.json", "fixtures/decomp/ranges.json",
                     "fixtures/decomp/recovered.json", "fixtures/decomp/measured_extents.json",
+                    "fixtures/decomp/distance.json",
                     "fixtures/scd/profile.json", "manifests/code_index.json",
                     "manifests/analysis_status.json", "manifests/byte_map.json"):
             (tmp / rel).parent.mkdir(parents=True, exist_ok=True)

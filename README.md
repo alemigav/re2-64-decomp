@@ -3,8 +3,10 @@
 **What it is:** a black-box study of *Resident Evil 2* on the Nintendo 64 (`NREE` rev 1 USA), reverse-engineered from the
 cartridge up — 3 664 functions catalogued, the file formats decoded, the script virtual machine and three audio codecs
 worked out from the bytes, and **274 functions reconstructed in C and recompiled — 273 of them matching the game's own
-machine code byte for byte**. It ships a **1386-case verification suite**, and every claim here is either measured by
+machine code byte for byte**. It ships a **1394-case verification suite**, and every claim here is either measured by
 one of those cases or explicitly labelled a reading of the code.
+
+Measured against the cartridge itself (M409), **439 bodies already compile byte-exact**, **188 of them nobody had noticed**, and **253 more are within eight words** — the decompiler's own C, compiled with the pinned profile, is closer to the game than the reconstruction count said. The 188 are the ones no one had verified; the rest is a ranked queue for the first time.
 
 > **Two versions of this page.** This is the short one: what the project is, what it proves, how to check it in a
 > minute, and where the work stands. The **dense technical companion —
@@ -54,7 +56,7 @@ The build, which is the shape a static recompiler wants — `make check`: **273 
 | | |
 |---|---|
 | **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **273 functions match the cartridge exactly**, to the last byte, out of **274 reconstructed in C**: from Nintendo's own libultra runtime down to single-instruction accessors. 97 of them are copies of 21 proven body shapes, so one proven shape registers every copy; an earlier arc re-verified 194 more from another decompilation, and those are **gone** — removed in M369 for want of a licence ([the corpus, honestly counted](#the-corpus-and-what-is-left)) |
-| **The unusual part** | **358 checks run with no ROM, no assets and no emulator** — the other 1028 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses `PASS` unless it has first proved each gate *can* fail |
+| **The unusual part** | **359 checks run with no ROM, no assets and no emulator** — the other 1035 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses `PASS` unless it has first proved each gate *can* fail |
 | **The scale of what is left** | 63.3 % of the image bytes sit inside a known function body and the rest is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
 
 **This is not a matching build** — of the whole cartridge, and there is **no Makefile, linker script or ROM
@@ -85,7 +87,7 @@ published as **226 of 229 words** rather than rounded up, and the largest functi
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp
 cd re2-64-decomp
-python3 tools/verify.py     # -> PASS-FAST: 358 cases run, 1028 SKIP (they need your dump, never PASS)
+python3 tools/verify.py     # -> PASS-FAST: 359 cases run, 1035 SKIP (they need your dump, never PASS)
 ```
 
 That is the whole setup: Python 3, no dependencies, no cartridge. `python3 tools/acceptance.py` lists the suites by
@@ -116,7 +118,7 @@ covers — but it is the first artefact here that a downstream tool could open, 
 ## Verify it without the cartridge
 
 ```sh
-python3 tools/acceptance.py      # 37 suites / 358 of 1386 cases run; the other 45 suites SKIP
+python3 tools/acceptance.py      # 37 suites / 359 of 1394 cases run; the other 47 suites SKIP
 python3 tools/audit_gates.py     # 160/160 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 25/25 — every doc anchor, heading and note pointer holds
@@ -127,7 +129,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 ```
 
 A suite that cannot run prints `SKIP (needs the cartridge)` — **never PASS** — and the split is stated wherever it is
-counted: **1028 of 1386 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
+counted: **1035 of 1394 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
 audit is the unusual one: it **disables each check's mechanism** and requires the check to fail, 160 mechanisms and 160
 failures with **0 vacuous**, after first running the unmutated tool as a positive control — that control once found that
 49 of 132 audits had never tested their mutation. [The extended page](docs/README-extended.md#6-the-verification-architecture)
@@ -135,7 +137,7 @@ has the architecture, the ratchet's three invariants and the 30-second rule.
 
 ## Milestones
 
-**408** numbers, 0-407: **344** with a row, and **64** named gaps. The full index — every number, its title, and the
+**410** numbers, 0-409: **345** with a row, and **65** named gaps. The full index — every number, its title, and the
 note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table worth reading
 before you believe any older note.
@@ -300,10 +302,10 @@ record the cartridge never labels — is
 ## Layout
 
 ```
-tools/       109 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+tools/       110 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 605 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        README-extended.md (the dense version), handover.md, format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    325 notes, one per milestone that has one
+docs/log/    326 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
