@@ -1,17 +1,34 @@
 /* FUN_80061bac
  * image   stage2 (stage2), base 0x80018a80
  * address 0x80061bac  body 0x80061bac..0x80061c97  size 236 B
- * body sha256 c81ec9c5a1a820b519a853ec09c4da1210b89fe19c7bd04e12764355b1389e82
- * provider record sha256 dd329e5bd1486f0c61782a2db8b9923bcf3e860868635783c6d0768031841272
- * callees 4 direct (4 in corpus)
- * provider Ghidra 12.2
+ * body sha256 7c85e23edcef88f965f6a1928e1da95e83d31c208078f0600cdfa4d698d926d6
+ * recovered byte-exact (imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/stage2/80061bac.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned char undefined1;
+typedef unsigned short undefined2;
+typedef unsigned int undefined4;
+typedef unsigned short ushort;
+typedef unsigned int uint;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_80061bac(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   int iVar1;
   
-  if (*(char *)(param_1 + 7) == '\0') {
+  if (*(unsigned char *)(param_1 + 7) == '\0') {
     *(undefined1 *)(param_1 + 7) = 1;
     *(undefined4 *)(param_1 + 0x1e8) = 0x13000700;
   }

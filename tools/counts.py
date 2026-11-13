@@ -69,9 +69,12 @@ CHECKS = [
      ("recovered", "recovered_exact"), 1),
     # M409: the distance map's line. "Already byte-exact" and "nobody had noticed" are the two sentences a reader
     # needs to judge the remaining work, and both are derived from the fixture, never typed.
-    ("README.md", r"\*\*(\d+) bodies of the decompiler's own C compile byte-exact\*\*, \*\*(\d+)\*\* of which were "
-                  r"never claimed until M410, and \*\*(\d+) more are within eight words",
-     ("distance_exact", "banked_exact", "distance_within_8"), 1),
+    # The sentence leads with the BANKED count, not with the map's `exact`: the map measures the provider artifact
+    # where one exists and `src/` otherwise, so its exact total mixes provenances. `banked_exact` comes from the
+    # fixture and means one thing.
+    ("README.md", r"\*\*(\d+) bodies of the decompiler's own C were already byte-exact and unclaimed\*\* — M410 and "
+                  r"M411 banked them — and \*\*(\d+) more are within eight words",
+     ("banked_exact", "distance_within_8"), 1),
     # M389: the front page's pictures. A generated block is not a licence to stop asserting -- the waffle's legend and
     # its headline are the two sentences a newcomer reads first, so they get cases like every other number on the page.
     ("README.md", r"\u2588 (\d+)\*\* reconstructed and byte-exact, \*\*\u2592 (\d+)\*\* a body the bytes give but "

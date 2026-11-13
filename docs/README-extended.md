@@ -24,7 +24,7 @@ Every figure on the front page is **derived from the fixtures and asserted by `t
 including in this file's shorter sibling. A phrase that *disappears* counts as a failure, so a stale line cannot be
 fixed by deleting it. Where a number is a *reading* rather than a measurement, the text says so.
 
-**The corpus of recovered functions is 461 entries, 460 of them byte-exact** — 274 written here, 187 the decompiler's own C verified word for word (M410). The composition matters more than the
+**The corpus of recovered functions is 485 entries, 484 of them byte-exact** — 274 written here, 187 the decompiler's own C verified word for word (M410). The composition matters more than the
 total, and any headline quoting it must carry this line — every figure in it is derived from
 `fixtures/decomp/recovered.json` and asserted by `tools/counts.py`, because the hand-typed version of this table summed
 to 198 against a corpus of 210 and had been short since M369:

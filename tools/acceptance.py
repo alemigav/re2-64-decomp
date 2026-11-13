@@ -104,7 +104,7 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 483, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 507, True),
     ("other corpus (repository)", [sys.executable, "tools/other_corpus.py", "--self-test"], 21, True),
     ("toolchain matrix (cartridge)", [sys.executable, "tools/toolchain_matrix.py", "--check"], 4, True),
     ("corpus build (cartridge)", [sys.executable, "tools/build_corpus.py", "--self-test"], 2, True),
@@ -193,6 +193,10 @@ SUITES = [
     # ~3 500 compiles, and a gate that re-measures the world cannot fit the 30-second rule.
     ("distance map (cartridge)", [sys.executable, "tools/distance_map.py", "--check"], 4, True),
     ("distance map self-test", [sys.executable, "tools/distance_map.py", "--self-test"], 3, True),
+    # M411: the type-repair pass over the one-word queue. `--check` re-pins every body it banked, so a repair that
+    # stops being byte-exact fails here rather than in a note.
+    ("type repair (cartridge)", [sys.executable, "tools/type_repair.py", "--check"], 1, True),
+    ("type repair self-test", [sys.executable, "tools/type_repair.py", "--self-test"], 3, True),
     ("resolve (repository)", [sys.executable, "tools/srcmap.py", "--check"], 4, False),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
     ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 47, False),

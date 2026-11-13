@@ -742,6 +742,35 @@
   },
   {
    "image": "ovl_008505e",
+   "address": "0x80164108",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80164108.c",
+   "syms": {
+    "FUN_80163604": 2148939268,
+    "FUN_80164108": 2148942088,
+    "FUN_80164140": 2148942144
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80164384",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80164384.c",
+   "syms": {
+    "FUN_80164384": 2148942724,
+    "FUN_801643d0": 2148942800,
+    "FUN_80164530": 2148943152,
+    "FUN_801664d8": 2148951256
+   }
+  },
+  {
+   "image": "ovl_008505e",
    "address": "0x801648a8",
    "words": 18,
    "verdict": "byte-exact",
@@ -776,6 +805,35 @@
    "source_file": "fixtures/decomp/authored/ovl_008505e/801649fc.c",
    "syms": {
     "FUN_8016313c": 2148938044
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80164a40",
+   "words": 76,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80164a40.c",
+   "syms": {
+    "FUN_80164a40": 2148944448,
+    "func_0x80032bd8": 2147691480,
+    "func_0x80077d18": 2147974424,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801651c0",
+   "words": 29,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801651c0.c",
+   "syms": {
+    "FUN_801651c0": 2148946368,
+    "FUN_80165a5c": 2148948572,
+    "func_0x80089d54": 2148048212
    }
   },
   {
@@ -923,6 +981,32 @@
   },
   {
    "image": "ovl_008bef8",
+   "address": "0x80162710",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_008bef8/80162710.c",
+   "syms": {
+    "FUN_80162710": 2148935440,
+    "func_0x80036c68": 2147708008
+   }
+  },
+  {
+   "image": "ovl_008bef8",
+   "address": "0x801627c0",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_008bef8/801627c0.c",
+   "syms": {
+    "FUN_801627c0": 2148935616,
+    "func_0x80036c68": 2147708008
+   }
+  },
+  {
+   "image": "ovl_008bef8",
    "address": "0x80164624",
    "words": 2,
    "verdict": "byte-exact",
@@ -982,6 +1066,22 @@
   },
   {
    "image": "ovl_0090698",
+   "address": "0x80163a54",
+   "words": 52,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80163a54.c",
+   "syms": {
+    "FUN_80163a54": 2148940372,
+    "FUN_80166cbc": 2148953276,
+    "FUN_80167938": 2148956472,
+    "func_0x80033604": 2147694084,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_0090698",
    "address": "0x80164650",
    "words": 12,
    "verdict": "byte-exact",
@@ -1008,6 +1108,21 @@
   },
   {
    "image": "ovl_0090698",
+   "address": "0x80164e1c",
+   "words": 27,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80164e1c.c",
+   "syms": {
+    "FUN_80164aac": 2148944556,
+    "FUN_80164e1c": 2148945436,
+    "FUN_80167688": 2148955784,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_0090698",
    "address": "0x8016557c",
    "words": 25,
    "verdict": "byte-exact",
@@ -1018,6 +1133,38 @@
     "FUN_80164a78": 2148944504,
     "FUN_8016557c": 2148947324,
     "FUN_8016703c": 2148954172
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80166038",
+   "words": 32,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80166038.c",
+   "syms": {
+    "FUN_801658fc": 2148948220,
+    "FUN_80166038": 2148950072,
+    "FUN_80166248": 2148950600,
+    "FUN_8016703c": 2148954172,
+    "FUN_80167688": 2148955784,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80166634",
+   "words": 35,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80166634.c",
+   "syms": {
+    "FUN_8016577c": 2148947836,
+    "FUN_80166634": 2148951604,
+    "FUN_8016703c": 2148954172,
+    "FUN_801679c8": 2148956616
    }
   },
   {
@@ -1300,6 +1447,19 @@
   },
   {
    "image": "ovl_009dd02",
+   "address": "0x80166280",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80166280.c",
+   "syms": {
+    "FUN_80166280": 2148950656,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_009dd02",
    "address": "0x801664c4",
    "words": 10,
    "verdict": "byte-exact",
@@ -1381,6 +1541,21 @@
   },
   {
    "image": "ovl_00a0344",
+   "address": "0x801626b4",
+   "words": 40,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/801626b4.c",
+   "syms": {
+    "FUN_801626b4": 2148935348,
+    "FUN_8016375c": 2148939612,
+    "func_0x80033604": 2147694084,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_00a0344",
    "address": "0x80163714",
    "words": 4,
    "verdict": "byte-exact",
@@ -1430,6 +1605,22 @@
    "syms": {
     "FUN_80163c44": 2148940868,
     "func_0x80036008": 2147704840,
+    "DAT_80163e68": 2148941416,
+    "DAT_80163ed4": 2148941524
+   }
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163c90",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80163c90.c",
+   "syms": {
+    "FUN_80163c90": 2148940944,
+    "func_0x80036290": 2147705488,
+    "func_0x80036694": 2147706516,
     "DAT_80163e68": 2148941416,
     "DAT_80163ed4": 2148941524
    }
@@ -1637,6 +1828,34 @@
    "syms": {
     "FUN_801623e4": 2148934628,
     "FUN_80167bd8": 2148957144
+   }
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x80165094",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/80165094.c",
+   "syms": {
+    "FUN_80165094": 2148946068,
+    "FUN_801650e0": 2148946144,
+    "FUN_80165374": 2148946804,
+    "FUN_80167c1c": 2148957212
+   }
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801669a8",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/801669a8.c",
+   "syms": {
+    "FUN_801669a8": 2148952488,
+    "func_0x80089d54": 2148048212
    }
   },
   {
@@ -1875,6 +2094,19 @@
   },
   {
    "image": "ovl_00b08a2",
+   "address": "0x8016256c",
+   "words": 26,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00b08a2/8016256c.c",
+   "syms": {
+    "FUN_8016256c": 2148935020,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_00b08a2",
    "address": "0x80165b80",
    "words": 13,
    "verdict": "byte-exact",
@@ -1950,6 +2182,18 @@
   },
   {
    "image": "ovl_00b321e",
+   "address": "0x801623ac",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/801623ac.c",
+   "syms": {
+    "FUN_801623ac": 2148934572
+   }
+  },
+  {
+   "image": "ovl_00b321e",
    "address": "0x80162564",
    "words": 31,
    "verdict": "byte-exact",
@@ -1959,6 +2203,21 @@
    "syms": {
     "FUN_80162564": 2148935012,
     "FUN_801663a4": 2148950948
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80163d10",
+   "words": 37,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all undefined2  -> short ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80163d10.c",
+   "syms": {
+    "FUN_80163d10": 2148941072,
+    "FUN_801665a0": 2148951456,
+    "func_0x80032b5c": 2147691356,
+    "func_0x80089d54": 2148048212
    }
   },
   {
@@ -2022,6 +2281,19 @@
   },
   {
    "image": "ovl_00b321e",
+   "address": "0x801652c8",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/801652c8.c",
+   "syms": {
+    "FUN_801652c8": 2148946632,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_00b321e",
    "address": "0x80165da0",
    "words": 22,
    "verdict": "byte-exact",
@@ -2030,6 +2302,18 @@
    "syms": {
     "FUN_80165ea0": 2148949664,
     "FUN_80165bd0": 2148948944
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x801665a0",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all undefined2  -> short ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/801665a0.c",
+   "syms": {
+    "FUN_801665a0": 2148951456
    }
   },
   {
@@ -3353,6 +3637,22 @@
   },
   {
    "image": "stage2",
+   "address": "0x80061bac",
+   "words": 59,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/stage2/80061bac.c",
+   "syms": {
+    "FUN_8005bea0": 2147860128,
+    "FUN_80061bac": 2147883948,
+    "FUN_80077adc": 2147973852,
+    "FUN_80089d54": 2148048212,
+    "FUN_8008d090": 2148061328
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800667b0",
    "words": 9,
    "verdict": "byte-exact",
@@ -4070,6 +4370,32 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007e0a0",
+   "words": 27,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/stage2/8007e0a0.c",
+   "syms": {
+    "FUN_8007e0a0": 2147999904,
+    "FUN_80089d54": 2148048212
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007e114",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/stage2/8007e114.c",
+   "syms": {
+    "FUN_8007e114": 2148000020,
+    "FUN_80089d54": 2148048212
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8007e590",
    "words": 229,
    "verdict": "partial: 226 of 229, three words of allocation",
@@ -4606,6 +4932,19 @@
     "FUN_800a0f1c": 2148142876,
     "FUN_800a2444": 2148148292,
     "DAT_8013bc90": 2148777104
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5890",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5890.c",
+   "syms": {
+    "FUN_800a5890": 2148161680,
+    "_DAT_80143f0c": 2148810508
    }
   },
   {

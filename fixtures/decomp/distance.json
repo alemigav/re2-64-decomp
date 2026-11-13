@@ -1,20 +1,20 @@
 {
  "histogram": {
-  "exact": 392,
+  "exact": 416,
   "none": 0,
   "over_half": 92,
   "under_half": 1995,
-  "within_1": 71,
+  "within_1": 47,
   "within_2": 88,
   "within_4": 59,
   "within_8": 78
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 461,
+  "claimed": 485,
   "claimed_not_exact": 70,
-  "exact": 392,
-  "exact_and_claimed": 391,
+  "exact": 416,
+  "exact_and_claimed": 415,
   "exact_unclaimed": 1
  },
  "profile": "cc1 2.8.1 -O2 -G 0 -mips2 -mcpu=r4300; as -EB -mips2 -mcpu=r4300 -g -G 0",
@@ -3618,9 +3618,9 @@
    "w": 94
   },
   "ovl_008505e:80164108": {
-   "d": 2,
-   "i": 13,
-   "s": "scored",
+   "d": null,
+   "i": 14,
+   "s": "exact",
    "t": "scalar",
    "w": 14
   },
@@ -3632,9 +3632,9 @@
    "w": 145
   },
   "ovl_008505e:80164384": {
-   "d": 4,
-   "i": 18,
-   "s": "scored",
+   "d": null,
+   "i": 19,
+   "s": "exact",
    "t": "scalar",
    "w": 19
   },
@@ -3696,9 +3696,9 @@
    "w": 17
   },
   "ovl_008505e:80164a40": {
-   "d": 7,
-   "i": 75,
-   "s": "scored",
+   "d": null,
+   "i": 76,
+   "s": "exact",
    "t": "scalar",
    "w": 76
   },
@@ -3750,9 +3750,9 @@
    "w": 100
   },
   "ovl_008505e:801651c0": {
-   "d": 4,
-   "i": 28,
-   "s": "scored",
+   "d": null,
+   "i": 29,
+   "s": "exact",
    "t": "scalar",
    "w": 29
   },
@@ -4880,9 +4880,9 @@
    "w": 161
   },
   "ovl_008bef8:80162710": {
-   "d": 2,
-   "i": 10,
-   "s": "scored",
+   "d": null,
+   "i": 11,
+   "s": "exact",
    "t": "scalar",
    "w": 11
   },
@@ -4894,9 +4894,9 @@
    "w": 33
   },
   "ovl_008bef8:801627c0": {
-   "d": 4,
-   "i": 16,
-   "s": "scored",
+   "d": null,
+   "i": 17,
+   "s": "exact",
    "t": "scalar",
    "w": 17
   },
@@ -5639,9 +5639,9 @@
    "w": 83
   },
   "ovl_0090698:80163a54": {
-   "d": 7,
-   "i": 51,
-   "s": "scored",
+   "d": null,
+   "i": 52,
+   "s": "exact",
    "t": "scalar",
    "w": 52
   },
@@ -5778,9 +5778,9 @@
    "w": 25
   },
   "ovl_0090698:80164e1c": {
-   "d": 7,
-   "i": 26,
-   "s": "scored",
+   "d": null,
+   "i": 27,
+   "s": "exact",
    "t": "scalar",
    "w": 27
   },
@@ -5928,9 +5928,9 @@
    "w": 73
   },
   "ovl_0090698:80166038": {
-   "d": 7,
-   "i": 31,
-   "s": "scored",
+   "d": null,
+   "i": 32,
+   "s": "exact",
    "t": "scalar",
    "w": 32
   },
@@ -5981,9 +5981,9 @@
    "w": 52
   },
   "ovl_0090698:80166634": {
-   "d": 7,
-   "i": 34,
-   "s": "scored",
+   "d": null,
+   "i": 35,
+   "s": "exact",
    "t": "scalar",
    "w": 35
   },
@@ -7931,9 +7931,9 @@
    "w": 13
   },
   "ovl_009dd02:80166280": {
-   "d": 3,
-   "i": 19,
-   "s": "scored",
+   "d": null,
+   "i": 20,
+   "s": "exact",
    "t": "scalar",
    "w": 20
   },
@@ -8161,9 +8161,9 @@
    "w": 119
   },
   "ovl_00a0344:801626b4": {
-   "d": 7,
-   "i": 39,
-   "s": "scored",
+   "d": null,
+   "i": 40,
+   "s": "exact",
    "t": "scalar",
    "w": 40
   },
@@ -8362,9 +8362,9 @@
    "w": 19
   },
   "ovl_00a0344:80163c90": {
-   "d": 5,
-   "i": 23,
-   "s": "scored",
+   "d": null,
+   "i": 24,
+   "s": "exact",
    "t": "scalar",
    "w": 24
   },
@@ -9212,9 +9212,9 @@
    "w": 58
   },
   "ovl_00a733e:80165094": {
-   "d": 4,
-   "i": 18,
-   "s": "scored",
+   "d": null,
+   "i": 19,
+   "s": "exact",
    "t": "scalar",
    "w": 19
   },
@@ -9301,9 +9301,9 @@
    "w": 93
   },
   "ovl_00a733e:801669a8": {
-   "d": 4,
-   "i": 18,
-   "s": "scored",
+   "d": null,
+   "i": 19,
+   "s": "exact",
    "t": "scalar",
    "w": 19
   },
@@ -10124,9 +10124,9 @@
    "w": 31
   },
   "ovl_00b08a2:8016256c": {
-   "d": 4,
-   "i": 25,
-   "s": "scored",
+   "d": null,
+   "i": 26,
+   "s": "exact",
    "t": "scalar",
    "w": 26
   },
@@ -10457,9 +10457,9 @@
    "w": 97
   },
   "ovl_00b321e:801623ac": {
-   "d": 4,
-   "i": 13,
-   "s": "scored",
+   "d": null,
+   "i": 14,
+   "s": "exact",
    "t": "scalar",
    "w": 14
   },
@@ -10587,9 +10587,9 @@
    "w": 13
   },
   "ovl_00b321e:80163d10": {
-   "d": 24,
-   "i": 36,
-   "s": "scored",
+   "d": null,
+   "i": 37,
+   "s": "exact",
    "t": "scalar",
    "w": 37
   },
@@ -10736,9 +10736,9 @@
    "w": 20
   },
   "ovl_00b321e:801652c8": {
-   "d": 4,
-   "i": 23,
-   "s": "scored",
+   "d": null,
+   "i": 24,
+   "s": "exact",
    "t": "scalar",
    "w": 24
   },
@@ -10879,9 +10879,9 @@
    "w": 60
   },
   "ovl_00b321e:801665a0": {
-   "d": 2,
-   "i": 16,
-   "s": "scored",
+   "d": null,
+   "i": 17,
+   "s": "exact",
    "t": "scalar",
    "w": 17
   },
@@ -15451,9 +15451,9 @@
    "w": 53
   },
   "stage2:80061bac": {
-   "d": 4,
-   "i": 58,
-   "s": "scored",
+   "d": null,
+   "i": 59,
+   "s": "exact",
    "t": "scalar",
    "w": 59
   },
@@ -17670,16 +17670,16 @@
    "w": 134
   },
   "stage2:8007e0a0": {
-   "d": 4,
-   "i": 26,
-   "s": "scored",
+   "d": null,
+   "i": 27,
+   "s": "exact",
    "t": "scalar",
    "w": 27
   },
   "stage2:8007e114": {
-   "d": 4,
-   "i": 20,
-   "s": "scored",
+   "d": null,
+   "i": 21,
+   "s": "exact",
    "t": "scalar",
    "w": 21
   },
@@ -20722,9 +20722,9 @@
    "w": 45
   },
   "stage2:800a5890": {
-   "d": 8,
-   "i": 10,
-   "s": "scored",
+   "d": null,
+   "i": 11,
+   "s": "exact",
    "t": "scalar",
    "w": 11
   },
@@ -22240,14 +22240,14 @@
  "totals": {
   "as_failed": 0,
   "cc1_failed": 698,
-  "exact": 392,
+  "exact": 416,
   "functions": 3473,
   "link_failed": 0,
   "measured": 2775,
   "no_source": 0,
-  "percent_words": 9.62,
-  "scored": 2383,
+  "percent_words": 9.63,
+  "scored": 2359,
   "words": 298724,
-  "words_identical": 28738
+  "words_identical": 28762
  }
 }
