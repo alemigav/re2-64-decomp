@@ -402,31 +402,11 @@
    "named": false,
    "validated": false
   },
-  "boot:0x80004b5c": {
-   "name": "FUN_80004b5c",
-   "image": "boot",
-   "address": "0x80004b5c",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "boot:0x80004bac": {
    "name": "FUN_80004bac",
    "image": "boot",
    "address": "0x80004bac",
    "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "boot:0x80004c34": {
-   "name": "FUN_80004c34",
-   "image": "boot",
-   "address": "0x80004c34",
-   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -2132,6 +2112,16 @@
    "named": false,
    "validated": false
   },
+  "boot:0x80004b5c": {
+   "name": "FUN_80004b5c",
+   "image": "boot",
+   "address": "0x80004b5c",
+   "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "boot:0x80004be4": {
    "name": "FUN_80004be4",
    "image": "boot",
@@ -2147,6 +2137,16 @@
    "image": "boot",
    "address": "0x80004c14",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "boot:0x80004c34": {
+   "name": "FUN_80004c34",
+   "image": "boot",
+   "address": "0x80004c34",
+   "callees": 1,
    "callees_unknown": 0,
    "level": 2,
    "named": false,

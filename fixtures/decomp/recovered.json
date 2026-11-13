@@ -165,6 +165,22 @@
   },
   {
    "image": "boot",
+   "address": "0x80004b5c",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (declsign: char -> unsignedchar) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/boot/80004b5c.c",
+   "syms": {
+    "FUN_80004b5c": 2147502940,
+    "func_0x800b431c": 2148221724,
+    "func_0x800b43a0": 2148221856,
+    "_DAT_80012878": 2147559544,
+    "_DAT_80012884": 2147559556
+   }
+  },
+  {
+   "image": "boot",
    "address": "0x80004be4",
    "words": 12,
    "verdict": "byte-exact",
@@ -184,6 +200,21 @@
    "source_file": "fixtures/decomp/authored/boot/80004c14.c",
    "syms": {
     "D_80012884": 2147559556
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004c34",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (declsign: char -> unsignedchar) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/boot/80004c34.c",
+   "syms": {
+    "FUN_80004c34": 2147503156,
+    "func_0x800b43a0": 2148221856,
+    "_DAT_80012878": 2147559544,
+    "_DAT_80012884": 2147559556
    }
   },
   {

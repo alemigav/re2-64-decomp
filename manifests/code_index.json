@@ -511,20 +511,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80004b5c",
-     "name": "FUN_80004b5c",
-     "file": "src/boot/FUN_80004b5c.c",
-     "size": 80,
-     "sha256": "a7045b126a6ad7122802d5a18912aa626d7d30b490f7da48560b42699c23db3f",
-     "provider_sha256": "11e8a88b976c19e82d0ea598906868a2b0497e81a7962e828371a94e19731be0",
-     "status": "written",
-     "callees": [
-      "0x800b431c",
-      "0x800b43a0"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80004bac",
      "name": "FUN_80004bac",
      "file": "src/boot/FUN_80004bac.c",
@@ -533,19 +519,6 @@
      "provider_sha256": "dc8b35ae61b6aa3b42a090635ceaf435893171a749216d8322b65f09b60186ae",
      "status": "written",
      "callees": [],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x80004c34",
-     "name": "FUN_80004c34",
-     "file": "src/boot/FUN_80004c34.c",
-     "size": 56,
-     "sha256": "9d729c392e42815f928a4cdd8fe22ee7fd15b864ab2595b6e7dcdc0dc4c70805",
-     "provider_sha256": "fd00a33dfd7c1828385c7b6f47834232e22f2bf13d93d97ed23afd19a80aca9c",
-     "status": "written",
-     "callees": [
-      "0x800b43a0"
-     ],
      "callees_unknown": 0
     },
     {
@@ -2867,6 +2840,20 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x80004b5c",
+     "name": "FUN_80004b5c",
+     "file": "src/boot/FUN_80004b5c.c",
+     "size": 80,
+     "sha256": "23d83892f10b9fe8e4ea5d5d35fdbd54e142d9ecaf1c4f0491d5b9939e8bedd2",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800b431c",
+      "0x800b43a0"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x80004be4",
      "name": "FUN_80004be4",
      "file": "src/boot/FUN_80004be4.c",
@@ -2886,6 +2873,19 @@
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80004c34",
+     "name": "FUN_80004c34",
+     "file": "src/boot/FUN_80004c34.c",
+     "size": 56,
+     "sha256": "1adb15d3bb86378ff5dd3fe3b15a9140e1e273c2e8ae15d0261b489c5f664089",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800b43a0"
+     ],
      "callees_unknown": 0
     },
     {

@@ -1,17 +1,31 @@
 /* FUN_80004b5c
  * image   boot (boot), base 0x80000480
  * address 0x80004b5c  body 0x80004b5c..0x80004bab  size 80 B
- * body sha256 a7045b126a6ad7122802d5a18912aa626d7d30b490f7da48560b42699c23db3f
- * provider record sha256 11e8a88b976c19e82d0ea598906868a2b0497e81a7962e828371a94e19731be0
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 23d83892f10b9fe8e4ea5d5d35fdbd54e142d9ecaf1c4f0491d5b9939e8bedd2
+ * recovered byte-exact (imported: closed by access type (declsign: char -> unsignedchar) and pinned word for word (M411))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/boot/80004b5c.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+extern unsigned int _DAT_80012878;
+extern unsigned int _DAT_80012884;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void FUN_80004b5c(void)
 
 {
-  char cVar1;
+  unsigned char cVar1;
   
   cVar1 = func_0x800b43a0(_DAT_80012878);
   if (cVar1 != '\0') {

@@ -28,6 +28,7 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -38,24 +39,46 @@ AUTHORED = ROOT / "fixtures" / "decomp" / "authored"
 
 # The substitution table, and every row of it is a width or a signedness — never a guess about behaviour. A body that
 # needs an entry here needs exactly one thing: the access spelled the way the cartridge spells it.
+# The substitution table, in CLASSES, because the closure rate per class is what says which instrument to build next.
+# Every row is a width, a signedness or a declaration type -- never a guess about behaviour.
 SUBS = [
-    ("*(char *)", "*(unsigned char *)"),
-    ("*(unsigned char *)", "*(char *)"),
-    ("*(signed char *)", "*(unsigned char *)"),
-    ("*(short *)", "*(unsigned short *)"),
-    ("*(unsigned short *)", "*(short *)"),
-    ("*(int *)", "*(unsigned int *)"),
-    ("*(unsigned int *)", "*(int *)"),
-    ("*(undefined1 *)", "*(signed char *)"),
-    ("*(undefined2 *)", "*(short *)"),
-    ("*(undefined4 *)", "*(int *)"),
-    ("(char)", "(unsigned char)"),
-    ("(unsigned char)", "(char)"),
-    ("(short)", "(unsigned short)"),
-    ("(unsigned short)", "(short)"),
-    ("(int)", "(unsigned int)"),
-    ("(unsigned int)", "(int)"),
+    ("width", "*(char *)", "*(unsigned char *)"),
+    ("width", "*(unsigned char *)", "*(char *)"),
+    ("width", "*(signed char *)", "*(unsigned char *)"),
+    ("width", "*(short *)", "*(unsigned short *)"),
+    ("width", "*(unsigned short *)", "*(short *)"),
+    ("width", "*(int *)", "*(unsigned int *)"),
+    ("width", "*(unsigned int *)", "*(int *)"),
+    ("width", "*(undefined1 *)", "*(signed char *)"),
+    ("width", "*(undefined2 *)", "*(short *)"),
+    ("width", "*(undefined4 *)", "*(int *)"),
+    ("width", "(char)", "(unsigned char)"),
+    ("width", "(unsigned char)", "(char)"),
+    ("width", "(short)", "(unsigned short)"),
+    ("width", "(unsigned short)", "(short)"),
+    ("width", "(int)", "(unsigned int)"),
+    ("width", "(unsigned int)", "(int)"),
+    # A declaration's type, not a cast: `undefined2 uVar1` against `short uVar1` changes the width of every use.
+    ("decltype", "undefined1 ", "unsigned char "),
+    ("decltype", "undefined2 ", "short "),
+    ("decltype", "undefined4 ", "int "),
+    ("decltype", "short ", "unsigned short "),
+    # The M396c lever, as a text substitution: a constant that the image materialises in a REGISTER often wants an
+    # integer addition rather than pointer arithmetic (or the reverse).
+    ("materialise", "*(undefined4 *)(param_1 + ", "*(undefined4 *)((int)param_1 + "),
+    ("materialise", "*(int *)(param_1 + ", "*(int *)((int)param_1 + "),
+    ("materialise", "*(unsigned char *)(param_1 + ", "*(unsigned char *)((int)param_1 + "),
 ]
+
+# ORDER, as a separate grammar because it is not a substitution on one token: two operands of a COMMUTATIVE operator
+# can be exchanged with no change of meaning, and the image sometimes has them the other way round. This is the
+# mechanism M401 found worth 3 -> 43 on a 58-word body, in its cheapest mechanical form.
+# Declaration-line signedness, as its own class: `char cVar1;` compiles to `sll 24` where the image has `andi 0xff`,
+# and every use of that variable differs with it. A text substitution cannot express this (the word `char ` also
+# occurs inside `unsigned char `), so the class works on declaration LINES.
+DECLARE = re.compile(r"^(\s*)(unsigned\s+|signed\s+)?(char|short|int)(\s+\**[A-Za-z_])", re.M)
+COMMUTATIVE = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*(?:\[[^\]]*\])?)\s*([+&|^*])\s*"
+                         r"([A-Za-z_][A-Za-z0-9_]*(?:\[[^\]]*\])?)\b")
 
 
 def bank_module():
@@ -65,16 +88,43 @@ def bank_module():
     return module
 
 
+def order_variants(text: str):
+    """One variant per distinct commutative swap site, so a body with three candidates yields three variants."""
+    out, seen = [], {text}
+    for m in COMMUTATIVE.finditer(text):
+        a, op, b = m.group(1), m.group(2), m.group(3)
+        if a == b:
+            continue
+        cand = text[:m.start()] + "%s %s %s" % (b, op, a) + text[m.end():]
+        if cand not in seen:
+            seen.add(cand)
+            out.append(("order: %s %s %s" % (a, op, b), cand))
+    return out[:12]
+
+
+def decl_variants(text: str):
+    """One variant per distinct declaration signedness, so a body with two declarations yields two variants."""
+    out, seen = [], {text}
+    for m in DECLARE.finditer(text):
+        indent, sign, base, tail = m.group(1), m.group(2) or "", m.group(3), m.group(4)
+        new_sign = "" if sign.strip() == "unsigned" else "unsigned "
+        cand = text[:m.start()] + "%s%s%s%s" % (indent, new_sign, base, tail) + text[m.end():]
+        if cand not in seen:
+            seen.add(cand)
+            out.append(("declsign: %s%s -> %s%s" % (sign.strip(), base, new_sign.strip(), base), cand))
+    return out[:12]
+
+
 def variants(text: str):
-    """Every single-substitution variant, plus the wholesale swap of one kind — bounded and deterministic."""
+    """Every single-substitution variant with the CLASS it belongs to — bounded and deterministic."""
     out = []
     seen = {text}
-    for old, new in SUBS:
+    for kind, old, new in SUBS:
         if old in text:
             cand = text.replace(old, new)
             if cand not in seen:
                 seen.add(cand)
-                out.append(("all %s -> %s" % (old.strip("*()"), new.strip("*()")), cand))
+                out.append(("%s: %s -> %s" % (kind, old.strip("*() ") or old, new.strip("*() ") or new), cand))
     return out
 
 
@@ -104,16 +154,19 @@ def write(args) -> int:
     if args.limit:
         todo = todo[:args.limit]
     closed, refused = 0, []
+    per_class, per_gap = {}, {}
     for cand in todo:
         text, syms, problem = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"])
         if text is None:
             refused.append("%s:0x%08x %s" % (cand["image"], cand["address"], problem))
             continue
         winner = None
-        for label, variant in variants(text):
+        for label, variant in variants(text) + decl_variants(text) + order_variants(text):
             matched, why = be.pins(dm, variant, cand["image"], cand["address"], cand["words"], syms)
             if matched == cand["words"]:
                 winner = (label, variant)
+                per_class[label.split(":")[0]] = per_class.get(label.split(":")[0], 0) + 1
+                per_gap[cand["gap"]] = per_gap.get(cand["gap"], 0) + 1
                 break
         if winner is None:
             refused.append("%s:0x%08x still %d of %d — no width/signedness substitution closes it"
@@ -133,7 +186,9 @@ def write(args) -> int:
         closed += 1
     fixture["functions"].sort(key=lambda e: (e["image"], int(e["address"], 16)))
     RECOVERED.write_text(json.dumps(fixture, indent=1) + "\n")
-    print("closed %d body(ies) by access type; %d refused" % (closed, len(refused)))
+    print("closed %d body(ies) by substitution; %d refused" % (closed, len(refused)))
+    print("closure by class: " + (", ".join("%s=%d" % kv for kv in sorted(per_class.items())) or "none"))
+    print("closure by gap:   " + (", ".join("gap%d=%d" % kv for kv in sorted(per_gap.items())) or "none"))
     for line in refused[:12]:
         print("  refused", line)
     print("recovered.json now holds %d entries (%d provider)"

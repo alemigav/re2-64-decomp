@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "66e1b2c",
+   "subject": "M412: the dialect gap -- 698 refusals were never a distance, and the arithmetic to 40%",
+   "milestones": [
+    412
+   ]
+  },
+  {
    "sha": "b988c3e",
    "subject": "M411: the one-word residue is an access type, not an allocation -- 24 more bodies",
    "milestones": [
