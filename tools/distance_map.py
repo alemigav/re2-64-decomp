@@ -81,7 +81,10 @@ TYPES = [
     ("sbyte", "typedef signed char sbyte;"),
     ("ushort", "typedef unsigned short ushort;"),
     ("uint", "typedef unsigned int uint;"),
-    ("code", "typedef unsigned int code;"),
+    # Ghidra's `code` is a FUNCTION type, not an integer: a call through a table is written
+    # `(**(code **)(param_2 + 0x24))(...)`, and as `unsigned int` that is "called object is not a function" —
+    # 496 of the 698 refusals. `void code()` makes `code *` a pointer to function, which is the provider's meaning.
+    ("code", "typedef int code();"),   # int, not void: the provider ASSIGNS call results through it
     ("longlong", "typedef long long longlong;"),
     ("ulonglong", "typedef unsigned long long ulonglong;"),
     ("size_t", "typedef unsigned int size_t;"),
@@ -233,6 +236,9 @@ def declaration(name: str, body: str, form: str) -> str:
     return "extern unsigned int %s;" % name
 
 
+IN_REG = re.compile(r"\bin_([a-z][a-z0-9]*)\b")
+
+
 def typedecls(body: str) -> str:
     """The type preamble this body needs: a name only when the body USES it and does not declare it.
 
@@ -252,6 +258,13 @@ def typedecls(body: str) -> str:
     # Emit a COP0 constant only for a name the body uses and does not declare itself: a body with its own `Index`
     # (a function or a global) failed as "redeclared as different kind of symbol" — the same class as the enum
     # collision, one level down.
+    # Ghidra names the incoming value of a register `in_a0`, `in_k0`, … and sometimes USES one without declaring it
+    # (a body that reads a register its own entry does not set). C89 would take an implicit function, not a value, so
+    # it has to be declared: a file-scope `static` object with no initialiser. The measurement is then exact wherever
+    # the body does not read that register, and the record's status shows `scalar` like any other rung.
+    for name in sorted({m.group(0) for m in IN_REG.finditer(body)}):
+        if not already_declared(body, name):
+            text += "static unsigned int %s;\n" % name
     for name, value in COP0.items():
         if not re.search(r"\b%s\b" % re.escape(name), body):
             continue
@@ -267,7 +280,10 @@ def already_declared(body: str, name: str) -> bool:
     Some provider bodies carry their own `extern undefined4 D_80012150;`; a second declaration with a different type
     is `conflicting types for ...`, which refused 33 boot bodies (the largest single remaining cause).
     """
-    return bool(re.search(r"^\s*(?:extern\s+)?(?:unsigned\s+|signed\s+|const\s+)*[A-Za-z_][A-Za-z0-9_]*\s*\**\s*"
+    # `\s+` after the type token, not `\s*`: with `\s*` the token could match a PREFIX of the name across the
+    # underscore — `_DAT_80012948 = in_k0;` looked like a declaration of `DAT_80012948` — so a real `extern` was
+    # skipped and the body failed with an undeclared symbol. 125 refusals traced to this one backtrack.
+    return bool(re.search(r"^\s*(?:extern\s+)?(?:unsigned\s+|signed\s+|const\s+)*[A-Za-z_][A-Za-z0-9_]*\s+\**\s*"
                           r"%s\b" % re.escape(name), body, re.M))
 
 

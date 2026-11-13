@@ -1,17 +1,32 @@
 /* FUN_8016313c
  * image   ovl_008505e (ovl), base 0x80161cf0
  * address 0x8016313c  body 0x8016313c..0x80163247  size 268 B
- * body sha256 ae2a195522c4e3f5dfa90e3559fbbe5452c08a89859c0dc99b8b39621858b62d
- * provider record sha256 6f90f26ce27bcce986e2c1b75e86a127b0524575016a2c005bf7a6951ce19e74
- * callees 5 direct (5 in corpus)
- * provider Ghidra 12.2
+ * body sha256 059dabc7a078a805cbd4dc7f236d2155e794161aca33875c8cf1499faceb9f5b
+ * recovered byte-exact (imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_008505e/8016313c.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned char undefined1;
+typedef unsigned int undefined4;
+typedef unsigned int uint;
+
+
+
+
+
+
+
+
+
+
+
+
 undefined4 FUN_8016313c(uint *param_1,undefined4 param_2,undefined4 param_3)
 
 {
   int iVar1;
   
-  if (*(char *)((int)param_1 + 7) == '\0') {
+  if (*(unsigned char *)((int)param_1 + 7) == '\0') {
     func_0x80032bd8(param_1,0,0);
     *(short *)((int)param_1 + 0x1e2) = *(short *)((int)param_1 + 0x1e2) + 0x28;
     if ((int)*(short *)((int)param_1 + 0x25e) <= (int)param_1[0xb]) {
@@ -21,7 +36,7 @@ undefined4 FUN_8016313c(uint *param_1,undefined4 param_2,undefined4 param_3)
       *param_1 = *param_1 & 0xefffffff | 0x4000000;
       func_0x80077d18(10,param_1);
     }
-    if (*(char *)((int)param_1 + 0x1e9) != '\b') {
+    if (*(unsigned char *)((int)param_1 + 0x1e9) != '\b') {
       func_0x80089d54(param_1,param_2,param_3,0x100);
       return 0;
     }

@@ -45,6 +45,30 @@
   },
   {
    "image": "boot",
+   "address": "0x80002360",
+   "words": 30,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/boot/80002360.c",
+   "syms": {
+    "FUN_80002360": 2147492704
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80002b8c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/boot/80002b8c.c",
+   "syms": {
+    "FUN_80002b8c": 2147494796
+   }
+  },
+  {
+   "image": "boot",
    "address": "0x8000319c",
    "words": 10,
    "verdict": "byte-exact",
@@ -685,12 +709,81 @@
   },
   {
    "image": "ovl_007fc12",
+   "address": "0x80162a2c",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_007fc12/80162a2c.c",
+   "syms": {
+    "FUN_80162a2c": 2148936236,
+    "PTR_FUN_8016e174": 2148983156
+   }
+  },
+  {
+   "image": "ovl_007fc12",
    "address": "0x80165424",
    "words": 8,
    "verdict": "byte-exact",
    "probe": "read from the words (M364): 8 of 8, measured extent turned into a reconstruction",
    "source_file": "fixtures/decomp/authored/ovl_007fc12/80165424.c",
    "syms": {}
+  },
+  {
+   "image": "ovl_007fc12",
+   "address": "0x8016b4f0",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_007fc12/8016b4f0.c",
+   "syms": {
+    "FUN_8016b4f0": 2148971760,
+    "PTR_FUN_8016e838": 2148984888
+   }
+  },
+  {
+   "image": "ovl_007fc12",
+   "address": "0x8016c0b4",
+   "words": 31,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_007fc12/8016c0b4.c",
+   "syms": {
+    "FUN_8016c0b4": 2148974772,
+    "FUN_8016d778": 2148980600,
+    "PTR_FUN_8016e84c": 2148984908
+   }
+  },
+  {
+   "image": "ovl_007fc12",
+   "address": "0x8016caf8",
+   "words": 35,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_007fc12/8016caf8.c",
+   "syms": {
+    "FUN_8016caf8": 2148977400,
+    "FUN_8016d778": 2148980600,
+    "func_0x80077adc": 2147973852,
+    "PTR_FUN_8016e85c": 2148984924
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80162140",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80162140.c",
+   "syms": {
+    "FUN_80162140": 2148933952,
+    "func_0x80077d18": 2147974424,
+    "PTR_FUN_80166d34": 2148953396
+   }
   },
   {
    "image": "ovl_008505e",
@@ -726,6 +819,36 @@
    "source_file": "fixtures/decomp/authored/ovl_008505e/80163100.c",
    "syms": {
     "FUN_8016313c": 2148938044
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x8016313c",
+   "words": 67,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/8016313c.c",
+   "syms": {
+    "FUN_8016313c": 2148938044,
+    "FUN_8016655c": 2148951388,
+    "func_0x80032b5c": 2147691356,
+    "func_0x80032bd8": 2147691480,
+    "func_0x80077d18": 2147974424,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801633f4",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801633f4.c",
+   "syms": {
+    "FUN_801633f4": 2148938740,
+    "PTR_FUN_80166dc8": 2148953544
    }
   },
   {
@@ -771,6 +894,20 @@
   },
   {
    "image": "ovl_008505e",
+   "address": "0x801646e4",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801646e4.c",
+   "syms": {
+    "FUN_801646e4": 2148943588,
+    "FUN_801664d8": 2148951256,
+    "PTR_FUN_80166de4": 2148953572
+   }
+  },
+  {
+   "image": "ovl_008505e",
    "address": "0x801648a8",
    "words": 18,
    "verdict": "byte-exact",
@@ -780,6 +917,20 @@
    "syms": {
     "FUN_8016313c": 2148938044,
     "FUN_801648a8": 2148944040
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801648f0",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801648f0.c",
+   "syms": {
+    "FUN_801648f0": 2148944112,
+    "FUN_801664d8": 2148951256,
+    "PTR_FUN_80166df0": 2148953584
    }
   },
   {
@@ -824,6 +975,32 @@
   },
   {
    "image": "ovl_008505e",
+   "address": "0x80164b70",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80164b70.c",
+   "syms": {
+    "FUN_80164b70": 2148944752,
+    "PTR_FUN_80166e00": 2148953600
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80164d5c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80164d5c.c",
+   "syms": {
+    "FUN_80164d5c": 2148945244,
+    "PTR_FUN_80166e58": 2148953688
+   }
+  },
+  {
+   "image": "ovl_008505e",
    "address": "0x801651c0",
    "words": 29,
    "verdict": "byte-exact",
@@ -834,6 +1011,21 @@
     "FUN_801651c0": 2148946368,
     "FUN_80165a5c": 2148948572,
     "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80165300",
+   "words": 34,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80165300.c",
+   "syms": {
+    "FUN_80165300": 2148946688,
+    "FUN_80166980": 2148952448,
+    "func_0x80033604": 2147694084,
+    "PTR_FUN_80166e7c": 2148953724
    }
   },
   {
@@ -849,6 +1041,79 @@
     "FUN_80165858": 2148948056,
     "FUN_80166980": 2148952448,
     "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801659d8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801659d8.c",
+   "syms": {
+    "FUN_801659d8": 2148948440,
+    "PTR_FUN_80166e8c": 2148953740
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80165bb4",
+   "words": 42,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80165bb4.c",
+   "syms": {
+    "FUN_80165bb4": 2148948916,
+    "FUN_8016655c": 2148951388,
+    "func_0x80032b5c": 2147691356,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80165c5c",
+   "words": 31,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80165c5c.c",
+   "syms": {
+    "FUN_80165c5c": 2148949084,
+    "FUN_80166980": 2148952448,
+    "func_0x80033604": 2147694084,
+    "PTR_FUN_80166f48": 2148953928
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80165f9c",
+   "words": 31,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80165f9c.c",
+   "syms": {
+    "FUN_80165f9c": 2148949916,
+    "FUN_80166980": 2148952448,
+    "func_0x80033604": 2147694084,
+    "PTR_FUN_80166f58": 2148953944
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80166210",
+   "words": 34,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80166210.c",
+   "syms": {
+    "FUN_80166210": 2148950544,
+    "FUN_80166980": 2148952448,
+    "func_0x80033604": 2147694084,
+    "PTR_FUN_80166f68": 2148953960
    }
   },
   {
@@ -898,6 +1163,49 @@
    "verdict": "byte-exact",
    "probe": "WRAPVOID_SOURCE: 7 of 7, all 3 copies of the identical body",
    "source": "WRAPVOID_SOURCE"
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80164490",
+   "words": 29,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0087352/80164490.c",
+   "syms": {
+    "FUN_80164490": 2148942992,
+    "func_0x800653d0": 2147898320,
+    "DAT_800e1158": 2148405592,
+    "PTR_FUN_80166680": 2148951680
+   }
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80165128",
+   "words": 29,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0087352/80165128.c",
+   "syms": {
+    "FUN_80165128": 2148946216,
+    "func_0x800653d0": 2147898320,
+    "DAT_800e1158": 2148405592,
+    "PTR_FUN_801666cc": 2148951756
+   }
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x8016558c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0087352/8016558c.c",
+   "syms": {
+    "FUN_8016558c": 2148947340,
+    "PTR_FUN_801666d8": 2148951768
+   }
   },
   {
    "image": "ovl_0087352",
@@ -951,6 +1259,19 @@
    "source": "S_80166294_SOURCE"
   },
   {
+   "image": "ovl_0087352",
+   "address": "0x801662a8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0087352/801662a8.c",
+   "syms": {
+    "FUN_801662a8": 2148950696,
+    "PTR_FUN_801666e8": 2148951784
+   }
+  },
+  {
    "image": "ovl_008900e",
    "address": "0x80162f08",
    "words": 20,
@@ -965,6 +1286,19 @@
    "verdict": "byte-exact",
    "probe": "loop family: 11 of 11 words, one shape for both copies (counter initialised before the pointer read)",
    "source": "LOOP11_SOURCE"
+  },
+  {
+   "image": "ovl_008900e",
+   "address": "0x80164d84",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008900e/80164d84.c",
+   "syms": {
+    "FUN_80164d84": 2148945284,
+    "PTR_FUN_80168cb4": 2148961460
+   }
   },
   {
    "image": "ovl_008900e",
@@ -1015,6 +1349,19 @@
   },
   {
    "image": "ovl_008bef8",
+   "address": "0x801646a8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008bef8/801646a8.c",
+   "syms": {
+    "FUN_801646a8": 2148943528,
+    "PTR_FUN_80166124": 2148950308
+   }
+  },
+  {
+   "image": "ovl_008bef8",
    "address": "0x80165a44",
    "words": 85,
    "verdict": "byte-exact",
@@ -1053,6 +1400,19 @@
   },
   {
    "image": "ovl_008e046",
+   "address": "0x80164d00",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008e046/80164d00.c",
+   "syms": {
+    "FUN_80164d00": 2148945152,
+    "PTR_FUN_80167498": 2148955288
+   }
+  },
+  {
+   "image": "ovl_008e046",
    "address": "0x80166e8c",
    "words": 21,
    "verdict": "byte-exact",
@@ -1062,6 +1422,45 @@
    "syms": {
     "FUN_80166e8c": 2148953740,
     "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80162218",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80162218.c",
+   "syms": {
+    "FUN_80162218": 2148934168,
+    "PTR_FUN_80167dc0": 2148957632
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80162f40",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80162f40.c",
+   "syms": {
+    "FUN_80162f40": 2148937536,
+    "PTR_FUN_80167e0c": 2148957708
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80163834",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80163834.c",
+   "syms": {
+    "FUN_80163834": 2148939828,
+    "PTR_FUN_80167e3c": 2148957756
    }
   },
   {
@@ -1082,6 +1481,19 @@
   },
   {
    "image": "ovl_0090698",
+   "address": "0x8016461c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/8016461c.c",
+   "syms": {
+    "FUN_8016461c": 2148943388,
+    "PTR_FUN_80167e6c": 2148957804
+   }
+  },
+  {
+   "image": "ovl_0090698",
    "address": "0x80164650",
    "words": 12,
    "verdict": "byte-exact",
@@ -1089,6 +1501,32 @@
    "source_file": "fixtures/decomp/authored/ovl_0090698/80164650.c",
    "syms": {
     "FUN_80163868": 2148939880
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801647c8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/801647c8.c",
+   "syms": {
+    "FUN_801647c8": 2148943816,
+    "PTR_FUN_80167ed8": 2148957912
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80164a78",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80164a78.c",
+   "syms": {
+    "FUN_80164a78": 2148944504,
+    "PTR_FUN_80167ef0": 2148957936
    }
   },
   {
@@ -1137,6 +1575,60 @@
   },
   {
    "image": "ovl_0090698",
+   "address": "0x8016577c",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/8016577c.c",
+   "syms": {
+    "FUN_8016577c": 2148947836,
+    "FUN_80165e40": 2148949568,
+    "PTR_FUN_80167f68": 2148958056
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801658fc",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/801658fc.c",
+   "syms": {
+    "FUN_801658fc": 2148948220,
+    "PTR_FUN_80167f78": 2148958072
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80165bd8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80165bd8.c",
+   "syms": {
+    "FUN_80165bd8": 2148948952,
+    "PTR_FUN_80167fc4": 2148958148
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80165ec8",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80165ec8.c",
+   "syms": {
+    "FUN_80165ec8": 2148949704,
+    "FUN_801661b8": 2148950456,
+    "PTR_FUN_80167fd0": 2148958160
+   }
+  },
+  {
+   "image": "ovl_0090698",
    "address": "0x80166038",
    "words": 32,
    "verdict": "byte-exact",
@@ -1150,6 +1642,19 @@
     "FUN_8016703c": 2148954172,
     "FUN_80167688": 2148955784,
     "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801660b8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/801660b8.c",
+   "syms": {
+    "FUN_801660b8": 2148950200,
+    "PTR_FUN_80167fe0": 2148958176
    }
   },
   {
@@ -1181,6 +1686,19 @@
   },
   {
    "image": "ovl_0093192",
+   "address": "0x80161f74",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0093192/80161f74.c",
+   "syms": {
+    "FUN_80161f74": 2148933492,
+    "PTR_FUN_80162d38": 2148937016
+   }
+  },
+  {
+   "image": "ovl_0093192",
    "address": "0x80162c6c",
    "words": 9,
    "verdict": "byte-exact",
@@ -1200,6 +1718,19 @@
    }
   },
   {
+   "image": "ovl_0093aba",
+   "address": "0x80165078",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0093aba/80165078.c",
+   "syms": {
+    "FUN_80165078": 2148946040,
+    "PTR_FUN_80165548": 2148947272
+   }
+  },
+  {
    "image": "ovl_0095446",
    "address": "0x801620b4",
    "words": 7,
@@ -1210,6 +1741,19 @@
    "syms": {
     "FUN_801620b4": 2148933812,
     "func_0x80035de8": 2147704296
+   }
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x801626f4",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/801626f4.c",
+   "syms": {
+    "FUN_801626f4": 2148935412,
+    "PTR_FUN_80167fcc": 2148958156
    }
   },
   {
@@ -1359,11 +1903,37 @@
   },
   {
    "image": "ovl_0098ee0",
+   "address": "0x80165c50",
+   "words": 22,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_0098ee0/80165c50.c",
+   "syms": {
+    "FUN_80165c50": 2148949072,
+    "PTR_LAB_80166894": 2148952212
+   }
+  },
+  {
+   "image": "ovl_0098ee0",
    "address": "0x80165ca8",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "CLEAR622_SOURCE: 2 of 2, all 2 copies of the identical body",
    "source": "CLEAR622_SOURCE"
+  },
+  {
+   "image": "ovl_0098ee0",
+   "address": "0x80165d24",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0098ee0/80165d24.c",
+   "syms": {
+    "FUN_80165d24": 2148949284,
+    "PTR_FUN_801668f0": 2148952304
+   }
   },
   {
    "image": "ovl_009aed0",
@@ -1388,6 +1958,19 @@
   },
   {
    "image": "ovl_009aed0",
+   "address": "0x80164c70",
+   "words": 22,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_009aed0/80164c70.c",
+   "syms": {
+    "FUN_80164c70": 2148945008,
+    "PTR_FUN_80166608": 2148951560
+   }
+  },
+  {
+   "image": "ovl_009aed0",
    "address": "0x80164dec",
    "words": 9,
    "verdict": "byte-exact",
@@ -1395,6 +1978,45 @@
    "source_file": "fixtures/decomp/authored/ovl_009aed0/80164dec.c",
    "syms": {
     "D_80166638": 2148951608
+   }
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x80165758",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009aed0/80165758.c",
+   "syms": {
+    "FUN_80165758": 2148947800,
+    "PTR_FUN_8016663c": 2148951612
+   }
+  },
+  {
+   "image": "ovl_009d3ba",
+   "address": "0x80162084",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009d3ba/80162084.c",
+   "syms": {
+    "FUN_80162084": 2148933764,
+    "PTR_FUN_80163050": 2148937808
+   }
+  },
+  {
+   "image": "ovl_009d3ba",
+   "address": "0x80162c28",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009d3ba/80162c28.c",
+   "syms": {
+    "FUN_80162c28": 2148936744,
+    "PTR_FUN_801630fc": 2148937980
    }
   },
   {
@@ -1435,6 +2057,46 @@
   },
   {
    "image": "ovl_009dd02",
+   "address": "0x801632a0",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/801632a0.c",
+   "syms": {
+    "FUN_80162678": 2148935288,
+    "FUN_801632a0": 2148938400,
+    "PTR_FUN_801672a0": 2148954784
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801636e8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/801636e8.c",
+   "syms": {
+    "FUN_801636e8": 2148939496,
+    "PTR_LAB_801672ac": 2148954796
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80164c64",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80164c64.c",
+   "syms": {
+    "FUN_80164c64": 2148944996,
+    "PTR_FUN_801672e8": 2148954856
+   }
+  },
+  {
+   "image": "ovl_009dd02",
    "address": "0x801653a0",
    "words": 23,
    "verdict": "byte-exact",
@@ -1443,6 +2105,61 @@
    "syms": {
     "FUN_80165310": 2148946704,
     "FUN_80164e88": 2148945544
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801654e0",
+   "words": 28,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/801654e0.c",
+   "syms": {
+    "FUN_80164e88": 2148945544,
+    "FUN_80165310": 2148946704,
+    "FUN_801654e0": 2148947168
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801655bc",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/801655bc.c",
+   "syms": {
+    "FUN_801655bc": 2148947388,
+    "FUN_8016561c": 2148947484,
+    "FUN_801656c0": 2148947648,
+    "FUN_80166b98": 2148952984
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80165e28",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80165e28.c",
+   "syms": {
+    "FUN_80165e28": 2148949544,
+    "PTR_FUN_80167390": 2148955024
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x8016624c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/8016624c.c",
+   "syms": {
+    "FUN_8016624c": 2148950604,
+    "PTR_FUN_8016739c": 2148955036
    }
   },
   {
@@ -1467,6 +2184,19 @@
    "source_file": "fixtures/decomp/authored/ovl_009dd02/801664c4.c",
    "syms": {
     "FUN_801664ec": 2148951276
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166584",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80166584.c",
+   "syms": {
+    "FUN_80166584": 2148951428,
+    "PTR_LAB_801673a8": 2148955048
    }
   },
   {
@@ -1556,6 +2286,34 @@
   },
   {
    "image": "ovl_00a0344",
+   "address": "0x801627f0",
+   "words": 43,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/801627f0.c",
+   "syms": {
+    "FUN_801627f0": 2148935664,
+    "FUN_8016375c": 2148939612,
+    "func_0x80033604": 2147694084,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80162ac4",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80162ac4.c",
+   "syms": {
+    "FUN_80162ac4": 2148936388,
+    "PTR_FUN_80163db0": 2148941232
+   }
+  },
+  {
+   "image": "ovl_00a0344",
    "address": "0x80163714",
    "words": 4,
    "verdict": "byte-exact",
@@ -1623,6 +2381,19 @@
     "func_0x80036694": 2147706516,
     "DAT_80163e68": 2148941416,
     "DAT_80163ed4": 2148941524
+   }
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80162624",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/80162624.c",
+   "syms": {
+    "FUN_80162624": 2148935204,
+    "PTR_FUN_80168f50": 2148962128
    }
   },
   {
@@ -1719,6 +2490,19 @@
   },
   {
    "image": "ovl_00a1414",
+   "address": "0x8016816c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/8016816c.c",
+   "syms": {
+    "FUN_8016816c": 2148958572,
+    "PTR_FUN_80169068": 2148962408
+   }
+  },
+  {
+   "image": "ovl_00a1414",
    "address": "0x80168cb4",
    "words": 42,
    "verdict": "byte-exact",
@@ -1729,6 +2513,19 @@
     "FUN_80168cb4": 2148961460,
     "func_0x80040e58": 2147749464,
     "func_0x800424ec": 2147755244
+   }
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x801625b0",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a43b6/801625b0.c",
+   "syms": {
+    "FUN_801625b0": 2148935088,
+    "PTR_FUN_801697ec": 2148964332
    }
   },
   {
@@ -1791,6 +2588,19 @@
   },
   {
    "image": "ovl_00a43b6",
+   "address": "0x80168ab0",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a43b6/80168ab0.c",
+   "syms": {
+    "FUN_80168ab0": 2148960944,
+    "PTR_FUN_801698d0": 2148964560
+   }
+  },
+  {
+   "image": "ovl_00a43b6",
    "address": "0x80169528",
    "words": 42,
    "verdict": "byte-exact",
@@ -1819,6 +2629,19 @@
   },
   {
    "image": "ovl_00a733e",
+   "address": "0x80162194",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/80162194.c",
+   "syms": {
+    "FUN_80162194": 2148934036,
+    "PTR_FUN_80167e0c": 2148957708
+   }
+  },
+  {
+   "image": "ovl_00a733e",
    "address": "0x801623e4",
    "words": 24,
    "verdict": "byte-exact",
@@ -1828,6 +2651,45 @@
    "syms": {
     "FUN_801623e4": 2148934628,
     "FUN_80167bd8": 2148957144
+   }
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x80163860",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/80163860.c",
+   "syms": {
+    "FUN_80163860": 2148939872,
+    "PTR_FUN_80167e28": 2148957736
+   }
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x80163d9c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/80163d9c.c",
+   "syms": {
+    "FUN_80163d9c": 2148941212,
+    "PTR_FUN_80167e34": 2148957748
+   }
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801644e4",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/801644e4.c",
+   "syms": {
+    "FUN_801644e4": 2148943076,
+    "PTR_FUN_80167e40": 2148957760
    }
   },
   {
@@ -1847,6 +2709,19 @@
   },
   {
    "image": "ovl_00a733e",
+   "address": "0x801664bc",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/801664bc.c",
+   "syms": {
+    "FUN_801664bc": 2148951228,
+    "PTR_LAB_80167fc0": 2148958144
+   }
+  },
+  {
+   "image": "ovl_00a733e",
    "address": "0x801669a8",
    "words": 19,
    "verdict": "byte-exact",
@@ -1856,6 +2731,19 @@
    "syms": {
     "FUN_801669a8": 2148952488,
     "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801669f4",
+   "words": 15,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/801669f4.c",
+   "syms": {
+    "FUN_801669f4": 2148952564,
+    "PTR_FUN_80167fd4": 2148958164
    }
   },
   {
@@ -1875,6 +2763,19 @@
    "source_file": "fixtures/decomp/authored/ovl_00a9d94/80162158.c",
    "syms": {
     "FUN_8016ba54": 2148973140
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016250c",
+   "words": 23,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016250c.c",
+   "syms": {
+    "FUN_8016250c": 2148934924,
+    "PTR_FUN_8016c400": 2148975616
    }
   },
   {
@@ -1935,6 +2836,19 @@
   },
   {
    "image": "ovl_00a9d94",
+   "address": "0x8016834c",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016834c.c",
+   "syms": {
+    "FUN_8016834c": 2148959052,
+    "PTR_FUN_8016c4f8": 2148975864
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
    "address": "0x80168cb4",
    "words": 7,
    "verdict": "byte-exact",
@@ -1962,6 +2876,19 @@
   },
   {
    "image": "ovl_00a9d94",
+   "address": "0x80169f84",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80169f84.c",
+   "syms": {
+    "FUN_80169f84": 2148966276,
+    "PTR_FUN_8016c50c": 2148975884
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
    "address": "0x8016a8c0",
    "words": 46,
    "verdict": "byte-exact",
@@ -1986,6 +2913,20 @@
     "FUN_8016a978": 2148968824,
     "func_0x80040e58": 2147749464,
     "func_0x800424ec": 2147755244
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016ab84",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016ab84.c",
+   "syms": {
+    "FUN_8016ab84": 2148969348,
+    "func_0x80066288": 2147902088,
+    "PTR_LAB_8016c518": 2148975896
    }
   },
   {
@@ -2041,6 +2982,33 @@
   },
   {
    "image": "ovl_00ae24a",
+   "address": "0x801623b0",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/801623b0.c",
+   "syms": {
+    "FUN_801623b0": 2148934576,
+    "PTR_FUN_80166f8c": 2148953996
+   }
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x801623e8",
+   "words": 39,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/801623e8.c",
+   "syms": {
+    "FUN_801623e8": 2148934632,
+    "PTR_FUN_80166f90": 2148954000,
+    "PTR_FUN_80166fa4": 2148954020
+   }
+  },
+  {
+   "image": "ovl_00ae24a",
    "address": "0x80164734",
    "words": 7,
    "verdict": "byte-exact",
@@ -2068,6 +3036,19 @@
   },
   {
    "image": "ovl_00ae24a",
+   "address": "0x80165390",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80165390.c",
+   "syms": {
+    "FUN_80165390": 2148946832,
+    "PTR_FUN_80167030": 2148954160
+   }
+  },
+  {
+   "image": "ovl_00ae24a",
    "address": "0x80165568",
    "words": 19,
    "verdict": "byte-exact",
@@ -2090,6 +3071,19 @@
    "source_file": "fixtures/decomp/authored/ovl_00b08a2/80161fe8.c",
    "syms": {
     "FUN_8016664c": 2148951628
+   }
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80162434",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b08a2/80162434.c",
+   "syms": {
+    "FUN_80162434": 2148934708,
+    "PTR_FUN_80167130": 2148954416
    }
   },
   {
@@ -2166,6 +3160,19 @@
   },
   {
    "image": "ovl_00b2d7a",
+   "address": "0x80161ebc",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b2d7a/80161ebc.c",
+   "syms": {
+    "FUN_80161ebc": 2148933308,
+    "PTR_FUN_80162610": 2148935184
+   }
+  },
+  {
+   "image": "ovl_00b2d7a",
    "address": "0x8016224c",
    "words": 13,
    "verdict": "byte-exact",
@@ -2207,6 +3214,45 @@
   },
   {
    "image": "ovl_00b321e",
+   "address": "0x801628e0",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/801628e0.c",
+   "syms": {
+    "FUN_801628e0": 2148935904,
+    "PTR_FUN_801666f4": 2148951796
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x8016345c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/8016345c.c",
+   "syms": {
+    "FUN_8016345c": 2148938844,
+    "PTR_FUN_80166704": 2148951812
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80163cdc",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80163cdc.c",
+   "syms": {
+    "FUN_80163cdc": 2148941020,
+    "PTR_FUN_80166718": 2148951832
+   }
+  },
+  {
+   "image": "ovl_00b321e",
    "address": "0x80163d10",
    "words": 37,
    "verdict": "byte-exact",
@@ -2233,6 +3279,22 @@
     "FUN_801648ac": 2148944044,
     "FUN_80166270": 2148950640,
     "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x8016490c",
+   "words": 40,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/8016490c.c",
+   "syms": {
+    "FUN_80164684": 2148943492,
+    "FUN_8016490c": 2148944140,
+    "FUN_80166270": 2148950640,
+    "func_0x80089d54": 2148048212,
+    "PTR_FUN_801667a8": 2148951976
    }
   },
   {
@@ -2267,6 +3329,51 @@
   },
   {
    "image": "ovl_00b321e",
+   "address": "0x80164dbc",
+   "words": 50,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80164dbc.c",
+   "syms": {
+    "FUN_80164684": 2148943492,
+    "FUN_80164dbc": 2148945340,
+    "FUN_801663a4": 2148950948,
+    "func_0x80033604": 2147694084,
+    "func_0x80089d54": 2148048212,
+    "PTR_FUN_801667a8": 2148951976
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164e84",
+   "words": 36,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80164e84.c",
+   "syms": {
+    "FUN_80164684": 2148943492,
+    "FUN_80164e84": 2148945540,
+    "func_0x80089d54": 2148048212,
+    "PTR_FUN_801667a8": 2148951976
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x8016518c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/8016518c.c",
+   "syms": {
+    "FUN_8016518c": 2148946316,
+    "PTR_FUN_80166830": 2148952112
+   }
+  },
+  {
+   "image": "ovl_00b321e",
    "address": "0x80165278",
    "words": 20,
    "verdict": "byte-exact",
@@ -2294,6 +3401,19 @@
   },
   {
    "image": "ovl_00b321e",
+   "address": "0x801654f8",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/801654f8.c",
+   "syms": {
+    "FUN_801654f8": 2148947192,
+    "PTR_FUN_8016683c": 2148952124
+   }
+  },
+  {
+   "image": "ovl_00b321e",
    "address": "0x80165da0",
    "words": 22,
    "verdict": "byte-exact",
@@ -2314,6 +3434,34 @@
    "source_file": "fixtures/decomp/authored/ovl_00b321e/801665a0.c",
    "syms": {
     "FUN_801665a0": 2148951456
+   }
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x8016264c",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b5346/8016264c.c",
+   "syms": {
+    "FUN_8016264c": 2148935244,
+    "FUN_80162908": 2148935944,
+    "PTR_FUN_80163068": 2148937832
+   }
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x80162a8c",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b5346/80162a8c.c",
+   "syms": {
+    "FUN_80162908": 2148935944,
+    "FUN_80162a8c": 2148936332,
+    "PTR_LAB_8016307c": 2148937852
    }
   },
   {
@@ -2446,6 +3594,18 @@
   },
   {
    "image": "stage2",
+   "address": "0x800283b0",
+   "words": 16,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800283b0.c",
+   "syms": {
+    "FUN_800283b0": 2147648432
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800283f0",
    "words": 11,
    "verdict": "byte-exact",
@@ -2488,11 +3648,50 @@
   },
   {
    "image": "stage2",
+   "address": "0x80028dc0",
+   "words": 49,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80028dc0.c",
+   "syms": {
+    "FUN_80028dc0": 2147651008,
+    "func_0x80004cfc": 2147503356,
+    "DAT_800b6b30": 2148231984
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80029390",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002aac8",
+   "words": 46,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8002aac8.c",
+   "syms": {
+    "FUN_8002aac8": 2147658440
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002cf20",
+   "words": 47,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8002cf20.c",
+   "syms": {
+    "FUN_8002c9c0": 2147666368,
+    "FUN_8002cf20": 2147667744
+   }
   },
   {
    "image": "stage2",
@@ -2502,6 +3701,55 @@
    "probe": "read from the words (M375): 9 of 9, nine words, three zero-stores through a re-read pointer field -- the reload is the alias rule doing the work",
    "source_file": "fixtures/decomp/authored/stage2/8002d164.c",
    "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002dbdc",
+   "words": 86,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8002dbdc.c",
+   "syms": {
+    "FUN_8002d710": 2147669776,
+    "FUN_8002dbdc": 2147671004
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002dd34",
+   "words": 32,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8002dd34.c",
+   "syms": {
+    "FUN_8002dd34": 2147671348
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e044",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8002e044.c",
+   "syms": {
+    "FUN_8002e044": 2147672132
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e640",
+   "words": 47,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8002e640.c",
+   "syms": {
+    "FUN_8002e640": 2147673664
+   }
   },
   {
    "image": "stage2",
@@ -2615,6 +3863,18 @@
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fd00",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8002fd00.c",
+   "syms": {
+    "FUN_8002fd00": 2147679488
+   }
   },
   {
    "image": "stage2",
@@ -3533,6 +4793,32 @@
   },
   {
    "image": "stage2",
+   "address": "0x8005c578",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8005c578.c",
+   "syms": {
+    "FUN_8005c578": 2147861880,
+    "PTR_FUN_801110c4": 2148602052
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005cb0c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8005cb0c.c",
+   "syms": {
+    "FUN_8005cb0c": 2147863308,
+    "PTR_FUN_801110e0": 2148602080
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8005d87c",
    "words": 9,
    "verdict": "byte-exact",
@@ -3637,6 +4923,19 @@
   },
   {
    "image": "stage2",
+   "address": "0x80061274",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80061274.c",
+   "syms": {
+    "FUN_80061274": 2147881588,
+    "PTR_FUN_80111100": 2148602112
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80061bac",
    "words": 59,
    "verdict": "byte-exact",
@@ -3649,6 +4948,45 @@
     "FUN_80077adc": 2147973852,
     "FUN_80089d54": 2148048212,
     "FUN_8008d090": 2148061328
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80061c98",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80061c98.c",
+   "syms": {
+    "FUN_80061c98": 2147884184,
+    "PTR_FUN_80111118": 2148602136
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80062150",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80062150.c",
+   "syms": {
+    "FUN_80062150": 2147885392,
+    "PTR_FUN_80111130": 2148602160
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80062520",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80062520.c",
+   "syms": {
+    "FUN_80062520": 2147886368,
+    "PTR_FUN_80111148": 2148602184
    }
   },
   {
@@ -4273,6 +5611,45 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007a6b0",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007a6b0.c",
+   "syms": {
+    "FUN_8007a6b0": 2147985072,
+    "PTR_FUN_8011a974": 2148641140
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a6e4",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007a6e4.c",
+   "syms": {
+    "FUN_8007a6e4": 2147985124,
+    "PTR_FUN_8011a984": 2148641156
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007a718",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007a718.c",
+   "syms": {
+    "FUN_8007a718": 2147985176,
+    "PTR_LAB_8011a988": 2148641160
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8007a8e8",
    "words": 7,
    "verdict": "byte-exact",
@@ -4367,6 +5744,33 @@
    "verdict": "byte-exact",
    "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007dae4",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411)",
+   "source_file": "fixtures/decomp/authored/stage2/8007dae4.c",
+   "syms": {
+    "FUN_80033680": 2147694208,
+    "FUN_8007dae4": 2147998436,
+    "FUN_8007db38": 2147998520
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007db38",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007db38.c",
+   "syms": {
+    "FUN_8007db38": 2147998520,
+    "PTR_FUN_8011b28c": 2148643468
+   }
   },
   {
    "image": "stage2",

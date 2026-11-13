@@ -1,11 +1,27 @@
 /* FUN_80165300
  * image   ovl_008505e (ovl), base 0x80161cf0
  * address 0x80165300  body 0x80165300..0x80165387  size 136 B
- * body sha256 878a0a48962792a7ac2eac01f93965990ed0878625071e2140b19a8a33c0045a
- * provider record sha256 ef670bc8ea7d34554537755c8da878e4d8ff382625c81082073eefb874dcb7d3
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 63d45165964b9b14771f428e8f7ebf7133153cb46826b1c1dbd33577aa167443
+ * recovered byte-exact (imported: the whole body matches by offset and content (M410, banked from the distance map))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_008505e/80165300.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned char byte;
+typedef unsigned int uint;
+typedef void code();
+extern unsigned int PTR_FUN_80166e7c;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_80165300(int param_1)
 
 {

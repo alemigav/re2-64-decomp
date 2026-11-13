@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-412 milestones are indexed. 325 of them have a note; the rest are rows in the log that cite
+413 milestones are indexed. 326 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -430,6 +430,7 @@ at the foot of this file.
 | 409 | **M409** — the distance map: 3 194 bodies had never been scored, and 188 of them already match | `docs/log/M409-the-distance-map.md` |
 | 410 | **M410** — banking 187 bodies: the corpus goes 274 → 461, and a correction to M409's headline | `docs/log/M410-banking-187.md` |
 | 411 | **M411** — the one-word residues are an ACCESS TYPE, not an allocation: 24 more bodies | `docs/log/M411-the-one-word-residue-is-a-type.md` |
+| 412 | **M412** — the dialect gap: 698 refusals were never a distance, and the arithmetic to 40 % | `docs/log/M412-the-dialect-gap-and-the-40-percent-arithmetic.md` |
 
 ## The gaps, and why they are empty
 

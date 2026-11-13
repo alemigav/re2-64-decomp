@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "b988c3e",
+   "subject": "M411: the one-word residue is an access type, not an allocation -- 24 more bodies",
+   "milestones": [
+    411
+   ]
+  },
+  {
    "sha": "b38461e",
    "subject": "M410: bank 187 bodies -- the corpus goes 274 to 461, and M409's headline was 392 not 439",
    "milestones": [

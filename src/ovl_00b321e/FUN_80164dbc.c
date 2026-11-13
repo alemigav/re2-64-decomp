@@ -1,17 +1,34 @@
 /* FUN_80164dbc
  * image   ovl_00b321e (ovl), base 0x80161cf0
  * address 0x80164dbc  body 0x80164dbc..0x80164e83  size 200 B
- * body sha256 15824fff3c2a37b5e0a65c55fb692412fea53aefc41ab63378d9ce7f33c63cdc
- * provider record sha256 d5900de663c26c3b539022f04f89ca82f4d032e429e1d95b684430b93f88228c
- * callees 4 direct (4 in corpus)
- * provider Ghidra 12.2
+ * body sha256 a16107529689ef14c148e57a74b3874a7ca4bb7b27238c2ae348399922e2896f
+ * recovered byte-exact (imported: closed by access type (all char  -> unsigned char ) and pinned word for word (M411))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_00b321e/80164dbc.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned int undefined4;
+typedef unsigned char byte;
+typedef unsigned int uint;
+typedef int code();
+extern unsigned int PTR_FUN_801667a8;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_80164dbc(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   uint uVar1;
   
-  if (*(char *)(param_1 + 6) == '\0') {
+  if (*(unsigned char *)(param_1 + 6) == '\0') {
     uVar1 = func_0x80033604();
     FUN_801663a4(param_1,8,uVar1 & 3);
     uVar1 = func_0x80033604();

@@ -1,11 +1,26 @@
 /* FUN_80002360
  * image   boot (boot), base 0x80000480
  * address 0x80002360  body 0x80002360..0x800023d7  size 120 B
- * body sha256 92628cceb1e65cbf7827b7537f5f7e99f2acd963c9ce5f833bc6a93ea96a6f24
- * provider record sha256 66dff96a04ac2b844b3d46927de2441953a973d7f39da505bb6cfc11379d5e11
- * callees 0 direct (0 in corpus)
- * provider Ghidra 12.2
+ * body sha256 85561712b2b9f56333d84484c50c4e6b6b1c3f95b1c73a64ee43e150cc0bb07e
+ * recovered byte-exact (imported: the whole body matches by offset and content (M410, banked from the distance map))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/boot/80002360.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned char undefined1;
+typedef unsigned int undefined4;
+typedef int code();
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_80002360(undefined1 param_1,undefined1 param_2,undefined4 param_3,undefined4 param_4,
                  int param_5)
 
