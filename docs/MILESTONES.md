@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-414 milestones are indexed. 327 of them have a note; the rest are rows in the log that cite
+415 milestones are indexed. 328 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -432,6 +432,7 @@ at the foot of this file.
 | 411 | **M411** — the one-word residues are an ACCESS TYPE, not an allocation: 24 more bodies | `docs/log/M411-the-one-word-residue-is-a-type.md` |
 | 412 | **M412** — the dialect gap: 698 refusals were never a distance, and the arithmetic to 40 % | `docs/log/M412-the-dialect-gap-and-the-40-percent-arithmetic.md` |
 | 413 | **M413** — the 8-word band, pass by pass: the mechanical classes are exhausted at 2 of 251 | `docs/log/M413-the-band-pass-tracking.md` |
+| 414 | **M414** — m2c on the far mass: 1 of 50, and no better than Ghidra | `docs/log/M414-m2c-on-the-far-mass-refuted.md` |
 
 ## The gaps, and why they are empty
 
