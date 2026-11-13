@@ -1,11 +1,24 @@
 /* inflate_init
  * image   boot (boot), base 0x80000480
  * address 0x80004550  body 0x80004550..0x80004593  size 68 B
- * body sha256 9982576cc83e4af0b7e0dd07c2cdec82822b8a73a382027a83f5c90ceb4af93a
- * provider record sha256 f2acaca27c929f513be592e7d1ef70d124489082e1e9c4846e93525e197d5660
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 616289424389f55373e0cbff885ea15dfdfa16bcf079e55a0f3d1e2b5f5a929d
+ * recovered byte-exact (imported: the whole body matches by offset and content (M410, banked from the distance map))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/boot/80004550.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned int undefined4;
+
+
+
+
+
+
+
+
+
+
+
+
 int inflate_init(int param_1,undefined4 param_2)
 
 {

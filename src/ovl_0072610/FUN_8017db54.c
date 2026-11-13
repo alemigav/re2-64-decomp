@@ -1,11 +1,37 @@
 /* FUN_8017db54
  * image   ovl_0072610 (ovl), base 0x8017b410
  * address 0x8017db54  body 0x8017db54..0x8017dca3  size 336 B
- * body sha256 878c59ab6bd57cdaec9d4c81a06611875eeaa837b2a0a48059dc6209ac28cfef
- * provider record sha256 aeb64d338cc0c69408df8e3f8ddf2e0fa17dbeff14dc822d107acd27499a7d11
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 d2a704e42a142d9c18e0f0fa259e0840808d0e46a4b743aead94dc413ae80b67
+ * recovered byte-exact (imported: the whole body matches by offset and content (M410, banked from the distance map))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_0072610/8017db54.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned int undefined4;
+extern unsigned int DAT_8018578c;
+extern unsigned int DAT_80185790;
+extern unsigned int DAT_80185794;
+extern unsigned int DAT_80185798;
+extern unsigned int DAT_8018579c;
+extern unsigned int DAT_801857a0;
+extern unsigned int DAT_801857a4;
+extern unsigned int DAT_801857a8;
+extern unsigned int DAT_801857ac;
+extern unsigned int DAT_801857b0;
+extern unsigned int DAT_801857b4;
+extern unsigned int DAT_801857b8;
+extern unsigned int DAT_80186c94;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_8017db54(void)
 
 {

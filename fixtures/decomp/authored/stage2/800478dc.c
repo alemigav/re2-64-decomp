@@ -1,0 +1,28 @@
+typedef unsigned short undefined2;
+
+
+
+
+
+
+
+
+
+
+
+
+void FUN_800478dc(int param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4,
+                 undefined2 param_5,undefined2 param_6,undefined2 param_7,undefined2 param_8,
+                 undefined2 param_9)
+
+{
+  *(undefined2 *)(param_1 + 4) = param_2;
+  *(undefined2 *)(param_1 + 6) = param_3;
+  *(undefined2 *)(param_1 + 0xc) = param_4;
+  *(undefined2 *)(param_1 + 0xe) = param_5;
+  *(undefined2 *)(param_1 + 0x14) = param_6;
+  *(undefined2 *)(param_1 + 0x16) = param_7;
+  *(undefined2 *)(param_1 + 0x1c) = param_8;
+  *(undefined2 *)(param_1 + 0x1e) = param_9;
+  return;
+}

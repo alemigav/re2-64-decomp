@@ -1,0 +1,26 @@
+typedef unsigned char undefined1;
+typedef unsigned int undefined4;
+
+
+
+
+
+
+
+
+
+
+
+
+undefined4 FUN_80071618(int param_1)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = FUN_800717a0((int)*(char *)(*(int *)(param_1 + 0x1c) + 3),
+                       (int)*(char *)(*(int *)(param_1 + 0x1c) + 4));
+  FUN_80038e98(*(undefined1 *)(*(int *)(param_1 + 0x1c) + 1),
+               *(undefined1 *)(*(int *)(param_1 + 0x1c) + 2),uVar1);
+  *(int *)(param_1 + 0x1c) = *(int *)(param_1 + 0x1c) + 5;
+  return 1;
+}

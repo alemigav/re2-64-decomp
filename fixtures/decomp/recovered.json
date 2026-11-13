@@ -20,11 +20,191 @@
   },
   {
    "image": "boot",
+   "address": "0x800013b0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 9 of 9, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/800013b0.c",
+   "syms": {
+    "D_800138a0": 2147563680,
+    "D_800138a4": 2147563684,
+    "D_800138a8": 2147563688,
+    "D_80013eb4": 2147565236
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x800022bc",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, one call then two indirect calls through the same slot with different arguments -- the second passes the first parameter as its own",
+   "source_file": "fixtures/decomp/authored/boot/800022bc.c",
+   "syms": {
+    "FUN_80001510": 2147489040
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x8000319c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 10 of 10, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/8000319c.c",
+   "syms": {
+    "FUN_8000305c": 2147496028
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x800044f0",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/boot/800044f0.c",
+   "syms": {
+    "FUN_800013b0": 2147488688,
+    "FUN_800013d4": 2147488724,
+    "FUN_800044f0": 2147501296,
+    "_DAT_80012820": 2147559456,
+    "_DAT_8010b6f8": 2148579064
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004550",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/boot/80004550.c",
+   "syms": {
+    "FUN_800013b0": 2147488688,
+    "FUN_800013d4": 2147488724
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004594",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/boot/80004594.c",
+   "syms": {
+    "FUN_800014ac": 2147488940,
+    "func_0x8008b0a4": 2148053156
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x800048b0",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/800048b0.c",
+   "syms": {}
+  },
+  {
+   "image": "boot",
+   "address": "0x8000490c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that calls with its second argument -- `addu $a0,$a1,$zero` in the delay slot is the whole body",
+   "source_file": "fixtures/decomp/authored/boot/8000490c.c",
+   "syms": {
+    "FUN_800014ac": 2147488940
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004a20",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
+   "source_file": "fixtures/decomp/authored/boot/80004a20.c",
+   "syms": {
+    "D_800c76b0": 2148300464,
+    "D_80012884": 2147559556
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004a50",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper: frame, save `$ra`, jal, restore",
+   "source_file": "fixtures/decomp/authored/boot/80004a50.c",
+   "syms": {
+    "FUN_80004bac": 2147503020
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004be4",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
+   "source_file": "fixtures/decomp/authored/boot/80004be4.c",
+   "syms": {
+    "D_800c76b0": 2148300464,
+    "D_80012884": 2147559556
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004c14",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/80004c14.c",
+   "syms": {
+    "D_80012884": 2147559556
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004c6c",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
+   "source_file": "fixtures/decomp/authored/boot/80004c6c.c",
+   "syms": {
+    "D_800c76b0": 2148300464,
+    "D_80012884": 2147559556
+   }
+  },
+  {
+   "image": "boot",
+   "address": "0x80004ec4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, the same wrapper around a different callee",
+   "source_file": "fixtures/decomp/authored/boot/80004ec4.c",
+   "syms": {
+    "FUN_80004cfc": 2147503356
+   }
+  },
+  {
+   "image": "boot",
    "address": "0x80006d30",
    "words": 9,
    "verdict": "byte-exact",
    "probe": "osmq: 9 of 9",
    "source": "OSMQ_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000a66c",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/boot/8000a66c.c",
+   "syms": {
+    "FUN_80008b70": 2147519344,
+    "FUN_8000a66c": 2147526252
+   }
   },
   {
    "image": "boot",
@@ -60,11 +240,84 @@
   },
   {
    "image": "boot",
+   "address": "0x8000d66c",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 11 of 11, eleven words, a wait loop on a callee's result then a one-argument call with 0x125 -- the boot image's first reconstruction in this band",
+   "source_file": "fixtures/decomp/authored/boot/8000d66c.c",
+   "syms": {
+    "FUN_8000d9c0": 2147539392,
+    "FUN_8000db10": 2147539728
+   }
+  },
+  {
+   "image": "boot",
    "address": "0x8000d9c0",
    "words": 6,
    "verdict": "byte-exact",
    "probe": "single: 6 of 6, one draft",
    "source": "S_8000D9C0_SOURCE"
+  },
+  {
+   "image": "boot",
+   "address": "0x8000de78",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 9 of 9, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/8000de78.c",
+   "syms": {}
+  },
+  {
+   "image": "boot",
+   "address": "0x8000de9c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 10 of 10, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/boot/8000de9c.c",
+   "syms": {}
+  },
+  {
+   "image": "boot",
+   "address": "0x8000e920",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, a call whose result becomes the next call's argument, with three stores into a pointer loaded from a global between them",
+   "source_file": "fixtures/decomp/authored/boot/8000e920.c",
+   "syms": {
+    "D_800129d4": 2147559892,
+    "FUN_800072e0": 2147513056,
+    "FUN_80007300": 2147513088
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b410",
+   "words": 15,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b410.c",
+   "syms": {
+    "FUN_80180070": 2149056624,
+    "DAT_80184b20": 2149075744,
+    "DAT_80184b24": 2149075748,
+    "DAT_80184b28": 2149075752
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b4d4",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b4d4.c",
+   "syms": {
+    "FUN_8017b44c": 2149037132,
+    "FUN_8017b4d4": 2149037268,
+    "func_0x80004c9c": 2147503260,
+    "DAT_80184b2c": 2149075756
+   }
   },
   {
    "image": "ovl_0072610",
@@ -76,11 +329,294 @@
   },
   {
    "image": "ovl_0072610",
+   "address": "0x8017b7a8",
+   "words": 16,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 16 of 16, sixteen words, five stores through a loaded pointer (three zeroes and one value twice) then a call with 0",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b7a8.c",
+   "syms": {
+    "D_80186c94": 2149084308,
+    "FUN_8017bbe8": 2149039080
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b98c",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b98c.c",
+   "syms": {
+    "FUN_8017b8f4": 2149038324
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017b9bc",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b9bc.c",
+   "syms": {
+    "FUN_8017b98c": 2149038476
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017bbb0",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M385): 7 of 7, seven words, a scale getter: a global pointer, a depth field at +12, and `depth >> (32 - a)` -- the shift's operands are the trap, and the source order decides which register shifts",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017bbb0.c",
+   "syms": {
+    "D_80186c94": 2149084308
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017bbcc",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that passes the constant 1",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017bbcc.c",
+   "syms": {
+    "FUN_8017bec8": 2149039816
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017befc",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 12 of 12, twelve words, a call with a constant argument, a second call with none, and the first call's result returned",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017befc.c",
+   "syms": {
+    "FUN_8017bbb0": 2149039024,
+    "FUN_8017bd8c": 2149039500
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017d404",
+   "words": 23,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017d404.c",
+   "syms": {
+    "FUN_8017bbe8": 2149039080,
+    "FUN_8017bec8": 2149039816,
+    "FUN_8017d404": 2149045252,
+    "FUN_8017d61c": 2149045788
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017d460",
+   "words": 49,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017d460.c",
+   "syms": {
+    "FUN_8017bec8": 2149039816,
+    "FUN_8017d460": 2149045344,
+    "FUN_8017d61c": 2149045788,
+    "FUN_8017dd78": 2149047672,
+    "DAT_8018576c": 2149078892,
+    "DAT_80185770": 2149078896,
+    "DAT_80185774": 2149078900,
+    "DAT_80185778": 2149078904,
+    "DAT_8018577c": 2149078908,
+    "DAT_80186c94": 2149084308
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017d81c",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017d81c.c",
+   "syms": {
+    "FUN_8017bbe8": 2149039080,
+    "FUN_8017bec8": 2149039816,
+    "FUN_8017d81c": 2149046300,
+    "DAT_80185818": 2149079064
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017d9e4",
+   "words": 46,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017d9e4.c",
+   "syms": {
+    "FUN_8017bbe8": 2149039080,
+    "FUN_8017bec8": 2149039816,
+    "FUN_8017d9e4": 2149046756,
+    "DAT_801857c4": 2149078980,
+    "DAT_801857c8": 2149078984,
+    "DAT_801857cc": 2149078988,
+    "DAT_801857d0": 2149078992,
+    "DAT_801857d4": 2149078996,
+    "DAT_801857d8": 2149079000,
+    "DAT_80186c94": 2149084308
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017db54",
+   "words": 84,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017db54.c",
+   "syms": {
+    "FUN_8017bec8": 2149039816,
+    "FUN_8017db54": 2149047124,
+    "DAT_8018578c": 2149078924,
+    "DAT_80185790": 2149078928,
+    "DAT_80185794": 2149078932,
+    "DAT_80185798": 2149078936,
+    "DAT_8018579c": 2149078940,
+    "DAT_801857a0": 2149078944,
+    "DAT_801857a4": 2149078948,
+    "DAT_801857a8": 2149078952,
+    "DAT_801857ac": 2149078956,
+    "DAT_801857b0": 2149078960,
+    "DAT_801857b4": 2149078964,
+    "DAT_801857b8": 2149078968,
+    "DAT_80186c94": 2149084308
+   }
+  },
+  {
+   "image": "ovl_0072610",
    "address": "0x8017dd70",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017dd78",
+   "words": 13,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 13 of 13, thirteen words, a wait loop: call, test, call-with-8, jump back -- the loop's back edge is a `j`, not a branch",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017dd78.c",
+   "syms": {
+    "FUN_8017bbcc": 2149039052,
+    "FUN_8017bbe8": 2149039080
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017df4c",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 8 of 8, eight words, a wrapper passing a fixed address -- it must be a SYMBOL, not a literal, or the `lui`/`addiu` pair becomes `ori`",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017df4c.c",
+   "syms": {
+    "D_80185710": 2149078800,
+    "FUN_8017b5e8": 2149037544
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017f4ac",
+   "words": 12,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017f4ac.c",
+   "syms": {
+    "FUN_8017bbcc": 2149039052,
+    "FUN_8017f4ac": 2149053612,
+    "DAT_80185780": 2149078912
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x8017ff78",
+   "words": 39,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/8017ff78.c",
+   "syms": {
+    "FUN_8017fa90": 2149055120,
+    "FUN_8017fcf0": 2149055728,
+    "FUN_8017ff78": 2149056376
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801806cc",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/801806cc.c",
+   "syms": {
+    "FUN_801806cc": 2149058252,
+    "func_0x80075608": 2147964424,
+    "func_0x800a1f40": 2148147008
+   }
+  },
+  {
+   "image": "ovl_0072610",
+   "address": "0x801813d8",
+   "words": 15,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 15 of 15, fifteen words, a counter read passed to a call, incremented, then a second call -- the increment's store lands in the second `jal`'s delay slot",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/801813d8.c",
+   "syms": {
+    "D_80186c98": 2149084312,
+    "FUN_8017ddb0": 2149047728,
+    "FUN_8017d0f0": 2149044464
+   }
+  },
+  {
+   "image": "ovl_007688e",
+   "address": "0x8015b4c8",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_007688e/8015b4c8.c",
+   "syms": {
+    "FUN_8015b4c8": 2148906184,
+    "func_0x8004cd08": 2147798280
+   }
+  },
+  {
+   "image": "ovl_0078c0e",
+   "address": "0x8017b410",
+   "words": 46,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0078c0e/8017b410.c",
+   "syms": {
+    "FUN_8017cf0c": 2149043980,
+    "func_0x80025b0c": 2147638028,
+    "func_0x80026910": 2147641616,
+    "func_0x80026980": 2147641728,
+    "func_0x80026a88": 2147641992,
+    "func_0x8004cdd4": 2147798484,
+    "func_0x8004ce90": 2147798672,
+    "func_0x8004cec4": 2147798724,
+    "DAT_80181eec": 2149064428,
+    "DAT_80181ef0": 2149064432,
+    "_DAT_800e911c": 2148438300,
+    "_DAT_800e9120": 2148438304,
+    "_DAT_800e924c": 2148438604,
+    "_DAT_8010bfa8": 2148581288
+   }
   },
   {
    "image": "ovl_0078c0e",
@@ -100,11 +636,186 @@
   },
   {
    "image": "ovl_0078c0e",
+   "address": "0x8017fe54",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0078c0e/8017fe54.c",
+   "syms": {
+    "FUN_8017f844": 2149054532,
+    "FUN_8017fe54": 2149056084,
+    "FUN_8017ff0c": 2149056268,
+    "FUN_80180020": 2149056544
+   }
+  },
+  {
+   "image": "ovl_0078c0e",
    "address": "0x8017ff80",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_007c552",
+   "address": "0x8017138c",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_007c552/8017138c.c",
+   "syms": {
+    "FUN_8017138c": 2148995980
+   }
+  },
+  {
+   "image": "ovl_007c552",
+   "address": "0x801714e0",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_007c552/801714e0.c",
+   "syms": {
+    "FUN_80171484": 2148996228,
+    "FUN_801714e0": 2148996320,
+    "DAT_80171d50": 2148998480
+   }
+  },
+  {
+   "image": "ovl_007fc12",
+   "address": "0x80165424",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M364): 8 of 8, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/ovl_007fc12/80165424.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80162dd4",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, a jump-table dispatch on `p[6]` then two named calls -- the table address is the image's own, so the dispatch reads as an array of function pointers",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80162dd4.c",
+   "syms": {
+    "D_80166db8": 2148953528,
+    "FUN_801664d8": 2148951256,
+    "FUN_80166980": 2148952448
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80162f54",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80162f54.c",
+   "syms": {
+    "FUN_80162f54": 2148937556
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80163100",
+   "words": 15,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 15 of 15, fifteen words, the same guard and callee as `0x801649fc` with a different store set",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80163100.c",
+   "syms": {
+    "FUN_8016313c": 2148938044
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x8016387c",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 14 of 14, fourteen words, an if/else whose arms are two different calls -- the shape three of the batch's entries share",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/8016387c.c",
+   "syms": {
+    "FUN_801638b4": 2148939956,
+    "FUN_80163c44": 2148940868
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801648a8",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801648a8.c",
+   "syms": {
+    "FUN_8016313c": 2148938044,
+    "FUN_801648a8": 2148944040
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80164938",
+   "words": 49,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80164938.c",
+   "syms": {
+    "FUN_80163060": 2148937824,
+    "FUN_80164938": 2148944184,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801649fc",
+   "words": 17,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 17 of 17, seventeen words, one guarded callee then three stores -- `$s0` saved because the context outlives the call",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801649fc.c",
+   "syms": {
+    "FUN_8016313c": 2148938044
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80165858",
+   "words": 37,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80165858.c",
+   "syms": {
+    "FUN_80164d5c": 2148945244,
+    "FUN_80165858": 2148948056,
+    "FUN_80166980": 2148952448,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x80166338",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 14 of 14, fourteen words, a guarded init (two stores) followed by an unconditional call",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80166338.c",
+   "syms": {
+    "FUN_80166370": 2148950896
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x801664d8",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801664d8.c",
+   "syms": {
+    "FUN_801664d8": 2148951256,
+    "func_0x800347b0": 2147698608
+   }
   },
   {
    "image": "ovl_0087352",
@@ -148,11 +859,46 @@
   },
   {
    "image": "ovl_0087352",
+   "address": "0x80165f80",
+   "words": 28,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0087352/80165f80.c",
+   "syms": {
+    "FUN_80165c68": 2148949096,
+    "FUN_80165f80": 2148949888,
+    "FUN_80166294": 2148950676,
+    "func_0x80033604": 2147694084,
+    "func_0x80065628": 2147898920
+   }
+  },
+  {
+   "image": "ovl_0087352",
+   "address": "0x80165ff0",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 11 of 11, eleven words, one guarded two-argument call -- `sltiu` against 1800 is the test",
+   "source_file": "fixtures/decomp/authored/ovl_0087352/80165ff0.c",
+   "syms": {
+    "FUN_80165c68": 2148949096
+   }
+  },
+  {
+   "image": "ovl_0087352",
    "address": "0x80166294",
    "words": 5,
    "verdict": "byte-exact",
    "probe": "single: 5 of 5, one draft",
    "source": "S_80166294_SOURCE"
+  },
+  {
+   "image": "ovl_008900e",
+   "address": "0x80162f08",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
+   "source": "MASKLOOP_SOURCE"
   },
   {
    "image": "ovl_008900e",
@@ -163,6 +909,19 @@
    "source": "LOOP11_SOURCE"
   },
   {
+   "image": "ovl_008900e",
+   "address": "0x80168600",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008900e/80168600.c",
+   "syms": {
+    "FUN_80168600": 2148959744,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
    "image": "ovl_008bef8",
    "address": "0x80164624",
    "words": 2,
@@ -171,12 +930,208 @@
    "source": "CLEAR622_SOURCE"
   },
   {
+   "image": "ovl_008bef8",
+   "address": "0x80165a44",
+   "words": 85,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008bef8/80165a44.c",
+   "syms": {
+    "FUN_80165a44": 2148948548,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_008bef8",
+   "address": "0x80165dc4",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
+   "source": "MASKLOOP_SOURCE"
+  },
+  {
+   "image": "ovl_008e046",
+   "address": "0x80162f08",
+   "words": 20,
+   "verdict": "byte-exact",
+   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
+   "source": "MASKLOOP_SOURCE"
+  },
+  {
    "image": "ovl_008e046",
    "address": "0x801630bc",
    "words": 11,
    "verdict": "byte-exact",
    "probe": "loop family: 11 of 11 words, one shape for both copies (counter initialised before the pointer read)",
    "source": "LOOP11_SOURCE"
+  },
+  {
+   "image": "ovl_008e046",
+   "address": "0x80166e8c",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_008e046/80166e8c.c",
+   "syms": {
+    "FUN_80166e8c": 2148953740,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80164650",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 12 of 12, twelve words, a call whose result is ignored, then two stores -- `s0` is saved only because the argument outlives the call",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80164650.c",
+   "syms": {
+    "FUN_80163868": 2148939880
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80164ccc",
+   "words": 59,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80164ccc.c",
+   "syms": {
+    "FUN_80164ccc": 2148945100,
+    "func_0x80032bd8": 2147691480,
+    "func_0x80077d18": 2147974424,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x8016557c",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/8016557c.c",
+   "syms": {
+    "FUN_80164a78": 2148944504,
+    "FUN_8016557c": 2148947324,
+    "FUN_8016703c": 2148954172
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801679c8",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/801679c8.c",
+   "syms": {
+    "FUN_801679c8": 2148956616
+   }
+  },
+  {
+   "image": "ovl_0093192",
+   "address": "0x80162c6c",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 9 of 9, nine words, four byte stores then a flag set in the same record -- the load hoists above the stores because the offsets prove no alias",
+   "source_file": "fixtures/decomp/authored/ovl_0093192/80162c6c.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_0093aba",
+   "address": "0x801621a8",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_0093aba/801621a8.c",
+   "syms": {
+    "FUN_801621c4": 2148934084
+   }
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x801620b4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/801620b4.c",
+   "syms": {
+    "FUN_801620b4": 2148933812,
+    "func_0x80035de8": 2147704296
+   }
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x80164d40",
+   "words": 56,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/80164d40.c",
+   "syms": {
+    "FUN_80164d40": 2148945216,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x80164e20",
+   "words": 56,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/80164e20.c",
+   "syms": {
+    "FUN_80164e20": 2148945440,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x80164f00",
+   "words": 78,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/80164f00.c",
+   "syms": {
+    "FUN_80164f00": 2148945664,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x80165038",
+   "words": 133,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/80165038.c",
+   "syms": {
+    "FUN_80165038": 2148945976,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x80166e58",
+   "words": 17,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 17 of 17, seventeen words, a flag test whose taken arm loads, clears, stores and calls, and whose other arm is one call",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/80166e58.c",
+   "syms": {
+    "FUN_801626f4": 2148935412,
+    "FUN_80166e9c": 2148953756
+   }
   },
   {
    "image": "ovl_0095446",
@@ -203,12 +1158,57 @@
    "source": "S_80163020_SOURCE"
   },
   {
+   "image": "ovl_0097e42",
+   "address": "0x801636e4",
+   "words": 31,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0097e42/801636e4.c",
+   "syms": {
+    "FUN_801636e4": 2148939492,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848,
+    "func_0x80082200": 2148016640
+   }
+  },
+  {
+   "image": "ovl_0098ee0",
+   "address": "0x80161d84",
+   "words": 35,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_0098ee0/80161d84.c",
+   "syms": {
+    "FUN_80161d84": 2148932996,
+    "func_0x80036290": 2147705488,
+    "func_0x80036734": 2147706676,
+    "DAT_80166458": 2148951128,
+    "DAT_80166528": 2148951336,
+    "DAT_801665f8": 2148951544,
+    "DAT_80166638": 2148951608,
+    "DAT_80166678": 2148951672
+   }
+  },
+  {
    "image": "ovl_0098ee0",
    "address": "0x80162114",
    "words": 12,
    "verdict": "byte-exact",
    "probe": "set12 family: 12 of 12 words; the store's value is 0x03000000 (`lui`), not 0x0300",
    "source": "SET12_SOURCE"
+  },
+  {
+   "image": "ovl_0098ee0",
+   "address": "0x80162d6c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_0098ee0/80162d6c.c",
+   "syms": {
+    "FUN_80161d84": 2148932996
+   }
   },
   {
    "image": "ovl_0098ee0",
@@ -225,6 +1225,30 @@
    "verdict": "byte-exact",
    "probe": "set12 family: 12 of 12 words; the store's value is 0x03000000 (`lui`), not 0x0300",
    "source": "SET12_SOURCE"
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x801629c4",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009aed0/801629c4.c",
+   "syms": {
+    "FUN_801629c4": 2148936132,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_009aed0",
+   "address": "0x80164dec",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 9 of 9, nine words, a no-argument indirect call through a global function pointer",
+   "source_file": "fixtures/decomp/authored/ovl_009aed0/80164dec.c",
+   "syms": {
+    "D_80166638": 2148951608
+   }
   },
   {
    "image": "ovl_009d3ba",
@@ -252,11 +1276,60 @@
   },
   {
    "image": "ovl_009dd02",
+   "address": "0x80162e28",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 14 of 14, fourteen words, the third instance of the if/else call dispatch in this batch",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80162e28.c",
+   "syms": {
+    "FUN_80162e60": 2148937312,
+    "FUN_80163094": 2148937876
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801653a0",
+   "words": 23,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 23 of 23, twenty-three words, a guarded call with two constants, then one unconditional call carrying all three parameters",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/801653a0.c",
+   "syms": {
+    "FUN_80165310": 2148946704,
+    "FUN_80164e88": 2148945544
+   }
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x801664c4",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 10 of 10, ten words, a flags word read/masked/stored around a halfword clear and a `jal`",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/801664c4.c",
+   "syms": {
+    "FUN_801664ec": 2148951276
+   }
+  },
+  {
+   "image": "ovl_009dd02",
    "address": "0x801665b8",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "ovl_009dd02",
+   "address": "0x80166908",
+   "words": 22,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80166908.c",
+   "syms": {
+    "FUN_80166908": 2148952328,
+    "func_0x80052bd0": 2147822544,
+    "func_0x80052c6c": 2147822700
+   }
   },
   {
    "image": "ovl_009dd02",
@@ -268,6 +1341,29 @@
   },
   {
    "image": "ovl_00a0344",
+   "address": "0x80161dc4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80161dc4.c",
+   "syms": {
+    "FUN_80163c90": 2148940944
+   }
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80162024",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M381): 14 of 14, fourteen words, the if/else call dispatch again -- `p[427]` is the test",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80162024.c",
+   "syms": {
+    "FUN_8016205c": 2148933724,
+    "FUN_80162064": 2148933732
+   }
+  },
+  {
+   "image": "ovl_00a0344",
    "address": "0x8016205c",
    "words": 2,
    "verdict": "byte-exact",
@@ -276,11 +1372,143 @@
   },
   {
    "image": "ovl_00a0344",
+   "address": "0x801624a4",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 11 of 11, eleven words, a state test then three stores -- the `lbu` of +703 hoists above them because the offsets prove no alias",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/801624a4.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163714",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80163714.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163ab8",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80163ab8.c",
+   "syms": {
+    "FUN_80163ab8": 2148940472,
+    "func_0x80052bd0": 2147822544,
+    "func_0x80052c6c": 2147822700
+   }
+  },
+  {
+   "image": "ovl_00a0344",
    "address": "0x80163b0c",
    "words": 6,
    "verdict": "byte-exact",
    "probe": "SET4_SOURCE: 6 of 6, all 2 copies of the identical body",
    "source": "SET4_SOURCE"
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163b24",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M380): 11 of 11, eleven words, an if/else on bit 6 of the argument: one arm is two stores, the other packs `(v & 0xf) << 16 + 0x02000000` into one word",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80163b24.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_00a0344",
+   "address": "0x80163c44",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a0344/80163c44.c",
+   "syms": {
+    "FUN_80163c44": 2148940868,
+    "func_0x80036008": 2147704840,
+    "DAT_80163e68": 2148941416,
+    "DAT_80163ed4": 2148941524
+   }
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80162754",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 8 of 8, eight words, a wrapper that loads a pointer from the context and offsets it before the call",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/80162754.c",
+   "syms": {
+    "FUN_80168b3c": 2148961084
+   }
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80165910",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/80165910.c",
+   "syms": {}
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x8016676c",
+   "words": 56,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/8016676c.c",
+   "syms": {
+    "FUN_8016676c": 2148951916,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x8016684c",
+   "words": 100,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/8016684c.c",
+   "syms": {
+    "FUN_8016684c": 2148952140,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x801669dc",
+   "words": 78,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/801669dc.c",
+   "syms": {
+    "FUN_801669dc": 2148952540,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a1414",
+   "address": "0x80166b14",
+   "words": 100,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/80166b14.c",
+   "syms": {
+    "FUN_80166b14": 2148952852,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
   },
   {
    "image": "ovl_00a1414",
@@ -299,6 +1527,62 @@
    "source": "DISPATCH80169060_SOURCE"
   },
   {
+   "image": "ovl_00a1414",
+   "address": "0x80168cb4",
+   "words": 42,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a1414/80168cb4.c",
+   "syms": {
+    "FUN_80168cb4": 2148961460,
+    "func_0x80040e58": 2147749464,
+    "func_0x800424ec": 2147755244
+   }
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x801673b4",
+   "words": 78,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a43b6/801673b4.c",
+   "syms": {
+    "FUN_801673b4": 2148955060,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x801674ec",
+   "words": 100,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a43b6/801674ec.c",
+   "syms": {
+    "FUN_801674ec": 2148955372,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x8016767c",
+   "words": 100,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a43b6/8016767c.c",
+   "syms": {
+    "FUN_8016767c": 2148955772,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
    "image": "ovl_00a43b6",
    "address": "0x8016895c",
    "words": 13,
@@ -315,12 +1599,131 @@
    "source": "DISPATCH801698C8_SOURCE"
   },
   {
+   "image": "ovl_00a43b6",
+   "address": "0x80169528",
+   "words": 42,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a43b6/80169528.c",
+   "syms": {
+    "FUN_80169528": 2148963624,
+    "func_0x80040e58": 2147749464,
+    "func_0x800424ec": 2147755244
+   }
+  },
+  {
+   "image": "ovl_00a43b6",
+   "address": "0x801695d0",
+   "words": 42,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a43b6/801695d0.c",
+   "syms": {
+    "FUN_801695d0": 2148963792,
+    "func_0x80040e58": 2147749464,
+    "func_0x800424ec": 2147755244
+   }
+  },
+  {
+   "image": "ovl_00a733e",
+   "address": "0x801623e4",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a733e/801623e4.c",
+   "syms": {
+    "FUN_801623e4": 2148934628,
+    "FUN_80167bd8": 2148957144
+   }
+  },
+  {
    "image": "ovl_00a733e",
    "address": "0x801675ec",
    "words": 8,
    "verdict": "byte-exact",
    "probe": "single: 8 of 8, one draft",
    "source": "S_801675EC_SOURCE"
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80162158",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 11 of 11, eleven words, one guarded call on bit 0 of a halfword at +426",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80162158.c",
+   "syms": {
+    "FUN_8016ba54": 2148973140
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80167228",
+   "words": 78,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80167228.c",
+   "syms": {
+    "FUN_80167228": 2148954664,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80167360",
+   "words": 78,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80167360.c",
+   "syms": {
+    "FUN_80167360": 2148954976,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80167498",
+   "words": 100,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80167498.c",
+   "syms": {
+    "FUN_80167498": 2148955288,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80167628",
+   "words": 166,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80167628.c",
+   "syms": {
+    "FUN_80167628": 2148955688,
+    "func_0x80033604": 2147694084,
+    "func_0x80037780": 2147710848
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x80168cb4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80168cb4.c",
+   "syms": {
+    "FUN_80168cd0": 2148961488
+   }
   },
   {
    "image": "ovl_00a9d94",
@@ -339,6 +1742,96 @@
    "source": "DISPATCH8016C504_SOURCE"
   },
   {
+   "image": "ovl_00a9d94",
+   "address": "0x8016a8c0",
+   "words": 46,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016a8c0.c",
+   "syms": {
+    "FUN_8016a8c0": 2148968640,
+    "func_0x80040e58": 2147749464,
+    "func_0x800424ec": 2147755244
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016a978",
+   "words": 42,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016a978.c",
+   "syms": {
+    "FUN_8016a978": 2148968824,
+    "func_0x80040e58": 2147749464,
+    "func_0x800424ec": 2147755244
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016ba28",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016ba28.c",
+   "syms": {
+    "FUN_8016ba28": 2148973096,
+    "func_0x80036008": 2147704840,
+    "DAT_8016c680": 2148976256
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016ba54",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016ba54.c",
+   "syms": {
+    "FUN_8016ba54": 2148973140,
+    "func_0x80036290": 2147705488,
+    "func_0x80036734": 2147706676,
+    "DAT_8016c680": 2148976256
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x8016baa0",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 10 of 10, ten words, a 28-byte stride into a base whose `addiu` immediate is negative (0x8016C3AC, not 0x8017C3AC)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016baa0.c",
+   "syms": {
+    "D_8016c3ac": 2148975532
+   }
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80161fc0",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80161fc0.c",
+   "syms": {
+    "FUN_801655b4": 2148947380
+   }
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80164734",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80164734.c",
+   "syms": {
+    "FUN_80164750": 2148943696
+   }
+  },
+  {
    "image": "ovl_00ae24a",
    "address": "0x80165308",
    "words": 13,
@@ -353,6 +1846,32 @@
    "verdict": "byte-exact",
    "probe": "dispatch family (table 0x8016702c): 13 of 13 words, one shape for all 2 copies",
    "source": "DISPATCH8016702C_SOURCE"
+  },
+  {
+   "image": "ovl_00ae24a",
+   "address": "0x80165568",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80165568.c",
+   "syms": {
+    "FUN_80165568": 2148947304,
+    "func_0x80036008": 2147704840,
+    "DAT_8016731c": 2148954908,
+    "DAT_80167388": 2148955016
+   }
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80161fe8",
+   "words": 12,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 12 of 12, twelve words, the same guard through two loads (a pointer at +564, then its first word)",
+   "source_file": "fixtures/decomp/authored/ovl_00b08a2/80161fe8.c",
+   "syms": {
+    "FUN_8016664c": 2148951628
+   }
   },
   {
    "image": "ovl_00b08a2",
@@ -371,6 +1890,49 @@
    "source": "DISPATCH801672B4_SOURCE"
   },
   {
+   "image": "ovl_00b08a2",
+   "address": "0x80166510",
+   "words": 34,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b08a2/80166510.c",
+   "syms": {
+    "FUN_80166510": 2148951312,
+    "func_0x80040e58": 2147749464,
+    "func_0x800424ec": 2147755244
+   }
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x80166598",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b08a2/80166598.c",
+   "syms": {
+    "FUN_80166598": 2148951448,
+    "func_0x80040e58": 2147749464
+   }
+  },
+  {
+   "image": "ovl_00b08a2",
+   "address": "0x801665e8",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b08a2/801665e8.c",
+   "syms": {
+    "FUN_801665e8": 2148951528,
+    "func_0x80036008": 2147704840,
+    "DAT_80167340": 2148954944,
+    "DAT_801673c8": 2148955080,
+    "DAT_80167440": 2148955200
+   }
+  },
+  {
    "image": "ovl_00b2d7a",
    "address": "0x8016224c",
    "words": 13,
@@ -385,6 +1947,118 @@
    "verdict": "byte-exact",
    "probe": "dispatch family (table 0x80162b14): 13 of 13 words, one shape for all 2 copies",
    "source": "DISPATCH80162B14_SOURCE"
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80162564",
+   "words": 31,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80162564.c",
+   "syms": {
+    "FUN_80162564": 2148935012,
+    "FUN_801663a4": 2148950948
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x801648ac",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/801648ac.c",
+   "syms": {
+    "FUN_801643d4": 2148942804,
+    "FUN_801648ac": 2148944044,
+    "FUN_80166270": 2148950640,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164b80",
+   "words": 15,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80164b80.c",
+   "syms": {
+    "FUN_801625e0": 2148935136,
+    "FUN_80164b80": 2148944768,
+    "FUN_801663a4": 2148950948,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80164d80",
+   "words": 15,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80164d80.c",
+   "syms": {
+    "FUN_80163620": 2148939296,
+    "FUN_80164d80": 2148945280,
+    "FUN_801663a4": 2148950948,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80165278",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80165278.c",
+   "syms": {
+    "FUN_801625e0": 2148935136,
+    "FUN_80165278": 2148946552,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80165da0",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, one call then the same callee twice with 3 and 4 and the second argument's halves",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80165da0.c",
+   "syms": {
+    "FUN_80165ea0": 2148949664,
+    "FUN_80165bd0": 2148948944
+   }
+  },
+  {
+   "image": "ovl_00b5e64",
+   "address": "0x80161d50",
+   "words": 42,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b5e64/80161d50.c",
+   "syms": {
+    "FUN_80161d50": 2148932944,
+    "func_0x800339dc": 2147695068,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_00b6040",
+   "address": "0x80161d6c",
+   "words": 32,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/ovl_00b6040/80161d6c.c",
+   "syms": {
+    "FUN_80161d6c": 2148932972,
+    "func_0x800339dc": 2147695068,
+    "func_0x80089d54": 2148048212
+   }
   },
   {
    "image": "stage2",
@@ -404,11 +2078,65 @@
   },
   {
    "image": "stage2",
+   "address": "0x80025d80",
+   "words": 15,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80025d80.c",
+   "syms": {
+    "FUN_80025d80": 2147638656,
+    "FUN_80026910": 2147641616,
+    "FUN_80026980": 2147641728,
+    "FUN_80026a88": 2147641992,
+    "DAT_800c56e0": 2148292320,
+    "DAT_800e924c": 2148438604
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800265f4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800265f4.c",
+   "syms": {
+    "FUN_800265f4": 2147640820,
+    "FUN_8004cdd4": 2147798484
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80026910",
    "words": 3,
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_80026910_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80026a88",
+   "words": 4,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80026a88.c",
+   "syms": {
+    "FUN_80026a88": 2147641992,
+    "DAT_800e9110": 2148438288
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80026a98",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/80026a98.c",
+   "syms": {
+    "D_800e9130": 2148438320
+   }
   },
   {
    "image": "stage2",
@@ -420,6 +2148,62 @@
   },
   {
    "image": "stage2",
+   "address": "0x80028328",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80028328.c",
+   "syms": {
+    "FUN_80028308": 2147648264,
+    "FUN_80028328": 2147648296,
+    "DAT_800c76b0": 2148300464
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800283f0",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 11 of 11, eleven words, a method-table call at slot 0 with a 0x84 size argument, then one field cleared in the result",
+   "source_file": "fixtures/decomp/authored/stage2/800283f0.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002841c",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 11 of 11, eleven words, the same call with 0x118 and a different cleared field -- the twin of 0x800283f0",
+   "source_file": "fixtures/decomp/authored/stage2/8002841c.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x800284f4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
+   "source_file": "fixtures/decomp/authored/stage2/800284f4.c",
+   "syms": {
+    "FUN_800283b0": 2147648432
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80028d8c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80028d8c.c",
+   "syms": {
+    "FUN_80028350": 2147648336,
+    "FUN_80028d8c": 2147650956
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80029390",
    "words": 2,
    "verdict": "byte-exact",
@@ -428,11 +2212,61 @@
   },
   {
    "image": "stage2",
+   "address": "0x8002d164",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, three zero-stores through a re-read pointer field -- the reload is the alias rule doing the work",
+   "source_file": "fixtures/decomp/authored/stage2/8002d164.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
    "address": "0x8002e808",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e810",
+   "words": 14,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M376): 14 of 14, a method-table call through slot 8 followed by a named callee -- the frame is 24 bytes and holds one saved register",
+   "source_file": "fixtures/decomp/authored/stage2/8002e810.c",
+   "syms": {
+    "FUN_800283b0": 2147648432
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e848",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a call through a method-table slot with a 200-byte stack buffer as its second argument",
+   "source_file": "fixtures/decomp/authored/stage2/8002e848.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002e87c",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8002e87c.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002fc00",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8002fc00.c",
+   "syms": {
+    "FUN_8002fc00": 2147679232
+   }
   },
   {
    "image": "stage2",
@@ -500,11 +2334,37 @@
   },
   {
    "image": "stage2",
+   "address": "0x80030f18",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80030f18.c",
+   "syms": {
+    "FUN_80030f18": 2147684120
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80030fa4",
    "words": 8,
    "verdict": "byte-exact",
    "probe": "single: 8 of 8, one draft",
    "source": "S_80030FA4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80031ab0",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80031ab0.c",
+   "syms": {
+    "FUN_80031ab0": 2147687088,
+    "func_0x80004cfc": 2147503356,
+    "DAT_800ea290": 2148442768
+   }
   },
   {
    "image": "stage2",
@@ -516,11 +2376,57 @@
   },
   {
    "image": "stage2",
+   "address": "0x8003247c",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 11 of 11, eleven words, the M372 shape a third time: symbol plus 0x18000 kept apart, then a byte decremented through it",
+   "source_file": "fixtures/decomp/authored/stage2/8003247c.c",
+   "syms": {
+    "D_800c76b0": 2148300464
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80032b10",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80032b10.c",
+   "syms": {
+    "FUN_80032b10": 2147691280
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80032f64",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80032f64.c",
+   "syms": {
+    "FUN_80032f64": 2147692388
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80033144",
    "words": 7,
    "verdict": "byte-exact",
    "probe": "single: 7 of 7, one draft",
    "source": "S_80033144_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80033160",
+   "words": 22,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M382): 22 of 22, twenty-two words, four `lh` arguments into one call, then a signed wrap and a 12-bit modular compare -- `(x + 0x400) & 0xfff < 0x800` is a half-turn test",
+   "source_file": "fixtures/decomp/authored/stage2/80033160.c",
+   "syms": {
+    "FUN_80032d14": 2147691796
+   }
   },
   {
    "image": "stage2",
@@ -540,11 +2446,80 @@
   },
   {
    "image": "stage2",
+   "address": "0x80035c08",
+   "words": 37,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80035c08.c",
+   "syms": {
+    "FUN_80035c08": 2147703816,
+    "FUN_80036008": 2147704840,
+    "DAT_800eb414": 2148447252,
+    "DAT_800eb4a8": 2148447400,
+    "DAT_800eb53c": 2148447548,
+    "DAT_800eb604": 2148447748,
+    "DAT_800eb684": 2148447876
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80035dbc",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80035dbc.c",
+   "syms": {
+    "FUN_80035dbc": 2147704252,
+    "FUN_80036008": 2147704840,
+    "DAT_800eb78c": 2148448140
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80035de8",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80035de8.c",
+   "syms": {
+    "FUN_80035de8": 2147704296,
+    "FUN_80036290": 2147705488,
+    "FUN_80036734": 2147706676,
+    "DAT_800eb78c": 2148448140
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80035e34",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "ret2: 2 of 2",
    "source": "RET2_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036c44",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M364): 9 of 9, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/80036c44.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80036e70",
+   "words": 12,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80036e70.c",
+   "syms": {
+    "FUN_80036e70": 2147708528,
+    "FUN_80040e58": 2147749464
+   }
   },
   {
    "image": "stage2",
@@ -556,6 +2531,43 @@
   },
   {
    "image": "stage2",
+   "address": "0x800390b8",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 10 of 10, ten words, an index of 124 bytes per entry (31 words) built by shift-subtract-shift",
+   "source_file": "fixtures/decomp/authored/stage2/800390b8.c",
+   "syms": {
+    "D_800ebda8": 2148449704
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80039a18",
+   "words": 32,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80039a18.c",
+   "syms": {
+    "FUN_8003994c": 2147719500,
+    "FUN_80039a18": 2147719704
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80039aa0",
+   "words": 47,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80039aa0.c",
+   "syms": {
+    "FUN_80039aa0": 2147719840,
+    "FUN_800844cc": 2148025548
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80039ba0",
    "words": 2,
    "verdict": "byte-exact",
@@ -564,11 +2576,344 @@
   },
   {
    "image": "stage2",
+   "address": "0x8003a128",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8003a128.c",
+   "syms": {
+    "FUN_8003a128": 2147721512,
+    "FUN_8003b14c": 2147725644,
+    "DAT_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003a578",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8003a578.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003aef8",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8003aef8.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003b1b8",
+   "words": 32,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8003b1b8.c",
+   "syms": {
+    "FUN_80038a20": 2147715616,
+    "FUN_8003b1b8": 2147725752,
+    "DAT_800e9028": 2148438056,
+    "DAT_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003b2a4",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8003b2a4.c",
+   "syms": {
+    "FUN_80038a20": 2147715616,
+    "FUN_8003b2a4": 2147725988,
+    "DAT_800e9028": 2148438056,
+    "DAT_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003b640",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 11 of 11, eleven words, two halfword accumulations through one loaded pointer -- and an EXTENT CORRECTION: the rung said 12, but word 12 is the next function's `addiu sp,sp,-0x30` prologue",
+   "source_file": "fixtures/decomp/authored/stage2/8003b640.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003bfb4",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8003bfb4.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003c170",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M364): 6 of 6, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8003c170.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003d144",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8003d144.c",
+   "syms": {
+    "FUN_8003d144": 2147733828,
+    "DAT_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003d454",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8003d454.c",
+   "syms": {
+    "FUN_8003ad94": 2147724692,
+    "FUN_8003d454": 2147734612,
+    "DAT_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003da98",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8003da98.c",
+   "syms": {
+    "FUN_80033604": 2147694084,
+    "FUN_80039c34": 2147720244,
+    "FUN_8003da98": 2147736216,
+    "DAT_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003dadc",
+   "words": 6,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8003dadc.c",
+   "syms": {
+    "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80040524",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80040524.c",
+   "syms": {
+    "FUN_80038a20": 2147715616,
+    "FUN_80040524": 2147747108,
+    "DAT_800e9028": 2148438056,
+    "DAT_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80040cf4",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80040cf4.c",
+   "syms": {
+    "FUN_80040cf4": 2147749108,
+    "FUN_8004226c": 2147754604,
+    "FUN_800424bc": 2147755196
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80040d2c",
+   "words": 55,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80040d2c.c",
+   "syms": {
+    "FUN_80040d2c": 2147749164
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80040e10",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M368): 8 of 8, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/80040e10.c",
+   "syms": {
+    "D_800f5e30": 2148490800
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80040e30",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 10 of 10, ten words, a masked float table read -- `lwc1` is the tell that the accessor returns a float",
+   "source_file": "fixtures/decomp/authored/stage2/80040e30.c",
+   "syms": {
+    "D_800f5e30": 2148490800
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800416bc",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800416bc.c",
+   "syms": {
+    "FUN_800416bc": 2147751612
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80041d50",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80041d50.c",
+   "syms": {
+    "FUN_80041a28": 2147752488,
+    "FUN_80041d50": 2147753296
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80042ad8",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80042ad8.c",
+   "syms": {
+    "FUN_80042ad8": 2147756760,
+    "FUN_800856f0": 2148030192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80042dac",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80042dac.c",
+   "syms": {
+    "FUN_80042dac": 2147757484,
+    "DAT_80139a64": 2148768356
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80043374",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a three-halfword copy out of 0x80139A80 -- the sign-extended base is the whole trap",
+   "source_file": "fixtures/decomp/authored/stage2/80043374.c",
+   "syms": {
+    "D_80139a80": 2148768384
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004343c",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, the same three-load copy storing sign-extended halves as words",
+   "source_file": "fixtures/decomp/authored/stage2/8004343c.c",
+   "syms": {
+    "D_80139a80": 2148768384
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800434b8",
    "words": 4,
    "verdict": "byte-exact",
    "probe": "single: 4 of 4, one draft",
    "source": "S_800434B8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80043620",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80043620.c",
+   "syms": {
+    "FUN_80043620": 2147759648,
+    "DAT_800efd94": 2148466068,
+    "DAT_800efd9c": 2148466076,
+    "DAT_800efda0": 2148466080,
+    "DAT_800efda4": 2148466084
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80043868",
+   "words": 27,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80043868.c",
+   "syms": {
+    "FUN_80043868": 2147760232,
+    "FUN_80043988": 2147760520,
+    "DAT_800efd94": 2148466068,
+    "DAT_800efd9c": 2148466076,
+    "DAT_800efda0": 2148466080
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800438d4",
+   "words": 23,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800438d4.c",
+   "syms": {
+    "FUN_800438d4": 2147760340,
+    "FUN_80043930": 2147760432,
+    "DAT_800efd94": 2148466068,
+    "DAT_800efd9c": 2148466076
+   }
   },
   {
    "image": "stage2",
@@ -636,6 +2981,18 @@
   },
   {
    "image": "stage2",
+   "address": "0x800478dc",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800478dc.c",
+   "syms": {
+    "FUN_800478dc": 2147776732
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800479bc",
    "words": 3,
    "verdict": "byte-exact",
@@ -692,6 +3049,34 @@
   },
   {
    "image": "stage2",
+   "address": "0x8004a7a0",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8004a7a0.c",
+   "syms": {
+    "FUN_8004a7a0": 2147788704,
+    "FUN_8004a7f4": 2147788788
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004cfcc",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8004cfcc.c",
+   "syms": {
+    "FUN_8004cf30": 2147798832,
+    "FUN_8004cfcc": 2147798988,
+    "FUN_8008b048": 2148053064,
+    "DAT_8010b6c0": 2148579008
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8004d178",
    "words": 3,
    "verdict": "byte-exact",
@@ -705,6 +3090,17 @@
    "verdict": "byte-exact",
    "probe": "clearu16: 2 of 2",
    "source": "CLEARU16_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004d320",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a load returned plus an eight-byte zero store -- the pair is what makes gcc materialise two zeros",
+   "source_file": "fixtures/decomp/authored/stage2/8004d320.c",
+   "syms": {
+    "D_8010b700": 2148579072
+   }
   },
   {
    "image": "stage2",
@@ -740,6 +3136,17 @@
   },
   {
    "image": "stage2",
+   "address": "0x800510c4",
+   "words": 3,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M368): 3 of 3, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/800510c4.c",
+   "syms": {
+    "D_8010bc30": 2148580400
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80052bbc",
    "words": 5,
    "verdict": "byte-exact",
@@ -748,11 +3155,32 @@
   },
   {
    "image": "stage2",
+   "address": "0x80052eec",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a ten-byte-stride scan capped at 32 entries -- the unsigned index is what makes it `sltiu`",
+   "source_file": "fixtures/decomp/authored/stage2/80052eec.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
    "address": "0x80053994",
    "words": 3,
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_80053994_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80054084",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80054084.c",
+   "syms": {
+    "FUN_80054084": 2147827844
+   }
   },
   {
    "image": "stage2",
@@ -793,6 +3221,31 @@
    "verdict": "byte-exact",
    "probe": "single: 6 of 6, one draft",
    "source": "S_8005C264_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005c308",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8005c308.c",
+   "syms": {
+    "FUN_8005c308": 2147861256
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8005c32c",
+   "words": 47,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8005c32c.c",
+   "syms": {
+    "FUN_80040e58": 2147749464,
+    "FUN_8005c32c": 2147861292
+   }
   },
   {
    "image": "stage2",
@@ -900,6 +3353,58 @@
   },
   {
    "image": "stage2",
+   "address": "0x800667b0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 9 of 9, nine words, a four-valued comparison built from two sign bits -- `srl 31` / `srl 30` then two `sllv`s, so the source shifts by the sign, not by a `slt`",
+   "source_file": "fixtures/decomp/authored/stage2/800667b0.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80069ebc",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80069ebc.c",
+   "syms": {
+    "FUN_80040bb4": 2147748788,
+    "FUN_80069ebc": 2147917500
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006a8bc",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006a8bc.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006a8e4",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006a8e4.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006b264",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8006b264.c",
+   "syms": {
+    "FUN_8006b264": 2147922532
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8006b374",
    "words": 3,
    "verdict": "byte-exact",
@@ -916,6 +3421,58 @@
   },
   {
    "image": "stage2",
+   "address": "0x8006baf4",
+   "words": 6,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8006baf4.c",
+   "syms": {
+    "FUN_8006ba24": 2147924516,
+    "FUN_8006baf4": 2147924724
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006bea0",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006bea0.c",
+   "syms": {
+    "D_80139e60": 2148769376
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006c070",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8006c070.c",
+   "syms": {
+    "FUN_8006c070": 2147926128,
+    "func_0x8000cb60": 2147535712,
+    "DAT_80112784": 2148607876,
+    "DAT_80112788": 2148607880,
+    "DAT_80112a24": 2148608548
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006cc58",
+   "words": 29,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8006cc58.c",
+   "syms": {
+    "FUN_8006cc58": 2147929176
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8006d100",
    "words": 2,
    "verdict": "byte-exact",
@@ -929,6 +3486,91 @@
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db00",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006db00.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db14",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006db14.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db84",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006db84.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006db98",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8006db98.c",
+   "syms": {
+    "FUN_8006d5dc": 2147931612,
+    "FUN_8006db98": 2147933080
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006dd7c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M364): 10 of 10, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006dd7c.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006de18",
+   "words": 2,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M364): 2 of 2, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006de18.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e338",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M364): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006e338.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e34c",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M364): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006e34c.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006e360",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M364): 10 of 10, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8006e360.c",
+   "syms": {}
   },
   {
    "image": "stage2",
@@ -953,6 +3595,19 @@
    "verdict": "byte-exact",
    "probe": "p6e68c: 41 of 41",
    "source": "P6E68C_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006eae0",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8006eae0.c",
+   "syms": {
+    "FUN_8006d284": 2147930756,
+    "FUN_8006eae0": 2147936992
+   }
   },
   {
    "image": "stage2",
@@ -996,6 +3651,56 @@
   },
   {
    "image": "stage2",
+   "address": "0x80071618",
+   "words": 22,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80071618.c",
+   "syms": {
+    "FUN_80038e98": 2147716760,
+    "FUN_80071618": 2147948056,
+    "FUN_800717a0": 2147948448
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071670",
+   "words": 16,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80071670.c",
+   "syms": {
+    "FUN_80038f40": 2147716928,
+    "FUN_80071670": 2147948144
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071744",
+   "words": 23,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80071744.c",
+   "syms": {
+    "FUN_80039020": 2147717152,
+    "FUN_80071744": 2147948356,
+    "FUN_800717a0": 2147948448
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80071df0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 9 of 9, nine words, a byte copied through two loaded pointers and a pointer field advanced by two",
+   "source_file": "fixtures/decomp/authored/stage2/80071df0.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
    "address": "0x8007230c",
    "words": 2,
    "verdict": "byte-exact",
@@ -1009,6 +3714,117 @@
    "verdict": "byte-exact",
    "probe": "empty-function family: `jr ra; nop`, the shape STUB_SOURCE has proven since M307 (10 more copies)",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007235c",
+   "words": 28,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007235c.c",
+   "syms": {
+    "FUN_8007235c": 2147951452,
+    "FUN_800777d8": 2147973080
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800724fc",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800724fc.c",
+   "syms": {
+    "FUN_800275c0": 2147644864,
+    "FUN_800724fc": 2147951868
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007272c",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8007272c.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072740",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/80072740.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072754",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/80072754.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80072768",
+   "words": 5,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/80072768.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073564",
+   "words": 11,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 11 of 11, eleven words, the same shape used for a nonzero test -- `sltu` in the delay slot is the return",
+   "source_file": "fixtures/decomp/authored/stage2/80073564.c",
+   "syms": {
+    "D_800c76b0": 2148300464
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80074024",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M375): 10 of 10, ten words, the M372 shape again: symbol plus 0x18000 kept apart, then a loaded pointer indexed",
+   "source_file": "fixtures/decomp/authored/stage2/80074024.c",
+   "syms": {
+    "D_800c76b0": 2148300464
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80075c78",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80075c78.c",
+   "syms": {
+    "FUN_80075c78": 2147966072,
+    "FUN_80075dbc": 2147966396,
+    "FUN_80076044": 2147967044
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80075da0",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80075da0.c",
+   "syms": {
+    "FUN_80075da0": 2147966368,
+    "FUN_80078b40": 2147978048
+   }
   },
   {
    "image": "stage2",
@@ -1028,6 +3844,127 @@
   },
   {
    "image": "stage2",
+   "address": "0x80078b40",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80078b40.c",
+   "syms": {
+    "FUN_80078b40": 2147978048,
+    "FUN_800b21a8": 2148213160
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800795ac",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800795ac.c",
+   "syms": {
+    "FUN_800795ac": 2147980716,
+    "FUN_8007a904": 2147985668
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800796c4",
+   "words": 16,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800796c4.c",
+   "syms": {
+    "FUN_800351e8": 2147701224,
+    "FUN_800796c4": 2147980996,
+    "FUN_800837ac": 2148022188,
+    "DAT_800e8ce0": 2148437216
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80079704",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80079704.c",
+   "syms": {
+    "FUN_80079704": 2147981060,
+    "FUN_8007aaa8": 2147986088
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80079720",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80079720.c",
+   "syms": {
+    "FUN_80079720": 2147981088,
+    "FUN_8007ab24": 2147986212
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007973c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007973c.c",
+   "syms": {
+    "FUN_8007973c": 2147981116,
+    "FUN_8007a8e8": 2147985640
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80079758",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80079758.c",
+   "syms": {
+    "FUN_80079758": 2147981144,
+    "FUN_8007a7e4": 2147985380
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007977c",
+   "words": 30,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007977c.c",
+   "syms": {
+    "FUN_8007977c": 2147981180,
+    "FUN_800837ac": 2148022188,
+    "FUN_8008794c": 2148038988,
+    "DAT_800e8eb8": 2148437688
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800797f4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800797f4.c",
+   "syms": {
+    "FUN_800350e8": 2147700968,
+    "FUN_800797f4": 2147981300
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8007a3d8",
    "words": 2,
    "verdict": "byte-exact",
@@ -1041,6 +3978,71 @@
    "verdict": "byte-exact",
    "probe": "single: 7 of 7, one draft",
    "source": "S_8007A8E8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007aa2c",
+   "words": 31,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007aa2c.c",
+   "syms": {
+    "FUN_8007aa2c": 2147985964,
+    "FUN_8008794c": 2148038988
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007aaa8",
+   "words": 31,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007aaa8.c",
+   "syms": {
+    "FUN_8007aaa8": 2147986088,
+    "FUN_8008794c": 2148038988
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007ab24",
+   "words": 60,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007ab24.c",
+   "syms": {
+    "FUN_8007ab24": 2147986212,
+    "FUN_8008794c": 2148038988
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007acc0",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007acc0.c",
+   "syms": {
+    "FUN_8007acc0": 2147986624,
+    "FUN_8008794c": 2148038988
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007ad14",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007ad14.c",
+   "syms": {
+    "FUN_8007ad14": 2147986708,
+    "FUN_8008794c": 2148038988
+   }
   },
   {
    "image": "stage2",
@@ -1076,11 +4078,179 @@
   },
   {
    "image": "stage2",
+   "address": "0x8007ef94",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8007ef94.c",
+   "syms": {
+    "FUN_80032dbc": 2147691964,
+    "FUN_80032e74": 2147692148,
+    "FUN_8007ef94": 2148003732
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800805d8",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800805d8.c",
+   "syms": {
+    "FUN_80035c9c": 2147703964,
+    "FUN_800805d8": 2148009432
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80081018",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80081018.c",
+   "syms": {
+    "FUN_80081018": 2148012056,
+    "FUN_80081bf0": 2148015088
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008103c",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8008103c.c",
+   "syms": {
+    "FUN_8008103c": 2148012092,
+    "FUN_80081bf0": 2148015088
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80081058",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80081058.c",
+   "syms": {
+    "FUN_80081058": 2148012120,
+    "FUN_80081bf0": 2148015088
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008107c",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8008107c.c",
+   "syms": {
+    "FUN_8008107c": 2148012156,
+    "FUN_80081bf0": 2148015088
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800816ac",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800816ac.c",
+   "syms": {
+    "FUN_800816ac": 2148013740,
+    "FUN_80082010": 2148016144
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800816d0",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800816d0.c",
+   "syms": {
+    "FUN_800816d0": 2148013776,
+    "FUN_80082010": 2148016144
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800816ec",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800816ec.c",
+   "syms": {
+    "FUN_800816ec": 2148013804,
+    "FUN_80082010": 2148016144
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80081710",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80081710.c",
+   "syms": {
+    "FUN_80081710": 2148013840,
+    "FUN_80082010": 2148016144
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80082200",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80082200.c",
+   "syms": {
+    "FUN_80082200": 2148016640
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8008225c",
    "words": 13,
    "verdict": "byte-exact",
    "probe": "call13 family: 13 of 13 words -- a call through the unchanged arguments, returning a0 + a2",
    "source": "CALL13_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800823e0",
+   "words": 37,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800823e0.c",
+   "syms": {
+    "FUN_800823e0": 2148017120,
+    "DAT_8010b6e8": 2148579048,
+    "DAT_8010b6ec": 2148579052,
+    "DAT_801137f0": 2148612080,
+    "DAT_801137f4": 2148612084
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80082474",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 9 of 9, nine words, a do-while byte copy bounded by a precomputed end pointer",
+   "source_file": "fixtures/decomp/authored/stage2/80082474.c",
+   "syms": {}
   },
   {
    "image": "stage2",
@@ -1108,11 +4278,56 @@
   },
   {
    "image": "stage2",
+   "address": "0x80083758",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80083758.c",
+   "syms": {
+    "FUN_80083758": 2148022104
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80083780",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80083780.c",
+   "syms": {
+    "FUN_80083780": 2148022144
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800837ac",
+   "words": 9,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 9 of 9, nine words, a bit test: `0x80000000u >> (i & 31)` is why the mask is a `lui` and not an `ori`",
+   "source_file": "fixtures/decomp/authored/stage2/800837ac.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
    "address": "0x80083ac4",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80083e14",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80083e14.c",
+   "syms": {
+    "FUN_80083e14": 2148023828
+   }
   },
   {
    "image": "stage2",
@@ -1124,11 +4339,95 @@
   },
   {
    "image": "stage2",
+   "address": "0x800844e4",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M379): 10 of 10, ten words, a byte swap written as four masked terms -- the order of the four `or`s is the whole function",
+   "source_file": "fixtures/decomp/authored/stage2/800844e4.c",
+   "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x800850a4",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800850a4.c",
+   "syms": {
+    "FUN_8008456c": 2148025708,
+    "FUN_800850a4": 2148028580,
+    "DAT_8011c924": 2148649252
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800878fc",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800878fc.c",
+   "syms": {
+    "FUN_800878fc": 2148038908
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008794c",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8008794c.c",
+   "syms": {
+    "FUN_8008794c": 2148038988
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80088548",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/80088548.c",
+   "syms": {
+    "FUN_80088548": 2148042056,
+    "DAT_8012bae0": 2148711136
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800888ec",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800888ec.c",
+   "syms": {
+    "FUN_80088764": 2148042596,
+    "FUN_800888ec": 2148042988
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8008af50",
    "words": 3,
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_8008AF50_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008af5c",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/8008af5c.c",
+   "syms": {
+    "D_8012bd80": 2148711808
+   }
   },
   {
    "image": "stage2",
@@ -1156,6 +4455,60 @@
   },
   {
    "image": "stage2",
+   "address": "0x8008b048",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8008b048.c",
+   "syms": {
+    "FUN_8008af80": 2148052864,
+    "FUN_8008b048": 2148053064,
+    "func_0x8000cd40": 2147536192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008b0a4",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8008b0a4.c",
+   "syms": {
+    "FUN_8008b040": 2148053056,
+    "FUN_8008b0a4": 2148053156,
+    "func_0x8000cd40": 2147536192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008b0ec",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8008b0ec.c",
+   "syms": {
+    "FUN_8008b048": 2148053064,
+    "FUN_8008b0ec": 2148053228
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008b108",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8008b108.c",
+   "syms": {
+    "FUN_8008b0a4": 2148053156,
+    "FUN_8008b108": 2148053256
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8008c054",
    "words": 2,
    "verdict": "byte-exact",
@@ -1180,11 +4533,168 @@
   },
   {
    "image": "stage2",
+   "address": "0x800995e0",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800995e0.c",
+   "syms": {
+    "FUN_800995e0": 2148111840,
+    "FUN_8009b21c": 2148119068
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8009b21c",
    "words": 2,
    "verdict": "byte-exact",
    "probe": "STUB_SOURCE: 2 of 2, all 34 copies of the identical body",
    "source": "STUB_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8009b224",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8009b224.c",
+   "syms": {
+    "FUN_800837ac": 2148022188,
+    "FUN_8009b224": 2148119076,
+    "DAT_800e8ce0": 2148437216
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8009b250",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8009b250.c",
+   "syms": {
+    "FUN_8009b250": 2148119120,
+    "FUN_8009b27c": 2148119164,
+    "FUN_8009b670": 2148120176,
+    "FUN_8009b978": 2148120952
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8009bea0",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/8009bea0.c",
+   "syms": {
+    "FUN_8009bea0": 2148122272,
+    "FUN_8009bf04": 2148122372
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2444",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800a2444.c",
+   "syms": {
+    "FUN_800a0f1c": 2148142876,
+    "FUN_800a2444": 2148148292,
+    "DAT_8013bc90": 2148777104
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a59d0",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800a59d0.c",
+   "syms": {
+    "FUN_800a59d0": 2148162000,
+    "_DAT_80143f0c": 2148810508
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5a00",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5a00.c",
+   "syms": {
+    "FUN_800a5a00": 2148162048,
+    "_DAT_80143f0c": 2148810508
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5a60",
+   "words": 27,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5a60.c",
+   "syms": {
+    "FUN_800a5a60": 2148162144,
+    "FUN_800a5da0": 2148162976,
+    "_DAT_80143f0c": 2148810508
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5b7c",
+   "words": 10,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M378): 10 of 10, ten words, a 104-byte stride into a pointer read from a global -- and an EXTENT CORRECTION: the rung said 11, but word 11 is the next function's `addiu sp,sp,-0x18` prologue, so the body ends in its own delay slot",
+   "source_file": "fixtures/decomp/authored/stage2/800a5b7c.c",
+   "syms": {
+    "D_80143f0c": 2148810508
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5ba4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5ba4.c",
+   "syms": {
+    "FUN_800a2774": 2148149108,
+    "FUN_800a5ba4": 2148162468
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5c08",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5c08.c",
+   "syms": {
+    "FUN_800a5c08": 2148162568,
+    "_DAT_80143f0c": 2148810508
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5c34",
+   "words": 7,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that doubles its second argument (`sll $a1,$a1,1` in the delay slot)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5c34.c",
+   "syms": {
+    "FUN_8000efa0": 2147544992
+   }
   },
   {
    "image": "stage2",
@@ -1244,6 +4754,32 @@
   },
   {
    "image": "stage2",
+   "address": "0x800a90d0",
+   "words": 9,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800a90d0.c",
+   "syms": {
+    "FUN_800a90d0": 2148176080,
+    "FUN_800adb48": 2148195144
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a90f4",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800a90f4.c",
+   "syms": {
+    "FUN_800a90f4": 2148176116,
+    "FUN_800adc44": 2148195396
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800a9420",
    "words": 3,
    "verdict": "byte-exact",
@@ -1268,6 +4804,30 @@
   },
   {
    "image": "stage2",
+   "address": "0x800ab1a0",
+   "words": 43,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ab1a0.c",
+   "syms": {
+    "FUN_800ab1a0": 2148184480
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab2cc",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ab2cc.c",
+   "syms": {
+    "FUN_800ab2cc": 2148184780
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800ab504",
    "words": 4,
    "verdict": "byte-exact",
@@ -1284,6 +4844,134 @@
   },
   {
    "image": "stage2",
+   "address": "0x800ab7a8",
+   "words": 4,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/800ab7a8.c",
+   "syms": {
+    "D_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac888",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac888.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac888": 2148190344
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac8a8",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac8a8.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac8a8": 2148190376
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac8c8",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac8c8.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac8c8": 2148190408
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac8e8",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac8e8.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac8e8": 2148190440
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac908",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac908.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac908": 2148190472
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac928",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac928.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac928": 2148190504
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac948",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac948.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac948": 2148190536
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac968",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac968.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac968": 2148190568
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ac988",
+   "words": 8,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800ac988.c",
+   "syms": {
+    "FUN_800ac394": 2148189076,
+    "FUN_800ac988": 2148190600
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800acae4",
    "words": 53,
    "verdict": "byte-exact",
@@ -1292,11 +4980,49 @@
   },
   {
    "image": "stage2",
+   "address": "0x800b2010",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800b2010.c",
+   "syms": {
+    "FUN_800a5cfc": 2148162812,
+    "FUN_800b2010": 2148212752
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800b2138",
    "words": 3,
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_800B2138_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b2618",
+   "words": 8,
+   "verdict": "byte-exact",
+   "probe": "read from the words (M368): 8 of 8, measured extent turned into a reconstruction",
+   "source_file": "fixtures/decomp/authored/stage2/800b2618.c",
+   "syms": {
+    "D_80147fb0": 2148827056
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b44f4",
+   "words": 16,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the whole body matches by offset and content (M410, banked from the distance map)",
+   "source_file": "fixtures/decomp/authored/stage2/800b44f4.c",
+   "syms": {
+    "FUN_800b44f4": 2148222196,
+    "FUN_800b4818": 2148223000,
+    "func_0x8000cb60": 2147535712
+   }
   },
   {
    "image": "stage2",
@@ -1321,1147 +5047,6 @@
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_800B4DAC_SOURCE"
-  },
-  {
-   "image": "ovl_008900e",
-   "address": "0x80162f08",
-   "words": 20,
-   "verdict": "byte-exact",
-   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
-   "source": "MASKLOOP_SOURCE"
-  },
-  {
-   "image": "ovl_008bef8",
-   "address": "0x80165dc4",
-   "words": 20,
-   "verdict": "byte-exact",
-   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
-   "source": "MASKLOOP_SOURCE"
-  },
-  {
-   "image": "ovl_008e046",
-   "address": "0x80162f08",
-   "words": 20,
-   "verdict": "byte-exact",
-   "probe": "masked-loop family: `r[i].v = (r[i].v & 0xff000000) | (hi<<16 | mid<<8 | lo)` on a 376-byte record, 3 copies",
-   "source": "MASKLOOP_SOURCE"
-  },
-  {
-   "image": "boot",
-   "address": "0x80004c14",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/boot/80004c14.c",
-   "syms": {
-    "D_80012884": 2147559556
-   }
-  },
-  {
-   "image": "ovl_00a0344",
-   "address": "0x80163714",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/ovl_00a0344/80163714.c",
-   "syms": {}
-  },
-  {
-   "image": "ovl_00a1414",
-   "address": "0x80165910",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/ovl_00a1414/80165910.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x80026a98",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/80026a98.c",
-   "syms": {
-    "D_800e9130": 2148438320
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002e87c",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8002e87c.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8003a578",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8003a578.c",
-   "syms": {
-    "D_800ebb94": 2148449172
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8003aef8",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8003aef8.c",
-   "syms": {
-    "D_800ebb94": 2148449172
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8003bfb4",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8003bfb4.c",
-   "syms": {
-    "D_800ebb94": 2148449172
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8003dadc",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 6 of 6, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8003dadc.c",
-   "syms": {
-    "D_800ebb94": 2148449172
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006a8bc",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006a8bc.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006a8e4",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006a8e4.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006bea0",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006bea0.c",
-   "syms": {
-    "D_80139e60": 2148769376
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006db00",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006db00.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006db14",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006db14.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006db84",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006db84.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8007272c",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8007272c.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x80072740",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/80072740.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x80072754",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/80072754.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x80072768",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/80072768.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8008af5c",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8008af5c.c",
-   "syms": {
-    "D_8012bd80": 2148711808
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x800ab7a8",
-   "words": 4,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M363): 4 of 4, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/800ab7a8.c",
-   "syms": {
-    "D_80136310": 2148754192
-   }
-  },
-  {
-   "image": "ovl_007fc12",
-   "address": "0x80165424",
-   "words": 8,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M364): 8 of 8, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/ovl_007fc12/80165424.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x80036c44",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M364): 9 of 9, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/80036c44.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8003c170",
-   "words": 6,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M364): 6 of 6, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8003c170.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006dd7c",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M364): 10 of 10, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006dd7c.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006e338",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M364): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006e338.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006e34c",
-   "words": 5,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M364): 5 of 5, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006e34c.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006e360",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M364): 10 of 10, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006e360.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8006de18",
-   "words": 2,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M364): 2 of 2, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/8006de18.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x800510c4",
-   "words": 3,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M368): 3 of 3, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/800510c4.c",
-   "syms": {
-    "D_8010bc30": 2148580400
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x80040e10",
-   "words": 8,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M368): 8 of 8, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/80040e10.c",
-   "syms": {
-    "D_800f5e30": 2148490800
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x800b2618",
-   "words": 8,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M368): 8 of 8, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/stage2/800b2618.c",
-   "syms": {
-    "D_80147fb0": 2148827056
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x800013b0",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M370): 9 of 9, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/boot/800013b0.c",
-   "syms": {
-    "D_800138a0": 2147563680,
-    "D_800138a4": 2147563684,
-    "D_800138a8": 2147563688,
-    "D_80013eb4": 2147565236
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x8000de78",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M370): 9 of 9, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/boot/8000de78.c",
-   "syms": {}
-  },
-  {
-   "image": "boot",
-   "address": "0x8000de9c",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M370): 10 of 10, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/boot/8000de9c.c",
-   "syms": {}
-  },
-  {
-   "image": "boot",
-   "address": "0x8000319c",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M370): 10 of 10, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/boot/8000319c.c",
-   "syms": {
-    "FUN_8000305c": 2147496028
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x800048b0",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/boot/800048b0.c",
-   "syms": {}
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017b98c",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b98c.c",
-   "syms": {
-    "FUN_8017b8f4": 2149038324
-   }
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017b9bc",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M370): 12 of 12, measured extent turned into a reconstruction",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b9bc.c",
-   "syms": {
-    "FUN_8017b98c": 2149038476
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x80004a20",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
-   "source_file": "fixtures/decomp/authored/boot/80004a20.c",
-   "syms": {
-    "D_800c76b0": 2148300464,
-    "D_80012884": 2147559556
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x80004be4",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
-   "source_file": "fixtures/decomp/authored/boot/80004be4.c",
-   "syms": {
-    "D_800c76b0": 2148300464,
-    "D_80012884": 2147559556
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x80004c6c",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M372): 12 of 12, the cohort of three (a symbol plus a two-term constant)",
-   "source_file": "fixtures/decomp/authored/boot/80004c6c.c",
-   "syms": {
-    "D_800c76b0": 2148300464,
-    "D_80012884": 2147559556
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x80043374",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 9 of 9, nine words, a three-halfword copy out of 0x80139A80 -- the sign-extended base is the whole trap",
-   "source_file": "fixtures/decomp/authored/stage2/80043374.c",
-   "syms": {
-    "D_80139a80": 2148768384
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004343c",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 9 of 9, nine words, the same three-load copy storing sign-extended halves as words",
-   "source_file": "fixtures/decomp/authored/stage2/8004343c.c",
-   "syms": {
-    "D_80139a80": 2148768384
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8004d320",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 9 of 9, nine words, a load returned plus an eight-byte zero store -- the pair is what makes gcc materialise two zeros",
-   "source_file": "fixtures/decomp/authored/stage2/8004d320.c",
-   "syms": {
-    "D_8010b700": 2148579072
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x80071df0",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 9 of 9, nine words, a byte copied through two loaded pointers and a pointer field advanced by two",
-   "source_file": "fixtures/decomp/authored/stage2/80071df0.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x800390b8",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 10 of 10, ten words, an index of 124 bytes per entry (31 words) built by shift-subtract-shift",
-   "source_file": "fixtures/decomp/authored/stage2/800390b8.c",
-   "syms": {
-    "D_800ebda8": 2148449704
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x80040e30",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 10 of 10, ten words, a masked float table read -- `lwc1` is the tell that the accessor returns a float",
-   "source_file": "fixtures/decomp/authored/stage2/80040e30.c",
-   "syms": {
-    "D_800f5e30": 2148490800
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x80074024",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 10 of 10, ten words, the M372 shape again: symbol plus 0x18000 kept apart, then a loaded pointer indexed",
-   "source_file": "fixtures/decomp/authored/stage2/80074024.c",
-   "syms": {
-    "D_800c76b0": 2148300464
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002d164",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 9 of 9, nine words, three zero-stores through a re-read pointer field -- the reload is the alias rule doing the work",
-   "source_file": "fixtures/decomp/authored/stage2/8002d164.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002e848",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 9 of 9, nine words, a call through a method-table slot with a 200-byte stack buffer as its second argument",
-   "source_file": "fixtures/decomp/authored/stage2/8002e848.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x80052eec",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M375): 9 of 9, nine words, a ten-byte-stride scan capped at 32 entries -- the unsigned index is what makes it `sltiu`",
-   "source_file": "fixtures/decomp/authored/stage2/80052eec.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002e810",
-   "words": 14,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M376): 14 of 14, a method-table call through slot 8 followed by a named callee -- the frame is 24 bytes and holds one saved register",
-   "source_file": "fixtures/decomp/authored/stage2/8002e810.c",
-   "syms": {
-    "FUN_800283b0": 2147648432
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x80082474",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M378): 9 of 9, nine words, a do-while byte copy bounded by a precomputed end pointer",
-   "source_file": "fixtures/decomp/authored/stage2/80082474.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x800667b0",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M378): 9 of 9, nine words, a four-valued comparison built from two sign bits -- `srl 31` / `srl 30` then two `sllv`s, so the source shifts by the sign, not by a `slt`",
-   "source_file": "fixtures/decomp/authored/stage2/800667b0.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x800837ac",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M378): 9 of 9, nine words, a bit test: `0x80000000u >> (i & 31)` is why the mask is a `lui` and not an `ori`",
-   "source_file": "fixtures/decomp/authored/stage2/800837ac.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x800a5b7c",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M378): 10 of 10, ten words, a 104-byte stride into a pointer read from a global -- and an EXTENT CORRECTION: the rung said 11, but word 11 is the next function's `addiu sp,sp,-0x18` prologue, so the body ends in its own delay slot",
-   "source_file": "fixtures/decomp/authored/stage2/800a5b7c.c",
-   "syms": {
-    "D_80143f0c": 2148810508
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8003b640",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M378): 11 of 11, eleven words, two halfword accumulations through one loaded pointer -- and an EXTENT CORRECTION: the rung said 12, but word 12 is the next function's `addiu sp,sp,-0x30` prologue",
-   "source_file": "fixtures/decomp/authored/stage2/8003b640.c",
-   "syms": {
-    "D_800ebb94": 2148449172
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x8003247c",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M378): 11 of 11, eleven words, the M372 shape a third time: symbol plus 0x18000 kept apart, then a byte decremented through it",
-   "source_file": "fixtures/decomp/authored/stage2/8003247c.c",
-   "syms": {
-    "D_800c76b0": 2148300464
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x80073564",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M378): 11 of 11, eleven words, the same shape used for a nonzero test -- `sltu` in the delay slot is the return",
-   "source_file": "fixtures/decomp/authored/stage2/80073564.c",
-   "syms": {
-    "D_800c76b0": 2148300464
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x800844e4",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 10 of 10, ten words, a byte swap written as four masked terms -- the order of the four `or`s is the whole function",
-   "source_file": "fixtures/decomp/authored/stage2/800844e4.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x800283f0",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 11 of 11, eleven words, a method-table call at slot 0 with a 0x84 size argument, then one field cleared in the result",
-   "source_file": "fixtures/decomp/authored/stage2/800283f0.c",
-   "syms": {}
-  },
-  {
-   "image": "stage2",
-   "address": "0x8002841c",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 11 of 11, eleven words, the same call with 0x118 and a different cleared field -- the twin of 0x800283f0",
-   "source_file": "fixtures/decomp/authored/stage2/8002841c.c",
-   "syms": {}
-  },
-  {
-   "image": "ovl_00a9d94",
-   "address": "0x8016baa0",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 10 of 10, ten words, a 28-byte stride into a base whose `addiu` immediate is negative (0x8016C3AC, not 0x8017C3AC)",
-   "source_file": "fixtures/decomp/authored/ovl_00a9d94/8016baa0.c",
-   "syms": {
-    "D_8016c3ac": 2148975532
-   }
-  },
-  {
-   "image": "ovl_0093192",
-   "address": "0x80162c6c",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 9 of 9, nine words, four byte stores then a flag set in the same record -- the load hoists above the stores because the offsets prove no alias",
-   "source_file": "fixtures/decomp/authored/ovl_0093192/80162c6c.c",
-   "syms": {}
-  },
-  {
-   "image": "ovl_009aed0",
-   "address": "0x80164dec",
-   "words": 9,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 9 of 9, nine words, a no-argument indirect call through a global function pointer",
-   "source_file": "fixtures/decomp/authored/ovl_009aed0/80164dec.c",
-   "syms": {
-    "D_80166638": 2148951608
-   }
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x801664c4",
-   "words": 10,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 10 of 10, ten words, a flags word read/masked/stored around a halfword clear and a `jal`",
-   "source_file": "fixtures/decomp/authored/ovl_009dd02/801664c4.c",
-   "syms": {
-    "FUN_801664ec": 2148951276
-   }
-  },
-  {
-   "image": "ovl_00a9d94",
-   "address": "0x80162158",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 11 of 11, eleven words, one guarded call on bit 0 of a halfword at +426",
-   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80162158.c",
-   "syms": {
-    "FUN_8016ba54": 2148973140
-   }
-  },
-  {
-   "image": "ovl_00b08a2",
-   "address": "0x80161fe8",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 12 of 12, twelve words, the same guard through two loads (a pointer at +564, then its first word)",
-   "source_file": "fixtures/decomp/authored/ovl_00b08a2/80161fe8.c",
-   "syms": {
-    "FUN_8016664c": 2148951628
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x8000d66c",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M379): 11 of 11, eleven words, a wait loop on a callee's result then a one-argument call with 0x125 -- the boot image's first reconstruction in this band",
-   "source_file": "fixtures/decomp/authored/boot/8000d66c.c",
-   "syms": {
-    "FUN_8000d9c0": 2147539392,
-    "FUN_8000db10": 2147539728
-   }
-  },
-  {
-   "image": "ovl_00a0344",
-   "address": "0x801624a4",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M380): 11 of 11, eleven words, a state test then three stores -- the `lbu` of +703 hoists above them because the offsets prove no alias",
-   "source_file": "fixtures/decomp/authored/ovl_00a0344/801624a4.c",
-   "syms": {}
-  },
-  {
-   "image": "ovl_00a0344",
-   "address": "0x80163b24",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M380): 11 of 11, eleven words, an if/else on bit 6 of the argument: one arm is two stores, the other packs `(v & 0xf) << 16 + 0x02000000` into one word",
-   "source_file": "fixtures/decomp/authored/ovl_00a0344/80163b24.c",
-   "syms": {}
-  },
-  {
-   "image": "ovl_0087352",
-   "address": "0x80165ff0",
-   "words": 11,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M380): 11 of 11, eleven words, one guarded two-argument call -- `sltiu` against 1800 is the test",
-   "source_file": "fixtures/decomp/authored/ovl_0087352/80165ff0.c",
-   "syms": {
-    "FUN_80165c68": 2148949096
-   }
-  },
-  {
-   "image": "ovl_0090698",
-   "address": "0x80164650",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M380): 12 of 12, twelve words, a call whose result is ignored, then two stores -- `s0` is saved only because the argument outlives the call",
-   "source_file": "fixtures/decomp/authored/ovl_0090698/80164650.c",
-   "syms": {
-    "FUN_80163868": 2148939880
-   }
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017befc",
-   "words": 12,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M380): 12 of 12, twelve words, a call with a constant argument, a second call with none, and the first call's result returned",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/8017befc.c",
-   "syms": {
-    "FUN_8017bbb0": 2149039024,
-    "FUN_8017bd8c": 2149039500
-   }
-  },
-  {
-   "image": "ovl_008505e",
-   "address": "0x8016387c",
-   "words": 14,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 14 of 14, fourteen words, an if/else whose arms are two different calls -- the shape three of the batch's entries share",
-   "source_file": "fixtures/decomp/authored/ovl_008505e/8016387c.c",
-   "syms": {
-    "FUN_801638b4": 2148939956,
-    "FUN_80163c44": 2148940868
-   }
-  },
-  {
-   "image": "ovl_008505e",
-   "address": "0x80166338",
-   "words": 14,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 14 of 14, fourteen words, a guarded init (two stores) followed by an unconditional call",
-   "source_file": "fixtures/decomp/authored/ovl_008505e/80166338.c",
-   "syms": {
-    "FUN_80166370": 2148950896
-   }
-  },
-  {
-   "image": "ovl_008505e",
-   "address": "0x801649fc",
-   "words": 17,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 17 of 17, seventeen words, one guarded callee then three stores -- `$s0` saved because the context outlives the call",
-   "source_file": "fixtures/decomp/authored/ovl_008505e/801649fc.c",
-   "syms": {
-    "FUN_8016313c": 2148938044
-   }
-  },
-  {
-   "image": "ovl_008505e",
-   "address": "0x80163100",
-   "words": 15,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 15 of 15, fifteen words, the same guard and callee as `0x801649fc` with a different store set",
-   "source_file": "fixtures/decomp/authored/ovl_008505e/80163100.c",
-   "syms": {
-    "FUN_8016313c": 2148938044
-   }
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017dd78",
-   "words": 13,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 13 of 13, thirteen words, a wait loop: call, test, call-with-8, jump back -- the loop's back edge is a `j`, not a branch",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/8017dd78.c",
-   "syms": {
-    "FUN_8017bbcc": 2149039052,
-    "FUN_8017bbe8": 2149039080
-   }
-  },
-  {
-   "image": "ovl_00a0344",
-   "address": "0x80162024",
-   "words": 14,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 14 of 14, fourteen words, the if/else call dispatch again -- `p[427]` is the test",
-   "source_file": "fixtures/decomp/authored/ovl_00a0344/80162024.c",
-   "syms": {
-    "FUN_8016205c": 2148933724,
-    "FUN_80162064": 2148933732
-   }
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x80162e28",
-   "words": 14,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 14 of 14, fourteen words, the third instance of the if/else call dispatch in this batch",
-   "source_file": "fixtures/decomp/authored/ovl_009dd02/80162e28.c",
-   "syms": {
-    "FUN_80162e60": 2148937312,
-    "FUN_80163094": 2148937876
-   }
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x801813d8",
-   "words": 15,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 15 of 15, fifteen words, a counter read passed to a call, incremented, then a second call -- the increment's store lands in the second `jal`'s delay slot",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/801813d8.c",
-   "syms": {
-    "D_80186c98": 2149084312,
-    "FUN_8017ddb0": 2149047728,
-    "FUN_8017d0f0": 2149044464
-   }
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017b7a8",
-   "words": 16,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 16 of 16, sixteen words, five stores through a loaded pointer (three zeroes and one value twice) then a call with 0",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/8017b7a8.c",
-   "syms": {
-    "D_80186c94": 2149084308,
-    "FUN_8017bbe8": 2149039080
-   }
-  },
-  {
-   "image": "ovl_0095446",
-   "address": "0x80166e58",
-   "words": 17,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M381): 17 of 17, seventeen words, a flag test whose taken arm loads, clears, stores and calls, and whose other arm is one call",
-   "source_file": "fixtures/decomp/authored/ovl_0095446/80166e58.c",
-   "syms": {
-    "FUN_801626f4": 2148935412,
-    "FUN_80166e9c": 2148953756
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x800022bc",
-   "words": 22,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M382): 22 of 22, twenty-two words, one call then two indirect calls through the same slot with different arguments -- the second passes the first parameter as its own",
-   "source_file": "fixtures/decomp/authored/boot/800022bc.c",
-   "syms": {
-    "FUN_80001510": 2147489040
-   }
-  },
-  {
-   "image": "ovl_008505e",
-   "address": "0x80162dd4",
-   "words": 22,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M382): 22 of 22, twenty-two words, a jump-table dispatch on `p[6]` then two named calls -- the table address is the image's own, so the dispatch reads as an array of function pointers",
-   "source_file": "fixtures/decomp/authored/ovl_008505e/80162dd4.c",
-   "syms": {
-    "D_80166db8": 2148953528,
-    "FUN_801664d8": 2148951256,
-    "FUN_80166980": 2148952448
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x8000e920",
-   "words": 22,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M382): 22 of 22, twenty-two words, a call whose result becomes the next call's argument, with three stores into a pointer loaded from a global between them",
-   "source_file": "fixtures/decomp/authored/boot/8000e920.c",
-   "syms": {
-    "D_800129d4": 2147559892,
-    "FUN_800072e0": 2147513056,
-    "FUN_80007300": 2147513088
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x80033160",
-   "words": 22,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M382): 22 of 22, twenty-two words, four `lh` arguments into one call, then a signed wrap and a 12-bit modular compare -- `(x + 0x400) & 0xfff < 0x800` is a half-turn test",
-   "source_file": "fixtures/decomp/authored/stage2/80033160.c",
-   "syms": {
-    "FUN_80032d14": 2147691796
-   }
-  },
-  {
-   "image": "ovl_00b321e",
-   "address": "0x80165da0",
-   "words": 22,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M382): 22 of 22, twenty-two words, one call then the same callee twice with 3 and 4 and the second argument's halves",
-   "source_file": "fixtures/decomp/authored/ovl_00b321e/80165da0.c",
-   "syms": {
-    "FUN_80165ea0": 2148949664,
-    "FUN_80165bd0": 2148948944
-   }
-  },
-  {
-   "image": "ovl_009dd02",
-   "address": "0x801653a0",
-   "words": 23,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M382): 23 of 23, twenty-three words, a guarded call with two constants, then one unconditional call carrying all three parameters",
-   "source_file": "fixtures/decomp/authored/ovl_009dd02/801653a0.c",
-   "syms": {
-    "FUN_80165310": 2148946704,
-    "FUN_80164e88": 2148945544
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x8000490c",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that calls with its second argument -- `addu $a0,$a1,$zero` in the delay slot is the whole body",
-   "source_file": "fixtures/decomp/authored/boot/8000490c.c",
-   "syms": {
-    "FUN_800014ac": 2147488940
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x80004a50",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper: frame, save `$ra`, jal, restore",
-   "source_file": "fixtures/decomp/authored/boot/80004a50.c",
-   "syms": {
-    "FUN_80004bac": 2147503020
-   }
-  },
-  {
-   "image": "boot",
-   "address": "0x80004ec4",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, the same wrapper around a different callee",
-   "source_file": "fixtures/decomp/authored/boot/80004ec4.c",
-   "syms": {
-    "FUN_80004cfc": 2147503356
-   }
-  },
-  {
-   "image": "ovl_0093aba",
-   "address": "0x801621a8",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
-   "source_file": "fixtures/decomp/authored/ovl_0093aba/801621a8.c",
-   "syms": {
-    "FUN_801621c4": 2148934084
-   }
-  },
-  {
-   "image": "ovl_0098ee0",
-   "address": "0x80162d6c",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
-   "source_file": "fixtures/decomp/authored/ovl_0098ee0/80162d6c.c",
-   "syms": {
-    "FUN_80161d84": 2148932996
-   }
-  },
-  {
-   "image": "ovl_00a9d94",
-   "address": "0x80168cb4",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
-   "source_file": "fixtures/decomp/authored/ovl_00a9d94/80168cb4.c",
-   "syms": {
-    "FUN_80168cd0": 2148961488
-   }
-  },
-  {
-   "image": "ovl_00ae24a",
-   "address": "0x80161fc0",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
-   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80161fc0.c",
-   "syms": {
-    "FUN_801655b4": 2148947380
-   }
-  },
-  {
-   "image": "ovl_00ae24a",
-   "address": "0x80164734",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
-   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80164734.c",
-   "syms": {
-    "FUN_80164750": 2148943696
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x800a5c34",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that doubles its second argument (`sll $a1,$a1,1` in the delay slot)",
-   "source_file": "fixtures/decomp/authored/stage2/800a5c34.c",
-   "syms": {
-    "FUN_8000efa0": 2147544992
-   }
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017df4c",
-   "words": 8,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 8 of 8, eight words, a wrapper passing a fixed address -- it must be a SYMBOL, not a literal, or the `lui`/`addiu` pair becomes `ori`",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/8017df4c.c",
-   "syms": {
-    "D_80185710": 2149078800,
-    "FUN_8017b5e8": 2149037544
-   }
-  },
-  {
-   "image": "ovl_00a1414",
-   "address": "0x80162754",
-   "words": 8,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 8 of 8, eight words, a wrapper that loads a pointer from the context and offsets it before the call",
-   "source_file": "fixtures/decomp/authored/ovl_00a1414/80162754.c",
-   "syms": {
-    "FUN_80168b3c": 2148961084
-   }
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017bbcc",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a wrapper that passes the constant 1",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/8017bbcc.c",
-   "syms": {
-    "FUN_8017bec8": 2149039816
-   }
-  },
-  {
-   "image": "stage2",
-   "address": "0x800284f4",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
-   "source_file": "fixtures/decomp/authored/stage2/800284f4.c",
-   "syms": {
-    "FUN_800283b0": 2147648432
-   }
-  },
-  {
-   "image": "ovl_00a0344",
-   "address": "0x80161dc4",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M384): 7 of 7, seven words, a plain call wrapper",
-   "source_file": "fixtures/decomp/authored/ovl_00a0344/80161dc4.c",
-   "syms": {
-    "FUN_80163c90": 2148940944
-   }
-  },
-  {
-   "image": "ovl_0072610",
-   "address": "0x8017bbb0",
-   "words": 7,
-   "verdict": "byte-exact",
-   "probe": "read from the words (M385): 7 of 7, seven words, a scale getter: a global pointer, a depth field at +12, and `depth >> (32 - a)` -- the shift's operands are the trap, and the source order decides which register shifts",
-   "source_file": "fixtures/decomp/authored/ovl_0072610/8017bbb0.c",
-   "syms": {
-    "D_80186c94": 2149084308
-   }
   }
  ]
 }

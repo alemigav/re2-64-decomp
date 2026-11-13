@@ -69,14 +69,16 @@ CHECKS = [
      ("recovered", "recovered_exact"), 1),
     # M409: the distance map's line. "Already byte-exact" and "nobody had noticed" are the two sentences a reader
     # needs to judge the remaining work, and both are derived from the fixture, never typed.
-    ("README.md", r"\*\*(\d+) bodies already compile byte-exact\*\*, \*\*(\d+) of them nobody had noticed\*\*, "
-                  r"and \*\*(\d+) more are within eight words",
-     ("distance_exact", "distance_unclaimed", "distance_within_8"), 1),
+    ("README.md", r"\*\*(\d+) bodies of the decompiler's own C compile byte-exact\*\*, \*\*(\d+)\*\* of which were "
+                  r"never claimed until M410, and \*\*(\d+) more are within eight words",
+     ("distance_exact", "banked_exact", "distance_within_8"), 1),
     # M389: the front page's pictures. A generated block is not a licence to stop asserting -- the waffle's legend and
     # its headline are the two sentences a newcomer reads first, so they get cases like every other number on the page.
     ("README.md", r"\u2588 (\d+)\*\* reconstructed and byte-exact, \*\*\u2592 (\d+)\*\* a body the bytes give but "
                   r"nobody has written, \*\*\u2591 ([\d\s,]+?)\*\* the decompiler's pseudocode",
-     ("recovered", "status_extent_measured", "status_pseudocode"), 1),
+     # the legend says "reconstructed AND byte-exact", so the waffle's first number is the exact count, not the
+     # total: M410 made those two different numbers (460 of 461) and the page must print the one its words describe.
+     ("recovered_exact", "status_extent_measured", "status_pseudocode"), 1),
     ("README.md", r"the remaining ([\d\s,]+?) would take about \*\*(\d+) more milestones\*\*",
      ("status_remaining", "front_milestones_left"), 1),
     # M366: three front-page claims that had rotted silently -- the shape census, and the two split counts in the
@@ -126,6 +128,11 @@ CHECKS = [
     ("README.md", r"compares every function against the cartridge: (\d+) exact, (\d+) differs",
      ("recovered_exact", "build_differs"), 1),
     ("README.md", r"tools/\s+(\d+) analysis and gate scripts", ("tool_count",), 1),
+    # M410: the provenance split. "Bodies whose C reproduces the cartridge" and "bodies this project wrote" are two
+    # numbers, and the page must never let the first stand in for the second.
+    ("README.md", r"(\d+) entries, (\d+) byte-exact\*\* — of which \*\*(\d+)\*\* are the decompiler's own C "
+                  r"verified word for word, and \*\*(\d+)\*\* are ours",
+     ("recovered", "recovered_exact", "banked_exact", "project_recovered"), 1),
     ("README.md", r"docs/log/\s+(\d+) notes", ("note_count",), 1),
     # the codec claim on the front page, tied to the committed fixture rather than to prose
     ("README.md", r"\*\*([\d\s,]+)\*\*-byte shared codebook, with\s+\*\*([\d\s,]+)\*\* of\s+"
@@ -254,7 +261,16 @@ def _recovered(root: Path) -> dict:
             "solo": len(solo),
             "split_screened": screened,
             "split_read": read,
-            "split_named": len(solo) - screened - read,
+            # M410: a FIFTH provenance, and it exists so that 187 bodies of the decompiler's own C are never counted
+            # as work this project did. They were byte-exact all along; the bank says so with `provenance: provider`,
+            # and the label is derived from the same `probe` channel as the other three.
+            "split_banked": sum(1 for e in solo if (e.get("probe") or "").startswith("imported:")),
+            "split_named": len(solo) - screened - read
+                           - sum(1 for e in solo if (e.get("probe") or "").startswith("imported:")),
+            "banked": sum(1 for e in entries if e.get("provenance") == "provider"),
+            "banked_exact": sum(1 for e in entries
+                                if e.get("provenance") == "provider" and e["verdict"] == "byte-exact"),
+            "project_recovered": sum(1 for e in entries if e.get("provenance") != "provider"),
             # M369: this key used to be called `imported`, which was the conflation M368 found -- it counts entries
             # whose C is a *file*, and after the removal every one of those is authored here. The name went with the
             # population; the invariant that no third-party corpus is present is a case in `check()`, not a number.

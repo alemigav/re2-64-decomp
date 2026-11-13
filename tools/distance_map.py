@@ -99,10 +99,18 @@ ALWAYS = ["typedef unsigned char bool_t;", "enum { false = 0, true = 1 };"]
 # and directly (`Status | 2`). They were macros in the original source. Emitted ALWAYS: a local variable of the same
 # name would simply shadow the enum constant, so there is nothing to collide with, and the conditional version missed
 # every body that reads a COP0 register without going through a helper (40 of 218 boot refusals).
-COP0 = """enum { Index = 0, Random = 1, EntryLo0 = 2, EntryLo1 = 3, Context = 4, PageMask = 5, Wired = 6,
-       BadVAddr = 8, Count = 9, EntryHi = 10, Compare = 11, Status = 12, Cause = 13, EPC = 14, PRId = 15,
-       Config = 16, LLAddr = 17, WatchLo = 18, WatchHi = 19 };"""
+# Ghidra passes COP0 register *names* as bare identifiers (`setCopReg(0, WatchLo, in_a0)`, and directly as
+# `Status | 2`); they were macros in the original source. They are emitted as `static const` OBJECTS rather than an
+# enum for one measured reason: `Index`, `Count` and `Context` are also ordinary variable names, and an enum constant
+# cannot be shadowed — a body with a parameter called `Index` was `conflicting types for Index`. A file-scope
+# `static const` can be shadowed by a local, and `-O2` folds it to the immediate, so no object and no relocation is
+# emitted for the ones a body actually uses.
+COP0 = {"Index": 0, "Random": 1, "EntryLo0": 2, "EntryLo1": 3, "Context": 4, "PageMask": 5, "Wired": 6,
+        "BadVAddr": 8, "Count": 9, "EntryHi": 10, "Compare": 11, "Status": 12, "Cause": 13, "EPC": 14,
+        "PRId": 15, "Config": 16, "LLAddr": 17, "WatchLo": 18, "WatchHi": 19}
 COP_CALL = re.compile(r"\b(?:set|get)Cop\w*\s*\(")
+# The COP0 names as a body actually uses them, so the enum is emitted only where it is needed.
+COP_NAME = re.compile(r"\b(?:WatchLo|WatchHi|EntryHi|EntryLo0|EntryLo1|PageMask|BadVAddr|Compare|Status|Cause|EPC|PRId|Config|LLAddr|Wired|Random|Context|Index|Count)\b")
 
 MODIFIERS = re.compile(r"\bprocessEntry\b")
 
@@ -226,12 +234,31 @@ def declaration(name: str, body: str, form: str) -> str:
 
 
 def typedecls(body: str) -> str:
-    """The type preamble this body needs: only the names it does not declare itself."""
+    """The type preamble this body needs: a name only when the body USES it and does not declare it.
+
+    Usage-driven, not blanket: the first version emitted all 22 typedefs plus two enums into every file, which put
+    25 lines of scaffolding above a four-line function and made a published reconstruction look nothing like one.
+    """
     out = []
     for name, decl in TYPES:
-        if not re.search(r"\btypedef\b[^;]*\b%s\b\s*;" % re.escape(name), body):
-            out.append(decl)
-    return "\n".join(out) + "\n" + "\n".join(ALWAYS) + "\n" + COP0 + "\n"
+        if not re.search(r"\b%s\b" % re.escape(name), body):
+            continue
+        if re.search(r"\btypedef\b[^;]*\b%s\b\s*;" % re.escape(name), body):
+            continue
+        out.append(decl)
+    text = "\n".join(out) + "\n" if out else ""
+    if re.search(r"\b(?:true|false)\b", body) and "enum" not in body:
+        text += "enum { false = 0, true = 1 };\n"
+    # Emit a COP0 constant only for a name the body uses and does not declare itself: a body with its own `Index`
+    # (a function or a global) failed as "redeclared as different kind of symbol" — the same class as the enum
+    # collision, one level down.
+    for name, value in COP0.items():
+        if not re.search(r"\b%s\b" % re.escape(name), body):
+            continue
+        if already_declared(body, name):
+            continue
+        text += "static const unsigned int %s = %d;\n" % (name, value)
+    return text
 
 
 def already_declared(body: str, name: str) -> bool:
@@ -350,9 +377,14 @@ def functions_to_measure(images=None):
             continue
         for fn in image.get("functions_list") or []:
             source = fn.get("file")
-            if not source or not (ROOT / source).exists():
+            # The PROVIDER's artifact, never `src/`. `src/` is a projection of `recovered.json`, so once a body is
+            # banked its `src/` file holds *our* reconstruction — measuring that would report the map's own output
+            # back as if it were the decompiler's C, and the "unclaimed" signal would vanish by construction.
+            provider = ROOT / "build" / "decomp" / image["name"] / "functions" / ("0x%08x.c" % int(fn["address"], 16))
+            path = provider if provider.exists() else (ROOT / source if source else None)
+            if path is None or not path.exists():
                 continue
-            text = (ROOT / source).read_text(errors="replace")
+            text = path.read_text(errors="replace")
             # a listing is not C: the extent is measured and the body is deliberately absent
             if "DISASSEMBLY LISTING" in text:
                 continue

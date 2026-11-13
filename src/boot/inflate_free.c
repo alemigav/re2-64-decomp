@@ -1,11 +1,25 @@
 /* inflate_free
  * image   boot (boot), base 0x80000480
  * address 0x80004594  body 0x80004594..0x800045db  size 72 B
- * body sha256 b0cfadb89f907f44f79a3d1a69f9a23c5f329e4b1fc804c97881aca2ac920a26
- * provider record sha256 73cf939924c5d99c6962aa2139912ccd39f2e7afcef3e33e8d4fa2193fa554ed
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 93863c453c99aa59d55e510fb395fce0bc54f41e1a28ad50af4566a02e2ef977
+ * recovered byte-exact (imported: the whole body matches by offset and content (M410, banked from the distance map))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/boot/80004594.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned int undefined4;
+typedef unsigned int uint;
+
+
+
+
+
+
+
+
+
+
+
+
 void inflate_free(int param_1,uint param_2)
 
 {

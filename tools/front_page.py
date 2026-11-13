@@ -110,7 +110,9 @@ def render(root: Path) -> str:
         "",
         "Each cell is **1 %% of the %s functions** in the cartridge's code: **█ %d** reconstructed and byte-exact, "
         "**▒ %d** a body the bytes give but nobody has written, **░ %s** the decompiler's pseudocode and nothing more."
-        % (f"{v['census']:,}".replace(",", " "), v["recovered"], v["measured"], f"{v['pseudocode']:,}".replace(",", " ")),
+        # The legend says "reconstructed AND byte-exact", so it prints the exact count. M410 made the two numbers
+        # different (460 of 461: one entry is the published partial), and this generator was printing the total.
+        % (f"{v['census']:,}".replace(",", " "), v["exact"], v["measured"], f"{v['pseudocode']:,}".replace(",", " ")),
         "",
         "That is the whole picture. The other numbers on this page are context: **63.3 %%** of the image bytes sit "
         "inside a known function body — but a byte inside a body is a *classification*, not a reconstruction, which is "

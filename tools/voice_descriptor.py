@@ -535,7 +535,7 @@ def engine_fields():
               "the resampling ratio in 12-bit fixed point: (rate / _DAT_80147fa4) * 4096, clamped to "
               "0.5 (0x2000). At 16 kHz against a 32 kHz output this is 0x800",
               writers=["@800a54ec:21: *(undefined2 *)(puVar4 + 4) = 0x1000;",
-                       "@800a5a00:15: *(ushort *)(param_1 * 0x68 + _DAT_80143f0c + 4) = param_2;"],
+                       "@800a5a00:30: *(ushort *)(param_1 * 0x68 + _DAT_80143f0c + 4) = param_2;"],
               readers=["@800a3bf4:272: puVar7[0x11] = *(ushort *)(param_1 + 4);"],
               insn=0x800A5518),
         field("position_double", 8,
@@ -596,7 +596,7 @@ def engine_fields():
               "four feeds is not stated by any MIPS instruction - it is one of the unobservable entries "
               "this map lists rather than guesses",
               writers=["@800a54ec:29: *(undefined2 *)(puVar4 + 0x40) = 0;",
-                       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
+                       "@800a5a60:32: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
                           "iVar1 + 0x44,param_5,iVar1 + 0x46);"],
               readers=["@800a3bf4:249: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x40) * "
                           "*(float *)(param_1 + 0x4c)) * 0x10000 -"],
@@ -604,7 +604,7 @@ def engine_fields():
         field("gain_target_1", 2,
               "the second target gain (see +0x40)",
               writers=["@800a54ec:30: *(undefined2 *)(puVar4 + 0x42) = 0;",
-                       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
+                       "@800a5a60:32: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
                           "iVar1 + 0x44,param_5,iVar1 + 0x46);"],
               readers=["@800a3bf4:255: iVar3 = (int)((float)(int)*(short *)(param_1 + 0x42) * "
                           "*(float *)(param_1 + 0x4c)) * 0x10000 -"],
@@ -620,7 +620,7 @@ def engine_fields():
         field("gain_target_3", 2,
               "the fourth target gain (see +0x40)",
               writers=["@800a54ec:32: *(undefined2 *)(puVar4 + 0x46) = 0;",
-                       "@800a5a60:18: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
+                       "@800a5a60:32: FUN_800a5da0(iVar1 + 0x42,iVar1 + 0x40,param_2,param_3,param_4,"
                           "iVar1 + 0x44,param_5,iVar1 + 0x46);"],
               readers=["@800a3bf4:265: fVar14 = (float)(int)*(short *)(param_1 + 0x46) * "
                           "*(float *)(param_1 + 0x4c);"],

@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "fd7bde6",
+   "subject": "M409: the distance map -- 3 194 bodies had never been scored, and 188 already match",
+   "milestones": [
+    409
+   ]
+  },
+  {
    "sha": "c7a4667",
    "subject": "M408: the loop decision-structure class on 0x800b43a0 -- 18 again, and the residue is one cause",
    "milestones": [

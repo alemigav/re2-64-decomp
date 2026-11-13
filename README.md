@@ -2,11 +2,11 @@
 
 **What it is:** a black-box study of *Resident Evil 2* on the Nintendo 64 (`NREE` rev 1 USA), reverse-engineered from the
 cartridge up — 3 664 functions catalogued, the file formats decoded, the script virtual machine and three audio codecs
-worked out from the bytes, and **274 functions reconstructed in C and recompiled — 273 of them matching the game's own
-machine code byte for byte**. It ships a **1394-case verification suite**, and every claim here is either measured by
+worked out from the bytes, and **461 functions reconstructed in C and recompiled — 460 of them matching the game's own
+machine code byte for byte**. It ships a **1582-case verification suite**, and every claim here is either measured by
 one of those cases or explicitly labelled a reading of the code.
 
-Measured against the cartridge itself (M409), **439 bodies already compile byte-exact**, **188 of them nobody had noticed**, and **253 more are within eight words** — the decompiler's own C, compiled with the pinned profile, is closer to the game than the reconstruction count said. The 188 are the ones no one had verified; the rest is a ranked queue for the first time.
+Measured against the cartridge itself (M409/M410), **392 bodies of the decompiler's own C compile byte-exact**, **187** of which were never claimed until M410, and **296 more are within eight words** — so the decompiler's output was already closer to the game than the reconstruction count said, and what remains is a ranked queue for the first time.
 
 > **Two versions of this page.** This is the short one: what the project is, what it proves, how to check it in a
 > minute, and where the work stands. The **dense technical companion —
@@ -22,11 +22,11 @@ Measured against the cartridge itself (M409), **439 bodies already compile byte-
 
 ## How close is this to a matching decompilation?
 
-**273 of 3 664 functions match the cartridge exactly — 7.5 %.**
+**460 of 3 664 functions match the cartridge exactly — 12.6 %.**
 
 ```
-█ █ █ █ █ █ █ █ ▒ ▒
-▒ ▒ ▒ ░ ░ ░ ░ ░ ░ ░
+█ █ █ █ █ █ █ █ █ █
+█ █ █ ▒ ▒ ▒ ▒ ▒ ░ ░
 ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
 ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
 ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
@@ -37,17 +37,17 @@ Measured against the cartridge itself (M409), **439 bodies already compile byte-
 ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
 ```
 
-Each cell is **1 % of the 3 664 functions** in the cartridge's code: **█ 274** reconstructed and byte-exact, **▒ 196** a body the bytes give but nobody has written, **░ 3 194** the decompiler's pseudocode and nothing more.
+Each cell is **1 % of the 3 664 functions** in the cartridge's code: **█ 460** reconstructed and byte-exact, **▒ 196** a body the bytes give but nobody has written, **░ 3 007** the decompiler's pseudocode and nothing more.
 
-That is the whole picture. The other numbers on this page are context: **63.3 %** of the image bytes sit inside a known function body — but a byte inside a body is a *classification*, not a reconstruction, which is why coverage is never the score here. At the rate of the last ten milestones (**53** functions) the remaining 3 390 would take about **640 more milestones**.
+That is the whole picture. The other numbers on this page are context: **63.3 %** of the image bytes sit inside a known function body — but a byte inside a body is a *classification*, not a reconstruction, which is why coverage is never the score here. At the rate of the last ten milestones (**53** functions) the remaining 3 203 would take about **604 more milestones**.
 
 | the three numbers, and which one is the score | |
 | --- | --- |
-| **reconstructed and proved** — the score | **273 of 3 664** (7.5 %) |
+| **reconstructed and proved** — the score | **460 of 3 664** (12.6 %) |
 | bytes inside a known function body | 63.3 % — a *classification*, not a reconstruction |
 | functions with a curated name | **47** of 3 664 — the gap between a transcript and understanding |
 
-The build, which is the shape a static recompiler wants — `make check`: **273 of 274** reconstructed bodies link at their cartridge address, over **28** images — the one that does not is the published partial; the build emits `.text` only, so there are **no data segments**.
+The build, which is the shape a static recompiler wants — `make check`: **460 of 461** reconstructed bodies link at their cartridge address, over **32** images — the one that does not is the published partial; the build emits `.text` only, so there are **no data segments**.
 
 <!-- front-page: end -->
 
@@ -55,8 +55,8 @@ The build, which is the shape a static recompiler wants — `make check`: **273 
 
 | | |
 |---|---|
-| **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **273 functions match the cartridge exactly**, to the last byte, out of **274 reconstructed in C**: from Nintendo's own libultra runtime down to single-instruction accessors. 97 of them are copies of 21 proven body shapes, so one proven shape registers every copy; an earlier arc re-verified 194 more from another decompilation, and those are **gone** — removed in M369 for want of a licence ([the corpus, honestly counted](#the-corpus-and-what-is-left)) |
-| **The unusual part** | **359 checks run with no ROM, no assets and no emulator** — the other 1035 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses `PASS` unless it has first proved each gate *can* fail |
+| **The result** | The compiler that built this game is **identified and reproduced** — gcc 2.8.1 for MIPS-ELF — and **460 functions match the cartridge exactly**, to the last byte, out of **461 reconstructed in C** — 274 of them written here, 187 of them the decompiler's own C verified word for word: from Nintendo's own libultra runtime down to single-instruction accessors. 97 of them are copies of 21 proven body shapes, so one proven shape registers every copy; an earlier arc re-verified 194 more from another decompilation, and those are **gone** — removed in M369 for want of a licence ([the corpus, honestly counted](#the-corpus-and-what-is-left)) |
+| **The unusual part** | **360 checks run with no ROM, no assets and no emulator** — the other 1222 need your dump and say `SKIP`, never `PASS` — plus a verifier that refuses `PASS` unless it has first proved each gate *can* fail |
 | **The scale of what is left** | 63.3 % of the image bytes sit inside a known function body and the rest is classified rather than guessed; finishing 64 MB is a community-scale effort, so every stage ships as it lands |
 
 **This is not a matching build** — of the whole cartridge, and there is **no Makefile, linker script or ROM
@@ -87,7 +87,7 @@ published as **226 of 229 words** rather than rounded up, and the largest functi
 ```sh
 git clone https://github.com/alemigav/re2-64-decomp
 cd re2-64-decomp
-python3 tools/verify.py     # -> PASS-FAST: 359 cases run, 1035 SKIP (they need your dump, never PASS)
+python3 tools/verify.py     # -> PASS-FAST: 360 cases run, 1222 SKIP (they need your dump, never PASS)
 ```
 
 That is the whole setup: Python 3, no dependencies, no cartridge. `python3 tools/acceptance.py` lists the suites by
@@ -101,7 +101,7 @@ links each at the address the cartridge puts it, and stitches the results into a
 
 ```sh
 make            # -> build/corpus/<image>.elf and <image>.bin, one pair per image, plus index.json
-make check      # the same, then compares every function against the cartridge: 273 exact, 1 differs
+make check      # the same, then compares every function against the cartridge: 460 exact, 1 differs
 make test       # the fast gate the acceptance suite runs
 ```
 
@@ -118,7 +118,7 @@ covers — but it is the first artefact here that a downstream tool could open, 
 ## Verify it without the cartridge
 
 ```sh
-python3 tools/acceptance.py      # 37 suites / 359 of 1394 cases run; the other 47 suites SKIP
+python3 tools/acceptance.py      # 37 suites / 360 of 1582 cases run; the other 47 suites SKIP
 python3 tools/audit_gates.py     # 160/160 — every gate must fail when its mechanism is disabled
 python3 tools/workflow_lint.py   # 14/14 — CI lints the file that makes CI run
 python3 tools/check_markers.py   # 25/25 — every doc anchor, heading and note pointer holds
@@ -129,7 +129,7 @@ python3 tools/verify.py          # all of the above, adjudicated into one verdic
 ```
 
 A suite that cannot run prints `SKIP (needs the cartridge)` — **never PASS** — and the split is stated wherever it is
-counted: **1035 of 1394 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
+counted: **1222 of 1582 cases cannot run without your dump**, and the CI job summary lists them by name. The mutation
 audit is the unusual one: it **disables each check's mechanism** and requires the check to fail, 160 mechanisms and 160
 failures with **0 vacuous**, after first running the unmutated tool as a positive control — that control once found that
 49 of 132 audits had never tested their mutation. [The extended page](docs/README-extended.md#6-the-verification-architecture)
@@ -137,7 +137,7 @@ has the architecture, the ratchet's three invariants and the 30-second rule.
 
 ## Milestones
 
-**410** numbers, 0-409: **345** with a row, and **65** named gaps. The full index — every number, its title, and the
+**411** numbers, 0-410: **346** with a row, and **65** named gaps. The full index — every number, its title, and the
 note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table worth reading
 before you believe any older note.
@@ -255,11 +255,12 @@ P19  M332│████████│ 66
   carry a curated name, and **12** have behaviour pinned by a gate or an executed experiment — and since M395 all **12**
   of those carry a name derived from what the gate pins, so the naming and the behaviour evidence overlap instead of being
   disjoint. Naming the other 3 619 does not have that luxury: a name without a gate behind it is a guess.
-- **The recovered corpus is 274 entries, 273 byte-exact** — and the count needs its qualifier, which is now derived
+- **The recovered corpus is 461 entries, 460 byte-exact** — of which **187** are the decompiler's own C verified word for word, and **274** are ours. The two numbers are never merged on this page, and the split is asserted. The count needs its qualifier too, which is now derived
   rather than typed: **97** are copies of **21** proven body shapes — 44 the empty function, **17 the dispatch family**
   across eight table addresses, 11 a masked call wrapper, and the rest two- and three-copy shapes closed by statement
-  order, by a strided index, or by where a constant sits in an OR chain. The other **177** are not copies: **52** landed
-  from the screening tool, **106** read by hand from the disassembly, **19** one-off probes. All of those figures are
+  order, by a strided index, or by where a constant sits in an OR chain. The other **364** are not copies: **52** landed
+  from the screening tool, **106** read by hand from the disassembly, **19** one-off probes, and **187** are the
+  decompiler's own C verified word for word (M410). All of those figures are
   derived from the corpus and asserted by `tools/counts.py` — the check that was missing while this sentence claimed
   46 + 55 against a corpus of 210. An earlier arc imported **194** reconstructions from another decompilation and
   re-verified them word for word; they were **removed in M369** because that project publishes no licence, so the
@@ -302,10 +303,10 @@ record the cartridge never labels — is
 ## Layout
 
 ```
-tools/       110 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
+tools/       111 analysis and gate scripts — plain Python 3, stdlib only, nothing to compile
 src/         3 605 decompiled functions across 36 images, one .c per function, provenance in each header, with the 174 switch-case bodies the provider labels `switchD_::caseD_` kept under `<image>/switch/`
 docs/        README-extended.md (the dense version), handover.md, format_notes.md, MILESTONES.md, reverse_engineering_log.md
-docs/log/    326 notes, one per milestone that has one
+docs/log/    327 notes, one per milestone that has one
 manifests/   offsets, sizes, addresses, hashes — derived facts, no bytes
 fixtures/    the synthetic cartridge, the opcode tables, the function-boundary index
 include/     re2_formats.h — the format structures, shared by the tools and the C validator
