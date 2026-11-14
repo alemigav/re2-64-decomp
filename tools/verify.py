@@ -183,7 +183,9 @@ def report(as_json: bool, tier="fast") -> int:
         "why": why,
         "coverage": ("fast" if tier == "fast" else
                      "partial" if (skipped or (audit and audit[4])) else "full"),
-        "note": ("fast tier: four heavy suites held back and admission not run -- `--full` for the whole thing"
+        # No count in this sentence: it said "four" while there were six, which is the M373 defect in miniature. The
+        # suites are named in `acceptance.HEAVY_SUITES`, which is the one place the number lives.
+        "note": ("fast tier: the named heavy suites held back and admission not run -- `--full` for the whole thing"
                  if tier == "fast" else
                  "cartridge-gated suites SKIPped: any claim that depends on them is INCONCLUSIVE here"
                  if (skipped or (audit and audit[4])) else "all suites ran"),

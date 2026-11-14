@@ -253,13 +253,23 @@ MAX_JOBS = 4
 # whole difference between a 12-minute commit and a ~30-second one, so they are named here as a measurement,
 # not a preference, and `--tier fast` drops exactly them.
 # `--tier all` (the default) is unchanged, so no existing caller can accidentally get less than it asked for.
+# M418: the gate audit is the heaviest suite by an order of magnitude — **273 s of a 344 s fast tier**, measured — and
+# it was in the tier that claims 30 seconds. It is admission-grade verification: `verify.py --full` already runs it as
+# its own *procedure*, so grading it twice bought nothing and broke the contract. Named here, timed here.
 HEAVY_SUITES = ("voice sweep (cartridge)", "file table (cartridge)",
-                "provenance acceptance", "routine index bounds (cartridge)")
+                "provenance acceptance", "routine index bounds (cartridge)",
+                "gate audit (mechanisms disabled)", "toolchain matrix (cartridge)")
 
 
 def jobs_of(raw):
     """Clamp a JOBS value to 1..MAX_JOBS. An unparseable value is 1 — a pool with no workers would
-    report a green run without running anything."""
+    report a green run without running anything.
+
+    M418: the DEFAULT used to be 1, which left three cores idle on every run and made the fast tier a serial sum of
+    87 suites. It now defaults to the smaller of MAX_JOBS and the machine's cores: the pool already existed, was
+    already clamped, and was already order-stable (results are collected by index, M240) — the default was simply
+    never set. `JOBS=1` still forces a serial run.
+    """
     try:
         n = int(raw)
     except (TypeError, ValueError):
@@ -268,7 +278,8 @@ def jobs_of(raw):
 
 
 def jobs_from_env():
-    return jobs_of(os.environ.get("JOBS", "1"))
+    default = str(min(MAX_JOBS, os.cpu_count() or 1))
+    return jobs_of(os.environ.get("JOBS", default))
 
 
 def judge(name, expected, code, text, lines):

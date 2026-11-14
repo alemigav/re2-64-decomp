@@ -982,6 +982,12 @@ def verdict(out: str):
     return None
 
 
+# The positive control is per AUDIT but it is identical for every case that shares a tool: the same pristine sandbox,
+# the same command. Running it once per tool instead of once per case is worth **~230 s of the 529 s** serial audit,
+# and it cannot weaken the mechanism — a control that passed in this environment passes in it again.
+_CONTROL_CACHE: dict = {}
+
+
 def run_audit(audit, keep: Path = None) -> tuple:
     """Returns (detected, detail). `detected` is True when the mutated check failed, as it must."""
     tmp = Path(tempfile.mkdtemp(prefix="gate-audit."))
@@ -1024,8 +1030,13 @@ def run_audit(audit, keep: Path = None) -> tuple:
         # never copied: the mutated tool died on `FileNotFoundError` before reaching a case, and exit 1 read
         # as a caught mutation. Growing the list an eighth time would not fix the class, so the pristine run
         # is now a mechanism. It costs one extra run per audit and it names the sandbox, not the mutation.
-        control = subprocess.run([interp, str(tmp / "tools" / audit["tool"])] + audit["args"],
-                                 capture_output=True, text=True, cwd=str(tmp))
+        control_key = (interp, audit["tool"], tuple(audit["args"]))
+        if control_key in _CONTROL_CACHE:
+            control = _CONTROL_CACHE[control_key]
+        else:
+            control = subprocess.run([interp, str(tmp / "tools" / audit["tool"])] + audit["args"],
+                                     capture_output=True, text=True, cwd=str(tmp))
+            _CONTROL_CACHE[control_key] = control
         if control.returncode != 0:
             lines = (control.stdout + control.stderr).splitlines()
             why = next((l for l in reversed(lines) if l.strip()), "")
