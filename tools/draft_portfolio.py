@@ -74,6 +74,22 @@ def find_m2c(explicit: str | None):
     return None
 
 
+def splat_lines(rows, addr: int) -> str:
+    """[(vaddr, word, insn)] -> m2c's `glabel` shape, with a label at every branch target.
+
+    Pure, and separate from the objdump call for one reason: the self-test used to reach through `asm_of` into
+    `build/`, which a CI checkout does not have (it is gitignored) — so the gate reported "no verdict" on a tree where
+    it could not run. **A gate's environment has to be the one it can run in** (M356's lesson, relearned here).
+    """
+    targets = set(re.findall(r"0x([0-9a-f]{8})", " ".join(i for _v, _w, i in rows)))
+    lines = []
+    for vaddr, word, insn in rows:
+        if vaddr in targets:
+            lines.append(".L%s:" % vaddr)
+        lines.append("/* 000000 %s %s */  %s" % (vaddr, word, re.sub(r"0x([0-9a-f]{8})", r".L\1", insn)))
+    return "glabel func_%08x\n" % addr + "\n".join(lines) + "\n"
+
+
 def asm_of(cp, image: str, addr: int, words: int) -> str:
     """The body's own words as m2c input: its `glabel` shape, with labels at branch targets."""
     blob, base = cp.image_window(image, cp.image_inventory())
@@ -91,13 +107,7 @@ def asm_of(cp, image: str, addr: int, words: int) -> str:
         vaddr, word, insn = m.group(1), m.group(2), m.group(3).strip()
         insn = FPREGS.sub(r"$\1", REGS.sub(r"$\1", insn))
         body.append((vaddr, word, insn))
-    targets = set(re.findall(r"0x([0-9a-f]{8})", " ".join(i for _v, _w, i in body)))
-    lines = []
-    for vaddr, word, insn in body:
-        if vaddr in targets:
-            lines.append(".L%s:" % vaddr)
-        lines.append("/* 000000 %s %s */  %s" % (vaddr, word, re.sub(r"0x([0-9a-f]{8})", r".L\1", insn)))
-    return "glabel func_%08x\n" % addr + "\n".join(lines) + "\n"
+    return splat_lines(body, addr)
 
 
 def split_args(s: str):
@@ -301,9 +311,11 @@ def self_test() -> int:
     cases.append(("M2C_FIELD expands with its type, even on a call-valued base",
                   expand_fields("x = M2C_FIELD(f(a, b), u16 *, 6);")
                   == "x = (*(u16 *)((s8 *)(f(a, b)) + (6)));", expand_fields("x = M2C_FIELD(f(a, b), u16 *, 6);")))
-    asm = asm_of(bank_module().distance_map().probe(), "boot", 0x80007010, 6)
+    rows = [("80007010", "14800003", "bnez\t$a0,0x80007020"), ("80007014", "00000000", "nop"),
+            ("80007020", "03e00008", "jr\t$ra")]
+    asm = splat_lines(rows, 0x80007010)
     cases.append(("the asm writer emits a glabel and a label at the branch target",
-                  asm.startswith("glabel func_80007010") and ".L80007020:" in asm and "$a0" in asm, asm[:60]))
+                  asm.startswith("glabel func_80007010") and ".L80007020:" in asm and "$a0" in asm, asm[:80]))
     cases.append(("a repeat expansion removes every M2C_FIELD",
                   "M2C_FIELD" not in expand_fields("a = M2C_FIELD(M2C_FIELD(p, u8 *, 1), u32 *, 2);"), ""))
     bad = sum(1 for _n, ok, _d in cases if not ok)
