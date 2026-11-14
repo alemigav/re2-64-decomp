@@ -34672,16 +34672,6 @@
    "named": false,
    "validated": false
   },
-  "ovl_00ae24a:0x80162484": {
-   "name": "FUN_80162484",
-   "image": "ovl_00ae24a",
-   "address": "0x80162484",
-   "callees": 2,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "ovl_00ae24a:0x8016255c": {
    "name": "FUN_8016255c",
    "image": "ovl_00ae24a",
@@ -34977,6 +34967,16 @@
    "image": "ovl_00ae24a",
    "address": "0x801623e8",
    "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "ovl_00ae24a:0x80162484": {
+   "name": "FUN_80162484",
+   "image": "ovl_00ae24a",
+   "address": "0x80162484",
+   "callees": 2,
    "callees_unknown": 0,
    "level": 2,
    "named": false,

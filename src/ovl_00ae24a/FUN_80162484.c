@@ -1,29 +1,55 @@
 /* FUN_80162484
  * image   ovl_00ae24a (ovl), base 0x80161cf0
  * address 0x80162484  body 0x80162484..0x8016255b  size 216 B
- * body sha256 df41bc65529895108c5e85130188e4dcc60e05dbfa4ba8d7f9a793058527bbd7
- * provider record sha256 13bf7d4369a5a5f44c19a48a5a030fcd37af918247b90bb80d39195707ea4a52
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 07e40555606860bc1e4432bdb2b90fd6b2df15e9de33ef013c88f74f2c757497
+ * recovered byte-exact (read from the words (M425): a guard chain of early returns over the 0x800C76B0+0x18000 record, signed compare, then the work block)
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_00ae24a/80162484.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef signed short s16;
+typedef signed int s32;
+typedef unsigned int u32;
 
-void FUN_80162484(int param_1)
+extern u8 D_800c76b0[];
+u32 func_80032e74(u32 a0, u32 a1, u32 a2, u32 a3);
+u32 func_80059e00(u32 a0, u32 a1);
 
+void FUN_80162484(u32 s1)
 {
-  short sVar1;
-  uint uVar2;
-  
-  uVar2 = *(uint *)(param_1 + 0x28c);
-  sVar1 = func_0x80032e74(param_1,_DAT_800e1158,_DAT_800e1160,0x80);
-  if ((((9000 < *(int *)(param_1 + 0x28)) && (uVar2 < 6000)) && (sVar1 == 0)) &&
-     (((DAT_800e139f == 0 && (_DAT_800e1322 < 1)) && ((*(ushort *)(param_1 + 0x2c2) & 4) == 0)))) {
-    *(undefined4 *)(param_1 + 4) = 0x1040000;
-    func_0x80059e00(500,0);
-    DAT_800e139f = DAT_800e139f | 0x80;
-    *(undefined1 *)(param_1 + 0x2b4) = 4;
-    *(undefined1 *)(param_1 + 0x2b5) = 0;
-    _DAT_800e10ec = _DAT_800e10ec | 0x100;
-  }
-  return;
+    u32 base = (u32)D_800c76b0;
+    u32 off = 0x18000;
+    u8 *s0 = (u8 *)(base + off);
+    u32 s2 = *(u32 *)(s1 + 652);
+    u32 r = func_80032e74(s1, *(u32 *)(s0 + 6824), *(u32 *)(s0 + 6832), 0x80);
+    u32 v0;
+
+    if (*(s32 *)(s1 + 40) < 0x2329)
+        return;
+    v0 = s2 < 0x1770;
+    if (v0 == 0)
+        return;
+    v0 = r << 16;
+    if (v0 != 0)
+        return;
+    if (*(u8 *)(s0 + 7407) != 0)
+        return;
+    if (*(s16 *)(s0 + 7282) > 0)
+        return;
+    v0 = *(u16 *)(s1 + 706);
+    v0 &= 4;
+    if (v0 != 0)
+        return;
+    *(u32 *)(s1 + 4) = 0x01040000;
+    func_80059e00(0x1f4, 0);
+    v0 = *(u8 *)(s0 + 7407);
+    v0 |= 0x80;
+    *(u8 *)(s0 + 7407) = v0;
+    v0 = 4;
+    *(u8 *)(s1 + 692) = v0;
+    *(u8 *)(s1 + 693) = 0;
+    v0 = *(u32 *)(s0 + 6716);
+    v0 |= 0x100;
+    *(u32 *)(s0 + 6716) = v0;
 }

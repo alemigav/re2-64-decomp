@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-425 milestones are indexed. 337 of them have a note; the rest are rows in the log that cite
+426 milestones are indexed. 338 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -443,6 +443,7 @@ at the foot of this file.
 | 422 | **M422** — six more bodies, and two bugs in the pass harness that were hiding them | `docs/log/M422-the-pass-harness-bugs.md` |
 | 423 | **M423** — six of the twelve "improvements" were spurious, and the six real ones do not close | `docs/log/M423-a-matcher-that-could-not-tell-a-constant-from-an-address.md` |
 | 424 | **M424** — the `blez` idiom: found, closed by hand at 16 of 16, and it recurs in 19 bodies | `docs/log/M424-the-blez-idiom.md` |
+| 425 | **M425** — the first body drafted whole: 54 words, and what it taught | `docs/log/M425-the-first-body-drafted-whole.md` |
 
 ## The gaps, and why they are empty
 

@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "6a74f4b",
+   "subject": "M424: the blez idiom -- found, closed at 16 of 16, and it recurs in 19 bodies",
+   "milestones": [
+    424
+   ]
+  },
+  {
    "sha": "79cf485",
    "subject": "M423: six of the twelve \"improvements\" were spurious, and the six real ones do not close",
    "milestones": [

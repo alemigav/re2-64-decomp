@@ -3198,6 +3198,28 @@
   },
   {
    "image": "ovl_00ae24a",
+   "address": "0x80162484",
+   "words": 54,
+   "verdict": "byte-exact",
+   "provenance": "project",
+   "probe": "read from the words (M425): a guard chain of early returns over the 0x800C76B0+0x18000 record, signed compare, then the work block",
+   "source_file": "fixtures/decomp/authored/ovl_00ae24a/80162484.c",
+   "syms": {
+    "FUN_80162484": 2148934788,
+    "func_0x80032e74": 2147692148,
+    "func_0x80059e00": 2147851776,
+    "DAT_800e139f": 2148406175,
+    "_DAT_800e10ec": 2148405484,
+    "_DAT_800e1158": 2148405592,
+    "_DAT_800e1160": 2148405600,
+    "_DAT_800e1322": 2148406050,
+    "func_80032e74": 2147692148,
+    "func_80059e00": 2147851776,
+    "D_800c76b0": 2148300464
+   }
+  },
+  {
+   "image": "ovl_00ae24a",
    "address": "0x80164734",
    "words": 7,
    "verdict": "byte-exact",
