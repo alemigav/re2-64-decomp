@@ -1,20 +1,20 @@
 {
  "histogram": {
-  "exact": 470,
+  "exact": 472,
   "none": 0,
-  "over_half": 134,
+  "over_half": 133,
   "under_half": 2185,
-  "within_1": 14,
-  "within_2": 80,
-  "within_4": 82,
+  "within_1": 13,
+  "within_2": 82,
+  "within_4": 80,
   "within_8": 90
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 654,
-  "claimed_not_exact": 185,
-  "exact": 470,
-  "exact_and_claimed": 469,
+  "claimed": 658,
+  "claimed_not_exact": 187,
+  "exact": 472,
+  "exact_and_claimed": 471,
   "exact_unclaimed": 1
  },
  "profile": "cc1 2.8.1 -O2 -G 0 -mips2 -mcpu=r4300; as -EB -mips2 -mcpu=r4300 -g -G 0",
@@ -7875,9 +7875,9 @@
    "w": 41
   },
   "ovl_009dd02:80163608": {
-   "d": 7,
-   "i": 55,
-   "s": "scored",
+   "d": null,
+   "i": 56,
+   "s": "exact",
    "t": "scalar",
    "w": 56
   },
@@ -11365,7 +11365,7 @@
   },
   "ovl_00b5346:8016217c": {
    "d": 7,
-   "i": 28,
+   "i": 29,
    "s": "scored",
    "t": "scalar",
    "w": 31
@@ -11386,7 +11386,7 @@
   },
   "ovl_00b5346:80162540": {
    "d": 7,
-   "i": 64,
+   "i": 65,
    "s": "scored",
    "t": "scalar",
    "w": 67
@@ -13403,9 +13403,9 @@
    "w": 85
   },
   "stage2:8003ba1c": {
-   "d": 6,
-   "i": 28,
-   "s": "scored",
+   "d": null,
+   "i": 43,
+   "s": "exact",
    "t": "scalar",
    "w": 43
   },
@@ -23080,14 +23080,14 @@
  "totals": {
   "as_failed": 0,
   "cc1_failed": 418,
-  "exact": 470,
+  "exact": 472,
   "functions": 3473,
   "link_failed": 0,
   "measured": 3055,
   "no_source": 0,
-  "percent_words": 11.05,
-  "scored": 2585,
+  "percent_words": 11.06,
+  "scored": 2583,
   "words": 298724,
-  "words_identical": 33010
+  "words_identical": 33028
  }
 }

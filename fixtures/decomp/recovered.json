@@ -2278,6 +2278,23 @@
   },
   {
    "image": "ovl_009dd02",
+   "address": "0x80163608",
+   "words": 56,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the cast pass after localtype (56 of 56) (M430)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80163608.c",
+   "syms": {
+    "FUN_80163564": 2148939108,
+    "FUN_80163608": 2148939272,
+    "FUN_80166838": 2148952120,
+    "func_0x80032b5c": 2147691356,
+    "func_0x800334c8": 2147693768,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_009dd02",
    "address": "0x801636e8",
    "words": 13,
    "verdict": "byte-exact",
@@ -3705,6 +3722,39 @@
   },
   {
    "image": "ovl_00b5346",
+   "address": "0x8016217c",
+   "words": 31,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the symbol:addr pass after localtype+cast (31 of 31) (M430)",
+   "source_file": "fixtures/decomp/authored/ovl_00b5346/8016217c.c",
+   "syms": {
+    "FUN_8016217c": 2148934012,
+    "FUN_801621f8": 2148934136,
+    "FUN_80162408": 2148934664,
+    "func_0x800837ac": 2148022188,
+    "D_800e8d00": 2148437248
+   }
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x80162540",
+   "words": 67,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the symbol:addr pass after localtype+cast (67 of 67) (M430)",
+   "source_file": "fixtures/decomp/authored/ovl_00b5346/80162540.c",
+   "syms": {
+    "FUN_80162540": 2148934976,
+    "func_0x80032bd8": 2147691480,
+    "func_0x80077d18": 2147974424,
+    "func_0x800837ac": 2148022188,
+    "func_0x80089d54": 2148048212,
+    "D_800e8d00": 2148437248
+   }
+  },
+  {
+   "image": "ovl_00b5346",
    "address": "0x8016264c",
    "words": 18,
    "verdict": "byte-exact",
@@ -4516,6 +4566,21 @@
    "source_file": "fixtures/decomp/authored/stage2/8003b640.c",
    "syms": {
     "D_800ebb94": 2148449172
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8003ba1c",
+   "words": 43,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the cast pass after localtype (43 of 43) (M430)",
+   "source_file": "fixtures/decomp/authored/stage2/8003ba1c.c",
+   "syms": {
+    "FUN_80033604": 2147694084,
+    "FUN_80039c34": 2147720244,
+    "FUN_8003ba1c": 2147727900,
+    "DAT_800ebb94": 2148449172
    }
   },
   {

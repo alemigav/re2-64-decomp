@@ -46,6 +46,7 @@ MECHANISMS = {
     "dat:width": "yes — vary a data symbol's declared width",
     "guard:early": "yes — a wrapping `if` becomes a guard with an early exit, with the value signed",
     "localtype": "yes — vary a local's or a parameter's declared type",
+    "cast": "yes — vary the signedness of a cast expression, pointer-ness preserved",
     "sig:param": "yes",
     "domain:integer": "no — changes the type of an expression tree",
     "pointer:named": "no — introduces a binding that changes CSE",
@@ -328,9 +329,34 @@ def localtype_variants(text: str, ctx=None):
     return out
 
 
+# --- cast — the signedness of a CAST EXPRESSION ---------------------------------------------------------------------
+# M429 read the residue behind `localtype`'s 96 improved bodies: the largest single class is the **extension idiom**
+# (`addu` where we emit `sll 24` or `andi 0xff`) in **47 %**, and byte/half signedness (`lbu`↔`lb`) in 29 % — one root
+# cause, and it lives in CASTS, where `localtype` cannot reach because that pass varies declarations.
+# The pointer-ness of a cast is preserved: `*(char *)` becomes `*(unsigned char *)`, never `(int)`.
+CAST = re.compile(r"\((?:unsigned |signed )?(?:char|short|int|u8|s8|u16|s16|u32|s32|undefined[1248])( \*)?\)")
+CAST_TYPES = ["unsigned char", "char", "short", "unsigned short", "int", "unsigned int"]
+
+
+def cast_variants(text: str, ctx=None):
+    """One variant per (cast site, type), pointer-ness preserved — bounded, and every candidate is a real C type."""
+    out, seen = [], {text}
+    for m in CAST.finditer(text):
+        star = m.group(1) or ""
+        for kind in CAST_TYPES:
+            cand = text[:m.start()] + "(%s%s)" % (kind, star) + text[m.end():]
+            if cand in seen:
+                continue
+            seen.add(cand)
+            out.append(("cast (%s%s)" % (kind, star), cand))
+            if len(out) >= 12:
+                return out
+    return out
+
+
 PASSES = {"order": order_variants, "sig": sig_variants, "guard": pastguard_variants,
           "forward": forward_variants, "symbol": symbol_variants, "datwidth": datwidth_variants,
-          "early": earlyguard_variants, "localtype": localtype_variants}
+          "early": earlyguard_variants, "localtype": localtype_variants, "cast": cast_variants}
 
 
 def band(kind: str):
@@ -385,16 +411,26 @@ def write(args) -> int:
               "band": args.band, "bodies": len(todo),
               "mechanisms": MECHANISMS, "passes": {}}
     banked, improved = 0, []
-    # Each pass sees the bodies the previous pass did not close, and each body keeps the best draft it has reached.
-    remaining = {("%s:%08x" % (c["image"], c["address"])): c for c in todo}
-    best = {("%s:%08x" % (c["image"], c["address"])): c["base"] for c in todo}
+    # Each pass sees the bodies the previous pass did not close, AND the best text the previous passes reached.
+    #
+    # The first version restarted every pass from the provider's draft, so an improvement could never accumulate: a body
+    # needing `localtype` and then `cast` was improved twice and closed never, and the closing count stayed 0 across
+    # nine passes. The improved count was measuring nine independent passes, not a pipeline.
+    remaining, best, best_text = {}, {}, {}
+    for c in todo:
+        key = "%s:%08x" % (c["image"], c["address"])
+        remaining[key] = c
+        best[key] = c["base"]
+        text, _syms, _why = be.body_for(dm, None, c["rung"], c["image"], c["address"], c["words"])
+        best_text[key] = text
     for name in passes:
         fn = PASSES[name]
         closed, tried, up = 0, 0, 0
         for key, cand in list(remaining.items()):
-            text, syms, _why = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"], cand["words"])
+            text = best_text.get(key)
             if text is None:
                 continue
+            syms = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"], cand["words"])[1]
             ctx = (dm.probe(), cand["image"], cand["address"], cand["words"])
             variants = fn(text, ctx)
             tried += 1
@@ -406,6 +442,7 @@ def write(args) -> int:
                     continue
                 if score > best[key]:
                     best[key] = score
+                    best_text[key] = variant
                     up += 1
                 if score == cand["words"]:
                     won = (label, variant)
@@ -422,11 +459,10 @@ def write(args) -> int:
                 fixture["functions"].append({
                     "image": cand["image"], "address": "0x%08x" % cand["address"], "words": cand["words"],
                     "verdict": "byte-exact", "provenance": "provider",
-                    "probe": "imported: closed by the %s mechanism pass (%d of %d -> %d of %d) (M416)"
-                             % (label.split()[0], cand["base"], cand["words"], cand["words"], cand["words"]),
+                    "probe": "imported: closed by the %s pass after %s (%d of %d) (M430)"
+                             % (label.split()[0], "+".join(passes[:passes.index(name)]) or "no prior pass",
+                                cand["words"], cand["words"]),
                     "source_file": str(out.relative_to(ROOT)),
-                    # the variant's OWN symbols, not the provider draft's: an entry that omits `D_80143fb0` banks a
-                    # body whose pin fails, and six of them did exactly that before this line (M422).
                     "syms": syms_for(variant, syms)})
                 fixture["functions"].sort(key=lambda e: (e["image"], int(e["address"], 16)))
                 RECOVERED.write_text(json.dumps(fixture, indent=1) + "\n")
@@ -434,7 +470,7 @@ def write(args) -> int:
             banked += 1
             del remaining[key]
         report["passes"][name] = {"bodies_tried": tried, "closed": closed, "improved": up}
-        print("pass %-6s bodies %3d  closed %d  improved %d" % (name, tried, closed, up))
+        print("pass %-9s bodies %3d  closed %d  improved %d" % (name, tried, closed, up))
     report["banked"] = banked
     report["improved_total"] = sum(1 for k in best if best[k] > next(c["base"] for c in todo
                                                                     if "%s:%08x" % (c["image"], c["address"]) == k))
@@ -480,6 +516,10 @@ def self_test() -> int:
         ("a parameter's declared type yields variants",
          any(v[0].startswith("localtype") for v in localtype_variants(
              "void f(int param_1)\n{\n  param_1 = 1;\n}\n", None)), ""),
+        ("a cast's signedness yields variants and keeps its pointer-ness",
+         any("(unsigned char *)" in c for _l, c in cast_variants("x = *(char *)(p + 1);")), ""),
+        ("a value cast yields variants too",
+         any(v[0].startswith("cast") for v in cast_variants("x = (char)y;")), ""),
         ("every mechanism is classified", all(v for v in MECHANISMS.values()), ""),
     ]
     bad = sum(1 for _n, ok, _d in cases if not ok)
@@ -495,7 +535,7 @@ def main(argv):
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--band", default="mid", choices=("mid", "near"))
-    ap.add_argument("--passes", default="localtype,symbol,datwidth,early,forward,order,guard,sig")
+    ap.add_argument("--passes", default="localtype,cast,symbol,datwidth,early,forward,order,guard,sig")
     ap.add_argument("--max-words", type=int, default=200)
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args(argv)

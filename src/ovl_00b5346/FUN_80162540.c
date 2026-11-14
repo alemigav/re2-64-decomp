@@ -1,19 +1,38 @@
 /* FUN_80162540
  * image   ovl_00b5346 (ovl), base 0x80161cf0
  * address 0x80162540  body 0x80162540..0x8016264b  size 268 B
- * body sha256 ad7ebd1e95a457d71e47a40b82183b528048a1d67c991434670c5bafb5f5b024
- * provider record sha256 feeed880b7ea2aa0f44c85b13686e4c87bc3b920e3d36afdbb769fe0954d4d54
- * callees 4 direct (4 in corpus)
- * provider Ghidra 12.2
+ * body sha256 36b617403845976c60c18b7f6a127c97ab89594d8f883266a022c699f6235a9e
+ * recovered byte-exact (imported: closed by the symbol:addr pass after localtype+cast (67 of 67) (M430))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_00b5346/80162540.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned int u32;
+typedef unsigned char undefined1;
+extern unsigned char D_800e8d00[];
+typedef unsigned short undefined2;
+typedef unsigned int undefined4;
+typedef unsigned char byte;
+typedef unsigned short ushort;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_80162540(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   int iVar1;
   
-  iVar1 = func_0x800837ac(0x800e8d00,0x1f);
+  iVar1 = func_0x800837ac((u32)D_800e8d00,0x1f);
   if (iVar1 == 0) {
-    if (*(char *)(param_1 + 6) == '\0') {
+    if (*(unsigned char *)(param_1 + 6) == '\0') {
       *(undefined1 *)(param_1 + 6) = 1;
       *(undefined2 *)(param_1 + 0x1e2) = 0x28;
       *(undefined2 *)(param_1 + 0x68) = 0x200;

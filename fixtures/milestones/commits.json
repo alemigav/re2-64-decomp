@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "386a97e",
+   "subject": "M428: localtype -- 4 bodies closed and 131 moved, the largest pass the program has produced",
+   "milestones": [
+    428
+   ]
+  },
+  {
    "sha": "6f5cca4",
    "subject": "M427: the queue is sorted by shape -- 1 495 linear bodies, 469 with loops",
    "milestones": [
