@@ -47,6 +47,7 @@ MECHANISMS = {
     "guard:early": "yes — a wrapping `if` becomes a guard with an early exit, with the value signed",
     "localtype": "yes — vary a local's or a parameter's declared type",
     "cast": "yes — vary the signedness of a cast expression, pointer-ness preserved",
+    "sign": "yes — swap a type for its opposite signedness at the SAME width",
     "sig:param": "yes",
     "domain:integer": "no — changes the type of an expression tree",
     "pointer:named": "no — introduces a binding that changes CSE",
@@ -354,6 +355,36 @@ def cast_variants(text: str, ctx=None):
     return out
 
 
+# --- sign — the SAME width, the opposite signedness ---------------------------------------------------------------
+# M429 read the residue and found the class that dominates: the extension idiom (47 %) and byte/half signedness (29 %),
+# one root cause. `cast` and `localtype` vary a type over six widths-and-signednesses at once, which means the ONE
+# change this class needs — `u8` -> `s8`, `u16` -> `s16`, same width — is only ever tried as a side effect, and often
+# loses the variant budget to an unrelated width change on the same body. This pass does only that swap, at every place a
+# type is written: a declaration, a parameter, or a cast.
+SIGN_PAIRS = {"u8": "s8", "s8": "u8", "u16": "s16", "s16": "u16", "u32": "s32", "s32": "u32",
+              "unsigned char": "char", "char": "unsigned char",
+              "unsigned short": "short", "short": "unsigned short",
+              "unsigned int": "int", "int": "unsigned int",
+              "undefined1": "signed char", "undefined2": "short", "undefined4": "int"}
+TYPE_SITE = re.compile(r"(?<![A-Za-z0-9_])(%s)(?![A-Za-z0-9_])" % "|".join(
+    sorted((re.escape(k) for k in SIGN_PAIRS), key=len, reverse=True)))
+
+
+def sign_variants(text: str, ctx=None):
+    """One variant per (type site, opposite signedness) — bounded, and never a width change."""
+    out, seen = [], {text}
+    for m in TYPE_SITE.finditer(text):
+        swapped = SIGN_PAIRS[m.group(1)]
+        cand = text[:m.start()] + swapped + text[m.end():]
+        if cand in seen:
+            continue
+        seen.add(cand)
+        out.append(("sign %s -> %s" % (m.group(1), swapped), cand))
+        if len(out) >= 12:
+            break
+    return out
+
+
 PASSES = {"order": order_variants, "sig": sig_variants, "guard": pastguard_variants,
           "forward": forward_variants, "symbol": symbol_variants, "datwidth": datwidth_variants,
           "early": earlyguard_variants, "localtype": localtype_variants, "cast": cast_variants}
@@ -404,78 +435,85 @@ def write(args) -> int:
     if args.limit:
         todo = todo[:args.limit]
     todo = [c for c in todo if c["words"] <= args.max_words]
-    passes = [p for p in (args.passes or "order,sig").split(",") if p in PASSES]
-    report = {"note": "Closures per mechanism pass, over a band. A mechanism that closes nothing is a measured zero. "
-                      "The mechanisms no text pass can express are listed in `mechanisms` — that is the finding, not a "
-                      "TODO.",
-              "band": args.band, "bodies": len(todo),
+    passes = [p for p in (args.passes or "").split(",") if p in PASSES]
+    report = {"note": "Closures per mechanism pass, over a band, run to a fixpoint. A mechanism that closes nothing is "
+                      "a measured zero. The mechanisms no text pass can express are listed in `mechanisms` — that is "
+                      "the finding, not a TODO.",
+              "band": args.band, "bodies": len(todo), "rounds": 0,
               "mechanisms": MECHANISMS, "passes": {}}
-    banked, improved = 0, []
-    # Each pass sees the bodies the previous pass did not close, AND the best text the previous passes reached.
-    #
-    # The first version restarted every pass from the provider's draft, so an improvement could never accumulate: a body
-    # needing `localtype` and then `cast` was improved twice and closed never, and the closing count stayed 0 across
-    # nine passes. The improved count was measuring nine independent passes, not a pipeline.
-    remaining, best, best_text = {}, {}, {}
+    remaining, best, best_text, syms_of = {}, {}, {}, {}
     for c in todo:
         key = "%s:%08x" % (c["image"], c["address"])
+        text, syms, _why = be.body_for(dm, None, c["rung"], c["image"], c["address"], c["words"])
+        if text is None:
+            continue
         remaining[key] = c
         best[key] = c["base"]
-        text, _syms, _why = be.body_for(dm, None, c["rung"], c["image"], c["address"], c["words"])
         best_text[key] = text
-    for name in passes:
-        fn = PASSES[name]
-        closed, tried, up = 0, 0, 0
-        for key, cand in list(remaining.items()):
-            text = best_text.get(key)
-            if text is None:
-                continue
-            syms = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"], cand["words"])[1]
-            ctx = (dm.probe(), cand["image"], cand["address"], cand["words"])
-            variants = fn(text, ctx)
-            tried += 1
-            won = None
-            for label, variant in variants:
-                score, status = be.pins(dm, variant, cand["image"], cand["address"], cand["words"],
-                                        syms_for(variant, syms))
-                if status != "linked":
+        syms_of[key] = syms
+    banked = 0
+    # A pass list run ONCE is not a pipeline (M429). A body that needs `localtype` on one local and `cast` on one site
+    # closes only if the second pass sees the first's result — and only if the first is allowed to run AGAIN over what
+    # the second changed. `--rounds` repeats the whole list until a round improves nothing; the first version ran each
+    # name exactly once, which searches an ORDERING and never a COMBINATION.
+    for round_no in range(max(1, args.rounds)):
+        moved = 0
+        for name in passes:
+            fn = PASSES[name]
+            closed, tried, up = 0, 0, 0
+            for key, cand in list(remaining.items()):
+                text = best_text.get(key)
+                if text is None:
                     continue
-                if score > best[key]:
-                    best[key] = score
-                    best_text[key] = variant
-                    up += 1
-                if score == cand["words"]:
-                    won = (label, variant)
-                    break
-            if won is None:
-                continue
-            label, text = won
-            out = AUTHORED / cand["image"] / ("%08x.c" % cand["address"])
-            out.parent.mkdir(parents=True, exist_ok=True)
-            out.write_text(text)
-            fixture = json.loads(RECOVERED.read_text())
-            if not any(e["image"] == cand["image"] and int(e["address"], 16) == cand["address"]
-                       for e in fixture["functions"]):
-                fixture["functions"].append({
-                    "image": cand["image"], "address": "0x%08x" % cand["address"], "words": cand["words"],
-                    "verdict": "byte-exact", "provenance": "provider",
-                    "probe": "imported: closed by the %s pass after %s (%d of %d) (M430)"
-                             % (label.split()[0], "+".join(passes[:passes.index(name)]) or "no prior pass",
-                                cand["words"], cand["words"]),
-                    "source_file": str(out.relative_to(ROOT)),
-                    "syms": syms_for(variant, syms)})
-                fixture["functions"].sort(key=lambda e: (e["image"], int(e["address"], 16)))
-                RECOVERED.write_text(json.dumps(fixture, indent=1) + "\n")
-            closed += 1
-            banked += 1
-            del remaining[key]
-        report["passes"][name] = {"bodies_tried": tried, "closed": closed, "improved": up}
-        print("pass %-9s bodies %3d  closed %d  improved %d" % (name, tried, closed, up))
+                syms = syms_of[key]
+                ctx = (dm.probe(), cand["image"], cand["address"], cand["words"])
+                variants = fn(text, ctx)
+                tried += 1
+                won = None
+                for label, variant in variants:
+                    score, status = be.pins(dm, variant, cand["image"], cand["address"], cand["words"],
+                                            syms_for(variant, syms))
+                    if status != "linked":
+                        continue
+                    if score > best[key]:
+                        best[key] = score
+                        best_text[key] = variant
+                        up += 1
+                    if score == cand["words"]:
+                        won = (label, variant)
+                        break
+                if won is None:
+                    continue
+                label, text = won
+                out = AUTHORED / cand["image"] / ("%08x.c" % cand["address"])
+                out.parent.mkdir(parents=True, exist_ok=True)
+                out.write_text(text)
+                fixture = json.loads(RECOVERED.read_text())
+                if not any(e["image"] == cand["image"] and int(e["address"], 16) == cand["address"]
+                           for e in fixture["functions"]):
+                    fixture["functions"].append({
+                        "image": cand["image"], "address": "0x%08x" % cand["address"], "words": cand["words"],
+                        "verdict": "byte-exact", "provenance": "provider",
+                        "probe": "imported: closed by the %s pass, round %d (M430)" % (label.split()[0], round_no + 1),
+                        "source_file": str(out.relative_to(ROOT)),
+                        "syms": syms_for(variant, syms)})
+                    fixture["functions"].sort(key=lambda e: (e["image"], int(e["address"], 16)))
+                    RECOVERED.write_text(json.dumps(fixture, indent=1) + "\n")
+                closed += 1
+                banked += 1
+                del remaining[key]
+            prev = report["passes"].get(name, {"bodies_tried": 0, "closed": 0, "improved": 0})
+            report["passes"][name] = {"bodies_tried": max(prev["bodies_tried"], tried),
+                                      "closed": prev["closed"] + closed, "improved": prev["improved"] + up}
+            print("round %d  %-9s bodies %3d  closed %d  improved %d" % (round_no + 1, name, tried, closed, up))
+            moved += closed + up
+        report["rounds"] = round_no + 1
+        if moved == 0:
+            break
     report["banked"] = banked
-    report["improved_total"] = sum(1 for k in best if best[k] > next(c["base"] for c in todo
-                                                                    if "%s:%08x" % (c["image"], c["address"]) == k))
     FIXTURE.write_text(json.dumps(report, indent=1, sort_keys=True) + "\n")
-    print("banked %d; bodies whose score rose without closing: %d" % (banked, report["improved_total"]))
+    total_improved = sum(v["improved"] for v in report["passes"].values())
+    print("banked %d across %d round(s); %d improvements in total" % (banked, report["rounds"], total_improved))
     return 0
 
 
@@ -535,8 +573,9 @@ def main(argv):
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--band", default="mid", choices=("mid", "near"))
-    ap.add_argument("--passes", default="localtype,cast,symbol,datwidth,early,forward,order,guard,sig")
+    ap.add_argument("--passes", default="localtype,cast,sign,symbol,datwidth,early,forward,order,guard,sig")
     ap.add_argument("--max-words", type=int, default=200)
+    ap.add_argument("--rounds", type=int, default=3, help="repeat the whole pass list until a round improves nothing")
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args(argv)
     if args.self_test:

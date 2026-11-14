@@ -1,20 +1,20 @@
 {
  "histogram": {
-  "exact": 472,
+  "exact": 476,
   "none": 0,
   "over_half": 133,
-  "under_half": 2185,
+  "under_half": 2184,
   "within_1": 13,
-  "within_2": 82,
-  "within_4": 80,
-  "within_8": 90
+  "within_2": 81,
+  "within_4": 79,
+  "within_8": 89
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 658,
+  "claimed": 662,
   "claimed_not_exact": 187,
-  "exact": 472,
-  "exact_and_claimed": 471,
+  "exact": 476,
+  "exact_and_claimed": 475,
   "exact_unclaimed": 1
  },
  "profile": "cc1 2.8.1 -O2 -G 0 -mips2 -mcpu=r4300; as -EB -mips2 -mcpu=r4300 -g -G 0",
@@ -16922,9 +16922,9 @@
    "w": 10
   },
   "stage2:8006dbc0": {
-   "d": 7,
-   "i": 7,
-   "s": "scored",
+   "d": null,
+   "i": 13,
+   "s": "exact",
    "t": "scalar",
    "w": 13
   },
@@ -17139,9 +17139,9 @@
    "w": 98
   },
   "stage2:800700d0": {
-   "d": 4,
-   "i": 7,
-   "s": "scored",
+   "d": null,
+   "i": 20,
+   "s": "exact",
    "t": "scalar",
    "w": 20
   },
@@ -17937,9 +17937,9 @@
    "w": 24
   },
   "stage2:800793a4": {
-   "d": 4,
-   "i": 27,
-   "s": "scored",
+   "d": null,
+   "i": 29,
+   "s": "exact",
    "t": "scalar",
    "w": 29
   },
@@ -21982,9 +21982,9 @@
    "w": 3
   },
   "stage2:800a942c": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 28,
+   "s": "exact",
    "t": "scalar",
    "w": 28
   },
@@ -23080,14 +23080,14 @@
  "totals": {
   "as_failed": 0,
   "cc1_failed": 418,
-  "exact": 472,
+  "exact": 476,
   "functions": 3473,
   "link_failed": 0,
   "measured": 3055,
   "no_source": 0,
   "percent_words": 11.06,
-  "scored": 2583,
+  "scored": 2579,
   "words": 298724,
-  "words_identical": 33028
+  "words_identical": 33053
  }
 }

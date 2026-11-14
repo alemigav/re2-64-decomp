@@ -477,7 +477,7 @@
       "name": "started",
       "offset": 0,
       "reader": [
-       "@800a942c:14: if ((&DAT_801481e0)[param_1 * 0x18] == '\\x01') {"
+       "@800a942c:28: if ((&DAT_801481e0)[param_1 * 0x18] == '\\x01') {"
       ],
       "width": 1,
       "writer": [
@@ -1219,7 +1219,7 @@
    },
    {
     "path": "src/stage2/FUN_800a942c.c",
-    "sha256": "6dd471a631cc8a145439be7f885201b64427b634fe5a021d7dd85375ee146cec"
+    "sha256": "94517d0f48422c7aee7788d901baeef520f898608b22aba87ce16dffbf0ff3f5"
    },
    {
     "path": "src/stage2/FUN_800b3640.c",

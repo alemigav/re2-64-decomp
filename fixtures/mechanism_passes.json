@@ -1,8 +1,7 @@
 {
- "band": "near",
- "banked": 3,
- "bodies": 191,
- "improved_total": 64,
+ "band": "mid",
+ "banked": 1,
+ "bodies": 458,
  "mechanisms": {
   "cast": "yes \u2014 vary the signedness of a cast expression, pointer-ness preserved",
   "compare:copy": "no \u2014 changes which value is live",
@@ -18,54 +17,56 @@
   "rematerialise:block": "no \u2014 introduces a nested scope",
   "sig:forward": "yes \u2014 needs the image's words (data-driven)",
   "sig:param": "yes",
+  "sign": "yes \u2014 swap a type for its opposite signedness at the SAME width",
   "symbol:addr": "yes \u2014 an address as a value becomes a symbol reference"
  },
- "note": "Closures per mechanism pass, over a band. A mechanism that closes nothing is a measured zero. The mechanisms no text pass can express are listed in `mechanisms` \u2014 that is the finding, not a TODO.",
+ "note": "Closures per mechanism pass, over a band, run to a fixpoint. A mechanism that closes nothing is a measured zero. The mechanisms no text pass can express are listed in `mechanisms` \u2014 that is the finding, not a TODO.",
  "passes": {
   "cast": {
-   "bodies_tried": 191,
-   "closed": 1,
-   "improved": 33
+   "bodies_tried": 458,
+   "closed": 0,
+   "improved": 76
   },
   "datwidth": {
-   "bodies_tried": 188,
+   "bodies_tried": 458,
    "closed": 0,
-   "improved": 22
+   "improved": 60
   },
   "early": {
-   "bodies_tried": 188,
+   "bodies_tried": 458,
    "closed": 0,
    "improved": 0
   },
   "forward": {
-   "bodies_tried": 188,
+   "bodies_tried": 458,
    "closed": 0,
    "improved": 0
   },
   "guard": {
-   "bodies_tried": 188,
+   "bodies_tried": 458,
    "closed": 0,
-   "improved": 0
+   "improved": 1
   },
   "localtype": {
-   "bodies_tried": 191,
-   "closed": 0,
-   "improved": 11
+   "bodies_tried": 458,
+   "closed": 1,
+   "improved": 130
   },
   "order": {
-   "bodies_tried": 188,
+   "bodies_tried": 458,
    "closed": 0,
-   "improved": 2
+   "improved": 15
   },
   "sig": {
-   "bodies_tried": 188,
+   "bodies_tried": 458,
    "closed": 0,
    "improved": 0
   },
   "symbol": {
-   "bodies_tried": 190,
-   "closed": 2,
-   "improved": 3
+   "bodies_tried": 458,
+   "closed": 0,
+   "improved": 10
   }
- }
+ },
+ "rounds": 4
 }

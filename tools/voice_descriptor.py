@@ -653,7 +653,7 @@ def handle_fields():
         field("started", 1,
               "set to 1 by the start call and cleared by FUN_800a942c before it releases the handle",
               writers=["@800a924c:38: (&DAT_801481e0)[iVar2] = 1;"],
-              readers=["@800a942c:14: if ((&DAT_801481e0)[param_1 * 0x18] == '\\x01') {"],
+              readers=["@800a942c:28: if ((&DAT_801481e0)[param_1 * 0x18] == '\\x01') {"],
               insn=0x800A92F4),
         field("refill_callback", 4,
               "the routine the engine calls when it wants more PCM; the voice path passes FUN_800b4478, "

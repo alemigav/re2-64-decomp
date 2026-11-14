@@ -5677,6 +5677,19 @@
   },
   {
    "image": "stage2",
+   "address": "0x8006dbc0",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the localtype pass, round 2 (M430)",
+   "source_file": "fixtures/decomp/authored/stage2/8006dbc0.c",
+   "syms": {
+    "FUN_8006d628": 2147931688,
+    "FUN_8006dbc0": 2147933120
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8006dd7c",
    "words": 10,
    "verdict": "byte-exact",
@@ -5772,6 +5785,20 @@
    "verdict": "byte-exact",
    "probe": "p6ff48: 98 of 98",
    "source": "P6FF48_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800700d0",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the localtype pass, round 2 (M430)",
+   "source_file": "fixtures/decomp/authored/stage2/800700d0.c",
+   "syms": {
+    "FUN_800700d0": 2147942608,
+    "FUN_800701d8": 2147942872,
+    "DAT_800e8c78": 2148437112
+   }
   },
   {
    "image": "stage2",
@@ -6029,6 +6056,21 @@
    "syms": {
     "FUN_80078b40": 2147978048,
     "FUN_800b21a8": 2148213160
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800793a4",
+   "words": 29,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width pass, round 2 (M430)",
+   "source_file": "fixtures/decomp/authored/stage2/800793a4.c",
+   "syms": {
+    "FUN_800793a4": 2147980196,
+    "FUN_800b2098": 2148212888,
+    "DAT_80119e73": 2148638323,
+    "DAT_80119e74": 2148638324
    }
   },
   {
@@ -7292,6 +7334,23 @@
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_800A9420_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a942c",
+   "words": 28,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width pass, round 2 (M430)",
+   "source_file": "fixtures/decomp/authored/stage2/800a942c.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a942c": 2148176940,
+    "FUN_800af130": 2148200752,
+    "DAT_80136310": 2148754192,
+    "DAT_801481e0": 2148827616
+   }
   },
   {
    "image": "stage2",
