@@ -20063,19 +20063,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x800a56c0",
-     "name": "FUN_800a56c0",
-     "file": "src/stage2/FUN_800a56c0.c",
-     "size": 64,
-     "sha256": "df07ebeb823095f4b5d5706685536bfbb530ecdc68c7edfcc4b8992fccf42435",
-     "provider_sha256": "55b63261a4b866960879990f19bc3e67b3a6a4efeae0a1c6a8503316a53ab6ab",
-     "status": "written",
-     "callees": [
-      "0x8000cb60"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x800a5750",
      "name": "FUN_800a5750",
      "file": "src/stage2/FUN_800a5750.c",
@@ -27815,6 +27802,19 @@
      "status": "recovered",
      "callees": [
       "0x8000c9e0"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800a56c0",
+     "name": "FUN_800a56c0",
+     "file": "src/stage2/FUN_800a56c0.c",
+     "size": 64,
+     "sha256": "884fd874f5d5b8c1a95737f279d612afa287d0898244093cffac78cfd70e2074",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000cb60"
      ],
      "callees_unknown": 0
     },

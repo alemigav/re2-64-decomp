@@ -6919,6 +6919,21 @@
   },
   {
    "image": "stage2",
+   "address": "0x800a56c0",
+   "words": 16,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: guard with an early exit plus a SIGNED declaration gives blez (M424 workbench)",
+   "source_file": "fixtures/decomp/authored/stage2/800a56c0.c",
+   "syms": {
+    "FUN_800a56c0": 2148161216,
+    "func_0x8000cb60": 2147535712,
+    "DAT_80135cac": 2148752556,
+    "D_80143fb0": 2148810672
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800a5700",
    "words": 10,
    "verdict": "byte-exact",

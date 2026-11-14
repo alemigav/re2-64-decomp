@@ -44,6 +44,7 @@ MECHANISMS = {
     "sig:forward": "yes — needs the image's words (data-driven)",
     "symbol:addr": "yes — an address as a value becomes a symbol reference",
     "dat:width": "yes — vary a data symbol's declared width",
+    "guard:early": "yes — a wrapping `if` becomes a guard with an early exit, with the value signed",
     "sig:param": "yes",
     "domain:integer": "no — changes the type of an expression tree",
     "pointer:named": "no — introduces a binding that changes CSE",
@@ -267,8 +268,40 @@ def datwidth_variants(text: str, ctx=None):
     return out[:8]
 
 
+# --- guard:early — the guard with an early exit, which is what `blez` means -----------------------------------------
+# `stage2:0x800a56c0` closed at 16 of 16 with `if (DAT <= 0) return;` and DAT declared **signed**: the image branches
+# straight to the epilogue (`blez v0,+9`), so the source is a GUARD, not a wrapping `if`, and `<= 0` on an unsigned
+# value is `== 0` — which is `beq`, the word we emitted. BOTH halves are required; either alone leaves 15 of 16.
+# Measured across the queue: **19 bodies carry this residue**.
+LAST_IF = re.compile(r"(\n(\s*)if \(([^\n]*)\) \{\n)([\s\S]*?)(\n\2\}\n\s*return;\n)\s*\}\s*$")
+NEGATE = [(" < ", " >= "), (" > ", " <= "), (" <= ", " > "), (" >= ", " < "), (" == ", " != "), (" != ", " == ")]
+
+
+def earlyguard_variants(text: str, ctx=None):
+    m = LAST_IF.search(text)
+    if not m:
+        return []
+    indent, cond, body = m.group(2), m.group(3), m.group(4)
+    out = []
+    closes = text[m.end():]
+    for neg_cond in ["!(%s)" % cond] + ["%s%s%s" % (cond.split(op)[0], nop, cond.split(op)[1])
+                                        for op, nop in NEGATE if op in cond][:2]:
+        restructured = ("\n%sif (%s) {\n%s    return;\n%s}\n%s\n}\n"
+                        % (indent, neg_cond, indent, indent, body.strip("\n")))
+        head = text[:m.start()]
+        cand = head + restructured if not closes.strip() else None
+        if cand is None:
+            continue
+        signed = re.sub(r"^extern unsigned int (\w+);$", r"extern int \1;", cand, flags=re.M)
+        for label, variant in (("guard:early", cand), ("guard:early+signed", signed)):
+            if variant not in out:
+                out.append((label, variant))
+    return out[:6]
+
+
 PASSES = {"order": order_variants, "sig": sig_variants, "guard": pastguard_variants,
-          "forward": forward_variants, "symbol": symbol_variants, "datwidth": datwidth_variants}
+          "forward": forward_variants, "symbol": symbol_variants, "datwidth": datwidth_variants,
+          "early": earlyguard_variants}
 
 
 def band(kind: str):
@@ -410,6 +443,8 @@ def self_test() -> int:
         ("`lui a0,0x8014` decodes to a0 = 0x80140000", _const_into_arg(0x3C048014) == ("a0", 0x80140000),
          str(_const_into_arg(0x3C048014))),
         ("an instruction that sets no argument register yields nothing", _const_into_arg(0x03E00008) is None, ""),
+        ("a wrapping if followed by return becomes a guard", bool(earlyguard_variants(
+            "extern unsigned int D;\nvoid f(void)\n{\n  if (0 < D) {\n    g();\n  }\n  return;\n}\n")), ""),
         ("every mechanism is classified", all(v for v in MECHANISMS.values()), ""),
     ]
     bad = sum(1 for _n, ok, _d in cases if not ok)
@@ -425,7 +460,7 @@ def main(argv):
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--band", default="mid", choices=("mid", "near"))
-    ap.add_argument("--passes", default="symbol,datwidth,forward,order,guard,sig")
+    ap.add_argument("--passes", default="symbol,datwidth,early,forward,order,guard,sig")
     ap.add_argument("--max-words", type=int, default=200)
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args(argv)

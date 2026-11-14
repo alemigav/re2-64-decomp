@@ -3429,7 +3429,7 @@
   {"id":"stage2:0x800a5358","image":"stage2","addr":"0x800a5358","name":"FUN_800a5358","file":"src/stage2/FUN_800a5358.c","size":404,"status":"written"},
   {"id":"stage2:0x800a54ec","image":"stage2","addr":"0x800a54ec","name":"snd_voice_setup","file":"src/stage2/snd_voice_setup.c","size":396,"status":"written"},
   {"id":"stage2:0x800a5678","image":"stage2","addr":"0x800a5678","name":"snd_mutex_acquire","file":"src/stage2/snd_mutex_acquire.c","size":72,"status":"recovered"},
-  {"id":"stage2:0x800a56c0","image":"stage2","addr":"0x800a56c0","name":"FUN_800a56c0","file":"src/stage2/FUN_800a56c0.c","size":64,"status":"written"},
+  {"id":"stage2:0x800a56c0","image":"stage2","addr":"0x800a56c0","name":"FUN_800a56c0","file":"src/stage2/FUN_800a56c0.c","size":64,"status":"recovered"},
   {"id":"stage2:0x800a5700","image":"stage2","addr":"0x800a5700","name":"FUN_800a5700","file":"src/stage2/FUN_800a5700.c","size":40,"status":"recovered"},
   {"id":"stage2:0x800a5728","image":"stage2","addr":"0x800a5728","name":"FUN_800a5728","file":"src/stage2/FUN_800a5728.c","size":40,"status":"recovered"},
   {"id":"stage2:0x800a5750","image":"stage2","addr":"0x800a5750","name":"FUN_800a5750","file":"src/stage2/FUN_800a5750.c","size":68,"status":"written"},
