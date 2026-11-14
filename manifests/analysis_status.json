@@ -8452,16 +8452,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x8006b9f0": {
-   "name": "FUN_8006b9f0",
-   "image": "stage2",
-   "address": "0x8006b9f0",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x8006ba24": {
    "name": "FUN_8006ba24",
    "image": "stage2",
@@ -8476,16 +8466,6 @@
    "name": "FUN_8006bb0c",
    "image": "stage2",
    "address": "0x8006bb0c",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x8006bbbc": {
-   "name": "FUN_8006bbbc",
-   "image": "stage2",
-   "address": "0x8006bbbc",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
@@ -11327,16 +11307,6 @@
    "image": "stage2",
    "address": "0x80087868",
    "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800879a0": {
-   "name": "FUN_800879a0",
-   "image": "stage2",
-   "address": "0x800879a0",
-   "callees": 2,
    "callees_unknown": 0,
    "level": 2,
    "named": false,
@@ -14442,40 +14412,10 @@
    "named": true,
    "validated": true
   },
-  "stage2:0x800a5678": {
-   "name": "snd_mutex_acquire",
-   "image": "stage2",
-   "address": "0x800a5678",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": true,
-   "validated": true
-  },
   "stage2:0x800a56c0": {
    "name": "FUN_800a56c0",
    "image": "stage2",
    "address": "0x800a56c0",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a5700": {
-   "name": "FUN_800a5700",
-   "image": "stage2",
-   "address": "0x800a5700",
-   "callees": 1,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
-  "stage2:0x800a5728": {
-   "name": "FUN_800a5728",
-   "image": "stage2",
-   "address": "0x800a5728",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
@@ -19332,6 +19272,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x8006b9f0": {
+   "name": "FUN_8006b9f0",
+   "image": "stage2",
+   "address": "0x8006b9f0",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x8006ba18": {
    "name": "FUN_8006ba18",
    "image": "stage2",
@@ -19346,6 +19296,16 @@
    "name": "FUN_8006baf4",
    "image": "stage2",
    "address": "0x8006baf4",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x8006bbbc": {
+   "name": "FUN_8006bbbc",
+   "image": "stage2",
+   "address": "0x8006bbbc",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,
@@ -20332,6 +20292,16 @@
    "named": false,
    "validated": false
   },
+  "stage2:0x800879a0": {
+   "name": "FUN_800879a0",
+   "image": "stage2",
+   "address": "0x800879a0",
+   "callees": 2,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
   "stage2:0x80088548": {
    "name": "FUN_80088548",
    "image": "stage2",
@@ -20616,6 +20586,36 @@
    "name": "FUN_800a2444",
    "image": "stage2",
    "address": "0x800a2444",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x800a5678": {
+   "name": "snd_mutex_acquire",
+   "image": "stage2",
+   "address": "0x800a5678",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": true,
+   "validated": true
+  },
+  "stage2:0x800a5700": {
+   "name": "FUN_800a5700",
+   "image": "stage2",
+   "address": "0x800a5700",
+   "callees": 1,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x800a5728": {
+   "name": "FUN_800a5728",
+   "image": "stage2",
+   "address": "0x800a5728",
    "callees": 1,
    "callees_unknown": 0,
    "level": 2,

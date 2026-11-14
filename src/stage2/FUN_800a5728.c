@@ -1,14 +1,28 @@
 /* FUN_800a5728
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800a5728  body 0x800a5728..0x800a574f  size 40 B
- * body sha256 11d972083c1afae89a2805bcf0cc5659cddc0a2b2f3b81d1522b898156e3f72c
- * provider record sha256 db1372266a0d124d324793d71e1e211348394835d616ccc4c55d6e931ebb7ec0
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 5ff849d956e74bcf3a834ad63b705c1c21a445d577f80c023dfcd6e338a862ae
+ * recovered byte-exact (imported: closed by the symbol:addr mechanism pass (9 of 10 -> 10 of 10) (M416))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/stage2/800a5728.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned int u32;
+extern unsigned char D_80143fb0[];
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_800a5728(void)
 
 {
-  osSendMesg(0x80143fb0,0,0);
+  func_0x8000cb60((u32)D_80143fb0,0,0);
   return;
 }

@@ -5390,6 +5390,20 @@
   },
   {
    "image": "stage2",
+   "address": "0x8006b9f0",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the symbol:addr mechanism pass (8 of 10 -> 10 of 10) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8006b9f0.c",
+   "syms": {
+    "FUN_8006b9f0": 2147924464,
+    "func_0x8000c9e0": 2147535328,
+    "D_80139fd0": 2148769744
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8006ba18",
    "words": 3,
    "verdict": "byte-exact",
@@ -5407,6 +5421,20 @@
    "syms": {
     "FUN_8006ba24": 2147924516,
     "FUN_8006baf4": 2147924724
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8006bbbc",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the symbol:addr mechanism pass (8 of 10 -> 10 of 10) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8006bbbc.c",
+   "syms": {
+    "FUN_8006bbbc": 2147924924,
+    "func_0x8000c9e0": 2147535328,
+    "D_80139f30": 2148769584
    }
   },
   {
@@ -6496,6 +6524,21 @@
   },
   {
    "image": "stage2",
+   "address": "0x800879a0",
+   "words": 12,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the symbol:addr mechanism pass (10 of 12 -> 12 of 12) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800879a0.c",
+   "syms": {
+    "FUN_800879a0": 2148039072,
+    "func_0x8000cb60": 2147535712,
+    "func_0x80011390": 2147554192,
+    "D_8013a230": 2148770352
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80088548",
    "words": 13,
    "verdict": "byte-exact",
@@ -6857,6 +6900,49 @@
     "FUN_800a0f1c": 2148142876,
     "FUN_800a2444": 2148148292,
     "DAT_8013bc90": 2148777104
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5678",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the symbol:addr mechanism pass (17 of 18 -> 18 of 18) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5678.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "func_0x8000c9e0": 2147535328,
+    "DAT_80135cac": 2148752556,
+    "D_80143fb0": 2148810672
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5700",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the symbol:addr mechanism pass (9 of 10 -> 10 of 10) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5700.c",
+   "syms": {
+    "FUN_800a5700": 2148161280,
+    "func_0x8000c9e0": 2147535328,
+    "D_80143fb0": 2148810672
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a5728",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the symbol:addr mechanism pass (9 of 10 -> 10 of 10) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a5728.c",
+   "syms": {
+    "FUN_800a5728": 2148161320,
+    "func_0x8000cb60": 2147535712,
+    "D_80143fb0": 2148810672
    }
   },
   {

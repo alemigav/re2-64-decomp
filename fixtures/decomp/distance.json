@@ -4,15 +4,15 @@
   "none": 0,
   "over_half": 134,
   "under_half": 2188,
-  "within_1": 18,
-  "within_2": 78,
+  "within_1": 15,
+  "within_2": 81,
   "within_4": 81,
   "within_8": 90
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 642,
-  "claimed_not_exact": 176,
+  "claimed": 648,
+  "claimed_not_exact": 182,
   "exact": 467,
   "exact_and_claimed": 466,
   "exact_unclaimed": 1
@@ -21504,8 +21504,8 @@
    "w": 99
   },
   "stage2:800a5678": {
-   "d": 7,
-   "i": 17,
+   "d": 6,
+   "i": 16,
    "s": "scored",
    "t": "scalar",
    "w": 18
@@ -21518,15 +21518,15 @@
    "w": 16
   },
   "stage2:800a5700": {
-   "d": 2,
-   "i": 9,
+   "d": 1,
+   "i": 8,
    "s": "scored",
    "t": "scalar",
    "w": 10
   },
   "stage2:800a5728": {
-   "d": 2,
-   "i": 9,
+   "d": 1,
+   "i": 8,
    "s": "scored",
    "t": "scalar",
    "w": 10
@@ -23091,6 +23091,6 @@
   "percent_words": 11.02,
   "scored": 2589,
   "words": 298724,
-  "words_identical": 32930
+  "words_identical": 32927
  }
 }

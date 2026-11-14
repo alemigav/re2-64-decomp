@@ -11516,19 +11516,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8006b9f0",
-     "name": "FUN_8006b9f0",
-     "file": "src/stage2/FUN_8006b9f0.c",
-     "size": 40,
-     "sha256": "c56c6501fd64d09f6fb560248eaf9415019d1fef997b8f8b8b1b165ad09afc1e",
-     "provider_sha256": "e0ca3449c398cd5af14f75e9cb1c4d82eeba1535961ba9b01b46161ac78acafa",
-     "status": "written",
-     "callees": [
-      "0x8000c9e0"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x8006ba24",
      "name": "FUN_8006ba24",
      "file": "src/stage2/FUN_8006ba24.c",
@@ -11551,19 +11538,6 @@
      "size": 176,
      "sha256": "2edda8d0add39f38f1bef9e52ebb721d9bdde232039b0ecea5e4a7aa0e473f87",
      "provider_sha256": "918ea55962ca8c945beb4ffb4a306ca06811282760ab44a3d67f88e0e4588529",
-     "status": "written",
-     "callees": [
-      "0x8000c9e0"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x8006bbbc",
-     "name": "FUN_8006bbbc",
-     "file": "src/stage2/FUN_8006bbbc.c",
-     "size": 40,
-     "sha256": "d7f5c1b59167cb48ff50b8830e90a98a41fff4a422cb9c898182bac3590d0e69",
-     "provider_sha256": "22701683c349483042711fea64fe6d93a07f99f822c95b77a887fb308879651d",
      "status": "written",
      "callees": [
       "0x8000c9e0"
@@ -15493,20 +15467,6 @@
      "provider_sha256": "c09d677b95901f1e0cb61d62dccd84cd1f13d0d9859dfc2ce80a54eae7145c42",
      "status": "written",
      "callees": [],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x800879a0",
-     "name": "FUN_800879a0",
-     "file": "src/stage2/FUN_800879a0.c",
-     "size": 48,
-     "sha256": "5d69682140c64d8ae514c49e88472fff7f7ed401f29362aba893ca4b2ce09e64",
-     "provider_sha256": "050468f3cf23fcfc6008cb7fe17ee11c8e371044f121019b406e54835fc90c04",
-     "status": "written",
-     "callees": [
-      "0x8000cb60",
-      "0x80011390"
-     ],
      "callees_unknown": 0
     },
     {
@@ -20103,51 +20063,12 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x800a5678",
-     "name": "snd_mutex_acquire",
-     "file": "src/stage2/snd_mutex_acquire.c",
-     "size": 72,
-     "sha256": "6632bd83aaa51b2124fc8834187e6b2f986bfbd0ffe9801a77d0768d6c9f5d1e",
-     "provider_sha256": "3987bddc8ded4cdf4b47539f00d7adc99837a1679c11a80fc8758adf3eda178e",
-     "status": "written",
-     "callees": [
-      "0x8000c9e0"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x800a56c0",
      "name": "FUN_800a56c0",
      "file": "src/stage2/FUN_800a56c0.c",
      "size": 64,
      "sha256": "df07ebeb823095f4b5d5706685536bfbb530ecdc68c7edfcc4b8992fccf42435",
      "provider_sha256": "55b63261a4b866960879990f19bc3e67b3a6a4efeae0a1c6a8503316a53ab6ab",
-     "status": "written",
-     "callees": [
-      "0x8000cb60"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x800a5700",
-     "name": "FUN_800a5700",
-     "file": "src/stage2/FUN_800a5700.c",
-     "size": 40,
-     "sha256": "6e6bba1d293422ceaa48474e09aa14c5f439f5e6149003629d1bc5bbf202df2a",
-     "provider_sha256": "10a595c9634ccc5a62c832fa2125c319293d6d9900f76cd570215f247ae43103",
-     "status": "written",
-     "callees": [
-      "0x8000c9e0"
-     ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x800a5728",
-     "name": "FUN_800a5728",
-     "file": "src/stage2/FUN_800a5728.c",
-     "size": 40,
-     "sha256": "11d972083c1afae89a2805bcf0cc5659cddc0a2b2f3b81d1522b898156e3f72c",
-     "provider_sha256": "db1372266a0d124d324793d71e1e211348394835d616ccc4c55d6e931ebb7ec0",
      "status": "written",
      "callees": [
       "0x8000cb60"
@@ -26270,6 +26191,19 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x8006b9f0",
+     "name": "FUN_8006b9f0",
+     "file": "src/stage2/FUN_8006b9f0.c",
+     "size": 40,
+     "sha256": "f113b3cbd8df745536af8b865a0be54a7693893ce97231bc4ddafb068d746b03",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000c9e0"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x8006ba18",
      "name": "FUN_8006ba18",
      "file": "src/stage2/FUN_8006ba18.c",
@@ -26290,6 +26224,19 @@
      "status": "recovered",
      "callees": [
       "0x8006ba24"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8006bbbc",
+     "name": "FUN_8006bbbc",
+     "file": "src/stage2/FUN_8006bbbc.c",
+     "size": 40,
+     "sha256": "f7f0ac1638fb900a48d2e58fc8577586957874f40c675dd88d4b4f9529424b67",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000c9e0"
      ],
      "callees_unknown": 0
     },
@@ -27470,6 +27417,20 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x800879a0",
+     "name": "FUN_800879a0",
+     "file": "src/stage2/FUN_800879a0.c",
+     "size": 48,
+     "sha256": "50812d4429b6305f6c51ce2ee28632528692c509462cf590c96fb9c948db838e",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000cb60",
+      "0x80011390"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x80088548",
      "name": "FUN_80088548",
      "file": "src/stage2/FUN_80088548.c",
@@ -27841,6 +27802,45 @@
      "status": "recovered",
      "callees": [
       "0x800a0f1c"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800a5678",
+     "name": "snd_mutex_acquire",
+     "file": "src/stage2/snd_mutex_acquire.c",
+     "size": 72,
+     "sha256": "6afcab62acd0e30d6e6cecae0a56d357a602620559e3d055235cdf3aa0da3dcc",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000c9e0"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800a5700",
+     "name": "FUN_800a5700",
+     "file": "src/stage2/FUN_800a5700.c",
+     "size": 40,
+     "sha256": "18fc8c9c4879e143e324b8d7bce8fd3c82d9ebecbd4ad4658b0f8338da1e809c",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000c9e0"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800a5728",
+     "name": "FUN_800a5728",
+     "file": "src/stage2/FUN_800a5728.c",
+     "size": 40,
+     "sha256": "5ff849d956e74bcf3a834ad63b705c1c21a445d577f80c023dfcd6e338a862ae",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8000cb60"
      ],
      "callees_unknown": 0
     },

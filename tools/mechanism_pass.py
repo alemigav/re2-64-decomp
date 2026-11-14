@@ -233,9 +233,11 @@ def symbol_variants(text: str, ctx=None):
         lit = "0x%s" % m.group(1)
         name = "D_%s" % m.group(1).lower()
         cand = text[:m.start()] + "(u32)%s" % name + text[m.end():]
-        if "extern u8 %s[];" % name not in cand:
+        # `unsigned char`, not `u8`: this body has no `u8` typedef, and a generated declaration may not assume one —
+        # the variant then fails as "cc1 refused" and the pass reports a zero for a mechanism that pins 10 of 10.
+        if "extern unsigned char %s[];" % name not in cand:
             i = 0 if not cand.startswith("typedef") else cand.index("\n") + 1
-            cand = cand[:i] + "extern u8 %s[];\n" % name + cand[i:]
+            cand = cand[:i] + "extern unsigned char %s[];\n" % name + cand[i:]
             if "typedef unsigned int u32;" not in cand:
                 cand = "typedef unsigned int u32;\n" + cand
         if cand not in seen:
@@ -287,6 +289,22 @@ def band(kind: str):
     return out
 
 
+NEWSYM = re.compile(r"\b(D_([0-9a-f]{8}))\b")
+
+
+def syms_for(variant: str, syms: dict) -> dict:
+    """The pin's symbol table plus any symbol a variant INTRODUCED, defined at the address its name carries.
+
+    Without this the `symbol:addr` pass is unscoreable: its variant declares `extern u8 D_80143fb0[]`, the linker has
+    nothing at that name, the pin fails and the pass reports a measured zero for a variant that scores 10 of 10 by hand
+    (M422). Any pass that introduces a name has to bring its address with it.
+    """
+    out = dict(syms or {})
+    for m in NEWSYM.finditer(variant):
+        out.setdefault(m.group(1), int(m.group(2), 16))
+    return out
+
+
 def write(args) -> int:
     be = bank_module()
     dm = be.distance_map()
@@ -316,7 +334,8 @@ def write(args) -> int:
             tried += 1
             won = None
             for label, variant in variants:
-                score, status = be.pins(dm, variant, cand["image"], cand["address"], cand["words"], syms)
+                score, status = be.pins(dm, variant, cand["image"], cand["address"], cand["words"],
+                                        syms_for(variant, syms))
                 if status != "linked":
                     continue
                 if score > best[key]:
@@ -339,7 +358,10 @@ def write(args) -> int:
                     "verdict": "byte-exact", "provenance": "provider",
                     "probe": "imported: closed by the %s mechanism pass (%d of %d -> %d of %d) (M416)"
                              % (label.split()[0], cand["base"], cand["words"], cand["words"], cand["words"]),
-                    "source_file": str(out.relative_to(ROOT)), "syms": syms})
+                    "source_file": str(out.relative_to(ROOT)),
+                    # the variant's OWN symbols, not the provider draft's: an entry that omits `D_80143fb0` banks a
+                    # body whose pin fails, and six of them did exactly that before this line (M422).
+                    "syms": syms_for(variant, syms)})
                 fixture["functions"].sort(key=lambda e: (e["image"], int(e["address"], 16)))
                 RECOVERED.write_text(json.dumps(fixture, indent=1) + "\n")
             closed += 1
