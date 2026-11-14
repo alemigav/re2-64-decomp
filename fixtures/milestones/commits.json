@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "6addb63",
+   "subject": "M426: the family template does not transfer -- the 54-word body was the easy one",
+   "milestones": [
+    426
+   ]
+  },
+  {
    "sha": "bc80833",
    "subject": "M425: the first body drafted whole -- 54 words, and the family it belongs to",
    "milestones": [

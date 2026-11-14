@@ -209,7 +209,36 @@ def report(at: str, args):
     return 0
 
 
-def queue(n: int, max_words: int):
+BRANCH = {0x01, 0x04, 0x05, 0x06, 0x07, 0x14, 0x15, 0x16, 0x17}
+
+
+def shape_of(cp, image: str, addr: int, words: int) -> str:
+    """`loop` when the image branches BACKWARD anywhere in the body, else `linear`.
+
+    M426 measured why this is the axis that matters: a straight-line body's gcc allocation follows the source order and a
+    draft can match it (54 of 54 in two iterations), while a body with a loop reproduces the algorithm and not the
+    register map (8 of 64 in three). So the drafting queue is sorted by shape before it is sorted by distance.
+    """
+    win = cp.image_window(image, cp.image_inventory())
+    if win is None:
+        return "unknown"
+    blob, base = win
+    for i in range(words):
+        pc = addr + 4 * i
+        w = int.from_bytes(blob[pc - base:pc - base + 4], "big")
+        op = w >> 26
+        if op in BRANCH:
+            imm = w & 0xFFFF
+            imm = imm - 0x10000 if imm & 0x8000 else imm
+            if pc + 4 + 4 * imm < pc:
+                return "loop"
+        elif op == 0x02:                                  # j
+            if ((pc & 0xF0000000) | ((w & 0x3FFFFFF) << 2)) < pc:
+                return "loop"
+    return "linear"
+
+
+def queue(n: int, max_words: int, shape: str = "any"):
     be, dm, cp, ls = load_modules()
     doc = json.loads(DISTANCE.read_text())
     claimed = {(f["image"], int(f["address"], 16)) for f in json.loads(RECOVERED.read_text())["functions"]}
@@ -223,12 +252,20 @@ def queue(n: int, max_words: int):
             continue
         gap = rec["w"] - rec["i"]
         rows.append((gap, rec["w"], key))
-    rows.sort()
-    print("%-26s %4s %5s  %s" % ("body", "gap", "words", "workbench command"))
-    for gap, w, key in rows[:n]:
-        print("%-26s %4d %5d  python3 tools/draft_workbench.py --at %s" % (key, gap, w, key))
-    print("\n%d body(ies) at or below %d words are drafting targets; %d of them are at gap <= 4"
-          % (len(rows), max_words, sum(1 for g, _w, _k in rows if g <= 4)))
+    shaped = []
+    for gap, w, key in rows:
+        img, a = key.split(":")
+        shaped.append((shape_of(cp, img, int(a, 16), w), gap, w, key))
+    counts = {}
+    for sh, _g, _w, _k in shaped:
+        counts[sh] = counts.get(sh, 0) + 1
+    if shape != "any":
+        shaped = [x for x in shaped if x[0] == shape]
+    shaped.sort(key=lambda x: (x[1], -x[2], x[3]))
+    print("shapes at or below %d words: %s" % (max_words, ", ".join("%s=%d" % kv for kv in sorted(counts.items()))))
+    print("%-26s %-7s %4s %5s  %s" % ("body", "shape", "gap", "words", "workbench command"))
+    for sh, gap, w, key in shaped[:n]:
+        print("%-26s %-7s %4d %5d  python3 tools/draft_workbench.py --at %s" % (key, sh, gap, w, key))
     return 0
 
 
@@ -268,13 +305,14 @@ def main(argv):
     ap.add_argument("--at", help="IMAGE:ADDRESS, e.g. stage2:0x800b43a0")
     ap.add_argument("--queue", type=int, default=0, metavar="N", help="the cheapest N bodies left")
     ap.add_argument("--max-words", type=int, default=120)
+    ap.add_argument("--shape", default="any", choices=("any", "linear", "loop"))
     ap.add_argument("--words", action="store_true", help="print only the image's words")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args(argv)
     if args.self_test:
         return self_test()
     if args.queue:
-        return queue(args.queue, args.max_words)
+        return queue(args.queue, args.max_words, args.shape)
     if args.at:
         return report(args.at, args)
     ap.print_help()

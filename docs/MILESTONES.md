@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-427 milestones are indexed. 339 of them have a note; the rest are rows in the log that cite
+428 milestones are indexed. 340 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -445,6 +445,7 @@ at the foot of this file.
 | 424 | **M424** — the `blez` idiom: found, closed by hand at 16 of 16, and it recurs in 19 bodies | `docs/log/M424-the-blez-idiom.md` |
 | 425 | **M425** — the first body drafted whole: 54 words, and what it taught | `docs/log/M425-the-first-body-drafted-whole.md` |
 | 426 | **M426** — the family template does not transfer: the 54-word body was the easy one | `docs/log/M426-the-family-template-does-not-transfer.md` |
+| 427 | **M427** — the queue is sorted by shape: 1 495 linear bodies, 469 with loops | `docs/log/M427-the-queue-is-sorted-by-shape.md` |
 
 ## The gaps, and why they are empty
 
