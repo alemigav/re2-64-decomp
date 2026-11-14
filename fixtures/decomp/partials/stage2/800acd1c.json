@@ -1,0 +1,36 @@
+{
+ "image": "stage2",
+ "address": "0x800acd1c",
+ "words": 64,
+ "score": 8,
+ "status": "partial",
+ "drafted": "M426",
+ "measured": "M426, full output, no truncation: 8 of 64 words identical",
+ "mechanism": "the search-and-decrement family over the table at 0x801521F0: a guard on a SIGNED count, a walk to find an entry by its 16-bit key, a refcount decrement, and a tail shift when it reaches zero",
+ "shape": [
+  "the count `*(s32 *)0x801521E0` must be SIGNED: the guard is `blez $v0,+12`, and on an unsigned count gcc emits `beq` (M424/M425's lesson a third time)",
+  "the search is a WALK: `tab = 0x801521F0` once, `tab += 8` per step, `lhu 4(tab)` against the key's low half",
+  "the key is truncated to 16 bits in $a0 (`andi a0,s0,0xffff`) while the loop bound is a COPY of the count in $a2",
+  "the match path decrements the halfword at entry+6 in place, then tests it; zero means shift the tail down",
+  "the shift copies 8 bytes per step with two lw/sw pairs and walked pointers (a1 += 8, a0 += 8)",
+  "both exits call 0x800a56c0 \u2014 the body M424 closed \u2014 and the found path stores count-1 into 0x801521E0 in the call's DELAY SLOT"
+ ],
+ "residue": "56 words, and the structure is not the problem \u2014 the draft has the guard, the walk, the refcount and the shift, all read correctly off the image. What differs is ALLOCATION and statement ORDER: the image keeps the count in $v0 and its copy in $a2 with the key in $a0, ours puts them elsewhere, and the loop's three-instruction body lands in a different order. Three restructurings moved the score 7 \u2192 8 \u2192 8.",
+ "next_hypothesis": "this is the allocation class that twenty mechanisms failed on (M396\u2013M408, M416). The 54-word body of M425 closed in two iterations because it is a straight-line guard chain; this one has two loops, and loops are where gcc's allocation decisions stop being steerable by source spelling. The family template does NOT transfer \u2014 the next attempt should either accept the shape and chase allocation with the permuter, or come back with a flag experiment",
+ "syms": {
+  "D_801521e0": "0x801521E0",
+  "D_801521f0": "0x801521F0",
+  "func_800a5678": "0x800A5678",
+  "func_800a56c0": "0x800A56C0"
+ },
+ "tried": [
+  "M426: the first structural read \u2014 `if (count > 0)` with an unsigned count and a `while (i < count)` loop, `i * 8` indexing \u2014 **8 of 64**",
+  "M426: signed count plus a `do { } while (i < count)` whose test is at the bottom (the image's back-edge) \u2014 **7 of 64**: `blez` appears, and the order shifts",
+  "M426: the count COPY in a second variable for the loop bound, the key held as `u32` so it lands in `$a0`, a walked pointer \u2014 **8 of 64**"
+ ],
+ "scores": {
+  "unsigned count, i*8 indexing (M426)": 8,
+  "signed count, do-while (M426)": 7,
+  "signed count + copy variable + walked pointer (M426)": 8
+ }
+}

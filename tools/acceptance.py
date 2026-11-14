@@ -187,7 +187,7 @@ SUITES = [
     ("extent scan (repository)", [sys.executable, "tools/extent_scan.py", "--self-test"], 11, False),
     ("front page (repository)", [sys.executable, "tools/front_page.py", "--check"], 1, False),
     ("permute target (repository)", [sys.executable, "tools/permute_target.py", "--self-test"], 3, False),
-    ("partials (cartridge)", [sys.executable, "tools/partials.py", "--check"], 2, True),
+    ("partials (cartridge)", [sys.executable, "tools/partials.py", "--check"], 3, True),
     # M409: the distance map. `--check` re-derives the published distribution from the committed records and
     # re-measures a 24-body sample; the full `--write` is an AUTHOR operation (like `--seed-gaps`) because it is
     # ~3 500 compiles, and a gate that re-measures the world cannot fit the 30-second rule.
