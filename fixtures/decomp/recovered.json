@@ -1730,6 +1730,19 @@
   },
   {
    "image": "ovl_0093192",
+   "address": "0x80161fa8",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by forwarding three parameters plus a constant fourth (M419 workbench)",
+   "source_file": "fixtures/decomp/authored/ovl_0093192/80161fa8.c",
+   "syms": {
+    "FUN_80161fa8": 2148933544,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_0093192",
    "address": "0x80162c6c",
    "words": 9,
    "verdict": "byte-exact",
@@ -3503,6 +3516,19 @@
     "FUN_8016264c": 2148935244,
     "FUN_80162908": 2148935944,
     "PTR_FUN_80163068": 2148937832
+   }
+  },
+  {
+   "image": "ovl_00b5346",
+   "address": "0x80162950",
+   "words": 7,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by forwarding three parameters plus a constant fourth (M419 workbench)",
+   "source_file": "fixtures/decomp/authored/ovl_00b5346/80162950.c",
+   "syms": {
+    "FUN_80162950": 2148936016,
+    "func_0x80089d54": 2148048212
    }
   },
   {

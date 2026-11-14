@@ -42602,19 +42602,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80161fa8",
-     "name": "FUN_80161fa8",
-     "file": "src/ovl_0093192/FUN_80161fa8.c",
-     "size": 28,
-     "sha256": "9d9803013500fa3b4bf81bfe2fb8ac21e903c6a08d0739f9da7a85077a2bbc32",
-     "provider_sha256": "c3afe8790761278ac745513296ccaa5596777b4cc58292c35713ae29705bd1ca",
-     "status": "written",
-     "callees": [
-      "0x80089d54"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x80161fc4",
      "name": "FUN_80161fc4",
      "file": "src/ovl_0093192/FUN_80161fc4.c",
@@ -42819,6 +42806,19 @@
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80161fa8",
+     "name": "FUN_80161fa8",
+     "file": "src/ovl_0093192/FUN_80161fa8.c",
+     "size": 28,
+     "sha256": "b51d31f7941f944a623580e5162c684191b1d1d78b36970955e47a4c02826cb9",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80089d54"
+     ],
      "callees_unknown": 0
     },
     {
@@ -54817,19 +54817,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80162950",
-     "name": "FUN_80162950",
-     "file": "src/ovl_00b5346/FUN_80162950.c",
-     "size": 28,
-     "sha256": "aae44f7164c67ee5e498d4abf42b02f59257089a006571cedd5bcacc330ed916",
-     "provider_sha256": "c50b2ce369d5e07c75c606a8aff0eb48fc084dbd80ef9bed8ce42eb8bd7bf0b8",
-     "status": "written",
-     "callees": [
-      "0x80089d54"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x8016296c",
      "name": "FUN_8016296c",
      "file": "src/ovl_00b5346/FUN_8016296c.c",
@@ -54932,6 +54919,19 @@
      "status": "recovered",
      "callees": [
       "0x80162908"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x80162950",
+     "name": "FUN_80162950",
+     "file": "src/ovl_00b5346/FUN_80162950.c",
+     "size": 28,
+     "sha256": "4e50538bd0fbdc4469b3c2d06693d870f26d64ef63f7bd7238b0056dd20e1181",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x80089d54"
      ],
      "callees_unknown": 0
     },
