@@ -1,20 +1,20 @@
 {
  "histogram": {
-  "exact": 467,
+  "exact": 470,
   "none": 0,
   "over_half": 134,
-  "under_half": 2187,
-  "within_1": 15,
-  "within_2": 81,
+  "under_half": 2185,
+  "within_1": 14,
+  "within_2": 80,
   "within_4": 82,
   "within_8": 90
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 650,
-  "claimed_not_exact": 184,
-  "exact": 467,
-  "exact_and_claimed": 466,
+  "claimed": 654,
+  "claimed_not_exact": 185,
+  "exact": 470,
+  "exact_and_claimed": 469,
   "exact_unclaimed": 1
  },
  "profile": "cc1 2.8.1 -O2 -G 0 -mips2 -mcpu=r4300; as -EB -mips2 -mcpu=r4300 -g -G 0",
@@ -3892,16 +3892,16 @@
    "w": 44
   },
   "ovl_008505e:801656ec": {
-   "d": 13,
-   "i": 14,
-   "s": "scored",
+   "d": null,
+   "i": 44,
+   "s": "exact",
    "t": "scalar",
    "w": 44
   },
   "ovl_008505e:8016579c": {
-   "d": 13,
-   "i": 14,
-   "s": "scored",
+   "d": null,
+   "i": 47,
+   "s": "exact",
    "t": "scalar",
    "w": 47
   },
@@ -12576,10 +12576,7 @@
    "w": 8
   },
   "stage2:80030fd0": {
-   "d": 30,
-   "i": 30,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 32
   },
   "stage2:80031050": {
@@ -17380,9 +17377,9 @@
    "w": 5
   },
   "stage2:8007277c": {
-   "d": 7,
-   "i": 12,
-   "s": "scored",
+   "d": null,
+   "i": 13,
+   "s": "exact",
    "t": "scalar",
    "w": 13
   },
@@ -23082,15 +23079,15 @@
  },
  "totals": {
   "as_failed": 0,
-  "cc1_failed": 417,
-  "exact": 467,
+  "cc1_failed": 418,
+  "exact": 470,
   "functions": 3473,
   "link_failed": 0,
-  "measured": 3056,
+  "measured": 3055,
   "no_source": 0,
-  "percent_words": 11.04,
-  "scored": 2589,
+  "percent_words": 11.05,
+  "scored": 2585,
   "words": 298724,
-  "words_identical": 32976
+  "words_identical": 33010
  }
 }

@@ -45,6 +45,7 @@ MECHANISMS = {
     "symbol:addr": "yes — an address as a value becomes a symbol reference",
     "dat:width": "yes — vary a data symbol's declared width",
     "guard:early": "yes — a wrapping `if` becomes a guard with an early exit, with the value signed",
+    "localtype": "yes — vary a local's or a parameter's declared type",
     "sig:param": "yes",
     "domain:integer": "no — changes the type of an expression tree",
     "pointer:named": "no — introduces a binding that changes CSE",
@@ -299,9 +300,37 @@ def earlyguard_variants(text: str, ctx=None):
     return out[:6]
 
 
+# --- localtype — the type of a LOCAL or a PARAMETER -------------------------------------------------------------
+# The most common one-word residue the shape-sorted queue produced (M427): `lhu` where we read `lw` because a stack
+# parameter is a halfword; `addu` where we emit `andi 0xff` because a local is unsigned; a store whose width follows a
+# local's declaration. The passes built before this vary an `extern` (`dat:width`) or an address literal (`symbol:addr`);
+# a local is the third place a type is written down, and unlike the loop mechanisms it is purely textual.
+TYPENAME = r"(?:undefined[1248]|u?char|u?short|s?8|s?16|s?32|u32|uint|int|unsigned int|signed int)"
+LOCAL = re.compile(r"^(\s*)(%s)((?:\s*\*)?\s+\**[A-Za-z_]\w*\s*;)" % TYPENAME, re.M)
+PARAM = re.compile(r"(?<=[(,])(\s*)(%s)(\s+\**)([A-Za-z_]\w*)" % TYPENAME)
+VARIANTS = ["unsigned char", "char", "short", "unsigned short", "int", "unsigned int"]
+
+
+def localtype_variants(text: str, ctx=None):
+    """One variant per (declaration or parameter, type) — bounded, and every candidate is a real C type."""
+    out, seen = [], {text}
+    for pattern in (LOCAL, PARAM):
+        for m in pattern.finditer(text):
+            for kind in VARIANTS:
+                if kind == m.group(2):
+                    continue
+                cand = text[:m.start(2)] + kind + text[m.end(2):]
+                if cand not in seen:
+                    seen.add(cand)
+                    out.append(("localtype %s as %s" % (m.group(4) if pattern is PARAM else m.group(3).strip(), kind), cand))
+                if len(out) >= 12:
+                    return out
+    return out
+
+
 PASSES = {"order": order_variants, "sig": sig_variants, "guard": pastguard_variants,
           "forward": forward_variants, "symbol": symbol_variants, "datwidth": datwidth_variants,
-          "early": earlyguard_variants}
+          "early": earlyguard_variants, "localtype": localtype_variants}
 
 
 def band(kind: str):
@@ -445,6 +474,12 @@ def self_test() -> int:
         ("an instruction that sets no argument register yields nothing", _const_into_arg(0x03E00008) is None, ""),
         ("a wrapping if followed by return becomes a guard", bool(earlyguard_variants(
             "extern unsigned int D;\nvoid f(void)\n{\n  if (0 < D) {\n    g();\n  }\n  return;\n}\n")), ""),
+        ("a local's declared type yields variants",
+         any(v[0].startswith("localtype") for v in localtype_variants(
+             "void f(void)\n{\n  undefined1 uVar1;\n  uVar1 = 1;\n}\n")), ""),
+        ("a parameter's declared type yields variants",
+         any(v[0].startswith("localtype") for v in localtype_variants(
+             "void f(int param_1)\n{\n  param_1 = 1;\n}\n", None)), ""),
         ("every mechanism is classified", all(v for v in MECHANISMS.values()), ""),
     ]
     bad = sum(1 for _n, ok, _d in cases if not ok)
@@ -460,7 +495,7 @@ def main(argv):
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--band", default="mid", choices=("mid", "near"))
-    ap.add_argument("--passes", default="symbol,datwidth,early,forward,order,guard,sig")
+    ap.add_argument("--passes", default="localtype,symbol,datwidth,early,forward,order,guard,sig")
     ap.add_argument("--max-words", type=int, default=200)
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args(argv)

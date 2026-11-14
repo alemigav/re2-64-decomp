@@ -1,15 +1,31 @@
 /* FUN_8016579c
  * image   ovl_008505e (ovl), base 0x80161cf0
  * address 0x8016579c  body 0x8016579c..0x80165857  size 188 B
- * body sha256 bab47dd72bfaa9af00e1e63752100c3d16e4110f76e3dabd6285dcc8bc20a352
- * provider record sha256 641c9349f33a9c5bc94c678ed5ecb802924753dc26b68a7c3d6100bd37263684
- * callees 3 direct (3 in corpus)
- * provider Ghidra 12.2
+ * body sha256 bcde4f9809c2ba13d299601eff53cc4a2058aceaccc564343be21add9c14342e
+ * recovered byte-exact (imported: closed by the localtype mechanism pass (14 of 47 -> 47 of 47) (M416))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_008505e/8016579c.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned char undefined1;
+typedef unsigned int undefined4;
+typedef unsigned char byte;
+typedef unsigned int uint;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_8016579c(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  uint uVar1;
+  unsigned char uVar1;
   uint uVar2;
   
   uVar1 = 4 - *(byte *)(param_1 + 0x26e) / 3;

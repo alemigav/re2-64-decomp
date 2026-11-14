@@ -1130,6 +1130,36 @@
   },
   {
    "image": "ovl_008505e",
+   "address": "0x801656ec",
+   "words": 44,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the localtype mechanism pass (14 of 44 -> 44 of 44) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/801656ec.c",
+   "syms": {
+    "FUN_80164d5c": 2148945244,
+    "FUN_801656ec": 2148947692,
+    "FUN_80166980": 2148952448,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_008505e",
+   "address": "0x8016579c",
+   "words": 47,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the localtype mechanism pass (14 of 47 -> 47 of 47) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/8016579c.c",
+   "syms": {
+    "FUN_80164d5c": 2148945244,
+    "FUN_8016579c": 2148947868,
+    "FUN_80166980": 2148952448,
+    "func_0x80033604": 2147694084
+   }
+  },
+  {
+   "image": "ovl_008505e",
    "address": "0x80165858",
    "words": 37,
    "verdict": "byte-exact",
@@ -4179,6 +4209,18 @@
   },
   {
    "image": "stage2",
+   "address": "0x80030fd0",
+   "words": 32,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the localtype mechanism pass (30 of 32 -> 32 of 32) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/80030fd0.c",
+   "syms": {
+    "FUN_80030fd0": 2147684304
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80031ab0",
    "words": 11,
    "verdict": "byte-exact",
@@ -5832,6 +5874,19 @@
    "probe": "read from the words (M363): 5 of 5, measured extent turned into a reconstruction",
    "source_file": "fixtures/decomp/authored/stage2/80072768.c",
    "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x8007277c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the localtype mechanism pass (12 of 13 -> 13 of 13) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8007277c.c",
+   "syms": {
+    "FUN_8007277c": 2147952508,
+    "FUN_8008c51c": 2148058396
+   }
   },
   {
    "image": "stage2",
