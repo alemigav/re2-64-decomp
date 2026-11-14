@@ -224,7 +224,11 @@ def forward_variants(text: str, ctx=None):
 # `stage2:0x800a5700`: the image emits `lui $a0,0x8014; addiu $a0,$a0,0x3fb0` and we emitted `ori` for the same sum.
 # The difference is not arithmetic, it is what gcc is looking at: a SYMBOL goes through %hi/%lo with a relocation and
 # lands as `addiu`, while a constant it can fold lands as `ori`. Measured 9 -> 10 of 10.
-ADDR_LITERAL = re.compile(r"\b0x([89a-fA-F][0-9a-fA-F]{7})\b")
+# RAM ADDRESSES ONLY — `0x8xxxxxxx`, which is where every image in this corpus lives. The first version matched
+# `[89a-f]`, so it "symbolised" sign-extended negatives (`0xfffffffe`, `0xffffffff`, `0xfbffffff`) and called that an
+# improvement: a mask became a pointer, the words moved, and the pass reported progress on six bodies where it had
+# simply changed the meaning. A matcher that cannot tell a constant from an address must not pretend to.
+ADDR_LITERAL = re.compile(r"\b0x(8[0-9a-fA-F]{7})\b")
 
 
 def symbol_variants(text: str, ctx=None):

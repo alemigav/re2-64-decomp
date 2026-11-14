@@ -133,6 +133,9 @@ def classify(pairs, ls, addr):
         return "exact", diffs
     tags = []
     for _i, want, got in diffs:
+        if got is None:                          # the compiled body is shorter than the extent: a hole, not a class
+            tags.append("short")
+            continue
         hw, gw = ls.gloss(want, addr).split()[0], ls.gloss(got, addr).split()[0]
         if hw != gw and {hw, gw} <= LOAD_OPS:
             tags.append("width")
@@ -150,7 +153,7 @@ def classify(pairs, ls, addr):
             tags.append("order" if len(diffs) > 1 else "alloc")
         else:
             tags.append("shape")
-    for tag in ("width", "extend", "materialise", "order", "layout", "alloc", "shape"):
+    for tag in ("short", "width", "extend", "materialise", "order", "layout", "alloc", "shape"):
         if tags.count(tag) * 2 >= len(tags) and tag in tags:
             return tag, diffs
     return tags[0], diffs
@@ -164,6 +167,7 @@ NEXT_MOVE = {
     "layout": "the residue is upstream: a size difference shifts the branch, so fix the body's shape first",
     "alloc": "register allocation — the class no pass reaches (M408/M416); park unless the body is worth a mechanism",
     "shape": "structural rewrite — read the image and rebuild the statement group",
+    "short": "the compiled body is SHORTER than the extent: a hole, so the residue is upstream of any single word",
 }
 
 

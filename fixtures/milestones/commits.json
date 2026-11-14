@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "77b921c",
+   "subject": "M422: six more bodies, and two bugs in the pass harness that were hiding them",
+   "milestones": [
+    422
+   ]
+  },
+  {
    "sha": "5605d1b",
    "subject": "M421: fix the width bug in the map, then re-run the pass set on the shrunk queue",
    "milestones": [

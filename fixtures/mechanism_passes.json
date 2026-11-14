@@ -2,7 +2,7 @@
  "band": "mid",
  "banked": 0,
  "bodies": 464,
- "improved_total": 85,
+ "improved_total": 81,
  "mechanisms": {
   "compare:copy": "no \u2014 changes which value is live",
   "dat:width": "yes \u2014 vary a data symbol's declared width",
@@ -47,7 +47,7 @@
   "symbol": {
    "bodies_tried": 464,
    "closed": 0,
-   "improved": 13
+   "improved": 6
   }
  }
 }

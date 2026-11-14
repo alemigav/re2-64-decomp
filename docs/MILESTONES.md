@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-423 milestones are indexed. 335 of them have a note; the rest are rows in the log that cite
+424 milestones are indexed. 336 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -441,6 +441,7 @@ at the foot of this file.
 | 420 | **M420** — `dat:width`: 41 bodies, and the instrument's own default was the defect | `docs/log/M420-the-declaration-width-pass.md` |
 | 421 | **M421** — the width bug fixed in the map: the queue shrinks, and every pass now closes zero | `docs/log/M421-the-width-fix-and-an-exhausted-queue.md` |
 | 422 | **M422** — six more bodies, and two bugs in the pass harness that were hiding them | `docs/log/M422-the-pass-harness-bugs.md` |
+| 423 | **M423** — six of the twelve "improvements" were spurious, and the six real ones do not close | `docs/log/M423-a-matcher-that-could-not-tell-a-constant-from-an-address.md` |
 
 ## The gaps, and why they are empty
 
