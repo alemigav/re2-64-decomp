@@ -1,10 +1,11 @@
 {
- "band": "near",
+ "band": "mid",
  "banked": 1,
- "bodies": 243,
- "improved_total": 2,
+ "bodies": 468,
+ "improved_total": 78,
  "mechanisms": {
   "compare:copy": "no \u2014 changes which value is live",
+  "dat:width": "yes \u2014 vary a data symbol's declared width",
   "domain:integer": "no \u2014 changes the type of an expression tree",
   "guard:conjunction": "no \u2014 changes control-flow shape",
   "loop:walk-vs-index": "no \u2014 changes an induction variable",
@@ -12,22 +13,39 @@
   "order:past-guard": "yes",
   "pointer:named": "no \u2014 introduces a binding that changes CSE",
   "rematerialise:block": "no \u2014 introduces a nested scope",
-  "sig:param": "yes"
+  "sig:forward": "yes \u2014 needs the image's words (data-driven)",
+  "sig:param": "yes",
+  "symbol:addr": "yes \u2014 an address as a value becomes a symbol reference"
  },
  "note": "Closures per mechanism pass, over a band. A mechanism that closes nothing is a measured zero. The mechanisms no text pass can express are listed in `mechanisms` \u2014 that is the finding, not a TODO.",
  "passes": {
-  "guard": {
-   "bodies_tried": 243,
+  "datwidth": {
+   "bodies_tried": 468,
+   "closed": 1,
+   "improved": 64
+  },
+  "forward": {
+   "bodies_tried": 467,
    "closed": 0,
    "improved": 0
   },
+  "guard": {
+   "bodies_tried": 467,
+   "closed": 0,
+   "improved": 1
+  },
   "order": {
-   "bodies_tried": 243,
-   "closed": 1,
-   "improved": 2
+   "bodies_tried": 467,
+   "closed": 0,
+   "improved": 19
   },
   "sig": {
-   "bodies_tried": 242,
+   "bodies_tried": 467,
+   "closed": 0,
+   "improved": 0
+  },
+  "symbol": {
+   "bodies_tried": 468,
    "closed": 0,
    "improved": 0
   }

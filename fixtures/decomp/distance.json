@@ -1,20 +1,20 @@
 {
  "histogram": {
-  "exact": 433,
+  "exact": 467,
   "none": 0,
-  "over_half": 135,
+  "over_half": 134,
   "under_half": 2188,
-  "within_1": 48,
-  "within_2": 84,
-  "within_4": 83,
-  "within_8": 92
+  "within_1": 18,
+  "within_2": 78,
+  "within_4": 81,
+  "within_8": 90
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 601,
-  "claimed_not_exact": 169,
-  "exact": 433,
-  "exact_and_claimed": 432,
+  "claimed": 642,
+  "claimed_not_exact": 176,
+  "exact": 467,
+  "exact_and_claimed": 466,
   "exact_unclaimed": 1
  },
  "profile": "cc1 2.8.1 -O2 -G 0 -mips2 -mcpu=r4300; as -EB -mips2 -mcpu=r4300 -g -G 0",
@@ -1952,9 +1952,9 @@
    "w": 97
   },
   "ovl_0072610:801805f0": {
-   "d": 33,
-   "i": 54,
-   "s": "scored",
+   "d": null,
+   "i": 55,
+   "s": "exact",
    "t": "scalar",
    "w": 55
   },
@@ -1994,9 +1994,9 @@
    "w": 53
   },
   "ovl_0072610:80180be4": {
-   "d": 3,
-   "i": 3,
-   "s": "scored",
+   "d": null,
+   "i": 11,
+   "s": "exact",
    "t": "scalar",
    "w": 11
   },
@@ -2173,10 +2173,7 @@
    "w": 109
   },
   "ovl_007688e:8015b030": {
-   "d": 21,
-   "i": 35,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 38
   },
   "ovl_007688e:8015b0c8": {
@@ -2187,9 +2184,9 @@
    "w": 91
   },
   "ovl_007688e:8015b234": {
-   "d": 6,
-   "i": 6,
-   "s": "scored",
+   "d": null,
+   "i": 14,
+   "s": "exact",
    "t": "scalar",
    "w": 14
   },
@@ -4945,10 +4942,7 @@
    "w": 44
   },
   "ovl_008900e:80168448": {
-   "d": 5,
-   "i": 12,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 13
   },
   "ovl_008900e:8016847c": {
@@ -5640,10 +5634,7 @@
    "w": 44
   },
   "ovl_008e046:80166d84": {
-   "d": 5,
-   "i": 12,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 13
   },
   "ovl_008e046:80166db8": {
@@ -6593,10 +6584,7 @@
    "w": 172
   },
   "ovl_0093aba:8016535c": {
-   "d": 5,
-   "i": 12,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 13
   },
   "ovl_0095446:80161cf0": {
@@ -6837,10 +6825,7 @@
    "w": 94
   },
   "ovl_0095446:80167ae4": {
-   "d": 5,
-   "i": 12,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 13
   },
   "ovl_0095446:80167b18": {
@@ -10691,10 +10676,7 @@
    "w": 164
   },
   "ovl_00b08a2:801664dc": {
-   "d": 5,
-   "i": 12,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 13
   },
   "ovl_00b08a2:80166510": {
@@ -10850,10 +10832,7 @@
    "w": 94
   },
   "ovl_00b2d7a:80162568": {
-   "d": 5,
-   "i": 12,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 13
   },
   "ovl_00b321e:80161cf0": {
@@ -11741,16 +11720,16 @@
    "w": 5
   },
   "stage2:80026834": {
-   "d": 9,
-   "i": 9,
-   "s": "scored",
+   "d": null,
+   "i": 18,
+   "s": "exact",
    "t": "scalar",
    "w": 18
   },
   "stage2:8002687c": {
-   "d": 1,
-   "i": 15,
-   "s": "scored",
+   "d": null,
+   "i": 16,
+   "s": "exact",
    "t": "scalar",
    "w": 16
   },
@@ -14070,16 +14049,16 @@
    "w": 4
   },
   "stage2:800434c8": {
-   "d": 26,
-   "i": 36,
-   "s": "scored",
+   "d": null,
+   "i": 38,
+   "s": "exact",
    "t": "scalar",
    "w": 38
   },
   "stage2:80043560": {
-   "d": 34,
-   "i": 46,
-   "s": "scored",
+   "d": null,
+   "i": 48,
+   "s": "exact",
    "t": "scalar",
    "w": 48
   },
@@ -14740,9 +14719,9 @@
    "w": 13
   },
   "stage2:8004cef8": {
-   "d": 6,
-   "i": 9,
-   "s": "scored",
+   "d": null,
+   "i": 11,
+   "s": "exact",
    "t": "scalar",
    "w": 11
   },
@@ -16707,9 +16686,9 @@
    "w": 27
   },
   "stage2:8006be10": {
-   "d": 3,
-   "i": 32,
-   "s": "scored",
+   "d": null,
+   "i": 36,
+   "s": "exact",
    "t": "scalar",
    "w": 36
   },
@@ -17191,9 +17170,9 @@
    "w": 26
   },
   "stage2:80070474": {
-   "d": 14,
-   "i": 25,
-   "s": "scored",
+   "d": null,
+   "i": 27,
+   "s": "exact",
    "t": "scalar",
    "w": 27
   },
@@ -19617,16 +19596,16 @@
    "w": 223
   },
   "stage2:8008bda0": {
-   "d": 10,
-   "i": 12,
-   "s": "scored",
+   "d": null,
+   "i": 13,
+   "s": "exact",
    "t": "scalar",
    "w": 13
   },
   "stage2:8008bdd4": {
-   "d": 17,
-   "i": 20,
-   "s": "scored",
+   "d": null,
+   "i": 21,
+   "s": "exact",
    "t": "scalar",
    "w": 21
   },
@@ -19821,9 +19800,9 @@
    "w": 32
   },
   "stage2:8008d6b4": {
-   "d": 15,
-   "i": 17,
-   "s": "scored",
+   "d": null,
+   "i": 18,
+   "s": "exact",
    "t": "scalar",
    "w": 18
   },
@@ -21357,30 +21336,30 @@
    "w": 29
   },
   "stage2:800a1f40": {
-   "d": 1,
-   "i": 16,
-   "s": "scored",
+   "d": null,
+   "i": 17,
+   "s": "exact",
    "t": "scalar",
    "w": 17
   },
   "stage2:800a1f84": {
-   "d": 1,
-   "i": 16,
-   "s": "scored",
+   "d": null,
+   "i": 17,
+   "s": "exact",
    "t": "scalar",
    "w": 17
   },
   "stage2:800a1fc8": {
-   "d": 1,
-   "i": 16,
-   "s": "scored",
+   "d": null,
+   "i": 17,
+   "s": "exact",
    "t": "scalar",
    "w": 17
   },
   "stage2:800a200c": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 25,
+   "s": "exact",
    "t": "scalar",
    "w": 25
   },
@@ -21392,9 +21371,9 @@
    "w": 28
   },
   "stage2:800a2218": {
-   "d": 1,
-   "i": 28,
-   "s": "scored",
+   "d": null,
+   "i": 29,
+   "s": "exact",
    "t": "scalar",
    "w": 29
   },
@@ -21406,9 +21385,9 @@
    "w": 44
   },
   "stage2:800a23cc": {
-   "d": 1,
-   "i": 21,
-   "s": "scored",
+   "d": null,
+   "i": 22,
+   "s": "exact",
    "t": "scalar",
    "w": 22
   },
@@ -22097,9 +22076,9 @@
    "w": 31
   },
   "stage2:800aa8dc": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 25,
+   "s": "exact",
    "t": "scalar",
    "w": 25
   },
@@ -22235,9 +22214,9 @@
    "w": 54
   },
   "stage2:800ab658": {
-   "d": 3,
-   "i": 13,
-   "s": "scored",
+   "d": null,
+   "i": 15,
+   "s": "exact",
    "t": "scalar",
    "w": 15
   },
@@ -22249,9 +22228,9 @@
    "w": 54
   },
   "stage2:800ab76c": {
-   "d": 3,
-   "i": 13,
-   "s": "scored",
+   "d": null,
+   "i": 15,
+   "s": "exact",
    "t": "scalar",
    "w": 15
   },
@@ -22781,9 +22760,9 @@
    "w": 7
   },
   "stage2:800b202c": {
-   "d": 1,
-   "i": 26,
-   "s": "scored",
+   "d": null,
+   "i": 27,
+   "s": "exact",
    "t": "scalar",
    "w": 27
   },
@@ -22802,23 +22781,23 @@
    "w": 3
   },
   "stage2:800b2144": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 25,
+   "s": "exact",
    "t": "scalar",
    "w": 25
   },
   "stage2:800b21a8": {
-   "d": 1,
-   "i": 17,
-   "s": "scored",
+   "d": null,
+   "i": 18,
+   "s": "exact",
    "t": "scalar",
    "w": 18
   },
   "stage2:800b2298": {
-   "d": 1,
-   "i": 28,
-   "s": "scored",
+   "d": null,
+   "i": 29,
+   "s": "exact",
    "t": "scalar",
    "w": 29
   },
@@ -22830,44 +22809,44 @@
    "w": 14
   },
   "stage2:800b2344": {
-   "d": 1,
-   "i": 20,
-   "s": "scored",
+   "d": null,
+   "i": 21,
+   "s": "exact",
    "t": "scalar",
    "w": 21
   },
   "stage2:800b2398": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 25,
+   "s": "exact",
    "t": "scalar",
    "w": 25
   },
   "stage2:800b23fc": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 25,
+   "s": "exact",
    "t": "scalar",
    "w": 25
   },
   "stage2:800b2460": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 25,
+   "s": "exact",
    "t": "scalar",
    "w": 25
   },
   "stage2:800b24c4": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 25,
+   "s": "exact",
    "t": "scalar",
    "w": 25
   },
   "stage2:800b2528": {
-   "d": 1,
-   "i": 24,
-   "s": "scored",
+   "d": null,
+   "i": 25,
+   "s": "exact",
    "t": "scalar",
    "w": 25
   },
@@ -22893,16 +22872,16 @@
    "w": 23
   },
   "stage2:800b2694": {
-   "d": 1,
-   "i": 9,
-   "s": "scored",
+   "d": null,
+   "i": 10,
+   "s": "exact",
    "t": "scalar",
    "w": 10
   },
   "stage2:800b26bc": {
-   "d": 1,
-   "i": 13,
-   "s": "scored",
+   "d": null,
+   "i": 14,
+   "s": "exact",
    "t": "scalar",
    "w": 14
   },
@@ -23103,15 +23082,15 @@
  },
  "totals": {
   "as_failed": 0,
-  "cc1_failed": 410,
-  "exact": 433,
+  "cc1_failed": 417,
+  "exact": 467,
   "functions": 3473,
   "link_failed": 0,
-  "measured": 3063,
+  "measured": 3056,
   "no_source": 0,
-  "percent_words": 11.04,
-  "scored": 2630,
+  "percent_words": 11.02,
+  "scored": 2589,
   "words": 298724,
-  "words_identical": 32972
+  "words_identical": 32930
  }
 }

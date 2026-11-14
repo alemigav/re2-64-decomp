@@ -41,6 +41,9 @@ FIXTURE = ROOT / "fixtures" / "mechanism_passes.json"
 MECHANISMS = {
     "order:adjacent": "yes",
     "order:past-guard": "yes",
+    "sig:forward": "yes — needs the image's words (data-driven)",
+    "symbol:addr": "yes — an address as a value becomes a symbol reference",
+    "dat:width": "yes — vary a data symbol's declared width",
     "sig:param": "yes",
     "domain:integer": "no — changes the type of an expression tree",
     "pointer:named": "no — introduces a binding that changes CSE",
@@ -61,7 +64,7 @@ def bank_module():
     return module
 
 
-def order_variants(text: str):
+def order_variants(text: str, ctx=None):
     """Swap two adjacent simple assignments to DISTINCT names. Only assignments, and only ones with no call on the
     right, so the swap cannot change what either means."""
     lines = text.splitlines()
@@ -84,7 +87,7 @@ PARAM_TYPES = [("undefined4 *", "undefined4 "), ("undefined4 *", "int *"), ("und
                ("void *", "int "), ("undefined4 ", "int "), ("int ", "undefined4 ")]
 
 
-def sig_variants(text: str):
+def sig_variants(text: str, ctx=None):
     """Re-type one parameter, or drop the pointer from it. One variant per (parameter slot, type) — bounded."""
     m = SIGNATURE.search(text)
     if not m:
@@ -112,7 +115,7 @@ def sig_variants(text: str):
 GUARD = re.compile(r"^\s*if\s*\(([^)]*)\)\s*\{\s*\n\s*return[^;]*;\s*\n\s*\}\s*$", re.M)
 
 
-def pastguard_variants(text: str):
+def pastguard_variants(text: str, ctx=None):
     """Move a leading simple assignment AFTER a `if (c) { return x; }` guard.
 
     Measured on `stage2:0x80082388` at M417: with `iVar2 = 0;` before the guard, gcc returns `addu $v0,$v1,$zero`
@@ -146,7 +149,120 @@ def pastguard_variants(text: str):
     return out[:6]
 
 
-PASSES = {"order": order_variants, "sig": sig_variants, "guard": pastguard_variants}
+# --- sig:forward — the first DATA-DRIVEN mechanism -------------------------------------------------------------------
+# M419 closed two bodies by hand with one mechanism: Ghidra declared `void f(void)`, and the image materialises a
+# constant into an argument register (a0-a3) immediately before the `jal`. The caller must therefore pass that many
+# arguments, with the constant last. Text alone cannot see this — it needs the image's words — so this pass takes the
+# same `ctx` every pass receives and uses it when it is there.
+ARG = {4: "a0", 5: "a1", 6: "a2", 7: "a3"}
+CALL = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)\s*\(([^()]*)\)")
+SIG = re.compile(r"^(\s*(?:[A-Za-z_][\w ]*?)\b)([A-Za-z_]\w*)\s*\(([^)]*)\)", re.M)
+NOT_A_CALL = {"if", "while", "for", "switch", "return", "sizeof"}
+
+
+def _const_into_arg(word: int):
+    """(arg name, value) when this instruction is `addiu/ori aN,$zero,IMM` or `lui aN,IMM`; else None."""
+    op, rs, rt = word >> 26, (word >> 21) & 0x1F, (word >> 16) & 0x1F
+    if op == 0x09 and rs == 0:                      # addiu aN, $zero, imm
+        imm = word & 0xFFFF
+        return ARG.get(rt), imm - 0x10000 if imm & 0x8000 else imm
+    if op == 0x0D and rs == 0:                      # ori aN, $zero, imm
+        return ARG.get(rt), word & 0xFFFF
+    if op == 0x0F:                                  # lui aN, imm
+        return ARG.get(rt), ((word & 0xFFFF) << 16)
+    return None
+
+
+def forward_variants(text: str, ctx=None):
+    """Declare the parameters the callee reads and forward them, with the constant the image puts in a register."""
+    if not ctx:
+        return []
+    cp, image, addr, words = ctx
+    blob, base = cp.image_window(image, cp.image_inventory())
+    ws = [int.from_bytes(blob[addr - base + 4 * i:addr - base + 4 * i + 4], "big") for i in range(words)]
+    found = []
+    for i, w in enumerate(ws):
+        if (w >> 26) != 0x03:                       # jal
+            continue
+        for j in (i - 1, i + 1):                    # the preceding instruction, or the delay slot
+            if not 0 <= j < len(ws):
+                continue
+            hit = _const_into_arg(ws[j])
+            if hit and hit[0]:
+                found.append((i, hit[0], hit[1]))
+    out, seen = [], {text}
+    for _i, reg, value in found:
+        idx = "a0 a1 a2 a3".split().index(reg)
+        # Only INSIDE the function body: the first `name(...)` in the text is the definition's own parameter list,
+        # and rewriting that produces a variant whose call is untouched — which is what the first version did, and it
+        # scored 0 on the very two bodies the mechanism was derived from.
+        brace = text.find("{")
+        start_at = brace if brace >= 0 else 0
+        m = next((mm for mm in CALL.finditer(text, start_at) if mm.group(1) not in NOT_A_CALL), None)
+        if m is None:
+            continue
+        args = [a.strip() for a in m.group(2).split(",") if a.strip()]
+        if len(args) > idx:                          # already passing that many: not this mechanism
+            continue
+        new_args = ["a%d" % k for k in range(idx)] + ["0x%x" % (value & 0xFFFFFFFF)]
+        call = "%s(%s)" % (m.group(1), ", ".join(new_args))
+        cand = text[:m.start()] + call + text[m.end():]
+        sig = SIG.search(cand)
+        if sig is None:
+            continue
+        params = ", ".join("u32 a%d" % k for k in range(idx))
+        cand = cand[:sig.start(3)] + params + cand[sig.end(3):]
+        if "typedef unsigned int u32;" not in cand:
+            cand = "typedef unsigned int u32;\n" + cand
+        if cand not in seen:
+            seen.add(cand)
+            out.append(("sig:forward %s=0x%x" % (reg, value & 0xFFFFFFFF), cand))
+    return out[:6]
+
+
+# --- symbol:addr — an absolute address passed as a VALUE wants to be a symbol reference ------------------------------
+# `stage2:0x800a5700`: the image emits `lui $a0,0x8014; addiu $a0,$a0,0x3fb0` and we emitted `ori` for the same sum.
+# The difference is not arithmetic, it is what gcc is looking at: a SYMBOL goes through %hi/%lo with a relocation and
+# lands as `addiu`, while a constant it can fold lands as `ori`. Measured 9 -> 10 of 10.
+ADDR_LITERAL = re.compile(r"\b0x([89a-fA-F][0-9a-fA-F]{7})\b")
+
+
+def symbol_variants(text: str, ctx=None):
+    out, seen = [], {text}
+    for m in ADDR_LITERAL.finditer(text):
+        lit = "0x%s" % m.group(1)
+        name = "D_%s" % m.group(1).lower()
+        cand = text[:m.start()] + "(u32)%s" % name + text[m.end():]
+        if "extern u8 %s[];" % name not in cand:
+            i = 0 if not cand.startswith("typedef") else cand.index("\n") + 1
+            cand = cand[:i] + "extern u8 %s[];\n" % name + cand[i:]
+            if "typedef unsigned int u32;" not in cand:
+                cand = "typedef unsigned int u32;\n" + cand
+        if cand not in seen:
+            seen.add(cand)
+            out.append(("symbol:addr %s" % lit, cand))
+    return out[:6]
+
+
+# --- dat:width — a data symbol declared a word where the image reads a byte ----------------------------------------
+# `stage2:0x800b2694` reads `DAT_80136310` as a byte (`lbu`) and we read it as a word, because the preamble declares
+# every `DAT_` as `unsigned int`. The width of that declaration is a decision the image has already made.
+DECL = re.compile(r"^extern unsigned int (\w+);$", re.M)
+
+
+def datwidth_variants(text: str, ctx=None):
+    out, seen = [], {text}
+    for m in DECL.finditer(text):
+        for kind in ("unsigned char", "short", "int"):
+            cand = text[:m.start()] + "extern %s %s;" % (kind, m.group(1)) + text[m.end():]
+            if cand not in seen:
+                seen.add(cand)
+                out.append(("dat:width %s as %s" % (m.group(1), kind), cand))
+    return out[:8]
+
+
+PASSES = {"order": order_variants, "sig": sig_variants, "guard": pastguard_variants,
+          "forward": forward_variants, "symbol": symbol_variants, "datwidth": datwidth_variants}
 
 
 def band(kind: str):
@@ -195,7 +311,8 @@ def write(args) -> int:
             text, syms, _why = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"])
             if text is None:
                 continue
-            variants = fn(text)
+            ctx = (dm.probe(), cand["image"], cand["address"], cand["words"])
+            variants = fn(text, ctx)
             tried += 1
             won = None
             for label, variant in variants:
@@ -262,6 +379,11 @@ def self_test() -> int:
         ("a parameter type yields a variant", any(v[0].startswith("sig:param") for v in sig_variants(text)), ""),
         ("moving an init past a returning guard yields a variant",
          len(pastguard_variants("    x = 0;\n    if (p == 0) {\n        return 0;\n    }\n    y = x;\n")) == 1, ""),
+        ("`addiu a3,$zero,0x400` decodes to a3 = 0x400", _const_into_arg(0x24070400) == ("a3", 0x400),
+         str(_const_into_arg(0x24070400))),
+        ("`lui a0,0x8014` decodes to a0 = 0x80140000", _const_into_arg(0x3C048014) == ("a0", 0x80140000),
+         str(_const_into_arg(0x3C048014))),
+        ("an instruction that sets no argument register yields nothing", _const_into_arg(0x03E00008) is None, ""),
         ("every mechanism is classified", all(v for v in MECHANISMS.values()), ""),
     ]
     bad = sum(1 for _n, ok, _d in cases if not ok)
@@ -277,7 +399,7 @@ def main(argv):
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--band", default="mid", choices=("mid", "near"))
-    ap.add_argument("--passes", default="order,guard,sig")
+    ap.add_argument("--passes", default="symbol,datwidth,forward,order,guard,sig")
     ap.add_argument("--max-words", type=int, default=200)
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args(argv)

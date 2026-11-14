@@ -1,12 +1,27 @@
 /* FUN_8015b234
  * image   ovl_007688e (ovl), base 0x8015b030
  * address 0x8015b234  body 0x8015b234..0x8015b26b  size 56 B
- * body sha256 3b831bc0d57237cd16615c84fc172890234f3a73bd2475ffab5d9b6807b7bc2d
- * provider record sha256 e3fc368ce085cb46fafbb08298de5a9563eef1bc660db5bc4405347e2985c225
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 0c2a3d99b32bf18cf9c160466c2189e196a77726b6adde4d31754f57e39d7742
+ * recovered byte-exact (imported: closed by the dat:width mechanism pass (6 of 14 -> 14 of 14) (M416))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_007688e/8015b234.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+extern unsigned int DAT_8016149c;
+extern int DAT_80161510;
+extern unsigned int _DAT_800c52d8;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void FUN_8015b234(void)
 

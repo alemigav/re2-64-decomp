@@ -610,6 +610,24 @@
   },
   {
    "image": "ovl_0072610",
+   "address": "0x801805f0",
+   "words": 55,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (54 of 55 -> 55 of 55) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/801805f0.c",
+   "syms": {
+    "FUN_801805f0": 2149058032,
+    "func_0x80004cfc": 2147503356,
+    "func_0x800752dc": 2147963612,
+    "func_0x800a2218": 2148147736,
+    "func_0x800a8bc8": 2148174792,
+    "DAT_80119e74": 2148638324,
+    "_DAT_800c52dc": 2148291292
+   }
+  },
+  {
+   "image": "ovl_0072610",
    "address": "0x801806cc",
    "words": 10,
    "verdict": "byte-exact",
@@ -624,6 +642,21 @@
   },
   {
    "image": "ovl_0072610",
+   "address": "0x80180be4",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (3 of 11 -> 11 of 11) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_0072610/80180be4.c",
+   "syms": {
+    "FUN_80180be4": 2149059556,
+    "func_0x8004d138": 2147799352,
+    "DAT_80185498": 2149078168,
+    "_DAT_8010b6d0": 2148579024
+   }
+  },
+  {
+   "image": "ovl_0072610",
    "address": "0x801813d8",
    "words": 15,
    "verdict": "byte-exact",
@@ -633,6 +666,42 @@
     "D_80186c98": 2149084312,
     "FUN_8017ddb0": 2149047728,
     "FUN_8017d0f0": 2149044464
+   }
+  },
+  {
+   "image": "ovl_007688e",
+   "address": "0x8015b030",
+   "words": 38,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (35 of 38 -> 38 of 38) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_007688e/8015b030.c",
+   "syms": {
+    "FUN_8015fc08": 2148924424,
+    "func_0x8004cd88": 2147798408,
+    "func_0x80052bbc": 2147822524,
+    "DAT_80160c1c": 2148928540,
+    "PTR_FUN_80160b38": 2148928312,
+    "_DAT_800e90f8": 2148438264,
+    "_DAT_800e911c": 2148438300,
+    "_DAT_800e9120": 2148438304,
+    "_DAT_8010bfa8": 2148581288
+   }
+  },
+  {
+   "image": "ovl_007688e",
+   "address": "0x8015b234",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (6 of 14 -> 14 of 14) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_007688e/8015b234.c",
+   "syms": {
+    "FUN_8015b234": 2148905524,
+    "func_0x800479c8": 2147776968,
+    "DAT_8016149c": 2148930716,
+    "DAT_80161510": 2148930832,
+    "_DAT_800c52d8": 2148291288
    }
   },
   {
@@ -1333,6 +1402,19 @@
   },
   {
    "image": "ovl_008900e",
+   "address": "0x80168448",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (12 of 13 -> 13 of 13) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_008900e/80168448.c",
+   "syms": {
+    "FUN_80168448": 2148959304,
+    "DAT_80168d4c": 2148961612
+   }
+  },
+  {
+   "image": "ovl_008900e",
    "address": "0x80168600",
    "words": 21,
    "verdict": "byte-exact",
@@ -1440,6 +1522,19 @@
    "syms": {
     "FUN_80164d00": 2148945152,
     "PTR_FUN_80167498": 2148955288
+   }
+  },
+  {
+   "image": "ovl_008e046",
+   "address": "0x80166d84",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (12 of 13 -> 13 of 13) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_008e046/80166d84.c",
+   "syms": {
+    "FUN_80166d84": 2148953476,
+    "DAT_8016752c": 2148955436
    }
   },
   {
@@ -1775,6 +1870,19 @@
    }
   },
   {
+   "image": "ovl_0093aba",
+   "address": "0x8016535c",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (12 of 13 -> 13 of 13) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_0093aba/8016535c.c",
+   "syms": {
+    "FUN_8016535c": 2148946780,
+    "DAT_8016554c": 2148947276
+   }
+  },
+  {
    "image": "ovl_0095446",
    "address": "0x801620b4",
    "words": 7,
@@ -1883,6 +1991,19 @@
    "verdict": "byte-exact",
    "probe": "dispatch family (table 0x801682d0): 13 of 13 words, one shape for all 2 copies",
    "source": "DISPATCH801682D0_SOURCE"
+  },
+  {
+   "image": "ovl_0095446",
+   "address": "0x80167ae4",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (12 of 13 -> 13 of 13) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_0095446/80167ae4.c",
+   "syms": {
+    "FUN_80167ae4": 2148956900,
+    "DAT_801682d8": 2148958936
+   }
   },
   {
    "image": "ovl_0097e42",
@@ -3185,6 +3306,19 @@
   },
   {
    "image": "ovl_00b08a2",
+   "address": "0x801664dc",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (12 of 13 -> 13 of 13) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_00b08a2/801664dc.c",
+   "syms": {
+    "FUN_801664dc": 2148951260,
+    "DAT_801672c8": 2148954824
+   }
+  },
+  {
+   "image": "ovl_00b08a2",
    "address": "0x80166510",
    "words": 34,
    "verdict": "byte-exact",
@@ -3254,6 +3388,19 @@
    "verdict": "byte-exact",
    "probe": "dispatch family (table 0x80162b14): 13 of 13 words, one shape for all 2 copies",
    "source": "DISPATCH80162B14_SOURCE"
+  },
+  {
+   "image": "ovl_00b2d7a",
+   "address": "0x80162568",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (12 of 13 -> 13 of 13) (M416)",
+   "source_file": "fixtures/decomp/authored/ovl_00b2d7a/80162568.c",
+   "syms": {
+    "FUN_80162568": 2148935016,
+    "DAT_80162b1c": 2148936476
+   }
   },
   {
    "image": "ovl_00b321e",
@@ -3617,6 +3764,37 @@
    "syms": {
     "FUN_800265f4": 2147640820,
     "FUN_8004cdd4": 2147798484
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80026834",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (9 of 18 -> 18 of 18) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/80026834.c",
+   "syms": {
+    "FUN_80026834": 2147641396,
+    "func_0x800072e0": 2147513056,
+    "func_0x80007300": 2147513088,
+    "DAT_80112968": 2148608360
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8002687c",
+   "words": 16,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (15 of 16 -> 16 of 16) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8002687c.c",
+   "syms": {
+    "FUN_8002687c": 2147641468,
+    "FUN_8006bf48": 2147925832,
+    "DAT_800c56f4": 2148292340,
+    "DAT_8010b6e0": 2148579040,
+    "DAT_8010b6e4": 2148579044
    }
   },
   {
@@ -4495,6 +4673,36 @@
   },
   {
    "image": "stage2",
+   "address": "0x800434c8",
+   "words": 38,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (36 of 38 -> 38 of 38) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800434c8.c",
+   "syms": {
+    "FUN_80042de0": 2147757536,
+    "FUN_8004341c": 2147759132,
+    "FUN_800434c8": 2147759304,
+    "_DAT_80139a78": 2148768376
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80043560",
+   "words": 48,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (46 of 48 -> 48 of 48) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/80043560.c",
+   "syms": {
+    "FUN_80042de0": 2147757536,
+    "FUN_8004341c": 2147759132,
+    "FUN_80043560": 2147759456,
+    "_DAT_80139a78": 2148768376
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80043620",
    "words": 10,
    "verdict": "byte-exact",
@@ -4695,6 +4903,19 @@
    "syms": {
     "FUN_8004a7a0": 2147788704,
     "FUN_8004a7f4": 2147788788
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004cef8",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (9 of 11 -> 11 of 11) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8004cef8.c",
+   "syms": {
+    "FUN_8004cef8": 2147798776,
+    "DAT_8010b328": 2148578088
    }
   },
   {
@@ -5190,6 +5411,20 @@
   },
   {
    "image": "stage2",
+   "address": "0x8006be10",
+   "words": 36,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (32 of 36 -> 36 of 36) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8006be10.c",
+   "syms": {
+    "FUN_8006be10": 2147925520,
+    "func_0x8000e9d0": 2147543504,
+    "DAT_801127f4": 2148607988
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8006bea0",
    "words": 5,
    "verdict": "byte-exact",
@@ -5396,6 +5631,21 @@
    "verdict": "byte-exact",
    "probe": "p701d8: 141 of 141",
    "source": "P701D8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x80070474",
+   "words": 27,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (25 of 27 -> 27 of 27) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/80070474.c",
+   "syms": {
+    "FUN_8006e838": 2147936312,
+    "FUN_80070474": 2147943540,
+    "FUN_800704e0": 2147943648,
+    "DAT_800e8c78": 2148437112
+   }
   },
   {
    "image": "stage2",
@@ -6369,6 +6619,36 @@
   },
   {
    "image": "stage2",
+   "address": "0x8008bda0",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (12 of 13 -> 13 of 13) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8008bda0.c",
+   "syms": {
+    "FUN_800274f8": 2147644664,
+    "FUN_8008bda0": 2148056480,
+    "DAT_8012bf99": 2148712345
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008bdd4",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (20 of 21 -> 21 of 21) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8008bdd4.c",
+   "syms": {
+    "FUN_800274f8": 2147644664,
+    "FUN_800275c0": 2147644864,
+    "FUN_8002767c": 2147645052,
+    "FUN_8008bdd4": 2148056532,
+    "DAT_8012bf98": 2148712344
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x8008c054",
    "words": 2,
    "verdict": "byte-exact",
@@ -6382,6 +6662,21 @@
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_8008C408_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008d6b4",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (17 of 18 -> 18 of 18) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/8008d6b4.c",
+   "syms": {
+    "FUN_80085398": 2148029336,
+    "FUN_8008d6b4": 2148062900,
+    "DAT_800c52dc": 2148291292,
+    "DAT_8012bf99": 2148712345
+   }
   },
   {
    "image": "stage2",
@@ -6452,6 +6747,102 @@
    "syms": {
     "FUN_8009bea0": 2148122272,
     "FUN_8009bf04": 2148122372
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a1f40",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (16 of 17 -> 17 of 17) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a1f40.c",
+   "syms": {
+    "FUN_800a0f1c": 2148142876,
+    "FUN_800a1f40": 2148147008,
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a1f84",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (16 of 17 -> 17 of 17) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a1f84.c",
+   "syms": {
+    "FUN_800a0d1c": 2148142364,
+    "FUN_800a1f84": 2148147076,
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a1fc8",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (16 of 17 -> 17 of 17) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a1fc8.c",
+   "syms": {
+    "FUN_800a1234": 2148143668,
+    "FUN_800a1fc8": 2148147144,
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a200c",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (24 of 25 -> 25 of 25) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a200c.c",
+   "syms": {
+    "FUN_800a12f8": 2148143864,
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "DAT_80136310": 2148754192,
+    "func_800a200c": 2148147212
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a2218",
+   "words": 29,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (28 of 29 -> 29 of 29) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a2218.c",
+   "syms": {
+    "FUN_800a13c4": 2148144068,
+    "FUN_800a2218": 2148147736,
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800a23cc",
+   "words": 22,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (21 of 22 -> 22 of 22) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800a23cc.c",
+   "syms": {
+    "FUN_800a15d0": 2148144592,
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "DAT_80136310": 2148754192,
+    "func_800a23cc": 2148148172
    }
   },
   {
@@ -6661,6 +7052,21 @@
   },
   {
    "image": "stage2",
+   "address": "0x800aa8dc",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (24 of 25 -> 25 of 25) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800aa8dc.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "DAT_80136310": 2148754192,
+    "func_800aa8dc": 2148182236
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800aaf70",
    "words": 5,
    "verdict": "byte-exact",
@@ -6714,6 +7120,36 @@
    "verdict": "byte-exact",
    "probe": "shift8: 2 of 2",
    "source": "SHIFT8_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab658",
+   "words": 15,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (13 of 15 -> 15 of 15) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800ab658.c",
+   "syms": {
+    "FUN_800a5180": 2148159872,
+    "FUN_800aaf84": 2148183940,
+    "FUN_800ab658": 2148185688,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ab76c",
+   "words": 15,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (13 of 15 -> 15 of 15) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800ab76c.c",
+   "syms": {
+    "FUN_800a5358": 2148160344,
+    "FUN_800aaf84": 2148183940,
+    "FUN_800ab76c": 2148185964,
+    "DAT_80136310": 2148754192
+   }
   },
   {
    "image": "stage2",
@@ -6886,11 +7322,173 @@
   },
   {
    "image": "stage2",
+   "address": "0x800b202c",
+   "words": 27,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (26 of 27 -> 27 of 27) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b202c.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a7b64": 2148170596,
+    "FUN_800b202c": 2148212780,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800b2138",
    "words": 3,
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_800B2138_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b2144",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (24 of 25 -> 25 of 25) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b2144.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a7e30": 2148171312,
+    "DAT_80136310": 2148754192,
+    "func_800b2144": 2148213060
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b21a8",
+   "words": 18,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (17 of 18 -> 18 of 18) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b21a8.c",
+   "syms": {
+    "FUN_800a2444": 2148148292,
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800aaea8": 2148183720,
+    "FUN_800aefb4": 2148200372,
+    "FUN_800b21a8": 2148213160,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b2298",
+   "words": 29,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (28 of 29 -> 29 of 29) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b2298.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a83b4": 2148172724,
+    "FUN_800b2298": 2148213400,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b2344",
+   "words": 21,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (20 of 21 -> 21 of 21) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b2344.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a8248": 2148172360,
+    "FUN_800b2344": 2148213572,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b2398",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (24 of 25 -> 25 of 25) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b2398.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a76a4": 2148169380,
+    "DAT_80136310": 2148754192,
+    "func_800b2398": 2148213656
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b23fc",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (24 of 25 -> 25 of 25) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b23fc.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a777c": 2148169596,
+    "DAT_80136310": 2148754192,
+    "func_800b23fc": 2148213756
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b2460",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (24 of 25 -> 25 of 25) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b2460.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a7970": 2148170096,
+    "DAT_80136310": 2148754192,
+    "func_800b2460": 2148213856
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b24c4",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (24 of 25 -> 25 of 25) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b24c4.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a7854": 2148169812,
+    "DAT_80136310": 2148754192,
+    "func_800b24c4": 2148213956
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b2528",
+   "words": 25,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (24 of 25 -> 25 of 25) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b2528.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a7a8c": 2148170380,
+    "FUN_800b2528": 2148214056,
+    "DAT_80136310": 2148754192
+   }
   },
   {
    "image": "stage2",
@@ -6901,6 +7499,36 @@
    "source_file": "fixtures/decomp/authored/stage2/800b2618.c",
    "syms": {
     "D_80147fb0": 2148827056
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b2694",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (9 of 10 -> 10 of 10) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b2694.c",
+   "syms": {
+    "FUN_800a5ba4": 2148162468,
+    "FUN_800b2694": 2148214420,
+    "DAT_80136310": 2148754192
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x800b26bc",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width mechanism pass (13 of 14 -> 14 of 14) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800b26bc.c",
+   "syms": {
+    "FUN_800a5678": 2148161144,
+    "FUN_800a56c0": 2148161216,
+    "FUN_800a5bc0": 2148162496,
+    "DAT_80136310": 2148754192,
+    "func_800b26bc": 2148214460
    }
   },
   {

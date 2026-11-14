@@ -1,11 +1,24 @@
 /* FUN_8008bdd4
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8008bdd4  body 0x8008bdd4..0x8008be27  size 84 B
- * body sha256 afd4f5ab2b20c3a8d5c4ad2c01a8404ca8b730e209a73b3824eb00e8cc916fe3
- * provider record sha256 6aaaa7bd09a47d16e8ddac1c9f0aff4209350e1714aa56dadd216c219ed270c1
- * callees 3 direct (3 in corpus)
- * provider Ghidra 12.2
+ * body sha256 0831a1ed429c5843c789ab660f1e656b92574210fcc130c150b1745ffc6c461f
+ * recovered byte-exact (imported: closed by the dat:width mechanism pass (20 of 21 -> 21 of 21) (M416))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/stage2/8008bdd4.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+extern unsigned char DAT_8012bf98;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_8008bdd4(void)
 
 {

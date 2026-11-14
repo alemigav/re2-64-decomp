@@ -1,12 +1,26 @@
 /* FUN_800434c8
  * image   stage2 (stage2), base 0x80018a80
  * address 0x800434c8  body 0x800434c8..0x8004355f  size 152 B
- * body sha256 3989cd15f4a8bd17901326364af31615ac7b7e2a2cfa9b5fcf3496e7741ce114
- * provider record sha256 851b41fdbdd272a6b356437e988c4f3a07c0b664e0400c596f08846ca07d653d
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 0d5432631125fe0d6fd557efb4f6805aedcc9bab45f0504ba65f10e83e81cffb
+ * recovered byte-exact (imported: closed by the dat:width mechanism pass (36 of 38 -> 38 of 38) (M416))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/stage2/800434c8.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+typedef unsigned int undefined4;
+extern short _DAT_80139a78;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int FUN_800434c8(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
                 undefined4 param_5,undefined4 param_6,int *param_7)

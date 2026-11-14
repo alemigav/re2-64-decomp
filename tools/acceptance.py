@@ -104,7 +104,7 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 623, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 664, True),
     ("other corpus (repository)", [sys.executable, "tools/other_corpus.py", "--self-test"], 21, True),
     ("toolchain matrix (cartridge)", [sys.executable, "tools/toolchain_matrix.py", "--check"], 4, True),
     ("corpus build (cartridge)", [sys.executable, "tools/build_corpus.py", "--self-test"], 2, True),
@@ -203,7 +203,7 @@ SUITES = [
     ("draft portfolio self-test", [sys.executable, "tools/draft_portfolio.py", "--self-test"], 3, False),
     # M416: the mechanism grammar as passes. `--check` reads the committed measurement; the self-test is pure.
     ("mechanism pass (repository)", [sys.executable, "tools/mechanism_pass.py", "--check"], 2, False),
-    ("mechanism pass self-test", [sys.executable, "tools/mechanism_pass.py", "--self-test"], 5, False),
+    ("mechanism pass self-test", [sys.executable, "tools/mechanism_pass.py", "--self-test"], 8, False),
     # M417: the drafting workbench. It asserts nothing about the corpus — it puts one body's words, draft, diff and
     # class in one place — so what is graded is its classifier, which is the part that makes a claim.
     ("draft workbench self-test", [sys.executable, "tools/draft_workbench.py", "--self-test"], 5, False),
