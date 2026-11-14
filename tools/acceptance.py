@@ -104,7 +104,7 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 614, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 618, True),
     ("other corpus (repository)", [sys.executable, "tools/other_corpus.py", "--self-test"], 21, True),
     ("toolchain matrix (cartridge)", [sys.executable, "tools/toolchain_matrix.py", "--check"], 4, True),
     ("corpus build (cartridge)", [sys.executable, "tools/build_corpus.py", "--self-test"], 2, True),
@@ -197,6 +197,10 @@ SUITES = [
     # stops being byte-exact fails here rather than in a note.
     ("type repair (cartridge)", [sys.executable, "tools/type_repair.py", "--check"], 1, True),
     ("type repair self-test", [sys.executable, "tools/type_repair.py", "--self-test"], 3, True),
+    # M415: the per-body portfolio. m2c is an OPTIONAL EXTERNAL — absent means SKIP, never PASS — so only the pure
+    # halves (the asm writer and the macro expander) and the fixture-derived summary are graded here.
+    ("draft portfolio (repository)", [sys.executable, "tools/draft_portfolio.py", "--check"], 2, False),
+    ("draft portfolio self-test", [sys.executable, "tools/draft_portfolio.py", "--self-test"], 3, False),
     ("resolve (repository)", [sys.executable, "tools/srcmap.py", "--check"], 4, False),
     ("counts self-test", [sys.executable, "tools/counts.py", "--self-test"], 4, False),
     ("counts (repository)", [sys.executable, "tools/counts.py", "--check"], 47, False),

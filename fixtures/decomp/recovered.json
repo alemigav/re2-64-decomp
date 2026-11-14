@@ -2076,6 +2076,18 @@
   },
   {
    "image": "ovl_009dd02",
+   "address": "0x80162678",
+   "words": 13,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: m2c's draft, better than the provider's (10 of 13 -> 13 of 13) and pinned word for word (M415)",
+   "source_file": "fixtures/decomp/authored/ovl_009dd02/80162678.c",
+   "syms": {
+    "FUN_80162678": 2148935288
+   }
+  },
+  {
+   "image": "ovl_009dd02",
    "address": "0x80162e28",
    "words": 14,
    "verdict": "byte-exact",
@@ -2807,6 +2819,18 @@
    "syms": {
     "FUN_8016250c": 2148934924,
     "PTR_FUN_8016c400": 2148975616
+   }
+  },
+  {
+   "image": "ovl_00a9d94",
+   "address": "0x801671dc",
+   "words": 19,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: m2c's draft, better than the provider's (15 of 19 -> 19 of 19) and pinned word for word (M415)",
+   "source_file": "fixtures/decomp/authored/ovl_00a9d94/801671dc.c",
+   "syms": {
+    "FUN_801671dc": 2148954588
    }
   },
   {
@@ -4568,6 +4592,18 @@
   },
   {
    "image": "stage2",
+   "address": "0x8004794c",
+   "words": 14,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: m2c's draft, better than the provider's (9 of 14 -> 14 of 14) and pinned word for word (M415)",
+   "source_file": "fixtures/decomp/authored/stage2/8004794c.c",
+   "syms": {
+    "FUN_8004794c": 2147776844
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800479bc",
    "words": 3,
    "verdict": "byte-exact",
@@ -4736,6 +4772,18 @@
    "probe": "read from the words (M375): 9 of 9, nine words, a ten-byte-stride scan capped at 32 entries -- the unsigned index is what makes it `sltiu`",
    "source_file": "fixtures/decomp/authored/stage2/80052eec.c",
    "syms": {}
+  },
+  {
+   "image": "stage2",
+   "address": "0x80052f10",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: m2c's draft, better than the provider's (10 of 11 -> 11 of 11) and pinned word for word (M415)",
+   "source_file": "fixtures/decomp/authored/stage2/80052f10.c",
+   "syms": {
+    "FUN_80052f10": 2147823376
+   }
   },
   {
    "image": "stage2",

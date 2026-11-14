@@ -1,20 +1,20 @@
 {
  "histogram": {
-  "exact": 424,
+  "exact": 428,
   "none": 0,
   "over_half": 135,
   "under_half": 2188,
-  "within_1": 52,
+  "within_1": 51,
   "within_2": 85,
-  "within_4": 86,
-  "within_8": 93
+  "within_4": 84,
+  "within_8": 92
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 592,
+  "claimed": 596,
   "claimed_not_exact": 169,
-  "exact": 424,
-  "exact_and_claimed": 423,
+  "exact": 428,
+  "exact_and_claimed": 427,
   "exact_unclaimed": 1
  },
  "profile": "cc1 2.8.1 -O2 -G 0 -mips2 -mcpu=r4300; as -EB -mips2 -mcpu=r4300 -g -G 0",
@@ -7802,9 +7802,9 @@
    "w": 110
   },
   "ovl_009dd02:80162678": {
-   "d": 0,
-   "i": 10,
-   "s": "scored",
+   "d": null,
+   "i": 13,
+   "s": "exact",
    "t": "scalar",
    "w": 13
   },
@@ -10006,9 +10006,9 @@
    "w": 300
   },
   "ovl_00a9d94:801671dc": {
-   "d": 0,
-   "i": 15,
-   "s": "scored",
+   "d": null,
+   "i": 19,
+   "s": "exact",
    "t": "scalar",
    "w": 19
   },
@@ -14238,9 +14238,9 @@
    "w": 14
   },
   "stage2:8004794c": {
-   "d": 0,
-   "i": 9,
-   "s": "scored",
+   "d": null,
+   "i": 14,
+   "s": "exact",
    "t": "scalar",
    "w": 14
   },
@@ -15088,9 +15088,9 @@
    "w": 9
   },
   "stage2:80052f10": {
-   "d": 2,
-   "i": 10,
-   "s": "scored",
+   "d": null,
+   "i": 11,
+   "s": "exact",
    "t": "scalar",
    "w": 11
   },
@@ -23104,14 +23104,14 @@
  "totals": {
   "as_failed": 0,
   "cc1_failed": 410,
-  "exact": 424,
+  "exact": 428,
   "functions": 3473,
   "link_failed": 0,
   "measured": 3063,
   "no_source": 0,
   "percent_words": 11.03,
-  "scored": 2639,
+  "scored": 2635,
   "words": 298724,
-  "words_identical": 32951
+  "words_identical": 32964
  }
 }

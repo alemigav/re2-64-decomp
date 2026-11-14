@@ -1,0 +1,1511 @@
+{
+ "note": "Per-body portfolio: which source produced the better draft. m2c is an optional external and is NOT a dependency; this fixture is the measurement, and `--check` SKIPs when it is absent.",
+ "records": {
+  "boot:800004f0": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 4,
+   "why": "cc1 refused"
+  },
+  "boot:80000518": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 2,
+   "why": "*/"
+  },
+  "boot:800006d0": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 2,
+   "why": "cc1 refused"
+  },
+  "boot:80000f50": {
+   "ghidra": 2,
+   "m2c": null,
+   "w": 4,
+   "why": "cc1 refused"
+  },
+  "boot:80002f80": {
+   "ghidra": 22,
+   "m2c": null,
+   "w": 26,
+   "why": "cc1 refused"
+  },
+  "boot:800048e8": {
+   "ghidra": 6,
+   "m2c": null,
+   "w": 9,
+   "why": "cc1 refused"
+  },
+  "boot:80004bac": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 14,
+   "why": "cc1 refused"
+  },
+  "boot:800051b8": {
+   "ghidra": 18,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "boot:80007010": {
+   "ghidra": 1,
+   "m2c": 4,
+   "source": "m2c",
+   "w": 6
+  },
+  "boot:80007300": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 7,
+   "why": "cc1 refused"
+  },
+  "boot:80009b9c": {
+   "ghidra": 30,
+   "m2c": null,
+   "w": 37,
+   "why": "cc1 refused"
+  },
+  "boot:80009c68": {
+   "ghidra": 11,
+   "m2c": 10,
+   "source": "ghidra",
+   "w": 17
+  },
+  "boot:8000be30": {
+   "ghidra": 2,
+   "m2c": 1,
+   "source": "ghidra",
+   "w": 8
+  },
+  "boot:8000c840": {
+   "ghidra": 5,
+   "m2c": null,
+   "w": 10,
+   "why": "cc1 refused"
+  },
+  "boot:8000ccf0": {
+   "ghidra": 1,
+   "m2c": null,
+   "w": 4,
+   "why": "cc1 refused"
+  },
+  "boot:8000cde0": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 4,
+   "why": "cc1 refused"
+  },
+  "boot:8000d020": {
+   "ghidra": 5,
+   "m2c": null,
+   "w": 10,
+   "why": "cc1 refused"
+  },
+  "boot:8000d360": {
+   "ghidra": 25,
+   "m2c": null,
+   "w": 27,
+   "why": "cc1 refused"
+  },
+  "boot:8000db10": {
+   "ghidra": 1,
+   "m2c": 1,
+   "source": "ghidra",
+   "w": 4
+  },
+  "boot:8000db20": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 19,
+   "why": "cc1 refused"
+  },
+  "boot:8000de30": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 3,
+   "why": "cc1 refused"
+  },
+  "boot:8000e980": {
+   "ghidra": 14,
+   "m2c": null,
+   "w": 19,
+   "why": "cc1 refused"
+  },
+  "boot:80011390": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "boot:800115b0": {
+   "ghidra": 0,
+   "m2c": 1,
+   "source": "m2c",
+   "w": 5
+  },
+  "ovl_0072610:8017b44c": {
+   "ghidra": 32,
+   "m2c": null,
+   "w": 34,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:8017b50c": {
+   "ghidra": 29,
+   "m2c": null,
+   "w": 35,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:8017b5e8": {
+   "ghidra": 5,
+   "m2c": 0,
+   "source": "ghidra",
+   "w": 9
+  },
+  "ovl_0072610:8017d214": {
+   "ghidra": 16,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:8017dca4": {
+   "ghidra": 49,
+   "m2c": null,
+   "w": 51,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:8017ee88": {
+   "ghidra": 18,
+   "m2c": 13,
+   "source": "ghidra",
+   "w": 19
+  },
+  "ovl_0072610:8017f370": {
+   "ghidra": 11,
+   "m2c": null,
+   "w": 17,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:8017f540": {
+   "ghidra": 25,
+   "m2c": null,
+   "w": 31,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:8017f7a0": {
+   "ghidra": 11,
+   "m2c": null,
+   "w": 15,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:80180070": {
+   "ghidra": 22,
+   "m2c": null,
+   "w": 30,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:801805f0": {
+   "ghidra": 54,
+   "m2c": null,
+   "w": 55,
+   "why": "cc1 refused"
+  },
+  "ovl_0072610:80180be4": {
+   "ghidra": 3,
+   "m2c": null,
+   "w": 11,
+   "why": "cc1 refused"
+  },
+  "ovl_007688e:8015b030": {
+   "ghidra": 35,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "ovl_007688e:8015b234": {
+   "ghidra": 6,
+   "m2c": null,
+   "w": 14,
+   "why": "cc1 refused"
+  },
+  "ovl_007688e:8015b488": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 16,
+   "why": "cc1 refused"
+  },
+  "ovl_007688e:8015d8c0": {
+   "ghidra": 11,
+   "m2c": null,
+   "w": 14,
+   "why": "cc1 refused"
+  },
+  "ovl_0078c0e:8017ff0c": {
+   "ghidra": 20,
+   "m2c": null,
+   "w": 24,
+   "why": "*/"
+  },
+  "ovl_007c552:8016e880": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 20,
+   "why": "cc1 refused"
+  },
+  "ovl_007c552:8016eb74": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 23,
+   "why": "cc1 refused"
+  },
+  "ovl_007c552:801700ac": {
+   "ghidra": 15,
+   "m2c": 20,
+   "source": "m2c",
+   "w": 22
+  },
+  "ovl_007c552:80171240": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 21,
+   "why": "cc1 refused"
+  },
+  "ovl_007c552:80171294": {
+   "ghidra": 4,
+   "m2c": null,
+   "w": 10,
+   "why": "cc1 refused"
+  },
+  "ovl_007e132:8017b4f8": {
+   "ghidra": 11,
+   "m2c": null,
+   "w": 14,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:80162748": {
+   "ghidra": 29,
+   "m2c": null,
+   "w": 32,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:80164838": {
+   "ghidra": 22,
+   "m2c": null,
+   "w": 28,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:801654c4": {
+   "ghidra": 33,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:8016563c": {
+   "ghidra": 39,
+   "m2c": null,
+   "w": 44,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:801658ec": {
+   "ghidra": 57,
+   "m2c": null,
+   "w": 59,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:80165a0c": {
+   "ghidra": 18,
+   "m2c": null,
+   "w": 20,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:80165ae8": {
+   "ghidra": 14,
+   "m2c": null,
+   "w": 20,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:80166018": {
+   "ghidra": 43,
+   "m2c": null,
+   "w": 50,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:801660e0": {
+   "ghidra": 37,
+   "m2c": null,
+   "w": 40,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:80166180": {
+   "ghidra": 29,
+   "m2c": null,
+   "w": 36,
+   "why": "cc1 refused"
+  },
+  "ovl_008505e:80166298": {
+   "ghidra": 30,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "ovl_008900e:80166c7c": {
+   "ghidra": 35,
+   "m2c": null,
+   "w": 40,
+   "why": "cc1 refused"
+  },
+  "ovl_008900e:80168448": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_008900e:80168654": {
+   "ghidra": 19,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "ovl_008bef8:80162270": {
+   "ghidra": 33,
+   "m2c": null,
+   "w": 36,
+   "why": "cc1 refused"
+  },
+  "ovl_008bef8:80163a84": {
+   "ghidra": 42,
+   "m2c": null,
+   "w": 44,
+   "why": "cc1 refused"
+  },
+  "ovl_008e046:80165a84": {
+   "ghidra": 35,
+   "m2c": null,
+   "w": 40,
+   "why": "cc1 refused"
+  },
+  "ovl_008e046:80166d84": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_008e046:80166ee0": {
+   "ghidra": 19,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "ovl_0090698:80165260": {
+   "ghidra": 56,
+   "m2c": null,
+   "w": 59,
+   "why": "cc1 refused"
+  },
+  "ovl_0090698:8016534c": {
+   "ghidra": 45,
+   "m2c": null,
+   "w": 47,
+   "why": "cc1 refused"
+  },
+  "ovl_0093192:80161fa8": {
+   "ghidra": 6,
+   "m2c": null,
+   "w": 7,
+   "why": "cc1 refused"
+  },
+  "ovl_0093aba:8016535c": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_0095446:80167ae4": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_0098ee0:801621c4": {
+   "ghidra": 19,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "ovl_0098ee0:8016332c": {
+   "ghidra": 33,
+   "m2c": null,
+   "w": 36,
+   "why": "cc1 refused"
+  },
+  "ovl_0098ee0:80164890": {
+   "ghidra": 61,
+   "m2c": null,
+   "w": 63,
+   "why": "*/"
+  },
+  "ovl_0098ee0:8016592c": {
+   "ghidra": 23,
+   "m2c": null,
+   "w": 27,
+   "why": "cc1 refused"
+  },
+  "ovl_009aed0:80162544": {
+   "ghidra": 19,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "ovl_009aed0:80162f84": {
+   "ghidra": 23,
+   "m2c": 2,
+   "source": "ghidra",
+   "w": 24
+  },
+  "ovl_009aed0:80163608": {
+   "ghidra": 33,
+   "m2c": null,
+   "w": 36,
+   "why": "cc1 refused"
+  },
+  "ovl_009aed0:801636a0": {
+   "ghidra": 3,
+   "m2c": null,
+   "w": 11,
+   "why": "cc1 refused"
+  },
+  "ovl_009aed0:801647e8": {
+   "ghidra": 95,
+   "m2c": null,
+   "w": 97,
+   "why": "*/"
+  },
+  "ovl_009d282:80161db0": {
+   "ghidra": 26,
+   "m2c": null,
+   "w": 27,
+   "why": "cc1 refused"
+  },
+  "ovl_009d3ba:80162ba4": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_009d3ba:80162bd8": {
+   "ghidra": 14,
+   "m2c": null,
+   "w": 20,
+   "why": "cc1 refused"
+  },
+  "ovl_009dd02:80162678": {
+   "ghidra": 10,
+   "m2c": 13,
+   "source": "m2c",
+   "w": 13
+  },
+  "ovl_009dd02:80163608": {
+   "ghidra": 55,
+   "m2c": null,
+   "w": 56,
+   "why": "cc1 refused"
+  },
+  "ovl_009dd02:80163a24": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 19,
+   "why": "cc1 refused"
+  },
+  "ovl_009dd02:801641e8": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 19,
+   "why": "cc1 refused"
+  },
+  "ovl_009dd02:80164698": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 19,
+   "why": "cc1 refused"
+  },
+  "ovl_009dd02:801653fc": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "ovl_009dd02:80165908": {
+   "ghidra": 27,
+   "m2c": null,
+   "w": 30,
+   "why": "cc1 refused"
+  },
+  "ovl_009dd02:80166408": {
+   "ghidra": 46,
+   "m2c": null,
+   "w": 47,
+   "why": "cc1 refused"
+  },
+  "ovl_00a0344:80162224": {
+   "ghidra": 21,
+   "m2c": null,
+   "w": 29,
+   "why": "cc1 refused"
+  },
+  "ovl_00a0344:80162a14": {
+   "ghidra": 38,
+   "m2c": null,
+   "w": 44,
+   "why": "cc1 refused"
+  },
+  "ovl_00a0344:80163410": {
+   "ghidra": 30,
+   "m2c": null,
+   "w": 34,
+   "why": "cc1 refused"
+  },
+  "ovl_00a1414:801658dc": {
+   "ghidra": 7,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_00a1414:801687f0": {
+   "ghidra": 7,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_00a43b6:8016724c": {
+   "ghidra": 88,
+   "m2c": null,
+   "w": 90,
+   "why": "cc1 refused"
+  },
+  "ovl_00a43b6:801683d8": {
+   "ghidra": 3,
+   "m2c": null,
+   "w": 7,
+   "why": "cc1 refused"
+  },
+  "ovl_00a43b6:801691dc": {
+   "ghidra": 7,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_00a733e:80166ef4": {
+   "ghidra": 7,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_00a733e:80167bd8": {
+   "ghidra": 14,
+   "m2c": null,
+   "w": 17,
+   "why": "cc1 refused"
+  },
+  "ovl_00a9d94:801671dc": {
+   "ghidra": 15,
+   "m2c": 19,
+   "source": "m2c",
+   "w": 19
+  },
+  "ovl_00ae24a:80165670": {
+   "ghidra": 20,
+   "m2c": null,
+   "w": 23,
+   "why": "cc1 refused"
+  },
+  "ovl_00ae24a:8016698c": {
+   "ghidra": 3,
+   "m2c": 1,
+   "source": "ghidra",
+   "w": 10
+  },
+  "ovl_00b08a2:801664dc": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_00b2d7a:80162568": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:801623e4": {
+   "ghidra": 25,
+   "m2c": null,
+   "w": 28,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:80163620": {
+   "ghidra": 100,
+   "m2c": null,
+   "w": 104,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:80163da4": {
+   "ghidra": 16,
+   "m2c": null,
+   "w": 19,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:80163df0": {
+   "ghidra": 25,
+   "m2c": null,
+   "w": 28,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:801649ac": {
+   "ghidra": 31,
+   "m2c": null,
+   "w": 35,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:80164f14": {
+   "ghidra": 31,
+   "m2c": null,
+   "w": 35,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:8016552c": {
+   "ghidra": 56,
+   "m2c": null,
+   "w": 59,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:801657d0": {
+   "ghidra": 44,
+   "m2c": null,
+   "w": 48,
+   "why": "cc1 refused"
+  },
+  "ovl_00b321e:80165df8": {
+   "ghidra": 39,
+   "m2c": null,
+   "w": 42,
+   "why": "cc1 refused"
+  },
+  "ovl_00b5346:8016217c": {
+   "ghidra": 28,
+   "m2c": null,
+   "w": 31,
+   "why": "cc1 refused"
+  },
+  "ovl_00b5346:80162540": {
+   "ghidra": 64,
+   "m2c": null,
+   "w": 67,
+   "why": "cc1 refused"
+  },
+  "ovl_00b5346:80162950": {
+   "ghidra": 6,
+   "m2c": null,
+   "w": 7,
+   "why": "cc1 refused"
+  },
+  "stage2:80018a80": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 2,
+   "why": "cc1 refused"
+  },
+  "stage2:80025d60": {
+   "ghidra": 0,
+   "m2c": 5,
+   "source": "m2c",
+   "w": 8
+  },
+  "stage2:80026820": {
+   "ghidra": 2,
+   "m2c": 2,
+   "source": "ghidra",
+   "w": 5
+  },
+  "stage2:8002687c": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 16,
+   "why": "cc1 refused"
+  },
+  "stage2:800270a8": {
+   "ghidra": 33,
+   "m2c": null,
+   "w": 40,
+   "why": "cc1 refused"
+  },
+  "stage2:80027650": {
+   "ghidra": 7,
+   "m2c": 8,
+   "source": "m2c",
+   "w": 11
+  },
+  "stage2:8002767c": {
+   "ghidra": 8,
+   "m2c": 8,
+   "source": "ghidra",
+   "w": 11
+  },
+  "stage2:80028308": {
+   "ghidra": 2,
+   "m2c": 7,
+   "source": "m2c",
+   "w": 8
+  },
+  "stage2:80028450": {
+   "ghidra": 37,
+   "m2c": null,
+   "w": 41,
+   "why": "cc1 refused"
+  },
+  "stage2:80028510": {
+   "ghidra": 22,
+   "m2c": null,
+   "w": 27,
+   "why": "cc1 refused"
+  },
+  "stage2:80028a20": {
+   "ghidra": 57,
+   "m2c": null,
+   "w": 63,
+   "why": "cc1 refused"
+  },
+  "stage2:800308ec": {
+   "ghidra": 78,
+   "m2c": null,
+   "w": 84,
+   "why": "cc1 refused"
+  },
+  "stage2:80030a3c": {
+   "ghidra": 78,
+   "m2c": null,
+   "w": 84,
+   "why": "cc1 refused"
+  },
+  "stage2:80030d0c": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 23,
+   "why": "cc1 refused"
+  },
+  "stage2:80030fd0": {
+   "ghidra": 30,
+   "m2c": null,
+   "w": 32,
+   "why": "cc1 refused"
+  },
+  "stage2:80032e74": {
+   "ghidra": 27,
+   "m2c": null,
+   "w": 32,
+   "why": "cc1 refused"
+  },
+  "stage2:80039ba8": {
+   "ghidra": 33,
+   "m2c": null,
+   "w": 35,
+   "why": "cc1 refused"
+  },
+  "stage2:8004341c": {
+   "ghidra": 0,
+   "m2c": 5,
+   "source": "m2c",
+   "w": 8
+  },
+  "stage2:800434c8": {
+   "ghidra": 36,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:80043560": {
+   "ghidra": 46,
+   "m2c": null,
+   "w": 48,
+   "why": "cc1 refused"
+  },
+  "stage2:80047824": {
+   "ghidra": 11,
+   "m2c": 9,
+   "source": "ghidra",
+   "w": 12
+  },
+  "stage2:8004794c": {
+   "ghidra": 9,
+   "m2c": 14,
+   "source": "m2c",
+   "w": 14
+  },
+  "stage2:80047b74": {
+   "ghidra": 28,
+   "m2c": 24,
+   "source": "ghidra",
+   "w": 33
+  },
+  "stage2:8004a7c8": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 11,
+   "why": "cc1 refused"
+  },
+  "stage2:8004c910": {
+   "ghidra": 7,
+   "m2c": 1,
+   "source": "ghidra",
+   "w": 15
+  },
+  "stage2:8004ce14": {
+   "ghidra": 8,
+   "m2c": null,
+   "w": 11,
+   "why": "cc1 refused"
+  },
+  "stage2:8004ce90": {
+   "ghidra": 8,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "stage2:8004cec4": {
+   "ghidra": 8,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "stage2:8004cef8": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 11,
+   "why": "cc1 refused"
+  },
+  "stage2:80052df4": {
+   "ghidra": 21,
+   "m2c": 8,
+   "source": "ghidra",
+   "w": 25
+  },
+  "stage2:80052f10": {
+   "ghidra": 10,
+   "m2c": 11,
+   "source": "m2c",
+   "w": 11
+  },
+  "stage2:80053d38": {
+   "ghidra": 15,
+   "m2c": 13,
+   "source": "ghidra",
+   "w": 17
+  },
+  "stage2:800540d4": {
+   "ghidra": 4,
+   "m2c": 5,
+   "source": "m2c",
+   "w": 6
+  },
+  "stage2:80054ed8": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 4,
+   "why": "cc1 refused"
+  },
+  "stage2:800584dc": {
+   "ghidra": 11,
+   "m2c": null,
+   "w": 14,
+   "why": "*/"
+  },
+  "stage2:80058e18": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 18,
+   "why": "*/"
+  },
+  "stage2:8006b364": {
+   "ghidra": 2,
+   "m2c": 2,
+   "source": "ghidra",
+   "w": 4
+  },
+  "stage2:8006b9f0": {
+   "ghidra": 8,
+   "m2c": null,
+   "w": 10,
+   "why": "cc1 refused"
+  },
+  "stage2:8006bbbc": {
+   "ghidra": 8,
+   "m2c": null,
+   "w": 10,
+   "why": "cc1 refused"
+  },
+  "stage2:8006be10": {
+   "ghidra": 32,
+   "m2c": null,
+   "w": 36,
+   "why": "cc1 refused"
+  },
+  "stage2:8006c044": {
+   "ghidra": 6,
+   "m2c": null,
+   "w": 11,
+   "why": "cc1 refused"
+  },
+  "stage2:8006cda8": {
+   "ghidra": 11,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:8006d108": {
+   "ghidra": 2,
+   "m2c": 2,
+   "source": "ghidra",
+   "w": 6
+  },
+  "stage2:8006d5a8": {
+   "ghidra": 7,
+   "m2c": 0,
+   "source": "ghidra",
+   "w": 13
+  },
+  "stage2:8006dbc0": {
+   "ghidra": 7,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "stage2:8006e534": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 16,
+   "why": "cc1 refused"
+  },
+  "stage2:8006fea4": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:8006feec": {
+   "ghidra": 18,
+   "m2c": null,
+   "w": 23,
+   "why": "cc1 refused"
+  },
+  "stage2:80070474": {
+   "ghidra": 25,
+   "m2c": null,
+   "w": 27,
+   "why": "cc1 refused"
+  },
+  "stage2:800706cc": {
+   "ghidra": 10,
+   "m2c": null,
+   "w": 15,
+   "why": "cc1 refused"
+  },
+  "stage2:8007277c": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "stage2:80073018": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 16,
+   "why": "cc1 refused"
+  },
+  "stage2:800735cc": {
+   "ghidra": 14,
+   "m2c": null,
+   "w": 17,
+   "why": "cc1 refused"
+  },
+  "stage2:80073610": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:80073658": {
+   "ghidra": 16,
+   "m2c": null,
+   "w": 19,
+   "why": "cc1 refused"
+  },
+  "stage2:80073f28": {
+   "ghidra": 8,
+   "m2c": null,
+   "w": 15,
+   "why": "cc1 refused"
+  },
+  "stage2:800750b0": {
+   "ghidra": 29,
+   "m2c": null,
+   "w": 36,
+   "why": "cc1 refused"
+  },
+  "stage2:800755c0": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:800793a4": {
+   "ghidra": 27,
+   "m2c": null,
+   "w": 29,
+   "why": "cc1 refused"
+  },
+  "stage2:8007dab0": {
+   "ghidra": 7,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "stage2:8007dd40": {
+   "ghidra": 26,
+   "m2c": null,
+   "w": 32,
+   "why": "cc1 refused"
+  },
+  "stage2:8007e2c8": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 17,
+   "why": "*/"
+  },
+  "stage2:8007e92c": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 15,
+   "why": "*/"
+  },
+  "stage2:8007f0e8": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f180": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f218": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f2b0": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f348": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f3e0": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f478": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f510": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f5a8": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f640": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:8007f6d8": {
+   "ghidra": 34,
+   "m2c": null,
+   "w": 38,
+   "why": "cc1 refused"
+  },
+  "stage2:80082388": {
+   "ghidra": 9,
+   "m2c": 3,
+   "source": "ghidra",
+   "w": 10
+  },
+  "stage2:80083e60": {
+   "ghidra": 2,
+   "m2c": null,
+   "w": 8,
+   "why": "*/"
+  },
+  "stage2:8008456c": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 4,
+   "why": "cc1 refused"
+  },
+  "stage2:800879a0": {
+   "ghidra": 10,
+   "m2c": null,
+   "w": 12,
+   "why": "cc1 refused"
+  },
+  "stage2:80088eec": {
+   "ghidra": 9,
+   "m2c": 9,
+   "source": "ghidra",
+   "w": 12
+  },
+  "stage2:8008bda0": {
+   "ghidra": 12,
+   "m2c": null,
+   "w": 13,
+   "why": "cc1 refused"
+  },
+  "stage2:8008bdd4": {
+   "ghidra": 20,
+   "m2c": null,
+   "w": 21,
+   "why": "cc1 refused"
+  },
+  "stage2:8008d634": {
+   "ghidra": 29,
+   "m2c": null,
+   "w": 32,
+   "why": "cc1 refused"
+  },
+  "stage2:8008d6b4": {
+   "ghidra": 17,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:8008f190": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 3,
+   "why": "cc1 refused"
+  },
+  "stage2:8008f238": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 6,
+   "why": "cc1 refused"
+  },
+  "stage2:8008f320": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 3,
+   "why": "cc1 refused"
+  },
+  "stage2:8008f3b0": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 6,
+   "why": "cc1 refused"
+  },
+  "stage2:80092650": {
+   "ghidra": 15,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:80095b90": {
+   "ghidra": 37,
+   "m2c": null,
+   "w": 41,
+   "why": "cc1 refused"
+  },
+  "stage2:8009be80": {
+   "ghidra": 0,
+   "m2c": 0,
+   "source": "ghidra",
+   "w": 8
+  },
+  "stage2:8009bec8": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 15,
+   "why": "cc1 refused"
+  },
+  "stage2:8009c1e0": {
+   "ghidra": 39,
+   "m2c": null,
+   "w": 43,
+   "why": "cc1 refused"
+  },
+  "stage2:8009d878": {
+   "ghidra": 10,
+   "m2c": null,
+   "w": 14,
+   "why": "*/"
+  },
+  "stage2:8009de50": {
+   "ghidra": 11,
+   "m2c": null,
+   "w": 15,
+   "why": "*/"
+  },
+  "stage2:8009f650": {
+   "ghidra": 1,
+   "m2c": null,
+   "w": 6,
+   "why": "cc1 refused"
+  },
+  "stage2:800a1f40": {
+   "ghidra": 16,
+   "m2c": null,
+   "w": 17,
+   "why": "cc1 refused"
+  },
+  "stage2:800a1f84": {
+   "ghidra": 16,
+   "m2c": null,
+   "w": 17,
+   "why": "cc1 refused"
+  },
+  "stage2:800a1fc8": {
+   "ghidra": 16,
+   "m2c": null,
+   "w": 17,
+   "why": "cc1 refused"
+  },
+  "stage2:800a200c": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "stage2:800a2218": {
+   "ghidra": 28,
+   "m2c": null,
+   "w": 29,
+   "why": "cc1 refused"
+  },
+  "stage2:800a23cc": {
+   "ghidra": 21,
+   "m2c": null,
+   "w": 22,
+   "why": "cc1 refused"
+  },
+  "stage2:800a5678": {
+   "ghidra": 17,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:800a56c0": {
+   "ghidra": 14,
+   "m2c": null,
+   "w": 16,
+   "why": "cc1 refused"
+  },
+  "stage2:800a5700": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 10,
+   "why": "cc1 refused"
+  },
+  "stage2:800a5728": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 10,
+   "why": "cc1 refused"
+  },
+  "stage2:800a591c": {
+   "ghidra": 16,
+   "m2c": null,
+   "w": 24,
+   "why": "*/"
+  },
+  "stage2:800a5acc": {
+   "ghidra": 12,
+   "m2c": 1,
+   "source": "ghidra",
+   "w": 18
+  },
+  "stage2:800a5c50": {
+   "ghidra": 17,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:800a851c": {
+   "ghidra": 25,
+   "m2c": null,
+   "w": 30,
+   "why": "cc1 refused"
+  },
+  "stage2:800a942c": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 28,
+   "why": "cc1 refused"
+  },
+  "stage2:800a9540": {
+   "ghidra": 6,
+   "m2c": 0,
+   "source": "ghidra",
+   "w": 14
+  },
+  "stage2:800aa8dc": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "stage2:800aaea8": {
+   "ghidra": 44,
+   "m2c": null,
+   "w": 50,
+   "why": "*/"
+  },
+  "stage2:800ab658": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 15,
+   "why": "cc1 refused"
+  },
+  "stage2:800ab76c": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 15,
+   "why": "cc1 refused"
+  },
+  "stage2:800ac9a8": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 11,
+   "why": "*/"
+  },
+  "stage2:800ae0d4": {
+   "ghidra": 25,
+   "m2c": null,
+   "w": 28,
+   "why": "cc1 refused"
+  },
+  "stage2:800b202c": {
+   "ghidra": 26,
+   "m2c": null,
+   "w": 27,
+   "why": "cc1 refused"
+  },
+  "stage2:800b2144": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "stage2:800b21a8": {
+   "ghidra": 17,
+   "m2c": null,
+   "w": 18,
+   "why": "cc1 refused"
+  },
+  "stage2:800b2298": {
+   "ghidra": 28,
+   "m2c": null,
+   "w": 29,
+   "why": "cc1 refused"
+  },
+  "stage2:800b230c": {
+   "ghidra": 6,
+   "m2c": null,
+   "w": 14,
+   "why": "cc1 refused"
+  },
+  "stage2:800b2344": {
+   "ghidra": 20,
+   "m2c": null,
+   "w": 21,
+   "why": "cc1 refused"
+  },
+  "stage2:800b2398": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "stage2:800b23fc": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "stage2:800b2460": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "stage2:800b24c4": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "stage2:800b2528": {
+   "ghidra": 24,
+   "m2c": null,
+   "w": 25,
+   "why": "cc1 refused"
+  },
+  "stage2:800b2694": {
+   "ghidra": 9,
+   "m2c": null,
+   "w": 10,
+   "why": "cc1 refused"
+  },
+  "stage2:800b26bc": {
+   "ghidra": 13,
+   "m2c": null,
+   "w": 14,
+   "why": "cc1 refused"
+  },
+  "stage2:80135cb0": {
+   "ghidra": 0,
+   "m2c": null,
+   "w": 7,
+   "why": "cc1 refused"
+  }
+ },
+ "summary": {
+  "bodies": 249,
+  "closed_by_m2c": 4,
+  "equal": 7,
+  "m2c_better": 8,
+  "m2c_refused": 215,
+  "m2c_worse": 15
+ },
+ "targets": [
+  "mips-gcc-c",
+  "mips-ido-c"
+ ]
+}
