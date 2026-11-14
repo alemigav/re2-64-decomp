@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "7e89504",
+   "subject": "M415: the per-body portfolio -- m2c closes 4 of 249 near-band bodies",
+   "milestones": [
+    415
+   ]
+  },
+  {
    "sha": "70a3fea",
    "subject": "M414: m2c on the far mass -- 1 of 50, no better than Ghidra, refuted",
    "milestones": [

@@ -6692,16 +6692,6 @@
    "named": false,
    "validated": false
   },
-  "stage2:0x80053d38": {
-   "name": "FUN_80053d38",
-   "image": "stage2",
-   "address": "0x80053d38",
-   "callees": 0,
-   "callees_unknown": 0,
-   "level": 2,
-   "named": false,
-   "validated": false
-  },
   "stage2:0x80053d7c": {
    "name": "FUN_80053d7c",
    "image": "stage2",
@@ -19266,6 +19256,16 @@
    "name": "FUN_80053994",
    "image": "stage2",
    "address": "0x80053994",
+   "callees": 0,
+   "callees_unknown": 0,
+   "level": 2,
+   "named": false,
+   "validated": false
+  },
+  "stage2:0x80053d38": {
+   "name": "FUN_80053d38",
+   "image": "stage2",
+   "address": "0x80053d38",
    "callees": 0,
    "callees_unknown": 0,
    "level": 2,

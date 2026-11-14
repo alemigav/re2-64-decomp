@@ -1,0 +1,29 @@
+{
+ "band": "mid",
+ "banked": 1,
+ "bodies": 477,
+ "improved_total": 22,
+ "mechanisms": {
+  "compare:copy": "no \u2014 changes which value is live",
+  "domain:integer": "no \u2014 changes the type of an expression tree",
+  "guard:conjunction": "no \u2014 changes control-flow shape",
+  "loop:walk-vs-index": "no \u2014 changes an induction variable",
+  "order:adjacent": "yes",
+  "pointer:named": "no \u2014 introduces a binding that changes CSE",
+  "rematerialise:block": "no \u2014 introduces a nested scope",
+  "sig:param": "yes"
+ },
+ "note": "Closures per mechanism pass, over a band. A mechanism that closes nothing is a measured zero. The mechanisms no text pass can express are listed in `mechanisms` \u2014 that is the finding, not a TODO.",
+ "passes": {
+  "order": {
+   "bodies_tried": 477,
+   "closed": 1,
+   "improved": 22
+  },
+  "sig": {
+   "bodies_tried": 476,
+   "closed": 0,
+   "improved": 0
+  }
+ }
+}

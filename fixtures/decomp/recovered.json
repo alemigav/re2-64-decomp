@@ -4795,6 +4795,19 @@
   },
   {
    "image": "stage2",
+   "address": "0x80053d38",
+   "words": 17,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the order:adjacent mechanism pass (15 of 17 -> 17 of 17) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/80053d38.c",
+   "syms": {
+    "FUN_80053d38": 2147827000,
+    "DAT_8010d940": 2148587840
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x80054084",
    "words": 20,
    "verdict": "byte-exact",
