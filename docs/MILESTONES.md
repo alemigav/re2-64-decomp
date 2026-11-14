@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-417 milestones are indexed. 330 of them have a note; the rest are rows in the log that cite
+418 milestones are indexed. 331 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -435,6 +435,7 @@ at the foot of this file.
 | 414 | **M414** — m2c on the far mass: 1 of 50, and no better than Ghidra | `docs/log/M414-m2c-on-the-far-mass-refuted.md` |
 | 415 | **M415** — the per-body portfolio: m2c closes 4 of 249 near-band bodies | `docs/log/M415-the-portfolio-on-the-near-band.md` |
 | 416 | **M416** — the mechanism grammar as passes: 1 of 477 mid-band bodies | `docs/log/M416-the-mechanism-grammar-as-passes.md` |
+| 417 | **M417** — the drafting program starts: a workbench, and the first body closed by classification | `docs/log/M417-the-drafting-program-starts.md` |
 
 ## The gaps, and why they are empty
 

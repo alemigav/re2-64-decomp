@@ -1,20 +1,20 @@
 {
  "histogram": {
-  "exact": 429,
+  "exact": 431,
   "none": 0,
   "over_half": 135,
   "under_half": 2188,
-  "within_1": 51,
+  "within_1": 50,
   "within_2": 84,
-  "within_4": 84,
+  "within_4": 83,
   "within_8": 92
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 597,
+  "claimed": 599,
   "claimed_not_exact": 169,
-  "exact": 429,
-  "exact_and_claimed": 428,
+  "exact": 431,
+  "exact_and_claimed": 430,
   "exact_unclaimed": 1
  },
  "profile": "cc1 2.8.1 -O2 -G 0 -mips2 -mcpu=r4300; as -EB -mips2 -mcpu=r4300 -g -G 0",
@@ -18923,9 +18923,9 @@
    "w": 32
   },
   "stage2:80082388": {
-   "d": 3,
-   "i": 9,
-   "s": "scored",
+   "d": null,
+   "i": 10,
+   "s": "exact",
    "t": "scalar",
    "w": 10
   },
@@ -22539,9 +22539,9 @@
    "w": 40
   },
   "stage2:800ae0d4": {
-   "d": 17,
-   "i": 25,
-   "s": "scored",
+   "d": null,
+   "i": 28,
+   "s": "exact",
    "t": "scalar",
    "w": 28
   },
@@ -23104,14 +23104,14 @@
  "totals": {
   "as_failed": 0,
   "cc1_failed": 410,
-  "exact": 429,
+  "exact": 431,
   "functions": 3473,
   "link_failed": 0,
   "measured": 3063,
   "no_source": 0,
   "percent_words": 11.04,
-  "scored": 2634,
+  "scored": 2632,
   "words": 298724,
-  "words_identical": 32966
+  "words_identical": 32970
  }
 }

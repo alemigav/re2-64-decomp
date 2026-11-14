@@ -132,6 +132,32 @@ CODE_PREFIXES = ("FUN", "LAB", "SUB", "THUNK", "SWITCHD", "CASED", "DEFAULT", "C
 _PROBE = None
 
 
+
+# Every scratch directory this tool creates is registered and wiped at exit. Not tidiness: each `pins()` call used to
+# leak one, and after M409-M417 there were **68 262 of them, 12 GB**, which made the gate audit's sandbox copy crawl
+# until the whole fast tier hung with no output. A leak that only shows up as a hang 60 000 runs later is a leak worth
+# one helper.
+_SCRATCH: list = []
+
+
+def _mkdtemp(prefix: str, root=None, dir=None) -> Path:
+    import tempfile
+    where = dir if dir is not None else root
+    d = Path(tempfile.mkdtemp(prefix=prefix, dir=str(where)))
+    _SCRATCH.append(d)
+    return d
+
+
+def _sweep() -> None:
+    import shutil
+    for p in _SCRATCH:
+        shutil.rmtree(p, ignore_errors=True)
+
+
+import atexit as _atexit
+
+_atexit.register(_sweep)
+
 def srcmap_module():
     """`srcmap` resolves a source path from an ADDRESS — a tool may never name a source file by name (M394)."""
     spec = importlib.util.spec_from_file_location("sm", str(ROOT / "tools" / "srcmap.py"))
@@ -318,7 +344,7 @@ def compile_one(args) -> dict:
     # possible score. Emptiness is refused, never measured.
     if "{" not in body or not body.strip():
         return {"s": NO_SOURCE, "w": words}
-    scratch = Path(tempfile.mkdtemp(prefix="dm_", dir=str(probe_module.WORK)))
+    scratch = Path(_mkdtemp(prefix="dm_", dir=str(probe_module.WORK)))
     stem = scratch / "f"
     s, o, fx, elf = (stem.with_suffix(x) for x in (".s", ".o", ".fix.o", ".elf"))
     # The ladder: the faithful declaration first; the retry only for a body the faithful one cannot express.

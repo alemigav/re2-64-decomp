@@ -40,6 +40,7 @@ FIXTURE = ROOT / "fixtures" / "mechanism_passes.json"
 # distinction is the finding: five of eight are structural.
 MECHANISMS = {
     "order:adjacent": "yes",
+    "order:past-guard": "yes",
     "sig:param": "yes",
     "domain:integer": "no — changes the type of an expression tree",
     "pointer:named": "no — introduces a binding that changes CSE",
@@ -108,7 +109,44 @@ def sig_variants(text: str):
     return out[:8]
 
 
-PASSES = {"order": order_variants, "sig": sig_variants}
+GUARD = re.compile(r"^\s*if\s*\(([^)]*)\)\s*\{\s*\n\s*return[^;]*;\s*\n\s*\}\s*$", re.M)
+
+
+def pastguard_variants(text: str):
+    """Move a leading simple assignment AFTER a `if (c) { return x; }` guard.
+
+    Measured on `stage2:0x80082388` at M417: with `iVar2 = 0;` before the guard, gcc returns `addu $v0,$v1,$zero`
+    (a register that happens to hold zero); with it after, it returns `addu $v0,$zero,$zero` — the image's form. A
+    guard that returns a constant leaves a zero in a register, and where the initialisation sits decides whether the
+    compiler reuses it.
+    """
+    lines = text.splitlines()
+    out, seen = [], {text}
+    for i in range(len(lines) - 3):
+        a = ASSIGN.match(lines[i])
+        if not a or "(" in a.group(3):
+            continue
+        j = i + 1
+        while j < len(lines) and not lines[j].strip():
+            j += 1
+        if j + 2 >= len(lines):
+            continue
+        if not (lines[j].strip().startswith("if") and "return" in " ".join(lines[j:j + 3])):
+            continue
+        end = j
+        while end < len(lines) and "}" not in lines[end]:
+            end += 1
+        if end >= len(lines):
+            continue
+        moved = lines[:i] + lines[i + 1:end + 1] + [lines[i]] + lines[end + 1:]
+        cand = "\n".join(moved) + "\n"
+        if cand not in seen:
+            seen.add(cand)
+            out.append(("order:past-guard %s" % a.group(2), cand))
+    return out[:6]
+
+
+PASSES = {"order": order_variants, "sig": sig_variants, "guard": pastguard_variants}
 
 
 def band(kind: str):
@@ -222,6 +260,8 @@ def self_test() -> int:
         ("two adjacent assignments yield a swap", len(order_variants(text)) == 1, ""),
         ("an assignment whose right-hand side calls is not swapped", order_variants("    a = g(1);\n    b = 2;\n") == [], ""),
         ("a parameter type yields a variant", any(v[0].startswith("sig:param") for v in sig_variants(text)), ""),
+        ("moving an init past a returning guard yields a variant",
+         len(pastguard_variants("    x = 0;\n    if (p == 0) {\n        return 0;\n    }\n    y = x;\n")) == 1, ""),
         ("every mechanism is classified", all(v for v in MECHANISMS.values()), ""),
     ]
     bad = sum(1 for _n, ok, _d in cases if not ok)
@@ -237,7 +277,7 @@ def main(argv):
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--band", default="mid", choices=("mid", "near"))
-    ap.add_argument("--passes", default="order,sig")
+    ap.add_argument("--passes", default="order,guard,sig")
     ap.add_argument("--max-words", type=int, default=200)
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args(argv)

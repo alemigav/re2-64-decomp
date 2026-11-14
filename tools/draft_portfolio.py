@@ -49,6 +49,32 @@ PRELUDE = ("typedef signed char s8; typedef unsigned char u8; typedef signed sho
 TARGETS = ("mips-gcc-c", "mips-ido-c")
 
 
+
+# Every scratch directory this tool creates is registered and wiped at exit. Not tidiness: each `pins()` call used to
+# leak one, and after M409-M417 there were **68 262 of them, 12 GB**, which made the gate audit's sandbox copy crawl
+# until the whole fast tier hung with no output. A leak that only shows up as a hang 60 000 runs later is a leak worth
+# one helper.
+_SCRATCH: list = []
+
+
+def _mkdtemp(prefix: str, root=None, dir=None) -> Path:
+    import tempfile
+    where = dir if dir is not None else root
+    d = Path(tempfile.mkdtemp(prefix=prefix, dir=str(where)))
+    _SCRATCH.append(d)
+    return d
+
+
+def _sweep() -> None:
+    import shutil
+    for p in _SCRATCH:
+        shutil.rmtree(p, ignore_errors=True)
+
+
+import atexit as _atexit
+
+_atexit.register(_sweep)
+
 def bank_module():
     spec = importlib.util.spec_from_file_location("be", str(ROOT / "tools" / "bank_exact.py"))
     module = importlib.util.module_from_spec(spec)
@@ -93,7 +119,7 @@ def splat_lines(rows, addr: int) -> str:
 def asm_of(cp, image: str, addr: int, words: int) -> str:
     """The body's own words as m2c input: its `glabel` shape, with labels at branch targets."""
     blob, base = cp.image_window(image, cp.image_inventory())
-    tmp = Path(tempfile.mkdtemp(prefix="pf_", dir=str(cp.WORK))) / ("%s.bin" % image)
+    tmp = Path(_mkdtemp(prefix="pf_", dir=str(cp.WORK))) / ("%s.bin" % image)
     tmp.write_bytes(blob)
     out = subprocess.run([str(OBJDUMP), "-D", "-b", "binary", "-m", "mips:isa32", "-EB",
                           "--adjust-vma=0x%x" % base, "--start-address=0x%x" % addr,
@@ -147,7 +173,7 @@ def expand_fields(text: str) -> str:
 def m2c_text(cp, python: str, script: str, image: str, addr: int, words: int):
     """(C text, None) or (None, why). Both compiler targets are tried and the first that decompiles wins."""
     asm = asm_of(cp, image, addr, words)
-    work = Path(tempfile.mkdtemp(prefix="pfm_", dir=str(cp.WORK)))
+    work = Path(_mkdtemp(prefix="pfm_", dir=str(cp.WORK)))
     (work / "f.s").write_text(asm)
     first = None
     for target in TARGETS:

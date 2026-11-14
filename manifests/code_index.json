@@ -15106,17 +15106,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x80082388",
-     "name": "FUN_80082388",
-     "file": "src/stage2/FUN_80082388.c",
-     "size": 40,
-     "sha256": "5631e0d0741c1fc62ebaa7de19c6f36459154c08685c7431f792498ca3986b26",
-     "provider_sha256": "40b3c0a5ffe56df3f82eec083f7373a84d075428f23f3656168aa736486e1ffc",
-     "status": "written",
-     "callees": [],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x800824b8",
      "name": "FUN_800824b8",
      "file": "src/stage2/FUN_800824b8.c",
@@ -21901,19 +21890,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x800ae0d4",
-     "name": "FUN_800ae0d4",
-     "file": "src/stage2/FUN_800ae0d4.c",
-     "size": 112,
-     "sha256": "74a0aa4b524526a4cfb351ed934069d6f8f735e735d128244580cea0b0de6435",
-     "provider_sha256": "b40bbfa929d63650151b599e99503750944246bfce2f47fe053ede95b064ee8f",
-     "status": "written",
-     "callees": [
-      "0x800a5cdc"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x800ae1a0",
      "name": "FUN_800ae1a0",
      "file": "src/stage2/FUN_800ae1a0.c",
@@ -27669,6 +27645,17 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x80082388",
+     "name": "FUN_80082388",
+     "file": "src/stage2/FUN_80082388.c",
+     "size": 40,
+     "sha256": "7c3c26abf6f97f9d5263d9acaf5fd64d5d4737e173aa503f28529dcc7f201dce",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x800823e0",
      "name": "FUN_800823e0",
      "file": "src/stage2/FUN_800823e0.c",
@@ -28491,6 +28478,19 @@
      "status": "recovered",
      "callees": [
       "0x800ab7e0"
+     ],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x800ae0d4",
+     "name": "FUN_800ae0d4",
+     "file": "src/stage2/FUN_800ae0d4.c",
+     "size": 112,
+     "sha256": "a175e254f36be6016b0b593725b62fb401e408da7445ab22c2c87902e98674bd",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x800a5cdc"
      ],
      "callees_unknown": 0
     },

@@ -47,6 +47,32 @@ PROVENANCE = "provider"
 PROBE_NOTE = "imported: the whole body matches by offset and content (M410, banked from the distance map)"
 
 
+
+# Every scratch directory this tool creates is registered and wiped at exit. Not tidiness: each `pins()` call used to
+# leak one, and after M409-M417 there were **68 262 of them, 12 GB**, which made the gate audit's sandbox copy crawl
+# until the whole fast tier hung with no output. A leak that only shows up as a hang 60 000 runs later is a leak worth
+# one helper.
+_SCRATCH: list = []
+
+
+def _mkdtemp(prefix: str, root=None, dir=None) -> Path:
+    import tempfile
+    where = dir if dir is not None else root
+    d = Path(tempfile.mkdtemp(prefix=prefix, dir=str(where)))
+    _SCRATCH.append(d)
+    return d
+
+
+def _sweep() -> None:
+    import shutil
+    for p in _SCRATCH:
+        shutil.rmtree(p, ignore_errors=True)
+
+
+import atexit as _atexit
+
+_atexit.register(_sweep)
+
 def distance_map():
     spec = importlib.util.spec_from_file_location("dm", str(ROOT / "tools" / "distance_map.py"))
     module = importlib.util.module_from_spec(spec)

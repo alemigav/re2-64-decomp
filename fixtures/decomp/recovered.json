@@ -6051,6 +6051,18 @@
   },
   {
    "image": "stage2",
+   "address": "0x80082388",
+   "words": 10,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the order:past-guard mechanism (M417, workbench)",
+   "source_file": "fixtures/decomp/authored/stage2/80082388.c",
+   "syms": {
+    "FUN_80082388": 2148017032
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800823e0",
    "words": 37,
    "verdict": "byte-exact",
@@ -6812,6 +6824,26 @@
    "verdict": "byte-exact",
    "probe": "pacae4: 53 of 53",
    "source": "PACAE4_SOURCE"
+  },
+  {
+   "image": "stage2",
+   "address": "0x800ae0d4",
+   "words": 28,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the order:adjacent mechanism pass (25 of 28 -> 28 of 28) (M416)",
+   "source_file": "fixtures/decomp/authored/stage2/800ae0d4.c",
+   "syms": {
+    "FUN_800a5cdc": 2148162780,
+    "FUN_800ae0d4": 2148196564,
+    "DAT_80153610": 2148873744,
+    "_DAT_8014e16c": 2148852076,
+    "_DAT_8014e1d0": 2148852176,
+    "_DAT_801521e0": 2148868576,
+    "_DAT_801529f0": 2148870640,
+    "_DAT_80153600": 2148873728,
+    "_DAT_80157e10": 2148892176
+   }
   },
   {
    "image": "stage2",
