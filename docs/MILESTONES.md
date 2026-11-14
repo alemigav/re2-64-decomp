@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-421 milestones are indexed. 333 of them have a note; the rest are rows in the log that cite
+422 milestones are indexed. 334 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -439,6 +439,7 @@ at the foot of this file.
 | 418 | **M418** — the fast tier is 14.2 s again: the audit was 273 s and had never been named heavy | `docs/log/M418-the-fast-tier-is-under-thirty-seconds-again.md` |
 | 419 | **M419** — the drafting program's first batch | Three targets from the workbench queue: `ovl_0093192:0x80161fa8` and `ovl_00b5346:0x80162950` closed (**6 → 7 of 7** each) and `stage2:0x800a5700` parked (9 of 10, `ori` vs `addiu`). Both closures are ONE new mechanism: **Ghidra declared `void f(void)` while the image materialises a constant into the fourth argument register before the call**, so declaring three parameters, forwarding them and passing the constant reproduces `addiu $a3,$zero,K` in the delay slot. Two bodies sharing it made `sig:forward` the next expressible pass |
 | 420 | **M420** — `dat:width`: 41 bodies, and the instrument's own default was the defect | `docs/log/M420-the-declaration-width-pass.md` |
+| 421 | **M421** — the width bug fixed in the map: the queue shrinks, and every pass now closes zero | `docs/log/M421-the-width-fix-and-an-exhausted-queue.md` |
 
 ## The gaps, and why they are empty
 

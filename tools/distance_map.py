@@ -245,7 +245,44 @@ def image_symbols() -> dict:
     return _IMAGE_SYMBOLS
 
 
-def declaration(name: str, body: str, form: str) -> str:
+LOAD_WIDTH = {0x20: 4, 0x21: 2, 0x22: 2, 0x23: 4, 0x24: 1, 0x25: 1, 0x26: 1, 0x27: 4, 0x28: 1, 0x29: 2,
+              0x2A: 4, 0x2B: 4, 0x2E: 4}
+TYPE_OF = {1: "unsigned char", 2: "unsigned short", 4: "unsigned int"}
+
+
+def data_widths(cp, image: str, addr: int, words: int) -> dict:
+    """name -> declared width, from how the IMAGE reads or writes that address.
+
+    The bug this fixes: the preamble declared every `DAT_…` as `unsigned int`, so every byte and half read in the
+    corpus compiled as a word and the body scored as a near-miss for a reason that had nothing to do with the
+    provider's C. `stage2:0x800b2694` does `lbu` where we did `lw`. The image has already decided each symbol's width;
+    this reads it off the addressing (`lui` + a load/store offset, or `lui`+`addiu` then the access).
+    """
+    win = cp.image_window(image, cp.image_inventory())
+    if win is None:
+        return {}
+    blob, base = win
+    ws = [int.from_bytes(blob[addr - base + 4 * i:addr - base + 4 * i + 4], "big") for i in range(words)]
+    lui, hi = {}, {}
+    widths = {}
+    for w in ws:
+        op, rs, rt = w >> 26, (w >> 21) & 0x1F, (w >> 16) & 0x1F
+        if op == 0x0F:                                   # lui rt, imm
+            lui[rt] = (w & 0xFFFF) << 16
+            continue
+        if op == 0x09 and rs in lui:                     # addiu rt, rs, imm  -> a full address
+            imm = w & 0xFFFF
+            hi[rt] = lui[rs] + (imm - 0x10000 if imm & 0x8000 else imm)
+            continue
+        if op in LOAD_WIDTH and (rs in lui or rs in hi):
+            off = w & 0xFFFF
+            off = off - 0x10000 if off & 0x8000 else off
+            target = (hi[rs] if rs in hi else lui[rs]) + off
+            widths.setdefault(target, LOAD_WIDTH[op])
+    return {"D_%08x" % a: TYPE_OF[width] for a, width in widths.items()}
+
+
+def declaration(name: str, body: str, form: str, width: str = None) -> str:
     """The `extern` for one data symbol, in the given form.
 
     `form` is the ladder rung, not a guess about the symbol: `scalar` is the faithful default (Ghidra writes `DAT_x`
@@ -255,11 +292,12 @@ def declaration(name: str, body: str, form: str) -> str:
     esc = re.escape(name)
     assigned = re.search(r"(?<![=!<>+\-*/&|^])\b%s\b\s*(?:=(?!=)|\+=|-=|\*=|/=|\+\+|--)" % esc, body)
     arrow = re.search(r"\b%s\s*->" % esc, body)
+    kind = width or "unsigned int"
     if arrow or (form == "pointer" and assigned):
-        return "extern unsigned int *%s;" % name
+        return "extern %s *%s;" % (kind, name)
     if form == "array":
-        return "extern unsigned int %s[];" % name
-    return "extern unsigned int %s;" % name
+        return "extern %s %s[];" % (kind, name)
+    return "extern %s %s;" % (kind, name)
 
 
 IN_REG = re.compile(r"\bin_([a-z][a-z0-9]*)\b")
@@ -313,9 +351,11 @@ def already_declared(body: str, name: str) -> bool:
                           r"%s\b" % re.escape(name), body, re.M))
 
 
-def build_source(body: str, data, form: str) -> str:
+def build_source(body: str, data, form: str, widths: dict = None) -> str:
     clean = MODIFIERS.sub("", body)
-    decls = "".join(declaration(n, clean, form) + "\n" for n, _a in data if not already_declared(clean, n))
+    widths = widths or {}
+    decls = "".join(declaration(n, clean, form, widths.get(n)) + "\n"
+                    for n, _a in data if not already_declared(clean, n))
     return typedecls(clean) + decls + clean
 
 
@@ -348,11 +388,12 @@ def compile_one(args) -> dict:
     stem = scratch / "f"
     s, o, fx, elf = (stem.with_suffix(x) for x in (".s", ".o", ".fix.o", ".elf"))
     # The ladder: the faithful declaration first; the retry only for a body the faithful one cannot express.
+    widths = data_widths(probe_module, image, addr, words)
     attempts = [("scalar", body)] if form_is_scalar(body, data) else [("scalar", body), ("array", body),
                                                                          ("pointer", body)]
     last = CC1_FAILED
     for form, text in attempts:
-        (scratch / "f.c").write_text(build_source(text, data, form))
+        (scratch / "f.c").write_text(build_source(text, data, form, widths))
         if subprocess.run([str(cc1), "-quiet"] + CFLAGS + [str(scratch / "f.c"), "-o", str(s)],
                           capture_output=True).returncode:
             last = CC1_FAILED

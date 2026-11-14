@@ -230,7 +230,7 @@ def write(args) -> int:
             records[key] = {"w": cand["words"], "ghidra": cand["ghidra"], "m2c": None, "why": why}
             refused += 1
             continue
-        syms = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"])[1] or {}
+        syms = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"], cand["words"])[1] or {}
         score, status = be.pins(dm, text, cand["image"], cand["address"], cand["words"], syms)
         if status != "linked":
             records[key] = {"w": cand["words"], "ghidra": cand["ghidra"], "m2c": None, "why": status}
@@ -290,7 +290,7 @@ def bank(args) -> int:
         text, why = m2c_text(cp, python, script, image, addr, rec["w"])
         if text is None:
             continue
-        syms = be.body_for(dm, None, "scalar", image, addr)[1] or {}
+        syms = be.body_for(dm, None, "scalar", image, addr, rec["w"])[1] or {}
         score, status = be.pins(dm, text, image, addr, rec["w"], syms)
         if status != "linked" or score != rec["w"]:
             continue

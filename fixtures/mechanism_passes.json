@@ -1,8 +1,8 @@
 {
  "band": "mid",
- "banked": 1,
- "bodies": 468,
- "improved_total": 78,
+ "banked": 0,
+ "bodies": 467,
+ "improved_total": 77,
  "mechanisms": {
   "compare:copy": "no \u2014 changes which value is live",
   "dat:width": "yes \u2014 vary a data symbol's declared width",
@@ -20,9 +20,9 @@
  "note": "Closures per mechanism pass, over a band. A mechanism that closes nothing is a measured zero. The mechanisms no text pass can express are listed in `mechanisms` \u2014 that is the finding, not a TODO.",
  "passes": {
   "datwidth": {
-   "bodies_tried": 468,
-   "closed": 1,
-   "improved": 64
+   "bodies_tried": 467,
+   "closed": 0,
+   "improved": 63
   },
   "forward": {
    "bodies_tried": 467,
@@ -45,7 +45,7 @@
    "improved": 0
   },
   "symbol": {
-   "bodies_tried": 468,
+   "bodies_tried": 467,
    "closed": 0,
    "improved": 0
   }

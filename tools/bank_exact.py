@@ -92,7 +92,7 @@ def provider_source(image: str, addr: int):
     return path if path.exists() else None
 
 
-def body_for(dm, source: str, rung: str, image: str = None, addr: int = None):
+def body_for(dm, source: str, rung: str, image: str = None, addr: int = None, words: int = None):
     """(authored text, syms, problem) for one body: the provider's text, made self-contained."""
     path = provider_source(image, addr) if image and addr is not None else None
     if path is None:
@@ -104,8 +104,11 @@ def body_for(dm, source: str, rung: str, image: str = None, addr: int = None):
         return None, {}, "empty body"
     clean = dm.MODIFIERS.sub("", raw)
     code, data = dm.symbols_of(clean)
+    # The widths the IMAGE uses, so a banked file and the map that found it cannot disagree about a symbol's type.
+    widths = dm.data_widths(dm.probe(), image, addr, words) if (image and addr and words) else {}
     text = dm.typedecls(clean) + "".join(
-        dm.declaration(n, clean, rung) + "\n" for n, _a in data if not dm.already_declared(clean, n)) + clean
+        dm.declaration(n, clean, rung, widths.get(n)) + "\n"
+        for n, _a in data if not dm.already_declared(clean, n)) + clean
     # BOTH channels: a body that calls `FUN_…` needs that name at its address to link, exactly as a body that reads
     # `DAT_…` does. Recording only the data half made four of the first six banked pins "not run" — the probe could
     # compile them and could not link them.

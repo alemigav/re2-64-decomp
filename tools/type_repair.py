@@ -156,7 +156,7 @@ def write(args) -> int:
     closed, refused = 0, []
     per_class, per_gap = {}, {}
     for cand in todo:
-        text, syms, problem = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"])
+        text, syms, problem = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"], cand["words"])
         if text is None:
             refused.append("%s:0x%08x %s" % (cand["image"], cand["address"], problem))
             continue

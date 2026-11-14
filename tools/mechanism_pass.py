@@ -308,7 +308,7 @@ def write(args) -> int:
         fn = PASSES[name]
         closed, tried, up = 0, 0, 0
         for key, cand in list(remaining.items()):
-            text, syms, _why = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"])
+            text, syms, _why = be.body_for(dm, None, cand["rung"], cand["image"], cand["address"], cand["words"])
             if text is None:
                 continue
             ctx = (dm.probe(), cand["image"], cand["address"], cand["words"])

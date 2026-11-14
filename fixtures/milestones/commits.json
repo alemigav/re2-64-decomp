@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "f4325c8",
+   "subject": "M420: dat:width -- 41 bodies, and the instrument's own default was the defect",
+   "milestones": [
+    420
+   ]
+  },
+  {
    "sha": "e2a9eeb",
    "subject": "M419: the drafting program's first batch -- 2 of 3, and one mechanism closed both",
    "milestones": [

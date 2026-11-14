@@ -184,7 +184,7 @@ def report(at: str, args):
         for a, w, g in rows:
             print("  %08x  %08x  %s" % (a, w, g))
         return 0
-    text, syms, why = be.body_for(dm, None, rec.get("t", "scalar"), image, addr)
+    text, syms, why = be.body_for(dm, None, rec.get("t", "scalar"), image, addr, words)
     if text is None:
         print("no draft: %s" % why)
         return 1
