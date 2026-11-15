@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "8afbcca",
+   "subject": "M455: the gap-2 triage -- 52 of 53 are source-level, and eleven of them are one family",
+   "milestones": [
+    455
+   ]
+  },
+  {
    "sha": "3f2bdfb",
    "subject": "M454: the accumulator-class experiment -- 18 more variants, no lever; and one of the two is not accumulator-class",
    "milestones": [
