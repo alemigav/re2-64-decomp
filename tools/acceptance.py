@@ -121,6 +121,15 @@ SUITES = [
     # M299: the shape solver's pure half -- what it enumerates. Its scoring half needs the cartridge, so the
     # cases here are the enumeration only and the tool is otherwise exercised through the probe suites.
     ("shape solver (repository)", [sys.executable, "tools/shape_solver.py", "--self-test"], 6, False),
+    # M443: the control-flow skeleton decoder. Its 9 cases include the two artefacts this decoder actually produced
+    # (a two-word fragment matched the dispatch pattern; comparing RETURN POSITIONS labelled identical shapes as
+    # `early-return`) and the truncation class that was 39 % of the far band. Repository-only: no cartridge.
+    ("skeleton decoder (repository)", [sys.executable, "tools/skeleton.py", "--self-test"], 9, False),
+    # M443: the census's own arithmetic, on a synthetic record set. The census run itself needs the cartridge.
+    ("skeleton census (repository)", [sys.executable, "tools/skeleton_census.py", "--self-test"], 3, False),
+    # M444: the positive control -- mechanically break a byte-exact body we hold and require the loop to restore it.
+    # Needs the cartridge, so it is gated.
+    ("structure loop (cartridge)", [sys.executable, "tools/structure_loop.py", "--self-test"], 1, True),
     # M319: the leaf screen's pure half -- the five rules that separate compiled code from hand-written
     # assembly (no `jr ra`, CP0, branch-to-self, writes $at/$k0, jumps through them). Listing needs the
     # cartridge; the rules do not.
