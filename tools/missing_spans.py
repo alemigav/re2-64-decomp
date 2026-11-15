@@ -127,6 +127,75 @@ def analyse(args):
             "in_gap": kinds.get("sp-access-in-gap", 0)}
 
 
+def aligned_gap(args):
+    """One body, ranked by ALIGNMENT instead of by index.
+
+    `pins` and `distance.json` both count identical words positionally over the first `words` words, so a single
+    inserted instruction costs every word after it. Both lists are truncated to the extent first — the linker pads
+    `.text`, so an over-long compile is not an over-long FUNCTION — and then aligned.
+    """
+    image, addr, words, name, source, code, data = args
+    got = census_mod.compile_words(args)
+    if got is None:
+        return {"status": "refused"}
+    ours, want = got
+    ours = ours[:words]
+    sm = difflib.SequenceMatcher(None, want, ours, autojunk=False)
+    aligned = sum(b.size for b in sm.get_matching_blocks())
+    positional = sum(1 for i in range(min(len(ours), words)) if ours[i] == want[i])
+    spans = sum(1 for tag, i1, i2, _j1, _j2 in sm.get_opcodes() if tag != "equal" and i1 != i2)
+    return {"status": "measured", "words": words, "our_words": len(ours),
+            "aligned": aligned, "positional": positional,
+            "gap_aligned": words - aligned, "gap_positional": words - positional, "spans": spans}
+
+
+def rerank(args) -> int:
+    """Every open scored body, ranked by aligned identity. The near band the map could not see."""
+    targets = census_mod.open_targets()
+    if args.limit:
+        targets = targets[:args.limit]
+    print("re-ranking %d open scored bodies by aligned identity (%d jobs)" % (len(targets), args.jobs),
+          file=sys.stderr)
+    rows = {}
+    with concurrent.futures.ProcessPoolExecutor(max_workers=args.jobs) as pool:
+        for t, res in zip(targets, pool.map(aligned_gap, targets, chunksize=8)):
+            rows["%s:%08x" % (t[0], t[1])] = res
+    import collections
+    buckets = collections.Counter()
+    near_aligned, near_pos = 0, 0
+    for v in rows.values():
+        if v["status"] != "measured":
+            continue
+        g = v["gap_aligned"]
+        buckets["0" if g == 0 else "1" if g == 1 else "2" if g == 2 else "3-4" if g <= 4 else
+                "5-8" if g <= 8 else "9-16" if g <= 16 else ">16"] += 1
+        if g <= 4:
+            near_aligned += 1
+        if v["gap_positional"] <= 4:
+            near_pos += 1
+    missing = sum(v["gap_aligned"] for v in rows.values() if v["status"] == "measured")
+    doc = {"tool": "missing_spans.py --rerank",
+           "note": ("Every open scored body ranked by ALIGNED identity. `pins` and distance.json count identical words "
+                    "POSITIONALLY, which a single inserted instruction destroys; both word lists are truncated to the "
+                    "extent before aligning. `gap_aligned` is what is genuinely absent; `gap_positional` is what the "
+                    "map recorded. A body is exact only when gap_aligned is 0."),
+           "summary": {"bodies": len(rows),
+                       "refused": sum(1 for v in rows.values() if v["status"] == "refused"),
+                       "missing_words": missing, "buckets": dict(buckets),
+                       "near_le4_aligned": near_aligned, "near_le4_positional": near_pos},
+           "rows": dict(sorted(rows.items()))}
+    out = ROOT / "fixtures" / "decomp" / "aligned_gaps.json"
+    out.write_text(json.dumps(doc, indent=1) + "\n")
+    s_ = doc["summary"]
+    print("%d bodies, %d refused; %d words genuinely absent" % (s_["bodies"], s_["refused"], s_["missing_words"]))
+    print("\naligned gap distribution (what is actually missing):")
+    for b in ("0", "1", "2", "3-4", "5-8", "9-16", ">16"):
+        print("   %-5s %5d" % (b, buckets[b]))
+    print("\nwithin 4 words:  aligned %d   vs   positional %d   (the map's own number)"
+          % (near_aligned, near_pos))
+    return 0
+
+
 def short_targets():
     """The census's short bodies, in gap order. This is the population, taken from the committed fixture."""
     if not SKELETONS.exists():
@@ -222,6 +291,7 @@ def self_test() -> int:
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--census", action="store_true")
+    ap.add_argument("--rerank", action="store_true")
     ap.add_argument("--at")
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--jobs", type=int, default=8)
@@ -231,6 +301,8 @@ def main(argv=None):
         return self_test()
     if a.at:
         return at(a)
+    if a.rerank:
+        return rerank(a)
     if a.census:
         return census(a)
     ap.print_help()
