@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "4421723",
+   "subject": "M439: the call-signature pass, refuted before it was built -- 4 bodies, not 565",
+   "milestones": [
+    439
+   ]
+  },
+  {
    "sha": "f0d15ed",
    "subject": "M438: the residue catalogued -- the biggest class is not a pass, it is a missing call signature",
    "milestones": [
