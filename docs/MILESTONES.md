@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-441 milestones are indexed. 351 of them have a note; the rest are rows in the log that cite
+442 milestones are indexed. 352 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -459,6 +459,7 @@ at the foot of this file.
 | 438 | **M438** — the residue, catalogued: the biggest class is not a compiler pass, it is a missing call signature | `docs/log/M438-the-residue-catalogued.md` |
 | 439 | **M439** — the call-signature pass, refuted before it was built: 4 bodies, not 565 | `docs/log/M439-the-call-signature-pass-refuted.md` |
 | 440 | **M440** — the pass catalogue closes: the compiler is not the lever | `docs/log/M440-the-compiler-is-not-the-lever.md` |
+| 441 | **M441** — the type lever measured out: 0 closures, and the population was never 298 | `docs/log/M441-the-type-lever-measured-out.md` |
 
 ## The gaps, and why they are empty
 
