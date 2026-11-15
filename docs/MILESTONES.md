@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-454 milestones are indexed. 363 of them have a note; the rest are rows in the log that cite
+455 milestones are indexed. 364 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -472,6 +472,7 @@ at the foot of this file.
 | 451 | **M451** — the 11 toolchain-family bodies, signature-grouped, and no edits | `docs/log/M451-the-toolchain-family-signatures.md` |
 | 452 | **M452** — the prologue save-order experiment: not a flag, not a cc1 build. Group A is closed as a class. | `docs/log/M452-the-prologue-save-order-experiment.md` |
 | 453 | **M453** — the 12-word body: my packing diagnosis was wrong, and the residual is two halves that exclude each other | `docs/log/M453-the-argument-packing-body-revised.md` |
+| 454 | **M454** — the accumulator-class experiment: 18 more variants, no lever; and one of the two is not accumulator-class | `docs/log/M454-the-accumulator-class-experiment.md` |
 
 ## The gaps, and why they are empty
 
