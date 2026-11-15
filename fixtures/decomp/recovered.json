@@ -6978,6 +6978,30 @@
   },
   {
    "image": "stage2",
+   "address": "0x8009c594",
+   "words": 51,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the dat:width pass, round 7 (M430)",
+   "source_file": "fixtures/decomp/authored/stage2/8009c594.c",
+   "syms": {
+    "FUN_8002767c": 2147645052,
+    "FUN_8009c594": 2148124052,
+    "FUN_8009e8d4": 2148133076,
+    "DAT_800e9184": 2148438404,
+    "DAT_80119e70": 2148638320,
+    "DAT_8013272c": 2148738860,
+    "DAT_80132738": 2148738872,
+    "DAT_8013273a": 2148738874,
+    "DAT_8013273c": 2148738876,
+    "DAT_8013273e": 2148738878,
+    "DAT_80132740": 2148738880,
+    "DAT_80132744": 2148738884,
+    "DAT_80132748": 2148738888
+   }
+  },
+  {
+   "image": "stage2",
    "address": "0x800a1f40",
    "words": 17,
    "verdict": "byte-exact",

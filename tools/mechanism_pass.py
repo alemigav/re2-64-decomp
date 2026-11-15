@@ -467,20 +467,33 @@ def write(args) -> int:
                     continue
                 syms = syms_of[key]
                 ctx = (dm.probe(), cand["image"], cand["address"], cand["words"])
-                variants = fn(text, ctx)
                 tried += 1
                 won = None
-                for label, variant in variants:
-                    score, status = be.pins(dm, variant, cand["image"], cand["address"], cand["words"],
-                                            syms_for(variant, syms))
-                    if status != "linked":
-                        continue
-                    if score > best[key]:
-                        best[key] = score
-                        best_text[key] = variant
-                        up += 1
-                    if score == cand["words"]:
-                        won = (label, variant)
+                # INNER FIXPOINT: keep applying this same mechanism to the body until it stops helping.
+                #
+                # `stage2:0x8009c594` needed about ten data-symbol widths and closed only in ROUND 7, because one pass
+                # visit made one change and then moved on. The outer rounds eventually got there, but they re-swept the
+                # whole band seven times to do it. Repeating the mechanism on the body it just improved costs the same
+                # compiles and lets one visit accumulate everything that mechanism can give.
+                for _inner in range(max(1, args.inner)):
+                    text = best_text[key]
+                    variants = fn(text, ctx)
+                    improved_here = False
+                    for label, variant in variants:
+                        score, status = be.pins(dm, variant, cand["image"], cand["address"], cand["words"],
+                                                syms_for(variant, syms))
+                        if status != "linked":
+                            continue
+                        if score > best[key]:
+                            best[key] = score
+                            best_text[key] = variant
+                            up += 1
+                            improved_here = True
+                            if score == cand["words"]:
+                                won = (label, variant)
+                        if won:
+                            break
+                    if won or not improved_here:
                         break
                 if won is None:
                     continue
@@ -576,6 +589,8 @@ def main(argv):
     ap.add_argument("--passes", default="localtype,cast,sign,symbol,datwidth,early,forward,order,guard,sig")
     ap.add_argument("--max-words", type=int, default=200)
     ap.add_argument("--rounds", type=int, default=3, help="repeat the whole pass list until a round improves nothing")
+    ap.add_argument("--inner", type=int, default=6,
+                    help="repeat ONE mechanism on the body it just improved, this many times at most")
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args(argv)
     if args.self_test:

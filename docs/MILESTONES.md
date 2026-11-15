@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-431 milestones are indexed. 343 of them have a note; the rest are rows in the log that cite
+432 milestones are indexed. 344 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -449,6 +449,7 @@ at the foot of this file.
 | 428 | **M428** — `localtype`: 4 bodies closed and 131 moved, the largest pass the program has produced | `docs/log/M428-the-localtype-pass.md` |
 | 429 | **M429** — the residue says `cast`, and nine passes that never composed | `docs/log/M429-the-cast-pass-and-composing-passes.md` |
 | 430 | **M430** — `sign` measured zero, and the lever was the fixpoint | `docs/log/M430-sign-measured-zero-and-the-fixpoint.md` |
+| 431 | **M431** — the mid band to a fixpoint: one body, and the seven rounds it took to see why | `docs/log/M431-the-mid-band-fixpoint-and-the-inner-loop.md` |
 
 ## The gaps, and why they are empty
 

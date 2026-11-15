@@ -1,11 +1,35 @@
 /* FUN_8009c594
  * image   stage2 (stage2), base 0x80018a80
  * address 0x8009c594  body 0x8009c594..0x8009c65f  size 204 B
- * body sha256 ebc06e8debc2fa4fdad0f91ade9a94ffed2f4103a30652880b1046e920c41629
- * provider record sha256 56d84c45980681244171fbe281d270822c24f92c3d9034dfdcfc445e64176030
- * callees 2 direct (2 in corpus)
- * provider Ghidra 12.2
+ * body sha256 4f3c0c98557357dd382f9d4dd2d6277428dba3eb02d4379de655e71359fb5a57
+ * recovered byte-exact (imported: closed by the dat:width pass, round 7 (M430))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/stage2/8009c594.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned char undefined1;
+typedef unsigned int uint;
+extern short DAT_800e9184;
+extern unsigned char DAT_80119e70;
+extern unsigned char DAT_8013272c;
+extern short DAT_80132738;
+extern short DAT_8013273a;
+extern short DAT_8013273c;
+extern short DAT_8013273e;
+extern unsigned int DAT_80132740;
+extern unsigned int DAT_80132744;
+extern unsigned int DAT_80132748;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_8009c594(void)
 
 {
@@ -13,8 +37,8 @@ void FUN_8009c594(void)
   undefined1 *puVar2;
   uint uVar3;
   
-  uVar3 = 0;
   puVar2 = DAT_80132748;
+  uVar3 = 0;
   do {
     if ((puVar2[1] & 0x10) != 0) {
       *puVar2 = 0;

@@ -3309,7 +3309,7 @@
   {"id":"stage2:0x8009c0c4","image":"stage2","addr":"0x8009c0c4","name":"FUN_8009c0c4","file":"src/stage2/FUN_8009c0c4.c","size":284,"status":"written"},
   {"id":"stage2:0x8009c1e0","image":"stage2","addr":"0x8009c1e0","name":"FUN_8009c1e0","file":"src/stage2/FUN_8009c1e0.c","size":172,"status":"written"},
   {"id":"stage2:0x8009c370","image":"stage2","addr":"0x8009c370","name":"FUN_8009c370","file":"src/stage2/FUN_8009c370.c","size":548,"status":"written"},
-  {"id":"stage2:0x8009c594","image":"stage2","addr":"0x8009c594","name":"FUN_8009c594","file":"src/stage2/FUN_8009c594.c","size":204,"status":"written"},
+  {"id":"stage2:0x8009c594","image":"stage2","addr":"0x8009c594","name":"FUN_8009c594","file":"src/stage2/FUN_8009c594.c","size":204,"status":"recovered"},
   {"id":"stage2:0x8009c660","image":"stage2","addr":"0x8009c660","name":"FUN_8009c660","file":"src/stage2/FUN_8009c660.c","size":1668,"status":"written"},
   {"id":"stage2:0x8009cce4","image":"stage2","addr":"0x8009cce4","name":"FUN_8009cce4","file":"src/stage2/FUN_8009cce4.c","size":348,"status":"written"},
   {"id":"stage2:0x8009ce40","image":"stage2","addr":"0x8009ce40","name":"FUN_8009ce40","file":"src/stage2/FUN_8009ce40.c","size":152,"status":"written"},

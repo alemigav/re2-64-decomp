@@ -1,7 +1,7 @@
 {
  "band": "mid",
- "banked": 1,
- "bodies": 458,
+ "banked": 0,
+ "bodies": 456,
  "mechanisms": {
   "cast": "yes \u2014 vary the signedness of a cast expression, pointer-ness preserved",
   "compare:copy": "no \u2014 changes which value is live",
@@ -23,50 +23,50 @@
  "note": "Closures per mechanism pass, over a band, run to a fixpoint. A mechanism that closes nothing is a measured zero. The mechanisms no text pass can express are listed in `mechanisms` \u2014 that is the finding, not a TODO.",
  "passes": {
   "cast": {
-   "bodies_tried": 458,
+   "bodies_tried": 456,
    "closed": 0,
    "improved": 76
   },
   "datwidth": {
-   "bodies_tried": 458,
+   "bodies_tried": 456,
    "closed": 0,
-   "improved": 60
+   "improved": 54
   },
   "early": {
-   "bodies_tried": 458,
+   "bodies_tried": 456,
    "closed": 0,
    "improved": 0
   },
   "forward": {
-   "bodies_tried": 458,
+   "bodies_tried": 456,
    "closed": 0,
    "improved": 0
   },
   "guard": {
-   "bodies_tried": 458,
+   "bodies_tried": 456,
    "closed": 0,
    "improved": 1
   },
   "localtype": {
-   "bodies_tried": 458,
-   "closed": 1,
-   "improved": 130
+   "bodies_tried": 456,
+   "closed": 0,
+   "improved": 129
   },
   "order": {
-   "bodies_tried": 458,
+   "bodies_tried": 456,
    "closed": 0,
-   "improved": 15
+   "improved": 14
   },
   "sig": {
-   "bodies_tried": 458,
+   "bodies_tried": 456,
    "closed": 0,
    "improved": 0
   },
   "symbol": {
-   "bodies_tried": 458,
+   "bodies_tried": 456,
    "closed": 0,
    "improved": 10
   }
  },
- "rounds": 4
+ "rounds": 3
 }
