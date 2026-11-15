@@ -1188,6 +1188,19 @@
   },
   {
    "image": "ovl_008505e",
+   "address": "0x80165a0c",
+   "words": 20,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the cast pass, round 1 (M430)",
+   "source_file": "fixtures/decomp/authored/ovl_008505e/80165a0c.c",
+   "syms": {
+    "FUN_80164d90": 2148945296,
+    "FUN_80165a0c": 2148948492
+   }
+  },
+  {
+   "image": "ovl_008505e",
    "address": "0x80165bb4",
    "words": 42,
    "verdict": "byte-exact",
@@ -1480,6 +1493,22 @@
    "syms": {
     "FUN_801627c0": 2148935616,
     "func_0x80036c68": 2147708008
+   }
+  },
+  {
+   "image": "ovl_008bef8",
+   "address": "0x80163a84",
+   "words": 44,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the cast pass, round 1 (M430)",
+   "source_file": "fixtures/decomp/authored/ovl_008bef8/80163a84.c",
+   "syms": {
+    "FUN_80163a84": 2148940420,
+    "FUN_80165364": 2148946788,
+    "func_0x80077d18": 2147974424,
+    "PTR_FUN_801660f0": 2148950256,
+    "PTR_LAB_801660d0": 2148950224
    }
   },
   {
@@ -2153,6 +2182,18 @@
   },
   {
    "image": "ovl_009aed0",
+   "address": "0x80162f84",
+   "words": 24,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the cast pass, round 1 (M430)",
+   "source_file": "fixtures/decomp/authored/ovl_009aed0/80162f84.c",
+   "syms": {
+    "FUN_80162f84": 2148937604
+   }
+  },
+  {
+   "image": "ovl_009aed0",
    "address": "0x80164c70",
    "words": 22,
    "verdict": "byte-exact",
@@ -2186,6 +2227,19 @@
    "syms": {
     "FUN_80165758": 2148947800,
     "PTR_FUN_8016663c": 2148951612
+   }
+  },
+  {
+   "image": "ovl_009d282",
+   "address": "0x80161db0",
+   "words": 27,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: the byte local must be int so `1 < b` is a SIGNED compare (slti, not sltiu) (M432)",
+   "source_file": "fixtures/decomp/authored/ovl_009d282/80161db0.c",
+   "syms": {
+    "FUN_80161db0": 2148933040,
+    "func_0x80089d54": 2148048212
    }
   },
   {
@@ -3706,6 +3760,20 @@
    "syms": {
     "FUN_80165ea0": 2148949664,
     "FUN_80165bd0": 2148948944
+   }
+  },
+  {
+   "image": "ovl_00b321e",
+   "address": "0x80165df8",
+   "words": 42,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported: closed by the cast pass, round 1 (M430)",
+   "source_file": "fixtures/decomp/authored/ovl_00b321e/80165df8.c",
+   "syms": {
+    "FUN_80165bd0": 2148948944,
+    "FUN_80165df8": 2148949496,
+    "FUN_80165ea0": 2148949664
    }
   },
   {

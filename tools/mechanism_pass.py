@@ -325,7 +325,7 @@ def localtype_variants(text: str, ctx=None):
                 if cand not in seen:
                     seen.add(cand)
                     out.append(("localtype %s as %s" % (m.group(4) if pattern is PARAM else m.group(3).strip(), kind), cand))
-                if len(out) >= 12:
+                if len(out) >= 48:
                     return out
     return out
 
@@ -350,8 +350,9 @@ def cast_variants(text: str, ctx=None):
                 continue
             seen.add(cand)
             out.append(("cast (%s%s)" % (kind, star), cand))
-            if len(out) >= 12:
-                return out
+            if len(out) >= 48:          # M432: 12 was fewer than (declaration sites x 6) on a body with several
+                return out              # locals, so a LATE declaration was never tried — `ovl_009d282:0x80161db0`'s
+                                        # `int bVar1` was the 13th variant and the pass reported a measured zero
     return out
 
 
@@ -380,7 +381,7 @@ def sign_variants(text: str, ctx=None):
             continue
         seen.add(cand)
         out.append(("sign %s -> %s" % (m.group(1), swapped), cand))
-        if len(out) >= 12:
+        if len(out) >= 48:
             break
     return out
 

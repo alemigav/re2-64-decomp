@@ -1,20 +1,20 @@
 {
  "histogram": {
-  "exact": 477,
+  "exact": 481,
   "none": 0,
   "over_half": 132,
   "under_half": 2184,
-  "within_1": 13,
-  "within_2": 81,
-  "within_4": 79,
+  "within_1": 11,
+  "within_2": 79,
+  "within_4": 78,
   "within_8": 89
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 663,
-  "claimed_not_exact": 187,
-  "exact": 477,
-  "exact_and_claimed": 476,
+  "claimed": 668,
+  "claimed_not_exact": 188,
+  "exact": 481,
+  "exact_and_claimed": 480,
   "exact_unclaimed": 1
  },
  "profile": "cc1 2.8.1 -O2 -G 0 -mips2 -mcpu=r4300; as -EB -mips2 -mcpu=r4300 -g -G 0",
@@ -3924,9 +3924,9 @@
    "w": 13
   },
   "ovl_008505e:80165a0c": {
-   "d": 7,
-   "i": 18,
-   "s": "scored",
+   "d": null,
+   "i": 20,
+   "s": "exact",
    "t": "scalar",
    "w": 20
   },
@@ -5118,10 +5118,7 @@
    "w": 36
   },
   "ovl_008bef8:80163a84": {
-   "d": 7,
-   "i": 42,
-   "s": "scored",
-   "t": "scalar",
+   "s": "cc1-failed",
    "w": 44
   },
   "ovl_008bef8:80163b34": {
@@ -7410,9 +7407,9 @@
    "w": 42
   },
   "ovl_009aed0:80162f84": {
-   "d": 15,
-   "i": 23,
-   "s": "scored",
+   "d": null,
+   "i": 24,
+   "s": "exact",
    "t": "scalar",
    "w": 24
   },
@@ -7599,9 +7596,9 @@
    "w": 26
   },
   "ovl_009d282:80161db0": {
-   "d": 7,
-   "i": 26,
-   "s": "scored",
+   "d": null,
+   "i": 27,
+   "s": "exact",
    "t": "scalar",
    "w": 27
   },
@@ -11259,9 +11256,9 @@
    "w": 22
   },
   "ovl_00b321e:80165df8": {
-   "d": 5,
-   "i": 39,
-   "s": "scored",
+   "d": null,
+   "i": 42,
+   "s": "exact",
    "t": "scalar",
    "w": 42
   },
@@ -23079,15 +23076,15 @@
  },
  "totals": {
   "as_failed": 0,
-  "cc1_failed": 418,
-  "exact": 477,
+  "cc1_failed": 419,
+  "exact": 481,
   "functions": 3473,
   "link_failed": 0,
-  "measured": 3055,
+  "measured": 3054,
   "no_source": 0,
-  "percent_words": 11.07,
-  "scored": 2578,
+  "percent_words": 11.06,
+  "scored": 2573,
   "words": 298724,
-  "words_identical": 33063
+  "words_identical": 33028
  }
 }

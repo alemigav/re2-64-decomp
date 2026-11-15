@@ -1,15 +1,30 @@
 /* FUN_80161db0
  * image   ovl_009d282 (ovl), base 0x80161cf0
  * address 0x80161db0  body 0x80161db0..0x80161e1b  size 108 B
- * body sha256 be0bae63a347ee5eed2263fd4b65db797d35123a15330134e9e1f4d0f9db42aa
- * provider record sha256 345c5ef64e3cd13ca2f1196cd2515732ae6295b6a5ea97153747a3e4d5f26a8f
- * callees 1 direct (1 in corpus)
- * provider Ghidra 12.2
+ * body sha256 6fe8fb9cc188c9f8fb9b9ebac8d25ee6346b880f6daa69e57ce1eeed5401b15c
+ * recovered byte-exact (imported: the byte local must be int so `1 < b` is a SIGNED compare (slti, not sltiu) (M432))
+ * provider Ghidra 12.2: body was the head only; this file is the reconstruction, kept in fixtures/decomp/authored/ovl_009d282/80161db0.c
+ * extents and pins: fixtures/decomp/recovered.json
  */
+typedef unsigned char undefined1;
+typedef unsigned int undefined4;
+typedef unsigned char byte;
+
+
+
+
+
+
+
+
+
+
+
+
 void FUN_80161db0(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  byte bVar1;
+  int bVar1;
   char cVar2;
   
   bVar1 = *(byte *)(param_1 + 5);
