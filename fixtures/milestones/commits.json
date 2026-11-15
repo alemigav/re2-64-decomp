@@ -2,6 +2,48 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "f0d15ed",
+   "subject": "M438: the residue catalogued -- the biggest class is not a pass, it is a missing call signature",
+   "milestones": [
+    438
+   ]
+  },
+  {
+   "sha": "350f761",
+   "subject": "M437: the near band was 19, not 23 -- and the four it hid were already claimed",
+   "milestones": [
+    437
+   ]
+  },
+  {
+   "sha": "d2660a6",
+   "subject": "M436: libultra is a source of names, not of bytes",
+   "milestones": [
+    436
+   ]
+  },
+  {
+   "sha": "01b1354",
+   "subject": "M435: the verifier could not say how far it got -- stream per-procedure evidence",
+   "milestones": [
+    435
+   ]
+  },
+  {
+   "sha": "f37c34c",
+   "subject": "M434: the map was measuring the projection -- 419 refusals become 278",
+   "milestones": [
+    434
+   ]
+  },
+  {
+   "sha": "bb26b4e",
+   "subject": "M433: what the cap was hiding -- four bodies and four improvements, and a 228 GB leak",
+   "milestones": [
+    433
+   ]
+  },
+  {
    "sha": "757ab57",
    "subject": "M432: the variant cap was a lottery -- 5 more bodies, and the bug that hid them",
    "milestones": [

@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-439 milestones are indexed. 349 of them have a note; the rest are rows in the log that cite
+440 milestones are indexed. 350 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -457,6 +457,7 @@ at the foot of this file.
 | 436 | **M436** — libultra is a source of names, not of bytes; and the preprocessor we did not know we had | `docs/log/M436-libultra-is-names-not-bytes.md` |
 | 437 | **M437** — the near band was 19, not 23 | The ask was to close the 23 unclaimed bodies at gap <= 2. They are 19. `queue()` filtered `recovered.json` but not `measured_extents.json`, so it offered **4 bodies whose C is already claimed** and whose text was deliberately withdrawn at M369 (14-19 words each, and 3 of the 4 sat at gap <= 1 — the front of the queue was the part that was wrong). One line fixes it and the honest depth is **19 open, 2 at gap <= 1**. Classifying the 19 by their actual first words also splits them: **3 are not C-expressible at all** — `boot:0x80000518` is `beq $zero,$zero,-1` with `daddiu $a0,$a0,1` in the delay slot (a branch-to-self idle loop, and gcc 2.8.1 emits `j` for an infinite loop at `-O0`, `-O1`, `-O2` and `-O3` — measured, four flag sets, six loop forms, never `beq`), `boot:0x800006d0` is a two-word `lui $k0` fragment with no `jr ra`, and `stage2:0x80018a80` is the image's own base address and is a `j`. **No body was closed.** The best probe is `stage2:0x80047824` (12 words) at **11 of 12**, and the last word is a stack-argument width: the image reads the 5th argument as `lhu $v0,18($sp)`, a halfword at **+0x12**, i.e. the second of two 2-byte values sharing that word, where `unsigned short` produces `lhu +0x10` and a struct by value reorders the whole body. `stage2:0x8006b364` and `boot:0x80000f50` each reach 2 of 4 with a **single register** wrong (`$t9` for `$v0`), which is the allocation class, not a statement class. So the near band is not 19 chances: it is 2 width residues, 2 allocation residues and a tail that C cannot express. |
 | 438 | **M438** — the residue, catalogued: the biggest class is not a compiler pass, it is a missing call signature | `docs/log/M438-the-residue-catalogued.md` |
+| 439 | **M439** — the call-signature pass, refuted before it was built: 4 bodies, not 565 | `docs/log/M439-the-call-signature-pass-refuted.md` |
 
 ## The gaps, and why they are empty
 
