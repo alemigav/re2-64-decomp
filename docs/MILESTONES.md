@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-446 milestones are indexed. 355 of them have a note; the rest are rows in the log that cite
+447 milestones are indexed. 356 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -464,6 +464,7 @@ at the foot of this file.
 | 443 | **M443** — the skeleton exists, and the first census overstated its own opportunity by 86 % | `docs/log/M443-the-skeleton-and-its-census.md` |
 | 444 | **M444** — the positive control passes | A loop that proposes structure is worthless unless it can recover a structure whose answer is known, so the control breaks byte-exact authored bodies mechanically — `guard:swap` applied twice returns the original — and requires the loop to put them back. **4 of 6 restored to byte-exact**, including a 76-word and a 67-word body; the two that stalled are bodies where the breaker and the greedy choice failed to compose. The loop itself is class-directed: it recompiles the current best, decodes both skeletons, and instantiates only the templates the difference class names, accepting a variant only on a **strict** improvement in identical words. On real far bodies it stalls — `boot:0x800014ac` 4 of 23, `boot:0x800013d4` 1 of 54 — because there the statements are wrong too, which is the honest reading: the mechanism is proven, and structure is one of several defects in a far body rather than the defect. |
 | 445 | **M445** — the loop measured on the far band: 21 of 414 bodies improve, none closes | `docs/log/M445-the-loop-measured-on-the-far-band.md` |
+| 446 | **M446** — statement proposals: one function closed, and the metric that was hiding it | `docs/log/M446-statement-proposals-and-the-metric.md` |
 
 ## The gaps, and why they are empty
 

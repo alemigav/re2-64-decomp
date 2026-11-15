@@ -11,8 +11,8 @@
  },
  "note": "How far every function that has C is from byte-exact, measured by tools/distance_map.py. 'exact' and 'scored' are measurements; every other status is a REFUSAL and is never counted as a zero. 't' is the declaration rung the body needed (scalar/array/pointer) -- a body that needed 'array' is measured with the declaration Ghidra meant, not with a fudged type.",
  "overlap": {
-  "claimed": 668,
-  "claimed_not_exact": 171,
+  "claimed": 669,
+  "claimed_not_exact": 172,
   "exact": 498,
   "exact_and_claimed": 497,
   "exact_unclaimed": 1

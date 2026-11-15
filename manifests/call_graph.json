@@ -991,7 +991,7 @@
   {"id":"ovl_0093192:0x80162884","image":"ovl_0093192","addr":"0x80162884","name":"FUN_80162884","file":"src/ovl_0093192/FUN_80162884.c","size":40,"status":"extent-measured"},
   {"id":"ovl_0093192:0x801628bc","image":"ovl_0093192","addr":"0x801628bc","name":"FUN_801628bc","file":"src/ovl_0093192/FUN_801628bc.c","size":124,"status":"written"},
   {"id":"ovl_0093192:0x80162938","image":"ovl_0093192","addr":"0x80162938","name":"FUN_80162938","file":"src/ovl_0093192/FUN_80162938.c","size":152,"status":"written"},
-  {"id":"ovl_0093192:0x801629d0","image":"ovl_0093192","addr":"0x801629d0","name":"FUN_801629d0","file":"src/ovl_0093192/FUN_801629d0.c","size":132,"status":"written"},
+  {"id":"ovl_0093192:0x801629d0","image":"ovl_0093192","addr":"0x801629d0","name":"FUN_801629d0","file":"src/ovl_0093192/FUN_801629d0.c","size":132,"status":"recovered"},
   {"id":"ovl_0093192:0x80162a6c","image":"ovl_0093192","addr":"0x80162a6c","name":"FUN_80162a6c","file":"src/ovl_0093192/FUN_80162a6c.c","size":304,"status":"written"},
   {"id":"ovl_0093192:0x80162b9c","image":"ovl_0093192","addr":"0x80162b9c","name":"FUN_80162b9c","file":"src/ovl_0093192/FUN_80162b9c.c","size":208,"status":"written"},
   {"id":"ovl_0093192:0x80162c6c","image":"ovl_0093192","addr":"0x80162c6c","name":"FUN_80162c6c","file":"src/ovl_0093192/FUN_80162c6c.c","size":36,"status":"recovered"},

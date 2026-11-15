@@ -104,7 +104,7 @@ SUITES = [
     ("splat rehearsal (cartridge)", [sys.executable, "tools/splat_boot.py", "--check"], 5, True),
     # M246: the compile-probe corpus -- IDO 5.3 and 7.1 are byte-identical, and both are refuted by the
     # cartridge move idiom (6560 addu, 0 or). Needs the unpacked image and build/toolchain.
-    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 690, True),
+    ("compile probes (cartridge)", [sys.executable, "tools/compile_probe.py", "--check"], 691, True),
     ("other corpus (repository)", [sys.executable, "tools/other_corpus.py", "--self-test"], 21, True),
     ("toolchain matrix (cartridge)", [sys.executable, "tools/toolchain_matrix.py", "--check"], 4, True),
     ("corpus build (cartridge)", [sys.executable, "tools/build_corpus.py", "--self-test"], 2, True),
@@ -127,6 +127,9 @@ SUITES = [
     ("skeleton decoder (repository)", [sys.executable, "tools/skeleton.py", "--self-test"], 9, False),
     # M443: the census's own arithmetic, on a synthetic record set. The census run itself needs the cartridge.
     ("skeleton census (repository)", [sys.executable, "tools/skeleton_census.py", "--self-test"], 3, False),
+    # M446: the aligned diff. Its control is the finding: one inserted word makes positional identity 2 of 5 where
+    # alignment says 4 of 5 present -- which is why the distance map could not rank the 969 short bodies at all.
+    ("missing spans (repository)", [sys.executable, "tools/missing_spans.py", "--self-test"], 5, False),
     # M444: the positive control -- mechanically break a byte-exact body we hold and require the loop to restore it.
     # Needs the cartridge, so it is gated.
     ("structure loop (cartridge)", [sys.executable, "tools/structure_loop.py", "--self-test"], 1, True),

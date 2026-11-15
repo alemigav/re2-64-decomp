@@ -32,7 +32,7 @@
   "tyrant header (repository)": 1,
   "match diff (cartridge)": 4,
   "splat rehearsal (cartridge)": 5,
-  "compile probes (cartridge)": 690,
+  "compile probes (cartridge)": 691,
   "other corpus (repository)": 21,
   "toolchain matrix (cartridge)": 4,
   "corpus build (cartridge)": 2,
@@ -47,6 +47,7 @@
   "shape solver (repository)": 6,
   "skeleton decoder (repository)": 9,
   "skeleton census (repository)": 3,
+  "missing spans (repository)": 5,
   "structure loop (cartridge)": 1,
   "leaf screen (repository)": 13,
   "preflight (repository)": 6,
@@ -95,5 +96,5 @@
   "acceptance self-test": 6,
   "verifier self-test": 8
  },
- "src_tree": "2af5c3a5396b44c6b6eb4bdfc22fdbd860f09221b0188e4f02e797c1545aabe7"
+ "src_tree": "16bc8a0bcce9dce0281c465e4ebdf75285f57d832e3023a9ae7f400427a1a0c0"
 }

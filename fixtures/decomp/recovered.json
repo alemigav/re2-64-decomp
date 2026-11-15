@@ -7962,6 +7962,20 @@
    "verdict": "byte-exact",
    "probe": "single: 3 of 3, one draft",
    "source": "S_800B4DAC_SOURCE"
+  },
+  {
+   "image": "ovl_0093192",
+   "address": "0x801629d0",
+   "words": 33,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "imported+adapted (M446): the draft's `func_0x80089d54()` omits its 4th argument; the image loads `addiu a3,zero,1024` immediately before the call, found by ALIGNING the two word lists (32 of 33 words present in order, positional identity 3 of 33 because one insertion shifts the rest). One statement added; the body is otherwise the decompiler's.",
+   "source_file": "fixtures/decomp/authored/ovl_0093192/801629d0.c",
+   "syms": {
+    "FUN_801629d0": 2148936144,
+    "func_0x8003247c": 2147689596,
+    "func_0x80089d54": 2148048212
+   }
   }
  ]
 }
