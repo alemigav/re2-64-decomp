@@ -24,7 +24,7 @@ Every figure on the front page is **derived from the fixtures and asserted by `t
 including in this file's shorter sibling. A phrase that *disappears* counts as a failure, so a stale line cannot be
 fixed by deleting it. Where a number is a *reading* rather than a measurement, the text says so.
 
-**The corpus of recovered functions is 669 entries, 668 of them byte-exact** — 274 written here, 187 the decompiler's own C verified word for word (M410). The composition matters more than the
+**The corpus of recovered functions is 671 entries, 670 of them byte-exact** — 274 written here, 187 the decompiler's own C verified word for word (M410). The composition matters more than the
 total, and any headline quoting it must carry this line — every figure in it is derived from
 `fixtures/decomp/recovered.json` and asserted by `tools/counts.py`, because the hand-typed version of this table summed
 to 198 against a corpus of 210 and had been short since M369:
@@ -37,7 +37,7 @@ to 198 against a corpus of 210 and had been short since M369:
 | imported from another decompilation, **removed in M369** (no licence) | **0** | one tool scores that corpus through this profile against this cartridge (`tools/other_corpus.py`); nothing else about that project is taken on trust |
 | copies of twenty-one proven body shapes | **97** | one proven reconstruction registers every copy: 44 empty functions, 11 nine-word masked calls, **17 of the dispatch family** across eight table addresses (M335), three of a masked read-modify-write loop, three of a three-store setter, and the rest two-copy shapes found by the *statement order*, by the *stride* rather than the walk (M355), or by where a constant sits in an OR chain |
 
-The corpus is therefore **107** by hand from the disassembly, **52** from the screening tool, **20** as one-off probes,
+The corpus is therefore **109** by hand from the disassembly, **52** from the screening tool, **20** as one-off probes,
 and **97** copies of a proven shape — 274 in all, and the four add up or `counts.py` fails.
 
 So "274" is a **corpus** number, not 210 independent reconstructions. The remaining published residue is one function

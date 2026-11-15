@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "217bf01",
+   "subject": "M447: the full re-rank -- 72 bodies are genuinely within two words, not 19",
+   "milestones": [
+    447
+   ]
+  },
+  {
    "sha": "e1d2459",
    "subject": "M446: statement proposals -- one function closed, and the metric that was hiding it",
    "milestones": [

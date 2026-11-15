@@ -7976,6 +7976,33 @@
     "func_0x8003247c": 2147689596,
     "func_0x80089d54": 2148048212
    }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8008456c",
+   "words": 4,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "read from the words (M448): the image materialises `&DAT_8011c924` once into v0 and stores it to `0x7800(v0)`, i.e. it expresses 0x80124124 as a DISPLACEMENT of the source symbol rather than loading a second symbol (Ghidra's `DAT_80124124 = &DAT_8011c924` costs an extra `lui`). Binding the address to a local and reusing it is what makes gcc keep one register and one `lui`.",
+   "source_file": "fixtures/decomp/authored/stage2/8008456c.c",
+   "syms": {
+    "FUN_8008456c": 2148025708,
+    "DAT_8011c924": 2148649252,
+    "DAT_80124124": 2148679972
+   }
+  },
+  {
+   "image": "stage2",
+   "address": "0x8004a7c8",
+   "words": 11,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "read from the words (M448): the image ORs 0x200 into the FOURTH argument in place (`ori a3,a3,512`) between the shift and the combining `or`, so `p3 << 4 | p4 | 0x200` is wrong in two ways \u2014 it folds 512 into the third argument and it loses the in-place update. Naming the shift and hoisting `p4 |= 0x200` forces the image's evaluation order.",
+   "source_file": "fixtures/decomp/authored/stage2/8004a7c8.c",
+   "syms": {
+    "FUN_8004a7c8": 2147788744,
+    "FUN_8004a7f4": 2147788788
+   }
   }
  ]
 }

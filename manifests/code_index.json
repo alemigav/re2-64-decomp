@@ -7787,19 +7787,6 @@
      "callees_unknown": 0
     },
     {
-     "address": "0x8004a7c8",
-     "name": "FUN_8004a7c8",
-     "file": "src/stage2/FUN_8004a7c8.c",
-     "size": 44,
-     "sha256": "794576bd5907b96f6284c4569c772f13281f4fd88dd4943620591954f1b688c9",
-     "provider_sha256": "d16b28f3d4c6624e57936c7067e429659a38b1aef9d6604ceb2bfbe82fcbbd72",
-     "status": "written",
-     "callees": [
-      "0x8004a7f4"
-     ],
-     "callees_unknown": 0
-    },
-    {
      "address": "0x8004a7f4",
      "name": "FUN_8004a7f4",
      "file": "src/stage2/FUN_8004a7f4.c",
@@ -15171,17 +15158,6 @@
      "callees": [
       "0x8008457c"
      ],
-     "callees_unknown": 0
-    },
-    {
-     "address": "0x8008456c",
-     "name": "FUN_8008456c",
-     "file": "src/stage2/FUN_8008456c.c",
-     "size": 16,
-     "sha256": "0705d63a86efc0badfaf9b2cf4bc4d6c42d9f5a8e7b693428e74912296932a3a",
-     "provider_sha256": "7a881a345a6f1910e145a902723661995d168ca91ca611f9fd525d20343a9f83",
-     "status": "written",
-     "callees": [],
      "callees_unknown": 0
     },
     {
@@ -25503,6 +25479,19 @@
      "callees_unknown": 0
     },
     {
+     "address": "0x8004a7c8",
+     "name": "FUN_8004a7c8",
+     "file": "src/stage2/FUN_8004a7c8.c",
+     "size": 44,
+     "sha256": "92093f91fa76ea8913e5a2e94e25505f174d8af7a4be5e16a3c24ac150be0a38",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [
+      "0x8004a7f4"
+     ],
+     "callees_unknown": 0
+    },
+    {
      "address": "0x8004cef8",
      "name": "FUN_8004cef8",
      "file": "src/stage2/FUN_8004cef8.c",
@@ -27334,6 +27323,17 @@
      "file": "src/stage2/FUN_800844e4.c",
      "size": 40,
      "sha256": "c4cbe1ab6079d2fb7f39d794c4ec9afd3fb42f92f222fc6af2713ec7f54d2cff",
+     "provider_sha256": "",
+     "status": "recovered",
+     "callees": [],
+     "callees_unknown": 0
+    },
+    {
+     "address": "0x8008456c",
+     "name": "FUN_8008456c",
+     "file": "src/stage2/FUN_8008456c.c",
+     "size": 16,
+     "sha256": "b69957c24cf5eed7537c3dd515208e19428ca7295a588e02041105c168e5cb41",
      "provider_sha256": "",
      "status": "recovered",
      "callees": [],
