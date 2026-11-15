@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "53814f5",
+   "subject": "M441: the type lever measured out -- 0 closures, and the population was never 298",
+   "milestones": [
+    441
+   ]
+  },
+  {
    "sha": "7cb9c78",
    "subject": "M440: the pass catalogue closes -- the compiler is not the lever",
    "milestones": [
