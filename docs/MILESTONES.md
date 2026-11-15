@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-436 milestones are indexed. 347 of them have a note; the rest are rows in the log that cite
+437 milestones are indexed. 348 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -454,6 +454,7 @@ at the foot of this file.
 | 433 | **M433** — what the cap was hiding: four bodies and four improvements, and a full disk | `docs/log/M433-what-the-cap-was-hiding-and-the-disk-fill.md` |
 | 434 | **M434** — the map was measuring the projection: 419 refusals become 278, and 112 "exact" bodies were our own C | `docs/log/M434-the-map-was-measuring-the-projection.md` |
 | 435 | **M435** — the verifier could not say how far it got | Twice a `verify.py --full` run was stopped and left **no output at all**, and both times it read as "the full tier is broken" rather than "the run was stopped". The cause: `run()` captures every procedure's output and the report prints only after all of them finish, so an interrupted run writes nothing — and rerunning it later shows a 289 s PASS, which is what made the misreading expensive. `progress()` now writes one flushed line per procedure to **stderr** (stdout stays machine-readable for `--json`), at start and at completion, with the elapsed time and that procedure's own verdict. Measured on the first `--full` after the change: `ci` **83.3 s**, `ratchet` **0.2 s**, `counts` **0.2 s**, `audit` **202.8 s**, **VERDICT PASS**, audit **160/160 with 0 vacuous and 0 broken** — so the earlier **26 m 50 s** reading was the disk-pressure era and not a property of the gate, and the honest cost of admission is **289 s once per commit at most**. With that number, the input-hash caching proposed for the heavy suites is **withdrawn as not worth its own infrastructure**; the ten-line streaming fix was the whole of the defect. This row also carries no note file: a repair that changes no claim does not need one, which is the documentation rule M434 proposed. |
+| 436 | **M436** — libultra is a source of names, not of bytes; and the preprocessor we did not know we had | `docs/log/M436-libultra-is-names-not-bytes.md` |
 
 ## The gaps, and why they are empty
 
