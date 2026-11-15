@@ -137,7 +137,7 @@ has the architecture, the ratchet's three invariants and the 30-second rule.
 
 ## Milestones
 
-**435** numbers, 0-434: **370** with a row, and **65** named gaps. The full index — every number, its title, and the
+**436** numbers, 0-435: **371** with a row, and **65** named gaps. The full index — every number, its title, and the
 note behind it — is [docs/MILESTONES.md](docs/MILESTONES.md); the narrative record is
 [docs/reverse_engineering_log.md](docs/reverse_engineering_log.md), which also carries a retraction table worth reading
 before you believe any older note.

@@ -29,6 +29,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -74,6 +75,19 @@ CI_SUMMARY = re.compile(r"all (\d+) runnable suite\(s\) pass \((\d+) cases\)")
 def run(cmd, env=None):
     proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, env=env)
     return proc.returncode, proc.stdout + proc.stderr
+
+
+def progress(line: str) -> None:
+    """One line of live evidence, on STDERR, flushed.
+
+    Why this exists (M435): every procedure's output is captured and the report is printed only after all of them
+    finish, so a run interrupted at minute four of five leaves **nothing at all** on disk. That happened twice to
+    `--full` and both times it read as "the full tier is broken" rather than "the run was stopped", which is the same
+    defect as a tool that cannot say why a compile failed. STDERR so `--json` stays machine-readable, and flushed
+    because a pipe buffers.
+    """
+    sys.stderr.write(line + "\n")
+    sys.stderr.flush()
 
 
 def verdict_of(text):
@@ -125,7 +139,10 @@ def collect(tier="fast"):
     for name, cmd, _why in PROCEDURES:
         if name == "ci" and tier == "fast":
             cmd = cmd + list(FAST)
+        progress("  ..  %-8s running" % name)
+        started = time.time()
         code, out = run(cmd, env=env)
+        elapsed = time.time() - started
         m = CI_SUMMARY.search(out)
         if name == "ci" and m:
             suites, cases = int(m.group(1)), int(m.group(2))
@@ -135,11 +152,16 @@ def collect(tier="fast"):
             results.append((name, code, verdict_of(out)))
             v = verdict_of(out)
             details[name] = f"{v[0]}/{v[1]}" if v else "-"
+        progress("  %s %-8s %6.1fs  %s" % ("ok  " if code == 0 else "FAIL", name, elapsed, details[name]))
         screens[name] = out
     if tier == "fast":
         # admission is not run at all here, and the report says so rather than implying a clean audit
         return results, screens, None, details
+    progress("  ..  %-8s running  (the gate audit: every gate must fail when its own mechanism is disabled)"
+             % ADMISSION[0])
+    started = time.time()
     code, out = run(ADMISSION[1])
+    elapsed = time.time() - started
     m = AUDIT.search(out)
     ms = AUDIT_SKIP.search(out)
     audit = (int(m.group(1)), int(m.group(2)), int(m.group(3)), int(m.group(4)),
@@ -148,6 +170,9 @@ def collect(tier="fast"):
     screens[ADMISSION[0]] = out
     v = verdict_of(out)
     details[ADMISSION[0]] = f"{v[0]}/{v[1]}" if v else "-"
+    progress("  %s %-8s %6.1fs  %s%s%s" % ("ok  " if code == 0 else "FAIL", ADMISSION[0], elapsed, details[ADMISSION[0]],
+                                          "" if not audit else "  (%d vacuous, %d broken)" % (audit[2], audit[3]),
+                                          "" if not audit or not audit[4] else "  (%d skipped, no cartridge)" % audit[4]))
     return results, screens, audit, details
 
 
