@@ -2797,7 +2797,7 @@
   {"id":"stage2:0x80073cf8","image":"stage2","addr":"0x80073cf8","name":"FUN_80073cf8","file":"src/stage2/FUN_80073cf8.c","size":320,"status":"written"},
   {"id":"stage2:0x80073e38","image":"stage2","addr":"0x80073e38","name":"FUN_80073e38","file":"src/stage2/FUN_80073e38.c","size":232,"status":"extent-measured"},
   {"id":"stage2:0x80073f20","image":"stage2","addr":"0x80073f20","name":"FUN_80073f20","file":"src/stage2/FUN_80073f20.c","size":8,"status":"extent-measured"},
-  {"id":"stage2:0x80073f28","image":"stage2","addr":"0x80073f28","name":"FUN_80073f28","file":"src/stage2/FUN_80073f28.c","size":60,"status":"written"},
+  {"id":"stage2:0x80073f28","image":"stage2","addr":"0x80073f28","name":"FUN_80073f28","file":"src/stage2/FUN_80073f28.c","size":60,"status":"recovered"},
   {"id":"stage2:0x80073f64","image":"stage2","addr":"0x80073f64","name":"FUN_80073f64","file":"src/stage2/FUN_80073f64.c","size":80,"status":"written"},
   {"id":"stage2:0x80073fb4","image":"stage2","addr":"0x80073fb4","name":"FUN_80073fb4","file":"src/stage2/FUN_80073fb4.c","size":112,"status":"extent-measured"},
   {"id":"stage2:0x80074024","image":"stage2","addr":"0x80074024","name":"FUN_80074024","file":"src/stage2/FUN_80074024.c","size":40,"status":"recovered"},

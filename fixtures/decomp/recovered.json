@@ -8003,6 +8003,19 @@
     "FUN_8004a7c8": 2147788744,
     "FUN_8004a7f4": 2147788788
    }
+  },
+  {
+   "image": "stage2",
+   "address": "0x80073f28",
+   "words": 15,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "read from the words (M448): the image masks the SECOND argument to 16 bits (`andi a1,a1,-1`) after the add, so the parameter is an `unsigned short` and the draft's `param_1[1] + 0x300` passes a full word. The draft already carried `(uint)(ushort)` on the fourth argument; the second was missing the same truncation.",
+   "source_file": "fixtures/decomp/authored/stage2/80073f28.c",
+   "syms": {
+    "FUN_8004ac04": 2147789828,
+    "FUN_80073f28": 2147958568
+   }
   }
  ]
 }

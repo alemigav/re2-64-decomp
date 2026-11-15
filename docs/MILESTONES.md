@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-449 milestones are indexed. 358 of them have a note; the rest are rows in the log that cite
+450 milestones are indexed. 359 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -467,6 +467,7 @@ at the foot of this file.
 | 446 | **M446** — statement proposals: one function closed, and the metric that was hiding it | `docs/log/M446-statement-proposals-and-the-metric.md` |
 | 447 | **M447** — the full re-rank: 72 bodies are genuinely within two words, not 19 | `docs/log/M447-the-full-rerank.md` |
 | 448 | **M448** — the first four gap-1 diagnoses: two closed, one scheduling wall, one argument-packing residual | `docs/log/M448-the-first-four-gap-1-diagnoses.md` |
+| 449 | **M449** — the scheduler cluster settled: one body, not a class; and `#nop` is an assembler difference | `docs/log/M449-the-scheduler-cluster-settled.md` |
 
 ## The gaps, and why they are empty
 
