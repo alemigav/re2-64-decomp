@@ -2,6 +2,13 @@
  "note": "Commit subjects that name a milestone. Seeded with gaps.json by the same command, for the same reason: a check must not read git history, because a CI clone is shallow.",
  "commits": [
   {
+   "sha": "314975b",
+   "subject": "M449: the scheduler cluster settled -- one body, not a class; and #nop is an assembler difference",
+   "milestones": [
+    449
+   ]
+  },
+  {
    "sha": "25c9b1b",
    "subject": "M448: the first four gap-1 diagnoses -- two closed, one scheduling wall, one packing residual",
    "milestones": [

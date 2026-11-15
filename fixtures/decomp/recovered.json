@@ -8016,6 +8016,39 @@
     "FUN_8004ac04": 2147789828,
     "FUN_80073f28": 2147958568
    }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x80165e40",
+   "words": 34,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "read from the words (M450): the image loads `addiu a3,zero,512` before the call, so the 4th argument is 0x200 and the draft called `func_0x80089d54()` with none. Same missing-argument pattern as ovl_0093192:0x801629d0 (M446); the three leading arguments are the function's own, passed straight through.",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/80165e40.c",
+   "syms": {
+    "FUN_80165e40": 2148949568,
+    "FUN_8016703c": 2148954172,
+    "FUN_80167688": 2148955784,
+    "func_0x80033604": 2147694084,
+    "func_0x80089d54": 2148048212
+   }
+  },
+  {
+   "image": "ovl_0090698",
+   "address": "0x801661b8",
+   "words": 36,
+   "verdict": "byte-exact",
+   "provenance": "provider",
+   "probe": "read from the words (M450): the sibling of ovl_0090698:0x80165e40, same defect \u2014 the image loads `addiu a3,zero,512` before the call and the draft passes no arguments.",
+   "source_file": "fixtures/decomp/authored/ovl_0090698/801661b8.c",
+   "syms": {
+    "FUN_801661b8": 2148950456,
+    "FUN_80166248": 2148950600,
+    "FUN_8016703c": 2148954172,
+    "FUN_80167688": 2148955784,
+    "func_0x80033604": 2147694084,
+    "func_0x80089d54": 2148048212
+   }
   }
  ]
 }
