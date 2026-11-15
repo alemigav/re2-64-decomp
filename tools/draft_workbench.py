@@ -31,6 +31,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DISTANCE = ROOT / "fixtures" / "decomp" / "distance.json"
 RECOVERED = ROOT / "fixtures" / "decomp" / "recovered.json"
+# M369 withdrew the third-party C and kept the claims as `measured_extents` listings. Those bodies are NOT unclaimed:
+# the address is claimed, the text is deliberately gone. The queue filtered only `recovered.json`, so it offered four
+# such bodies (14-19 words each) as fresh targets — the kind of error that reads as opportunity.
+MEASURED = ROOT / "fixtures" / "decomp" / "measured_extents.json"
 AUTHORED = ROOT / "fixtures" / "decomp" / "authored"
 
 LOAD_OPS = {"lb", "lbu", "lh", "lhu", "lw", "lwl", "lwr", "sb", "sh", "sw", "swl", "swr"}
@@ -242,6 +246,8 @@ def queue(n: int, max_words: int, shape: str = "any"):
     be, dm, cp, ls = load_modules()
     doc = json.loads(DISTANCE.read_text())
     claimed = {(f["image"], int(f["address"], 16)) for f in json.loads(RECOVERED.read_text())["functions"]}
+    # A `measured_extents` entry claims the ADDRESS: the C was withdrawn at M369, so it is not a fresh target.
+    claimed |= {(f["image"], int(f["address"], 16)) for f in json.loads(MEASURED.read_text())["functions"]}
     rows = []
     for key, rec in doc["records"].items():
         if rec["s"] != "scored" or rec["w"] > max_words:
