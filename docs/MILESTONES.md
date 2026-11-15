@@ -7,7 +7,7 @@ and `docs/reverse_engineering_log.md` disagree, so the two cannot drift. The *re
 per milestone, plus a retraction table) and `docs/log/M<n>-*.md` (one note per milestone); this is the index
 to them, and the frontpage carries a curated [phase table](../README.md#milestones) over the same ground.
 
-434 milestones are indexed. 346 of them have a note; the rest are rows in the log that cite
+435 milestones are indexed. 347 of them have a note; the rest are rows in the log that cite
 `docs/format_notes.md` instead. **65 have no record at all** — 24, 31–78, 80, 172, 240–244, 393, 398–400, 403–406, 408 — and they appear in place, marked
 *(no row, no note)*: an index that hides its gaps is worse than one that names them. Why they are empty is
 at the foot of this file.
@@ -451,7 +451,8 @@ at the foot of this file.
 | 430 | **M430** — `sign` measured zero, and the lever was the fixpoint | `docs/log/M430-sign-measured-zero-and-the-fixpoint.md` |
 | 431 | **M431** — the mid band to a fixpoint: one body, and the seven rounds it took to see why | `docs/log/M431-the-mid-band-fixpoint-and-the-inner-loop.md` |
 | 432 | **M432** — the variant cap was a lottery: 5 more bodies, and the bug that hid them | `docs/log/M432-the-variant-cap-was-a-lottery.md` |
-| 433 | **M433** — what the cap was hiding: four bodies and four improvements, and a 228 GB leak | `docs/log/M433-what-the-cap-was-hiding-and-the-disk-fill.md` |
+| 433 | **M433** — what the cap was hiding: four bodies and four improvements, and a full disk | `docs/log/M433-what-the-cap-was-hiding-and-the-disk-fill.md` |
+| 434 | **M434** — the map was measuring the projection: 419 refusals become 278, and 112 "exact" bodies were our own C | `docs/log/M434-the-map-was-measuring-the-projection.md` |
 
 ## The gaps, and why they are empty
 

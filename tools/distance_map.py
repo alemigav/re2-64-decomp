@@ -117,6 +117,112 @@ COP_NAME = re.compile(r"\b(?:WatchLo|WatchHi|EntryHi|EntryLo0|EntryLo1|PageMask|
 
 MODIFIERS = re.compile(r"\bprocessEntry\b")
 
+# Ghidra assembles and slices sub-word values with ITS OWN macro notation — `CONCAT12(a,b)`, `SUB41(x,0)` and the
+# field form `x._1_3_` for "bytes 1..3 of x". In Ghidra's sources those are `#define`s in `mem.h`, and this `cc1`
+# has **no preprocessor**, so they arrive as raw identifiers: `x._1_3_` is a parse error, and on the recovery path
+# `cc1` 2.8 dies with SIGSEGV *while reporting it*, which is why 56 bodies were on record as "cc1-failed" with an
+# empty message. Written out as shifts and masks they are the same value, so the emitted code is the image's code.
+#
+# Two limits keep this a translation and not a guess, which is what the project's rule forbids:
+#   * the field form is expanded ONLY for a variable whose DECLARED width is known and large enough. If the width
+#     is unknown, or the field runs past it, the shift would reinterpret a narrower object and change the code —
+#     so those bodies are left exactly as they were, refused rather than silently mis-measured.
+#   * `SUBnn` is NOT expanded: it drops bytes, and the observed corpus has none (measured: 0 of 311 refusals).
+WIDTH_OF_TYPE = {
+    "undefined": 1, "undefined1": 1, "byte": 1, "char": 1, "signed char": 1, "unsigned char": 1,
+    "ubyte": 1, "sbyte": 1, "bool": 1, "u8": 1, "s8": 1,
+    "undefined2": 2, "short": 2, "unsigned short": 2, "ushort": 2, "u16": 2, "s16": 2, "wchar_t": 2,
+    "undefined4": 4, "int": 4, "unsigned int": 4, "uint": 4, "u32": 4, "s32": 4, "size_t": 4, "float": 4,
+    "undefined3": 4, "code": 4,
+    "undefined8": 8, "long long": 8, "unsigned long long": 8, "ulonglong": 8, "longlong": 8, "double": 8,
+}
+IDIOM_DECL = re.compile(r"^\s*(?:static\s+|const\s+|extern\s+)*([A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)?)\s+\**\s*"
+                        r"([A-Za-z_]\w*)\s*(?:\[[^\]]*\])?\s*;\s*$", re.M)
+IDIOM_FIELD = re.compile(r"\b([A-Za-z_]\w*)\._(\d)_(\d)_")
+IDIOM_CONCAT = re.compile(r"\bCONCAT(\d)(\d)\s*\(")
+
+
+def idiom_widths(text: str) -> dict:
+    """name -> declared width in bytes, for the plain declarations in this body."""
+    out = {}
+    for m in IDIOM_DECL.finditer(text):
+        w = WIDTH_OF_TYPE.get(m.group(1).strip())
+        if w:
+            out[m.group(2)] = max(out.get(m.group(2), 0), w)
+    return out
+
+
+def _idiom_args(s: str, start: int):
+    """Split the argument list whose opening paren was already consumed at `start`."""
+    depth, args, cur, i = 1, [], "", start
+    while i < len(s):
+        c = s[i]
+        if c == "(":
+            depth += 1
+        elif c == ")":
+            depth -= 1
+            if depth == 0:
+                args.append(cur.strip())
+                return args, i + 1
+        elif c == "," and depth == 1:
+            args.append(cur.strip())
+            cur = ""
+            i += 1
+            continue
+        cur += c
+        i += 1
+    return None, start
+
+
+def _expand_concat(text: str) -> str:
+    """`CONCATxy(a,b)` -> `(a << 8y) | (b & mask)`; x and y are the ARGUMENTS' widths, the result is x+y bytes."""
+    out, i = [], 0
+    while True:
+        m = IDIOM_CONCAT.search(text, i)
+        if not m:
+            out.append(text[i:])
+            break
+        out.append(text[i:m.start()])
+        y = int(m.group(2))
+        args, end = _idiom_args(text, m.end())
+        if args is None or len(args) != 2:
+            out.append(m.group(0))
+            i = m.end()
+            continue
+        out.append("((%s << %d) | ((%s) & 0x%X))" % (args[0], 8 * y, args[1], (1 << (8 * y)) - 1))
+        i = end
+    return "".join(out)
+
+
+def expand_idioms(text: str) -> str:
+    """Translate Ghidra's byte-assembly notation into plain C89, where the declared widths allow it."""
+    widths = idiom_widths(text)
+
+    def fits(var, a, b):
+        w = widths.get(var)
+        return w is not None and a <= b < w
+
+    out = []
+    for line in text.splitlines(keepends=True):
+        m = re.match(r"^(\s*)([A-Za-z_]\w*)\._(\d)_(\d)_\s*=\s*(.+;)\s*$", line)
+        if m and fits(m.group(2), int(m.group(3)), int(m.group(4))):
+            ind, var, a, b = m.group(1), m.group(2), int(m.group(3)), int(m.group(4))
+            span = (1 << (8 * (b - a + 1))) - 1
+            keep, put = (~(span << (8 * a))) & 0xFFFFFFFF, span << (8 * a)
+            out.append("%s%s = (%s & 0x%X) | ((%s) << %d & 0x%X);\n"
+                       % (ind, var, var, keep, m.group(5).rstrip().rstrip(";"), 8 * a, put))
+            continue
+        out.append(line)
+    text = "".join(out)
+
+    def repl(m):
+        var, a, b = m.group(1), int(m.group(2)), int(m.group(3))
+        if not fits(var, a, b):
+            return m.group(0)
+        return "((%s >> %d) & 0x%X)" % (var, 8 * a, (1 << (8 * (b - a + 1))) - 1)
+
+    return _expand_concat(IDIOM_FIELD.sub(repl, text))
+
 # A Ghidra symbol name carries its own address: `FUN_800243d0` is at 0x800243d0 and `DAT_801137d8` at 0x801137d8.
 # That is what makes a bulk link possible without a symbol table: the name IS the address.
 # The optional leading underscore is Ghidra's: `_DAT_80132110` is a data name whose symbol had one. Without it the
@@ -352,7 +458,7 @@ def already_declared(body: str, name: str) -> bool:
 
 
 def build_source(body: str, data, form: str, widths: dict = None) -> str:
-    clean = MODIFIERS.sub("", body)
+    clean = expand_idioms(MODIFIERS.sub("", body))
     widths = widths or {}
     decls = "".join(declaration(n, clean, form, widths.get(n)) + "\n"
                     for n, _a in data if not already_declared(clean, n))
@@ -473,8 +579,16 @@ def functions_to_measure(images=None):
                 continue
             body = strip_comments(text)
             code, data = symbols_of(body)
+            # The path returned must be the path just READ. It used to be the census `source`, i.e. the `src/`
+            # PROJECTION, while `code`/`data` came from the provider's body — so `compile_one` measured a
+            # different translation unit from the one whose symbols had been extracted. For all 647 functions
+            # whose `src/` file is a reconstruction rather than a copy, that measured OUR OWN C: `main`
+            # (byte-exact, 30 of 30) scored 24 of 30 through the map and 1 of 30 from the provider's draft, and
+            # 108 of this project's own byte-exact bodies were on record here as `cc1-failed`. This is the M410
+            # defect (measure the projection and you count your own output as the decompiler's) surviving in the
+            # one place the M421 fix did not reach.
             out.append((image["name"], int(fn["address"], 16), int(fn["size"]) // 4, fn.get("name", ""),
-                        source, code, data))
+                        str(path.relative_to(ROOT)), code, data))
     return out
 
 

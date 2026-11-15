@@ -1,4 +1,4 @@
-# M433 — what the cap was hiding: four bodies and four improvements, and a 228 GB leak
+# M433 — what the cap was hiding: four bodies and four improvements, and a full disk
 
 M432 found that a cap of 12 variants silently discarded the one that closed a body. Rerunning the queue with the cap
 raised answers the question exactly, and the answer has two halves.
@@ -19,7 +19,7 @@ raised answers the question exactly, and the answer has two halves.
 
 ## The bug that rerunning it produced
 
-The diagnostic filled a **228 GB disk** and died with `No space left on device`. Cause: `pins()` created a scratch
+The diagnostic **exhausted the 16 GB of free space on a 228 GB disk** and died with `No space left on device`. (Corrected at M434: the disk is 228 GB *in total* and was 92 % full before this ran, so the leak could not have filled it — it consumed the free space, and **836 scratch directories** were still on disk afterwards.) Cause: `pins()` created a scratch
 directory per call and the only cleanup was an `atexit` sweep (M417) — an **exit handler**, which a long-running search
 never reaches. Eleven minutes of uncapped variants created scratch faster than the process could exit.
 
