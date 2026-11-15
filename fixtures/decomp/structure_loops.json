@@ -1,0 +1,9619 @@
+{
+ "tool": "structure_loop.py",
+ "note": "One run per body over the census's addressable class. `trace` is the round-by-round record: the skeleton difference class the round acted on, the template that won, and the identical-word count before and after. `exact` is only set when `bank_exact.pins` reached the full word count; nothing was banked by this fixture.",
+ "band": [
+  "early-return",
+  "guard-shape"
+ ],
+ "summary": {
+  "bodies": 414,
+  "closed": 0,
+  "improved": 21,
+  "refused": 393
+ },
+ "runs": {
+  "boot:800013d4": {
+   "words": 54,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:800014ac": {
+   "words": 23,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80001510": {
+   "words": 52,
+   "identical": 37,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 37,
+     "words": 52,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 37,
+     "words": 52,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:800015e0": {
+   "words": 46,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 46,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 46,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80002fe8": {
+   "words": 29,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 29,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 29,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:800036f0": {
+   "words": 51,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80004c9c": {
+   "words": 24,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 24,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80004ee0": {
+   "words": 40,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 40,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "boot:800051b8": {
+   "words": 25,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 25,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "boot:80006650": {
+   "words": 40,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 40,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 40,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80006d60": {
+   "words": 52,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 52,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 52,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80006e30": {
+   "words": 51,
+   "identical": 31,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 31,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 31,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80007010": {
+   "words": 6,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 6,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 6,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80007300": {
+   "words": 7,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 7,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "boot:80007ef0": {
+   "words": 22,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 22,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "boot:80008f78": {
+   "words": 25,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 25,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 25,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80008fe0": {
+   "words": 38,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 38,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80009078": {
+   "words": 42,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80009120": {
+   "words": 20,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 20,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 3,
+     "words": 20,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 3,
+     "words": 20,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80009170": {
+   "words": 60,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 60,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 60,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80009b9c": {
+   "words": 37,
+   "identical": 30,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 30,
+     "words": 37,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 30,
+     "words": 37,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80009c68": {
+   "words": 17,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 17,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 17,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000a2d0": {
+   "words": 49,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 49,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 49,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000aa10": {
+   "words": 56,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 56,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 56,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000bd80": {
+   "words": 42,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000cb10": {
+   "words": 18,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000cd00": {
+   "words": 16,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 16,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 16,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000cdf0": {
+   "words": 50,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000dae0": {
+   "words": 12,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 12,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 3,
+     "words": 12,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 3,
+     "words": 12,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000db20": {
+   "words": 19,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000dd70": {
+   "words": 48,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 48,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 48,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000de40": {
+   "words": 14,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 14,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 14,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:8000e860": {
+   "words": 46,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 46,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "boot:8000e980": {
+   "words": 19,
+   "identical": 14,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 14,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 14,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:80010500": {
+   "words": 33,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 33,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "boot:80011390": {
+   "words": 18,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "boot:800115b0": {
+   "words": 5,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 5,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "ovl_0072610:8017bec8": {
+   "words": 13,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 13,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 13,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8017d744": {
+   "words": 54,
+   "identical": 35,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 35,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 35,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8017da9c": {
+   "words": 46,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 46,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 46,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8017f3b4": {
+   "words": 31,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 12,
+     "words": 31,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 12,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8017f430": {
+   "words": 31,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 12,
+     "words": 31,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 12,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8017f4dc": {
+   "words": 25,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 25,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 9,
+     "words": 25,
+     "class": "none",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 9,
+     "words": 25,
+     "class": "none",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8017f658": {
+   "words": 25,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 25,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 9,
+     "words": 25,
+     "class": "none",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 9,
+     "words": 25,
+     "class": "none",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8017f94c": {
+   "words": 40,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 40,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 40,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8017f9ec": {
+   "words": 40,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 40,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 40,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:80180014": {
+   "words": 21,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 21,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 21,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:80180070": {
+   "words": 30,
+   "identical": 22,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 22,
+     "words": 30,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 22,
+     "words": 30,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:801803e4": {
+   "words": 34,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 34,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 34,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:80180a20": {
+   "words": 60,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 60,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 60,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:80180b10": {
+   "words": 53,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 53,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 53,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:801826c0": {
+   "words": 47,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 47,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 47,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:8018277c": {
+   "words": 31,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0072610:80182c28": {
+   "words": 54,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0078c0e:8017ff88": {
+   "words": 38,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 9,
+     "words": 38,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 9,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007af7a:8017b574": {
+   "words": 22,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 22,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 22,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007af7a:8017db90": {
+   "words": 46,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 46,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 46,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007c552:8016eb74": {
+   "words": 23,
+   "identical": 15,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 15,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007c552:801700ac": {
+   "words": 22,
+   "identical": 15,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 22,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 15,
+     "words": 22,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007c552:80171240": {
+   "words": 21,
+   "identical": 15,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 21,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 15,
+     "words": 21,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007c552:80171294": {
+   "words": 10,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 10,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 10,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007c552:801712bc": {
+   "words": 25,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 25,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 25,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007e132:8017c234": {
+   "words": 21,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 21,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 21,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007fc12:80162a64": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007fc12:80162ae0": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007fc12:801665d0": {
+   "words": 52,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 52,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 52,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007fc12:801666a8": {
+   "words": 56,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 56,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 56,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007fc12:80167abc": {
+   "words": 58,
+   "identical": 39,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 39,
+     "words": 58,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 39,
+     "words": 58,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007fc12:80167ba4": {
+   "words": 57,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007fc12:8016b524": {
+   "words": 28,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 28,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 28,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_007fc12:8016b594": {
+   "words": 39,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 39,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80163570": {
+   "words": 17,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 17,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 17,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:801635b4": {
+   "words": 20,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 20,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 20,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:801636b8": {
+   "words": 46,
+   "identical": 44,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 22,
+     "words": 46,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 44,
+     "words": 46,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 44,
+     "words": 46,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80163e94": {
+   "words": 31,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80164ba4": {
+   "words": 54,
+   "identical": 36,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 36,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 36,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80165234": {
+   "words": 51,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:801654c4": {
+   "words": 38,
+   "identical": 33,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 33,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 33,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:8016555c": {
+   "words": 56,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 56,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 56,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80165a5c": {
+   "words": 21,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 21,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 21,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80165b38": {
+   "words": 31,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80165dd4": {
+   "words": 43,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 43,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 43,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80166298": {
+   "words": 38,
+   "identical": 30,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 30,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 30,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008505e:80166370": {
+   "words": 41,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 41,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 41,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0087352:80162728": {
+   "words": 35,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 35,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 35,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0087352:80162f48": {
+   "words": 57,
+   "identical": 37,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 37,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 37,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0087352:801630f0": {
+   "words": 57,
+   "identical": 37,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 37,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 37,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0087352:80165bc4": {
+   "words": 37,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 37,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 37,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008900e:80162ac8": {
+   "words": 55,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 55,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 55,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008900e:80163500": {
+   "words": 32,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 32,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 32,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008900e:801668b4": {
+   "words": 46,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 46,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 46,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008900e:80166d1c": {
+   "words": 51,
+   "identical": 48,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 48,
+     "words": 51,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 48,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008900e:80167f60": {
+   "words": 37,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 37,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 37,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008bef8:801635d0": {
+   "words": 50,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 50,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "ovl_008bef8:80163698": {
+   "words": 51,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 51,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "ovl_008bef8:801639f4": {
+   "words": 36,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 36,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 36,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008bef8:80164588": {
+   "words": 39,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 39,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008bef8:8016462c": {
+   "words": 29,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 29,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 29,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008bef8:801652e4": {
+   "words": 32,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 32,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "ovl_008e046:80162ac8": {
+   "words": 55,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 55,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 55,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008e046:80163500": {
+   "words": 32,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 32,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 32,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008e046:80165b24": {
+   "words": 51,
+   "identical": 48,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 48,
+     "words": 51,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 48,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_008e046:80166a54": {
+   "words": 37,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 37,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 37,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80163b24": {
+   "words": 49,
+   "identical": 14,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 14,
+     "words": 49,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 14,
+     "words": 49,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80164c34": {
+   "words": 38,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80165178": {
+   "words": 58,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 58,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 58,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80165930": {
+   "words": 23,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80165b6c": {
+   "words": 27,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80165e40": {
+   "words": 34,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 34,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 34,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:801660ec": {
+   "words": 51,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:801661b8": {
+   "words": 36,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 36,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 36,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80166564": {
+   "words": 52,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 52,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 52,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80166c70": {
+   "words": 19,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80166cbc": {
+   "words": 39,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 39,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80166ed0": {
+   "words": 45,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 45,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 45,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0090698:80167938": {
+   "words": 36,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 36,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "ovl_0090698:801679f4": {
+   "words": 27,
+   "identical": 18,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 18,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 18,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0093192:80162c90": {
+   "words": 23,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 11,
+     "words": 23,
+     "class": "none",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 11,
+     "words": 23,
+     "class": "none",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0093aba:801621c4": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0095446:8016272c": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0095446:801627a8": {
+   "words": 31,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0095446:80163718": {
+   "words": 50,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0097e42:801621d8": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0097e42:80163040": {
+   "words": 34,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 34,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 34,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0097e42:801634c8": {
+   "words": 49,
+   "identical": 14,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 14,
+     "words": 49,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 14,
+     "words": 49,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0097e42:8016358c": {
+   "words": 43,
+   "identical": 13,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 13,
+     "words": 43,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 13,
+     "words": 43,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0098ee0:80162144": {
+   "words": 32,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 32,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "ovl_0098ee0:80162910": {
+   "words": 43,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 43,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 43,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0098ee0:80162b88": {
+   "words": 37,
+   "identical": 17,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 17,
+     "words": 37,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 17,
+     "words": 37,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_0098ee0:80165998": {
+   "words": 34,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 34,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 34,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009aed0:801625b0": {
+   "words": 57,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009aed0:80162870": {
+   "words": 32,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 32,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "ovl_009aed0:80162edc": {
+   "words": 42,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009aed0:801636a0": {
+   "words": 11,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 11,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 11,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009d282:80161d48": {
+   "words": 26,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 26,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 26,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009d3ba:801620bc": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009d3ba:80162138": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009d3ba:80162438": {
+   "words": 32,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 32,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 32,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009d3ba:80162c5c": {
+   "words": 46,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 46,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 46,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:801639d0": {
+   "words": 21,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 21,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 21,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80163a24": {
+   "words": 19,
+   "identical": 13,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 13,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 13,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:801641e8": {
+   "words": 19,
+   "identical": 13,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 13,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 13,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80164328": {
+   "words": 51,
+   "identical": 32,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 32,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 32,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80164698": {
+   "words": 19,
+   "identical": 13,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 13,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 13,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80164e0c": {
+   "words": 31,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:801651ac": {
+   "words": 51,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80165278": {
+   "words": 38,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80165310": {
+   "words": 36,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 36,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 36,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:801653fc": {
+   "words": 18,
+   "identical": 13,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 13,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 13,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80165444": {
+   "words": 39,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 39,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80165550": {
+   "words": 27,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:801656c0": {
+   "words": 44,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 44,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80165d20": {
+   "words": 26,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 26,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 26,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80165d88": {
+   "words": 38,
+   "identical": 18,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 17,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 18,
+     "words": 38,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 18,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:801664ec": {
+   "words": 38,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80166644": {
+   "words": 33,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 33,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 33,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80166838": {
+   "words": 52,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 52,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 52,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80166978": {
+   "words": 35,
+   "identical": 14,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 14,
+     "words": 35,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 14,
+     "words": 35,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_009dd02:80166db8": {
+   "words": 58,
+   "identical": 49,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 49,
+     "words": 58,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 49,
+     "words": 58,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a0344:80162064": {
+   "words": 44,
+   "identical": 16,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 16,
+     "words": 44,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 16,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a0344:80162224": {
+   "words": 29,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 29,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 29,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a0344:801623c4": {
+   "words": 56,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 56,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 56,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a0344:80162930": {
+   "words": 57,
+   "identical": 48,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 48,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 48,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a0344:80163724": {
+   "words": 14,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 14,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 14,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a0344:80163b50": {
+   "words": 26,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 26,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 26,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a0344:80163bb8": {
+   "words": 35,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 35,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 35,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a1414:8016265c": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a1414:801626d8": {
+   "words": 31,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a1414:801658dc": {
+   "words": 13,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a1414:801687f0": {
+   "words": 13,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a43b6:801625e8": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a43b6:80162664": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a43b6:801626e0": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a43b6:801627c4": {
+   "words": 23,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a43b6:801691dc": {
+   "words": 13,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80162314": {
+   "words": 31,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80162af8": {
+   "words": 59,
+   "identical": 13,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 13,
+     "words": 59,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 13,
+     "words": 59,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80162be4": {
+   "words": 41,
+   "identical": 27,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 27,
+     "words": 41,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 27,
+     "words": 41,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:8016326c": {
+   "words": 39,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 39,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80164d04": {
+   "words": 38,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80165424": {
+   "words": 35,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 35,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 35,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:801654b0": {
+   "words": 58,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 58,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 58,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80165598": {
+   "words": 60,
+   "identical": 24,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 24,
+     "words": 60,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 24,
+     "words": 60,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80165e14": {
+   "words": 31,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80166ef4": {
+   "words": 13,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:80167064": {
+   "words": 42,
+   "identical": 31,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 31,
+     "words": 42,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 31,
+     "words": 42,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:801676cc": {
+   "words": 57,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 5,
+     "words": 57,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "guard:swap",
+     "identical": 7,
+     "words": 57,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 3,
+     "template": "-",
+     "identical": 7,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a733e:801677b0": {
+   "words": 57,
+   "identical": 14,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 57,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 14,
+     "words": 57,
+     "class": "guard-shape",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 14,
+     "words": 57,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a9d94:80162568": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a9d94:801625e4": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a9d94:801659ac": {
+   "words": 42,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 42,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 42,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00a9d94:801687d8": {
+   "words": 35,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 35,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 35,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00ae24a:8016464c": {
+   "words": 58,
+   "identical": 43,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 43,
+     "words": 58,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 43,
+     "words": 58,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00ae24a:801655b4": {
+   "words": 47,
+   "identical": 37,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 37,
+     "words": 47,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 37,
+     "words": 47,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00ae24a:8016698c": {
+   "words": 10,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 10,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 10,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b08a2:8016246c": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b08a2:801624e8": {
+   "words": 31,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b2d7a:80161ef4": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b2d7a:80161f70": {
+   "words": 31,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b2d7a:801621fc": {
+   "words": 18,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b321e:8016217c": {
+   "words": 43,
+   "identical": 25,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 25,
+     "words": 43,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 25,
+     "words": 43,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b321e:80163490": {
+   "words": 56,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 56,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 56,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b321e:80163570": {
+   "words": 44,
+   "identical": 13,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 13,
+     "words": 44,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 13,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b321e:8016513c": {
+   "words": 20,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 20,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 20,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b321e:801651c0": {
+   "words": 46,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 46,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 11,
+     "words": 46,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 11,
+     "words": 46,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b321e:801658f4": {
+   "words": 38,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b321e:80165f44": {
+   "words": 28,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 28,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 28,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b321e:801664b0": {
+   "words": 60,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 60,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 60,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b5346:801620fc": {
+   "words": 32,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 32,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 32,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b5346:80162908": {
+   "words": 18,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b5346:80162e00": {
+   "words": 57,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "ovl_00b6040:80161f84": {
+   "words": 38,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80025b1c": {
+   "words": 35,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 35,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 35,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80025dbc": {
+   "words": 44,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800267a4": {
+   "words": 31,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8002691c": {
+   "words": 25,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 25,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 25,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800274f8": {
+   "words": 50,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80028350": {
+   "words": 24,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 24,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80029f08": {
+   "words": 40,
+   "identical": 27,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 27,
+     "words": 40,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 27,
+     "words": 40,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8003025c": {
+   "words": 50,
+   "identical": 35,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 35,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 35,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80030324": {
+   "words": 50,
+   "identical": 35,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 35,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 35,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80030d0c": {
+   "words": 23,
+   "identical": 15,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 15,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80031050": {
+   "words": 24,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 24,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800327ec": {
+   "words": 36,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 36,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 36,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80032bd8": {
+   "words": 37,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 37,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 37,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80032d14": {
+   "words": 42,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80032e74": {
+   "words": 32,
+   "identical": 27,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 27,
+     "words": 32,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 27,
+     "words": 32,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80032ef4": {
+   "words": 28,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 28,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 28,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80032fac": {
+   "words": 30,
+   "identical": 19,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 19,
+     "words": 30,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 19,
+     "words": 30,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80033024": {
+   "words": 22,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 22,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 22,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80033648": {
+   "words": 14,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 14,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 14,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8003590c": {
+   "words": 40,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 40,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80036b84": {
+   "words": 24,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 24,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80036be4": {
+   "words": 24,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 24,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80036c68": {
+   "words": 43,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 43,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80036d14": {
+   "words": 44,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80036dc4": {
+   "words": 43,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 43,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80038e98": {
+   "words": 42,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80038f40": {
+   "words": 15,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 15,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 15,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80038ff0": {
+   "words": 12,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 12,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 12,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80039020": {
+   "words": 38,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80039d0c": {
+   "words": 24,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 24,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8003a154": {
+   "words": 50,
+   "identical": 34,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 34,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 34,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8003b238": {
+   "words": 27,
+   "identical": 17,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 17,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 17,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8003bd84": {
+   "words": 45,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 45,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 45,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8003c188": {
+   "words": 20,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 20,
+     "class": null,
+     "status": "cc1 refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:8003c260": {
+   "words": 51,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 51,
+     "class": null,
+     "status": "cc1 refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80040a14": {
+   "words": 17,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 17,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 17,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80040a58": {
+   "words": 20,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 20,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 20,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80040c04": {
+   "words": 26,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 26,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 26,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80042454": {
+   "words": 18,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80042a24": {
+   "words": 27,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80042d60": {
+   "words": 19,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80047b74": {
+   "words": 33,
+   "identical": 28,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 28,
+     "words": 33,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 28,
+     "words": 33,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80047bf8": {
+   "words": 52,
+   "identical": 17,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 17,
+     "words": 52,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 17,
+     "words": 52,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80047cc8": {
+   "words": 40,
+   "identical": 23,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 23,
+     "words": 40,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 23,
+     "words": 40,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80048060": {
+   "words": 42,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 42,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80048294": {
+   "words": 19,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800482e0": {
+   "words": 44,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80048390": {
+   "words": 39,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 39,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004842c": {
+   "words": 44,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800484dc": {
+   "words": 44,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800491cc": {
+   "words": 58,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 58,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 58,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80049394": {
+   "words": 16,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 16,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 16,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800493d4": {
+   "words": 30,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 30,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 30,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004944c": {
+   "words": 30,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 30,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 30,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800494c4": {
+   "words": 30,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 30,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 30,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004c4a0": {
+   "words": 49,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 49,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 3,
+     "words": 49,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 3,
+     "words": 49,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004ca18": {
+   "words": 27,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004cc5c": {
+   "words": 19,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004cca8": {
+   "words": 24,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 24,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004cd08": {
+   "words": 19,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004cd88": {
+   "words": 19,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 19,
+     "class": null,
+     "status": "cc1 refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:8004cf30": {
+   "words": 39,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 39,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004dbf8": {
+   "words": 48,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 48,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 48,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004f47c": {
+   "words": 26,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 26,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 26,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8004f774": {
+   "words": 40,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 40,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 40,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800510d0": {
+   "words": 13,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 13,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 13,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80052bd0": {
+   "words": 39,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 39,
+     "class": null,
+     "status": "cc1 refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80052c6c": {
+   "words": 41,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 41,
+     "class": null,
+     "status": "cc1 refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80053c4c": {
+   "words": 11,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 11,
+     "class": null,
+     "status": "cc1 refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:8005c27c": {
+   "words": 35,
+   "identical": 16,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 16,
+     "words": 35,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 16,
+     "words": 35,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8005d700": {
+   "words": 40,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 40,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 40,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8005ef08": {
+   "words": 47,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 47,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 47,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800608c8": {
+   "words": 36,
+   "identical": 15,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 36,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 15,
+     "words": 36,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80060958": {
+   "words": 34,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 34,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80062b80": {
+   "words": 60,
+   "identical": 39,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 39,
+     "words": 60,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 39,
+     "words": 60,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80062c70": {
+   "words": 35,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 35,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 35,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800661e4": {
+   "words": 41,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 41,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 41,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800666ec": {
+   "words": 48,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 48,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 48,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80067578": {
+   "words": 31,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 31,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:800679f0": {
+   "words": 32,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 32,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:80067e6c": {
+   "words": 29,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 29,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:800682dc": {
+   "words": 31,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 31,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:800691c0": {
+   "words": 26,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 26,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 26,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006a6c8": {
+   "words": 37,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 37,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:8006aa50": {
+   "words": 60,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 60,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:8006b380": {
+   "words": 23,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 23,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 23,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006c044": {
+   "words": 11,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 11,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 11,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006cccc": {
+   "words": 55,
+   "identical": 17,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 17,
+     "words": 55,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 17,
+     "words": 55,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006cda8": {
+   "words": 18,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006d284": {
+   "words": 17,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 17,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 17,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006da14": {
+   "words": 59,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 59,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 59,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006e1bc": {
+   "words": 45,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 45,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 45,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006e534": {
+   "words": 16,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 16,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 16,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006e79c": {
+   "words": 18,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006ebec": {
+   "words": 27,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8006feec": {
+   "words": 23,
+   "identical": 18,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 18,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 18,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800706cc": {
+   "words": 15,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 15,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 15,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800723cc": {
+   "words": 20,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 20,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 20,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80072670": {
+   "words": 47,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 47,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 47,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80072878": {
+   "words": 29,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 29,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 29,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800728ec": {
+   "words": 35,
+   "identical": 10,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 35,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 10,
+     "words": 35,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80072978": {
+   "words": 43,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 43,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 43,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80073f28": {
+   "words": 15,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 15,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 15,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800755c0": {
+   "words": 18,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80075ef8": {
+   "words": 23,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80075f54": {
+   "words": 27,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80075fc0": {
+   "words": 33,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 33,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 33,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007604c": {
+   "words": 16,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 16,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 16,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800787dc": {
+   "words": 18,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 18,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 18,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80078824": {
+   "words": 34,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 34,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:800788ac": {
+   "words": 56,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 56,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 56,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80078fc0": {
+   "words": 57,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800790a4": {
+   "words": 60,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 60,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 60,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80079194": {
+   "words": 51,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80079260": {
+   "words": 57,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800795c8": {
+   "words": 39,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 39,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80079664": {
+   "words": 24,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 24,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007bd9c": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007be18": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007be94": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007bf10": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007bf8c": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007c008": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007c084": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007c100": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007c17c": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007c1f8": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007c274": {
+   "words": 31,
+   "identical": 21,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 21,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007d748": {
+   "words": 51,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 51,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007dab0": {
+   "words": 13,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 13,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8007e170": {
+   "words": 36,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 36,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 36,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800813f0": {
+   "words": 55,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 55,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 55,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80082290": {
+   "words": 30,
+   "identical": 16,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 16,
+     "words": 30,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 16,
+     "words": 30,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80082308": {
+   "words": 32,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 32,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 32,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800837d0": {
+   "words": 27,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 27,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 27,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80084420": {
+   "words": 43,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 43,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 2,
+     "words": 43,
+     "class": "our-short",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 2,
+     "words": 43,
+     "class": "our-short",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80085164": {
+   "words": 50,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8008522c": {
+   "words": 53,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 53,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 53,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80085300": {
+   "words": 38,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800856a4": {
+   "words": 19,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80087a28": {
+   "words": 50,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80087cf8": {
+   "words": 38,
+   "identical": 15,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 38,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 15,
+     "words": 38,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80087d90": {
+   "words": 40,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 40,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 40,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80088254": {
+   "words": 32,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 32,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 32,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800882d4": {
+   "words": 24,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 24,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8008c314": {
+   "words": 10,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 10,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 10,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8008c51c": {
+   "words": 19,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 19,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 19,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8008c8a8": {
+   "words": 50,
+   "identical": 22,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 22,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 22,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8008d2e4": {
+   "words": 35,
+   "identical": 11,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 11,
+     "words": 35,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 11,
+     "words": 35,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8008de80": {
+   "words": 29,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 29,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 29,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8008eff8": {
+   "words": 44,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8008f41c": {
+   "words": 15,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 15,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 15,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80091fcc": {
+   "words": 24,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 24,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80094b68": {
+   "words": 40,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 40,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 40,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80096d90": {
+   "words": 57,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80097b68": {
+   "words": 57,
+   "identical": 28,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 28,
+     "words": 57,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 28,
+     "words": 57,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:80097f14": {
+   "words": 47,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 47,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 47,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8009bec8": {
+   "words": 15,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 15,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 15,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8009e8d4": {
+   "words": 26,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 26,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 26,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8009ec1c": {
+   "words": 31,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8009eee0": {
+   "words": 28,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 28,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 28,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8009f5b0": {
+   "words": 23,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 23,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:8009f834": {
+   "words": 28,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 28,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 28,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a1ecc": {
+   "words": 29,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 29,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 29,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a231c": {
+   "words": 44,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 44,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a35c8": {
+   "words": 38,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 38,
+     "class": null,
+     "status": "cc1 refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:800a58c4": {
+   "words": 22,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 22,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 22,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a5acc": {
+   "words": 18,
+   "identical": 12,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 18,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 12,
+     "words": 18,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a5b14": {
+   "words": 26,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 26,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 26,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a5d10": {
+   "words": 32,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 32,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 32,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a61fc": {
+   "words": 23,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 23,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 23,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a6258": {
+   "words": 23,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 23,
+     "class": "guard-shape",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 23,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a76a4": {
+   "words": 54,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a777c": {
+   "words": 54,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a7a8c": {
+   "words": 54,
+   "identical": 2,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 2,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 2,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a8248": {
+   "words": 36,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 36,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 36,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a832c": {
+   "words": 14,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 14,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 14,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a8364": {
+   "words": 20,
+   "identical": 1,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 1,
+     "words": 20,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 1,
+     "words": 20,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a83b4": {
+   "words": 47,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 47,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 47,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a8470": {
+   "words": 30,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 30,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:800a851c": {
+   "words": 30,
+   "identical": 25,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 25,
+     "words": 30,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 25,
+     "words": 30,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a8594": {
+   "words": 30,
+   "identical": 9,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 9,
+     "words": 30,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 9,
+     "words": 30,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a9054": {
+   "words": 31,
+   "identical": 15,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 15,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 15,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a949c": {
+   "words": 41,
+   "identical": 27,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 27,
+     "words": 41,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 27,
+     "words": 41,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800a9540": {
+   "words": 14,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 14,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 14,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800aa83c": {
+   "words": 31,
+   "identical": 30,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 10,
+     "words": 31,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 13,
+     "words": 31,
+     "class": "none",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "guard:swap",
+     "identical": 30,
+     "words": 31,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 3,
+     "template": "-",
+     "identical": 30,
+     "words": 31,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800aad40": {
+   "words": 39,
+   "identical": 36,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 12,
+     "words": 39,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 31,
+     "words": 39,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "guard:swap",
+     "identical": 36,
+     "words": 39,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 3,
+     "template": "-",
+     "identical": 36,
+     "words": 39,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800aaddc": {
+   "words": 51,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 51,
+     "class": "early-return",
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 0,
+     "words": 51,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800aaea8": {
+   "words": 50,
+   "identical": 47,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 44,
+     "words": 50,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 47,
+     "words": 50,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 47,
+     "words": 50,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800ab514": {
+   "words": 24,
+   "identical": 0,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 0,
+     "words": 24,
+     "class": null,
+     "status": "ld refused"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "status": "refused: body does not compile"
+    }
+   ]
+  },
+  "stage2:800ab580": {
+   "words": 54,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800ab694": {
+   "words": 54,
+   "identical": 7,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 54,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 7,
+     "words": 54,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800ac7cc": {
+   "words": 47,
+   "identical": 33,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 33,
+     "words": 47,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 33,
+     "words": 47,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800adc44": {
+   "words": 57,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 57,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 57,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800add28": {
+   "words": 55,
+   "identical": 4,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 4,
+     "words": 55,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 4,
+     "words": 55,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800ade04": {
+   "words": 60,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 60,
+     "class": "guard-shape",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 60,
+     "class": "guard-shape",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800aebfc": {
+   "words": 52,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 7,
+     "words": 52,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "guard:swap",
+     "identical": 8,
+     "words": 52,
+     "class": "early-return",
+     "status": "improved"
+    },
+    {
+     "round": 2,
+     "template": "-",
+     "identical": 8,
+     "words": 52,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800aedc0": {
+   "words": 48,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 48,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 48,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800af080": {
+   "words": 21,
+   "identical": 5,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 5,
+     "words": 21,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 5,
+     "words": 21,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800b230c": {
+   "words": 14,
+   "identical": 6,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 6,
+     "words": 14,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 6,
+     "words": 14,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800b431c": {
+   "words": 33,
+   "identical": 3,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 3,
+     "words": 33,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 3,
+     "words": 33,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  },
+  "stage2:800b4d30": {
+   "words": 24,
+   "identical": 8,
+   "exact": false,
+   "trace": [
+    {
+     "round": 0,
+     "template": "-",
+     "identical": 8,
+     "words": 24,
+     "class": "early-return",
+     "status": "linked"
+    },
+    {
+     "round": 1,
+     "template": "-",
+     "identical": 8,
+     "words": 24,
+     "class": "early-return",
+     "status": "stalled"
+    }
+   ]
+  }
+ }
+}

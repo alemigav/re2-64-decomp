@@ -466,6 +466,10 @@ def main(argv=None):
     ap.add_argument("--self-test", action="store_true")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--write", action="store_true")
+    ap.add_argument("--band", default="early-return,guard-shape",
+                    help="difference classes to run, comma separated (from skeletons.json)")
+    ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--max-words", type=int, default=60)
     a = ap.parse_args(argv)
     if a.self_test:
         return self_test()
@@ -479,6 +483,8 @@ def main(argv=None):
         print("  %s summary is derived from the runs" % ("PASS" if same else "FAIL"))
         print("%d/%d structure-loop case(s)" % (1 if same else 0, 1))
         return 0 if same else 1
+    if a.write:
+        return run_band(a)
     if not a.at:
         ap.print_help()
         return 2
@@ -497,11 +503,53 @@ def main(argv=None):
     return 0
 
 
+def run_band(a) -> int:
+    """Run the loop over the addressable class and write the trace fixture — the rate, not an anecdote."""
+    census = ROOT / "fixtures" / "decomp" / "skeletons.json"
+    if not census.exists():
+        print("no census at %s — run skeleton_census.py --write" % census, file=sys.stderr)
+        return 2
+    want = tuple(x.strip() for x in a.band.split(",") if x.strip())
+    recs = json.loads(census.read_text())["records"]
+    keys = [k for k, v in recs.items()
+            if v["class"] in want and v["gap"] > 4 and v["words"] <= a.max_words]
+    keys.sort(key=lambda k: (recs[k]["gap"], recs[k]["words"], k))
+    if a.limit:
+        keys = keys[:a.limit]
+    print("running %d bodies from classes %s (gap>4, <=%d words)" % (len(keys), ",".join(want), a.max_words),
+          file=sys.stderr)
+    bykey = {"%s:%08x" % (t[0], t[1]): t for t in dm.functions_to_measure(None)}
+    runs = {}
+    for i, key in enumerate(keys, 1):
+        t = bykey.get(key)
+        if t is None:
+            continue
+        res = run_body(t[0], t[1], t[2], t[4], rounds=a.rounds)
+        runs[key] = {k: res[k] for k in ("words", "identical", "exact", "trace")}
+        if i % 10 == 0:
+            print("  %d/%d ..." % (i, len(keys)), file=sys.stderr)
+    doc = {"tool": "structure_loop.py",
+           "note": ("One run per body over the census's addressable class. `trace` is the round-by-round record: the "
+                    "skeleton difference class the round acted on, the template that won, and the identical-word count "
+                    "before and after. `exact` is only set when `bank_exact.pins` reached the full word count; nothing "
+                    "was banked by this fixture."),
+           "band": list(want), "summary": summarise(runs), "runs": dict(sorted(runs.items()))}
+    FIXTURE.parent.mkdir(parents=True, exist_ok=True)
+    FIXTURE.write_text(json.dumps(doc, indent=1) + "\n")
+    s = doc["summary"]
+    print("%d bodies: %d exact, %d improved, %d stalled/refused"
+          % (s["bodies"], s["closed"], s["improved"], s["refused"]))
+    return 0
+
+
 def summarise(runs):
+    """Closure and improvement counts. `improved` means the loop moved the body at all, which is a different and much
+    larger claim than `closed` — the two are never added together."""
     closed = sum(1 for r in runs.values() if r.get("exact"))
-    improved = sum(1 for r in runs.values() if not r.get("exact") and (r.get("identical") or 0) > 0)
-    return {"bodies": len(runs), "closed": closed, "improved": improved,
-            "refused": len(runs) - closed - improved}
+    moved = sum(1 for r in runs.values()
+                if not r.get("exact") and any(s.get("status") == "improved" for s in r.get("trace") or []))
+    return {"bodies": len(runs), "closed": closed, "improved": moved,
+            "refused": len(runs) - closed - moved}
 
 
 if __name__ == "__main__":
