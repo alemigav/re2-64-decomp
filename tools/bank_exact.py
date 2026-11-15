@@ -117,7 +117,7 @@ def body_for(dm, source: str, rung: str, image: str = None, addr: int = None, wo
     return text.rstrip("\n") + "\n", syms, None
 
 
-def pins(dm, text: str, image: str, addr: int, words: int, syms: dict):
+def _pins_unfreed(dm, text: str, image: str, addr: int, words: int, syms: dict):
     """(identical, status) — compile, assemble, link and compare EXACTLY as the gate will.
 
     The pin is decided here, before the entry is written, because a claim the probe cannot check is not a claim.
@@ -135,7 +135,7 @@ def pins(dm, text: str, image: str, addr: int, words: int, syms: dict):
     if len(want) < 4 * words:
         return 0, "past the window"
     import tempfile as _tf
-    d = Path(_tf.mkdtemp(prefix="pin_", dir=str(cp.WORK)))
+    d = _mkdtemp(prefix="pin_", dir=str(cp.WORK))   # registered, so `pins()` can free it before returning
     f = d / "f"
     (d / "f.c").write_text(text)
     cc1 = cp.TC / "mips-gcc-2.8.1" / "bin" / "cc1"
@@ -168,6 +168,23 @@ def pins(dm, text: str, image: str, addr: int, words: int, syms: dict):
         return 0, why
     got = cp.text_of(f.with_suffix(".elf"))
     return sum(1 for i in range(words) if got[4 * i:4 * i + 4] == want[4 * i:4 * i + 4]), "linked"
+
+
+def pins(dm, text: str, image: str, addr: int, words: int, syms: dict):
+    """Compile, link and compare one draft; free its scratch BEFORE returning.
+
+    The atexit sweep (M417) is right for a tool that runs and quits and wrong for a long search: the cap diagnostic ran
+    for eleven minutes, created scratch faster than the process could reach its exit handler, and **filled a 228 GB
+    disk**. The dirs this call created are exactly the ones `_SCRATCH` gained, so they are the ones deleted here.
+    """
+    import shutil
+    before = len(_SCRATCH)
+    try:
+        return _pins_unfreed(dm, text, image, addr, words, syms)
+    finally:
+        for d in _SCRATCH[before:]:
+            shutil.rmtree(d, ignore_errors=True)
+        del _SCRATCH[before:]
 
 
 def candidates() -> list[dict]:

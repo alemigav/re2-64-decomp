@@ -1,7 +1,7 @@
 {
  "band": "near",
- "banked": 4,
- "bodies": 184,
+ "banked": 0,
+ "bodies": 180,
  "mechanisms": {
   "cast": "yes \u2014 vary the signedness of a cast expression, pointer-ness preserved",
   "compare:copy": "no \u2014 changes which value is live",
@@ -23,9 +23,9 @@
  "note": "Closures per mechanism pass, over a band, run to a fixpoint. A mechanism that closes nothing is a measured zero. The mechanisms no text pass can express are listed in `mechanisms` \u2014 that is the finding, not a TODO.",
  "passes": {
   "cast": {
-   "bodies_tried": 184,
-   "closed": 4,
-   "improved": 39
+   "bodies_tried": 180,
+   "closed": 0,
+   "improved": 31
   },
   "datwidth": {
    "bodies_tried": 180,
@@ -48,7 +48,7 @@
    "improved": 0
   },
   "localtype": {
-   "bodies_tried": 184,
+   "bodies_tried": 180,
    "closed": 0,
    "improved": 11
   },

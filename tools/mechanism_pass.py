@@ -325,7 +325,7 @@ def localtype_variants(text: str, ctx=None):
                 if cand not in seen:
                     seen.add(cand)
                     out.append(("localtype %s as %s" % (m.group(4) if pattern is PARAM else m.group(3).strip(), kind), cand))
-                if len(out) >= 48:
+                if len(out) >= VARIANT_CAP:
                     return out
     return out
 
@@ -350,9 +350,8 @@ def cast_variants(text: str, ctx=None):
                 continue
             seen.add(cand)
             out.append(("cast (%s%s)" % (kind, star), cand))
-            if len(out) >= 48:          # M432: 12 was fewer than (declaration sites x 6) on a body with several
-                return out              # locals, so a LATE declaration was never tried — `ovl_009d282:0x80161db0`'s
-                                        # `int bVar1` was the 13th variant and the pass reported a measured zero
+            if len(out) >= VARIANT_CAP:
+                return out
     return out
 
 
@@ -381,7 +380,7 @@ def sign_variants(text: str, ctx=None):
             continue
         seen.add(cand)
         out.append(("sign %s -> %s" % (m.group(1), swapped), cand))
-        if len(out) >= 48:
+        if len(out) >= VARIANT_CAP:
             break
     return out
 
@@ -413,6 +412,11 @@ def band(kind: str):
     return out
 
 
+# The bound on how many variants one mechanism may offer for one body. It is a MODULE constant, not a literal inside the
+# generators, for one reason: M432 found that a cap of 12 silently discarded the very variant that closed a body, and a
+# bound you cannot raise is a bound you cannot measure. `--cap` sets it, and the diagnostic that answers "what is the cap
+# hiding" raises it to infinity and records where each winner sits in the order.
+VARIANT_CAP = 48
 NEWSYM = re.compile(r"\b(D_([0-9a-f]{8}))\b")
 
 
@@ -499,6 +503,11 @@ def write(args) -> int:
                 if won is None:
                     continue
                 label, text = won
+                if args.no_bank:
+                    closed += 1
+                    banked += 1
+                    del remaining[key]
+                    continue
                 out = AUTHORED / cand["image"] / ("%08x.c" % cand["address"])
                 out.parent.mkdir(parents=True, exist_ok=True)
                 out.write_text(text)
@@ -590,10 +599,15 @@ def main(argv):
     ap.add_argument("--passes", default="localtype,cast,sign,symbol,datwidth,early,forward,order,guard,sig")
     ap.add_argument("--max-words", type=int, default=200)
     ap.add_argument("--rounds", type=int, default=3, help="repeat the whole pass list until a round improves nothing")
+    ap.add_argument("--no-bank", action="store_true", help="count closures without writing them (for counterfactuals)")
+    ap.add_argument("--cap", type=int, default=48, help="max variants one mechanism may offer for one body")
     ap.add_argument("--inner", type=int, default=6,
                     help="repeat ONE mechanism on the body it just improved, this many times at most")
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args(argv)
+    global VARIANT_CAP
+    if getattr(args, "cap", None):
+        VARIANT_CAP = args.cap
     if args.self_test:
         return self_test()
     if args.check:
